@@ -1,52 +1,47 @@
 # oogasalad
-## TEAM NAME
-## NAMES
 
+## PacOne
 
-This project implements an authoring environment and player for multiple related games.
+### Authors: Ishan Madan (im121), Owen Jennings (otj4), Jessica Chen (jc939), Angela Predolac (ap721), William He (wwh15), Luke Fu (lmf59), Austin Huang (ash110), Troy Ludwig (tdl21)
+
+This project implements an authoring environment and player for the traditional arcade game,
+Pac-Man.
 
 ### Timeline
 
- * Start Date: 
+* Start Date: March 21st, 2025
 
- * Finish Date: 
+* Finish Date:
 
- * Hours Spent:
-
-
+* Hours Spent:
 
 ### Attributions
 
- * Resources used for learning (including AI assistance)
- 
- * Resources used directly (including AI assistance)
+* Resources used for learning (including AI assistance)
 
+* Resources used directly (including AI assistance)
 
 ### Running the Program
 
- * Main class:
+* Main class:
 
- * Data files needed: 
+* Data files needed:
 
- * Interesting data files:
+* Interesting data files:
 
- * Key/Mouse inputs:
-
-
+* Key/Mouse inputs:
 
 ### Notes/Assumptions
 
- * Assumptions or Simplifications:
+* Assumptions or Simplifications:
 
- * Known Bugs:
+* Known Bugs:
 
- * Features implemented:
+* Features implemented:
 
- * Features unimplemented:
+* Features unimplemented:
 
- * Noteworthy Features:
-
-
+* Noteworthy Features:
 
 ### Assignment Impressions
 
