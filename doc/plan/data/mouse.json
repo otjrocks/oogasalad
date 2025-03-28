@@ -17,8 +17,7 @@
       "controlType": "FollowMouse",
       "effect": null,
       "initialX": 50.0,
-      "initialY": 50.0,
-      "tags": {}
+      "initialY": 50.0
     },
     {
       "type": "Guard",
@@ -26,8 +25,7 @@
       "controlType": "RandomMovement",
       "effect": null,
       "initialX": 150.0,
-      "initialY": 150.0,
-      "tags": {}
+      "initialY": 150.0
     },
     {
       "type": "Cheese",
@@ -35,8 +33,7 @@
       "controlType": null,
       "effect": "Teleport(300,300)",
       "initialX": 100.0,
-      "initialY": 200.0,
-      "tags": {}
+      "initialY": 200.0
     }
   ],
   "collisionRules": [

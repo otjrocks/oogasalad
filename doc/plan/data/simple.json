@@ -17,8 +17,7 @@
       "controlType": "Keyboard",
       "effect": null,
       "initialX": 100.0,
-      "initialY": 100.0,
-      "tags": {}
+      "initialY": 100.0
     },
     {
       "type": "Pellet",
@@ -26,8 +25,7 @@
       "controlType": null,
       "effect": null,
       "initialX": 150.0,
-      "initialY": 100.0,
-      "tags": {}
+      "initialY": 100.0
     }
   ],
   "collisionRules": [
