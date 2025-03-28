@@ -7,7 +7,14 @@ package plan.api;
  */
 public interface EntityFactory {
 
-    Entity createEntity(EntityData entityData);
+    /**
+     * Returns an entity with the information from EntityData
+     *
+     * @param entityData - from configuration
+     * @return an instance of the created entity based on the provided data
+     * @throws EntityCreationException if an error occurs during entity creation
+     */
+    Entity createEntity(EntityData entityData) throws EntityCreationException;
 
     /**
      * Exception thrown to indicate an error occurred during the creation of an entity.
