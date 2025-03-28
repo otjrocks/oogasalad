@@ -5,7 +5,8 @@ import java.util.List;
 /**
  * The {@code StrategyLoader} interface provides methods for retrieving available strategies
  * used in the game. Strategies define various behaviors such as movement, collision handling,
- * edge interactions, effects, and game outcomes.
+ * edge interactions, effects, and game outcomes. Each strategy is an interface that will have
+ * concrete implementations.
  *
  * <p>Implementations of this interface are responsible for dynamically loading the available
  * strategy classes that adhere to the respective strategy interfaces.
