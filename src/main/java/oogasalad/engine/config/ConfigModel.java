@@ -1,9 +1,9 @@
-package engine.config;
+package oogasalad.engine.config;
 
-import engine.model.CollisionRule;
-import engine.model.EntityData;
-import engine.model.GameSettings;
-import engine.model.MetaData;
+import oogasalad.engine.model.CollisionRule;
+import oogasalad.engine.model.EntityData;
+import oogasalad.engine.model.GameSettings;
+import oogasalad.engine.model.MetaData;
 import java.util.List;
 
 public class ConfigModel {

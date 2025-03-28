@@ -2,7 +2,7 @@ package oogasalad;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import engine.config.ConfigModel;
+import oogasalad.engine.config.ConfigModel;
 import java.io.File;
 import java.io.IOException;
 
@@ -24,7 +24,7 @@ public class Main {
         ObjectMapper mapper = new ObjectMapper();
       ConfigModel config = null;
       try {
-        config = mapper.readValue(new File("basic_config.json"), ConfigModel.class);
+        config = mapper.readValue(new File("data/basic.json"), ConfigModel.class);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }

@@ -2,13 +2,13 @@
  * ConfigSaver
  *
  * Overview
- * This API is responsible for converting an in-memory representation of a game (`ConfigModel`) into a persistent format, typically a JSON file. It acts as the saving mechanism for both the Authoring Environment and Game Player to write out configurations for user-authored games. The design separates the act of serializing configuration data from the business logic of the engine or the UI.
+ * This API is responsible for converting an in-memory representation of a game (`ConfigModel`) into a persistent format, typically a JSON file. It acts as the saving mechanism for both the Authoring Environment and Game Player to write out configurations for user-authored games. The design separates the act of serializing configuration data from the business logic of the oogasalad.engine or the UI.
  *
  * SOLID / Object-Oriented Design
  * S: Responsible solely for saving `ConfigModel` objects to a file.
  * O: Easily extended to support new file formats (e.g., XML, YAML) without modifying the interface.
  * L: Any implementation of `ConfigSaver` can be substituted if it adheres to the same interface.
- * I: Cleanly interfaces with only what’s necessary (i.e., `ConfigModel`, not game engine internals).
+ * I: Cleanly interfaces with only what’s necessary (i.e., `ConfigModel`, not game oogasalad.engine internals).
  * D: Depends only on the abstract `ConfigModel`, not on any implementation-specific internals.
  *
  * Extensible / How to Think About Tasks

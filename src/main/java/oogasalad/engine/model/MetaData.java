@@ -1,4 +1,4 @@
-package engine.model;
+package oogasalad.engine.model;
 
 public class MetaData {
   public String title;

@@ -1,4 +1,4 @@
-package engine.model;
+package oogasalad.engine.model;
 
 public class CollisionRule {
   public String entityTypeA;

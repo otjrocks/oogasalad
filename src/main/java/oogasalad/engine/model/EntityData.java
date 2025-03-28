@@ -1,4 +1,4 @@
-package engine.model;
+package oogasalad.engine.model;
 
 import java.util.Map;
 
