@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import oogasalad.engine.config.ConfigModel;
 import java.io.File;
 import java.io.IOException;
+import oogasalad.engine.config.ConfigParseException;
+import oogasalad.engine.config.ConfigParser;
+import oogasalad.engine.config.JsonConfigParser;
 
 /**
  * Feel free to completely change this code or delete it entirely. 
@@ -21,13 +24,14 @@ public class Main {
      * Start of the program.
      */
     public static void main (String[] args) {
-        ObjectMapper mapper = new ObjectMapper();
+      ConfigParser parser = new JsonConfigParser();
       ConfigModel config = null;
       try {
-        config = mapper.readValue(new File("data/basic.json"), ConfigModel.class);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
+        config = parser.loadFromFile("data/basic.json");
+      } catch (ConfigParseException e) {
+        System.out.println(e.getMessage());
       }
-      System.out.println(config.entityConfigs.get(0).type);
+
+      System.out.println(config.getEntityConfigs().getFirst().getType());
     }
 }
