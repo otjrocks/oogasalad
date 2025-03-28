@@ -13,5 +13,5 @@ public class ConfigModel {
   public List<CollisionRule> collisionRules;
   public String winCondition;
 
-  public ConfigModel() {} // Required for Jackson
+  public ConfigModel() {}
 }
