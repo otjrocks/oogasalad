@@ -1,9 +1,9 @@
 package oogasalad.engine.model;
 
 public class MetaData {
-  public String title;
-  public String author;
-  public String description;
+  private String title;
+  private String author;
+  private String description;
 
   public MetaData() {}
 }

@@ -1,9 +1,9 @@
 package oogasalad.engine.model;
 
 public class CollisionRule {
-  public String entityTypeA;
-  public String entityTypeB;
-  public String strategy;
+  private String entityTypeA;
+  private String entityTypeB;
+  private String strategy;
 
   public CollisionRule() {}
 }

@@ -1,10 +1,10 @@
 package oogasalad.engine.model;
 
 public class GameSettings {
-  public double gameSpeed;
-  public int startingLives;
-  public int initialScore;
-  public String edgePolicy;
+  private double gameSpeed;
+  private int startingLives;
+  private int initialScore;
+  private String edgePolicy;
 
   public GameSettings() {}
 }
