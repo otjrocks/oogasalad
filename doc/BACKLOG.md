@@ -54,16 +54,6 @@
 
 ## Use Cases
 
-Confine the use cases to the one you are doing
-
-### Template
-
-**Use Case:**   
-\- Goal:   
-\- Steps:
-
-1.
-
 ### Authoring Environment (Will, Angela, Ishan):
 
 **Use Case: AUTH-1: Create Dynamic Entity**  
