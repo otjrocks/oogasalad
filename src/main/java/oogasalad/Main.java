@@ -1,12 +1,9 @@
 package oogasalad;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import oogasalad.engine.config.ConfigModel;
-import java.io.File;
-import java.io.IOException;
-import oogasalad.engine.config.ConfigParseException;
-import oogasalad.engine.config.ConfigParser;
+import oogasalad.engine.config.ConfigException;
+import oogasalad.engine.config.api.ConfigParser;
 import oogasalad.engine.config.JsonConfigParser;
 
 /**
@@ -28,7 +25,7 @@ public class Main {
       ConfigModel config = null;
       try {
         config = parser.loadFromFile("data/basic.json");
-      } catch (ConfigParseException e) {
+      } catch (ConfigException e) {
         System.out.println(e.getMessage());
       }
 
