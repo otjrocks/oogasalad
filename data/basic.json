@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "title": "Basic Pacman Level",
+    "author": "CS308 Team",
+    "description": "A minimal configuration with only Pacman."
+  },
+  "settings": {
+    "gameSpeed": 1.0,
+    "startingLives": 3,
+    "initialScore": 0,
+    "edgePolicy": "Wrap"
+  },
+  "entityConfigs": [
+    {
+      "type": "Pacman",
+      "imagePath": "assets/images/pacman.png",
+      "controlType": "Keyboard",
+      "effect": null,
+      "initialX": 100.0,
+      "initialY": 100.0,
+      "tags": {}
+    }
+  ],
+  "collisionRules": [],
+  "winCondition": "SurviveForTime(30)"
+}

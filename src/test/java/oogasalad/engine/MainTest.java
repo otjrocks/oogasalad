@@ -1,9 +1,9 @@
-package oogasalad;
+package oogasalad.engine;
 
+import oogasalad.Main;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
 
 /**
  * Feel free to completely change this code or delete it entirely. 
