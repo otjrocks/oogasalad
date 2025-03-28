@@ -1,6 +1,6 @@
 # Design Plan
 
-# Project Layout
+## Project Layout (Packages and Example Classes)
 
 * /editor
     * /model
@@ -28,9 +28,9 @@
         * JSONFileHandler
 * Main()
 
-Game Player
+## Game Player
 
-## Model
+### Model
 
 * GameState: A collection of the current games statistics, such as score, lives, etc.
     * GameMetaData
@@ -39,7 +39,7 @@ Game Player
     * Various information such as map state, and player locations
     * Can be wrote to file/database to allow for game progress save and load.
 
-## View
+### View
 
 * GameView
     * GameMap
@@ -50,7 +50,7 @@ Game Player
 * StartScreenView
 * LevelSelectorView / SaveSelector / GameModeSelector
 
-## Controller
+### Controller
 
 * MainController
 * AnimationController: Control game animation, play, pause, speed, etc.
@@ -63,13 +63,9 @@ Game Player
 * Checks win/loss via GameGoal
 * Triggers UI updates
 
-## 
-
-## 
-
 ## **Authoring Environment (AE)**
 
-### **`authoring.model`**
+### Model
 
 #### **AuthoringModel**
 
@@ -98,7 +94,7 @@ Game Player
 * `int startingLives`
 * `String edgePolicy`
 
-### **`authoring.view`**
+### View
 
 #### **EntitySelectorView**
 
@@ -120,15 +116,15 @@ Game Player
 
 * Form-style UI for everything in `GameSettings`
 
-### **`authoring.controller`**
+### Controller
 
 #### **AuthoringController**
 
 * Manages user actions and updates the `AuthoringModel`
 
-# Shared
+## Shared
 
-## Model
+### Model
 
 * Entity \<Interface\>
     * StaticEntity (Background elements)
