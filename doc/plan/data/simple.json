@@ -1,0 +1,41 @@
+{
+  "metadata": {
+    "title": "Simple Pacman",
+    "author": "Team CS308",
+    "description": "A basic level with keyboard control and simple scoring."
+  },
+  "settings": {
+    "gameSpeed": 1.0,
+    "startingLives": 3,
+    "initialScore": 0,
+    "edgePolicy": "Wrap"
+  },
+  "entityConfigs": [
+    {
+      "type": "Pacman",
+      "imagePath": "assets/images/pacman.png",
+      "controlType": "Keyboard",
+      "effect": null,
+      "initialX": 100.0,
+      "initialY": 100.0,
+      "tags": {}
+    },
+    {
+      "type": "Pellet",
+      "imagePath": "assets/images/pellet.png",
+      "controlType": null,
+      "effect": null,
+      "initialX": 150.0,
+      "initialY": 100.0,
+      "tags": {}
+    }
+  ],
+  "collisionRules": [
+    {
+      "entityTypeA": "Pacman",
+      "entityTypeB": "Pellet",
+      "strategy": "AddScore(10)"
+    }
+  ],
+  "winCondition": "AllPelletsCollected"
+}
