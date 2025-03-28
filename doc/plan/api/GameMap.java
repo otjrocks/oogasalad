@@ -11,7 +11,6 @@ import java.util.Iterator;
  */
 public interface GameMap {
   // I used ChatGPT to assist in writing the methods of this interface
-
   /**
    * Adds an entity to the game map at a specific position.
    *
@@ -56,6 +55,9 @@ public interface GameMap {
    */
   class Entity {
 
+    Entity(int x, int y) {
+
+    }
   }
 
   class InvalidPositionException extends Exception {
