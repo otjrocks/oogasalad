@@ -1,5 +1,7 @@
 package oogasalad.engine.view.components;
 
+import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
+
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -37,8 +39,9 @@ public class Selector extends HBox {
     myComboBox.setId(id);
     myLabel.setId(id + "-label");
     myComboBox.getStyleClass().add("combo-box");
+    this.setSpacing(ELEMENT_SPACING);
     this.getChildren().addAll(myLabel, myComboBox);
-    this.setAlignment(Pos.CENTER_LEFT);
+    this.getStyleClass().add("selector-container");
   }
 
   /**

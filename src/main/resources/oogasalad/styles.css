@@ -7,6 +7,7 @@
 .splash-screen-view {
   -fx-background-color: -fx-primary;
   -fx-alignment: center; /* Center the children of the VBox */
+  -fx-text-alignment: center;
 }
 .title {
   -fx-font-family: "Press Start 2P";
@@ -17,4 +18,7 @@ Label, Text {
   -fx-fill: -fx-secondary;
   -fx-text-fill: -fx-secondary;
 }
-
+.selector-container {
+  -fx-alignment: center;
+  -fx-padding: 30px 5px 10px 5px;
+}
