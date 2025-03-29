@@ -20,6 +20,7 @@ public class LoggingManager {
    */
   public static void printStartInfo() {
     if (LOGGER != null) {
+      LOGGER.info("\n");
       logDividerLine();
       LOGGER.info("Program started at {}", new Date());
       logDividerLine();
