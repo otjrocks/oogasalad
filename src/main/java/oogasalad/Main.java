@@ -1,37 +1,35 @@
 package oogasalad;
 
 
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import oogasalad.engine.LanguageManager;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.ConfigException;
+import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.config.api.ConfigParser;
 import oogasalad.engine.config.JsonConfigParser;
+import oogasalad.engine.view.SplashScreenView;
 
 /**
- * Feel free to completely change this code or delete it entirely.
+ * The Main class of the project.
+ *
+ * @author Owen Jennings
  */
-public class Main {
+public class Main extends Application {
 
-  /**
-   * A method to test (and a joke :).
-   */
-  public double getVersion() {
-    return 0.001;
-  }
+  private final Group myRoot = new Group();
 
-  /**
-   * Start of the program.
-   */
-  public static void main(String[] args) {
-    LoggingManager.printStartInfo();
-    ConfigParser parser = new JsonConfigParser();
-    ConfigModel config = null;
-    try {
-      config = parser.loadFromFile("data/basic.json");
-    } catch (ConfigException e) {
-      LoggingManager.LOGGER.error("Error loading the basic config file, {}", e.getMessage());
-    }
-    LoggingManager.LOGGER.info("Config file read first entity as: {}",
-        config.getEntityConfigs().getFirst().getType());
+  @Override
+  public void start(Stage stage) {
+    myRoot.getChildren().add(new SplashScreenView()); // Add splash screen for testing.
+    Scene scene = new Scene(myRoot, GameConfig.WIDTH, GameConfig.HEIGHT,
+        GameConfig.BACKGROUND_COLOR);
+    stage.setScene(scene);
+    stage.setTitle(LanguageManager.getMessage("TITLE"));
+    stage.show();
   }
 }

@@ -10,7 +10,7 @@ public class LanguageSelector {
   public LanguageSelector() {
     mySelector = new Selector(myLanguageManager.getAvailableLanguages(),
         myLanguageManager.getLanguage(),
-        "language-selector", myLanguageManager.getMessage("LANGUAGE_SELECTOR_TITLE"),
+        "language-selector", LanguageManager.getMessage("LANGUAGE_SELECTOR_TITLE"),
         e -> handleLanguageSelection());
   }
 

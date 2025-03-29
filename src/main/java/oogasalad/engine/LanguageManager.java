@@ -14,6 +14,7 @@ import oogasalad.engine.utility.FileUtility;
 public class LanguageManager {
 
   private static final String LANGUAGE_FILE_PATH = "oogasalad.languages.";
+  private static final String LANGUAGE_DIRECTORY_PATH = "src/main/resources/oogasalad/languages/";
   private static final String DEFAULT_LANGUAGE = "English";
 
   private static String myCurrentLanguage = DEFAULT_LANGUAGE;
@@ -27,7 +28,7 @@ public class LanguageManager {
    * @return The message specified in the language file for the provided key if it exists or a
    * missing key message
    */
-  public String getMessage(String key) {
+  public static String getMessage(String key) {
     try {
       if (myMessages != null) {
         return myMessages.getString(key);
@@ -65,7 +66,7 @@ public class LanguageManager {
    * @return The display name of all the possible languages
    */
   public List<String> getAvailableLanguages() {
-    return FileUtility.getFileNamesInDirectory(LANGUAGE_FILE_PATH, ".properties");
+    return FileUtility.getFileNamesInDirectory(LANGUAGE_DIRECTORY_PATH, ".properties");
   }
 
   /**
