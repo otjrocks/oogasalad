@@ -1,9 +1,20 @@
 .root {
   -fx-font-family: "Inter";
   -fx-font-size: 16px;
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
 }
-
+.splash-screen-view {
+  -fx-background-color: -fx-primary;
+  -fx-alignment: center; /* Center the children of the VBox */
+}
 .title {
   -fx-font-family: "Press Start 2P";
-  -fx-font-size: 60px;
+  -fx-font-size: 30px;
 }
+
+Label, Text {
+  -fx-fill: -fx-secondary;
+  -fx-text-fill: -fx-secondary;
+}
+

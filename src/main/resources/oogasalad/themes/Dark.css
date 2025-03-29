@@ -1,0 +1,6 @@
+* {
+  -fx-primary: rgb(46, 46, 46);
+  -fx-secondary: rgb(232, 232, 232);
+  -fx-highlight: rgb(214, 214, 214);
+  -fx-warning: rgb(239, 34, 34);
+}

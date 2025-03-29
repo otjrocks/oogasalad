@@ -6,6 +6,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.ThemeManager;
+import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.view.components.Selector;
 
 /**
@@ -26,6 +27,8 @@ public class SplashScreenView extends VBox {
    */
   public SplashScreenView(Stage stage) {
     myThemeManager = new ThemeManager(stage);
+    this.getStyleClass().add("splash-screen-view");
+    this.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
     initializeSplashScreen();
   }
 

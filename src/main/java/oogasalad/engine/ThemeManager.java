@@ -19,7 +19,6 @@ public class ThemeManager {
   public static final String COMMON_STYLES_PATH = "/oogasalad/styles.css";
   private static final String FONTS_PATH = "/oogasalad/fonts/";
 
-
   private final Scene myScene;
 
   /**
