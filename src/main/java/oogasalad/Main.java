@@ -6,12 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import oogasalad.engine.LanguageManager;
-import oogasalad.engine.LoggingManager;
-import oogasalad.engine.config.ConfigModel;
-import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.GameConfig;
-import oogasalad.engine.config.api.ConfigParser;
-import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.view.SplashScreenView;
 
 /**
