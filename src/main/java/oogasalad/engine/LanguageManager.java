@@ -33,8 +33,9 @@ public class LanguageManager {
       if (myMessages != null) {
         return myMessages.getString(key);
       } else {
+        // since no language, display in English
         logMissingMessage("The language file is missing.");
-        return "ERROR: MISSING KEY";
+        return "ERROR: MISSING LANGUAGE FILE";
       }
     } catch (MissingResourceException e) {
       // queries key does not exist in language file or trouble finding messages file
