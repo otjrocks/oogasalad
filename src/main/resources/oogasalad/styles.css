@@ -4,11 +4,13 @@
   -fx-background-color: -fx-primary;
   -fx-text-fill: -fx-secondary;
 }
+
 .splash-screen-view {
   -fx-background-color: -fx-primary;
   -fx-alignment: center; /* Center the children of the VBox */
   -fx-text-alignment: center;
 }
+
 .title {
   -fx-font-family: "Press Start 2P";
   -fx-font-size: 30px;
@@ -18,7 +20,33 @@ Label, Text {
   -fx-fill: -fx-secondary;
   -fx-text-fill: -fx-secondary;
 }
+
+
+/* Selector */
 .selector-container {
   -fx-alignment: center;
-  -fx-padding: 30px 5px 10px 5px;
+  -fx-padding: 25px 5px 10px 5px;
 }
+
+.combo-box {
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+}
+
+.combo-box .list-cell {
+  -fx-text-fill: -fx-secondary;
+  -fx-background-color: -fx-primary;
+  -fx-border-width: 0;
+}
+
+.combo-box-popup .list-view {
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+}
+
+.combo-box .arrow {
+  -fx-background-color: -fx-secondary;
+}
+
