@@ -20,11 +20,11 @@ public class Main extends Application {
 
   @Override
   public void start(Stage stage) {
-    myRoot.getChildren().add(new SplashScreenView()); // Add splash screen for testing.
     Scene scene = new Scene(myRoot, GameConfig.WIDTH, GameConfig.HEIGHT,
         GameConfig.BACKGROUND_COLOR);
     stage.setScene(scene);
     stage.setTitle(LanguageManager.getMessage("TITLE"));
     stage.show();
+    myRoot.getChildren().add(new SplashScreenView(stage)); // Add splash screen for testing.
   }
 }

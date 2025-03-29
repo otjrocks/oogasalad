@@ -16,7 +16,7 @@ class SplashScreenViewTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) {
-    SplashScreenView splashScreenView = new SplashScreenView();
+    SplashScreenView splashScreenView = new SplashScreenView(stage);
     Scene scene = new Scene(splashScreenView, 800, 600);
     stage.setScene(scene);
     stage.show();
