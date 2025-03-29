@@ -1,8 +1,9 @@
-package oogasalad.engine.controller;
+package oogasalad.engine;
 
+import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import oogasalad.engine.LoggingManager;
+import oogasalad.engine.utility.FileUtility;
 
 /**
  * A class to handle the selection and handling of language messages from a language properties
@@ -10,7 +11,7 @@ import oogasalad.engine.LoggingManager;
  *
  * @author Owen Jennings
  */
-public class LanguageController {
+public class LanguageManager {
 
   private static final String LANGUAGE_FILE_PATH = "oogasalad.languages.";
   private static final String DEFAULT_LANGUAGE = "English";
@@ -50,12 +51,21 @@ public class LanguageController {
   }
 
   /**
-   * Get the display name of the current language
+   * Get the display name of the current language.
    *
    * @return The display name of the current language
    */
   public String getLanguage() {
     return myCurrentLanguage;
+  }
+
+  /**
+   * Get a list of all available language files.
+   *
+   * @return The display name of all the possible languages
+   */
+  public List<String> getAvailableLanguages() {
+    return FileUtility.getFileNamesInDirectory(LANGUAGE_FILE_PATH, ".properties");
   }
 
   /**
