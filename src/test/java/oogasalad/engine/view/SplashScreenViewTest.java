@@ -3,8 +3,10 @@ package oogasalad.engine.view;
 import static oogasalad.engine.LanguageManager.getMessage;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import oogasalad.engine.config.GameConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -16,9 +18,11 @@ class SplashScreenViewTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) {
-    SplashScreenView splashScreenView = new SplashScreenView(stage);
-    Scene scene = new Scene(splashScreenView, 800, 600);
+    Group root = new Group();
+    Scene scene = new Scene(root, GameConfig.WIDTH, GameConfig.HEIGHT);
     stage.setScene(scene);
+    SplashScreenView splashScreenView = new SplashScreenView(stage);
+    root.getChildren().add(splashScreenView);
     stage.show();
   }
 
