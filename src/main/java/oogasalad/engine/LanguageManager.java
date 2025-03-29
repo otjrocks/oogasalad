@@ -56,7 +56,7 @@ public class LanguageManager {
    *
    * @return The display name of the current language
    */
-  public String getLanguage() {
+  public static String getLanguage() {
     return myCurrentLanguage;
   }
 
@@ -65,7 +65,7 @@ public class LanguageManager {
    *
    * @return The display name of all the possible languages
    */
-  public List<String> getAvailableLanguages() {
+  public static List<String> getAvailableLanguages() {
     return FileUtility.getFileNamesInDirectory(LANGUAGE_DIRECTORY_PATH, ".properties");
   }
 
@@ -74,7 +74,7 @@ public class LanguageManager {
    *
    * @param language The string display name of the language you which to switch to
    */
-  public void setLanguage(String language) {
+  public static void setLanguage(String language) {
     myCurrentLanguage = language;
     myMessages = getLanguageResourceBundle();
   }

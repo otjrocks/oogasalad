@@ -14,7 +14,6 @@ import oogasalad.engine.view.components.Selector;
 public class SplashScreenView extends VBox {
 
   private Selector myLanguageSelector;
-  private final LanguageManager myLanguageManager;
 
   /**
    * Create the splash screen view.
@@ -22,7 +21,6 @@ public class SplashScreenView extends VBox {
    * @author Owen Jennings
    */
   public SplashScreenView() {
-    myLanguageManager = new LanguageManager();
     initializeSplashScreen();
   }
 
@@ -30,8 +28,8 @@ public class SplashScreenView extends VBox {
    * Initialize all the splash screen components and add them to the VBox.
    */
   private void initializeSplashScreen() {
-    myLanguageSelector = new Selector(myLanguageManager.getAvailableLanguages(),
-        myLanguageManager.getLanguage(),
+    myLanguageSelector = new Selector(LanguageManager.getAvailableLanguages(),
+        LanguageManager.getLanguage(),
         "language-selector", LanguageManager.getMessage("LANGUAGE_SELECTOR_TITLE"),
         e -> handleLanguageSelection());
     this.getChildren().add(new Text(LanguageManager.getMessage("TITLE")));
@@ -39,7 +37,7 @@ public class SplashScreenView extends VBox {
   }
 
   private void handleLanguageSelection() {
-    myLanguageManager.setLanguage(myLanguageSelector.getValue());
+    LanguageManager.setLanguage(myLanguageSelector.getValue());
     refresh();
   }
 
