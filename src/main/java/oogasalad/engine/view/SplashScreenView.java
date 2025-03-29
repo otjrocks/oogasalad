@@ -30,9 +30,11 @@ public class SplashScreenView extends VBox {
   private void initializeSplashScreen() {
     myLanguageSelector = new Selector(LanguageManager.getAvailableLanguages(),
         LanguageManager.getLanguage(),
-        "language-selector", LanguageManager.getMessage("LANGUAGE_SELECTOR_TITLE"),
+        "languageSelector", LanguageManager.getMessage("LANGUAGE_SELECTOR_TITLE"),
         e -> handleLanguageSelection());
-    this.getChildren().add(new Text(LanguageManager.getMessage("TITLE")));
+    Text title = new Text(LanguageManager.getMessage("TITLE"));
+    title.setId("splashScreenTitle");
+    this.getChildren().add(title);
     this.getChildren().add(myLanguageSelector);
   }
 

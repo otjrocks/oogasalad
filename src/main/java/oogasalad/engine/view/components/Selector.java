@@ -35,6 +35,7 @@ public class Selector extends HBox {
     myComboBox.setValue(defaultValue);
     myComboBox.setOnAction(action);
     myComboBox.setId(id);
+    myLabel.setId(id + "-label");
     myComboBox.getStyleClass().add("combo-box");
     this.getChildren().addAll(myLabel, myComboBox);
     this.setAlignment(Pos.CENTER_LEFT);
