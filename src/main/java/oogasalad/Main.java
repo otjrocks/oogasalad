@@ -29,8 +29,9 @@ public class Main {
     try {
       config = parser.loadFromFile("data/basic.json");
     } catch (ConfigException e) {
-      System.out.println(e.getMessage());
+      LoggingManager.LOGGER.error("Error loading the basic config file, {}", e.getMessage());
     }
-    System.out.println(config.getEntityConfigs().getFirst().getType());
+    LoggingManager.LOGGER.info("Config file read first entity as: {}",
+        config.getEntityConfigs().getFirst().getType());
   }
 }
