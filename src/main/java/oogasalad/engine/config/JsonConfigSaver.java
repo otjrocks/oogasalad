@@ -9,10 +9,33 @@ import java.util.Collections;
 import java.util.List;
 import oogasalad.engine.config.api.ConfigSaver;
 
+/**
+ * The JsonConfigSaver class is responsible for saving configuration data to JSON files. It uses the
+ * Jackson ObjectMapper for JSON serialization and supports pretty-printing for better readability
+ * of the output files.
+ *
+ * <p>This class implements the ConfigSaver interface and provides methods to save a ConfigModel to
+ * a file and retrieve the supported file extensions.
+ *
+ * <p>Example usage:
+ *
+ * <pre>
+ * JsonConfigSaver saver = new JsonConfigSaver();
+ * saver.saveToFile(configModel, "path/to/config.json");
+ * </pre>
+ *
+ * @author Will He
+ * @see ConfigSaver
+ * @see ConfigModel
+ */
 public class JsonConfigSaver implements ConfigSaver {
 
   private final ObjectMapper mapper;
 
+  /**
+   * Constructs a new JsonConfigSaver instance. Initializes the Jackson ObjectMapper used for JSON
+   * serialization and enables pretty-printing for the output JSON files.
+   */
   public JsonConfigSaver() {
     mapper = new ObjectMapper();
     mapper.enable(SerializationFeature.INDENT_OUTPUT); // makes it look nice
@@ -37,6 +60,8 @@ public class JsonConfigSaver implements ConfigSaver {
 
   /**
    * Returns a list of supported file extensions. In this implementation: only JSON.
+   *
+   * @return a list containing the supported file extension ".json"
    */
   @Override
   public List<String> getSupportedFileExtensions() {
