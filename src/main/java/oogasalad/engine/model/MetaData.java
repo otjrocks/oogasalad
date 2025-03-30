@@ -29,5 +29,4 @@ public class MetaData {
     this.description = description;
   }
 
-  public MetaData() {}
 }

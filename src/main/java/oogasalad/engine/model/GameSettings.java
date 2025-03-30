@@ -37,6 +37,4 @@ public class GameSettings {
   public void setEdgePolicy(String edgePolicy) {
     this.edgePolicy = edgePolicy;
   }
-
-  public GameSettings() {}
 }

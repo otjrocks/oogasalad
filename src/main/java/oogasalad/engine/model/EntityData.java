@@ -9,9 +9,6 @@ public class EntityData {
   private String effect;
   private double initialX;
   private double initialY;
-  private Map<String, String> tags;
-
-  public EntityData() {}
 
   public String getType() {
     return type;
@@ -59,13 +56,5 @@ public class EntityData {
 
   public void setInitialY(double initialY) {
     this.initialY = initialY;
-  }
-
-  public Map<String, String> getTags() {
-    return tags;
-  }
-
-  public void setTags(Map<String, String> tags) {
-    this.tags = tags;
   }
 }

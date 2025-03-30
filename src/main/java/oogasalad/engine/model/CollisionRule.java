@@ -28,6 +28,4 @@ public class CollisionRule {
   public void setStrategy(String strategy) {
     this.strategy = strategy;
   }
-
-  public CollisionRule() {}
 }
