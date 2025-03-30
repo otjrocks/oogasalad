@@ -1,7 +1,5 @@
 package oogasalad.engine.model;
 
-import java.util.Map;
-
 public class EntityData {
   private String type;
   private String imagePath;
