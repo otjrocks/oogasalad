@@ -47,22 +47,27 @@ public class GameStateUseCase {
     private int lives = 3;
     private final List<HUDComponent> hudComponents = new java.util.ArrayList<>();
 
+    @Override
     public void updateScore(int delta) {
       score += delta;
     }
 
+    @Override
     public int getScore() {
       return score;
     }
 
+    @Override
     public void updateLives(int delta) {
       lives += delta;
     }
 
+    @Override
     public int getLives() {
       return lives;
     }
 
+    @Override
     public void saveState(String filePath) throws SaveFailedException {
       // Simulate a successful save
       if (filePath == null || filePath.isEmpty()) {
@@ -72,18 +77,22 @@ public class GameStateUseCase {
       // In real code, write JSON or binary serialization here
     }
 
+    @Override
     public void loadState(String filePath) {
       throw new UnsupportedOperationException("Not implemented in this example.");
     }
 
+    @Override
     public void addHUDComponent(HUDComponent component) {
       hudComponents.add(component);
     }
 
+    @Override
     public List<HUDComponent> getHUDComponents() {
       return hudComponents;
     }
 
+    @Override
     public void resetState() {
       score = 0;
       lives = 3;
