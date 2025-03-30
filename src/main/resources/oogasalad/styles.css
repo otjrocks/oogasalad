@@ -50,3 +50,8 @@ Label, Text {
   -fx-background-color: -fx-secondary;
 }
 
+
+.game-view {
+  -fx-border-width: 5px;
+  -fx-border-color: -fx-secondary;
+}
