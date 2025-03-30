@@ -22,11 +22,6 @@ public class EntityPlacementTest {
         testEntityData.setInitialX(10.0);
         testEntityData.setInitialY(20.0);
 
-        Map<String, String> tags = new HashMap<>();
-        tags.put("health", "100");
-        tags.put("speed", "5");
-        testEntityData.setTags(tags);
-
         testPlacement = new EntityPlacement(testEntityData, 30.0, 40.0);
     }
 
