@@ -1,6 +1,7 @@
 package oogasalad.engine.model;
 
 import java.util.Iterator;
+import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 
