@@ -5,9 +5,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import oogasalad.engine.LanguageManager;
+import oogasalad.engine.LoggingManager;
 import oogasalad.engine.ThemeManager;
+import oogasalad.engine.config.ConfigException;
+import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.GameConfig;
+import oogasalad.engine.config.JsonConfigParser;
+import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.api.GameMapFactory;
+import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.view.components.Selector;
+import oogasalad.player.view.GameView;
 
 /**
  * The initial splash screen shown when the program is started.
@@ -39,6 +47,7 @@ public class SplashScreenView extends VBox {
     initializeTitle();
     initializeLanguageSelector();
     initializeThemeSelector();
+    createExampleMap();
   }
 
 
@@ -79,4 +88,23 @@ public class SplashScreenView extends VBox {
     initializeSplashScreen();
   }
 
+  private void createExampleMap() {
+    JsonConfigParser configParser = new JsonConfigParser();
+    ConfigModel configModel = null;
+    try {
+      configModel = configParser.loadFromFile("data/basic.json");
+    } catch (ConfigException e) {
+      LoggingManager.LOGGER.warn(e);
+    }
+    GameMap gameMap = null;
+    try {
+      if (configModel != null) {
+        gameMap = GameMapFactory.createGameMap(configModel, 20, 20);
+      }
+    } catch (InvalidPositionException e) {
+      LoggingManager.LOGGER.warn(e);
+    }
+    GameView gameView = new GameView(gameMap);
+    this.getChildren().add(gameView);
+  }
 }

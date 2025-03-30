@@ -22,12 +22,12 @@ public class EntityView extends ImageView {
    */
   public EntityView(EntityData entityData) {
     myEntityData = entityData;
+    this.setFitWidth(GameView.TILE_WIDTH);
+    this.setFitHeight(GameView.TILE_HEIGHT);
     initializeView();
   }
 
   private void initializeView() {
-    this.setX(myEntityData.getInitialX());
-    this.setY(myEntityData.getInitialY());
     this.setImage(new Image(
         Objects.requireNonNull(
             this.getClass().getClassLoader().getResourceAsStream(myEntityData.getImagePath()))));

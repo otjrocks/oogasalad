@@ -23,13 +23,14 @@ public class GameMapImpl implements GameMap {
   public void addEntity(Entity entity) throws InvalidPositionException {
     EntityData data = entity.entityData();
     checkEntryInBounds(entity, data);
+    myEntityList.add(entity);
   }
 
   private void checkEntryInBounds(Entity entity, EntityData data) throws InvalidPositionException {
     if (data.getInitialX() < 0 || data.getInitialX() >= myWidth || data.getInitialY() < 0
         || data.getInitialY() >= myHeight) {
-      LoggingManager.LOGGER.warn(
-          "Cannot add entity " + entity + " because it does not fit in the game map!");
+      LoggingManager.LOGGER.warn("Cannot add entity {} because it does not fit in the game map!",
+          entity);
       throw new InvalidPositionException("The entity you provided does not fit in this game map!");
     }
   }
@@ -58,5 +59,15 @@ public class GameMapImpl implements GameMap {
   @Override
   public Iterator<Entity> iterator() {
     return myEntityList.iterator();
+  }
+
+  @Override
+  public int getWidth() {
+    return myWidth;
+  }
+
+  @Override
+  public int getHeight() {
+    return myHeight;
   }
 }

@@ -1,6 +1,6 @@
 package oogasalad.player.view;
 
-import javafx.scene.Group;
+import javafx.scene.layout.StackPane;
 import oogasalad.engine.model.GameMap;
 
 /**
@@ -8,20 +8,27 @@ import oogasalad.engine.model.GameMap;
  *
  * @author Owen Jennings
  */
-public class GameView extends Group {
+public class GameView extends StackPane {
 
-  private final GameMapView myGameMapView;
+  public static final int WIDTH = 500;
+  public static final int HEIGHT = 500;
+  public static int TILE_WIDTH = 0;
+  public static int TILE_HEIGHT = 0;
 
   /**
    * Create the game view.
    *
    * @param gameMap The game map model you wish to use.
-   * @param width   The width of the view.
-   * @param height  The height of the view.
    */
-  public GameView(GameMap gameMap, int width, int height) {
-    myGameMapView = new GameMapView(gameMap, width, height);
+  public GameView(GameMap gameMap) {
+    TILE_WIDTH = WIDTH / gameMap.getWidth();
+    TILE_HEIGHT = HEIGHT / gameMap.getHeight();
+    GameMapView myGameMapView = new GameMapView(gameMap);
+    this.setPrefSize(WIDTH, HEIGHT);
+    this.setMinSize(WIDTH, HEIGHT);
+    this.setMaxSize(WIDTH, HEIGHT);
     this.getChildren().add(myGameMapView);
+    this.getStyleClass().add("game-view");
   }
 
 }

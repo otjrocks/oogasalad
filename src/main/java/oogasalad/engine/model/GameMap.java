@@ -13,6 +13,7 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
  */
 public interface GameMap {
   // I used ChatGPT to assist in writing the methods of this interface
+
   /**
    * Adds an entity to the game map at a specific position.
    *
@@ -51,4 +52,18 @@ public interface GameMap {
    * @return an iterator to iterate over all entities in the GameMap.
    */
   Iterator<Entity> iterator();
+
+  /**
+   * Get the width of the game map.
+   *
+   * @return Int representing the game map width.
+   */
+  int getWidth();
+
+  /**
+   * Get the height of the game map.
+   *
+   * @return Int representing the game map height.
+   */
+  int getHeight();
 }
