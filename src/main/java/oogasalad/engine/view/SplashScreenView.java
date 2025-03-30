@@ -38,14 +38,15 @@ public class SplashScreenView extends VBox {
   private void initializeSplashScreen() {
     initializeTitle();
     initializeLanguageSelector();
+    initializeThemeSelector();
+  }
+
+
+  private void initializeThemeSelector() {
     myThemeSelector = new Selector(myThemeManager.getAvailableThemes(),
         ThemeManager.DEFAULT_THEME, "themeSelector",
         LanguageManager.getMessage("THEME_SELECTOR_TITLE"), e -> switchTheme());
     this.getChildren().add(myThemeSelector);
-  }
-
-  private void switchTheme() {
-    myThemeManager.setTheme(myThemeSelector.getValue());
   }
 
   private void initializeLanguageSelector() {
@@ -67,6 +68,11 @@ public class SplashScreenView extends VBox {
     LanguageManager.setLanguage(myLanguageSelector.getValue());
     refresh();
   }
+
+  private void switchTheme() {
+    myThemeManager.setTheme(myThemeSelector.getValue());
+  }
+
 
   private void refresh() {
     this.getChildren().clear();
