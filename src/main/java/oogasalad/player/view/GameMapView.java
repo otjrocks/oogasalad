@@ -1,10 +1,9 @@
 package oogasalad.player.view;
 
 import java.util.Iterator;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
-import oogasalad.engine.model.Entity;
 import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.entity.Entity;
 
 /**
  * The view used to display the game map.
@@ -28,9 +27,9 @@ public class GameMapView extends Pane {
   private void initializeMap() {
     for (Iterator<Entity> it = myGameMap.iterator(); it.hasNext(); ) {
       Entity entity = it.next();
-      EntityView entityView = new EntityView(entity.entityData());
-      entityView.setLayoutX(entity.entityData().getInitialX() * GameView.TILE_WIDTH);
-      entityView.setLayoutY(entity.entityData().getInitialY() * GameView.TILE_HEIGHT);
+      EntityView entityView = new EntityView(entity.getEntityData());
+      entityView.setLayoutX(entity.getEntityData().getInitialX() * GameView.TILE_WIDTH);
+      entityView.setLayoutY(entity.getEntityData().getInitialY() * GameView.TILE_HEIGHT);
       this.getChildren().add(entityView);
     }
   }
