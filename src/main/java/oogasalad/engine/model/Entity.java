@@ -1,6 +1,4 @@
-package oogasalad.engine.model.api;
-
-import oogasalad.engine.model.EntityData;
+package oogasalad.engine.model;
 
 /**
  * An record to encapsulate a game entity.

@@ -1,12 +1,11 @@
-package oogasalad.engine.model.api;
+package oogasalad.engine.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import oogasalad.engine.LoggingManager;
-import oogasalad.engine.model.EntityData;
-import oogasalad.engine.model.api.exceptions.EntityNotFoundException;
-import oogasalad.engine.model.api.exceptions.InvalidPositionException;
+import oogasalad.engine.model.exceptions.EntityNotFoundException;
+import oogasalad.engine.model.exceptions.InvalidPositionException;
 
 public class GameMapImpl implements GameMap {
 

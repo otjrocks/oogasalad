@@ -1,8 +1,8 @@
-package oogasalad.engine.model.api;
+package oogasalad.engine.model;
 
 import java.util.Iterator;
-import oogasalad.engine.model.api.exceptions.EntityNotFoundException;
-import oogasalad.engine.model.api.exceptions.InvalidPositionException;
+import oogasalad.engine.model.exceptions.EntityNotFoundException;
+import oogasalad.engine.model.exceptions.InvalidPositionException;
 
 /**
  * The {@code GameMap} interface provides methods for managing the game's map, which consists of

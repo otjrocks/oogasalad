@@ -1,4 +1,4 @@
-package oogasalad.engine.model.api.exceptions;
+package oogasalad.engine.model.exceptions;
 
 /**
  * An exception thrown by the Game Map when a user requests an entity that is not found on the map.

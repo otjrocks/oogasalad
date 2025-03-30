@@ -1,4 +1,4 @@
-package oogasalad.engine.model.api.exceptions;
+package oogasalad.engine.model.exceptions;
 
 /**
  * An exception thrown when a user attempts to add an Entity to the Game map in an invalid
