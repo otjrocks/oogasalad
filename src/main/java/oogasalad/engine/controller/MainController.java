@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 import oogasalad.Main;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.view.SplashScreenView;
+import oogasalad.player.view.GamePlayerView;
 
 /**
  * The main controller of the game engine. This class controls the interactions between the model
@@ -17,6 +18,7 @@ public class MainController {
   private final Group myRoot;
   private final Stage myStage;
   private SplashScreenView mySplashScreenView = null;
+  private GamePlayerView myGamePlayerView = null;
 
   /**
    * Create a main controller for the program.
@@ -31,13 +33,15 @@ public class MainController {
   }
 
   /**
-   * Show the splash screen view.
+   * Show the splash screen view, if it is not already being displayed
    */
   public void showSplashScreen() {
     if (mySplashScreenView == null) {
       mySplashScreenView = new SplashScreenView(this);
     }
-    myRoot.getChildren().add(mySplashScreenView);
+    if (!myRoot.getChildren().contains(mySplashScreenView)) {
+      myRoot.getChildren().add(mySplashScreenView);
+    }
   }
 
   /**
@@ -49,6 +53,18 @@ public class MainController {
     } else {
       LoggingManager.LOGGER.warn(
           "Attempted to hide the splash screen, even though it wasn't being displayed.");
+    }
+  }
+
+  /**
+   * Show the game player view if it is not already being displayed
+   */
+  public void showGamePlayerView() {
+    if (myGamePlayerView == null) {
+      myGamePlayerView = new GamePlayerView();
+    }
+    if (!myRoot.getChildren().contains(myGamePlayerView)) {
+      myRoot.getChildren().add(myGamePlayerView);
     }
   }
 
