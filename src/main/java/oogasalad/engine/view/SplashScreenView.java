@@ -1,6 +1,9 @@
 package oogasalad.engine.view;
 
 
+import java.util.List;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -15,6 +18,7 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.api.GameMapFactory;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.view.components.Selector;
+import oogasalad.engine.view.components.VMenu;
 import oogasalad.player.view.GameView;
 
 /**
@@ -47,7 +51,23 @@ public class SplashScreenView extends VBox {
     initializeTitle();
     initializeLanguageSelector();
     initializeThemeSelector();
-    createExampleMap();
+    initializeSplashMenu();
+  }
+
+  private void initializeSplashMenu() {
+    List<String> options = List.of(LanguageManager.getMessage("GAME_PLAYER"),
+        LanguageManager.getMessage("AUTHORING_ENVIRONMENT"),
+        LanguageManager.getMessage("CONFIGURATION"));
+    List<EventHandler<ActionEvent>> actions = List.of(
+        e -> {
+        },
+        e -> {
+        },
+        e -> {
+        }
+    );
+    VMenu splashMenu = new VMenu(options, actions);
+    this.getChildren().add(splashMenu);
   }
 
 
@@ -88,23 +108,23 @@ public class SplashScreenView extends VBox {
     initializeSplashScreen();
   }
 
-  private void createExampleMap() {
-    JsonConfigParser configParser = new JsonConfigParser();
-    ConfigModel configModel = null;
-    try {
-      configModel = configParser.loadFromFile("data/basic.json");
-    } catch (ConfigException e) {
-      LoggingManager.LOGGER.warn(e);
-    }
-    GameMap gameMap = null;
-    try {
-      if (configModel != null) {
-        gameMap = GameMapFactory.createGameMap(configModel, 20, 20);
-      }
-    } catch (InvalidPositionException e) {
-      LoggingManager.LOGGER.warn(e);
-    }
-    GameView gameView = new GameView(gameMap);
-    this.getChildren().add(gameView);
-  }
+//  private void createExampleMap() {
+//    JsonConfigParser configParser = new JsonConfigParser();
+//    ConfigModel configModel = null;
+//    try {
+//      configModel = configParser.loadFromFile("data/basic.json");
+//    } catch (ConfigException e) {
+//      LoggingManager.LOGGER.warn(e);
+//    }
+//    GameMap gameMap = null;
+//    try {
+//      if (configModel != null) {
+//        gameMap = GameMapFactory.createGameMap(configModel, 20, 20);
+//      }
+//    } catch (InvalidPositionException e) {
+//      LoggingManager.LOGGER.warn(e);
+//    }
+//    GameView gameView = new GameView(gameMap);
+//    this.getChildren().add(gameView);
+//  }
 }
