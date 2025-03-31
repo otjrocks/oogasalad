@@ -28,6 +28,7 @@ public class VMenu extends VBox {
     validateParameters(values, actions);
     createMenu(values, actions);
     this.setSpacing(ELEMENT_SPACING);
+    this.getStyleClass().add("v-menu");
   }
 
   private static void validateParameters(List<String> values,
