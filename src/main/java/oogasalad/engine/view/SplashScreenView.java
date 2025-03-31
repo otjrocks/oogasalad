@@ -54,7 +54,7 @@ public class SplashScreenView extends VBox {
         LanguageManager.getMessage("AUTHORING_ENVIRONMENT"),
         LanguageManager.getMessage("CONFIGURATION"));
     List<EventHandler<ActionEvent>> actions = List.of(
-        e -> myMainController.hideSplashScreen(),
+        e -> activateGamePlayerMode(),
         e -> {
         },
         e -> {
@@ -62,6 +62,11 @@ public class SplashScreenView extends VBox {
     );
     VMenu splashMenu = new VMenu(options, actions);
     this.getChildren().add(splashMenu);
+  }
+
+  private void activateGamePlayerMode() {
+    myMainController.hideSplashScreen();
+    myMainController.showGamePlayerView();
   }
 
 
@@ -101,24 +106,4 @@ public class SplashScreenView extends VBox {
     this.getChildren().clear();
     initializeSplashScreen();
   }
-
-//  private void createExampleMap() {
-//    JsonConfigParser configParser = new JsonConfigParser();
-//    ConfigModel configModel = null;
-//    try {
-//      configModel = configParser.loadFromFile("data/basic.json");
-//    } catch (ConfigException e) {
-//      LoggingManager.LOGGER.warn(e);
-//    }
-//    GameMap gameMap = null;
-//    try {
-//      if (configModel != null) {
-//        gameMap = GameMapFactory.createGameMap(configModel, 20, 20);
-//      }
-//    } catch (InvalidPositionException e) {
-//      LoggingManager.LOGGER.warn(e);
-//    }
-//    GameView gameView = new GameView(gameMap);
-//    this.getChildren().add(gameView);
-//  }
 }
