@@ -28,7 +28,7 @@ public class GameMapFactory {
       throws InvalidPositionException {
     GameMapImpl gameMap = new GameMapImpl(width, height); // Hardcoded for now
     for (EntityData entityData : configModel.getEntityConfigs()) {
-      Entity entity = new Entity(entityData);
+      Entity entity = EntityFactory.createEntity(entityData);
       gameMap.addEntity(entity);
     }
     return gameMap;
