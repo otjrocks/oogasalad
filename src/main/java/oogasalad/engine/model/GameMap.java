@@ -67,4 +67,9 @@ public interface GameMap {
    * @return Int representing the game map height.
    */
   int getHeight();
+
+  /**
+   * added this for now to reflect game loop update, eventually in controller
+   */
+  void update();
 }

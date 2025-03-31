@@ -71,4 +71,11 @@ public class GameMapImpl implements GameMap {
   public int getHeight() {
     return myHeight;
   }
+
+  @Override
+  public void update() {
+    for (Entity entity : myEntityList) {
+      entity.update();
+    }
+  }
 }

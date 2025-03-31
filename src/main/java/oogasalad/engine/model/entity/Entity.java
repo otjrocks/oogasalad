@@ -12,4 +12,7 @@ public abstract class Entity {
   public EntityData getEntityData() {
     return myEntityData;
   }
+
+  // feel free to rename this, currently just updates the position
+  public abstract void update();
 }
