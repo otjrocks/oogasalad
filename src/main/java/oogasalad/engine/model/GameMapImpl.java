@@ -21,7 +21,7 @@ public class GameMapImpl implements GameMap {
 
   @Override
   public void addEntity(Entity entity) throws InvalidPositionException {
-    EntityData data = entity.entityData();
+    EntityData data = entity.getEntityData();
     checkEntryInBounds(entity, data);
     myEntityList.add(entity);
   }
@@ -49,7 +49,7 @@ public class GameMapImpl implements GameMap {
   @Override
   public Entity getEntityAt(int x, int y) throws EntityNotFoundException {
     for (Entity entity : myEntityList) {
-      if (entity.entityData().getInitialX() == x && entity.entityData().getInitialY() == y) {
+      if (entity.getEntityData().getInitialX() == x && entity.getEntityData().getInitialY() == y) {
         return entity;
       }
     }

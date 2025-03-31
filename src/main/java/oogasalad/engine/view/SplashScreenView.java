@@ -1,6 +1,8 @@
 package oogasalad.engine.view;
 
 
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -99,7 +101,7 @@ public class SplashScreenView extends VBox {
     GameMap gameMap = null;
     try {
       if (configModel != null) {
-        gameMap = GameMapFactory.createGameMap(configModel, 20, 20);
+        gameMap = GameMapFactory.createGameMap(new Scene(new Pane()), configModel, 20, 20);
       }
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn(e);
