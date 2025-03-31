@@ -1,10 +1,10 @@
 package oogasalad.engine.model.api;
 
 import oogasalad.engine.config.ConfigModel;
-import oogasalad.engine.model.Entity;
 import oogasalad.engine.model.EntityData;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameMapImpl;
+import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 
 /**
