@@ -1,10 +1,11 @@
 package oogasalad.player.view;
 
+import java.util.HashMap;
 import java.util.Iterator;
-import javafx.scene.canvas.Canvas;
+import java.util.Map;
 import javafx.scene.layout.Pane;
-import oogasalad.engine.model.Entity;
 import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.entity.Entity;
 
 /**
  * The view used to display the game map.
@@ -14,6 +15,7 @@ import oogasalad.engine.model.GameMap;
 public class GameMapView extends Pane {
 
   private final GameMap myGameMap;
+  private final Map<Entity, EntityView> entityViewsMap = new HashMap<>();
 
   /**
    * Create the GameMap view instance.
@@ -28,10 +30,19 @@ public class GameMapView extends Pane {
   private void initializeMap() {
     for (Iterator<Entity> it = myGameMap.iterator(); it.hasNext(); ) {
       Entity entity = it.next();
-      EntityView entityView = new EntityView(entity.entityData());
-      entityView.setLayoutX(entity.entityData().getInitialX() * GameView.TILE_WIDTH);
-      entityView.setLayoutY(entity.entityData().getInitialY() * GameView.TILE_HEIGHT);
+      EntityView entityView = new EntityView(entity.getEntityData());
+      entityView.setLayoutX(entity.getEntityData().getInitialX() * GameView.TILE_WIDTH);
+      entityView.setLayoutY(entity.getEntityData().getInitialY() * GameView.TILE_HEIGHT);
+      entityViewsMap.put(entity, entityView);
       this.getChildren().add(entityView);
+    }
+  }
+
+  public void updateEntityPositions() {
+    for (Entity entity : entityViewsMap.keySet()) {
+      EntityView entityView = entityViewsMap.get(entity);
+      entityView.setLayoutX(entity.getEntityData().getInitialX() * GameView.TILE_WIDTH);
+      entityView.setLayoutY(entity.getEntityData().getInitialY() * GameView.TILE_HEIGHT);
     }
   }
 }
