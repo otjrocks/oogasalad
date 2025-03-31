@@ -55,3 +55,27 @@ Label, Text {
   -fx-border-width: 5px;
   -fx-border-color: -fx-secondary;
 }
+
+/* Vertical Menu - VMenu */
+.v-menu {
+  -fx-padding: 30px;
+  -fx-spacing: 20px;
+  -fx-alignment: center;
+}
+
+.v-menu .button {
+  -fx-font-size: 24px;
+  -fx-padding: 10px 20px;
+  -fx-min-width: 400px;
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 3px;
+  -fx-background-radius: 5px;
+  -fx-border-radius: 5px;
+}
+
+.v-menu .button:hover {
+  -fx-background-color: -fx-highlight;
+}
+
