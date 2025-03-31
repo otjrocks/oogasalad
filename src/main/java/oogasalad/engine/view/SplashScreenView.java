@@ -8,18 +8,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import oogasalad.engine.LanguageManager;
-import oogasalad.engine.LoggingManager;
 import oogasalad.engine.ThemeManager;
-import oogasalad.engine.config.ConfigException;
-import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.GameConfig;
-import oogasalad.engine.config.JsonConfigParser;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.api.GameMapFactory;
-import oogasalad.engine.model.exceptions.InvalidPositionException;
+import oogasalad.engine.controller.MainController;
 import oogasalad.engine.view.components.Selector;
 import oogasalad.engine.view.components.VMenu;
-import oogasalad.player.view.GameView;
 
 /**
  * The initial splash screen shown when the program is started.
@@ -31,14 +24,16 @@ public class SplashScreenView extends VBox {
   private Selector myLanguageSelector;
   private final ThemeManager myThemeManager;
   private Selector myThemeSelector;
+  private final MainController myMainController;
 
   /**
-   * Create the splash screen view.
+   * Create a splash screen view.
    *
-   * @author Owen Jennings
+   * @param mainController The main controller of the program.
    */
-  public SplashScreenView(Stage stage) {
-    myThemeManager = new ThemeManager(stage);
+  public SplashScreenView(MainController mainController) {
+    myThemeManager = new ThemeManager(mainController.getStage());
+    myMainController = mainController;
     this.getStyleClass().add("splash-screen-view");
     this.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
     initializeSplashScreen();
@@ -59,8 +54,7 @@ public class SplashScreenView extends VBox {
         LanguageManager.getMessage("AUTHORING_ENVIRONMENT"),
         LanguageManager.getMessage("CONFIGURATION"));
     List<EventHandler<ActionEvent>> actions = List.of(
-        e -> {
-        },
+        e -> myMainController.hideSplashScreen(),
         e -> {
         },
         e -> {

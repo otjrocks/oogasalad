@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import oogasalad.engine.config.GameConfig;
+import oogasalad.engine.controller.MainController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -21,7 +22,8 @@ class SplashScreenViewTest extends DukeApplicationTest {
     Group root = new Group();
     Scene scene = new Scene(root, GameConfig.WIDTH, GameConfig.HEIGHT);
     stage.setScene(scene);
-    SplashScreenView splashScreenView = new SplashScreenView(stage);
+    MainController mainController = new MainController(stage, root);
+    SplashScreenView splashScreenView = new SplashScreenView(mainController);
     root.getChildren().add(splashScreenView);
     stage.show();
   }
@@ -49,6 +51,7 @@ class SplashScreenViewTest extends DukeApplicationTest {
 
 
   private void verifyLanguageChange(String language) {
+    waitForFxEvents();
     clickOn("#languageSelector");
     clickOn(language);
     waitForFxEvents();  // Ensure that all UI events and updates are processed before assertions
