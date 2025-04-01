@@ -90,7 +90,7 @@ public interface GameState {
    */
   class SaveFailedException extends Exception {
     /**
-     * Throws exception with corresponding message
+     * Throws exception with corresponding message.
      */
     public SaveFailedException(String message) {
       super(message);
@@ -102,7 +102,7 @@ public interface GameState {
    */
   class LoadFailedException extends Exception {
     /**
-     * Loads failed exception with corresponding message
+     * Loads failed exception with corresponding message.
      */
     public LoadFailedException(String message) {
       super(message);
