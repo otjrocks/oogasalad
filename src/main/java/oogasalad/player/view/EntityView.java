@@ -22,6 +22,7 @@ public class EntityView extends ImageView {
    * @param entityData The entity data used to initialize the view.
    */
   public EntityView(GameMap gameMap, EntityData entityData) {
+    super();
     myEntityData = entityData;
     this.setFitWidth((double) GameView.WIDTH / gameMap.getWidth());
     this.setFitHeight((double) GameView.HEIGHT / gameMap.getHeight());

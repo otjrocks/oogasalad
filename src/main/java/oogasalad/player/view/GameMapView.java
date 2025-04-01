@@ -23,6 +23,7 @@ public class GameMapView extends Pane {
    * @param gameMap The game map model to use when creating the view.
    */
   public GameMapView(GameMap gameMap) {
+    super();
     myGameMap = gameMap;
     initializeMap();
   }

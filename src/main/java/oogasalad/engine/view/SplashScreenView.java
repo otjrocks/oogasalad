@@ -31,6 +31,7 @@ public class SplashScreenView extends VBox {
    * @param mainController The main controller of the program.
    */
   public SplashScreenView(MainController mainController) {
+    super();
     myThemeManager = new ThemeManager(mainController.getStage());
     myMainController = mainController;
     this.getStyleClass().add("splash-screen-view");

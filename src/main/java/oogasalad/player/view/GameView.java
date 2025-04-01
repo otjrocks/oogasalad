@@ -23,6 +23,7 @@ public class GameView extends StackPane {
    * @param gameMap The game map model you wish to use.
    */
   public GameView(GameMap gameMap) {
+    super();
     myGameMapView = new GameMapView(gameMap);
     myGameMap = gameMap;
     this.setPrefSize(WIDTH, HEIGHT);
