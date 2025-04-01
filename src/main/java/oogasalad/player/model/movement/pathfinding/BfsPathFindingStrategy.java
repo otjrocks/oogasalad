@@ -1,7 +1,6 @@
 package oogasalad.player.model.movement.pathfinding;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,39 +16,20 @@ import oogasalad.engine.model.GameMap;
 public class BfsPathFindingStrategy implements PathFindingStrategy {
 
   @Override
-  public List<int[]> getPath(GameMap map, int startX, int startY, int targetX, int targetY) {
+  public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY) {
 
     // don't know if this method needs to check for valid positions
     if (!isValidPosition(map, startX, startY) || !isValidPosition(map, targetX, targetY)) {
-      return List.of();
+      return new int[]{0, 0};
     }
 
     // standard BFS algorithm
-    List<int[]> current = bfs(map, startX, startY, targetX, targetY);
-    if (current != null) {
-      return current;
-    }
-
-    // otherwise it just no move
-    return List.of();
-  }
-
-  private List<int[]> bfs(GameMap map, int startX, int startY, int targetX, int targetY) {
     Queue<Node> queue = new LinkedList<>();
     queue.offer(new Node(startX, startY, null));
 
     Set<String> visited = new HashSet<>();
     visited.add(startX + "," + startY);
 
-    List<int[]> current = bfsIterations(map, targetX, targetY, queue, visited);
-    if (current != null) {
-      return current;
-    }
-    return null;
-  }
-
-  private List<int[]> bfsIterations(GameMap map, int targetX, int targetY, Queue<Node> queue,
-      Set<String> visited) {
     while (!queue.isEmpty()) {
       Node current = queue.poll();
       int x = current.x;
@@ -57,32 +37,32 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
 
       if (x == targetX && y == targetY) {
         // once you get the target retrace to build the path
-        return buildPath(current);
+        int[] nextPos = firstDirection(current);
+        int dx = nextPos[0] - startX;
+        int dy = nextPos[1] - startY;
+        return new int[]{dx, dy};
       }
 
       // map ideally gives you all adjacent positions to traverse in that ARE VALID
       // so here not doing any valid checking
-      handleNeighbors(map, queue, visited, x, y, current);
-    }
-    return null;
-  }
+      for (int[] neighbor : getAdjacentPositions(map, x, y)) {
+        int newX = neighbor[0];
+        int newY = neighbor[1];
 
-  private void handleNeighbors(GameMap map, Queue<Node> queue, Set<String> visited, int x, int y,
-      Node current) {
-    for (int[] neighbor : getAdjacentPositions(map, x, y)) {
-      int newX = neighbor[0];
-      int newY = neighbor[1];
+        String posKey = newX + "," + newY;
 
-      String posKey = newX + "," + newY;
-
-      if (!visited.contains(posKey) && isValidPosition(map, newX, newY)) {
-        queue.offer(new Node(newX, newY, current));
-        visited.add(posKey);
+        if (!visited.contains(posKey) && isValidPosition(map, newX, newY)) {
+          queue.offer(new Node(newX, newY, current));
+          visited.add(posKey);
+        }
       }
     }
+
+    // otherwise it just no move
+    return new int[]{0, 0};
   }
 
-  private List<int[]> buildPath(Node target) {
+  private int[] firstDirection(Node target) {
 
     // reconstruct path tree from BFS traversal list because we love algorithms
 
@@ -94,8 +74,13 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
       current = current.parent;
     }
 
-    Collections.reverse(path);
-    return path;
+    // next direction to move to
+    if (path.size() > 1) {
+      return path.get(path.size() - 2);
+    }
+
+    // already at destination
+    return path.getLast();
   }
 
   private boolean isValidPosition(GameMap map, int x, int y) {
