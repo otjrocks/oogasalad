@@ -3,15 +3,9 @@ package oogasalad.engine.model;
 import java.util.List;
 
 /**
- * The {@code GameState} interface provides methods to manage the states of HUD elements and other
- * graphical interfaces while the game is running.
- *
- * Designed with SOLID principles:
- * - SRP: Separates UI state management from other logic.
- * - OCP: Can extend with more HUD elements without modifying the interface.
- * - LSP: Allows for interchangeable HUD components.
- * - ISP: Focuses on small, HUD-related responsibilities.
- * - DIP: Depends on abstractions (e.g., HUDComponent).
+ * The {@code GameState} interface defines methods to manage HUD elements and game metadata
+ * like score, lives, and serialization functionality for pause/save/resume capabilities.
+ * It is used to keep track of dynamic values and HUD components throughout the game.
  *
  * @author Luke Fu
  */
@@ -69,14 +63,14 @@ public interface GameState {
   void addHUDComponent(HUDComponent component);
 
   /**
-   * Retrieves a list of all registered HUD components.
+   * Returns all currently registered HUD components that should be displayed.
    *
-   * @return list of HUD components currently displayed in the game.
+   * @return list of HUD components active in the HUD.
    */
   List<HUDComponent> getHUDComponents();
 
   /**
-   * Resets the game state to its initial configuration (e.g., on reset or level restart).
+   * Resets the game state to its initial configuration, including score, lives, and registered HUD.
    */
   void resetState();
 
