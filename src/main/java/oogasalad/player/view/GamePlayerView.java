@@ -3,7 +3,6 @@ package oogasalad.player.view;
 import static oogasalad.engine.config.GameConfig.HEIGHT;
 import static oogasalad.engine.config.GameConfig.WIDTH;
 
-import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.ConfigException;

@@ -1,5 +1,6 @@
 package oogasalad.authoring.view;
 
+import oogasalad.engine.LoggingManager;
 import oogasalad.engine.model.EntityData;
 
 import javafx.geometry.Insets;
@@ -83,7 +84,8 @@ public class EntitySelectorView extends VBox {
       imageView.setFitWidth(100);
       imageView.setFitHeight(100);
       imageView.setPreserveRatio(true);
-    } catch (Exception e) {
+    } catch (IllegalArgumentException e) {
+      LoggingManager.LOGGER.warn("Unable to load image {}", entity.getImagePath());
       imageView.setImage(null);
     }
 
@@ -94,12 +96,12 @@ public class EntitySelectorView extends VBox {
 
     entityBox.getChildren().addAll(imageView, typeLabel, controlLabel, effectLabel);
 
-    setupDragAndDrop(entityBox, entity);
+    setupDragAndDrop(entityBox);
 
     return entityBox;
   }
 
-  private void setupDragAndDrop(VBox entityBox, EntityData entity) {
+  private void setupDragAndDrop(VBox entityBox) {
     entityBox.setOnDragDetected(event -> {
       entityBox.startFullDrag();
     });

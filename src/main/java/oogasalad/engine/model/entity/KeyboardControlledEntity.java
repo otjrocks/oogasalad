@@ -15,7 +15,7 @@ import java.util.Set;
 public class KeyboardControlledEntity extends Entity {
 
   private final Set<KeyCode> myActiveKeys = new HashSet<>();
-  private final double SPEED = 1.0;
+  private static final double SPEED = 1.0;
 
   /**
    * Create a keyboard controlled entity.
