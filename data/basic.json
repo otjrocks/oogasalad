@@ -38,7 +38,7 @@
     {
       "type": "Wall",
       "imagePath": "assets/images/wall.png",
-      "controlType": "wall",
+      "controlType": "",
       "effect": null,
       "initialX": 7,
       "initialY": 7
@@ -46,10 +46,26 @@
     {
       "type": "Dot",
       "imagePath": "assets/images/dot.png",
-      "controlType": "dot",
+      "controlType": "",
       "effect": null,
       "initialX": 8,
       "initialY": 8
+    }
+  ],
+  "tiles": [
+    {
+      "layout": [
+        "##########",
+        "#..#..#..#",
+        "#........#",
+        "#..#..#..#",
+        "#..#..#..#",
+        "#..####..#",
+        "#........#",
+        "#........#",
+        "#..#..#..#",
+        "##########"
+      ]
     }
   ],
   "collisionRules": [],
