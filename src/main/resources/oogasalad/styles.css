@@ -79,3 +79,7 @@ Label, Text {
   -fx-background-color: -fx-highlight;
 }
 
+.game-player-view {
+  -fx-padding: 20px;
+}
+
