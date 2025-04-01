@@ -60,14 +60,14 @@ public interface GameState {
    *
    * @param component the HUDComponent to be registered.
    */
-  void addHUDComponent(HUDComponent component);
+  void addHudComponent(HudComponent component);
 
   /**
    * Returns all currently registered HUD components that should be displayed.
    *
    * @return list of HUD components active in the HUD.
    */
-  List<HUDComponent> getHUDComponents();
+  List<HudComponent> getHudComponents();
 
   /**
    * Resets the game state to its initial configuration, including score, lives, and registered HUD.
@@ -81,7 +81,7 @@ public interface GameState {
   /**
    * Marker or functional interface representing a HUD element.
    */
-  interface HUDComponent {
+  interface HudComponent {
     // Extendable interface for things like ScoreBox, PauseButton, etc.
   }
 

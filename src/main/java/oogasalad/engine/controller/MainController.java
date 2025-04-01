@@ -32,7 +32,7 @@ public class MainController {
   }
 
   /**
-   * Show the splash screen view, if it is not already being displayed
+   * Show the splash screen view, if it is not already being displayed.
    */
   public void showSplashScreen() {
     if (mySplashScreenView == null) {

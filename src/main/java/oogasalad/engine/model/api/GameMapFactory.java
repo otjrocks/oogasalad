@@ -16,7 +16,7 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
 public class GameMapFactory {
 
   /**
-   * Create a game map with the provided configuration model
+   * Create a game map with the provided configuration model.
    *
    * @param configModel The configuration model you wish to use to create the game map.
    * @param width       The width of the game map.

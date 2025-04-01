@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A class containing utility methods pertaining to files. From Cell Society project
+ * A class containing utility methods pertaining to files. From Cell Society project.
  *
  * @author Owen Jennings
  */

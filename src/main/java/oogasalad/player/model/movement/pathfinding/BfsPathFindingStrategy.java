@@ -72,7 +72,9 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     if (targetNode == null) return new int[]{0, 0};
 
     List<int[]> path = reconstructPath(targetNode);
-    if (path.isEmpty()) return new int[]{0, 0};
+    if (path.isEmpty()) {
+      return new int[]{0, 0};
+    }
 
     int[] nextPos = path.getFirst();
     return new int[]{nextPos[0] - startX, nextPos[1] - startY};
@@ -110,6 +112,6 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     return x + "," + y;
   }
 
-  private record Node (int x, int y, Node parent) {
+  private record Node(int x, int y, Node parent) {
   }
 }
