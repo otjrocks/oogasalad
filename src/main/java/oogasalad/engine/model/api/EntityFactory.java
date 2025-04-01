@@ -1,40 +1,49 @@
 package oogasalad.engine.model.api;
 
 import oogasalad.engine.input.GameInputManager;
+import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.BasicEntity;
 import oogasalad.engine.model.entity.BfsEntity;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.entity.KeyboardControlledEntity;
-import oogasalad.engine.model.EntityData;
 
 /**
- * A factory design pattern to create a Entities provided a configuration model.
+ * A factory design pattern used to create various entities.
  *
- * @author Luke Fu
+ * @author Jessica Chen
  */
 public class EntityFactory {
 
   /**
-   * Creates an entity instance based on the provided {@link EntityData}.
+   * Create an entity with the provided parameters.
    *
-   * @param input the input manager to use for player-controlled entities
-   * @param data  the configuration data for the entity
-   * @param gameMap the game map context, used for AI/pathfinding
-   * @return a specific subclass of {@link Entity}, depending on controlType
-   * @throws IllegalArgumentException if the controlType is unrecognized
+   * @param data The entity data for the entity that you wish to create.
+   * @return An Entity object.
+   * @see Entity
    */
-  public static Entity createEntity(GameInputManager input, EntityData data, GameMap gameMap) {
-    String controlType = data.getControlType();
+  public static Entity createEntity(GameInputManager input, EntityPlacement data, GameMap gameMap) {
+    String controlType = data.getType().getControlType();
 
-    if (controlType == null || controlType.isBlank()) {
-      return new BasicEntity(data); // for Wall, Dot, etc.
+    if (isBasicEntity(controlType)) {
+      return new BasicEntity(data);
     }
 
-    return switch (controlType.toLowerCase()) {
+    return createControlledEntity(controlType.toLowerCase(), input, data, gameMap);
+  }
+
+  private static boolean isBasicEntity(String controlType) {
+    return controlType == null || controlType.isBlank() ||
+        controlType.equalsIgnoreCase("wall") ||
+        controlType.equalsIgnoreCase("dot");
+  }
+
+  private static Entity createControlledEntity(String controlType, GameInputManager input,
+      EntityPlacement data, GameMap gameMap) {
+    return switch (controlType) {
       case "keyboard" -> new KeyboardControlledEntity(input, data);
       case "bfs" -> new BfsEntity(data, gameMap);
-      default -> throw new IllegalArgumentException("Unknown controlType: " + controlType);
+      default -> throw new IllegalArgumentException("Unknown entity: " + controlType);
     };
   }
 }

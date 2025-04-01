@@ -31,10 +31,10 @@ public class GameMapView extends Pane {
   private void initializeMap() {
     for (Iterator<Entity> it = myGameMap.iterator(); it.hasNext(); ) {
       Entity entity = it.next();
-      EntityView entityView = new EntityView(myGameMap, entity.getEntityData());
+      EntityView entityView = new EntityView(myGameMap, entity.getEntityPlacement());
       entityView.setLayoutX(
-          entity.getEntityData().getInitialX() * ((double) GameView.WIDTH / myGameMap.getWidth()));
-      entityView.setLayoutY(entity.getEntityData().getInitialY() * ((double) GameView.HEIGHT
+          entity.getEntityPlacement().getX() * ((double) GameView.WIDTH / myGameMap.getWidth()));
+      entityView.setLayoutY(entity.getEntityPlacement().getY() * ((double) GameView.HEIGHT
           / myGameMap.getHeight()));
       entityViewsMap.put(entity, entityView);
       this.getChildren().add(entityView);
@@ -48,8 +48,8 @@ public class GameMapView extends Pane {
     for (Entity entity : entityViewsMap.keySet()) {
       EntityView entityView = entityViewsMap.get(entity);
       entityView.setLayoutX(
-          entity.getEntityData().getInitialX() * ((double) GameView.WIDTH / myGameMap.getWidth()));
-      entityView.setLayoutY(entity.getEntityData().getInitialY() * ((double) GameView.HEIGHT
+          entity.getEntityPlacement().getX() * ((double) GameView.WIDTH / myGameMap.getWidth()));
+      entityView.setLayoutY(entity.getEntityPlacement().getY() * ((double) GameView.HEIGHT
           / myGameMap.getHeight()));
     }
   }

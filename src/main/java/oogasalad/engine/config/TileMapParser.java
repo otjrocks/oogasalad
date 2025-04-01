@@ -3,7 +3,7 @@ package oogasalad.engine.config;
 import java.util.HashMap;
 import java.util.Map;
 import oogasalad.engine.input.GameInputManager;
-import oogasalad.engine.model.EntityData;
+import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.api.EntityFactory;
@@ -34,7 +34,7 @@ public class TileMapParser {
    * @param templates map of entity type → entity data templates
    * @throws InvalidPositionException if entity cannot be added
    */
-  public void parseTiles(String[] layout, GameInputManager input, GameMap map, Map<String, EntityData> templates)
+  public void parseTiles(String[] layout, GameInputManager input, GameMap map, Map<String, EntityPlacement> templates)
       throws InvalidPositionException {
 
     for (int y = 0; y < layout.length; y++) {
@@ -42,7 +42,7 @@ public class TileMapParser {
     }
   }
 
-  private void parseRow(String row, int y, GameInputManager input, GameMap map, Map<String, EntityData> templates)
+  private void parseRow(String row, int y, GameInputManager input, GameMap map, Map<String, EntityPlacement> templates)
       throws InvalidPositionException {
     for (int x = 0; x < row.length(); x++) {
       char symbol = row.charAt(x);
@@ -51,30 +51,29 @@ public class TileMapParser {
   }
 
   private void createEntityFromTile(char symbol, int x, int y, GameInputManager input, GameMap map,
-      Map<String, EntityData> templates) throws InvalidPositionException {
+      Map<String, EntityPlacement> templates) throws InvalidPositionException {
     String type = tileToEntityType.get(symbol);
     if (type == null) {
       return;
     }
 
-    EntityData template = templates.get(type);
+    EntityPlacement template = templates.get(type);
     if (template == null) {
       return;
     }
 
-    EntityData clone = cloneWithPosition(template, x, y);
+    EntityPlacement clone = cloneWithPosition(template, x, y);
     Entity entity = EntityFactory.createEntity(input, clone, map);
     map.addEntity(entity);
   }
 
-  private EntityData cloneWithPosition(EntityData template, int x, int y) {
-    EntityData data = new EntityData();
+  private EntityPlacement cloneWithPosition(EntityPlacement template, int x, int y) {
+    EntityPlacement data = new EntityPlacement(template.getType(), x, y, "Default");
     data.setType(template.getType());
-    data.setImagePath(template.getImagePath());
-    data.setControlType(template.getControlType());
-    data.setEffect(template.getEffect());
-    data.setInitialX(x);
-    data.setInitialY(y);
+    data.setMode(template.getMode());
+    data.getType().setControlType(template.getType().getControlType());
+    data.setX(x);
+    data.setY(y);
     return data;
   }
 }
