@@ -58,6 +58,7 @@ public class GameMapImpl implements GameMap {
       myEntityList.remove(entity);
     }
   }
+
   @Override
   public Optional<Entity> getEntityAt(int x, int y) {
     for (Entity entity : myEntityList) {

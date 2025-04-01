@@ -1,7 +1,7 @@
 package oogasalad.engine.model;
 
 /**
- * A class to store all the pertinent information about an Entity
+ * A class to store all the pertinent information about an Entity.
  *
  * @author Will He
  */

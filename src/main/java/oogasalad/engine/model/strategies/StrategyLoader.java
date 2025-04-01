@@ -1,4 +1,4 @@
-package oogasalad.engine.model.Strategies;
+package oogasalad.engine.model.strategies;
 
 import java.util.List;
 import oogasalad.engine.model.exceptions.LoadStrategyException;

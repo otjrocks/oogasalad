@@ -1,4 +1,4 @@
-package oogasalad.engine.model.Strategies;
+package oogasalad.engine.model.strategies;
 
 /**
  * An interface that defines how an entity moves.

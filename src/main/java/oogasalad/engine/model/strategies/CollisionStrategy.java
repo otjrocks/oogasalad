@@ -1,7 +1,7 @@
-package oogasalad.engine.model.Strategies;
+package oogasalad.engine.model.strategies;
 
 /**
- * An interface to handle the result of collisions
+ * An interface to handle the result of collisions.
  *
  * @author Austin Huang
  */

@@ -31,7 +31,8 @@ public class KeyboardControlledEntity extends Entity {
 
   @Override
   public void update() {
-    double dx = 0, dy = 0;
+    double dx = 0;
+    double dy = 0;
 
     if (myActiveKeys.contains(KeyCode.UP)) {
       dy -= SPEED;

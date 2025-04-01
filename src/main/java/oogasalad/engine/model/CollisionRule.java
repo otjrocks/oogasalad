@@ -48,7 +48,7 @@ public class CollisionRule {
   }
 
   /**
-   * Get the strategy string for this collision
+   * Get the strategy string for this collision.
    *
    * @return A string representing the strategy to use between these two entities.
    */

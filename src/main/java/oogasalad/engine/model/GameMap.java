@@ -69,7 +69,7 @@ public interface GameMap {
   int getHeight();
 
   /**
-   * added this for now to reflect game loop update, eventually in controller
+   * added this for now to reflect game loop update, eventually in controller.
    */
   void update();
 }

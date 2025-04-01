@@ -9,7 +9,9 @@ import java.util.Set;
 import oogasalad.engine.model.GameMap;
 
 /**
- * A path finding strategy implementation that follows the rules of BFS.
+ * A pathfinding strategy using Breadth-First Search. Returns the next direction to move from start
+ * to target position, returns the direction as (dx, dy) or (0, 0) if target should remain in same
+ * location.
  *
  * @author Jessica Chen
  */
@@ -17,113 +19,109 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
 
   @Override
   public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY) {
-
-    // don't know if this method needs to check for valid positions
     if (!isValidPosition(map, startX, startY) || !isValidPosition(map, targetX, targetY)) {
       return new int[]{0, 0};
     }
 
-    // standard BFS algorithm
-    Queue<Node> queue = new LinkedList<>();
-    queue.offer(new Node(startX, startY, null));
+    Node targetNode = bfs(map, startX, startY, targetX, targetY);
+    return buildDirection(startX, startY, targetNode);
+  }
 
+  private Node bfs(GameMap map, int startX, int startY, int targetX, int targetY) {
+    Queue<Node> queue = new LinkedList<>();
     Set<String> visited = new HashSet<>();
-    visited.add(startX + "," + startY);
+    Node startNode = new Node(startX, startY, null);
+
+    enqueue(queue, visited, startNode);
 
     while (!queue.isEmpty()) {
       Node current = queue.poll();
-      int x = current.x;
-      int y = current.y;
 
-      if (x == targetX && y == targetY) {
-        // once you get the target retrace to build the path
-        int[] nextPos = firstDirection(current);
-        int dx = nextPos[0] - startX;
-        int dy = nextPos[1] - startY;
-        return new int[]{dx, dy};
+      if (isTarget(current, targetX, targetY)) {
+        return current;
       }
 
-      // map ideally gives you all adjacent positions to traverse in that ARE VALID
-      // so here not doing any valid checking
-      for (int[] neighbor : getAdjacentPositions(map, x, y)) {
-        int newX = neighbor[0];
-        int newY = neighbor[1];
+      processNeighbors(map, current, queue, visited, targetX, targetY);
+    }
 
-        String posKey = newX + "," + newY;
+    return null; // no path found
+  }
 
-        if (!visited.contains(posKey) && isValidPosition(map, newX, newY)) {
-          queue.offer(new Node(newX, newY, current));
-          visited.add(posKey);
-        }
+  private void enqueue(Queue<Node> queue, Set<String> visited, Node node) {
+    queue.offer(node);
+    visited.add(key(node.x, node.y));
+  }
+
+  private boolean isTarget(Node node, int targetX, int targetY) {
+    return node.x == targetX && node.y == targetY;
+  }
+
+  private void processNeighbors(GameMap map, Node current, Queue<Node> queue, Set<String> visited,
+      int targetX, int targetY) {
+    for (int[] neighbor : getNeighbors(map, current.x, current.y, targetX, targetY)) {
+      int newX = neighbor[0];
+      int newY = neighbor[1];
+      String neighborKey = key(newX, newY);
+
+      if (!visited.contains(neighborKey)) {
+        enqueue(queue, visited, new Node(newX, newY, current));
       }
     }
-
-    // otherwise it just no move
-    return new int[]{0, 0};
   }
 
-  private int[] firstDirection(Node target) {
-
-    // reconstruct path tree from BFS traversal list because we love algorithms
-
-    List<int[]> path = new ArrayList<>();
-    Node current = target;
-
-    while (current != null) {
-      path.add(new int[]{current.x, current.y});
-      current = current.parent;
+  private int[] buildDirection(int startX, int startY, Node targetNode) {
+    if (targetNode == null) {
+      return new int[]{0, 0};
     }
 
-    // next direction to move to
-    if (path.size() > 1) {
-      return path.get(path.size() - 2);
+    List<int[]> path = reconstructPath(targetNode);
+    if (path.isEmpty()) {
+      return new int[]{0, 0};
     }
 
-    // already at destination
-    return path.getLast();
+    int[] nextPos = path.getFirst();
+    return new int[]{nextPos[0] - startX, nextPos[1] - startY};
   }
 
-  private boolean isValidPosition(GameMap map, int x, int y) {
-    // TODO: eventually need to account for blocking entities
-    return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight();
+  private List<int[]> reconstructPath(Node node) {
+    List<int[]> path = new LinkedList<>();
+    while (node.parent != null) {
+      path.addFirst(new int[]{node.x, node.y});
+      node = node.parent;
+    }
+    return path;
   }
 
-  private List<int[]> getAdjacentPositions(GameMap map, int x, int y) {
+  private List<int[]> getNeighbors(GameMap map, int x, int y, int targetX, int targetY) {
     List<int[]> neighbors = new ArrayList<>();
+    int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
-    int[][] directions = {
-        {-1, 0},  // Up
-        {1, 0},   // Down
-        {0, -1},  // Left
-        {0, 1}    // Right
-    };
-
-    for (int[] dir : directions) {
-      int newX = x + dir[0];
-      int newY = y + dir[1];
-
-      if (isValidPosition(map, newX, newY)) {
-        neighbors.add(new int[]{newX, newY});
+    for (int[] d : directions) {
+      int nx = x + d[0];
+      int ny = y + d[1];
+      if (isValidPosition(map, nx, ny) && ((nx == targetX && ny == targetY) || isEmpty(map, nx,
+          ny))) {
+        neighbors.add(new int[]{nx, ny});
       }
+
     }
 
     return neighbors;
-
   }
 
-  // way to keep track of positions and parents so we don't need to do the silly things with like
-  // 2 arrays, good part about 330 is you get to pseudocode it
-  private static class Node {
+  private boolean isValidPosition(GameMap map, int x, int y) {
+    return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight();
+  }
 
-    int x;
-    int y;
-    Node parent;
+  private boolean isEmpty(GameMap map, int x, int y) {
+    return map.getEntityAt(x, y).isEmpty();
+  }
 
-    Node(int x, int y, Node parent) {
-      this.x = x;
-      this.y = y;
-      this.parent = parent;
-    }
+  private String key(int x, int y) {
+    return x + "," + y;
+  }
+
+  private record Node(int x, int y, Node parent) {
+
   }
 }
-
