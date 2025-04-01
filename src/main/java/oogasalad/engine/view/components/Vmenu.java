@@ -14,7 +14,7 @@ import oogasalad.engine.LoggingManager;
  *
  * @author Owen Jennings
  */
-public class VMenu extends VBox {
+public class Vmenu extends VBox {
 
   /**
    * Create a vertical menu with the values provided. The actions[i] corresponds with the menu value
@@ -23,7 +23,8 @@ public class VMenu extends VBox {
    * @param values  The display name of the menu options
    * @param actions The actions to execute when a given value is selected from the menu.
    */
-  public VMenu(List<String> values, List<EventHandler<ActionEvent>> actions) {
+  public Vmenu(List<String> values, List<EventHandler<ActionEvent>> actions) {
+    super();
     validateParameters(values, actions);
     createMenu(values, actions);
     this.setSpacing(ELEMENT_SPACING);

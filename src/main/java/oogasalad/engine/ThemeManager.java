@@ -54,6 +54,11 @@ public class ThemeManager {
     myScene.getStylesheets().add(COMMON_STYLES_PATH); // add common css file
   }
 
+  /**
+   * Get a list of all the theme display names.
+   *
+   * @return A list of strings representing the available themes.
+   */
   public List<String> getAvailableThemes() {
     return FileUtility.getFileNamesInDirectory(THEME_DIRECTORY_PATH, ".css");
   }

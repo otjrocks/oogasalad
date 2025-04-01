@@ -11,7 +11,7 @@ import oogasalad.engine.ThemeManager;
 import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.view.components.Selector;
-import oogasalad.engine.view.components.VMenu;
+import oogasalad.engine.view.components.Vmenu;
 
 /**
  * The initial splash screen shown when the program is started.
@@ -31,6 +31,7 @@ public class SplashScreenView extends VBox {
    * @param mainController The main controller of the program.
    */
   public SplashScreenView(MainController mainController) {
+    super();
     myThemeManager = new ThemeManager(mainController.getStage());
     myMainController = mainController;
     this.getStyleClass().add("splash-screen-view");
@@ -59,7 +60,7 @@ public class SplashScreenView extends VBox {
         e -> {
         }
     );
-    VMenu splashMenu = new VMenu(options, actions);
+    Vmenu splashMenu = new Vmenu(options, actions);
     this.getChildren().add(splashMenu);
   }
 

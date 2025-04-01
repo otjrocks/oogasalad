@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A class containing utility methods pertaining to files. From Cell Society project
+ * A class containing utility methods pertaining to files. From Cell Society project.
  *
  * @author Owen Jennings
  */
@@ -14,7 +14,7 @@ public class FileUtility {
 
   /**
    * Get a list of all the files in the provided directory that end with a specific string or file
-   * extension
+   * extension.
    *
    * @param directoryPath The directory you are querying
    * @param ending        The ending of the files you which to query for

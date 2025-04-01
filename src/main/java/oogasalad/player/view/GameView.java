@@ -13,8 +13,6 @@ public class GameView extends StackPane {
 
   public static final int WIDTH = 500;
   public static final int HEIGHT = 500;
-  public static int TILE_WIDTH = 0;
-  public static int TILE_HEIGHT = 0;
 
   private final GameMapView myGameMapView;
   private final GameMap myGameMap;
@@ -25,8 +23,7 @@ public class GameView extends StackPane {
    * @param gameMap The game map model you wish to use.
    */
   public GameView(GameMap gameMap) {
-    TILE_WIDTH = WIDTH / gameMap.getWidth();
-    TILE_HEIGHT = HEIGHT / gameMap.getHeight();
+    super();
     myGameMapView = new GameMapView(gameMap);
     myGameMap = gameMap;
     this.setPrefSize(WIDTH, HEIGHT);
@@ -38,8 +35,8 @@ public class GameView extends StackPane {
     initializeGameLoop();
   }
 
-
   // this and following methods are written by ChatGPT
+
   /**
    * Initializes and starts the game loop using AnimationTimer.
    */
@@ -55,10 +52,14 @@ public class GameView extends StackPane {
         double elapsedTime = (now - lastUpdateTime) / 1_000_000_000.0;
 
         // Only update if enough time has passed (e.g., 60 FPS)
-        if (lastUpdateTime == 0 || elapsedTime > 1.0 / 5.0) {
+        if (checkEnoughTimeHasPassed(elapsedTime)) {
           updateGame();
           lastUpdateTime = now;
         }
+      }
+
+      private boolean checkEnoughTimeHasPassed(double elapsedTime) {
+        return lastUpdateTime == 0 || elapsedTime > 1.0 / 5.0;
       }
     };
     gameLoop.start(); // Start the game loop
@@ -66,7 +67,6 @@ public class GameView extends StackPane {
 
   /**
    * Updates the game state and refreshes the entity positions.
-   *
    */
   private void updateGame() {
     // Update the game map and entity positions

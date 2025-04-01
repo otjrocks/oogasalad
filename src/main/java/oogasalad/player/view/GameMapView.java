@@ -23,6 +23,7 @@ public class GameMapView extends Pane {
    * @param gameMap The game map model to use when creating the view.
    */
   public GameMapView(GameMap gameMap) {
+    super();
     myGameMap = gameMap;
     initializeMap();
   }
@@ -30,19 +31,26 @@ public class GameMapView extends Pane {
   private void initializeMap() {
     for (Iterator<Entity> it = myGameMap.iterator(); it.hasNext(); ) {
       Entity entity = it.next();
-      EntityView entityView = new EntityView(entity.getEntityData());
-      entityView.setLayoutX(entity.getEntityData().getInitialX() * GameView.TILE_WIDTH);
-      entityView.setLayoutY(entity.getEntityData().getInitialY() * GameView.TILE_HEIGHT);
+      EntityView entityView = new EntityView(myGameMap, entity.getEntityData());
+      entityView.setLayoutX(
+          entity.getEntityData().getInitialX() * ((double) GameView.WIDTH / myGameMap.getWidth()));
+      entityView.setLayoutY(entity.getEntityData().getInitialY() * ((double) GameView.HEIGHT
+          / myGameMap.getHeight()));
       entityViewsMap.put(entity, entityView);
       this.getChildren().add(entityView);
     }
   }
 
+  /**
+   * Update the positions of entities in this game map view.
+   */
   public void updateEntityPositions() {
     for (Entity entity : entityViewsMap.keySet()) {
       EntityView entityView = entityViewsMap.get(entity);
-      entityView.setLayoutX(entity.getEntityData().getInitialX() * GameView.TILE_WIDTH);
-      entityView.setLayoutY(entity.getEntityData().getInitialY() * GameView.TILE_HEIGHT);
+      entityView.setLayoutX(
+          entity.getEntityData().getInitialX() * ((double) GameView.WIDTH / myGameMap.getWidth()));
+      entityView.setLayoutY(entity.getEntityData().getInitialY() * ((double) GameView.HEIGHT
+          / myGameMap.getHeight()));
     }
   }
 }

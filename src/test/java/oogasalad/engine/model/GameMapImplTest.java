@@ -3,6 +3,7 @@ package oogasalad.engine.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Iterator;
+import java.util.Optional;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -39,7 +40,7 @@ class GameMapImplTest extends DukeApplicationTest {
     data.setInitialX(5);
     data.setInitialY(5);
     data.setControlType("Keyboard");
-    myEntity = EntityFactory.createEntity(myScene, data);
+    myEntity = EntityFactory.createEntity(myScene, data, myGameMap);
   }
 
   @Test
@@ -71,19 +72,16 @@ class GameMapImplTest extends DukeApplicationTest {
   @Test
   void getEntityAt_attemptGetEntityAt_ReturnsEntityAtPosition() {
     assertDoesNotThrow(() -> myGameMap.addEntity(myEntity));
-    var ref = new Object() {
-      Entity result;
-    };
-    assertDoesNotThrow(
-        () -> ref.result = myGameMap.getEntityAt((int) myEntity.getEntityData().getInitialX(),
-            (int) myEntity.getEntityData().getInitialY()));
-    assertEquals(myEntity, ref.result);
+    Optional<Entity> result = myGameMap.getEntityAt((int) myEntity.getEntityData().getInitialX(),
+            (int) myEntity.getEntityData().getInitialY());
+    assertTrue(result.isPresent());
+    assertEquals(myEntity, result.get());
   }
 
   @Test
-  void getEntityAt_attemptGetOfNonExistentEntity_ThrowException() {
+  void getEntityAt_attemptGetOfNonExistentEntity_ReturnsEmptyOptional() {
     assertDoesNotThrow(() -> myGameMap.addEntity(myEntity));
-    assertThrows(EntityNotFoundException.class, () -> myGameMap.getEntityAt(1, 1));
+    assertTrue(myGameMap.getEntityAt(1, 1).isEmpty());
   }
 
 
@@ -92,7 +90,7 @@ class GameMapImplTest extends DukeApplicationTest {
     assertDoesNotThrow(() -> myGameMap.addEntity(myEntity));
     EntityData data = new EntityData();
     data.setControlType("Keyboard");
-    Entity secondEntity = EntityFactory.createEntity(myScene, data);
+    Entity secondEntity = EntityFactory.createEntity(myScene, data, myGameMap);
     assertDoesNotThrow(() -> myGameMap.addEntity(secondEntity));
     Iterator<Entity> iterator = myGameMap.iterator();
     while (iterator.hasNext()) {

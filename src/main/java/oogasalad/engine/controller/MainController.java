@@ -2,7 +2,6 @@ package oogasalad.engine.controller;
 
 import javafx.scene.Group;
 import javafx.stage.Stage;
-import oogasalad.Main;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.view.SplashScreenView;
 import oogasalad.player.view.GamePlayerView;
@@ -33,7 +32,7 @@ public class MainController {
   }
 
   /**
-   * Show the splash screen view, if it is not already being displayed
+   * Show the splash screen view, if it is not already being displayed.
    */
   public void showSplashScreen() {
     if (mySplashScreenView == null) {
@@ -57,7 +56,7 @@ public class MainController {
   }
 
   /**
-   * Show the game player view if it is not already being displayed
+   * Show the game player view if it is not already being displayed.
    */
   public void showGamePlayerView() {
     if (myGamePlayerView == null) {

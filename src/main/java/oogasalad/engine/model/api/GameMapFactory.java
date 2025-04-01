@@ -1,6 +1,5 @@
 package oogasalad.engine.model.api;
 
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.model.EntityData;
@@ -17,7 +16,7 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
 public class GameMapFactory {
 
   /**
-   * Create a game map with the provided configuration model
+   * Create a game map with the provided configuration model.
    *
    * @param configModel The configuration model you wish to use to create the game map.
    * @param width       The width of the game map.
@@ -30,7 +29,7 @@ public class GameMapFactory {
       throws InvalidPositionException {
     GameMapImpl gameMap = new GameMapImpl(width, height); // Hardcoded for now
     for (EntityData entityData : configModel.getEntityConfigs()) {
-      Entity entity = EntityFactory.createEntity(scene, entityData);
+      Entity entity = EntityFactory.createEntity(scene, entityData, gameMap);
       gameMap.addEntity(entity);
     }
     return gameMap;
