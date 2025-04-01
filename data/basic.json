@@ -8,7 +8,9 @@
     "gameSpeed": 1.0,
     "startingLives": 3,
     "initialScore": 0,
-    "edgePolicy": "Wrap"
+    "edgePolicy": "Wrap",
+    "width": 10,
+    "height": 10
   },
   "entityConfigs": [
     {
@@ -32,8 +34,8 @@
       "imagePath": "assets/images/pacman.png",
       "controlType": "bfs",
       "effect": null,
-      "initialX": 10,
-      "initialY": 10
+      "initialX": 5,
+      "initialY": 5
     },
     {
       "type": "Wall",
