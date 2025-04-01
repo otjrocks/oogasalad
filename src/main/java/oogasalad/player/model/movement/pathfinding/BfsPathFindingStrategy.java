@@ -9,6 +9,11 @@ import java.util.Queue;
 import java.util.Set;
 import oogasalad.engine.model.GameMap;
 
+/**
+ * A path finding strategy implementation that follows the rules of BFS.
+ *
+ * @author Jessica Chen
+ */
 public class BfsPathFindingStrategy implements PathFindingStrategy {
 
   @Override
