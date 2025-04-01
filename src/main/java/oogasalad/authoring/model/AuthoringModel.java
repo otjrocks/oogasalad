@@ -12,6 +12,7 @@ import java.util.Optional;
  * Stores entity templates, entity placements, collision rules, and game settings.
  */
 public class AuthoringModel {
+
     private List<EntityData> entityTemplates;
     private List<EntityPlacement> entityPlacements;
     //private CollisionRuleEditorModel collisionRuleModel;
@@ -88,8 +89,8 @@ public class AuthoringModel {
      */
     public Optional<EntityData> findEntityTemplateByType(String type) {
         return entityTemplates.stream()
-                .filter(template -> template.getType().equals(type))
-                .findFirst();
+            .filter(template -> template.getType().equals(type))
+            .findFirst();
     }
 
     /**
@@ -116,8 +117,8 @@ public class AuthoringModel {
      * Creates and adds a new entity placement using an existing template.
      *
      * @param template The entity template to use
-     * @param x The x coordinate for placement
-     * @param y The y coordinate for placement
+     * @param x        The x coordinate for placement
+     * @param y        The y coordinate for placement
      * @return The newly created EntityPlacement, or null if template was null
      */
     public EntityPlacement createAndAddEntityPlacement(EntityData template, double x, double y) {
@@ -143,20 +144,20 @@ public class AuthoringModel {
     /**
      * Finds an entity placement at or near the specified coordinates.
      *
-     * @param x The x coordinate to search at
-     * @param y The y coordinate to search at
+     * @param x         The x coordinate to search at
+     * @param y         The y coordinate to search at
      * @param threshold The maximum distance to consider for a match
      * @return An Optional containing the found placement, or empty if not found
      */
     public Optional<EntityPlacement> findEntityPlacementAt(double x, double y, double threshold) {
         return entityPlacements.stream()
-                .filter(placement -> {
-                    double distance = Math.sqrt(
-                            Math.pow(placement.getX() - x, 2) +
-                                    Math.pow(placement.getY() - y, 2));
-                    return distance <= threshold;
-                })
-                .findFirst();
+            .filter(placement -> {
+                double distance = Math.sqrt(
+                    Math.pow(placement.getX() - x, 2) +
+                        Math.pow(placement.getY() - y, 2));
+                return distance <= threshold;
+            })
+            .findFirst();
     }
 
     /*
@@ -183,6 +184,6 @@ public class AuthoringModel {
         entityTemplates.clear();
         entityPlacements.clear();
         //collisionRuleModel = new CollisionRuleEditorModel();
-        //gameSettingsModel = new GameSettingsModel();
+        //gameSettingsModel = new GameSettingsModel();\
     }
 }
