@@ -1,6 +1,7 @@
 package oogasalad.authoring.model;
 
-import oogasalad.engine.model.EntityData;
+import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.EntityPlacement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,17 +13,17 @@ import java.util.Optional;
 class AuthoringModelTest {
 
     private AuthoringModel model;
-    private EntityData mockTemplate1;
-    private EntityData mockTemplate2;
+    private EntityType mockTemplate1;
+    private EntityType mockTemplate2;
 
     @BeforeEach
     public void setUp() {
         model = new AuthoringModel();
 
-        mockTemplate1 = mock(EntityData.class);
+        mockTemplate1 = mock(EntityType.class);
         when(mockTemplate1.getType()).thenReturn("Player");
 
-        mockTemplate2 = mock(EntityData.class);
+        mockTemplate2 = mock(EntityType.class);
         when(mockTemplate2.getType()).thenReturn("Enemy");
     }
 
@@ -45,7 +46,7 @@ class AuthoringModelTest {
         assertEquals(1, model.getEntityTemplates().size(), "Should have one template left");
         assertEquals(mockTemplate2, model.getEntityTemplates().get(0), "Remaining template should be mockTemplate2");
 
-        EntityData nonExistentTemplate = mock(EntityData.class);
+        EntityType nonExistentTemplate = mock(EntityType.class);
         assertFalse(model.removeEntityTemplate(nonExistentTemplate), "Should return false when template not found");
     }
 
@@ -53,14 +54,14 @@ class AuthoringModelTest {
     public void testUpdateEntityTemplate() {
         model.addEntityTemplate(mockTemplate1);
 
-        EntityData newTemplate = mock(EntityData.class);
+        EntityType newTemplate = mock(EntityType.class);
         when(newTemplate.getType()).thenReturn("UpdatedPlayer");
 
         assertTrue(model.updateEntityTemplate(mockTemplate1, newTemplate), "Should return true on successful update");
         assertEquals(1, model.getEntityTemplates().size(), "Should still have one template");
         assertEquals(newTemplate, model.getEntityTemplates().get(0), "Template should be updated to new one");
 
-        EntityData nonExistentTemplate = mock(EntityData.class);
+        EntityType nonExistentTemplate = mock(EntityType.class);
         assertFalse(model.updateEntityTemplate(nonExistentTemplate, newTemplate), "Should return false when template not found");
     }
 
@@ -69,12 +70,12 @@ class AuthoringModelTest {
         model.addEntityTemplate(mockTemplate1);
         EntityPlacement placement = model.createAndAddEntityPlacement(mockTemplate1, 10, 20);
 
-        EntityData newTemplate = mock(EntityData.class);
+        EntityType newTemplate = mock(EntityType.class);
         when(newTemplate.getType()).thenReturn("UpdatedPlayer");
 
         model.updateEntityTemplate(mockTemplate1, newTemplate);
 
-        assertEquals(newTemplate, placement.getEntityData(), "Placement should reference the new template");
+        assertEquals(newTemplate, placement.getType(), "Placement should reference the new template");
     }
 
     @Test
@@ -82,7 +83,7 @@ class AuthoringModelTest {
         model.addEntityTemplate(mockTemplate1);
         model.addEntityTemplate(mockTemplate2);
 
-        Optional<EntityData> result = model.findEntityTemplateByType("Player");
+        Optional<EntityType> result = model.findEntityTemplateByType("Player");
         assertTrue(result.isPresent(), "Should find existing template");
         assertEquals(mockTemplate1, result.get(), "Should return the correct template");
 
@@ -92,7 +93,7 @@ class AuthoringModelTest {
 
     @Test
     public void testAddEntityPlacement() {
-        EntityPlacement placement = new EntityPlacement(mockTemplate1, 10, 20);
+        EntityPlacement placement = new EntityPlacement(mockTemplate1, 10, 20, "Default");
 
         assertTrue(model.addEntityPlacement(placement), "Should return true when adding valid placement");
         assertEquals(1, model.getEntityPlacements().size(), "Should have one placement");
@@ -107,7 +108,7 @@ class AuthoringModelTest {
 
         assertNotNull(placement, "Should return a non-null placement");
         assertEquals(1, model.getEntityPlacements().size(), "Should have one placement");
-        assertEquals(mockTemplate1, placement.getEntityData(), "Placement should have the correct template");
+        assertEquals(mockTemplate1, placement.getType(), "Placement should have the correct template");
         assertEquals(15, placement.getX(), "Placement should have the correct X coordinate");
         assertEquals(25, placement.getY(), "Placement should have the correct Y coordinate");
 
@@ -125,7 +126,7 @@ class AuthoringModelTest {
         assertEquals(1, model.getEntityPlacements().size(), "Should have one placement left");
         assertEquals(placement2, model.getEntityPlacements().get(0), "Remaining placement should be placement2");
 
-        EntityPlacement nonExistentPlacement = new EntityPlacement(mockTemplate1, 50, 60);
+        EntityPlacement nonExistentPlacement = new EntityPlacement(mockTemplate1, 50, 60, "Default");
         assertFalse(model.removeEntityPlacement(nonExistentPlacement), "Should return false when placement not found");
     }
 
@@ -179,7 +180,7 @@ class AuthoringModelTest {
         model.addEntityTemplate(mockTemplate1);
         model.createAndAddEntityPlacement(mockTemplate1, 10, 20);
 
-        List<EntityData> templates = model.getEntityTemplates();
+        List<EntityType> templates = model.getEntityTemplates();
         List<EntityPlacement> placements = model.getEntityPlacements();
 
         assertThrows(UnsupportedOperationException.class, () -> {

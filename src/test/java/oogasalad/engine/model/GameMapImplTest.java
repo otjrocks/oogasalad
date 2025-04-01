@@ -39,11 +39,10 @@ class GameMapImplTest extends DukeApplicationTest {
   @BeforeEach
   void setUp() {
     myGameMap = new GameMapImpl(width, height);
-    EntityData data = new EntityData();
-    data.setInitialX(5);
-    data.setInitialY(5);
+    EntityType data = new EntityType();
     data.setControlType("Keyboard");
-    myEntity = EntityFactory.createEntity(myInput, data, myGameMap);
+    EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
+    myEntity = EntityFactory.createEntity(myInput, placement, myGameMap);
   }
 
   @Test
@@ -54,8 +53,8 @@ class GameMapImplTest extends DukeApplicationTest {
 
   @Test
   void addEntity_attemptAddingEntityOutOfBounds_ThrowException() {
-    myEntity.getEntityData().setInitialX(width + 1);
-    myEntity.getEntityData().setInitialY(height + 1);
+    myEntity.getEntityPlacement().setX(width + 1);
+    myEntity.getEntityPlacement().setY(height + 1);
     assertThrows(InvalidPositionException.class, () -> myGameMap.addEntity(myEntity));
   }
 
@@ -75,8 +74,8 @@ class GameMapImplTest extends DukeApplicationTest {
   @Test
   void getEntityAt_attemptGetEntityAt_ReturnsEntityAtPosition() {
     assertDoesNotThrow(() -> myGameMap.addEntity(myEntity));
-    Optional<Entity> result = myGameMap.getEntityAt((int) myEntity.getEntityData().getInitialX(),
-            (int) myEntity.getEntityData().getInitialY());
+    Optional<Entity> result = myGameMap.getEntityAt((int) myEntity.getEntityPlacement().getX(),
+            (int) myEntity.getEntityPlacement().getY());
     assertTrue(result.isPresent());
     assertEquals(myEntity, result.get());
   }
@@ -91,9 +90,10 @@ class GameMapImplTest extends DukeApplicationTest {
   @Test
   void iterator_ensureEntityIteratorContainsAddedEntities_Success() {
     assertDoesNotThrow(() -> myGameMap.addEntity(myEntity));
-    EntityData data = new EntityData();
+    EntityType data = new EntityType();
     data.setControlType("Keyboard");
-    Entity secondEntity = EntityFactory.createEntity(myInput, data, myGameMap);
+    EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
+    Entity secondEntity = EntityFactory.createEntity(myInput, placement, myGameMap);
     assertDoesNotThrow(() -> myGameMap.addEntity(secondEntity));
     Iterator<Entity> iterator = myGameMap.iterator();
     while (iterator.hasNext()) {
