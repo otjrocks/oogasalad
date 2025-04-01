@@ -6,7 +6,6 @@ import oogasalad.engine.LoggingManager;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.GameStateImpl;
 import oogasalad.engine.view.SplashScreenView;
-import oogasalad.player.view.GamePlayerView;
 import oogasalad.player.view.GameScreenView;
 
 /**
