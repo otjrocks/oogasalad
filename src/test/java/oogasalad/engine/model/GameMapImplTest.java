@@ -3,19 +3,34 @@ package oogasalad.engine.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Iterator;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.model.api.EntityFactory;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import util.DukeApplicationTest;
 
-class GameMapImplTest {
+@ExtendWith(MockitoExtension.class)
+class GameMapImplTest extends DukeApplicationTest {
 
   private final int width = 10;
   private final int height = 10;
   private GameMap myGameMap;
   private Entity myEntity;
+  private Scene myScene;
+
+  @Override
+  public void start(Stage stage) {
+    Group root = new Group();
+    myScene = new Scene(root, GameConfig.WIDTH, GameConfig.HEIGHT);
+  }
 
   @BeforeEach
   void setUp() {
@@ -23,7 +38,8 @@ class GameMapImplTest {
     EntityData data = new EntityData();
     data.setInitialX(5);
     data.setInitialY(5);
-    myEntity = EntityFactory.createEntity(data);
+    data.setControlType("Keyboard");
+    myEntity = EntityFactory.createEntity(myScene, data);
   }
 
   @Test
@@ -74,7 +90,9 @@ class GameMapImplTest {
   @Test
   void iterator_ensureEntityIteratorContainsAddedEntities_Success() {
     assertDoesNotThrow(() -> myGameMap.addEntity(myEntity));
-    Entity secondEntity = EntityFactory.createEntity(new EntityData());
+    EntityData data = new EntityData();
+    data.setControlType("Keyboard");
+    Entity secondEntity = EntityFactory.createEntity(myScene, data);
     assertDoesNotThrow(() -> myGameMap.addEntity(secondEntity));
     Iterator<Entity> iterator = myGameMap.iterator();
     while (iterator.hasNext()) {
