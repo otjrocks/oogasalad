@@ -8,8 +8,22 @@ import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.entity.KeyboardControlledEntity;
 import oogasalad.engine.model.EntityData;
 
+/**
+ * A factory design pattern to create a Entities provided a configuration model.
+ *
+ * @author Luke Fu
+ */
 public class EntityFactory {
 
+  /**
+   * Creates an entity instance based on the provided {@link EntityData}.
+   *
+   * @param input the input manager to use for player-controlled entities
+   * @param data  the configuration data for the entity
+   * @param gameMap the game map context, used for AI/pathfinding
+   * @return a specific subclass of {@link Entity}, depending on controlType
+   * @throws IllegalArgumentException if the controlType is unrecognized
+   */
   public static Entity createEntity(GameInputManager input, EntityData data, GameMap gameMap) {
     String controlType = data.getControlType();
 

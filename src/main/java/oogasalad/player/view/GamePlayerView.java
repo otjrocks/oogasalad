@@ -10,6 +10,7 @@ import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.JsonConfigParser;
+import oogasalad.engine.config.TileMapParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.EntityData;
 import oogasalad.engine.model.GameMap;
@@ -40,43 +41,53 @@ public class GamePlayerView extends Pane {
   }
 
   private void createExampleMap() {
-    JsonConfigParser configParser = new JsonConfigParser();
-    ConfigModel configModel = null;
+    ConfigModel configModel = loadConfigModel();
+    if (configModel == null) return;
 
+    GameMap gameMap = buildGameMap(configModel);
+    if (gameMap == null) return;
+
+    loadTilesIntoMap(configModel, gameMap);
+    this.getChildren().add(new GameView(gameMap));
+  }
+
+  private ConfigModel loadConfigModel() {
     try {
-      configModel = configParser.loadFromFile("data/basic.json");
+      return new JsonConfigParser().loadFromFile("data/basic.json");
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn(e);
-    }
-
-    GameMap gameMap = null;
-
-    try {
-      if (configModel != null) {
-        gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), configModel, 20, 20);
-
-        // Load entities from TileMap
-        //TODO: encapsulate more of this
-        if (configModel.getTiles() != null && !configModel.getTiles().isEmpty()) {
-          String[] layout = configModel.getTiles().get(0).getLayout();
-          oogasalad.engine.config.TileMapParser tileParser = new oogasalad.engine.config.TileMapParser();
-
-          Map<String, EntityData> templateMap = new HashMap<>();
-          for (EntityData data : configModel.getEntityConfigs()) {
-            templateMap.put(data.getType(), data);
-          }
-
-          tileParser.parseTiles(layout, myMainController.getInputManager(), gameMap, templateMap);
-        }
-      }
-    } catch (InvalidPositionException e) {
-      LoggingManager.LOGGER.warn(e);
-    }
-
-    if (gameMap != null) {
-      GameView gameView = new GameView(gameMap);
-      this.getChildren().add(gameView);
+      return null;
     }
   }
 
+  private GameMap buildGameMap(ConfigModel configModel) {
+    try {
+      return GameMapFactory.createGameMap(myMainController.getInputManager(), configModel, 20, 20);
+    } catch (InvalidPositionException e) {
+      LoggingManager.LOGGER.warn(e);
+      return null;
+    }
+  }
+
+  private void loadTilesIntoMap(ConfigModel configModel, GameMap gameMap) {
+    if (configModel.getTiles() == null || configModel.getTiles().isEmpty()) return;
+
+    String[] layout = configModel.getTiles().get(0).getLayout();
+    Map<String, EntityData> templateMap = buildTemplateMap(configModel);
+
+    TileMapParser tileParser = new TileMapParser();
+    try {
+      tileParser.parseTiles(layout, myMainController.getInputManager(), gameMap, templateMap);
+    } catch (InvalidPositionException e) {
+      LoggingManager.LOGGER.warn(e);
+    }
+  }
+
+  private Map<String, EntityData> buildTemplateMap(ConfigModel configModel) {
+    Map<String, EntityData> map = new HashMap<>();
+    for (EntityData data : configModel.getEntityConfigs()) {
+      map.put(data.getType(), data);
+    }
+    return map;
+  }
 }
