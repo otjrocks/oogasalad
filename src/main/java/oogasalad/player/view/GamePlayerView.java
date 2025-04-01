@@ -3,11 +3,13 @@ package oogasalad.player.view;
 import static oogasalad.engine.config.GameConfig.HEIGHT;
 import static oogasalad.engine.config.GameConfig.WIDTH;
 
+import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.JsonConfigParser;
+import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.api.GameMapFactory;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
@@ -19,10 +21,12 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
  */
 public class GamePlayerView extends Pane {
 
+  private final MainController myMainController;
   /**
    * Create the Game Player View.
    */
-  public GamePlayerView() {
+  public GamePlayerView(MainController controller) {
+    myMainController = controller;
     this.setPrefSize(WIDTH, HEIGHT);
     this.getStyleClass().add("game-player-view");
     createExampleMap();
@@ -39,7 +43,7 @@ public class GamePlayerView extends Pane {
     GameMap gameMap = null;
     try {
       if (configModel != null) {
-        gameMap = GameMapFactory.createGameMap(configModel, 20, 20);
+        gameMap = GameMapFactory.createGameMap(myMainController.getStage().getScene(), configModel, 20, 20);
       }
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn(e);

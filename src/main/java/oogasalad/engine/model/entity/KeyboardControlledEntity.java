@@ -12,10 +12,10 @@ public class KeyboardControlledEntity extends Entity {
     private final Set<KeyCode> myActiveKeys = new HashSet<>();
     private final double SPEED = 1.0;
 
-    public KeyboardControlledEntity(Group root, EntityData entityData) {
+    public KeyboardControlledEntity(Scene scene, EntityData entityData) {
         super(entityData);
-        root.setOnKeyPressed(event -> myActiveKeys.add(event.getCode()));
-        root.setOnKeyReleased(event -> myActiveKeys.remove(event.getCode()));
+        scene.setOnKeyPressed(event -> myActiveKeys.add(event.getCode()));
+        scene.setOnKeyReleased(event -> myActiveKeys.remove(event.getCode()));
     }
 
     @Override

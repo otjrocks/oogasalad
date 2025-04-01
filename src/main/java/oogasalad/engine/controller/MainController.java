@@ -61,7 +61,7 @@ public class MainController {
    */
   public void showGamePlayerView() {
     if (myGamePlayerView == null) {
-      myGamePlayerView = new GamePlayerView();
+      myGamePlayerView = new GamePlayerView(this);
     }
     if (!myRoot.getChildren().contains(myGamePlayerView)) {
       myRoot.getChildren().add(myGamePlayerView);

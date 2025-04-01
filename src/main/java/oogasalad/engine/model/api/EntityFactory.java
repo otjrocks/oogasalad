@@ -9,9 +9,9 @@ import oogasalad.engine.model.entity.KeyboardControlledEntity;
 
 public class EntityFactory {
 
-  public static Entity createEntity(Group root, EntityData data) {
+  public static Entity createEntity(Scene scene, EntityData data) {
     return switch (data.getControlType().toLowerCase()) {
-      case "keyboard" -> new KeyboardControlledEntity(root, data);
+      case "keyboard" -> new KeyboardControlledEntity(scene, data);
       case "bfs" -> new BfsEntity(data);
       default -> throw new IllegalArgumentException("Unknown entity");
     };
