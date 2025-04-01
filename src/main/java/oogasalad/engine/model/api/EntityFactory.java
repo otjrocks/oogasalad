@@ -1,6 +1,7 @@
 package oogasalad.engine.model.api;
 
 import javafx.scene.Scene;
+import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.BfsEntity;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.EntityData;
@@ -13,6 +14,7 @@ import oogasalad.engine.model.entity.KeyboardControlledEntity;
  */
 public class EntityFactory {
 
+<<<<<<< HEAD
   /**
    * Create an entity with the provided parameters.
    *
@@ -22,9 +24,12 @@ public class EntityFactory {
    * @see Entity
    */
   public static Entity createEntity(Scene scene, EntityData data) {
+=======
+  public static Entity createEntity(Scene scene, EntityData data, GameMap gameMap) {
+>>>>>>> da8d72a282c09c378ada4f4fc650ff4a6c29f9fb
     return switch (data.getControlType().toLowerCase()) {
       case "keyboard" -> new KeyboardControlledEntity(scene, data);
-      case "bfs" -> new BfsEntity(data);
+      case "bfs" -> new BfsEntity(data, gameMap);
       default -> throw new IllegalArgumentException("Unknown entity");
     };
   }
