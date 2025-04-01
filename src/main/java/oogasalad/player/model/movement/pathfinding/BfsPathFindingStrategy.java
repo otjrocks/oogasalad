@@ -100,16 +100,15 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
 
   // way to keep track of positions and parents so we don't need to do the silly things with like
   // 2 arrays, good part about 330 is you get to pseudocode it
-  private static class Node {
 
-    private final int x;
-    private final int y;
-    private final Node parent;
+  /**
+   * A record to represent a node in a graph.
+   *
+   * @param x      The x coordinate of this node.
+   * @param y      The y coordinate of this node.
+   * @param parent The parent of this node.
+   */
+  private record Node(int x, int y, BfsPathFindingStrategy.Node parent) {
 
-    Node(int x, int y, Node parent) {
-      this.x = x;
-      this.y = y;
-      this.parent = parent;
-    }
   }
 }
