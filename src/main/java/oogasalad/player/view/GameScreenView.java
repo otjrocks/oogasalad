@@ -29,7 +29,7 @@ public class GameScreenView extends BorderPane {
         hudContainer = new VBox(10, scoreLabel, livesLabel);
         hudContainer.setStyle("-fx-padding: 10; -fx-background-color: lightgray;");
 
-        gamePlayerView = new GamePlayerView(controller, gameState);
+        gamePlayerView = new GamePlayerView(controller);
 
         this.setTop(hudContainer);
         this.setCenter(gamePlayerView);
