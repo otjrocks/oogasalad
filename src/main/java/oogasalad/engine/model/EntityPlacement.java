@@ -5,6 +5,9 @@ package oogasalad.engine.model;
  * Each placement includes an (x, y) coordinate and a mode (e.g., "Default", "PoweredUp").
  * Used to instantiate and track the position and state of individual entities.
  *
+ * The `type` field is used during deserialization, while `resolvedEntityType` is populated
+ * later when matching string types to actual {@link EntityType} objects.
+ *
  * @author Will He, Angela Predolac
  */
 public class EntityPlacement {
@@ -15,9 +18,9 @@ public class EntityPlacement {
   private double y;
   private String mode;
 
-  public EntityPlacement(){
+  /** Default constructor for deserialization. */
+  public EntityPlacement() {}
 
-  }
   /**
    * Constructs a new EntityPlacement with a given type, position, and mode.
    *
@@ -34,27 +37,37 @@ public class EntityPlacement {
   }
 
   /**
-   * Returns the type information of this placed entity.
+   * Returns the resolved {@link EntityType} of this placement.
    *
-   * @return the {@link EntityType} associated with this placement
+   * @return the actual {@link EntityType} instance associated with this placement
    */
   public EntityType getType() {
     return resolvedEntityType;
   }
 
+  /**
+   * Returns the unresolved string name of the entity type (used before resolution).
+   *
+   * @return the type string as defined in the config file
+   */
   public String getTypeString() {
     return type;
   }
 
   /**
-   * Sets the type of this placed entity.
+   * Sets the unresolved type string for this entity (typically used during JSON parsing).
    *
-   * @param type the new String for this placement
+   * @param type the raw entity type name string
    */
   public void setType(String type) {
     this.type = type;
   }
 
+  /**
+   * Sets the resolved {@link EntityType} after matching the type string.
+   *
+   * @param resolvedEntityType the actual {@link EntityType} object for this placement
+   */
   public void setResolvedEntityType(EntityType resolvedEntityType) {
     this.resolvedEntityType = resolvedEntityType;
   }
@@ -126,7 +139,7 @@ public class EntityPlacement {
 
   /**
    * Returns a string representation of this EntityPlacement,
-   * including type and position info.
+   * including resolved type and position info.
    *
    * @return a string summary of the entity placement
    */

@@ -28,7 +28,6 @@ public class EntityFactory {
     if (isBasicEntity(controlType)) {
       return new BasicEntity(data);
     }
-    System.out.println(controlType);
     return createControlledEntity(controlType.toLowerCase(), input, data, gameMap);
   }
 
