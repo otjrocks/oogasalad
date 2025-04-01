@@ -2,6 +2,7 @@ package oogasalad.engine.model.api;
 
 import javafx.scene.Scene;
 import oogasalad.engine.config.ConfigModel;
+import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityData;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameMapImpl;
@@ -25,11 +26,11 @@ public class GameMapFactory {
    * @throws InvalidPositionException Whenever the map cannot be created because an entity with an
    *                                  invalid position was added.
    */
-  public static GameMap createGameMap(Scene scene, ConfigModel configModel, int width, int height)
+  public static GameMap createGameMap(GameInputManager input, ConfigModel configModel, int width, int height)
       throws InvalidPositionException {
     GameMapImpl gameMap = new GameMapImpl(width, height); // Hardcoded for now
     for (EntityData entityData : configModel.getEntityConfigs()) {
-      Entity entity = EntityFactory.createEntity(scene, entityData, gameMap);
+      Entity entity = EntityFactory.createEntity(input, entityData, gameMap);
       gameMap.addEntity(entity);
     }
     return gameMap;

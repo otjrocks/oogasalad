@@ -44,8 +44,8 @@ public class GamePlayerView extends Pane {
     GameMap gameMap = null;
     try {
       if (configModel != null) {
-        gameMap = GameMapFactory.createGameMap(myMainController.getStage().getScene(), configModel,
-            20, 20);
+        gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(),
+                configModel, 20, 20);
       }
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn(e);

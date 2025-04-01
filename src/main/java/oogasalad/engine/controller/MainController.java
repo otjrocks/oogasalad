@@ -3,6 +3,7 @@ package oogasalad.engine.controller;
 import javafx.scene.Group;
 import javafx.stage.Stage;
 import oogasalad.engine.LoggingManager;
+import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.view.SplashScreenView;
 import oogasalad.player.view.GamePlayerView;
 
@@ -16,6 +17,7 @@ public class MainController {
 
   private final Group myRoot;
   private final Stage myStage;
+  private final GameInputManager myInputManager;
   private SplashScreenView mySplashScreenView = null;
   private GamePlayerView myGamePlayerView = null;
 
@@ -28,6 +30,7 @@ public class MainController {
   public MainController(Stage stage, Group root) {
     myRoot = root;
     myStage = stage;
+    myInputManager = new GameInputManager(stage.getScene(), myRoot);
     showSplashScreen();
   }
 
@@ -63,7 +66,7 @@ public class MainController {
       myGamePlayerView = new GamePlayerView(this);
     }
     if (!myRoot.getChildren().contains(myGamePlayerView)) {
-      myRoot.getChildren().add(myGamePlayerView);
+      myInputManager.getRoot().getChildren().add(myGamePlayerView);
     }
   }
 
@@ -74,5 +77,9 @@ public class MainController {
    */
   public Stage getStage() {
     return myStage;
+  }
+
+  public GameInputManager getInputManager() {
+    return myInputManager;
   }
 }
