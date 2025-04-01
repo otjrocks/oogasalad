@@ -2,7 +2,6 @@ package oogasalad.engine.view.components;
 
 import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
 
-import java.lang.reflect.Executable;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
