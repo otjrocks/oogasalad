@@ -58,6 +58,8 @@ public class EntityPlacement {
   }
 
   /**
+   * Return the y coordinate of this entity.
+   *
    * @return The y-coordinate of this entity placement
    */
   public double getY() {

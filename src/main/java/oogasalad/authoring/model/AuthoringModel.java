@@ -29,6 +29,8 @@ public class AuthoringModel {
   }
 
   /**
+   * Return ann unmodifiable list of all entity templates.
+   *
    * @return An unmodifiable list of all entity templates
    */
   public List<EntityData> getEntityTemplates() {

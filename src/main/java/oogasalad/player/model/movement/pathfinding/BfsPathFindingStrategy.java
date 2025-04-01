@@ -9,9 +9,9 @@ import java.util.Set;
 import oogasalad.engine.model.GameMap;
 
 /**
- * A pathfinding strategy using Breadth-First Search. Returns the next direction to move from
- * start to target position, returns the direction as (dx, dy) or (0, 0) if target should
- * remain in same location.
+ * A pathfinding strategy using Breadth-First Search. Returns the next direction to move from start
+ * to target position, returns the direction as (dx, dy) or (0, 0) if target should remain in same
+ * location.
  *
  * @author Jessica Chen
  */
@@ -56,7 +56,8 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     return node.x == targetX && node.y == targetY;
   }
 
-  private void processNeighbors(GameMap map, Node current, Queue<Node> queue, Set<String> visited, int targetX, int targetY) {
+  private void processNeighbors(GameMap map, Node current, Queue<Node> queue, Set<String> visited,
+      int targetX, int targetY) {
     for (int[] neighbor : getNeighbors(map, current.x, current.y, targetX, targetY)) {
       int newX = neighbor[0];
       int newY = neighbor[1];
@@ -98,12 +99,10 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     for (int[] d : directions) {
       int nx = x + d[0];
       int ny = y + d[1];
-      if (isValidPosition(map, nx, ny)) {
-        // Only allow non-target neighbors if they are empty
-        if ((nx == targetX && ny == targetY) || isEmpty(map, nx, ny)) {
+      if (isValidPosition(map, nx, ny) && ((nx == targetX && ny == targetY) || isEmpty(map, nx, ny))) {
           neighbors.add(new int[]{nx, ny});
         }
-      }
+
     }
 
     return neighbors;
@@ -122,5 +121,6 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
   }
 
   private record Node(int x, int y, Node parent) {
+
   }
 }
