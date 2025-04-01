@@ -11,7 +11,7 @@ import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.config.TileMapParser;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.model.EntityData;
+import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.api.GameMapFactory;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
@@ -82,9 +82,9 @@ public class GamePlayerView extends StackPane {
     String[] layout = configModel.getTiles().get(0).getLayout();
     TileMapParser tileParser = new TileMapParser();
 
-    Map<String, EntityData> templateMap = new HashMap<>();
-    for (EntityData data : configModel.getEntityConfigs()) {
-      templateMap.put(data.getType(), data);
+    Map<String, EntityPlacement> templateMap = new HashMap<>();
+    for (EntityPlacement data : configModel.getEntities()) {
+      templateMap.put(data.getType().getType(), data);
     }
 
     tileParser.parseTiles(layout, myMainController.getInputManager(), gameMap, templateMap);
