@@ -24,7 +24,6 @@ import oogasalad.engine.model.GameState;
 public class GamePlayerView extends Pane {
 
   private final MainController myMainController;
-  private final GameState gameState;
 
   /**
    * Create the Game Player View.
@@ -32,7 +31,6 @@ public class GamePlayerView extends Pane {
   public GamePlayerView(MainController controller, GameState gameState) {
     super();
     myMainController = controller;
-    this.gameState = gameState;
 
     this.setPrefSize(WIDTH, HEIGHT);
     this.getStyleClass().add("game-player-view");

@@ -27,7 +27,7 @@ public class EntityFactory {
   public static Entity createEntity(GameInputManager input, EntityData data, GameMap gameMap) {
     String controlType = data.getControlType();
 
-    if (controlType == null || controlType.isBlank() || controlType.equalsIgnoreCase("none")) {
+    if (controlType == null || controlType.isBlank()) {
       return new BasicEntity(data); // for Wall, Dot, etc.
     }
 
