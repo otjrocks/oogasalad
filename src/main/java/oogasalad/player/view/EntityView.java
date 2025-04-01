@@ -1,7 +1,6 @@
 package oogasalad.player.view;
 
 import java.util.Objects;
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import oogasalad.engine.model.EntityData;
