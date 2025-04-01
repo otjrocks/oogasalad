@@ -41,6 +41,9 @@ public class GameMapView extends Pane {
     }
   }
 
+  /**
+   * Update the positions of entities in this game map view.
+   */
   public void updateEntityPositions() {
     for (Entity entity : entityViewsMap.keySet()) {
       EntityView entityView = entityViewsMap.get(entity);

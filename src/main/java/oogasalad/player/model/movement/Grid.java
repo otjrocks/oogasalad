@@ -15,16 +15,37 @@ public class Grid {
   private final int width;
   private final int height;
 
+  /**
+   * A grid with a specific width and height.
+   *
+   * @param width  The width of the grid.
+   * @param height The height of the grid.
+   */
   public Grid(int width, int height) {
     this.width = width;
     this.height = height;
   }
 
+  /**
+   * Check if a position is valid for the grid.
+   *
+   * @param x The x coordinate for the position.
+   * @param y The y coordinate for the position.
+   * @return if the position is valid.
+   */
   public boolean isValidPosition(int x, int y) {
     return x >= 0 && y >= 0 && x < width && y < height;
   }
 
   // written by chatgpt because I was too lazy
+
+  /**
+   * Get the adjacent neighbors for the provided coordinate.
+   *
+   * @param x The x position for the current position.
+   * @param y The y position for the current position.
+   * @return A list of int[] which represents all the adjacent neighbors.
+   */
   public List<int[]> getAdjacentPositions(int x, int y) {
     List<int[]> neighbors = new ArrayList<>();
 
