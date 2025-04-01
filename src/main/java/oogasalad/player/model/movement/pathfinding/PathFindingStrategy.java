@@ -17,7 +17,7 @@ public interface PathFindingStrategy {
    * @param startY  The starting y in the map.
    * @param targetX The target's x value.
    * @param targetY The target's y value.
-   * @return A list of int[] that represents a path from start point to target point.
+   * @return A int[] that represents the first direction on the path as (dx, dy).
    */
   int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY);
 
