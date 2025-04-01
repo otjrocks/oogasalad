@@ -89,6 +89,9 @@ public interface GameState {
    * Exception thrown when saving the game state fails.
    */
   class SaveFailedException extends Exception {
+    /**
+     * Throws exception with corresponding message
+     */
     public SaveFailedException(String message) {
       super(message);
     }
@@ -98,6 +101,9 @@ public interface GameState {
    * Exception thrown when loading the game state fails.
    */
   class LoadFailedException extends Exception {
+    /**
+     * Loads failed exception with corresponding message
+     */
     public LoadFailedException(String message) {
       super(message);
     }
