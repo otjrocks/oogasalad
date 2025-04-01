@@ -1,7 +1,8 @@
 package oogasalad.engine.config;
 
 import oogasalad.engine.model.CollisionRule;
-import oogasalad.engine.model.EntityData;
+import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameSettings;
 import oogasalad.engine.model.MetaData;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * <ul>
  *   <li>MetaData: General information about the game.</li>
  *   <li>GameSettings: Settings that define the game's behavior and rules.</li>
- *   <li>EntityData: A list of configurations for game entities.</li>
+ *   <li>EntityType: A list of configurations for game entities.</li>
  *   <li>CollisionRule: A list of rules governing entity interactions.</li>
  *   <li>WinCondition: A string defining the condition for winning the game.</li>
  * </ul>
@@ -26,7 +27,7 @@ public class ConfigModel {
 
   private MetaData metadata;
   private GameSettings settings;
-  private List<EntityData> entityConfigs;
+  private List<EntityPlacement> entityConfigs;
   private List<CollisionRule> collisionRules;
   private String winCondition;
 
@@ -71,7 +72,7 @@ public class ConfigModel {
    *
    * @return the list of entity configurations
    */
-  public List<EntityData> getEntityConfigs() {
+  public List<EntityPlacement> getEntities() {
     return entityConfigs;
   }
 
@@ -80,7 +81,7 @@ public class ConfigModel {
    *
    * @param entityConfigs the list of entity configurations to set
    */
-  public void setEntityConfigs(List<EntityData> entityConfigs) {
+  public void setEntityConfigs(List<EntityPlacement> entityConfigs) {
     this.entityConfigs = entityConfigs;
   }
 
