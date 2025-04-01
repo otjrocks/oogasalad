@@ -29,23 +29,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     return buildDirection(startX, startY, targetNode);
   }
 
-  /**
-   * Performs a breadth-first search to find the shortest path from start to
-   * target position.
-   * <p>
-   * Returns the target node if found, otherwise returns null.
-   * 
-   * <p>
-   * Package protected for testing purposes.
-   *
-   * @param map     the game map to search on
-   * @param startX  the starting x-coordinate
-   * @param startY  the starting y-coordinate
-   * @param targetX the target x-coordinate
-   * @param targetY the target y-coordinate
-   * @return the target node if a path is found, otherwise null
-   */
-  Node bfs(GameMap map, int startX, int startY, int targetX, int targetY) {
+  private Node bfs(GameMap map, int startX, int startY, int targetX, int targetY) {
     Queue<Node> queue = new LinkedList<>();
     Set<String> visited = new HashSet<>();
     Node startNode = new Node(startX, startY, null);
@@ -96,19 +80,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     return path;
   }
 
-  /**
-   * Builds the direction to move from the start position to the target node.
-   * 
-   * <p>
-   * Package protected for testing purposes.
-   * 
-   * @param startX     the starting x-coordinate
-   * @param startY     the starting y-coordinate
-   * @param targetNode the target node containing the path information
-   * @return an array representing the direction to move as [dx, dy], or [0, 0] if
-   *         no movement is needed
-   */
-  int[] buildDirection(int startX, int startY, Node targetNode) {
+  private int[] buildDirection(int startX, int startY, Node targetNode) {
     if (targetNode == null) {
       return new int[] { 0, 0 };
     }
