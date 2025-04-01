@@ -13,8 +13,6 @@ public class GameView extends StackPane {
 
   public static final int WIDTH = 500;
   public static final int HEIGHT = 500;
-  public static int TILE_WIDTH = 0;
-  public static int TILE_HEIGHT = 0;
 
   private final GameMapView myGameMapView;
   private final GameMap myGameMap;
@@ -25,8 +23,6 @@ public class GameView extends StackPane {
    * @param gameMap The game map model you wish to use.
    */
   public GameView(GameMap gameMap) {
-    TILE_WIDTH = WIDTH / gameMap.getWidth();
-    TILE_HEIGHT = HEIGHT / gameMap.getHeight();
     myGameMapView = new GameMapView(gameMap);
     myGameMap = gameMap;
     this.setPrefSize(WIDTH, HEIGHT);
