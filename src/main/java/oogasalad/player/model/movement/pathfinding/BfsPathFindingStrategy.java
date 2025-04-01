@@ -7,15 +7,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-import oogasalad.player.model.movement.Grid;
+import oogasalad.engine.model.GameMap;
 
 public class BfsPathFindingStrategy implements PathFindingStrategy {
 
   @Override
-  public List<int[]> getPath(Grid map, int startX, int startY, int targetX, int targetY) {
+  public List<int[]> getPath(GameMap map, int startX, int startY, int targetX, int targetY) {
 
     // don't know if this method needs to check for valid positions
-    if (!map.isValidPosition(startX, startY) || !map.isValidPosition(targetX, targetY)) {
+    if (!isValidPosition(map, startX, startY) || !isValidPosition(map, targetX, targetY)) {
       return List.of();
     }
 
@@ -38,13 +38,13 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
 
       // map ideally gives you all adjacent positions to traverse in that ARE VALID
       // so here not doing any valid checking
-      for (int[] neighbor : map.getAdjacentPositions(x, y)) {
+      for (int[] neighbor : getAdjacentPositions(map, x, y)) {
         int newX = neighbor[0];
         int newY = neighbor[1];
 
         String posKey = newX + "," + newY;
 
-        if (!visited.contains(posKey) && map.isValidPosition(newX, newY)) {
+        if (!visited.contains(posKey) && isValidPosition(map, newX, newY)) {
           queue.offer(new Node(newX, newY, current));
           visited.add(posKey);
         }
@@ -69,6 +69,34 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
 
     Collections.reverse(path);
     return path;
+  }
+
+  private boolean isValidPosition(GameMap map, int x, int y) {
+    return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight() && map.getEntityAt(x, y)
+        .isEmpty();
+  }
+
+  private List<int[]> getAdjacentPositions(GameMap map, int x, int y) {
+    List<int[]> neighbors = new ArrayList<>();
+
+    int[][] directions = {
+        {-1, 0},  // Up
+        {1, 0},   // Down
+        {0, -1},  // Left
+        {0, 1}    // Right
+    };
+
+    for (int[] dir : directions) {
+      int newX = x + dir[0];
+      int newY = y + dir[1];
+
+      if (isValidPosition(map, newX, newY)) {
+        neighbors.add(new int[]{newX, newY});
+      }
+    }
+
+    return neighbors;
+
   }
 
   // way to keep track of positions and parents so we don't need to do the silly things with like

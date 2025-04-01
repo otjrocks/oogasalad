@@ -1,8 +1,8 @@
 package oogasalad.player.model.movement.pathfinding;
 
 import java.util.List;
-import oogasalad.player.model.movement.Grid;
+import oogasalad.engine.model.GameMap;
 
 public interface PathFindingStrategy {
-  List<int[]> getPath(Grid map, int startX, int startY, int targetX, int targetY);
+  List<int[]> getPath(GameMap map, int startX, int startY, int targetX, int targetY);
 }
