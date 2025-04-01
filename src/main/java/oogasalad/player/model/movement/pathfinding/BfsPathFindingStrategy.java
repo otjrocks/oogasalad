@@ -111,9 +111,6 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
 
   }
 
-  // way to keep track of positions and parents so we don't need to do the silly things with like
-  // 2 arrays, good part about 330 is you get to pseudocode it
-
   /**
    * A record to represent a node in a graph.
    *
