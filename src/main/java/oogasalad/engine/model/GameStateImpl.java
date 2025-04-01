@@ -16,6 +16,10 @@ public class GameStateImpl implements GameState {
     private int lives;
     private final List<HudComponent> hudComponents;
 
+    /**
+     * Creates game state representation (for HUD elements) based on a number of initial lives
+     * @param initialLives: Number of lives we want the player to start with
+     */
     public GameStateImpl(int initialLives) {
         this.score = 0;
         this.lives = initialLives;
