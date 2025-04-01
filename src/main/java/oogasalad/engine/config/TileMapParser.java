@@ -38,24 +38,33 @@ public class TileMapParser {
       throws InvalidPositionException {
 
     for (int y = 0; y < layout.length; y++) {
-      String row = layout[y];
-      for (int x = 0; x < row.length(); x++) {
-        char symbol = row.charAt(x);
-        String type = tileToEntityType.get(symbol);
-        if (type == null) {
-          continue;
-        }
-
-        EntityData template = templates.get(type);
-        if (template == null) {
-          continue;
-        }
-
-        EntityData clone = cloneWithPosition(template, x, y);
-        Entity entity = EntityFactory.createEntity(input, clone, map);
-        map.addEntity(entity);
-      }
+      parseRow(layout[y], y, input, map, templates);
     }
+  }
+
+  private void parseRow(String row, int y, GameInputManager input, GameMap map, Map<String, EntityData> templates)
+      throws InvalidPositionException {
+    for (int x = 0; x < row.length(); x++) {
+      char symbol = row.charAt(x);
+      createEntityFromTile(symbol, x, y, input, map, templates);
+    }
+  }
+
+  private void createEntityFromTile(char symbol, int x, int y, GameInputManager input, GameMap map,
+      Map<String, EntityData> templates) throws InvalidPositionException {
+    String type = tileToEntityType.get(symbol);
+    if (type == null) {
+      return;
+    }
+
+    EntityData template = templates.get(type);
+    if (template == null) {
+      return;
+    }
+
+    EntityData clone = cloneWithPosition(template, x, y);
+    Entity entity = EntityFactory.createEntity(input, clone, map);
+    map.addEntity(entity);
   }
 
   private EntityData cloneWithPosition(EntityData template, int x, int y) {
