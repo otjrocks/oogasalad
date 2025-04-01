@@ -20,12 +20,31 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     }
 
     // standard BFS algorithm
+    List<int[]> current = bfs(map, startX, startY, targetX, targetY);
+    if (current != null) {
+      return current;
+    }
+
+    // otherwise it just no move
+    return List.of();
+  }
+
+  private List<int[]> bfs(GameMap map, int startX, int startY, int targetX, int targetY) {
     Queue<Node> queue = new LinkedList<>();
     queue.offer(new Node(startX, startY, null));
 
     Set<String> visited = new HashSet<>();
     visited.add(startX + "," + startY);
 
+    List<int[]> current = bfsIterations(map, targetX, targetY, queue, visited);
+    if (current != null) {
+      return current;
+    }
+    return null;
+  }
+
+  private List<int[]> bfsIterations(GameMap map, int targetX, int targetY, Queue<Node> queue,
+      Set<String> visited) {
     while (!queue.isEmpty()) {
       Node current = queue.poll();
       int x = current.x;
@@ -38,21 +57,24 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
 
       // map ideally gives you all adjacent positions to traverse in that ARE VALID
       // so here not doing any valid checking
-      for (int[] neighbor : getAdjacentPositions(map, x, y)) {
-        int newX = neighbor[0];
-        int newY = neighbor[1];
+      handleNeighbors(map, queue, visited, x, y, current);
+    }
+    return null;
+  }
 
-        String posKey = newX + "," + newY;
+  private void handleNeighbors(GameMap map, Queue<Node> queue, Set<String> visited, int x, int y,
+      Node current) {
+    for (int[] neighbor : getAdjacentPositions(map, x, y)) {
+      int newX = neighbor[0];
+      int newY = neighbor[1];
 
-        if (!visited.contains(posKey) && isValidPosition(map, newX, newY)) {
-          queue.offer(new Node(newX, newY, current));
-          visited.add(posKey);
-        }
+      String posKey = newX + "," + newY;
+
+      if (!visited.contains(posKey) && isValidPosition(map, newX, newY)) {
+        queue.offer(new Node(newX, newY, current));
+        visited.add(posKey);
       }
     }
-
-    // otherwise it just no move
-    return List.of();
   }
 
   private List<int[]> buildPath(Node target) {
@@ -101,17 +123,16 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
 
   // way to keep track of positions and parents so we don't need to do the silly things with like
   // 2 arrays, good part about 330 is you get to pseudocode it
-  private static class Node {
 
-    int x;
-    int y;
-    Node parent;
+  /**
+   * A record to represent a node in a graph.
+   *
+   * @param x      The x coordinate of a node.
+   * @param y      The y coordinate of a node.
+   * @param parent The parent of a node.
+   */
+  private record Node(int x, int y, BfsPathFindingStrategy.Node parent) {
 
-    Node(int x, int y, Node parent) {
-      this.x = x;
-      this.y = y;
-      this.parent = parent;
-    }
   }
 }
 
