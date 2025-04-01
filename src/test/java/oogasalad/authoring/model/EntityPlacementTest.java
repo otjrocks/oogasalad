@@ -1,44 +1,42 @@
 package oogasalad.authoring.model;
 
 import static org.junit.jupiter.api.Assertions.*;
-import oogasalad.engine.model.EntityData;
+import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.EntityPlacement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class EntityPlacementTest {
 
-    private EntityData testEntityData;
+    private EntityType testEntityType;
     private EntityPlacement testPlacement;
 
     @BeforeEach
     public void setUp() {
-        testEntityData = new EntityData();
-        testEntityData.setType("Enemy");
-        testEntityData.setImagePath("/images/enemy.png");
-        testEntityData.setControlType("AI");
-        testEntityData.setEffect("Damage");
-        testEntityData.setInitialX(10.0);
-        testEntityData.setInitialY(20.0);
+        testEntityType = new EntityType();
+        testEntityType.setType("Enemy");
+        testEntityType.setControlType("AI");
+        testEntityType.setEffect("Damage");
 
-        testPlacement = new EntityPlacement(testEntityData, 30.0, 40.0);
+        testPlacement = new EntityPlacement(testEntityType, 30.0, 40.0, "Default");
     }
 
     @Test
     public void testConstructor() {
-        assertEquals(testEntityData, testPlacement.getEntityData());
+        assertEquals(testEntityType, testPlacement.getType());
         assertEquals(30.0, testPlacement.getX());
         assertEquals(40.0, testPlacement.getY());
     }
 
     @Test
     public void testGetSetEntityData() {
-        EntityData newEntityData = new EntityData();
-        newEntityData.setType("Player");
+        EntityType newEntityType = new EntityType();
+        newEntityType.setType("Player");
 
-        testPlacement.setEntityData(newEntityData);
+        testPlacement.setType(newEntityType);
 
-        assertEquals(newEntityData, testPlacement.getEntityData());
-        assertEquals("Player", testPlacement.getEntityData().getType());
+        assertEquals(newEntityType, testPlacement.getType());
+        assertEquals("Player", testPlacement.getType().getType());
     }
 
     @Test
@@ -64,17 +62,6 @@ public class EntityPlacementTest {
     }
 
     @Test
-    public void testUpdateInitialPosition() {
-        testPlacement.setX(90.0);
-        testPlacement.setY(100.0);
-
-        testPlacement.updateInitialPosition();
-
-        assertEquals(90.0, testPlacement.getEntityData().getInitialX());
-        assertEquals(100.0, testPlacement.getEntityData().getInitialY());
-    }
-
-    @Test
     public void testToString() {
         String expected = "EntityPlacement{entityData=Enemy, x=30.0, y=40.0}";
         assertEquals(expected, testPlacement.toString());
@@ -83,7 +70,7 @@ public class EntityPlacementTest {
     @Test
     public void testNullEntityData() {
         Exception exception = assertThrows(NullPointerException.class, () -> {
-            new EntityPlacement(null, 10.0, 20.0).toString();
+            new EntityPlacement(null, 10.0, 20.0, "Default").toString();
         });
 
         assertNotNull(exception);

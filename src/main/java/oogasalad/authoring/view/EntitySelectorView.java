@@ -1,7 +1,7 @@
 package oogasalad.authoring.view;
 
 import oogasalad.engine.LoggingManager;
-import oogasalad.engine.model.EntityData;
+import oogasalad.engine.model.EntityType;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -58,12 +58,12 @@ public class EntitySelectorView extends VBox {
    *
    * @param entities The list of entity data you wish to load.
    */
-  public void loadEntityData(List<EntityData> entities) {
+  public void loadEntityData(List<EntityType> entities) {
     entityGrid.getChildren().clear();
 
     // Populate grid with entity data
     for (int i = 0; i < entities.size(); i++) {
-      EntityData entity = entities.get(i);
+      EntityType entity = entities.get(i);
       VBox entityBox = createEntityDataBox(entity);
 
       int row = i / 3;
@@ -73,19 +73,19 @@ public class EntitySelectorView extends VBox {
     }
   }
 
-  private VBox createEntityDataBox(EntityData entity) {
+  private VBox createEntityDataBox(EntityType entity) {
     VBox entityBox = new VBox(5);
     entityBox.setStyle("-fx-border-color: lightgray; -fx-border-width: 1px; -fx-padding: 5px;");
 
     ImageView imageView = new ImageView();
     try {
-      Image image = new Image(entity.getImagePath());
+      Image image = new Image(entity.getModes().get("Default").getImagePath());
       imageView.setImage(image);
       imageView.setFitWidth(100);
       imageView.setFitHeight(100);
       imageView.setPreserveRatio(true);
     } catch (IllegalArgumentException e) {
-      LoggingManager.LOGGER.warn("Unable to load image {}", entity.getImagePath());
+      LoggingManager.LOGGER.warn("Unable to load image {}", entity.getModes().get("Default").getImagePath());
       imageView.setImage(null);
     }
 

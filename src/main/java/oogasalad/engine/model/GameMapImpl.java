@@ -34,14 +34,14 @@ public class GameMapImpl implements GameMap {
 
   @Override
   public void addEntity(Entity entity) throws InvalidPositionException {
-    EntityData data = entity.getEntityData();
+    EntityPlacement data = entity.getEntityPlacement();
     checkEntryInBounds(entity, data);
     myEntityList.add(entity);
   }
 
-  private void checkEntryInBounds(Entity entity, EntityData data) throws InvalidPositionException {
-    if (data.getInitialX() < 0 || data.getInitialX() >= myWidth || data.getInitialY() < 0
-        || data.getInitialY() >= myHeight) {
+  private void checkEntryInBounds(Entity entity, EntityPlacement data) throws InvalidPositionException {
+    if (data.getX() < 0 || data.getY() >= myWidth || data.getY() < 0
+        || data.getY() >= myHeight) {
       LoggingManager.LOGGER.warn("Cannot add entity {} because it does not fit in the game map!",
           entity);
       throw new InvalidPositionException("The entity you provided does not fit in this game map!");
@@ -62,7 +62,7 @@ public class GameMapImpl implements GameMap {
   @Override
   public Optional<Entity> getEntityAt(int x, int y) {
     for (Entity entity : myEntityList) {
-      if (entity.getEntityData().getInitialX() == x && entity.getEntityData().getInitialY() == y) {
+      if (entity.getEntityPlacement().getX() == x && entity.getEntityPlacement().getY() == y) {
         return Optional.of(entity);
       }
     }

@@ -1,7 +1,8 @@
 package oogasalad.engine.model.entity;
 
 import oogasalad.engine.input.GameInputManager;
-import oogasalad.engine.model.EntityData;
+import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.model.EntityType;
 
 /**
  * An entity that can use keyboard input.
@@ -16,10 +17,10 @@ public class KeyboardControlledEntity extends Entity {
   /**
    * Create a keyboard controlled entity.
    *
-   * @param entityData The entity data.
+   * @param entityPlacement The entity data.
    */
-  public KeyboardControlledEntity(GameInputManager input, EntityData entityData) {
-    super(entityData);
+  public KeyboardControlledEntity(GameInputManager input, EntityPlacement entityPlacement) {
+    super(entityPlacement);
     this.inputManager = input;
   }
 
@@ -32,7 +33,7 @@ public class KeyboardControlledEntity extends Entity {
     if (inputManager.isMovingLeft()) dx -= SPEED;
     if (inputManager.isMovingRight()) dx += SPEED;
 
-    getEntityData().setInitialX(getEntityData().getInitialX() + dx);
-    getEntityData().setInitialY(getEntityData().getInitialY() + dy);
+    getEntityPlacement().setX(getEntityPlacement().getX() + dx);
+    getEntityPlacement().setY(getEntityPlacement().getY() + dy);
   }
 }

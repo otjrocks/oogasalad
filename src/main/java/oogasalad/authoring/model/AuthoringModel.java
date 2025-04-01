@@ -1,11 +1,12 @@
 package oogasalad.authoring.model;
 
-import oogasalad.engine.model.EntityData;
+import oogasalad.engine.model.EntityType;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import oogasalad.engine.model.EntityPlacement;
 
 /**
  * Top-level model that manages all authoring data for the game. Stores entity templates, entity
@@ -13,7 +14,7 @@ import java.util.Optional;
  */
 public class AuthoringModel {
 
-  private List<EntityData> entityTemplates;
+  private List<EntityType> entityTemplates;
   private List<EntityPlacement> entityPlacements;
   //private CollisionRuleEditorModel collisionRuleModel;
   //private GameSettingsModel gameSettingsModel;
@@ -33,7 +34,7 @@ public class AuthoringModel {
    *
    * @return An unmodifiable list of all entity templates
    */
-  public List<EntityData> getEntityTemplates() {
+  public List<EntityType> getEntityTemplates() {
     return Collections.unmodifiableList(entityTemplates);
   }
 
@@ -43,7 +44,7 @@ public class AuthoringModel {
    * @param template The entity template to add
    * @return true if the template was added successfully
    */
-  public boolean addEntityTemplate(EntityData template) {
+  public boolean addEntityTemplate(EntityType template) {
     if (template == null) {
       return false;
     }
@@ -56,7 +57,7 @@ public class AuthoringModel {
    * @param template The entity template to remove
    * @return true if the template was removed successfully
    */
-  public boolean removeEntityTemplate(EntityData template) {
+  public boolean removeEntityTemplate(EntityType template) {
     return entityTemplates.remove(template);
   }
 
@@ -67,15 +68,15 @@ public class AuthoringModel {
    * @param newTemplate The new template data
    * @return true if the template was updated successfully
    */
-  public boolean updateEntityTemplate(EntityData oldTemplate, EntityData newTemplate) {
+  public boolean updateEntityTemplate(EntityType oldTemplate, EntityType newTemplate) {
     int index = entityTemplates.indexOf(oldTemplate);
     if (index >= 0) {
       entityTemplates.set(index, newTemplate);
 
       // Update any placements using this template
       for (EntityPlacement placement : entityPlacements) {
-        if (placement.getEntityData() == oldTemplate) {
-          placement.setEntityData(newTemplate);
+        if (placement.getType() == oldTemplate) {
+          placement.setType(newTemplate);
         }
       }
       return true;
@@ -89,7 +90,7 @@ public class AuthoringModel {
    * @param type The type of the entity template to find
    * @return An Optional containing the found template, or empty if not found
    */
-  public Optional<EntityData> findEntityTemplateByType(String type) {
+  public Optional<EntityType> findEntityTemplateByType(String type) {
     return entityTemplates.stream()
         .filter(template -> template.getType().equals(type))
         .findFirst();
@@ -125,12 +126,12 @@ public class AuthoringModel {
    * @param y        The y coordinate for placement
    * @return The newly created EntityPlacement, or null if template was null
    */
-  public EntityPlacement createAndAddEntityPlacement(EntityData template, double x, double y) {
+  public EntityPlacement createAndAddEntityPlacement(EntityType template, double x, double y) {
     if (template == null) {
       return null;
     }
 
-    EntityPlacement placement = new EntityPlacement(template, x, y);
+    EntityPlacement placement = new EntityPlacement(template, x, y, "Default");
     entityPlacements.add(placement);
     return placement;
   }
