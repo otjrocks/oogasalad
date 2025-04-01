@@ -22,9 +22,9 @@
     {
       "type": "Pacman",
       "imagePath": "assets/images/pacman.png",
-      "controlType": "bfs",
+      "controlType": "keyboard",
       "effect": null,
-      "initialX": 1,
+      "initialX": 0,
       "initialY": 1
     },
     {

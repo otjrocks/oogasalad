@@ -41,7 +41,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
         return current;
       }
 
-      processNeighbors(map, current, queue, visited);
+      processNeighbors(map, current, queue, visited, targetX, targetY);
     }
 
     return null; // no path found
@@ -56,8 +56,8 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     return node.x == targetX && node.y == targetY;
   }
 
-  private void processNeighbors(GameMap map, Node current, Queue<Node> queue, Set<String> visited) {
-    for (int[] neighbor : getNeighbors(map, current.x, current.y)) {
+  private void processNeighbors(GameMap map, Node current, Queue<Node> queue, Set<String> visited, int targetX, int targetY) {
+    for (int[] neighbor : getNeighbors(map, current.x, current.y, targetX, targetY)) {
       int newX = neighbor[0];
       int newY = neighbor[1];
       String neighborKey = key(newX, newY);
@@ -69,7 +69,9 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
   }
 
   private int[] buildDirection(int startX, int startY, Node targetNode) {
-    if (targetNode == null) return new int[]{0, 0};
+    if (targetNode == null) {
+      return new int[]{0, 0};
+    }
 
     List<int[]> path = reconstructPath(targetNode);
     if (path.isEmpty()) {
@@ -89,7 +91,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     return path;
   }
 
-  private List<int[]> getNeighbors(GameMap map, int x, int y) {
+  private List<int[]> getNeighbors(GameMap map, int x, int y, int targetX, int targetY) {
     List<int[]> neighbors = new ArrayList<>();
     int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
@@ -97,7 +99,10 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
       int nx = x + d[0];
       int ny = y + d[1];
       if (isValidPosition(map, nx, ny)) {
-        neighbors.add(new int[]{nx, ny});
+        // Only allow non-target neighbors if they are empty
+        if ((nx == targetX && ny == targetY) || isEmpty(map, nx, ny)) {
+          neighbors.add(new int[]{nx, ny});
+        }
       }
     }
 
@@ -106,6 +111,10 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
 
   private boolean isValidPosition(GameMap map, int x, int y) {
     return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight();
+  }
+
+  private boolean isEmpty(GameMap map, int x, int y) {
+    return map.getEntityAt(x, y).isEmpty();
   }
 
   private String key(int x, int y) {
