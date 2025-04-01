@@ -26,6 +26,8 @@ public class EntityPlacement {
   }
 
   /**
+   * Return EntityData associated with this EntityPlacement.
+   * 
    * @return The EntityData associated with this placement
    */
   public EntityData getEntityData() {
