@@ -48,7 +48,9 @@ public class EntityType {
   private Map<String, Object> strategyConfig;
 
   /** Default constructor required for deserialization or reflection. */
-  public EntityType() {}
+  public EntityType() {
+    // Empty
+  }
 
   /**
    * Returns the type identifier of the entity.
