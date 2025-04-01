@@ -36,6 +36,13 @@ public class JsonConfigParser implements ConfigParser {
     this.mapper = new ObjectMapper();
   }
 
+  /**
+   * Retrieve the config model from a file with the provided file path.
+   *
+   * @param filepath the path to the configuration file to be loaded
+   * @return The config model data from this file.
+   * @throws ConfigException If the config file cannot be parsed.
+   */
   public ConfigModel loadFromFile(String filepath) throws ConfigException {
     try {
       return mapper.readValue(new File(filepath), ConfigModel.class);

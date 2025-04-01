@@ -2,7 +2,6 @@ package oogasalad.engine.controller;
 
 import javafx.scene.Group;
 import javafx.stage.Stage;
-import oogasalad.Main;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.view.SplashScreenView;
 import oogasalad.player.view.GamePlayerView;

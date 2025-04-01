@@ -9,12 +9,23 @@ import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 
+/**
+ * A simple implementation of a {@code GameMap}.
+ *
+ * @author Owen Jennings
+ */
 public class GameMapImpl implements GameMap {
 
   private final List<Entity> myEntityList;
   private final int myWidth;
   private final int myHeight;
 
+  /**
+   * The constructor for a game map.
+   *
+   * @param width  The width in cells of this game map.
+   * @param height The height in cells of this game map.
+   */
   public GameMapImpl(int width, int height) {
     myEntityList = new ArrayList<>();
     myWidth = width;

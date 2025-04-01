@@ -1,6 +1,5 @@
 package oogasalad.engine.model.api;
 
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.BfsEntity;
@@ -8,9 +7,26 @@ import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.EntityData;
 import oogasalad.engine.model.entity.KeyboardControlledEntity;
 
+/**
+ * A factory design pattern used to create various entities.
+ *
+ * @author Jessica Chen
+ */
 public class EntityFactory {
 
+<<<<<<< HEAD
+  /**
+   * Create an entity with the provided parameters.
+   *
+   * @param scene The javafx scene of the program.
+   * @param data  The entity data for the entity that you wish to create.
+   * @return An Entity object.
+   * @see Entity
+   */
+  public static Entity createEntity(Scene scene, EntityData data) {
+=======
   public static Entity createEntity(Scene scene, EntityData data, GameMap gameMap) {
+>>>>>>> da8d72a282c09c378ada4f4fc650ff4a6c29f9fb
     return switch (data.getControlType().toLowerCase()) {
       case "keyboard" -> new KeyboardControlledEntity(scene, data);
       case "bfs" -> new BfsEntity(data, gameMap);

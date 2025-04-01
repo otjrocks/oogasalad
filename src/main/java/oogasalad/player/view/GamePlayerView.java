@@ -3,7 +3,6 @@ package oogasalad.player.view;
 import static oogasalad.engine.config.GameConfig.HEIGHT;
 import static oogasalad.engine.config.GameConfig.WIDTH;
 
-import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.ConfigException;
@@ -26,6 +25,7 @@ public class GamePlayerView extends Pane {
    * Create the Game Player View.
    */
   public GamePlayerView(MainController controller) {
+    super();
     myMainController = controller;
     this.setPrefSize(WIDTH, HEIGHT);
     this.getStyleClass().add("game-player-view");

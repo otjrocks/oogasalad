@@ -24,6 +24,7 @@ public class VMenu extends VBox {
    * @param actions The actions to execute when a given value is selected from the menu.
    */
   public VMenu(List<String> values, List<EventHandler<ActionEvent>> actions) {
+    super();
     validateParameters(values, actions);
     createMenu(values, actions);
     this.setSpacing(ELEMENT_SPACING);
