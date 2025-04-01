@@ -19,6 +19,12 @@ public class BfsEntity extends Entity {
   private final List<int[]> myPath;
   private int myCurrentStep;
 
+  /**
+   * Create a BFS entity.
+   *
+   * @param entityData The data to include with this entity.
+   * @param gameMap    The game map this entity is a part of.
+   */
   public BfsEntity(EntityData entityData, GameMap gameMap) {
     super(entityData);
 
