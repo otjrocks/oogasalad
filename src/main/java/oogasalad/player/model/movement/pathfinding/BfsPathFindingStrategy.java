@@ -54,22 +54,27 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
         // once you get the target retrace to build the path
         return buildPath(current);
       }
-
-      // map ideally gives you all adjacent positions to traverse in that ARE VALID
-      // so here not doing any valid checking
-      for (int[] neighbor : map.getAdjacentPositions(x, y)) {
-        int newX = neighbor[0];
-        int newY = neighbor[1];
-
-        String posKey = newX + "," + newY;
-
-        if (!visited.contains(posKey) && map.isValidPosition(newX, newY)) {
-          queue.offer(new Node(newX, newY, current));
-          visited.add(posKey);
-        }
-      }
+      handleAllNeighbors(map, queue, visited, x, y, current);
     }
     return null;
+  }
+
+  private static void handleAllNeighbors(Grid map, Queue<Node> queue, Set<String> visited, int x,
+      int y,
+      Node current) {
+    // map ideally gives you all adjacent positions to traverse in that ARE VALID
+    // so here not doing any valid checking
+    for (int[] neighbor : map.getAdjacentPositions(x, y)) {
+      int newX = neighbor[0];
+      int newY = neighbor[1];
+
+      String posKey = newX + "," + newY;
+
+      if (!visited.contains(posKey) && map.isValidPosition(newX, newY)) {
+        queue.offer(new Node(newX, newY, current));
+        visited.add(posKey);
+      }
+    }
   }
 
   private List<int[]> buildPath(Node target) {
