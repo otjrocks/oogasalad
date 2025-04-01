@@ -1,6 +1,5 @@
 package oogasalad.player.model.movement.pathfinding;
 
-import java.util.List;
 import oogasalad.engine.model.GameMap;
 
 /**
@@ -20,5 +19,6 @@ public interface PathFindingStrategy {
    * @param targetY The target's y value.
    * @return A list of int[] that represents a path from start point to target point.
    */
-  List<int[]> getPath(GameMap map, int startX, int startY, int targetX, int targetY);
+  int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY);
+
 }

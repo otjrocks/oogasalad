@@ -1,6 +1,5 @@
 package oogasalad.engine.model.entity;
 
-import java.util.List;
 
 import oogasalad.engine.model.EntityData;
 import oogasalad.engine.model.GameMap;
@@ -16,8 +15,9 @@ import oogasalad.player.model.movement.pathfinding.PathFindingStrategy;
  */
 public class BfsEntity extends Entity {
 
-  private final List<int[]> myPath;
-  private int myCurrentStep;
+  private final GameMap myGameMap;
+  // TODO: would be nice if this was static, so each class don't need own for path finidng
+  private final PathFindingStrategy myPathFindingStrategy;
 
   /**
    * Create a BFS entity.
@@ -28,18 +28,17 @@ public class BfsEntity extends Entity {
   public BfsEntity(EntityData entityData, GameMap gameMap) {
     super(entityData);
 
-    PathFindingStrategy pathFindingStrategy = new BfsPathFindingStrategy();
-    myPath = pathFindingStrategy.getPath(gameMap, (int) getEntityData().getInitialX(),
-        (int) getEntityData().getInitialY(), 0, 0);
+    myGameMap = gameMap;
+    myPathFindingStrategy = new BfsPathFindingStrategy();
   }
 
   @Override
   public void update() {
-    if (myPath != null && myCurrentStep < myPath.size()) {
-      getEntityData().setInitialX(myPath.get(myCurrentStep)[0]);
-      getEntityData().setInitialY(myPath.get(myCurrentStep)[1]);
-      myCurrentStep++;
-    }
+    int[] dir = myPathFindingStrategy.getPath(myGameMap, (int) getEntityData().getInitialX(),
+        (int) getEntityData().getInitialY(), 0, 0);
+
+    getEntityData().setInitialX(getEntityData().getInitialX() + dir[0]);
+    getEntityData().setInitialY(getEntityData().getInitialY() + dir[1]);
   }
 
 }
