@@ -59,7 +59,7 @@
     },
     {
       "type": "PowerPellet",
-      "controlType": null,
+      "controlType": "dot",
       "effect": "SpeedBoost(5)",
       "modes": {
         "Default": {
@@ -70,7 +70,7 @@
     },
     {
       "type": "Wall",
-      "controlType": null,
+      "controlType": "wall",
       "effect": null,
       "blocks": ["Pacman", "RedGhost", "BlueGhost"],
       "modes": {
@@ -84,36 +84,12 @@
   "entityPlacements": [
     {
       "type": "Pacman",
-      "x": 100.0,
-      "y": 100.0,
-      "mode": "Default"
-    },
-    {
-      "type": "RedGhost",
-      "x": 200.0,
-      "y": 200.0,
-      "mode": "Default"
-    },
-    {
-      "type": "BlueGhost",
-      "x": 210.0,
-      "y": 210.0,
-      "mode": "Default"
-    },
-    {
-      "type": "PowerPellet",
-      "x": 150.0,
-      "y": 150.0,
-      "mode": "Default"
-    },
-    {
-      "type": "Wall",
-      "x": 120.0,
-      "y": 100.0,
+      "x": 2.0,
+      "y": 2.0,
       "mode": "Default"
     }
   ],
-  "collisionInteractions": [
+  "collisionRules": [
     {
       "entityTypeA": "Pacman",
       "modeA": "Default",

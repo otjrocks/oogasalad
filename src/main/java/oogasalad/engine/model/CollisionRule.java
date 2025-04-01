@@ -1,67 +1,137 @@
 package oogasalad.engine.model;
 
+import java.util.List;
+
 /**
- * A strategy that determines how to handle collisions.
+ * Represents a rule for handling a collision between two entity types,
+ * each potentially in a specific mode. Specifies a list of events that
+ * should be triggered for each entity upon collision.
  *
- * @author Will He
+ * Used in the game engine to define conditional, mode-based collision behavior.
+ * Example: "Pacman" in "PoweredUp" mode colliding with "Ghost" in "Default" mode
+ * could trigger "EatGhost" for Pacman and "Die" for Ghost.
+ *
+ * Author: Will He
  */
 public class CollisionRule {
 
   private String entityTypeA;
+  private String modeA;
   private String entityTypeB;
-  private String strategy;
+  private String modeB;
+  private List<String> eventsA;
+  private List<String> eventsB;
 
-  /**
-   * Get the entity type b.
-   *
-   * @return The string representing the type of entity b.
-   */
-  public String getEntityTypeB() {
-    return entityTypeB;
+  /** Default constructor for deserialization or reflection. */
+  public CollisionRule() {
+    // Empty
   }
 
   /**
-   * Set the string representing entity type b.
+   * Returns the type of the first entity involved in the collision.
    *
-   * @param entityTypeB The string you wish to set type b to.
-   */
-  public void setEntityTypeB(String entityTypeB) {
-    this.entityTypeB = entityTypeB;
-  }
-
-  /**
-   * Get the entity type of entity A.
-   *
-   * @return The string representing the entity type.
+   * @return the string identifier for entity A
    */
   public String getEntityTypeA() {
     return entityTypeA;
   }
 
   /**
-   * Set the string representing the type of entity A.
+   * Sets the type of the first entity involved in the collision.
    *
-   * @param entityTypeA The string you wish to set type A to.
+   * @param entityTypeA the string identifier for entity A
    */
   public void setEntityTypeA(String entityTypeA) {
     this.entityTypeA = entityTypeA;
   }
 
   /**
-   * Get the strategy string for this collision.
+   * Returns the mode of the first entity involved in the collision.
    *
-   * @return A string representing the strategy to use between these two entities.
+   * @return the mode string for entity A
    */
-  public String getStrategy() {
-    return strategy;
+  public String getModeA() {
+    return modeA;
   }
 
   /**
-   * Set the strategy to be used between two entity types.
+   * Sets the mode of the first entity involved in the collision.
    *
-   * @param strategy The string representing the strategy you wish to be used.
+   * @param modeA the mode string for entity A
    */
-  public void setStrategy(String strategy) {
-    this.strategy = strategy;
+  public void setModeA(String modeA) {
+    this.modeA = modeA;
+  }
+
+  /**
+   * Returns the type of the second entity involved in the collision.
+   *
+   * @return the string identifier for entity B
+   */
+  public String getEntityTypeB() {
+    return entityTypeB;
+  }
+
+  /**
+   * Sets the type of the second entity involved in the collision.
+   *
+   * @param entityTypeB the string identifier for entity B
+   */
+  public void setEntityTypeB(String entityTypeB) {
+    this.entityTypeB = entityTypeB;
+  }
+
+  /**
+   * Returns the mode of the second entity involved in the collision.
+   *
+   * @return the mode string for entity B
+   */
+  public String getModeB() {
+    return modeB;
+  }
+
+  /**
+   * Sets the mode of the second entity involved in the collision.
+   *
+   * @param modeB the mode string for entity B
+   */
+  public void setModeB(String modeB) {
+    this.modeB = modeB;
+  }
+
+  /**
+   * Returns the list of events to apply to the first entity (A) after collision.
+   *
+   * @return a list of event names for entity A
+   */
+  public List<String> getEventsA() {
+    return eventsA;
+  }
+
+  /**
+   * Sets the list of events to apply to the first entity (A) after collision.
+   *
+   * @param eventsA a list of event names for entity A
+   */
+  public void setEventsA(List<String> eventsA) {
+    this.eventsA = eventsA;
+  }
+
+  /**
+   * Returns the list of events to apply to the second entity (B) after collision.
+   *
+   * @return a list of event names for entity B
+   */
+  public List<String> getEventsB() {
+    return eventsB;
+  }
+
+  /**
+   * Sets the list of events to apply to the second entity (B) after collision.
+   *
+   * @param eventsB a list of event names for entity B
+   */
+  public void setEventsB(List<String> eventsB) {
+    this.eventsB = eventsB;
   }
 }

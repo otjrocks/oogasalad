@@ -28,7 +28,6 @@ public class EntityFactory {
     if (isBasicEntity(controlType)) {
       return new BasicEntity(data);
     }
-
     return createControlledEntity(controlType.toLowerCase(), input, data, gameMap);
   }
 
@@ -42,7 +41,7 @@ public class EntityFactory {
       EntityPlacement data, GameMap gameMap) {
     return switch (controlType) {
       case "keyboard" -> new KeyboardControlledEntity(input, data);
-      case "bfs" -> new BfsEntity(data, gameMap);
+      case "targetentity", "targetaheadofentity" -> new BfsEntity(data, gameMap);
       default -> throw new IllegalArgumentException("Unknown entity: " + controlType);
     };
   }

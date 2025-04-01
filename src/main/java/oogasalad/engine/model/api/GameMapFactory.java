@@ -3,7 +3,6 @@ package oogasalad.engine.model.api;
 import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameMapImpl;
 import oogasalad.engine.model.entity.Entity;
@@ -29,7 +28,7 @@ public class GameMapFactory {
     int width = configModel.getSettings().getWidth();
     int height = configModel.getSettings().getHeight();
     GameMapImpl gameMap = new GameMapImpl(width, height); // Hardcoded for now
-    for (EntityPlacement entityPlacement : configModel.getEntities()) {
+    for (EntityPlacement entityPlacement : configModel.getEntityPlacements()) {
       Entity entity = EntityFactory.createEntity(input, entityPlacement, gameMap);
       gameMap.addEntity(entity);
     }
