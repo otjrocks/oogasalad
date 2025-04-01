@@ -1,5 +1,7 @@
 package oogasalad.engine.model.strategies;
 
+import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
 
 /**
@@ -9,7 +11,7 @@ import oogasalad.engine.model.entity.Entity;
  *
  * @author Austin Huang
  */
-public class UpdateScore implements CollisionStrategy {
+public class UpdateScoreStrategy implements CollisionStrategy {
   private int scoreIncrement;
 
   /**
@@ -17,7 +19,7 @@ public class UpdateScore implements CollisionStrategy {
    *
    * @param increment the amount by which the score should be increased on collision
    */
-  public UpdateScore(int increment) {
+  public UpdateScoreStrategy(int increment) {
     this.scoreIncrement = increment;
   }
 
@@ -29,7 +31,7 @@ public class UpdateScore implements CollisionStrategy {
    * @param entity2 the second entity involved in the collision
    */
   @Override
-  public void handleCollision(Entity entity1, Entity entity2) {
-//    GameState.updateScore(scoreIncrement);
+  public void handleCollision(Entity entity1, Entity entity2, GameMap gameMap, GameState gameState) {
+    gameState.updateScore(scoreIncrement);
   }
 }

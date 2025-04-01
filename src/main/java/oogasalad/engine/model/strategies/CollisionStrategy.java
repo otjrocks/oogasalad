@@ -1,5 +1,7 @@
 package oogasalad.engine.model.strategies;
 
+import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
 
 /**
@@ -15,5 +17,6 @@ public interface CollisionStrategy {
    * @param entity1 entity that initiates collision
    * @param entity2 entity that is collided against
    */
-  void handleCollision(Entity entity1, Entity entity2);
+  void handleCollision(Entity entity1, Entity entity2, GameMap gameMap, GameState gameState)
+      throws Exception;
 }
