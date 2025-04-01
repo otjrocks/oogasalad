@@ -5,30 +5,22 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.BasicEntity;
 import oogasalad.engine.model.entity.BfsEntity;
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.engine.model.EntityData;
 import oogasalad.engine.model.entity.KeyboardControlledEntity;
+import oogasalad.engine.model.EntityData;
 
-/**
- * A factory design pattern used to create various entities.
- *
- * @author Jessica Chen
- */
 public class EntityFactory {
 
-  /**
-   * Create an entity with the provided parameters.
-   *
-   * @param data  The entity data for the entity that you wish to create.
-   * @return An Entity object.
-   * @see Entity
-   */
   public static Entity createEntity(GameInputManager input, EntityData data, GameMap gameMap) {
-    return switch (data.getControlType().toLowerCase()) {
+    String controlType = data.getControlType();
+
+    if (controlType == null || controlType.isBlank() || controlType.equalsIgnoreCase("none")) {
+      return new BasicEntity(data); // for Wall, Dot, etc.
+    }
+
+    return switch (controlType.toLowerCase()) {
       case "keyboard" -> new KeyboardControlledEntity(input, data);
       case "bfs" -> new BfsEntity(data, gameMap);
-      case "wall", "dot" -> new BasicEntity(data);
-      default -> throw new IllegalArgumentException("Unknown entity");
+      default -> throw new IllegalArgumentException("Unknown controlType: " + controlType);
     };
   }
-
 }

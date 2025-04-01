@@ -3,12 +3,15 @@ package oogasalad.player.view;
 import static oogasalad.engine.config.GameConfig.HEIGHT;
 import static oogasalad.engine.config.GameConfig.WIDTH;
 
+import java.util.HashMap;
+import java.util.Map;
 import javafx.scene.layout.Pane;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
+import oogasalad.engine.model.EntityData;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.api.GameMapFactory;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
@@ -39,23 +42,41 @@ public class GamePlayerView extends Pane {
   private void createExampleMap() {
     JsonConfigParser configParser = new JsonConfigParser();
     ConfigModel configModel = null;
+
     try {
       configModel = configParser.loadFromFile("data/basic.json");
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn(e);
     }
+
     GameMap gameMap = null;
+
     try {
       if (configModel != null) {
-        gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(),
-                configModel, 20, 20);
+        gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), configModel, 20, 20);
+
+        // Load entities from TileMap
+        //TODO: encapsulate more of this
+        if (configModel.getTiles() != null && !configModel.getTiles().isEmpty()) {
+          String[] layout = configModel.getTiles().get(0).getLayout();
+          oogasalad.engine.util.TileMapParser tileParser = new oogasalad.engine.util.TileMapParser();
+
+          Map<String, EntityData> templateMap = new HashMap<>();
+          for (EntityData data : configModel.getEntityConfigs()) {
+            templateMap.put(data.getType(), data);
+          }
+
+          tileParser.parseTiles(layout, myMainController.getInputManager(), gameMap, templateMap);
+        }
       }
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn(e);
     }
+
     if (gameMap != null) {
       GameView gameView = new GameView(gameMap);
       this.getChildren().add(gameView);
     }
   }
+
 }
