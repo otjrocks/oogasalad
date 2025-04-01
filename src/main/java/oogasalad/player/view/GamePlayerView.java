@@ -1,11 +1,10 @@
 package oogasalad.player.view;
 
-import static oogasalad.engine.config.GameConfig.HEIGHT;
 import static oogasalad.engine.config.GameConfig.WIDTH;
 
 import java.util.HashMap;
 import java.util.Map;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.ConfigModel;
@@ -22,7 +21,7 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
  *
  * @author Owen Jennings
  */
-public class GamePlayerView extends Pane {
+public class GamePlayerView extends StackPane {
 
   private final MainController myMainController;
 
@@ -33,7 +32,7 @@ public class GamePlayerView extends Pane {
     super();
     myMainController = controller;
 
-    this.setPrefSize(WIDTH, HEIGHT);
+    this.setPrefWidth(WIDTH);
     this.getStyleClass().add("game-player-view");
 
     createExampleMap();
@@ -57,7 +56,7 @@ public class GamePlayerView extends Pane {
             myMainController.getInputManager(), configModel, 20, 20);
 
         if (configModel.getTiles() != null && !configModel.getTiles().isEmpty()) {
-          parseTilesToGameMap(configModel, gameMap); // ✅ Only one map used
+          parseTilesToGameMap(configModel, gameMap);
         }
       }
     } catch (InvalidPositionException e) {
