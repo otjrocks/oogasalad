@@ -33,7 +33,7 @@ public class KeyboardControlledEntity extends Entity {
   public void update() {
     double dx = 0, dy = 0;
 
-    if (mygActiveKeys.contains(KeyCode.UP)) {
+    if (myActiveKeys.contains(KeyCode.UP)) {
       dy -= SPEED;
     }
     if (myActiveKeys.contains(KeyCode.DOWN)) {

@@ -14,7 +14,6 @@ import oogasalad.engine.model.entity.KeyboardControlledEntity;
  */
 public class EntityFactory {
 
-<<<<<<< HEAD
   /**
    * Create an entity with the provided parameters.
    *
@@ -23,10 +22,7 @@ public class EntityFactory {
    * @return An Entity object.
    * @see Entity
    */
-  public static Entity createEntity(Scene scene, EntityData data) {
-=======
   public static Entity createEntity(Scene scene, EntityData data, GameMap gameMap) {
->>>>>>> da8d72a282c09c378ada4f4fc650ff4a6c29f9fb
     return switch (data.getControlType().toLowerCase()) {
       case "keyboard" -> new KeyboardControlledEntity(scene, data);
       case "bfs" -> new BfsEntity(data, gameMap);
