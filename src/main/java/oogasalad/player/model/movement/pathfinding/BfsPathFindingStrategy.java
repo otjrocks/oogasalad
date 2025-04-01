@@ -32,42 +32,55 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     Set<String> visited = new HashSet<>();
     Node startNode = new Node(startX, startY, null);
 
-    queue.offer(startNode);
-    visited.add(key(startX, startY));
+    enqueue(queue, visited, startNode);
 
     while (!queue.isEmpty()) {
       Node current = queue.poll();
-      if (current.x == targetX && current.y == targetY) {
+
+      if (isTarget(current, targetX, targetY)) {
         return current;
       }
 
-      for (int[] neighbor : getNeighbors(map, current.x, current.y)) {
-        int newX = neighbor[0];
-        int newY = neighbor[1];
-        String key = key(newX, newY);
+      processNeighbors(map, current, queue, visited);
+    }
 
-        if (!visited.contains(key)) {
-          visited.add(key);
-          queue.offer(new Node(newX, newY, current));
-        }
+    return null; // no path found
+  }
+
+  private void enqueue(Queue<Node> queue, Set<String> visited, Node node) {
+    queue.offer(node);
+    visited.add(key(node.x, node.y));
+  }
+
+  private boolean isTarget(Node node, int targetX, int targetY) {
+    return node.x == targetX && node.y == targetY;
+  }
+
+  private void processNeighbors(GameMap map, Node current, Queue<Node> queue, Set<String> visited) {
+    for (int[] neighbor : getNeighbors(map, current.x, current.y)) {
+      int newX = neighbor[0];
+      int newY = neighbor[1];
+      String neighborKey = key(newX, newY);
+
+      if (!visited.contains(neighborKey)) {
+        enqueue(queue, visited, new Node(newX, newY, current));
       }
     }
-    return null; // no path found
   }
 
   private int[] buildDirection(int startX, int startY, Node targetNode) {
     if (targetNode == null) return new int[]{0, 0};
 
     List<int[]> path = reconstructPath(targetNode);
-    if (path.size() < 2) return new int[]{0, 0}; // already at destination
+    if (path.isEmpty()) return new int[]{0, 0};
 
-    int[] nextPos = path.get(1); // step after start
+    int[] nextPos = path.getFirst();
     return new int[]{nextPos[0] - startX, nextPos[1] - startY};
   }
 
   private List<int[]> reconstructPath(Node node) {
-    LinkedList<int[]> path = new LinkedList<>();
-    while (node != null) {
+    List<int[]> path = new LinkedList<>();
+    while (node.parent != null) {
       path.addFirst(new int[]{node.x, node.y});
       node = node.parent;
     }
