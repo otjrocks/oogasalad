@@ -30,6 +30,6 @@ public class UpdateScore implements CollisionStrategy {
    */
   @Override
   public void handleCollision(Entity entity1, Entity entity2) {
-    System.out.println("GameState.updateScore(scoreIncrement)" + scoreIncrement);
+//    GameState.updateScore(scoreIncrement);
   }
 }
