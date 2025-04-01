@@ -34,14 +34,6 @@
       "effect": null,
       "initialX": 10,
       "initialY": 10
-    },
-    {
-      "type": "Wall",
-      "imagePath": "assets/images/wall.png",
-      "controlType": "Keyboard",
-      "effect": null,
-      "initialX": 10,
-      "initialY": 10
     }
   ],
   "collisionRules": [],
