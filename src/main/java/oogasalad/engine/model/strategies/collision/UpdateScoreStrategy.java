@@ -12,7 +12,7 @@ import oogasalad.engine.model.entity.Entity;
  * @author Austin Huang
  */
 public class UpdateScoreStrategy implements CollisionStrategy {
-  private int scoreIncrement;
+  private final int scoreIncrement;
 
   /**
    * Constructs an {@code UpdateScore} strategy with a specified score increment.
