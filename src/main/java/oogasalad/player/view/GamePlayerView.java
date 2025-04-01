@@ -59,7 +59,7 @@ public class GamePlayerView extends Pane {
         //TODO: encapsulate more of this
         if (configModel.getTiles() != null && !configModel.getTiles().isEmpty()) {
           String[] layout = configModel.getTiles().get(0).getLayout();
-          oogasalad.engine.util.TileMapParser tileParser = new oogasalad.engine.util.TileMapParser();
+          oogasalad.engine.config.TileMapParser tileParser = new oogasalad.engine.config.TileMapParser();
 
           Map<String, EntityData> templateMap = new HashMap<>();
           for (EntityData data : configModel.getEntityConfigs()) {
