@@ -1,11 +1,7 @@
 package oogasalad.engine.model.entity;
 
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityData;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * An entity that can use keyboard input.

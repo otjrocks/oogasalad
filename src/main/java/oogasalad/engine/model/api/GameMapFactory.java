@@ -1,6 +1,5 @@
 package oogasalad.engine.model.api;
 
-import javafx.scene.Scene;
 import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityData;
