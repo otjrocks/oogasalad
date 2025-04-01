@@ -10,5 +10,5 @@ public class GameConfig {
   public static final int WIDTH = 1200;
   public static final int HEIGHT = 900;
   public static final int ELEMENT_SPACING = 10;
-
+  public static final int MARGIN = 100;
 }

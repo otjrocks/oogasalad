@@ -1,7 +1,7 @@
 package oogasalad.engine.model.api;
 
-import javafx.scene.Scene;
 import oogasalad.engine.config.ConfigModel;
+import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityData;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameMapImpl;
@@ -19,17 +19,17 @@ public class GameMapFactory {
    * Create a game map with the provided configuration model.
    *
    * @param configModel The configuration model you wish to use to create the game map.
-   * @param width       The width of the game map.
-   * @param height      The height of the game map.
    * @return A game map object
    * @throws InvalidPositionException Whenever the map cannot be created because an entity with an
    *                                  invalid position was added.
    */
-  public static GameMap createGameMap(Scene scene, ConfigModel configModel, int width, int height)
+  public static GameMap createGameMap(GameInputManager input, ConfigModel configModel)
       throws InvalidPositionException {
+    int width = configModel.getSettings().getWidth();
+    int height = configModel.getSettings().getHeight();
     GameMapImpl gameMap = new GameMapImpl(width, height); // Hardcoded for now
     for (EntityData entityData : configModel.getEntityConfigs()) {
-      Entity entity = EntityFactory.createEntity(scene, entityData, gameMap);
+      Entity entity = EntityFactory.createEntity(input, entityData, gameMap);
       gameMap.addEntity(entity);
     }
     return gameMap;

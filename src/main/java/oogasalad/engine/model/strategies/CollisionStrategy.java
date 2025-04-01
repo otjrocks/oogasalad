@@ -1,5 +1,7 @@
 package oogasalad.engine.model.strategies;
 
+import oogasalad.engine.model.entity.Entity;
+
 /**
  * An interface to handle the result of collisions.
  *
@@ -8,14 +10,10 @@ package oogasalad.engine.model.strategies;
 public interface CollisionStrategy {
 
   /**
-   * Get the collision strategy.
+   * Handles events that happen after a collision.
    *
-   * @return A collision strategy.
+   * @param entity1 entity that initiates collision
+   * @param entity2 entity that is collided against
    */
-  CollisionStrategy getCollisionStrategy();
-
-  /**
-   * Set the action on collision for this strategy.
-   */
-  void actionOnCollision();
+  void handleCollision(Entity entity1, Entity entity2);
 }
