@@ -20,12 +20,31 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     }
 
     // standard BFS algorithm
+    List<int[]> current = bfs(map, startX, startY, targetX, targetY);
+    if (current != null) {
+      return current;
+    }
+
+    // otherwise it just no move
+    return List.of();
+  }
+
+  private List<int[]> bfs(Grid map, int startX, int startY, int targetX, int targetY) {
     Queue<Node> queue = new LinkedList<>();
     queue.offer(new Node(startX, startY, null));
 
     Set<String> visited = new HashSet<>();
     visited.add(startX + "," + startY);
 
+    List<int[]> current = bfsIteration(map, targetX, targetY, queue, visited);
+    if (current != null) {
+      return current;
+    }
+    return null;
+  }
+
+  private List<int[]> bfsIteration(Grid map, int targetX, int targetY, Queue<Node> queue,
+      Set<String> visited) {
     while (!queue.isEmpty()) {
       Node current = queue.poll();
       int x = current.x;
@@ -50,9 +69,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
         }
       }
     }
-
-    // otherwise it just no move
-    return List.of();
+    return null;
   }
 
   private List<int[]> buildPath(Node target) {
@@ -75,9 +92,9 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
   // 2 arrays, good part about 330 is you get to pseudocode it
   private static class Node {
 
-    int x;
-    int y;
-    Node parent;
+    private final int x;
+    private final int y;
+    private final Node parent;
 
     Node(int x, int y, Node parent) {
       this.x = x;
