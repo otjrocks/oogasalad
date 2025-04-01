@@ -70,6 +70,7 @@ public class GameView extends StackPane {
    */
   private void updateGame() {
     // Update the game map and entity positions
+
     myGameMap.update(); // Update game state (e.g., entity movements)
     myGameMapView.updateEntityPositions(); // Update entity views to reflect changes
   }

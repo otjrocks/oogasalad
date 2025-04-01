@@ -1,10 +1,8 @@
 package oogasalad.engine.model.entity;
 
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import oogasalad.engine.model.EntityData;
-
 import java.util.HashSet;
 import java.util.Set;
 
