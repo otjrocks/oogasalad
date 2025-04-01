@@ -16,16 +16,11 @@ import oogasalad.engine.model.EntityData;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.api.GameMapFactory;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
-import oogasalad.engine.model.GameState;
 
 /**
  * The view that displays only the game grid.
- * Handles loading a config file, creating the GameMap,
- * and populating it from tile data.
  *
- * Includes robust error handling and logging.
- *
- * @author Luke Fu
+ * @author Owen Jennings
  */
 public class GamePlayerView extends Pane {
 
@@ -33,11 +28,8 @@ public class GamePlayerView extends Pane {
 
   /**
    * Create the Game Player View.
-   *
-   * @param controller the main controller managing input and game state
-   * @param gameState the shared game state (score, lives, etc.)
    */
-  public GamePlayerView(MainController controller, GameState gameState) {
+  public GamePlayerView(MainController controller) {
     super();
     myMainController = controller;
 
@@ -47,18 +39,14 @@ public class GamePlayerView extends Pane {
     createExampleMap();
   }
 
-  /**
-   * Creates and loads the map based on JSON configuration,
-   * applying tile layout and entity templates.
-   */
   private void createExampleMap() {
+    JsonConfigParser configParser = new JsonConfigParser();
     ConfigModel configModel = null;
     try {
-      configModel = new JsonConfigParser().loadFromFile("data/basic.json");
+      configModel = configParser.loadFromFile("data/basic.json");
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
     }
-
     GameMap gameMap = null;
     try {
       if (configModel != null) {
@@ -68,13 +56,16 @@ public class GamePlayerView extends Pane {
         if (configModel.getTiles() != null && !configModel.getTiles().isEmpty()) {
           parseTilesToGameMap(configModel, gameMap);
         }
+        gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(),
+            configModel, 20, 20);
       }
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn("Failed to create or populate GameMap: ", e);
     }
 
     if (gameMap != null) {
-      this.getChildren().add(new GameView(gameMap));
+      GameView gameView = new GameView(gameMap);
+      this.getChildren().add(gameView);
     }
   }
 
