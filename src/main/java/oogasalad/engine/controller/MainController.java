@@ -79,6 +79,9 @@ public class MainController {
     return myStage;
   }
 
+  /**
+   * Get the input manager initialized in MainController.
+   */
   public GameInputManager getInputManager() {
     return myInputManager;
   }
