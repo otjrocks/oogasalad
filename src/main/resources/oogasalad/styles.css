@@ -75,8 +75,6 @@ Label, Text {
 
 /* Game player views */
 .game-view {
-  -fx-border-width: 3px;
-  -fx-border-color: -fx-secondary;
   -fx-background-color: -fx-primary;
 }
 

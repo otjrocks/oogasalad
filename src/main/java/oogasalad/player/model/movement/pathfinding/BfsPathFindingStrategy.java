@@ -9,8 +9,10 @@ import java.util.Set;
 import oogasalad.engine.model.GameMap;
 
 /**
- * A pathfinding strategy using Breadth-First Search. Returns the next direction to move from start
- * to target position, returns the direction as (dx, dy) or (0, 0) if target should remain in same
+ * A pathfinding strategy using Breadth-First Search. Returns the next direction
+ * to move from start
+ * to target position, returns the direction as (dx, dy) or (0, 0) if target
+ * should remain in same
  * location.
  *
  * @author Jessica Chen
@@ -20,7 +22,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
   @Override
   public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY) {
     if (!isValidPosition(map, startX, startY) || !isValidPosition(map, targetX, targetY)) {
-      return new int[]{0, 0};
+      return new int[] { 0, 0 };
     }
 
     Node targetNode = bfs(map, startX, startY, targetX, targetY);
@@ -69,39 +71,39 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     }
   }
 
-  private int[] buildDirection(int startX, int startY, Node targetNode) {
-    if (targetNode == null) {
-      return new int[]{0, 0};
-    }
-
-    List<int[]> path = reconstructPath(targetNode);
-    if (path.isEmpty()) {
-      return new int[]{0, 0};
-    }
-
-    int[] nextPos = path.getFirst();
-    return new int[]{nextPos[0] - startX, nextPos[1] - startY};
-  }
-
   private List<int[]> reconstructPath(Node node) {
     List<int[]> path = new LinkedList<>();
     while (node.parent != null) {
-      path.addFirst(new int[]{node.x, node.y});
+      path.addFirst(new int[] { node.x, node.y });
       node = node.parent;
     }
     return path;
   }
 
+  private int[] buildDirection(int startX, int startY, Node targetNode) {
+    if (targetNode == null) {
+      return new int[] { 0, 0 };
+    }
+
+    List<int[]> path = reconstructPath(targetNode);
+    if (path.isEmpty()) {
+      return new int[] { 0, 0 };
+    }
+
+    int[] nextPos = path.getFirst();
+    return new int[] { nextPos[0] - startX, nextPos[1] - startY };
+  }
+
   private List<int[]> getNeighbors(GameMap map, int x, int y, int targetX, int targetY) {
     List<int[]> neighbors = new ArrayList<>();
-    int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    int[][] directions = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
 
     for (int[] d : directions) {
       int nx = x + d[0];
       int ny = y + d[1];
       if (isValidPosition(map, nx, ny) && ((nx == targetX && ny == targetY) || isEmpty(map, nx,
           ny))) {
-        neighbors.add(new int[]{nx, ny});
+        neighbors.add(new int[] { nx, ny });
       }
 
     }

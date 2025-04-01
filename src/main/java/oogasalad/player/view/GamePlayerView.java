@@ -52,8 +52,7 @@ public class GamePlayerView extends StackPane {
 
     try {
       if (configModel != null) {
-        gameMap = GameMapFactory.createGameMap(
-            myMainController.getInputManager(), configModel, 20, 20);
+        gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), configModel);
 
         if (configModel.getTiles() != null && !configModel.getTiles().isEmpty()) {
           parseTilesToGameMap(configModel, gameMap);
