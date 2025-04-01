@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.ThemeManager;
 import oogasalad.engine.config.GameConfig;

@@ -16,9 +16,8 @@ public class GameView extends StackPane {
   public static int TILE_WIDTH = 0;
   public static int TILE_HEIGHT = 0;
 
-  private GameMapView myGameMapView;
-  private GameMap myGameMap;
-  private AnimationTimer gameLoop;
+  private final GameMapView myGameMapView;
+  private final GameMap myGameMap;
 
   /**
    * Create the game view.
@@ -40,13 +39,14 @@ public class GameView extends StackPane {
   }
 
 
-  // this and following methods are written by chat gpt
-
+  // this and following methods are written by ChatGPT
   /**
    * Initializes and starts the game loop using AnimationTimer.
    */
   private void initializeGameLoop() {
-    gameLoop = new AnimationTimer() {
+    // Calculate elapsed time in seconds (optional, for frame-dependent logic)
+    // Only update if enough time has passed (e.g., 60 FPS)
+    AnimationTimer gameLoop = new AnimationTimer() {
       private long lastUpdateTime = 0;
 
       @Override
@@ -56,7 +56,7 @@ public class GameView extends StackPane {
 
         // Only update if enough time has passed (e.g., 60 FPS)
         if (lastUpdateTime == 0 || elapsedTime > 1.0 / 5.0) {
-          updateGame(elapsedTime);
+          updateGame();
           lastUpdateTime = now;
         }
       }
@@ -67,21 +67,11 @@ public class GameView extends StackPane {
   /**
    * Updates the game state and refreshes the entity positions.
    *
-   * @param elapsedTime Time passed since the last frame, useful for animations.
    */
-  private void updateGame(double elapsedTime) {
+  private void updateGame() {
     // Update the game map and entity positions
     myGameMap.update(); // Update game state (e.g., entity movements)
     myGameMapView.updateEntityPositions(); // Update entity views to reflect changes
-  }
-
-  /**
-   * Stop the game loop if needed (optional).
-   */
-  public void stopGameLoop() {
-    if (gameLoop != null) {
-      gameLoop.stop();
-    }
   }
 
 }

@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Temporary Grid with things needed for path finding
- * - what are the adjacent positions for a given position, what positions are valid...
+ * Temporary Grid with things needed for path finding - what are the adjacent positions for a given
+ * position, what positions are valid... Thing this would be GameMap? but I don't want to change it
+ * if it's not.
  *
- * Thing this would be GameMap? but I don't want to change it if its not
+ * @author Jessica Chen
  */
 public class Grid {
+
   private final int width;
   private final int height;
 
