@@ -1,11 +1,12 @@
 package oogasalad.engine.model.api;
 
 import oogasalad.engine.input.GameInputManager;
+import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.BasicEntity;
 import oogasalad.engine.model.entity.BfsEntity;
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.engine.model.EntityData;
+import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.entity.KeyboardControlledEntity;
 
 /**
@@ -22,8 +23,8 @@ public class EntityFactory {
    * @return An Entity object.
    * @see Entity
    */
-  public static Entity createEntity(GameInputManager input, EntityData data, GameMap gameMap) {
-    return switch (data.getControlType().toLowerCase()) {
+  public static Entity createEntity(GameInputManager input, EntityPlacement data, GameMap gameMap) {
+    return switch (data.getType().getControlType().toLowerCase()) {
       case "keyboard" -> new KeyboardControlledEntity(input, data);
       case "bfs" -> new BfsEntity(data, gameMap);
       case "wall", "dot" -> new BasicEntity(data);

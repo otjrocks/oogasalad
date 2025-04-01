@@ -1,6 +1,7 @@
 package oogasalad.engine.model.entity;
 
-import oogasalad.engine.model.EntityData;
+import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.model.EntityType;
 
 /**
  * An abstract class to represent an Entity in the game.
@@ -9,25 +10,25 @@ import oogasalad.engine.model.EntityData;
  */
 public abstract class Entity {
 
-  private final EntityData myEntityData;
+  private final EntityPlacement myEntityPlacement;
 
   /**
    * Initialize the entity with the provided entity data.
    *
-   * @param entityData The data used to initialize this entity.
+   * @param entityPlacement The data used to initialize this entity.
    */
-  protected Entity(EntityData entityData) {
-    myEntityData = entityData;
+  protected Entity(EntityPlacement entityPlacement) {
+    myEntityPlacement = entityPlacement;
   }
 
   /**
    * Get the entity data object for this entity.
    *
-   * @return An EntityData object
-   * @see EntityData
+   * @return An EntityType object
+   * @see EntityType
    */
-  public EntityData getEntityData() {
-    return myEntityData;
+  public EntityPlacement getEntityPlacement() {
+    return myEntityPlacement;
   }
 
   // feel free to rename this, currently just updates the position
