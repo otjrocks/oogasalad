@@ -2,6 +2,7 @@ package oogasalad.engine.model.strategies;
 
 import java.util.List;
 import oogasalad.engine.model.exceptions.LoadStrategyException;
+import oogasalad.engine.model.strategies.collision.CollisionStrategy;
 
 /**
  * A class to handle the loading of strategy patterns for entities.
