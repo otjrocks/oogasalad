@@ -2,9 +2,8 @@ package oogasalad.engine.model.entity;
 
 import java.util.List;
 
-import javafx.scene.Scene;
 import oogasalad.engine.model.EntityData;
-import oogasalad.player.model.movement.Grid;
+import oogasalad.engine.model.GameMap;
 import oogasalad.player.model.movement.pathfinding.BfsPathFindingStrategy;
 import oogasalad.player.model.movement.pathfinding.PathFindingStrategy;
 
@@ -13,11 +12,11 @@ public class BfsEntity extends Entity {
   private List<int[]> myPath;
   private int myCurrentStep;
 
-  public BfsEntity(EntityData entityData) {
+  public BfsEntity(EntityData entityData, GameMap gameMap) {
     super(entityData);
 
     PathFindingStrategy pathFindingStrategy = new BfsPathFindingStrategy();
-    myPath = pathFindingStrategy.getPath(new Grid(20, 20), (int) getEntityData().getInitialX(), (int) getEntityData().getInitialY(), 0, 0);
+    myPath = pathFindingStrategy.getPath(gameMap, (int) getEntityData().getInitialX(), (int) getEntityData().getInitialY(), 0, 0);
   }
 
   @Override

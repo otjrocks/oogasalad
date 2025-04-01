@@ -3,6 +3,7 @@ package oogasalad.engine.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
@@ -46,16 +47,16 @@ public class GameMapImpl implements GameMap {
       myEntityList.remove(entity);
     }
   }
-
   @Override
-  public Entity getEntityAt(int x, int y) throws EntityNotFoundException {
+  public Optional<Entity> getEntityAt(int x, int y) {
     for (Entity entity : myEntityList) {
       if (entity.getEntityData().getInitialX() == x && entity.getEntityData().getInitialY() == y) {
-        return entity;
+        return Optional.of(entity);
       }
     }
-    throw new EntityNotFoundException("The entity you provided does not exist in the game map!");
+    return Optional.empty();
   }
+
 
   @Override
   public Iterator<Entity> iterator() {
