@@ -42,22 +42,23 @@ public class GamePlayerView extends Pane {
   private void createExampleMap() {
     JsonConfigParser configParser = new JsonConfigParser();
     ConfigModel configModel = null;
+
     try {
       configModel = configParser.loadFromFile("data/basic.json");
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
     }
+
     GameMap gameMap = null;
+
     try {
       if (configModel != null) {
         gameMap = GameMapFactory.createGameMap(
             myMainController.getInputManager(), configModel, 20, 20);
 
         if (configModel.getTiles() != null && !configModel.getTiles().isEmpty()) {
-          parseTilesToGameMap(configModel, gameMap);
+          parseTilesToGameMap(configModel, gameMap); // ✅ Only one map used
         }
-        gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(),
-            configModel, 20, 20);
       }
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn("Failed to create or populate GameMap: ", e);
