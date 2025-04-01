@@ -99,8 +99,8 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
   }
 
   private boolean isValidPosition(GameMap map, int x, int y) {
-    return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight() && map.getEntityAt(x, y)
-        .isEmpty();
+    // TODO: eventually need to account for blocking entities
+    return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight();
   }
 
   private List<int[]> getAdjacentPositions(GameMap map, int x, int y) {
