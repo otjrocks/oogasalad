@@ -8,6 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import oogasalad.engine.config.GameConfig;
+import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.api.EntityFactory;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
@@ -26,11 +27,13 @@ class GameMapImplTest extends DukeApplicationTest {
   private GameMap myGameMap;
   private Entity myEntity;
   private Scene myScene;
+  private GameInputManager myInput;
 
   @Override
   public void start(Stage stage) {
     Group root = new Group();
     myScene = new Scene(root, GameConfig.WIDTH, GameConfig.HEIGHT);
+    myInput = new GameInputManager(myScene, root);
   }
 
   @BeforeEach
@@ -40,7 +43,7 @@ class GameMapImplTest extends DukeApplicationTest {
     data.setInitialX(5);
     data.setInitialY(5);
     data.setControlType("Keyboard");
-    myEntity = EntityFactory.createEntity(myScene, data, myGameMap);
+    myEntity = EntityFactory.createEntity(myInput, data, myGameMap);
   }
 
   @Test
@@ -90,7 +93,7 @@ class GameMapImplTest extends DukeApplicationTest {
     assertDoesNotThrow(() -> myGameMap.addEntity(myEntity));
     EntityData data = new EntityData();
     data.setControlType("Keyboard");
-    Entity secondEntity = EntityFactory.createEntity(myScene, data, myGameMap);
+    Entity secondEntity = EntityFactory.createEntity(myInput, data, myGameMap);
     assertDoesNotThrow(() -> myGameMap.addEntity(secondEntity));
     Iterator<Entity> iterator = myGameMap.iterator();
     while (iterator.hasNext()) {
