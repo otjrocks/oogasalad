@@ -3,7 +3,12 @@ package oogasalad.engine.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import oogasalad.engine.config.api.ConfigParser;
+import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.model.EntityType;
 
 /**
  * The JsonConfigParser class is responsible for parsing configuration files in JSON format and
@@ -45,9 +50,24 @@ public class JsonConfigParser implements ConfigParser {
    */
   public ConfigModel loadFromFile(String filepath) throws ConfigException {
     try {
-      return mapper.readValue(new File(filepath), ConfigModel.class);
+      ConfigModel model = mapper.readValue(new File(filepath), ConfigModel.class);
+      resolveEntityTypes(model);
+      return model;
     } catch (IOException e) {
       throw new ConfigException("Failed to parse config file: " + filepath, e);
+    }
+  }
+
+  public void resolveEntityTypes(ConfigModel config) {
+    Map<String, EntityType> typeMap = config.getEntityTypes().stream()
+        .collect(Collectors.toMap(EntityType::getType, Function.identity()));
+
+    for (EntityPlacement placement : config.getEntityPlacements()) {
+      EntityType matchedType = typeMap.get(placement.getTypeString());
+      if (matchedType == null) {
+        throw new IllegalArgumentException("Unknown entity type: " + placement.getType());
+      }
+      placement.setResolvedEntityType(matchedType);
     }
   }
 }

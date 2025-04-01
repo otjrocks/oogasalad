@@ -9,11 +9,15 @@ package oogasalad.engine.model;
  */
 public class EntityPlacement {
 
-  private EntityType type;
+  private String type;
+  private EntityType resolvedEntityType;
   private double x;
   private double y;
   private String mode;
 
+  public EntityPlacement(){
+
+  }
   /**
    * Constructs a new EntityPlacement with a given type, position, and mode.
    *
@@ -23,7 +27,7 @@ public class EntityPlacement {
    * @param mode the initial mode of the entity (e.g., "Default", "PoweredUp")
    */
   public EntityPlacement(EntityType type, double x, double y, String mode) {
-    this.type = type;
+    this.resolvedEntityType = type;
     this.x = x;
     this.y = y;
     this.mode = mode;
@@ -35,16 +39,24 @@ public class EntityPlacement {
    * @return the {@link EntityType} associated with this placement
    */
   public EntityType getType() {
+    return resolvedEntityType;
+  }
+
+  public String getTypeString() {
     return type;
   }
 
   /**
    * Sets the type of this placed entity.
    *
-   * @param type the new {@link EntityType} for this placement
+   * @param type the new String for this placement
    */
-  public void setType(EntityType type) {
+  public void setType(String type) {
     this.type = type;
+  }
+
+  public void setResolvedEntityType(EntityType resolvedEntityType) {
+    this.resolvedEntityType = resolvedEntityType;
   }
 
   /**
@@ -121,7 +133,7 @@ public class EntityPlacement {
   @Override
   public String toString() {
     return "EntityPlacement{" +
-        "entityData=" + type.getType() +
+        "entityData=" + resolvedEntityType.getType() +
         ", x=" + x +
         ", y=" + y +
         '}';

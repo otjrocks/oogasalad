@@ -33,7 +33,7 @@ public class EntityPlacementTest {
         EntityType newEntityType = new EntityType();
         newEntityType.setType("Player");
 
-        testPlacement.setType(newEntityType);
+        testPlacement.setResolvedEntityType(newEntityType);
 
         assertEquals(newEntityType, testPlacement.getType());
         assertEquals("Player", testPlacement.getType().getType());

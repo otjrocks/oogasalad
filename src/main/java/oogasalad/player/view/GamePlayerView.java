@@ -83,7 +83,7 @@ public class GamePlayerView extends StackPane {
     TileMapParser tileParser = new TileMapParser();
 
     Map<String, EntityPlacement> templateMap = new HashMap<>();
-    for (EntityPlacement data : configModel.getEntities()) {
+    for (EntityPlacement data : configModel.getEntityPlacements()) {
       templateMap.put(data.getType().getType(), data);
     }
 

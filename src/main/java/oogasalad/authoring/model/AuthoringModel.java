@@ -76,7 +76,7 @@ public class AuthoringModel {
       // Update any placements using this template
       for (EntityPlacement placement : entityPlacements) {
         if (placement.getType() == oldTemplate) {
-          placement.setType(newTemplate);
+          placement.setResolvedEntityType(newTemplate);
         }
       }
       return true;

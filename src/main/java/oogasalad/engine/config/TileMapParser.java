@@ -69,7 +69,7 @@ public class TileMapParser {
 
   private EntityPlacement cloneWithPosition(EntityPlacement template, int x, int y) {
     EntityPlacement data = new EntityPlacement(template.getType(), x, y, "Default");
-    data.setType(template.getType());
+    data.setResolvedEntityType(template.getType());
     data.setMode(template.getMode());
     data.getType().setControlType(template.getType().getControlType());
     data.setX(x);

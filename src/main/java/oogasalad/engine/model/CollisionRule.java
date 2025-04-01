@@ -1,5 +1,7 @@
 package oogasalad.engine.model;
 
+import java.util.List;
+
 /**
  * A strategy that determines how to handle collisions.
  *
@@ -8,60 +10,59 @@ package oogasalad.engine.model;
 public class CollisionRule {
 
   private String entityTypeA;
+  private String modeA;
   private String entityTypeB;
-  private String strategy;
+  private String modeB;
+  private List<String> eventsA;
+  private List<String> eventsB;
 
-  /**
-   * Get the entity type b.
-   *
-   * @return The string representing the type of entity b.
-   */
-  public String getEntityTypeB() {
-    return entityTypeB;
-  }
+  public CollisionRule() {}
 
-  /**
-   * Set the string representing entity type b.
-   *
-   * @param entityTypeB The string you wish to set type b to.
-   */
-  public void setEntityTypeB(String entityTypeB) {
-    this.entityTypeB = entityTypeB;
-  }
-
-  /**
-   * Get the entity type of entity A.
-   *
-   * @return The string representing the entity type.
-   */
   public String getEntityTypeA() {
     return entityTypeA;
   }
 
-  /**
-   * Set the string representing the type of entity A.
-   *
-   * @param entityTypeA The string you wish to set type A to.
-   */
   public void setEntityTypeA(String entityTypeA) {
     this.entityTypeA = entityTypeA;
   }
 
-  /**
-   * Get the strategy string for this collision.
-   *
-   * @return A string representing the strategy to use between these two entities.
-   */
-  public String getStrategy() {
-    return strategy;
+  public String getModeA() {
+    return modeA;
   }
 
-  /**
-   * Set the strategy to be used between two entity types.
-   *
-   * @param strategy The string representing the strategy you wish to be used.
-   */
-  public void setStrategy(String strategy) {
-    this.strategy = strategy;
+  public void setModeA(String modeA) {
+    this.modeA = modeA;
+  }
+
+  public String getEntityTypeB() {
+    return entityTypeB;
+  }
+
+  public void setEntityTypeB(String entityTypeB) {
+    this.entityTypeB = entityTypeB;
+  }
+
+  public String getModeB() {
+    return modeB;
+  }
+
+  public void setModeB(String modeB) {
+    this.modeB = modeB;
+  }
+
+  public List<String> getEventsA() {
+    return eventsA;
+  }
+
+  public void setEventsA(List<String> eventsA) {
+    this.eventsA = eventsA;
+  }
+
+  public List<String> getEventsB() {
+    return eventsB;
+  }
+
+  public void setEventsB(List<String> eventsB) {
+    this.eventsB = eventsB;
   }
 }
