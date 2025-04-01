@@ -34,6 +34,22 @@
       "effect": null,
       "initialX": 10,
       "initialY": 10
+    },
+    {
+      "type": "Wall",
+      "imagePath": "assets/images/wall.png",
+      "controlType": "wall",
+      "effect": null,
+      "initialX": 7,
+      "initialY": 7
+    },
+    {
+      "type": "Dot",
+      "imagePath": "assets/images/dot.png",
+      "controlType": "dot",
+      "effect": null,
+      "initialX": 8,
+      "initialY": 8
     }
   ],
   "collisionRules": [],
