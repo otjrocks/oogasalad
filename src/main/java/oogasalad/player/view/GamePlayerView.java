@@ -20,6 +20,12 @@ import oogasalad.engine.model.GameState;
 
 /**
  * The view that displays only the game grid.
+ * Handles loading a config file, creating the GameMap,
+ * and populating it from tile data.
+ *
+ * Includes robust error handling and logging.
+ *
+ * @author Luke Fu
  */
 public class GamePlayerView extends Pane {
 
@@ -27,6 +33,9 @@ public class GamePlayerView extends Pane {
 
   /**
    * Create the Game Player View.
+   *
+   * @param controller the main controller managing input and game state
+   * @param gameState the shared game state (score, lives, etc.)
    */
   public GamePlayerView(MainController controller, GameState gameState) {
     super();
@@ -38,54 +47,55 @@ public class GamePlayerView extends Pane {
     createExampleMap();
   }
 
+  /**
+   * Creates and loads the map based on JSON configuration,
+   * applying tile layout and entity templates.
+   */
   private void createExampleMap() {
-    ConfigModel configModel = loadConfigModel();
-    if (configModel == null) return;
-
-    GameMap gameMap = buildGameMap(configModel);
-    if (gameMap == null) return;
-
-    loadTilesIntoMap(configModel, gameMap);
-    this.getChildren().add(new GameView(gameMap));
-  }
-
-  private ConfigModel loadConfigModel() {
+    ConfigModel configModel = null;
     try {
-      return new JsonConfigParser().loadFromFile("data/basic.json");
+      configModel = new JsonConfigParser().loadFromFile("data/basic.json");
     } catch (ConfigException e) {
-      LoggingManager.LOGGER.warn(e);
-      return null;
+      LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
     }
-  }
 
-  private GameMap buildGameMap(ConfigModel configModel) {
+    GameMap gameMap = null;
     try {
-      return GameMapFactory.createGameMap(myMainController.getInputManager(), configModel, 20, 20);
+      if (configModel != null) {
+        gameMap = GameMapFactory.createGameMap(
+            myMainController.getInputManager(), configModel, 20, 20);
+
+        if (configModel.getTiles() != null && !configModel.getTiles().isEmpty()) {
+          parseTilesToGameMap(configModel, gameMap);
+        }
+      }
     } catch (InvalidPositionException e) {
-      LoggingManager.LOGGER.warn(e);
-      return null;
+      LoggingManager.LOGGER.warn("Failed to create or populate GameMap: ", e);
+    }
+
+    if (gameMap != null) {
+      this.getChildren().add(new GameView(gameMap));
     }
   }
 
-  private void loadTilesIntoMap(ConfigModel configModel, GameMap gameMap) {
-    if (configModel.getTiles() == null || configModel.getTiles().isEmpty()) return;
+  /**
+   * Parses tile layout from config and adds entities to the game map.
+   *
+   * @param configModel the loaded config data
+   * @param gameMap the game map to populate
+   * @throws InvalidPositionException if an entity cannot be added to the map
+   */
+  private void parseTilesToGameMap(ConfigModel configModel, GameMap gameMap)
+      throws InvalidPositionException {
 
     String[] layout = configModel.getTiles().get(0).getLayout();
-    Map<String, EntityData> templateMap = buildTemplateMap(configModel);
-
     TileMapParser tileParser = new TileMapParser();
-    try {
-      tileParser.parseTiles(layout, myMainController.getInputManager(), gameMap, templateMap);
-    } catch (InvalidPositionException e) {
-      LoggingManager.LOGGER.warn(e);
-    }
-  }
 
-  private Map<String, EntityData> buildTemplateMap(ConfigModel configModel) {
-    Map<String, EntityData> map = new HashMap<>();
+    Map<String, EntityData> templateMap = new HashMap<>();
     for (EntityData data : configModel.getEntityConfigs()) {
-      map.put(data.getType(), data);
+      templateMap.put(data.getType(), data);
     }
-    return map;
+
+    tileParser.parseTiles(layout, myMainController.getInputManager(), gameMap, templateMap);
   }
 }
