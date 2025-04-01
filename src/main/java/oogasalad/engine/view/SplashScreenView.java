@@ -1,6 +1,7 @@
 package oogasalad.engine.view;
 
 
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -29,13 +30,15 @@ public class SplashScreenView extends VBox {
   private Selector myLanguageSelector;
   private final ThemeManager myThemeManager;
   private Selector myThemeSelector;
+  private Group myRoot;
 
   /**
    * Create the splash screen view.
    *
    * @author Owen Jennings
    */
-  public SplashScreenView(Stage stage) {
+  public SplashScreenView(Stage stage, Group root) {
+    myRoot = root;
     myThemeManager = new ThemeManager(stage);
     this.getStyleClass().add("splash-screen-view");
     this.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
@@ -101,7 +104,7 @@ public class SplashScreenView extends VBox {
     GameMap gameMap = null;
     try {
       if (configModel != null) {
-        gameMap = GameMapFactory.createGameMap(new Scene(new Pane()), configModel, 20, 20);
+        gameMap = GameMapFactory.createGameMap(myRoot, configModel, 20, 20);
       }
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn(e);

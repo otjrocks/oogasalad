@@ -27,6 +27,6 @@ public class Main extends Application {
     stage.setScene(scene);
     stage.setTitle(LanguageManager.getMessage("TITLE"));
     stage.show();
-     myRoot.getChildren().add(new SplashScreenView(stage)); // Add splash screen for testing.
+     myRoot.getChildren().add(new SplashScreenView(stage, myRoot)); // Add splash screen for testing.
   }
 }

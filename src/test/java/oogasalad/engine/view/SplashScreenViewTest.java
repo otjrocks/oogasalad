@@ -21,7 +21,7 @@ class SplashScreenViewTest extends DukeApplicationTest {
     Group root = new Group();
     Scene scene = new Scene(root, GameConfig.WIDTH, GameConfig.HEIGHT);
     stage.setScene(scene);
-    SplashScreenView splashScreenView = new SplashScreenView(stage);
+    SplashScreenView splashScreenView = new SplashScreenView(stage, root);
     root.getChildren().add(splashScreenView);
     stage.show();
   }

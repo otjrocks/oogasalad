@@ -1,6 +1,8 @@
 package oogasalad.engine.model.entity;
 
 import java.util.List;
+
+import javafx.scene.Scene;
 import oogasalad.engine.model.EntityData;
 import oogasalad.player.model.movement.Grid;
 import oogasalad.player.model.movement.pathfinding.BfsPathFindingStrategy;
