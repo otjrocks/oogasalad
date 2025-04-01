@@ -1,23 +1,13 @@
 package oogasalad;
 
-
-import java.io.File;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.LoggingManager;
-import oogasalad.engine.config.ConfigException;
-import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.GameConfig;
-import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.api.GameMapFactory;
-import oogasalad.engine.model.exceptions.InvalidPositionException;
-import oogasalad.engine.view.SplashScreenView;
-import oogasalad.player.view.GameView;
 
 /**
  * The Main class of the project.
