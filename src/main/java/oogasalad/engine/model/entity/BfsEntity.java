@@ -1,6 +1,5 @@
 package oogasalad.engine.model.entity;
 
-import java.util.List;
 
 import oogasalad.engine.model.EntityData;
 import oogasalad.engine.model.GameMap;
