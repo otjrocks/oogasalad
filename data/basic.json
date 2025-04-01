@@ -42,8 +42,8 @@
       "imagePath": "assets/images/wall.png",
       "controlType": "",
       "effect": null,
-      "initialX": 7,
-      "initialY": 7
+      "initialX": 2,
+      "initialY": 2
     },
     {
       "type": "Dot",
