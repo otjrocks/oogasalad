@@ -11,6 +11,8 @@ public class GameSettings {
   private int startingLives;
   private int initialScore;
   private String edgePolicy;
+  private int width;
+  private int height;
 
   /**
    * Get the int representing the initial score for the game.
@@ -82,5 +84,41 @@ public class GameSettings {
    */
   public void setEdgePolicy(String edgePolicy) {
     this.edgePolicy = edgePolicy;
+  }
+
+  /**
+   * Get the width of this game map.
+   *
+   * @return The int representing the game map width.
+   */
+  public int getWidth() {
+    return width;
+  }
+
+  /**
+   * Set the width of this game map.
+   *
+   * @param width The int representing the width you want.
+   */
+  public void setWidth(int width) {
+    this.width = width;
+  }
+
+  /**
+   * Get the height of the game map.
+   *
+   * @return The current game map height.
+   */
+  public int getHeight() {
+    return height;
+  }
+
+  /**
+   * Set the height of the game map.
+   *
+   * @param height The height of the game map.
+   */
+  public void setHeight(int height) {
+    this.height = height;
   }
 }

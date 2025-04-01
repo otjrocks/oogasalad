@@ -8,7 +8,9 @@
     "gameSpeed": 1.0,
     "startingLives": 3,
     "initialScore": 0,
-    "edgePolicy": "Wrap"
+    "edgePolicy": "Wrap",
+    "width": 10,
+    "height": 10
   },
   "entityTypes": [
     {
