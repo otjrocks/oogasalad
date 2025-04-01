@@ -56,7 +56,7 @@ public class MainController {
   }
 
   /**
-   * Show the game player view if it is not already being displayed
+   * Show the game player view if it is not already being displayed.
    */
   public void showGamePlayerView() {
     if (myGamePlayerView == null) {

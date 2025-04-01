@@ -94,6 +94,8 @@ public class AuthoringModel {
   }
 
   /**
+   * returns a unmodifiable list of all entity placements.
+   *
    * @return An unmodifiable list of all entity placements
    */
   public List<EntityPlacement> getEntityPlacements() {

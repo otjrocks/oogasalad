@@ -9,8 +9,8 @@ import oogasalad.engine.model.EntityData;
 public class EntityPlacement {
 
   private EntityData entityData;
-  private double x;
-  private double y;
+  private double myX;
+  private double myY;
 
   /**
    * Creates a new EntityPlacement with the specified entity data and coordinates.
@@ -21,8 +21,8 @@ public class EntityPlacement {
    */
   public EntityPlacement(EntityData entityData, double x, double y) {
     this.entityData = entityData;
-    this.x = x;
-    this.y = y;
+    this.myX = x;
+    this.myY = y;
   }
 
   /**
@@ -45,7 +45,7 @@ public class EntityPlacement {
    * @return The x-coordinate of this entity placement
    */
   public double getX() {
-    return x;
+    return myX;
   }
 
   /**
@@ -54,14 +54,14 @@ public class EntityPlacement {
    * @param x The new x-coordinate
    */
   public void setX(double x) {
-    this.x = x;
+    this.myX = x;
   }
 
   /**
    * @return The y-coordinate of this entity placement
    */
   public double getY() {
-    return y;
+    return myY;
   }
 
   /**
@@ -70,7 +70,7 @@ public class EntityPlacement {
    * @param y The new y-coordinate
    */
   public void setY(double y) {
-    this.y = y;
+    this.myY = y;
   }
 
   /**
@@ -80,27 +80,29 @@ public class EntityPlacement {
    * @param y The new y-coordinate
    */
   public void moveTo(double x, double y) {
-    this.x = x;
-    this.y = y;
+    this.myX = x;
+    this.myY = y;
   }
 
   /**
    * Updates the initial position in the EntityData to match the current placement coordinates.
    */
   public void updateInitialPosition() {
-    this.entityData.setInitialX(this.x);
-    this.entityData.setInitialY(this.y);
+    this.entityData.setInitialX(this.myX);
+    this.entityData.setInitialY(this.myY);
   }
 
   /**
+   * Returns a string representation of this EntityPlacement.
+   *
    * @return A string representation of this EntityPlacement
    */
   @Override
   public String toString() {
     return "EntityPlacement{" +
         "entityData=" + entityData.getType() +
-        ", x=" + x +
-        ", y=" + y +
+        ", x=" + myX +
+        ", y=" + myY +
         '}';
   }
 }
