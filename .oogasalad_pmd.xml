@@ -2,7 +2,7 @@
 <ruleset name="CompSci 308 Design Ruleset"
   xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="https://pmd.github.io/schema/ruleset_2_0_0.xsd http://pmd.sourceforge.net/ruleset/2.0.0">
+  xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.net/ruleset_2_0_0.xsd">
 
   <description>
     PMD ruleset for CellSociety based on the CellSociety design requirements.
@@ -17,8 +17,8 @@
   <!-- DESIGN-03 - Named Constants -->
   <rule ref="category/java/errorprone.xml/AvoidLiteralsInIfCondition">
     <properties>
-      <property name="ignoreMagicNumbers" value="-1,0"/>
-      <property name="ignoreExpressions" value="false"/>
+      <property name="ignoreMagicNumbers" value="-1,0" />
+      <property name="ignoreExpressions" value="false" />
     </properties>
   </rule>
   <rule ref="category/java/design.xml/FinalFieldCouldBeStatic">
@@ -34,12 +34,11 @@
     <priority>1</priority>
   </rule>
   <rule name="InstanceVariablesMustBePrivate"
-    language="java"
-    message="Class-level variables must be private; 'static final' constants may be private, protected, default, or public."
-    class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        language="java"
+        message="Class-level variables must be private; 'static final' constants may be private, protected, default, or public."
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>
-      This rule ensures that all class-level variables are declared as private unless they are
-      'static' and 'final'.
+      This rule ensures that all class-level variables are declared as private unless they are 'static' and 'final'.
     </description>
     <priority>1</priority>
     <properties>
@@ -99,19 +98,19 @@
   </rule>
   <rule ref="category/java/design.xml/NcssCount">
     <properties>
-      <property name="methodReportLevel" value="30"/>
-      <property name="classReportLevel" value="1200"/>
+      <property name="methodReportLevel" value="30" />
+      <property name="classReportLevel" value="1200" />
     </properties>
   </rule>
 
   <!-- DESIGN-08 - Comments -->
   <rule ref="category/java/documentation.xml/CommentRequired">
     <properties>
-      <property name="accessorCommentRequirement" value="Required"/>
-      <property name="classCommentRequirement" value="Required"/>
-      <property name="publicMethodCommentRequirement" value="Required"/>
-      <property name="fieldCommentRequirement" value="Ignored"/>
-      <property name="protectedMethodCommentRequirement" value="Ignored"/>
+      <property name="accessorCommentRequirement" value="Required" />
+      <property name="classCommentRequirement" value="Required" />
+      <property name="publicMethodCommentRequirement" value="Required" />
+      <property name="fieldCommentRequirement" value="Ignored" />
+      <property name="protectedMethodCommentRequirement" value="Ignored" />
     </properties>
     <priority>2</priority>
   </rule>
@@ -119,9 +118,9 @@
 
   <!-- DESIGN-09 - Model-View Separation -->
   <rule name="AvoidJavaFXImportsInModelPackages"
-    language="java"
-    message="JavaFX packages should only be used in the View (view package). The model should be agnostic of how it is displayed."
-    class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        language="java"
+        message="JavaFX packages should only be used in the View (view package). The model should be agnostic of how it is displayed."
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>
       This rule identifies if a class within 'model', '*.model', or '*.model.*' packages is
       importing anything from the javafx package.
@@ -131,13 +130,11 @@
       <property name="xpath">
         <value>
           <![CDATA[
-                        //CompilationUnit[
-                            (PackageDeclaration/Name[contains(@Image, '.model')] or
-                            PackageDeclaration/Name[@Image = 'model'])
-                            and
-                            .//ImportDeclaration[contains(@ImportedName, 'javafx.')]
-                        ]
-                    ]]>
+            //CompilationUnit[
+              contains(@PackageName, '.model') and
+              .//ImportDeclaration[contains(@ImportedName, 'javafx.')]
+            ]
+          ]]>
         </value>
       </property>
     </properties>
@@ -159,9 +156,6 @@
     <priority>1</priority>
   </rule>
   <rule ref="category/java/bestpractices.xml/MissingOverride">
-    <priority>2</priority>
-  </rule>
-  <rule ref="category/java/codestyle.xml/CallSuperInConstructor">
     <priority>2</priority>
   </rule>
   <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode">
@@ -217,9 +211,9 @@
 
   <!-- DESIGN-15 - Externalize Configuration -->
   <rule name="AvoidMagicNumbers"
-    language="java"
-    message="Avoid using magic numbers in the code."
-    class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        language="java"
+        message="Avoid using magic numbers in the code."
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>
       Magic numbers are numbers that occur multiple time in code without an explanatory name.
       This rule excludes -1, 0, 1, and 2 which are commonly used in a non-magic context.
@@ -236,9 +230,9 @@
     </properties>
   </rule>
   <rule name="AvoidLiteralHexColorCodes"
-    language="java"
-    message="Avoid using literal hex color codes in the code. Consider using a constant or resource instead."
-    class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        language="java"
+        message="Avoid using literal hex color codes in the code. Consider using a constant or resource instead."
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>
       This rule finds instances where hex color codes are used directly in the code, which can make
       maintenance more difficult and the code less readable.
@@ -263,11 +257,11 @@
 
   <!-- DESIGN-16 - No Dead Code -->
   <rule ref="category/java/documentation.xml/UncommentedEmptyConstructor"
-    message="The constructor body is empty. If this is your intent, document it with a comment.">
+        message="The constructor body is empty. If this is your intent, document it with a comment.">
     <priority>2</priority>
   </rule>
   <rule ref="category/java/documentation.xml/UncommentedEmptyMethodBody"
-    message="The method body is empty. If this is your intent, document it with a comment.">
+        message="The method body is empty. If this is your intent, document it with a comment.">
     <priority>2</priority>
   </rule>
   <rule ref="category/java/bestpractices.xml/UnusedAssignment">
@@ -305,6 +299,34 @@
   <!-- Nothing yet -->
 
   <!-- DESIGN-18 - API -->
+  <rule name="ApiShouldNotBeConcrete"
+        language="java"
+        message="Classes in .api. packages should be one of the following: immutable (via a java record or enum), an abstract type (interface or abstract class), a exception (with the name ending in Exception), or a factory (with the name ending in Factory)."
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <description>
+      This rule ensures that classes in packages with '.api.' are abstractions.
+    </description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          <![CDATA[
+            //CompilationUnit[
+              contains(@PackageName, '.api')
+            ]
+            //ClassDeclaration[not(
+              @Abstract=true() or
+              @Interface=true() or
+              @Enum=true() or
+              @Record=true() or
+              ends-with(@SimpleName, 'Factory') or
+              ends-with(@SimpleName, 'Exception')
+            )]
+          ]]>
+        </value>
+      </property>
+    </properties>
+  </rule>
   <rule ref="category/java/design.xml/UseObjectForClearerAPI">
     <priority>2</priority>
   </rule>
@@ -325,6 +347,5 @@
   <rule ref="category/java/errorprone.xml/UseCorrectExceptionLogging">
     <priority>3</priority>
   </rule>
-
 
 </ruleset>

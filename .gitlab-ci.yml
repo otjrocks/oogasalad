@@ -1,4 +1,4 @@
-image: dukedesigncoach/testfx-runner:bellsoftjdk21
+image: dukedesigncoach/testfx-runner:bellsoftjdk21.1
 
 stages:
   - validate
