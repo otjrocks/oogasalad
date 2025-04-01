@@ -2,6 +2,7 @@ package oogasalad.player.view;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.StackPane;
+import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.model.GameMap;
 
 /**
@@ -11,8 +12,8 @@ import oogasalad.engine.model.GameMap;
  */
 public class GameView extends StackPane {
 
-  public static final int WIDTH = 500;
-  public static final int HEIGHT = 500;
+  public static final int WIDTH = GameConfig.WIDTH - 2 * GameConfig.MARGIN;
+  public static final int HEIGHT = GameConfig.HEIGHT - 2 * GameConfig.MARGIN;
 
   private final GameMapView myGameMapView;
   private final GameMap myGameMap;

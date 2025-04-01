@@ -50,12 +50,6 @@ Label, Text {
   -fx-background-color: -fx-secondary;
 }
 
-
-.game-view {
-  -fx-border-width: 5px;
-  -fx-border-color: -fx-secondary;
-}
-
 /* Vertical Menu - VMenu */
 .v-menu {
   -fx-padding: 30px;
@@ -77,5 +71,30 @@ Label, Text {
 
 .v-menu .button:hover {
   -fx-background-color: -fx-highlight;
+}
+
+/* Game player views */
+.game-view {
+  -fx-border-width: 3px;
+  -fx-border-color: -fx-secondary;
+  -fx-background-color: -fx-primary;
+}
+
+.game-screen-view {
+  -fx-background-color: -fx-primary;
+}
+
+.hud-container {
+  -fx-padding: 20px;
+  -fx-background-color: -fx-primary;
+  -fx-alignment: center;
+  -fx-spacing: 20px;
+}
+
+.hud-container Label {
+  -fx-font-size: 20px;
+  -fx-font-weight: bold;
+  -fx-text-fill: -fx-secondary;
+  -fx-font-family: "Press Start 2P";
 }
 

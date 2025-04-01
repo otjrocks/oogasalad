@@ -5,6 +5,7 @@ import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameSettings;
 import oogasalad.engine.model.MetaData;
+import oogasalad.engine.model.Tiles;
 import java.util.List;
 
 /**
@@ -30,6 +31,7 @@ public class ConfigModel {
   private List<EntityPlacement> entityConfigs;
   private List<CollisionRule> collisionRules;
   private String winCondition;
+  private List<Tiles> tiles;
 
   /**
    * Retrieves the metadata of the game.
@@ -120,4 +122,21 @@ public class ConfigModel {
   public void setWinCondition(String winCondition) {
     this.winCondition = winCondition;
   }
+  /**
+   * Retrieves the list of tiles for the game.
+   *
+   * @return the list of tiles for the game
+   */
+  public List<Tiles> getTiles() {
+    return tiles;
+  }
+  /**
+   * Sets the tiles of the game.
+   *
+   * @param tiles the tiles in the game
+   */
+  public void setTiles(List<Tiles> tiles) {
+    this.tiles = tiles;
+  }
+
 }

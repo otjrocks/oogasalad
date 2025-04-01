@@ -24,7 +24,14 @@ public class EntityFactory {
    * @see Entity
    */
   public static Entity createEntity(GameInputManager input, EntityPlacement data, GameMap gameMap) {
-    return switch (data.getType().getControlType().toLowerCase()) {
+    String controlType = data.getType().getControlType();
+
+    if (controlType == null || controlType.isBlank()) {
+      return new BasicEntity(data); // for Wall, Dot, etc.
+    }
+
+
+    return switch (controlType.toLowerCase()) {
       case "keyboard" -> new KeyboardControlledEntity(input, data);
       case "bfs" -> new BfsEntity(data, gameMap);
       case "wall", "dot" -> new BasicEntity(data);
