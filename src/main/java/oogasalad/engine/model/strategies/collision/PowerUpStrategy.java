@@ -31,11 +31,10 @@ public class PowerUpStrategy implements CollisionStrategy {
    * @param entity2 the entity that triggers the power-up effect
    * @param gameMap the game map containing all entities
    * @param gameState the current state of the game, which may be modified by the power-up
-   * @throws Exception if an error occurs while applying the power-up effect
    */
   @Override
-  public void handleCollision(Entity entity1, Entity entity2, GameMap gameMap, GameState gameState)
-      throws Exception {
+  public void handleCollision(Entity entity1, Entity entity2, GameMap gameMap,
+      GameState gameState) {
     // implement power up of entity 1
   }
 }

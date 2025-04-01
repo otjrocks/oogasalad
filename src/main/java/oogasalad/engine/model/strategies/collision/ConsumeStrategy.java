@@ -42,7 +42,7 @@ public class ConsumeStrategy implements CollisionStrategy {
     }
     catch (EntityNotFoundException e) {
       throw new EntityNotFoundException(
-          "Cannot remove requested entity, because it does not exist in the game map!");
+          "Cannot remove requested entity, because it does not exist in the game map!", e);
     }
   }
 }
