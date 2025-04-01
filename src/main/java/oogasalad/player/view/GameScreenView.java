@@ -1,8 +1,5 @@
 package oogasalad.player.view;
 
-import static oogasalad.engine.config.GameConfig.HEIGHT;
-import static oogasalad.engine.config.GameConfig.WIDTH;
-
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
