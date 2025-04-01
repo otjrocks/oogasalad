@@ -12,24 +12,27 @@ import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.api.GameMapFactory;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
+import oogasalad.engine.model.GameState;
 
 /**
- * The view that displays the entire player view.
- *
- * @author Owen Jennings
+ * The view that displays only the game grid.
  */
 public class GamePlayerView extends Pane {
 
   private final MainController myMainController;
+  private final GameState gameState;
 
   /**
    * Create the Game Player View.
    */
-  public GamePlayerView(MainController controller) {
+  public GamePlayerView(MainController controller, GameState gameState) {
     super();
     myMainController = controller;
+    this.gameState = gameState;
+
     this.setPrefSize(WIDTH, HEIGHT);
     this.getStyleClass().add("game-player-view");
+
     createExampleMap();
   }
 
@@ -50,9 +53,8 @@ public class GamePlayerView extends Pane {
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn(e);
     }
-    GameView gameView;
     if (gameMap != null) {
-      gameView = new GameView(gameMap);
+      GameView gameView = new GameView(gameMap);
       this.getChildren().add(gameView);
     }
   }

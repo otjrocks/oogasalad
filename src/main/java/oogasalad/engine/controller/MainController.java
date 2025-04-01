@@ -4,8 +4,10 @@ import javafx.scene.Group;
 import javafx.stage.Stage;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.input.GameInputManager;
+import oogasalad.engine.model.GameStateImpl;
 import oogasalad.engine.view.SplashScreenView;
 import oogasalad.player.view.GamePlayerView;
+import oogasalad.player.view.GameScreenView;
 
 /**
  * The main controller of the game engine. This class controls the interactions between the model
@@ -18,8 +20,9 @@ public class MainController {
   private final Group myRoot;
   private final Stage myStage;
   private final GameInputManager myInputManager;
+  private final GameStateImpl myGameState;
   private SplashScreenView mySplashScreenView = null;
-  private GamePlayerView myGamePlayerView = null;
+  private GameScreenView myGameScreenView = null;
 
   /**
    * Create a main controller for the program.
@@ -31,6 +34,7 @@ public class MainController {
     myRoot = root;
     myStage = stage;
     myInputManager = new GameInputManager(stage.getScene(), myRoot);
+    myGameState = new GameStateImpl(3);
     showSplashScreen();
   }
 
@@ -62,11 +66,11 @@ public class MainController {
    * Show the game player view if it is not already being displayed.
    */
   public void showGamePlayerView() {
-    if (myGamePlayerView == null) {
-      myGamePlayerView = new GamePlayerView(this);
+    if (myGameScreenView == null) {
+      myGameScreenView = new GameScreenView(this, myGameState);
     }
-    if (!myRoot.getChildren().contains(myGamePlayerView)) {
-      myInputManager.getRoot().getChildren().add(myGamePlayerView);
+    if (!myRoot.getChildren().contains(myGameScreenView)) {
+      myInputManager.getRoot().getChildren().add(myGameScreenView);
     }
   }
 
