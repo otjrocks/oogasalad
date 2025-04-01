@@ -99,9 +99,10 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     for (int[] d : directions) {
       int nx = x + d[0];
       int ny = y + d[1];
-      if (isValidPosition(map, nx, ny) && ((nx == targetX && ny == targetY) || isEmpty(map, nx, ny))) {
-          neighbors.add(new int[]{nx, ny});
-        }
+      if (isValidPosition(map, nx, ny) && ((nx == targetX && ny == targetY) || isEmpty(map, nx,
+          ny))) {
+        neighbors.add(new int[]{nx, ny});
+      }
 
     }
 

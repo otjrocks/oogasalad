@@ -42,6 +42,8 @@ public class EntityPlacement {
   }
 
   /**
+   * Returns the x coordinate of this entity placement.
+   *
    * @return The x-coordinate of this entity placement
    */
   public double getX() {
