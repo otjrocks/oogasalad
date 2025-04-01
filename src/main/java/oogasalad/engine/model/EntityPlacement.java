@@ -19,7 +19,9 @@ public class EntityPlacement {
   private String mode;
 
   /** Default constructor for deserialization. */
-  public EntityPlacement() {}
+  public EntityPlacement() {
+    // Empty
+  }
 
   /**
    * Constructs a new EntityPlacement with a given type, position, and mode.
