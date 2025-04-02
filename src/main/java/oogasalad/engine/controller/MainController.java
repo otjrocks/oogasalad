@@ -2,6 +2,8 @@ package oogasalad.engine.controller;
 
 import javafx.scene.Group;
 import javafx.stage.Stage;
+import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.input.GameInputManager;
@@ -77,9 +79,12 @@ public class MainController {
 
   public void showAuthoringView() {
     if (myAuthoringView == null) {
+      AuthoringModel model = new AuthoringModel();
       myAuthoringView = new AuthoringView();
+      AuthoringController controller = new AuthoringController(model, myAuthoringView);
+      myAuthoringView.setController(controller);
     }
-    if (!myRoot.getChildren().contains(myAuthoringView)) {
+    if (!myInputManager.getRoot().getChildren().contains(myAuthoringView)) {
       myInputManager.getRoot().getChildren().add(myAuthoringView);
     }
   }

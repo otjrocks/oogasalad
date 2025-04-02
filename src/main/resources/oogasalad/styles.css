@@ -96,3 +96,14 @@ Label, Text {
   -fx-font-family: "Press Start 2P";
 }
 
+.canvas-view {
+  -fx-border-color: black;
+  -fx-border-width: 2px;
+  -fx-border-style: solid;
+  -fx-background-color: white;
+}
+
+.selected-tile {
+  -fx-background-color: lightgray;
+}
+
