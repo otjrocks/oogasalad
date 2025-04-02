@@ -131,12 +131,13 @@ public class GameMapView extends Pane {
 
     for (Entity entityA : entityViewsMap.keySet()) {
       for (Entity entityB : entityViewsMap.keySet()) {
-        if (entityA != entityB && // Prevent self-collision
+        // Detect collision between two entities from their x and y values.
+        // A collision is defined as any two entities that intersect at some point in the "grid".
+        if (entityA != entityB &&
             Math.abs(entityA.getEntityPlacement().getX() - entityB.getEntityPlacement().getX()) < 1
             &&
             Math.abs(entityA.getEntityPlacement().getY() - entityB.getEntityPlacement().getY())
                 < 1) {
-
           collisions.add(Arrays.asList(entityA, entityB));
         }
       }
