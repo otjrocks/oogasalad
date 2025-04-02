@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import javafx.scene.layout.Pane;
 import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.GameStateImpl;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
@@ -21,6 +22,7 @@ import oogasalad.engine.model.strategies.collision.StopStrategy;
 public class GameMapView extends Pane {
 
   private final GameMap myGameMap;
+  private final GameState myGameState;
   private final Map<Entity, EntityView> entityViewsMap = new HashMap<>();
 
   /**
@@ -28,9 +30,10 @@ public class GameMapView extends Pane {
    *
    * @param gameMap The game map model to use when creating the view.
    */
-  public GameMapView(GameMap gameMap) {
+  public GameMapView(GameMap gameMap, GameState gameState) {
     super();
     myGameMap = gameMap;
+    myGameState = gameState;
     initializeMap();
   }
 
@@ -73,9 +76,8 @@ public class GameMapView extends Pane {
       Entity e2 = collision.get(1);
       StopStrategy stopStrategy = new StopStrategy();
       if (e1.getEntityPlacement().getType().getType().equals("Pacman") && e2.getEntityPlacement().getType().getType().equals("Wall")) {
-        System.out.println("Collision between Pacman and Wall");
         try {
-          stopStrategy.handleCollision(e1, e2, myGameMap, new GameStateImpl(5));
+          stopStrategy.handleCollision(e1, e2, myGameMap, myGameState);
         } catch (EntityNotFoundException e) {
           throw new RuntimeException(e);
         }

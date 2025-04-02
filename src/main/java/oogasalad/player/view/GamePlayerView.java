@@ -13,6 +13,7 @@ import oogasalad.engine.config.TileMapParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.api.GameMapFactory;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 
@@ -24,13 +25,15 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
 public class GamePlayerView extends StackPane {
 
   private final MainController myMainController;
+  private final GameState myGameState;
 
   /**
    * Create the Game Player View.
    */
-  public GamePlayerView(MainController controller) {
+  public GamePlayerView(MainController controller, GameState gameState) {
     super();
     myMainController = controller;
+    myGameState = gameState;
 
     this.setPrefWidth(WIDTH);
     this.getStyleClass().add("game-player-view");
@@ -63,7 +66,7 @@ public class GamePlayerView extends StackPane {
     }
 
     if (gameMap != null) {
-      GameView gameView = new GameView(gameMap);
+      GameView gameView = new GameView(gameMap, myGameState);
       this.getChildren().add(gameView);
     }
   }

@@ -4,9 +4,7 @@ import static oogasalad.engine.config.GameConfig.HEIGHT;
 import static oogasalad.engine.config.GameConfig.WIDTH;
 
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.controller.MainController;
@@ -37,7 +35,7 @@ public class GameScreenView extends VBox {
     hudContainer = new HBox(scoreLabel, livesLabel);
     hudContainer.getStyleClass().add("hud-container");
 
-    gamePlayerView = new GamePlayerView(controller);
+    gamePlayerView = new GamePlayerView(controller, gameState);
 
     this.getChildren().add(hudContainer);
     this.getChildren().add(gamePlayerView);

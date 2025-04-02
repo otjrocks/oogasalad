@@ -25,8 +25,8 @@ public class EntityView extends ImageView {
   public EntityView(GameMap gameMap, EntityPlacement entityPlacement) {
     super();
     myPlacement = entityPlacement;
-    this.setFitWidth((double) GameView.WIDTH / gameMap.getWidth() - 5);
-    this.setFitHeight((double) GameView.HEIGHT / gameMap.getHeight() - 5);
+    this.setFitWidth((double) GameView.WIDTH / gameMap.getWidth() - 2);
+    this.setFitHeight((double) GameView.HEIGHT / gameMap.getHeight() - 2);
     initializeView();
   }
 

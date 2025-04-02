@@ -53,13 +53,12 @@ public abstract class Entity {
   }
 
   /**
-   * Get the character representing the entity direction.
-   * @return Character representing entity direction.
+   * Get the entity direction
+   * @return The direction character for this entity.
    */
   public char getEntityDirection() {
     return currentDirection;
   }
-
 
   private void updateEntityVelocity() {
     if (currentDirection == 'U') {

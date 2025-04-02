@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.layout.StackPane;
 import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameState;
 
 /**
  * The main game view of the player. Primarily encapsulates the game map view.
@@ -23,9 +24,9 @@ public class GameView extends StackPane {
    *
    * @param gameMap The game map model you wish to use.
    */
-  public GameView(GameMap gameMap) {
+  public GameView(GameMap gameMap, GameState gameState) {
     super();
-    myGameMapView = new GameMapView(gameMap);
+    myGameMapView = new GameMapView(gameMap, gameState);
     myGameMap = gameMap;
     this.setPrefSize(WIDTH, HEIGHT);
     this.setMinSize(WIDTH, HEIGHT);
