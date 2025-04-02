@@ -14,7 +14,7 @@ public abstract class Entity {
   private double dx;
   private double dy;
   private char currentDirection;
-  private static final double SPEED = 0.5;
+  public static final double ENTITY_SPEED = 0.4;
 
   /**
    * Initialize the entity with the provided entity data.
@@ -62,19 +62,19 @@ public abstract class Entity {
 
   private void updateEntityVelocity() {
     if (currentDirection == 'U') {
-      setDy(-SPEED);
+      setDy(-ENTITY_SPEED);
       setDx(0);
     }
     if (currentDirection == 'D') {
-      setDy(SPEED);
+      setDy(ENTITY_SPEED);
       setDx(0);
     }
     if (currentDirection == 'L') {
-      setDx(-SPEED);
+      setDx(-ENTITY_SPEED);
       setDy(0);
     }
     if (currentDirection == 'R') {
-      setDx(SPEED);
+      setDx(ENTITY_SPEED);
       setDy(0);
     }
     if (currentDirection == ' ') {

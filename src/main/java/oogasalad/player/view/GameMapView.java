@@ -57,14 +57,19 @@ public class GameMapView extends Pane {
    * Update the positions of entities in this game map view.
    */
   public void updateEntityPositions() {
-    updateEntityModels();
-    updateEntityViewsMap();
-    updateEntityViewsFromModel();
+    updateEntityModels(); // update all models. First move objects, then check for collisions
+    updateEntityViewsMap(); // update the mapping of entity models to entity views
+    updateEntityViewsFromModel(); // update the entity views from their model information
+  }
+
+  private void moveEntityModels() {
+    for (Entity entity : entityViewsMap.keySet()) {
+      moveEntity(entity);
+    }
   }
 
   private void updateEntityViewsFromModel() {
     for (Entity entity : entityViewsMap.keySet()) {
-      moveEntity(entity);
       EntityView entityView = entityViewsMap.get(entity);
       entityView.setLayoutX(
           entity.getEntityPlacement().getX() * ((double) GameView.WIDTH / myGameMap.getWidth()));
@@ -78,27 +83,40 @@ public class GameMapView extends Pane {
     entity.getEntityPlacement().setY(entity.getEntityPlacement().getY() + entity.getDy());
   }
 
-  private void updateEntityModels() { // TODO: remove later, just for testing
+  private void updateEntityModels() {
+    moveEntityModels();
     for (List<Entity> collision : checkCollisions()) {
       Entity e1 = collision.get(0);
       Entity e2 = collision.get(1);
-      StopStrategy stopStrategy = new StopStrategy();
-      if (e1.getEntityPlacement().getType().getType().equals("Pacman") && e2.getEntityPlacement().getType().getType().equals("Wall")) {
-        try {
-          stopStrategy.handleCollision(e1, e2, myGameMap, myGameState);
-        } catch (EntityNotFoundException e) {
-          throw new RuntimeException(e);
-        }
+      handlePacManWallStop(e1, e2);
+      handlePacManFoodDot(e1, e2);
+    }
+  }
+
+  private void handlePacManFoodDot(Entity e1, Entity e2) {
+    // TODO: remove hard coded later, just for testing
+    if (e1.getEntityPlacement().getType().getType().equals("Pacman") && e2.getEntityPlacement()
+        .getType().getType().equals("Dot")) {
+      ConsumeStrategy consumeStrategy = new ConsumeStrategy();
+      try {
+        consumeStrategy.handleCollision(e1, e2, myGameMap, myGameState);
+      } catch (EntityNotFoundException e) {
+        throw new RuntimeException(e);
       }
-      if (e1.getEntityPlacement().getType().getType().equals("Pacman") && e2.getEntityPlacement().getType().getType().equals("Dot")) {
-        ConsumeStrategy consumeStrategy = new ConsumeStrategy();
-        try {
-          consumeStrategy.handleCollision(e1, e2, myGameMap, myGameState);
-        } catch (EntityNotFoundException e) {
-          throw new RuntimeException(e);
-        }
-        UpdateScoreStrategy scoreStrategy = new UpdateScoreStrategy(10);
-        scoreStrategy.handleCollision(e1, e2, myGameMap, myGameState);
+      UpdateScoreStrategy scoreStrategy = new UpdateScoreStrategy(10);
+      scoreStrategy.handleCollision(e1, e2, myGameMap, myGameState);
+    }
+  }
+
+  private void handlePacManWallStop(Entity e1, Entity e2) {
+    StopStrategy stopStrategy = new StopStrategy();
+    // TODO: remove hard coded later, just for testing
+    if (e1.getEntityPlacement().getType().getType().equals("Pacman") && e2.getEntityPlacement()
+        .getType().getType().equals("Wall")) {
+      try {
+        stopStrategy.handleCollision(e1, e2, myGameMap, myGameState);
+      } catch (EntityNotFoundException e) {
+        throw new RuntimeException(e);
       }
     }
   }
@@ -112,20 +130,18 @@ public class GameMapView extends Pane {
     List<List<Entity>> collisions = new ArrayList<>();
 
     for (Entity entityA : entityViewsMap.keySet()) {
-      EntityView viewA = entityViewsMap.get(entityA);
       for (Entity entityB : entityViewsMap.keySet()) {
-        if (entityA == entityB) continue; // Skip self-comparison
+        if (entityA != entityB && // Prevent self-collision
+            Math.abs(entityA.getEntityPlacement().getX() - entityB.getEntityPlacement().getX()) < 1
+            &&
+            Math.abs(entityA.getEntityPlacement().getY() - entityB.getEntityPlacement().getY())
+                < 1) {
 
-        EntityView viewB = entityViewsMap.get(entityB);
-        if (viewA.getBoundsInParent().intersects(viewB.getBoundsInParent())) {
-          List<Entity> pair = Arrays.asList(entityA, entityB);
-          collisions.add(pair);
+          collisions.add(Arrays.asList(entityA, entityB));
         }
       }
     }
-
     return collisions; // Returns a list of all colliding entity pairs
   }
-
 
 }
