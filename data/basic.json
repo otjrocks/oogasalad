@@ -9,8 +9,8 @@
     "startingLives": 3,
     "initialScore": 0,
     "edgePolicy": "Wrap",
-    "width": 10,
-    "height": 10
+    "width": 28,
+    "height": 32
   },
   "entityTypes": [
     {
@@ -72,7 +72,11 @@
       "type": "Wall",
       "controlType": "wall",
       "effect": null,
-      "blocks": ["Pacman", "RedGhost", "BlueGhost"],
+      "blocks": [
+        "Pacman",
+        "RedGhost",
+        "BlueGhost"
+      ],
       "modes": {
         "Default": {
           "movementSpeed": 0,
@@ -84,7 +88,11 @@
       "type": "Dot",
       "controlType": "wall",
       "effect": null,
-      "blocks": ["Pacman", "RedGhost", "BlueGhost"],
+      "blocks": [
+        "Pacman",
+        "RedGhost",
+        "BlueGhost"
+      ],
       "modes": {
         "Default": {
           "movementSpeed": 0,
@@ -96,23 +104,22 @@
   "entityPlacements": [
     {
       "type": "Pacman",
-      "x": 1.0,
-      "y": 1.0,
+      "x": 15.0,
+      "y": 15.0,
       "mode": "Default"
     },
     {
       "type": "Wall",
-      "x": 9.0,
-      "y": 9.0,
+      "x": 1.0,
+      "y": 31.0,
       "mode": "Default"
     },
     {
       "type": "Dot",
-      "x": 9.0,
-      "y": 9.0,
+      "x": 2.0,
+      "y": 31.0,
       "mode": "Default"
     }
-
   ],
   "collisionRules": [
     {
@@ -120,7 +127,9 @@
       "modeA": "Default",
       "entityTypeB": "RedGhost",
       "modeB": "Any",
-      "eventsA": ["LoseLife"],
+      "eventsA": [
+        "LoseLife"
+      ],
       "eventsB": []
     },
     {
@@ -128,34 +137,61 @@
       "modeA": "PoweredUp",
       "entityTypeB": "RedGhost",
       "modeB": "Any",
-      "eventsA": ["AddScore(100)"],
-      "eventsB": ["Destroy"]
+      "eventsA": [
+        "AddScore(100)"
+      ],
+      "eventsB": [
+        "Destroy"
+      ]
     },
     {
       "entityTypeA": "Pacman",
       "modeA": "Any",
       "entityTypeB": "PowerPellet",
       "modeB": "Any",
-      "eventsA": ["TriggerEffectOnA", "ChangeMode(PoweredUp)"],
+      "eventsA": [
+        "TriggerEffectOnA",
+        "ChangeMode(PoweredUp)"
+      ],
       "eventsB": []
     }
   ],
   "tiles": [
     {
       "layout": [
-        "##########",
-        "#........#",
-        "#.######.#",
-        "#.##..##.#",
-        "#.##..##.#",
-        "#.######.#",
-        "#........#",
-        "##########",
-        "#..#..#..#",
-        "##########"
+        "############################",
+        "#............##............#",
+        "#.####.#####.##.#####.####.#",
+        "#.####.#####.##.#####.####.#",
+        "#.####.#####.##.#####.####.#",
+        "#..........................#",
+        "#.####.##.########.##.####.#",
+        "#.####.##.########.##.####.#",
+        "#......##....##....##......#",
+        "######.##### ## #####.######",
+        "######.##### ## #####.######",
+        "######.##          ##.######",
+        "######.## ###--### ##.######",
+        "######.## #      # ##.######",
+        "      .   #      #   .      ",
+        "######.## #      # ##.######",
+        "######.## ######## ##.######",
+        "######.##          ##.######",
+        "######.## ######## ##.######",
+        "######.## ######## ##.######",
+        "#............##............#",
+        "#.####.#####.##.#####.####.#",
+        "#.####.#####.##.#####.####.#",
+        "#...##.......  .......##...#",
+        "###.##.##.########.##.##.###",
+        "###.##.##.########.##.##.###",
+        "#......##....##....##......#",
+        "#.##########.##.##########.#",
+        "#.##########.##.##########.#",
+        "#..........................#",
+        "############################"
       ]
     }
   ],
-
   "winCondition": "SurviveForTime(60)"
 }

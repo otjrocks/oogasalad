@@ -14,7 +14,7 @@ public abstract class Entity {
   private double dx;
   private double dy;
   private char currentDirection;
-  private static final double SPEED = 0.15;
+  private static final double SPEED = 0.5;
 
   /**
    * Initialize the entity with the provided entity data.

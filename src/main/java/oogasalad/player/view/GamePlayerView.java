@@ -81,7 +81,7 @@ public class GamePlayerView extends StackPane {
   private void parseTilesToGameMap(ConfigModel configModel, GameMap gameMap)
       throws InvalidPositionException {
 
-    String[] layout = configModel.getTiles().get(0).getLayout();
+    String[] layout = configModel.getTiles().getFirst().getLayout();
     TileMapParser tileParser = new TileMapParser();
 
     Map<String, EntityPlacement> templateMap = new HashMap<>();
