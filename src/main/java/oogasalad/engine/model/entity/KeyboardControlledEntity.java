@@ -12,7 +12,9 @@ import oogasalad.engine.model.EntityType;
 public class KeyboardControlledEntity extends Entity {
 
   private final GameInputManager inputManager;
-  private static final double SPEED = 1.0;
+  private static final double SPEED = 0.15;
+
+  private char currentDirection = ' ';
 
   /**
    * Create a keyboard controlled entity.
@@ -26,14 +28,42 @@ public class KeyboardControlledEntity extends Entity {
 
   @Override
   public void update() {
-    double dx = 0, dy = 0;
+    updateCurrentDirectionFromKeyboardInput();
+    updateEntityLocation();
+  }
 
-    if (inputManager.isMovingUp()) dy -= SPEED;
-    if (inputManager.isMovingDown()) dy += SPEED;
-    if (inputManager.isMovingLeft()) dx -= SPEED;
-    if (inputManager.isMovingRight()) dx += SPEED;
+  private void updateEntityLocation() {
+    double dx = 0, dy = 0;
+    if (currentDirection == 'U') {
+      dy -= SPEED;
+      dx = 0;
+    }
+    if (currentDirection == 'D') {
+      dy += SPEED;
+      dx = 0;
+    }
+    if (currentDirection == 'L') {
+      dx -= SPEED;
+      dy = 0;
+    }
+    if (currentDirection == 'R') {
+      dx += SPEED;
+      dy = 0;
+    }
 
     getEntityPlacement().setX(getEntityPlacement().getX() + dx);
     getEntityPlacement().setY(getEntityPlacement().getY() + dy);
+  }
+
+  private void updateCurrentDirectionFromKeyboardInput() {
+    if (inputManager.isMovingUp()) {
+      currentDirection = 'U';
+    } else if (inputManager.isMovingDown()) {
+      currentDirection = 'D';
+    } else if (inputManager.isMovingLeft()) {
+      currentDirection = 'L';
+    } else if (inputManager.isMovingRight()) {
+      currentDirection = 'R';
+    }
   }
 }
