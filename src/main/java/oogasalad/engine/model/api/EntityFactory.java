@@ -40,7 +40,7 @@ public class EntityFactory {
   private static Entity createControlledEntity(String controlType, GameInputManager input,
       EntityPlacement data, GameMap gameMap) {
     return switch (controlType) {
-      case "keyboard" -> new KeyboardControlledEntity(input, data);
+      case "keyboard" -> new KeyboardControlledEntity(input, data, gameMap);
       case "targetentity", "targetaheadofentity" -> new BfsEntity(data, gameMap);
       default -> throw new IllegalArgumentException("Unknown entity: " + controlType);
     };
