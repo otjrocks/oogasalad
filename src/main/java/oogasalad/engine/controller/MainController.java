@@ -77,6 +77,9 @@ public class MainController {
     }
   }
 
+  /**
+   * Show the authoring environment view if not already displayed
+   */
   public void showAuthoringView() {
     if (myAuthoringView == null) {
       AuthoringModel model = new AuthoringModel();

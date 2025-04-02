@@ -22,6 +22,8 @@ import java.util.Map;
 /**
  * View displaying all defined EntityTypes in a draggable grid.
  * Clicking on a tile notifies the controller to open an editor.
+ *
+ * @author Will He
  */
 public class EntitySelectorView extends VBox {
 
@@ -29,7 +31,10 @@ public class EntitySelectorView extends VBox {
   private final AuthoringController controller;
   private VBox currentlySelectedTile = null;
 
-
+  /**
+   * View for selecting EntityType to drag onto Canvas
+   * @param controller Wiring with model
+   */
   public EntitySelectorView(AuthoringController controller) {
     this.controller = controller;
     this.getStyleClass().add("entity-selector-view");
@@ -92,6 +97,7 @@ public class EntitySelectorView extends VBox {
     // Drag-and-drop support
     tile.setOnDragDetected(e -> {
       Dragboard db = tile.startDragAndDrop(TransferMode.COPY);
+      @SuppressWarnings("PMD.LooseCoupling")
       ClipboardContent content = new ClipboardContent();
       content.putString(type.getType());
       db.setContent(content);

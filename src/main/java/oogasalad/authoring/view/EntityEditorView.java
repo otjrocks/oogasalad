@@ -11,6 +11,8 @@ import java.util.Map;
 
 /**
  * View for editing a selected EntityType.
+ *
+ * @author Will He
  */
 public class EntityEditorView extends VBox {
 
@@ -20,6 +22,10 @@ public class EntityEditorView extends VBox {
   private final AuthoringController controller;
   private EntityType current;
 
+  /**
+   * Edit parameters for an entityType
+   * @param controller Wires with model
+   */
   public EntityEditorView(AuthoringController controller) {
     this.controller = controller;
     this.setSpacing(10);
@@ -39,7 +45,8 @@ public class EntityEditorView extends VBox {
   }
 
   /**
-   * Load the selected EntityType into the editor UI.
+   * Set's entity type
+   * @param type of type EntityType
    */
   public void setEntityType(EntityType type) {
     this.current = type;
@@ -62,6 +69,10 @@ public class EntityEditorView extends VBox {
     }
   }
 
+  /**
+   * Getter for entityType
+   * @return entity Type
+   */
   public EntityType getEditedEntityType() {
     current.setType(typeField.getText());
     current.setControlType(controlTypeBox.getValue());
