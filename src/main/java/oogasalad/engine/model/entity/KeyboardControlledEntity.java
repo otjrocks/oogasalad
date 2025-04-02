@@ -40,14 +40,33 @@ public class KeyboardControlledEntity extends Entity {
   }
 
   private void setEntityDirection(int myX, int myY) {
+    setUpDirection(myX, myY);
+    setDownDirection(myX, myY);
+    setLeftDirection(myX, myY);
+    setRightDirection(myX, myY);
+  }
+
+  private void setRightDirection(int myX, int myY) {
+    if (inputManager.isMovingRight() && checkNoWall(myX + 1, myY)) {
+      this.setEntityDirection('R');
+    }
+  }
+
+  private void setLeftDirection(int myX, int myY) {
+    if (inputManager.isMovingLeft() && checkNoWall(myX - 1, myY)) {
+      this.setEntityDirection('L');
+    }
+  }
+
+  private void setDownDirection(int myX, int myY) {
+    if (inputManager.isMovingDown() && checkNoWall(myX, myY + 1)) {
+      this.setEntityDirection('D');
+    }
+  }
+
+  private void setUpDirection(int myX, int myY) {
     if (inputManager.isMovingUp() && checkNoWall(myX, myY - 1)) {
       this.setEntityDirection('U');
-    } else if (inputManager.isMovingDown() && checkNoWall(myX, myY + 1)) {
-      this.setEntityDirection('D');
-    } else if (inputManager.isMovingLeft() && checkNoWall(myX - 1, myY)) {
-      this.setEntityDirection('L');
-    } else if (inputManager.isMovingRight() && checkNoWall(myX + 1, myY)) {
-      this.setEntityDirection('R');
     }
   }
 
