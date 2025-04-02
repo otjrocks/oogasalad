@@ -2,6 +2,9 @@ package oogasalad.engine.controller;
 
 import javafx.scene.Group;
 import javafx.stage.Stage;
+import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.authoring.model.AuthoringModel;
+import oogasalad.authoring.view.AuthoringView;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.GameStateImpl;
@@ -22,6 +25,7 @@ public class MainController {
   private final GameStateImpl myGameState;
   private SplashScreenView mySplashScreenView = null;
   private GameScreenView myGameScreenView = null;
+  private AuthoringView myAuthoringView = null;
 
   /**
    * Create a main controller for the program.
@@ -72,6 +76,22 @@ public class MainController {
       myInputManager.getRoot().getChildren().add(myGameScreenView);
     }
   }
+
+  /**
+   * Show the authoring environment view if not already displayed
+   */
+  public void showAuthoringView() {
+    if (myAuthoringView == null) {
+      AuthoringModel model = new AuthoringModel();
+      myAuthoringView = new AuthoringView();
+      AuthoringController controller = new AuthoringController(model, myAuthoringView);
+      myAuthoringView.setController(controller);
+    }
+    if (!myInputManager.getRoot().getChildren().contains(myAuthoringView)) {
+      myInputManager.getRoot().getChildren().add(myAuthoringView);
+    }
+  }
+
 
   /**
    * Get the main stage of this controller.

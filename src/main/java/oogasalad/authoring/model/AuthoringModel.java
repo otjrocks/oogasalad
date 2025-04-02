@@ -1,23 +1,22 @@
 package oogasalad.authoring.model;
 
+import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import oogasalad.engine.model.EntityPlacement;
+import java.util.*;
 
 /**
- * Top-level model that manages all authoring data for the game. Stores entity templates, entity
- * placements, collision rules, and game settings.
+ * Top-level model that manages all authoring data for the game.
+ * Stores entity templates, entity placements, collision rules, and game settings.
+ *
+ * @author Angela Predolac
  */
 public class AuthoringModel {
 
   private List<EntityType> entityTemplates;
   private List<EntityPlacement> entityPlacements;
-  //private CollisionRuleEditorModel collisionRuleModel;
-  //private GameSettingsModel gameSettingsModel;
+  // private CollisionRuleEditorModel collisionRuleModel;
+  // private GameSettingsModel gameSettingsModel;
 
   /**
    * Creates a new AuthoringModel with empty collections and default models.
@@ -25,12 +24,12 @@ public class AuthoringModel {
   public AuthoringModel() {
     entityTemplates = new ArrayList<>();
     entityPlacements = new ArrayList<>();
-    //collisionRuleModel = new CollisionRuleEditorModel();
-    //gameSettingsModel = new GameSettingsModel();
+    // collisionRuleModel = new CollisionRuleEditorModel();
+    // gameSettingsModel = new GameSettingsModel();
   }
 
   /**
-   * Return ann unmodifiable list of all entity templates.
+   * Return an unmodifiable list of all entity templates.
    *
    * @return An unmodifiable list of all entity templates
    */
@@ -45,7 +44,7 @@ public class AuthoringModel {
    * @return true if the template was added successfully
    */
   public boolean addEntityTemplate(EntityType template) {
-    if (template == null) {
+    if (template == null || findEntityTemplateByType(template.getType()).isPresent()) {
       return false;
     }
     return entityTemplates.add(template);
@@ -97,7 +96,7 @@ public class AuthoringModel {
   }
 
   /**
-   * returns a unmodifiable list of all entity placements.
+   * Returns an unmodifiable list of all entity placements.
    *
    * @return An unmodifiable list of all entity placements
    */
@@ -130,7 +129,6 @@ public class AuthoringModel {
     if (template == null) {
       return null;
     }
-
     EntityPlacement placement = new EntityPlacement(template, x, y, "Default");
     entityPlacements.add(placement);
     return placement;
@@ -157,23 +155,22 @@ public class AuthoringModel {
   public Optional<EntityPlacement> findEntityPlacementAt(double x, double y, double threshold) {
     return entityPlacements.stream()
         .filter(placement -> {
-          double distance = Math.sqrt(
-              Math.pow(placement.getX() - x, 2) +
-                  Math.pow(placement.getY() - y, 2));
-          return distance <= threshold;
+          double dx = placement.getX() - x;
+          double dy = placement.getY() - y;
+          return Math.sqrt(dx * dx + dy * dy) <= threshold;
         })
         .findFirst();
   }
 
-    /*
-    public CollisionRuleEditorModel getCollisionRuleModel() {
-        return collisionRuleModel;
-    }
+  /*
+  public CollisionRuleEditorModel getCollisionRuleModel() {
+      return collisionRuleModel;
+  }
 
-    public GameSettingsModel getGameSettingsModel() {
-        return gameSettingsModel;
-    }
-    */
+  public GameSettingsModel getGameSettingsModel() {
+      return gameSettingsModel;
+  }
+  */
 
   /**
    * Clears all entity placements from the model.
@@ -188,7 +185,7 @@ public class AuthoringModel {
   public void clearAll() {
     entityTemplates.clear();
     entityPlacements.clear();
-    //collisionRuleModel = new CollisionRuleEditorModel();
-    //gameSettingsModel = new GameSettingsModel();\
+    // collisionRuleModel = new CollisionRuleEditorModel();
+    // gameSettingsModel = new GameSettingsModel();
   }
 }
