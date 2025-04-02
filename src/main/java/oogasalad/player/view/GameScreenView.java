@@ -13,6 +13,11 @@ import oogasalad.engine.LanguageManager;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.GameState;
 
+/**
+ * A view that displays the Heads-up display (HUD) and the game player view.
+ *
+ * @author Owen Jennings, Troy Ludwig
+ */
 public class GameScreenView extends VBox {
 
   private final GameState gameState;
@@ -23,6 +28,12 @@ public class GameScreenView extends VBox {
   private int lastScore;
   private int lastLives;
 
+  /**
+   * Create a game screen view.
+   *
+   * @param controller The main controller for the player view.
+   * @param gameState  The game state object for this current game.
+   */
   public GameScreenView(MainController controller, GameState gameState) {
     super();
     this.gameState = gameState;

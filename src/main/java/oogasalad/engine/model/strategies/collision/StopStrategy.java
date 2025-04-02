@@ -5,6 +5,12 @@ import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 
+/**
+ * An implementation of the collision strategy that stops the first entity's movement when it
+ * collides with the second entity.
+ *
+ * @author Owen Jennings
+ */
 public class StopStrategy implements CollisionStrategy {
 
   @Override

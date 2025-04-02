@@ -36,6 +36,10 @@ public class KeyboardControlledEntity extends Entity {
   private void updateCurrentDirectionFromKeyboardInput() {
     int myX = (int) this.getEntityPlacement().getX();
     int myY = (int) this.getEntityPlacement().getY();
+    setEntityDirection(myX, myY);
+  }
+
+  private void setEntityDirection(int myX, int myY) {
     if (inputManager.isMovingUp() && checkNoWall(myX, myY - 1)) {
       this.setEntityDirection('U');
     } else if (inputManager.isMovingDown() && checkNoWall(myX, myY + 1)) {
