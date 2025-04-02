@@ -9,10 +9,11 @@ import java.util.Map;
 import javafx.scene.layout.Pane;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
-import oogasalad.engine.model.GameStateImpl;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
+import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
 import oogasalad.engine.model.strategies.collision.StopStrategy;
+import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
 
 /**
  * The view used to display the game map.
@@ -34,10 +35,12 @@ public class GameMapView extends Pane {
     super();
     myGameMap = gameMap;
     myGameState = gameState;
-    initializeMap();
+    updateEntityViewsMap();
   }
 
-  private void initializeMap() {
+  private void updateEntityViewsMap() {
+    entityViewsMap.clear();
+    this.getChildren().clear();
     for (Iterator<Entity> it = myGameMap.iterator(); it.hasNext(); ) {
       Entity entity = it.next();
       EntityView entityView = new EntityView(myGameMap, entity.getEntityPlacement());
@@ -54,7 +57,12 @@ public class GameMapView extends Pane {
    * Update the positions of entities in this game map view.
    */
   public void updateEntityPositions() {
-    handleExamplePacManWallCollision();
+    updateEntityModels();
+    updateEntityViewsMap();
+    updateEntityViewsFromModel();
+  }
+
+  private void updateEntityViewsFromModel() {
     for (Entity entity : entityViewsMap.keySet()) {
       moveEntity(entity);
       EntityView entityView = entityViewsMap.get(entity);
@@ -70,7 +78,7 @@ public class GameMapView extends Pane {
     entity.getEntityPlacement().setY(entity.getEntityPlacement().getY() + entity.getDy());
   }
 
-  private void handleExamplePacManWallCollision() { // TODO: remove later, just for testing
+  private void updateEntityModels() { // TODO: remove later, just for testing
     for (List<Entity> collision : checkCollisions()) {
       Entity e1 = collision.get(0);
       Entity e2 = collision.get(1);
@@ -81,6 +89,16 @@ public class GameMapView extends Pane {
         } catch (EntityNotFoundException e) {
           throw new RuntimeException(e);
         }
+      }
+      if (e1.getEntityPlacement().getType().getType().equals("Pacman") && e2.getEntityPlacement().getType().getType().equals("Dot")) {
+        ConsumeStrategy consumeStrategy = new ConsumeStrategy();
+        try {
+          consumeStrategy.handleCollision(e1, e2, myGameMap, myGameState);
+        } catch (EntityNotFoundException e) {
+          throw new RuntimeException(e);
+        }
+        UpdateScoreStrategy scoreStrategy = new UpdateScoreStrategy(10);
+        scoreStrategy.handleCollision(e1, e2, myGameMap, myGameState);
       }
     }
   }

@@ -79,6 +79,18 @@
           "imagePath": "assets/images/wall.png"
         }
       }
+    },
+    {
+      "type": "Dot",
+      "controlType": "wall",
+      "effect": null,
+      "blocks": ["Pacman", "RedGhost", "BlueGhost"],
+      "modes": {
+        "Default": {
+          "movementSpeed": 0,
+          "imagePath": "assets/images/dot.png"
+        }
+      }
     }
   ],
   "entityPlacements": [
@@ -90,6 +102,12 @@
     },
     {
       "type": "Wall",
+      "x": 9.0,
+      "y": 9.0,
+      "mode": "Default"
+    },
+    {
+      "type": "Dot",
       "x": 9.0,
       "y": 9.0,
       "mode": "Default"
