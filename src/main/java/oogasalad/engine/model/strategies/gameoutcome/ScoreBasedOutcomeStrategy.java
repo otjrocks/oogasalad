@@ -1,4 +1,4 @@
-package oogasalad.engine.model.strategies;
+package oogasalad.engine.model.strategies.gameoutcome;
 
 import oogasalad.engine.model.GameState;
 
