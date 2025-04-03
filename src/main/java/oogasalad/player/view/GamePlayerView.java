@@ -11,6 +11,7 @@ import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.config.TileMapParser;
 import oogasalad.engine.controller.MainController;
+import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
@@ -75,7 +76,7 @@ public class GamePlayerView extends StackPane {
    * Parses tile layout from config and adds entities to the game map.
    *
    * @param configModel the loaded config data
-   * @param gameMap the game map to populate
+   * @param gameMap     the game map to populate
    * @throws InvalidPositionException if an entity cannot be added to the map
    */
   private void parseTilesToGameMap(ConfigModel configModel, GameMap gameMap)

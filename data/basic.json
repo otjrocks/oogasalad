@@ -104,8 +104,8 @@
   "entityPlacements": [
     {
       "type": "Pacman",
-      "x": 15.0,
-      "y": 15.0,
+      "x": 13.0,
+      "y": 23.0,
       "mode": "Default"
     },
 
