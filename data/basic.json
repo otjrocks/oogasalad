@@ -99,25 +99,56 @@
           "imagePath": "assets/images/dot.png"
         }
       }
+    },
+    {
+      "type": "Tunnel",
+      "controlType": "wall",
+      "effect": null,
+      "modes": {
+        "Default": {
+          "movementSpeed": 0,
+          "imagePath": "assets/images/tunnel.png"
+        }
+      }
     }
   ],
   "entityPlacements": [
     {
       "type": "Pacman",
-      "x": 15.0,
+      "x": 13.0,
+      "y": 23.0,
+      "mode": "Default"
+    },
+
+    {
+      "type": "BlueGhost",
+      "x": 9.0,
       "y": 15.0,
+      "mode": "Default"
+    },
+
+    {
+      "type": "RedGhost",
+      "x": 18.0,
+      "y": 16.0,
       "mode": "Default"
     },
     {
       "type": "Wall",
       "x": 1.0,
-      "y": 31.0,
+      "y": 30.0,
       "mode": "Default"
     },
     {
       "type": "Dot",
       "x": 2.0,
-      "y": 31.0,
+      "y": 29.0,
+      "mode": "Default"
+    },
+    {
+      "type": "Tunnel",
+      "x": 0.0,
+      "y": 14.0,
       "mode": "Default"
     }
   ],
@@ -173,7 +204,7 @@
         "######.##          ##.######",
         "######.## ###--### ##.######",
         "######.## #      # ##.######",
-        "      .   #      #   .      ",
+        "O     .   #      #   .     O",
         "######.## #      # ##.######",
         "######.## ######## ##.######",
         "######.##          ##.######",
