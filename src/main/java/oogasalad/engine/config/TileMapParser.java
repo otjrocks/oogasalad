@@ -23,6 +23,7 @@ public class TileMapParser {
     tileToEntityType = new HashMap<>();
     tileToEntityType.put('#', "Wall");
     tileToEntityType.put('.', "Dot");
+    tileToEntityType.put('O', "Tunnel");
   }
 
   /**
