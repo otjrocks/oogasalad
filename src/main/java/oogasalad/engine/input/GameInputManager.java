@@ -13,6 +13,7 @@ public class GameInputManager {
     private final Group root;
     private final Scene scene;
     private final Set<KeyCode> activeKeys = new HashSet<>();
+    private KeyCode lastActiveKey = null;
 
     /**
      * Constructor for the input manager that records what keys are actively
@@ -24,8 +25,11 @@ public class GameInputManager {
     public GameInputManager(Scene scene, Group root) {
         this.scene = scene;
         this.root = root;
-        scene.setOnKeyPressed(event -> activeKeys.add(event.getCode()));
-        scene.setOnKeyReleased(event -> activeKeys.remove(event.getCode()));
+        scene.setOnKeyPressed(event -> {
+          activeKeys.remove(lastActiveKey);
+          activeKeys.add(event.getCode());
+          lastActiveKey = event.getCode();
+        });
     }
 
     /**

@@ -9,8 +9,8 @@
     "startingLives": 3,
     "initialScore": 0,
     "edgePolicy": "Wrap",
-    "width": 10,
-    "height": 10
+    "width": 28,
+    "height": 32
   },
   "entityTypes": [
     {
@@ -72,11 +72,31 @@
       "type": "Wall",
       "controlType": "wall",
       "effect": null,
-      "blocks": ["Pacman", "RedGhost", "BlueGhost"],
+      "blocks": [
+        "Pacman",
+        "RedGhost",
+        "BlueGhost"
+      ],
       "modes": {
         "Default": {
           "movementSpeed": 0,
           "imagePath": "assets/images/wall.png"
+        }
+      }
+    },
+    {
+      "type": "Dot",
+      "controlType": "wall",
+      "effect": null,
+      "blocks": [
+        "Pacman",
+        "RedGhost",
+        "BlueGhost"
+      ],
+      "modes": {
+        "Default": {
+          "movementSpeed": 0,
+          "imagePath": "assets/images/dot.png"
         }
       }
     }
@@ -84,8 +104,20 @@
   "entityPlacements": [
     {
       "type": "Pacman",
+      "x": 15.0,
+      "y": 15.0,
+      "mode": "Default"
+    },
+    {
+      "type": "Wall",
+      "x": 1.0,
+      "y": 31.0,
+      "mode": "Default"
+    },
+    {
+      "type": "Dot",
       "x": 2.0,
-      "y": 2.0,
+      "y": 31.0,
       "mode": "Default"
     }
   ],
@@ -95,7 +127,9 @@
       "modeA": "Default",
       "entityTypeB": "RedGhost",
       "modeB": "Any",
-      "eventsA": ["LoseLife"],
+      "eventsA": [
+        "LoseLife"
+      ],
       "eventsB": []
     },
     {
@@ -103,34 +137,61 @@
       "modeA": "PoweredUp",
       "entityTypeB": "RedGhost",
       "modeB": "Any",
-      "eventsA": ["AddScore(100)"],
-      "eventsB": ["Destroy"]
+      "eventsA": [
+        "AddScore(100)"
+      ],
+      "eventsB": [
+        "Destroy"
+      ]
     },
     {
       "entityTypeA": "Pacman",
       "modeA": "Any",
       "entityTypeB": "PowerPellet",
       "modeB": "Any",
-      "eventsA": ["TriggerEffectOnA", "ChangeMode(PoweredUp)"],
+      "eventsA": [
+        "TriggerEffectOnA",
+        "ChangeMode(PoweredUp)"
+      ],
       "eventsB": []
     }
   ],
   "tiles": [
     {
       "layout": [
-        "##########",
-        "#..#..#..#",
-        "#........#",
-        "#..#..#..#",
-        "#..#..#..#",
-        "#..####..#",
-        "#........#",
-        "#........#",
-        "#..#..#..#",
-        "##########"
+        "############################",
+        "#............##............#",
+        "#.####.#####.##.#####.####.#",
+        "#.####.#####.##.#####.####.#",
+        "#.####.#####.##.#####.####.#",
+        "#..........................#",
+        "#.####.##.########.##.####.#",
+        "#.####.##.########.##.####.#",
+        "#......##....##....##......#",
+        "######.##### ## #####.######",
+        "######.##### ## #####.######",
+        "######.##          ##.######",
+        "######.## ###--### ##.######",
+        "######.## #      # ##.######",
+        "      .   #      #   .      ",
+        "######.## #      # ##.######",
+        "######.## ######## ##.######",
+        "######.##          ##.######",
+        "######.## ######## ##.######",
+        "######.## ######## ##.######",
+        "#............##............#",
+        "#.####.#####.##.#####.####.#",
+        "#.####.#####.##.#####.####.#",
+        "#...##.......  .......##...#",
+        "###.##.##.########.##.##.###",
+        "###.##.##.########.##.##.###",
+        "#......##....##....##......#",
+        "#.##########.##.##########.#",
+        "#.##########.##.##########.#",
+        "#..........................#",
+        "############################"
       ]
     }
   ],
-
   "winCondition": "SurviveForTime(60)"
 }

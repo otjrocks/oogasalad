@@ -4,7 +4,6 @@ import java.util.Objects;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
 
 /**
