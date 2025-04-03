@@ -91,6 +91,14 @@ public class GameMapImpl implements GameMap {
   public void update() {
     for (Entity entity : myEntityList) {
       entity.update();
+      wrapEntity(entity);
     }
+  }
+
+  private void wrapEntity(Entity entity) {
+    double newX = (entity.getEntityPlacement().getX() + myWidth) % myWidth;
+    double newY = (entity.getEntityPlacement().getY() + myHeight) % myHeight;
+    entity.getEntityPlacement().setX(newX);
+    entity.getEntityPlacement().setY(newY);
   }
 }
