@@ -47,13 +47,6 @@ public class BfsEntity extends Entity {
         target[0], target[1],
         getEntityPlacement());
 
-    // CURRENT CONFIGURATION GIVES YOU THE CHOPPY MOTION WITH SPEED
-
-    // UNCOMMENT THIS IF YOU WANT TILE BASED MOVEMENT
-    // getEntityPlacement().setX(getEntityPlacement().getX() + dir[0]);
-    // getEntityPlacement().setY(getEntityPlacement().getY() + dir[1]);
-
-    // COMMENT THIS IF YOU WANT TILE BASED MOVEMENT
     setEntityDirection(dir[0], dir[1]);
   }
 

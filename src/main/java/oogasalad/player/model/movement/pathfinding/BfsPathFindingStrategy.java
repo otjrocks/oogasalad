@@ -12,10 +12,8 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 
 /**
- * A pathfinding strategy using Breadth-First Search. Returns the next direction
- * to move from start
- * to target position, returns the direction as (dx, dy) or (0, 0) if target
- * should remain in same
+ * A pathfinding strategy using Breadth-First Search. Returns the next direction to move from start
+ * to target position, returns the direction as (dx, dy) or (0, 0) if target should remain in same
  * location.
  *
  * @author Jessica Chen
@@ -23,16 +21,18 @@ import oogasalad.engine.model.entity.Entity;
 public class BfsPathFindingStrategy implements PathFindingStrategy {
 
   @Override
-  public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY, EntityPlacement thisEntity) {
+  public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY,
+      EntityPlacement thisEntity) {
     if (!isValidPosition(map, startX, startY) || !isValidPosition(map, targetX, targetY)) {
-      return new int[] { 0, 0 };
+      return new int[]{0, 0};
     }
 
     Node targetNode = bfs(map, startX, startY, targetX, targetY, thisEntity);
     return buildDirection(startX, startY, targetNode);
   }
 
-  private Node bfs(GameMap map, int startX, int startY, int targetX, int targetY, EntityPlacement thisEntity) {
+  private Node bfs(GameMap map, int startX, int startY, int targetX, int targetY,
+      EntityPlacement thisEntity) {
     Queue<Node> queue = new LinkedList<>();
     Set<String> visited = new HashSet<>();
     Node startNode = new Node(startX, startY, null);
@@ -46,7 +46,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
         return current;
       }
 
-      processNeighbors(map, current, queue, visited, targetX, targetY, thisEntity);
+      processNeighbors(map, current, queue, visited, thisEntity);
     }
 
     return null; // no path found
@@ -62,8 +62,8 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
   }
 
   private void processNeighbors(GameMap map, Node current, Queue<Node> queue, Set<String> visited,
-      int targetX, int targetY, EntityPlacement thisEntity) {
-    for (int[] neighbor : getNeighbors(map, current.x, current.y, targetX, targetY, thisEntity)) {
+      EntityPlacement thisEntity) {
+    for (int[] neighbor : getNeighbors(map, current.x, current.y, thisEntity)) {
       int newX = neighbor[0];
       int newY = neighbor[1];
       String neighborKey = key(newX, newY);
@@ -77,7 +77,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
   private List<int[]> reconstructPath(Node node) {
     List<int[]> path = new LinkedList<>();
     while (node.parent != null) {
-      path.addFirst(new int[] { node.x, node.y });
+      path.addFirst(new int[]{node.x, node.y});
       node = node.parent;
     }
 
@@ -86,30 +86,31 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
 
   private int[] buildDirection(int startX, int startY, Node targetNode) {
     if (targetNode == null) {
-      return new int[] { 0, 0 };
+      return new int[]{0, 0};
     }
 
     List<int[]> path = reconstructPath(targetNode);
     // TODO: in the future should make this wander instead of standing still, since
     // standing still is kinda silly
     if (path.isEmpty()) {
-      return new int[] { 0, 0 };
+      return new int[]{0, 0};
     }
 
     int[] nextPos = path.getFirst();
-    return new int[] { nextPos[0] - startX, nextPos[1] - startY };
+    return new int[]{nextPos[0] - startX, nextPos[1] - startY};
   }
 
-  private List<int[]> getNeighbors(GameMap map, int x, int y, int targetX, int targetY, EntityPlacement thisEntity) {
+  private List<int[]> getNeighbors(GameMap map, int x, int y,
+      EntityPlacement thisEntity) {
     List<int[]> neighbors = new ArrayList<>();
-    int[][] directions = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+    int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
     for (int[] d : directions) {
       int nx = x + d[0];
       int ny = y + d[1];
-      if (isValidPosition(map, nx, ny) && ((nx == targetX && ny == targetY) || isEmpty(map, nx,
-          ny, thisEntity))) {
-        neighbors.add(new int[] { nx, ny });
+
+      if (isValidPosition(map, nx, ny) && isEmpty(map, nx, ny, thisEntity)) {
+        neighbors.add(new int[]{nx, ny});
       }
 
     }
