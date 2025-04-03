@@ -67,7 +67,17 @@ class BfsPathFindingStrategyTest {
       }
     }
 
-    when(mockMap.getEntityAt(2, 3)).thenReturn(Optional.ofNullable(mock(Entity.class)));
+    Entity blockedEntity = mock(Entity.class);
+    EntityPlacement blockedPlacement = mock(EntityPlacement.class);
+    EntityType blockedType = mock(EntityType.class);
+    when(mockMap.getEntityAt(anyInt(), anyInt())).thenReturn(Optional.of(blockedEntity));
+    when(blockedEntity.getEntityPlacement()).thenReturn(blockedPlacement);
+    when(blockedPlacement.getType()).thenReturn(blockedType);
+    when(blockedType.getBlocks()).thenReturn(List.of("type"));
+
+    when(mockEntityPlacement.getTypeString()).thenReturn("notType");
+
+    when(mockMap.getEntityAt(2, 3)).thenReturn(Optional.of(blockedEntity));
 
     int startX = 2, startY = 2;
     int targetX = 2, targetY = 3;
