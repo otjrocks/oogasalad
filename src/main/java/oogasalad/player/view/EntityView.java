@@ -1,10 +1,10 @@
 package oogasalad.player.view;
 
 import java.util.Objects;
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import oogasalad.engine.model.EntityData;
+import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.model.GameMap;
 
 /**
  * A view used to display a specific Entity from the {@code Entity} model API.
@@ -13,23 +13,25 @@ import oogasalad.engine.model.EntityData;
  */
 public class EntityView extends ImageView {
 
-  private final EntityData myEntityData;
+  private final EntityPlacement myPlacement;
 
   /**
    * Create an Entity view using the entity data provided.
    *
-   * @param entityData The entity data used to initialize the view.
+   * @param gameMap    The game map being used for this entity view.
+   * @param entityPlacement The entity data used to initialize the view.
    */
-  public EntityView(EntityData entityData) {
-    myEntityData = entityData;
-    this.setFitWidth(GameView.TILE_WIDTH);
-    this.setFitHeight(GameView.TILE_HEIGHT);
+  public EntityView(GameMap gameMap, EntityPlacement entityPlacement) {
+    super();
+    myPlacement = entityPlacement;
+    this.setFitWidth((double) GameView.WIDTH / gameMap.getWidth());
+    this.setFitHeight((double) GameView.HEIGHT / gameMap.getHeight());
     initializeView();
   }
 
   private void initializeView() {
     this.setImage(new Image(
         Objects.requireNonNull(
-            this.getClass().getClassLoader().getResourceAsStream(myEntityData.getImagePath()))));
+            this.getClass().getClassLoader().getResourceAsStream(myPlacement.getType().getModes().get("Default").getImagePath()))));
   }
 }

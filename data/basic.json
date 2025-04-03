@@ -1,41 +1,211 @@
 {
   "metadata": {
-    "title": "Basic Pacman Level",
+    "title": "Advanced Ghost AI Demo",
     "author": "CS308 Team",
-    "description": "A minimal configuration with only Pacman."
+    "description": "Shows different controlTypes with strategyConfig and collision/mode logic."
   },
   "settings": {
     "gameSpeed": 1.0,
     "startingLives": 3,
     "initialScore": 0,
-    "edgePolicy": "Wrap"
+    "edgePolicy": "Wrap",
+    "width": 28,
+    "height": 32
   },
-  "entityConfigs": [
+  "entityTypes": [
     {
       "type": "Pacman",
-      "imagePath": "assets/images/pacman.png",
       "controlType": "Keyboard",
       "effect": null,
-      "initialX": 0,
-      "initialY": 0
+      "modes": {
+        "Default": {
+          "movementSpeed": 100,
+          "imagePath": "assets/images/pacman.png"
+        },
+        "PoweredUp": {
+          "movementSpeed": 150,
+          "imagePath": "assets/images/pacman_powered.png"
+        }
+      }
     },
     {
-      "type": "Pacman",
-      "imagePath": "assets/images/pacman.png",
-      "controlType": "Keyboard",
+      "type": "RedGhost",
+      "controlType": "TargetEntity",
+      "strategyConfig": {
+        "targetType": "Pacman"
+      },
       "effect": null,
-      "initialX": 1,
-      "initialY": 1
+      "modes": {
+        "Default": {
+          "movementSpeed": 90,
+          "imagePath": "assets/images/red_ghost.png"
+        }
+      }
     },
     {
-      "type": "Pacman",
-      "imagePath": "assets/images/pacman.png",
-      "controlType": "Keyboard",
+      "type": "BlueGhost",
+      "controlType": "TargetAheadOfEntity",
+      "strategyConfig": {
+        "targetType": "Pacman",
+        "tilesAhead": 4
+      },
       "effect": null,
-      "initialX": 10,
-      "initialY": 10
+      "modes": {
+        "Default": {
+          "movementSpeed": 90,
+          "imagePath": "assets/images/blue_ghost.png"
+        }
+      }
+    },
+    {
+      "type": "PowerPellet",
+      "controlType": "dot",
+      "effect": "SpeedBoost(5)",
+      "modes": {
+        "Default": {
+          "movementSpeed": 0,
+          "imagePath": "assets/images/powerpellet.png"
+        }
+      }
+    },
+    {
+      "type": "Wall",
+      "controlType": "wall",
+      "effect": null,
+      "blocks": [
+        "Pacman",
+        "RedGhost",
+        "BlueGhost"
+      ],
+      "modes": {
+        "Default": {
+          "movementSpeed": 0,
+          "imagePath": "assets/images/wall.png"
+        }
+      }
+    },
+    {
+      "type": "Dot",
+      "controlType": "wall",
+      "effect": null,
+      "blocks": [
+        "Pacman",
+        "RedGhost",
+        "BlueGhost"
+      ],
+      "modes": {
+        "Default": {
+          "movementSpeed": 0,
+          "imagePath": "assets/images/dot.png"
+        }
+      }
     }
   ],
-  "collisionRules": [],
-  "winCondition": "SurviveForTime(30)"
+  "entityPlacements": [
+    {
+      "type": "Pacman",
+      "x": 15.0,
+      "y": 15.0,
+      "mode": "Default"
+    },
+
+    {
+      "type": "BlueGhost",
+      "x": 9.0,
+      "y": 15.0,
+      "mode": "Default"
+    },
+
+    {
+      "type": "RedGhost",
+      "x": 18.0,
+      "y": 16.0,
+      "mode": "Default"
+    },
+    {
+      "type": "Wall",
+      "x": 1.0,
+      "y": 31.0,
+      "mode": "Default"
+    },
+    {
+      "type": "Dot",
+      "x": 2.0,
+      "y": 31.0,
+      "mode": "Default"
+    }
+  ],
+  "collisionRules": [
+    {
+      "entityTypeA": "Pacman",
+      "modeA": "Default",
+      "entityTypeB": "RedGhost",
+      "modeB": "Any",
+      "eventsA": [
+        "LoseLife"
+      ],
+      "eventsB": []
+    },
+    {
+      "entityTypeA": "Pacman",
+      "modeA": "PoweredUp",
+      "entityTypeB": "RedGhost",
+      "modeB": "Any",
+      "eventsA": [
+        "AddScore(100)"
+      ],
+      "eventsB": [
+        "Destroy"
+      ]
+    },
+    {
+      "entityTypeA": "Pacman",
+      "modeA": "Any",
+      "entityTypeB": "PowerPellet",
+      "modeB": "Any",
+      "eventsA": [
+        "TriggerEffectOnA",
+        "ChangeMode(PoweredUp)"
+      ],
+      "eventsB": []
+    }
+  ],
+  "tiles": [
+    {
+      "layout": [
+        "############################",
+        "#............##............#",
+        "#.####.#####.##.#####.####.#",
+        "#.####.#####.##.#####.####.#",
+        "#.####.#####.##.#####.####.#",
+        "#..........................#",
+        "#.####.##.########.##.####.#",
+        "#.####.##.########.##.####.#",
+        "#......##....##....##......#",
+        "######.##### ## #####.######",
+        "######.##### ## #####.######",
+        "######.##          ##.######",
+        "######.## ###--### ##.######",
+        "######.## #      # ##.######",
+        "      .   #      #   .      ",
+        "######.## #      # ##.######",
+        "######.## ######## ##.######",
+        "######.##          ##.######",
+        "######.## ######## ##.######",
+        "######.## ######## ##.######",
+        "#............##............#",
+        "#.####.#####.##.#####.####.#",
+        "#.####.#####.##.#####.####.#",
+        "#...##.......  .......##...#",
+        "###.##.##.########.##.##.###",
+        "###.##.##.########.##.##.###",
+        "#......##....##....##......#",
+        "#.##########.##.##########.#",
+        "#.##########.##.##########.#",
+        "#..........................#",
+        "############################"
+      ]
+    }
+  ],
+  "winCondition": "SurviveForTime(60)"
 }

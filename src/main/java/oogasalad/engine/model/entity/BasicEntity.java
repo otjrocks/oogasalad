@@ -1,15 +1,27 @@
 package oogasalad.engine.model.entity;
 
-import oogasalad.engine.model.EntityData;
+import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.model.EntityType;
 
+/**
+ * A basic entity.
+ *
+ * @author Jessica Chen
+ */
 public class BasicEntity extends Entity {
-  public BasicEntity(EntityData entityData) {
-    super(entityData);
+
+  /**
+   * The constructor for a basic entity.
+   *
+   * @param entityPlacement The data used to create this entity.
+   */
+  public BasicEntity(EntityPlacement entityPlacement) {
+    super(entityPlacement);
   }
 
   @Override
   public void update() {
-    // Intentionaly does nothing because it is basic
+    // Intentionally does nothing because it is basic
   }
 
 

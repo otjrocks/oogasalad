@@ -1,6 +1,6 @@
 * {
-  -fx-primary: rgb(46, 46, 46);
-  -fx-secondary: rgb(232, 232, 232);
-  -fx-highlight: rgb(214, 214, 214);
-  -fx-warning: rgb(239, 34, 34);
+  -fx-primary: rgb(0, 0, 64);
+  -fx-secondary: rgb(255, 255, 255);
+  -fx-highlight: rgb(45, 45, 158);
+  -fx-warning: rgb(255, 0, 0);
 }

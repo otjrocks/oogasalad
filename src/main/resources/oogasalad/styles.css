@@ -50,8 +50,77 @@ Label, Text {
   -fx-background-color: -fx-secondary;
 }
 
-
-.game-view {
-  -fx-border-width: 5px;
-  -fx-border-color: -fx-secondary;
+/* Vertical Menu - VMenu */
+.v-menu {
+  -fx-padding: 30px;
+  -fx-spacing: 20px;
+  -fx-alignment: center;
 }
+
+.v-menu .button {
+  -fx-font-size: 24px;
+  -fx-padding: 10px 20px;
+  -fx-min-width: 400px;
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 3px;
+  -fx-background-radius: 5px;
+  -fx-border-radius: 5px;
+}
+
+.v-menu .button:hover {
+  -fx-background-color: -fx-highlight;
+}
+
+/* Game player views */
+.game-view {
+  -fx-background-color: -fx-primary;
+}
+
+.game-screen-view {
+  -fx-background-color: -fx-primary;
+}
+
+.hud-container {
+  -fx-padding: 20px;
+  -fx-background-color: -fx-primary;
+  -fx-alignment: center;
+  -fx-spacing: 20px;
+}
+
+.hud-container Label {
+  -fx-font-size: 20px;
+  -fx-font-weight: bold;
+  -fx-text-fill: -fx-secondary;
+  -fx-font-family: "Press Start 2P";
+}
+
+.canvas-view {
+  -fx-border-color: black;
+  -fx-border-width: 2px;
+  -fx-border-style: solid;
+  -fx-background-color: white;
+}
+
+.selected-tile {
+  -fx-background-color: lightgray;
+}
+
+.entity-selector-view .button {
+  -fx-font-size: 14px;
+  -fx-padding: 10px 20px;
+  -fx-min-width: 400px;
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 3px;
+  -fx-background-radius: 5px;
+  -fx-border-radius: 5px;
+}
+
+.entity-selector-view .button:hover {
+  -fx-background-color: -fx-highlight;
+}
+
+

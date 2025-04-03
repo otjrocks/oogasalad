@@ -1,6 +1,7 @@
 package oogasalad.engine.model;
 
 import java.util.Iterator;
+import java.util.Optional;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
@@ -39,10 +40,9 @@ public interface GameMap {
    *
    * @param x the X-coordinate of the entity.
    * @param y the Y-coordinate of the entity.
-   * @return the entity located at the specified position.
-   * @throws EntityNotFoundException if no entity exists at the given coordinates.
+   * @return the entity located at the specified position, returns Optional empty if not found.
    */
-  Entity getEntityAt(int x, int y) throws EntityNotFoundException;
+  Optional<Entity> getEntityAt(int x, int y);
 
   /**
    * Returns an iterator for traversing the entities on the map. This iterator intentionally does
@@ -69,7 +69,7 @@ public interface GameMap {
   int getHeight();
 
   /**
-   * added this for now to reflect game loop update, eventually in controller
+   * added this for now to reflect game loop update, eventually in controller.
    */
   void update();
 }

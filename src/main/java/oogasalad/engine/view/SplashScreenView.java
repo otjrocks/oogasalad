@@ -1,21 +1,17 @@
 package oogasalad.engine.view;
 
 
+import java.util.List;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import oogasalad.engine.LanguageManager;
-import oogasalad.engine.LoggingManager;
 import oogasalad.engine.ThemeManager;
-import oogasalad.engine.config.ConfigException;
-import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.GameConfig;
-import oogasalad.engine.config.JsonConfigParser;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.api.GameMapFactory;
-import oogasalad.engine.model.exceptions.InvalidPositionException;
+import oogasalad.engine.controller.MainController;
 import oogasalad.engine.view.components.Selector;
-import oogasalad.player.view.GameView;
+import oogasalad.engine.view.components.Vmenu;
 
 /**
  * The initial splash screen shown when the program is started.
@@ -27,14 +23,17 @@ public class SplashScreenView extends VBox {
   private Selector myLanguageSelector;
   private final ThemeManager myThemeManager;
   private Selector myThemeSelector;
+  private final MainController myMainController;
 
   /**
-   * Create the splash screen view.
+   * Create a splash screen view.
    *
-   * @author Owen Jennings
+   * @param mainController The main controller of the program.
    */
-  public SplashScreenView(Stage stage) {
-    myThemeManager = new ThemeManager(stage);
+  public SplashScreenView(MainController mainController) {
+    super();
+    myThemeManager = new ThemeManager(mainController.getStage());
+    myMainController = mainController;
     this.getStyleClass().add("splash-screen-view");
     this.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
     initializeSplashScreen();
@@ -47,7 +46,31 @@ public class SplashScreenView extends VBox {
     initializeTitle();
     initializeLanguageSelector();
     initializeThemeSelector();
-    createExampleMap();
+    initializeSplashMenu();
+  }
+
+  private void initializeSplashMenu() {
+    List<String> options = List.of(LanguageManager.getMessage("GAME_PLAYER"),
+        LanguageManager.getMessage("AUTHORING_ENVIRONMENT"),
+        LanguageManager.getMessage("CONFIGURATION"));
+    List<EventHandler<ActionEvent>> actions = List.of(
+        e -> activateGamePlayerMode(),
+        e -> activateAuthoringMode(),
+        e -> {
+        }
+    );
+    Vmenu splashMenu = new Vmenu(options, actions);
+    this.getChildren().add(splashMenu);
+  }
+
+  private void activateGamePlayerMode() {
+    myMainController.hideSplashScreen();
+    myMainController.showGamePlayerView();
+  }
+
+  private void activateAuthoringMode() {
+    myMainController.hideSplashScreen();
+    myMainController.showAuthoringView();
   }
 
 
@@ -86,25 +109,5 @@ public class SplashScreenView extends VBox {
   private void refresh() {
     this.getChildren().clear();
     initializeSplashScreen();
-  }
-
-  private void createExampleMap() {
-    JsonConfigParser configParser = new JsonConfigParser();
-    ConfigModel configModel = null;
-    try {
-      configModel = configParser.loadFromFile("data/basic.json");
-    } catch (ConfigException e) {
-      LoggingManager.LOGGER.warn(e);
-    }
-    GameMap gameMap = null;
-    try {
-      if (configModel != null) {
-        gameMap = GameMapFactory.createGameMap(configModel, 20, 20);
-      }
-    } catch (InvalidPositionException e) {
-      LoggingManager.LOGGER.warn(e);
-    }
-    GameView gameView = new GameView(gameMap);
-    this.getChildren().add(gameView);
   }
 }

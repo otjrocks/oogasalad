@@ -20,6 +20,11 @@ Pac-Man.
 * Resources used for learning (including AI assistance)
 
 * Resources used directly (including AI assistance)
+    * Our project uses Google Fonts for our game fonts. The specific fonts we use are Inter and
+      Press Start 2P.
+    * Various sprites from the original game were used. Additionally, this source was used for game
+      sprites: https://www.spriters-resource.com/arcade/pacman/
+    * 
 
 ### Running the Program
 

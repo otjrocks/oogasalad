@@ -1,91 +1,124 @@
 package oogasalad.authoring.view;
-import oogasalad.engine.model.EntityData;
 
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.control.ScrollPane;
+import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.engine.model.EntityType;
+import oogasalad.engine.config.ModeConfig;
 
 import java.util.List;
+import java.util.Map;
 
+/**
+ * View displaying all defined EntityTypes in a draggable grid.
+ * Clicking on a tile notifies the controller to open an editor.
+ *
+ * @author Will He
+ */
 public class EntitySelectorView extends VBox {
-    private GridPane entityGrid;
-    private ScrollPane scrollPane;
 
-    public EntitySelectorView() {
-        initializeComponents();
-        setupLayout();
+  private final FlowPane tileGrid;
+  private final AuthoringController controller;
+  private VBox currentlySelectedTile = null;
+
+  /**
+   * View for selecting EntityType to drag onto Canvas
+   * @param controller Wiring with model
+   */
+  public EntitySelectorView(AuthoringController controller) {
+    this.controller = controller;
+    this.getStyleClass().add("entity-selector-view");
+    this.setSpacing(10);
+    this.setPadding(new Insets(10));
+
+    // Button to add new entity types
+    Button addButton = new Button("+ Add Entity Type");
+    addButton.setOnAction(e -> controller.createNewEntityType());
+
+    // Grid that holds entity tiles
+    tileGrid = new FlowPane();
+    tileGrid.setHgap(10);
+    tileGrid.setVgap(10);
+    tileGrid.setPrefWrapLength(250); // wraps based on width
+
+    // Scrollable container for grid
+    ScrollPane scrollPane = new ScrollPane(tileGrid);
+    scrollPane.setFitToWidth(true);
+    VBox.setVgrow(scrollPane, Priority.ALWAYS);
+
+    this.getChildren().addAll(addButton, scrollPane);
+  }
+
+  /**
+   * Refresh the grid of entity type tiles.
+   *
+   * @param entityTypes list of types to display
+   */
+  public void updateEntities(List<EntityType> entityTypes) {
+    tileGrid.getChildren().clear();
+    for (EntityType type : entityTypes) {
+      tileGrid.getChildren().add(createEntityTile(type));
+    }
+  }
+
+  private VBox createEntityTile(EntityType type) {
+    VBox tile = new VBox();
+    tile.setSpacing(4);
+    tile.getStyleClass().add("entity-tile");
+
+    // Use first mode (usually "Default") for preview image
+    ImageView imageView = new ImageView();
+    imageView.setFitWidth(48);
+    imageView.setFitHeight(48);
+    String imagePath = getFirstModeImage(type);
+    if (imagePath != null) {
+      imageView.setImage(new Image(imagePath));
     }
 
-    private void initializeComponents() {
-        // Create a grid to display entity data
-        entityGrid = new GridPane();
-        entityGrid.setHgap(10);
-        entityGrid.setVgap(10);
-        entityGrid.setPadding(new Insets(10));
 
-        // Create a scroll pane to contain the grid
-        scrollPane = new ScrollPane(entityGrid);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+    tile.getChildren().addAll(imageView);
+
+    // Click to open in EntityEditor
+    tile.setOnMouseClicked(e -> {
+      controller.selectEntityType(type.getType());
+      highlightSelectedTile(tile);
+    });
+
+    // Drag-and-drop support
+    tile.setOnDragDetected(e -> {
+      Dragboard db = tile.startDragAndDrop(TransferMode.COPY);
+      @SuppressWarnings("PMD.LooseCoupling")
+      ClipboardContent content = new ClipboardContent();
+      content.putString(type.getType());
+      db.setContent(content);
+      e.consume();
+    });
+
+    return tile;
+  }
+
+  private String getFirstModeImage(EntityType type) {
+    Map<String, ModeConfig> modes = type.getModes();
+    if (modes == null || modes.isEmpty()) return null;
+    return modes.values().iterator().next().getImagePath();
+  }
+
+  private void highlightSelectedTile(VBox tile) {
+    if (currentlySelectedTile != null) {
+      currentlySelectedTile.getStyleClass().remove("selected-tile");
     }
+    tile.getStyleClass().add("selected-tile");
+    currentlySelectedTile = tile;
+  }
 
-    private void setupLayout() {
-        getChildren().add(new Label("Available Entities"));
-        getChildren().add(scrollPane);
-        setSpacing(10);
-        setPadding(new Insets(10));
-    }
-
-    public void loadEntityData(List<EntityData> entities) {
-        entityGrid.getChildren().clear();
-
-        // Populate grid with entity data
-        for (int i = 0; i < entities.size(); i++) {
-            EntityData entity = entities.get(i);
-            VBox entityBox = createEntityDataBox(entity);
-
-            int row = i / 3;
-            int col = i % 3;
-
-            entityGrid.add(entityBox, col, row);
-        }
-    }
-
-    private VBox createEntityDataBox(EntityData entity) {
-        VBox entityBox = new VBox(5);
-        entityBox.setStyle("-fx-border-color: lightgray; -fx-border-width: 1px; -fx-padding: 5px;");
-
-        ImageView imageView = new ImageView();
-        try {
-            Image image = new Image(entity.getImagePath());
-            imageView.setImage(image);
-            imageView.setFitWidth(100);
-            imageView.setFitHeight(100);
-            imageView.setPreserveRatio(true);
-        } catch (Exception e) {
-            imageView.setImage(null);
-        }
-
-        // Create labels for entity details
-        Label typeLabel = new Label("Type: " + entity.getType());
-        Label controlLabel = new Label("Control: " + entity.getControlType());
-        Label effectLabel = new Label("Effect: " + entity.getEffect());
-
-        entityBox.getChildren().addAll(imageView, typeLabel, controlLabel, effectLabel);
-
-        setupDragAndDrop(entityBox, entity);
-
-        return entityBox;
-    }
-
-    private void setupDragAndDrop(VBox entityBox, EntityData entity) {
-        entityBox.setOnDragDetected(event -> {
-            entityBox.startFullDrag();
-        });
-    }
 }
