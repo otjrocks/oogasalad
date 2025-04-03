@@ -3,7 +3,6 @@ package oogasalad.player.model.movement.targetcalculation;
 import java.util.Map;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.player.model.exceptions.TargetStrategyException;
 
 /**
@@ -13,6 +12,16 @@ import oogasalad.player.model.exceptions.TargetStrategyException;
  */
 public class TargetStrategyFactory {
 
+  /**
+   * Factory method to create a TargetStrategy based on the control type of the given
+   * EntityPlacement.
+   *
+   * @param placement the EntityPlacement object containing information about the entity and its
+   *                  control type
+   * @param gameMap   the GameMap object representing the current state of the game
+   * @return a TargetStrategy instance corresponding to the control type of the entity
+   * @throws TargetStrategyException if the control type of the entity is unknown or unsupported
+   */
   public static TargetStrategy createTargetStrategy(EntityPlacement placement,
       GameMap gameMap)
       throws TargetStrategyException {
