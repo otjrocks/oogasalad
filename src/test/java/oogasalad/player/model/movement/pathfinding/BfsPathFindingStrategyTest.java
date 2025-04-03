@@ -5,7 +5,10 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
+import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.entity.Entity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,10 +19,12 @@ class BfsPathFindingStrategyTest {
 
   private GameMap mockMap;
   private BfsPathFindingStrategy strategy;
+  private EntityPlacement mockEntityPlacement;
 
   @BeforeEach
   public void setUp() {
     mockMap = mock(GameMap.class);
+    mockEntityPlacement = mock(EntityPlacement.class);
     strategy = new BfsPathFindingStrategy();
   }
 
@@ -41,9 +46,9 @@ class BfsPathFindingStrategyTest {
     int startX = 2, startY = 2;
     int targetX = 2, targetY = 3;
 
-    int[] expected = { 0, 1 };
+    int[] expected = {0, 1};
 
-    int[] actual = strategy.getPath(mockMap, startX, startY, targetX, targetY);
+    int[] actual = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntityPlacement);
     assertArrayEquals(expected, actual);
   }
 
@@ -67,9 +72,9 @@ class BfsPathFindingStrategyTest {
     int startX = 2, startY = 2;
     int targetX = 2, targetY = 3;
 
-    int[] expected = { 0, 1 };
+    int[] expected = {0, 1};
 
-    int[] actual = strategy.getPath(mockMap, startX, startY, targetX, targetY);
+    int[] actual = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntityPlacement);
     assertArrayEquals(expected, actual);
   }
 
@@ -90,9 +95,9 @@ class BfsPathFindingStrategyTest {
     int startX = 2, startY = 2;
     int targetX = 2, targetY = 2;
 
-    int[] expected = { 0, 0 };
+    int[] expected = {0, 0};
 
-    int[] actual = strategy.getPath(mockMap, startX, startY, targetX, targetY);
+    int[] actual = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntityPlacement);
     assertArrayEquals(expected, actual);
   }
 
@@ -101,8 +106,8 @@ class BfsPathFindingStrategyTest {
     when(mockMap.getWidth()).thenReturn(3);
     when(mockMap.getHeight()).thenReturn(3);
 
-    int[] actual = strategy.getPath(mockMap, -1, 1, 2, 2);
-    assertArrayEquals(new int[] {0, 0}, actual);
+    int[] actual = strategy.getPath(mockMap, -1, 1, 2, 2, mockEntityPlacement);
+    assertArrayEquals(new int[]{0, 0}, actual);
   }
 
   @Test
@@ -111,12 +116,21 @@ class BfsPathFindingStrategyTest {
     when(mockMap.getHeight()).thenReturn(3);
 
     // Start and target valid
-    when(mockMap.getEntityAt(anyInt(), anyInt())).thenReturn(Optional.of(mock(Entity.class)));
+    Entity blockedEntity = mock(Entity.class);
+    EntityPlacement blockedPlacement = mock(EntityPlacement.class);
+    EntityType blockedType = mock(EntityType.class);
+    when(mockMap.getEntityAt(anyInt(), anyInt())).thenReturn(Optional.of(blockedEntity));
+    when(blockedEntity.getEntityPlacement()).thenReturn(blockedPlacement);
+    when(blockedPlacement.getType()).thenReturn(blockedType);
+    when(blockedType.getBlocks()).thenReturn(List.of("type"));
 
-    int[] actual = strategy.getPath(mockMap, 0, 0, 2, 2);
-    assertArrayEquals(new int[] {0, 0}, actual);
+    when(mockEntityPlacement.getTypeString()).thenReturn("type");
+
+    int[] actual = strategy.getPath(mockMap, 0, 0, 2, 2, mockEntityPlacement);
+
+
+    assertArrayEquals(new int[]{0, 0}, actual);
   }
 
 
-    
 }

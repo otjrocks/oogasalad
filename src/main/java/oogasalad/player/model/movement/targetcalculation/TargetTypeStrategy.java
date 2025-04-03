@@ -68,9 +68,7 @@ public class TargetTypeStrategy implements TargetStrategy {
     int targetY = y;
 
     switch (dir) {
-      case 'U':
-        targetY -= myTilesAhead;
-        break;
+
       case 'R':
         targetX += myTilesAhead;
         break;
@@ -80,7 +78,8 @@ public class TargetTypeStrategy implements TargetStrategy {
       case 'L':
         targetX -= myTilesAhead;
         break;
-      default:
+      default: // default up
+        targetY -= myTilesAhead;
         break;
     }
     return new int[]{targetX, targetY};

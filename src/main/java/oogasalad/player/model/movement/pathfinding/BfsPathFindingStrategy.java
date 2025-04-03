@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
+import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.entity.Entity;
 
 /**
  * A pathfinding strategy using Breadth-First Search. Returns the next direction
@@ -20,16 +23,16 @@ import oogasalad.engine.model.GameMap;
 public class BfsPathFindingStrategy implements PathFindingStrategy {
 
   @Override
-  public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY) {
+  public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY, EntityPlacement thisEntity) {
     if (!isValidPosition(map, startX, startY) || !isValidPosition(map, targetX, targetY)) {
       return new int[] { 0, 0 };
     }
 
-    Node targetNode = bfs(map, startX, startY, targetX, targetY);
+    Node targetNode = bfs(map, startX, startY, targetX, targetY, thisEntity);
     return buildDirection(startX, startY, targetNode);
   }
 
-  private Node bfs(GameMap map, int startX, int startY, int targetX, int targetY) {
+  private Node bfs(GameMap map, int startX, int startY, int targetX, int targetY, EntityPlacement thisEntity) {
     Queue<Node> queue = new LinkedList<>();
     Set<String> visited = new HashSet<>();
     Node startNode = new Node(startX, startY, null);
@@ -43,7 +46,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
         return current;
       }
 
-      processNeighbors(map, current, queue, visited, targetX, targetY);
+      processNeighbors(map, current, queue, visited, targetX, targetY, thisEntity);
     }
 
     return null; // no path found
@@ -59,8 +62,8 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
   }
 
   private void processNeighbors(GameMap map, Node current, Queue<Node> queue, Set<String> visited,
-      int targetX, int targetY) {
-    for (int[] neighbor : getNeighbors(map, current.x, current.y, targetX, targetY)) {
+      int targetX, int targetY, EntityPlacement thisEntity) {
+    for (int[] neighbor : getNeighbors(map, current.x, current.y, targetX, targetY, thisEntity)) {
       int newX = neighbor[0];
       int newY = neighbor[1];
       String neighborKey = key(newX, newY);
@@ -77,6 +80,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
       path.addFirst(new int[] { node.x, node.y });
       node = node.parent;
     }
+
     return path;
   }
 
@@ -86,6 +90,8 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     }
 
     List<int[]> path = reconstructPath(targetNode);
+    // TODO: in the future should make this wander instead of standing still, since
+    // standing still is kinda silly
     if (path.isEmpty()) {
       return new int[] { 0, 0 };
     }
@@ -94,7 +100,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     return new int[] { nextPos[0] - startX, nextPos[1] - startY };
   }
 
-  private List<int[]> getNeighbors(GameMap map, int x, int y, int targetX, int targetY) {
+  private List<int[]> getNeighbors(GameMap map, int x, int y, int targetX, int targetY, EntityPlacement thisEntity) {
     List<int[]> neighbors = new ArrayList<>();
     int[][] directions = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
 
@@ -102,7 +108,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
       int nx = x + d[0];
       int ny = y + d[1];
       if (isValidPosition(map, nx, ny) && ((nx == targetX && ny == targetY) || isEmpty(map, nx,
-          ny))) {
+          ny, thisEntity))) {
         neighbors.add(new int[] { nx, ny });
       }
 
@@ -115,8 +121,13 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight();
   }
 
-  private boolean isEmpty(GameMap map, int x, int y) {
-    return map.getEntityAt(x, y).isEmpty();
+  private boolean isEmpty(GameMap map, int x, int y, EntityPlacement thisEntity) {
+    Optional<Entity> entity = map.getEntityAt(x, y);
+
+    return entity.map(value -> value.getEntityPlacement().getType().getBlocks() == null ||
+        value.getEntityPlacement().getType().getBlocks().stream()
+            .noneMatch(block -> block.equalsIgnoreCase(thisEntity.getTypeString()))).orElse(true);
+
   }
 
   private String key(int x, int y) {
