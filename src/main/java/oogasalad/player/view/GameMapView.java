@@ -88,7 +88,9 @@ public class GameMapView extends Pane {
     for (List<Entity> collision : checkCollisions()) {
       Entity e1 = collision.get(0);
       Entity e2 = collision.get(1);
-      handlePacManWallStop(e1, e2);
+      handleEntityWallStop(e1, e2, "Pacman");
+      handleEntityWallStop(e1, e2, "BlueGhost");
+      handleEntityWallStop(e1, e2, "RedGhost");
       handlePacManFoodDot(e1, e2);
     }
   }
@@ -108,11 +110,11 @@ public class GameMapView extends Pane {
     }
   }
 
-  private void handlePacManWallStop(Entity e1, Entity e2) {
+  private void handleEntityWallStop(Entity e1, Entity e2, String entityType) {
     StopStrategy stopStrategy = new StopStrategy();
     // TODO: remove hard coded later, just for testing
-    if (e1.getEntityPlacement().getType().getType().equals("Pacman") && e2.getEntityPlacement()
-        .getType().getType().equals("Wall")) {
+    if (e1.getEntityPlacement().getType().getType().equals(entityType) &&
+        e2.getEntityPlacement().getType().getType().equals("Wall")) {
       try {
         stopStrategy.handleCollision(e1, e2, myGameMap, myGameState);
       } catch (EntityNotFoundException e) {
@@ -120,6 +122,7 @@ public class GameMapView extends Pane {
       }
     }
   }
+
 
   /**
    * Checks for collisions between entity views.

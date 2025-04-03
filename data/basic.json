@@ -108,6 +108,20 @@
       "y": 15.0,
       "mode": "Default"
     },
+
+    {
+      "type": "BlueGhost",
+      "x": 9.0,
+      "y": 15.0,
+      "mode": "Default"
+    },
+
+    {
+      "type": "RedGhost",
+      "x": 18.0,
+      "y": 16.0,
+      "mode": "Default"
+    },
     {
       "type": "Wall",
       "x": 1.0,

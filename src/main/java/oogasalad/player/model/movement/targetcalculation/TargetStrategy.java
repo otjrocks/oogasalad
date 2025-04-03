@@ -8,16 +8,9 @@ package oogasalad.player.model.movement.targetcalculation;
 public interface TargetStrategy {
 
   /**
-   * Calculates and returns the X-coordinate of the target position.
+   * Calculates and returns the coordinate of the target position.
    *
-   * @return the X-coordinate of the target position
+   * @return the coordinate of the target position given in [x, y]
    */
-  int getTargetPositionX();
-
-  /**
-   * Calculates and returns the Y-coordinate of the target position.
-   *
-   * @return the Y-coordinate of the target position
-   */
-  int getTargetPositionY();
+  int[] getTargetPosition();
 }
