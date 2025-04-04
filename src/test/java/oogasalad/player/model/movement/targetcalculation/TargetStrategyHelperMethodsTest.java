@@ -5,12 +5,15 @@ import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
 
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
+import oogasalad.player.model.exceptions.TargetStrategyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -74,4 +77,46 @@ public class TargetStrategyHelperMethodsTest {
     assertTrue(result.isPresent());
     assertEquals(mockEnemy1, result.get());
   }
+
+  @Test
+  void validateAndGetTargetType_validConfig_returnsType() {
+    Map<String, Object> config = new HashMap<>();
+    config.put("targetType", "Enemy");
+
+    String result = TargetStrategyHelperMethods.validateAndGetTargetType(config);
+    assertEquals("Enemy", result);
+  }
+
+  @Test
+  void validateAndGetTargetType_missingKey_throwsException() {
+    Map<String, Object> config = new HashMap<>();
+
+    Exception exception = assertThrows(TargetStrategyException.class, () ->
+        TargetStrategyHelperMethods.validateAndGetTargetType(config)
+    );
+
+    assertEquals("Target type is required", exception.getMessage());
+  }
+
+  @Test
+  void validateAndGetTargetType_nullValue_returnsStringNull() {
+    Map<String, Object> config = new HashMap<>();
+    config.put("targetType", null);
+
+    Exception exception = assertThrows(TargetStrategyException.class, () ->
+        TargetStrategyHelperMethods.validateAndGetTargetType(config)
+    );
+
+    assertEquals("Target type is required", exception.getMessage());
+  }
+
+  @Test
+  void validateAndGetTargetType_nonStringValue_returnsConvertedString() {
+    Map<String, Object> config = new HashMap<>();
+    config.put("targetType", 123);  // Integer
+
+    String result = TargetStrategyHelperMethods.validateAndGetTargetType(config);
+    assertEquals("123", result);
+  }
+
 }

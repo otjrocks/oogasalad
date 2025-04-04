@@ -1,9 +1,11 @@
 package oogasalad.player.model.movement.targetcalculation;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
+import oogasalad.player.model.exceptions.TargetStrategyException;
 
 /**
  * A utility class that provides helper methods for target calculation strategies
@@ -47,5 +49,22 @@ class TargetStrategyHelperMethods {
       }
     }
     return Optional.empty();
+  }
+
+  /**
+   * Validates the provided strategy configuration map to ensure it contains a "targetType" key
+   * and retrieves its corresponding value as a string.
+   *
+   * @param strategyConfig a map containing the configuration for the target strategy.
+   *                       It must include a "targetType" key.
+   * @return the value associated with the "targetType" key as a string.
+   * @throws TargetStrategyException if the "targetType" key is not present in the strategyConfig map.
+   */
+   static String validateAndGetTargetType(Map<String, Object> strategyConfig) {
+    if (!strategyConfig.containsKey("targetType") || strategyConfig.get("targetType") == null) {
+      throw new TargetStrategyException("Target type is required");
+    }
+
+    return strategyConfig.get("targetType").toString();
   }
 }
