@@ -61,7 +61,8 @@ class TargetStrategyHelperMethods {
    * @throws TargetStrategyException if the "targetType" key is not present in the strategyConfig map.
    */
    static String validateAndGetTargetType(Map<String, Object> strategyConfig) {
-    if (!strategyConfig.containsKey("targetType") || strategyConfig.get("targetType") == null) {
+    final String TARGET_TYPE_KEY = "targetType";
+    if (!strategyConfig.containsKey(TARGET_TYPE_KEY) || strategyConfig.get(TARGET_TYPE_KEY) == null) {
       throw new TargetStrategyException("Target type is required");
     }
 
