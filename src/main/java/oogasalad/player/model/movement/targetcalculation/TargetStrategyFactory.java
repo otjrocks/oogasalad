@@ -1,5 +1,6 @@
 package oogasalad.player.model.movement.targetcalculation;
 
+import java.lang.reflect.Constructor;
 import java.util.Map;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
@@ -12,6 +13,9 @@ import oogasalad.player.model.exceptions.TargetStrategyException;
  */
 public class TargetStrategyFactory {
 
+  private static final String STRATEGY_PACKAGE
+      = "oogasalad.player.model.movement.targetcalculation.";
+
   /**
    * Factory method to create a TargetStrategy based on the control type of the given
    * EntityPlacement.
@@ -22,44 +26,32 @@ public class TargetStrategyFactory {
    * @return a TargetStrategy instance corresponding to the control type of the entity
    * @throws TargetStrategyException if the control type of the entity is unknown or unsupported
    */
-  public static TargetStrategy createTargetStrategy(EntityPlacement placement,
-      GameMap gameMap)
+  public static TargetStrategy createTargetStrategy(EntityPlacement placement, GameMap gameMap)
       throws TargetStrategyException {
-    String strategy = placement.getType().getControlType().toLowerCase();
-    return switch (strategy) {
-      case "targetentity" -> createTargetTypeStrategy(placement, gameMap);
-      case "targetaheadofentity" -> createTargetTypeStrategy(placement, gameMap);
-      default -> throw new TargetStrategyException("Unknown target strategy");
-    };
-  }
+    String controlType = placement.getType().getControlType();
+    String className = STRATEGY_PACKAGE + capitalize(controlType) + "Strategy";
 
-  private static TargetStrategy createTargetTypeStrategy(EntityPlacement placement,
-      GameMap gameMap) {
-    Map<String, Object> strategyConfig = placement.getType().getStrategyConfig();
-    String targetType = validateAndGetTargetType(strategyConfig);
-    int tilesAhead = validateAndGetTilesAhead(strategyConfig);
-    return new TargetTypeStrategy(gameMap, targetType, tilesAhead);
-  }
-
-  private static String validateAndGetTargetType(Map<String, Object> strategyConfig) {
-    if (!strategyConfig.containsKey("targetType")) {
-      throw new TargetStrategyException("Target type is required");
+    try {
+      Class<?> clazz = Class.forName(className);
+      Constructor<?> constructor = clazz.getConstructor(GameMap.class, Map.class);
+      return (TargetStrategy) constructor.newInstance(gameMap,
+          placement.getType().getStrategyConfig());
+    } catch (Exception e) {
+      throw new TargetStrategyException(
+          "Failed to create strategy for control type: " + controlType, e);
     }
-
-    return strategyConfig.get("targetType").toString();
   }
 
-  private static int validateAndGetTilesAhead(Map<String, Object> strategyConfig) {
-    if (strategyConfig.containsKey("tilesAhead")) {
-      try {
-        return Integer.parseInt(strategyConfig.get("tilesAhead").toString());
-      } catch (NumberFormatException e) {
-        throw new TargetStrategyException("tilesAhead must be an integer", e);
+  // made by chatGPT
+  private static String capitalize(String input) {
+    String[] parts = input.split("(?=[A-Z])|_|\\s+"); // split camelCase, snake_case, or spaces
+    StringBuilder sb = new StringBuilder();
+    for (String part : parts) {
+      if (!part.isEmpty()) {
+        sb.append(part.substring(0, 1).toUpperCase());
+        sb.append(part.substring(1).toLowerCase());
       }
     }
-
-    // we can log this, but may be annoying
-    return 0;
+    return sb.toString();
   }
-
 }
