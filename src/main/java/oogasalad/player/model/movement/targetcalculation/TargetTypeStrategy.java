@@ -53,7 +53,8 @@ public class TargetTypeStrategy implements TargetStrategy {
 
   @Override
   public int[] getTargetPosition() {
-    Optional<Entity> entity = returnFirstEntityOfType();
+    Optional<Entity> entity = TargetStrategyHelperMethods.findFirstEntityOfType(myGameMap,
+        myTargetType);
 
     // if no entity, no target so stay where you are
     // or random movement (design choice for later)
@@ -83,17 +84,5 @@ public class TargetTypeStrategy implements TargetStrategy {
         break;
     }
     return new int[]{targetX, targetY};
-  }
-
-  private Optional<Entity> returnFirstEntityOfType() {
-    Iterator<Entity> iterator = myGameMap.iterator();
-    while (iterator.hasNext()) {
-      Entity entity = iterator.next();
-      if (entity.getEntityPlacement().getTypeString()
-          .equalsIgnoreCase(myTargetType)) {
-        return Optional.of(entity);
-      }
-    }
-    return Optional.empty();
   }
 }
