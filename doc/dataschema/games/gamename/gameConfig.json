@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "gameTitle": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "gameDescription": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "gameTitle",
+        "author",
+        "gameDescription"
+      ]
+    },
+    "defaultSettings": {
+      "type": "object",
+      "properties": {
+        "gameSpeed": {
+          "type": "number"
+        },
+        "startingLives": {
+          "type": "integer"
+        },
+        "initialScore": {
+          "type": "integer"
+        },
+        "scoreStrategy": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "gameSpeed",
+        "startingLives",
+        "initialScore",
+        "scoreStrategy"
+      ]
+    },
+    "levels":
+    {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "object",
+            "properties": {
+              "gameSpeed": {
+                "type": "number"
+              },
+              "startingLives": {
+                "type": "integer"
+              },
+              "initialScore": {
+                "type": "integer"
+              }
+            }
+          },
+          "levelMap": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "levelMap"
+        ]
+      }
+    }
+  },
+  "required": [
+    "metadata",
+    "defaultSettings",
+    "levels"
+  ]
+}
