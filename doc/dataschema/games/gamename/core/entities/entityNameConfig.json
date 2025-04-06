@@ -45,8 +45,7 @@
       "required": [
         "name",
         "controlType",
-        "movementType",
-        "blocks"
+        "movementType"
       ]
     },
     "modes": {
@@ -86,6 +85,7 @@
             "type": "object",
             "properties": {
               "imagePath": {
+                "description": "name of the tileset in assets",
                 "type": "string"
               },
               "tileWidth": {
@@ -103,7 +103,14 @@
               "animationSpeed": {
                 "type": "number"
               }
-            }
+            },
+            "required": [
+              "imagePath",
+              "tileWidth",
+              "tileHeight",
+              "tilesToCycle",
+              "animationSpeed"
+            ]
           }
         },
         "required": [
