@@ -78,7 +78,6 @@
         "BlueGhost"
       ],
       "modes": {
-        "Default": {
           "movementSpeed": 0,
           "imagePath": "assets/images/wall.png"
         }
