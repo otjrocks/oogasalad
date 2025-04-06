@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "entityMappings": {
+      "modes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "entity": {
+              "description": "path to entity",
+              "type": "string"
+            },
+            "id": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "entity",
+            "id"
+          ]
+        }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "edgePolicy": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "controlType",
+        "movementType"
+      ]
+    },
+    "layout": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "entityMappings",
+    "settings",
+    "layout"
+  ]
+}
