@@ -35,13 +35,17 @@
         },
         "scoreStrategy": {
           "type": "string"
+        },
+        "winCondition": {
+          "type": "string"
         }
       },
       "required": [
         "gameSpeed",
         "startingLives",
         "initialScore",
-        "scoreStrategy"
+        "scoreStrategy",
+        "winCondition"
       ]
     },
     "levels":
@@ -61,6 +65,9 @@
               },
               "initialScore": {
                 "type": "integer"
+              },
+              "winCondition": {
+                "type": "string"
               }
             }
           },
