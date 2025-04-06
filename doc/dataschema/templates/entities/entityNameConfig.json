@@ -33,12 +33,20 @@
         },
         "movementSpeed": {
           "type": "number"
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "description": "This string would be the name of the entity it blocks",
+            "type": "string"
+          }
         }
       },
       "required": [
         "name",
         "controlType",
-        "movementType"
+        "movementType",
+        "blocks"
       ]
     },
     "modes": {
