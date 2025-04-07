@@ -18,11 +18,6 @@ public class EntityPlacement {
   private double y;
   private String mode;
 
-  /** Default constructor for deserialization. */
-  public EntityPlacement() {
-    // Empty
-  }
-
   /**
    * Constructs a new EntityPlacement with a given type, position, and mode.
    *
