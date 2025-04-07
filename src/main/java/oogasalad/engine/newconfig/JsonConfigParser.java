@@ -34,10 +34,21 @@ public class JsonConfigParser implements ConfigParser {
 
   private final ObjectMapper mapper;
 
+  /**
+   * Constructs a new JsonConfigParser instance and initializes the ObjectMapper used for parsing
+   * JSON configurations.
+   */
   public JsonConfigParser() {
     this.mapper = new ObjectMapper();
   }
 
+  /**
+   * Loads a game configuration from the specified file path.
+   *
+   * @param filepath the path to the configuration file to be loaded
+   * @return a GameConfig object representing the loaded configuration
+   * @throws ConfigException if there is an error during the loading process
+   */
   public GameConfig loadFromFile(String filepath) throws ConfigException {
     GameConfig gameConfig = loadGameConfig(filepath);
 
