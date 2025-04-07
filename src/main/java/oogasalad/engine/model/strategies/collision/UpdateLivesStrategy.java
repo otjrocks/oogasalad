@@ -3,6 +3,7 @@ package oogasalad.engine.model.strategies.collision;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
+import oogasalad.engine.records.CollisionContext;
 
 /**
  * The {@code UpdateLivesStrategy} class implements the {@link CollisionStrategy} interface
@@ -38,13 +39,11 @@ public class UpdateLivesStrategy implements CollisionStrategy {
    * {@code livesIncrement} value. A positive value increases lives, while a
    * negative value decreases them.</p>
    *
-   * @param entity1 the entity that initiates the collision
-   * @param entity2 the entity that is collided against
-   * @param gameMap the game map containing all entities (unused in this strategy)
-   * @param gameState the current state of the game, where lives are updated
+   * @param collisionContext the context of the collision, containing both entities,
+   *                         the game map, and the current game state
    */
   @Override
-  public void handleCollision(Entity entity1, Entity entity2, GameMap gameMap, GameState gameState) {
-    gameState.updateLives(livesIncrement);
+  public void handleCollision(CollisionContext collisionContext) {
+    collisionContext.gameState().updateLives(livesIncrement);
   }
 }
