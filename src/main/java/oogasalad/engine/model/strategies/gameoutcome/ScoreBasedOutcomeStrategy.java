@@ -1,6 +1,6 @@
 package oogasalad.engine.model.strategies.gameoutcome;
 
-import oogasalad.engine.model.GameState;
+import oogasalad.engine.records.GameContext;
 
 /**
  * The {@code ScoreBasedOutcomeStrategy} class implements the {@link GameOutcomeStrategy}
@@ -26,24 +26,25 @@ public class ScoreBasedOutcomeStrategy implements GameOutcomeStrategy{
   /**
    * Determines if the game has ended based on the player's score.
    *
-   * @param gameState the current state of the game
-   * @return {@code true} if the player's score is greater than or equal to the winning score, {@code false} otherwise
+   * @param gameContext contains gameScore and gameMap
+   * @return {@code true} if the player's score is greater than or equal to the
+   *                           winning score, {@code false} otherwise
    */
   @Override
-  public boolean hasGameEnded(GameState gameState) {
-    return gameState.getScore() >= winningScore;
+  public boolean hasGameEnded(GameContext gameContext) {
+    return gameContext.gameState().getScore() >= winningScore;
   }
 
   /**
-   * Returns the outcome of the game based on the player's score.
-   * If the game has ended due to reaching the winning score, it returns a victory message.
-   * Otherwise, it indicates the game is still ongoing.
+   * Returns the outcome of the game based on the player's score. If the game has ended due to
+   * reaching the winning score, it returns a victory message. Otherwise, it indicates the game is
+   * still ongoing.
    *
-   * @param gameState the current state of the game
+   * @param gameContext contains gameScore and gameMap
    * @return a string representing the game outcome
    */
   @Override
-  public String getGameOutcome(GameState gameState) {
-    return hasGameEnded(gameState) ? "Victory!" : "Game ongoing";
+  public String getGameOutcome(GameContext gameContext) {
+    return hasGameEnded(gameContext) ? "Victory!" : "Game ongoing";
   }
 }
