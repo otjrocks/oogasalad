@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.api.EntityFactory;
@@ -29,13 +30,14 @@ public class TileMapParser {
   /**
    * Parses a tile layout and populates the GameMap with entities.
    *
-   * @param layout tile map string array
-   * @param input input manager
-   * @param map game map to populate
+   * @param layout    tile map string array
+   * @param input     input manager
+   * @param map       game map to populate
    * @param templates map of entity type → entity data templates
    * @throws InvalidPositionException if entity cannot be added
    */
-  public void parseTiles(String[] layout, GameInputManager input, GameMap map, Map<String, EntityPlacement> templates)
+  public void parseTiles(String[] layout, GameInputManager input, GameMap map,
+      Map<String, EntityPlacement> templates)
       throws InvalidPositionException {
 
     for (int y = 0; y < layout.length; y++) {
@@ -43,7 +45,8 @@ public class TileMapParser {
     }
   }
 
-  private void parseRow(String row, int y, GameInputManager input, GameMap map, Map<String, EntityPlacement> templates)
+  private void parseRow(String row, int y, GameInputManager input, GameMap map,
+      Map<String, EntityPlacement> templates)
       throws InvalidPositionException {
     for (int x = 0; x < row.length(); x++) {
       char symbol = row.charAt(x);
@@ -72,9 +75,10 @@ public class TileMapParser {
     EntityPlacement data = new EntityPlacement(template.getType(), x, y, "Default");
     data.setResolvedEntityType(template.getType());
     data.setMode(template.getMode());
-    data.getType().setControlType(template.getType().getControlType());
-    data.setX(x);
-    data.setY(y);
+    EntityType cloneType = new EntityType(data.getType().type(), template.getType().controlType(),
+        data.getType().effect(), data.getType().modes(), data.getType()
+        .blocks(), data.getType().strategyConfig());
+    data.setResolvedEntityType(cloneType);
     return data;
   }
 }

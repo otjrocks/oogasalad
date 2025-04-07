@@ -35,7 +35,7 @@ public class EntityPlacementTest {
         testPlacement.setResolvedEntityType(newEntityType);
 
         assertEquals(newEntityType, testPlacement.getType());
-        assertEquals("Player", testPlacement.getType().getType());
+        assertEquals("Player", testPlacement.getType().type());
     }
 
     @Test

@@ -33,7 +33,7 @@ public class EntityPlacement {
    */
   public EntityPlacement(EntityType type, double x, double y, String mode) {
     this.resolvedEntityType = type;
-    this.type = type.getType();
+    this.type = type.type();
     this.x = x;
     this.y = y;
     this.mode = mode;
@@ -149,7 +149,7 @@ public class EntityPlacement {
   @Override
   public String toString() {
     return "EntityPlacement{" +
-        "entityData=" + resolvedEntityType.getType() +
+        "entityData=" + resolvedEntityType.type() +
         ", x=" + x +
         ", y=" + y +
         '}';

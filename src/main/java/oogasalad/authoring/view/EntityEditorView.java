@@ -52,16 +52,16 @@ public class EntityEditorView extends VBox {
     this.current = type;
     if (type == null) return;
 
-    typeField.setText(type.getType());
+    typeField.setText(type.type());
     typeField.setOnAction(e -> commitChanges());
     typeField.focusedProperty().addListener((obs, oldVal, newVal) -> {
       if (!newVal) commitChanges(); // when field loses focus
     });
 
-    controlTypeBox.setValue(type.getControlType());
+    controlTypeBox.setValue(type.controlType());
 
     modeList.getChildren().clear();
-    for (Map.Entry<String, ModeConfig> entry : type.getModes().entrySet()) {
+    for (Map.Entry<String, ModeConfig> entry : type.modes().entrySet()) {
       String modeName = entry.getKey();
       ModeConfig config = entry.getValue();
       Label label = new Label(modeName + ": " + config.getImagePath() + ", speed=" + config.getMovementSpeed());

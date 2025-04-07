@@ -86,7 +86,7 @@ public class GamePlayerView extends StackPane {
 
     Map<String, EntityPlacement> templateMap = new HashMap<>();
     for (EntityPlacement data : configModel.entityPlacements()) {
-      templateMap.put(data.getType().getType(), data);
+      templateMap.put(data.getType().type(), data);
     }
 
     tileParser.parseTiles(layout, myMainController.getInputManager(), gameMap, templateMap);

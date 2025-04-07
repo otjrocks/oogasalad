@@ -73,7 +73,7 @@ public class JsonConfigParser implements ConfigParser {
    */
   public void resolveEntityTypes(ConfigModel config) {
     Map<String, EntityType> typeMap = config.entityTypes().stream()
-        .collect(Collectors.toMap(EntityType::getType, Function.identity()));
+        .collect(Collectors.toMap(EntityType::type, Function.identity()));
 
     for (EntityPlacement placement : config.entityPlacements()) {
       EntityType matchedType = typeMap.get(placement.getTypeString());
