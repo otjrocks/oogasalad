@@ -19,7 +19,7 @@ import oogasalad.engine.model.GameSettings;
  * Manages adding, updating, and retrieving entity types and level data,
  * and synchronizes changes across levels as needed.
  *
- * @author Will He
+ * @author Will He, Angela Predolac
  */
 public class AuthoringModel {
   private String gameTitle;
