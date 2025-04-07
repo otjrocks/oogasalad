@@ -26,6 +26,8 @@ public class AuthoringController {
 
   private final AuthoringModel model;
   private final AuthoringView view;
+  private final LevelController levelController;
+
 
   private EntityType selectedType;
 
@@ -38,6 +40,7 @@ public class AuthoringController {
   public AuthoringController(AuthoringModel model, AuthoringView view) {
     this.model = model;
     this.view = view;
+    this.levelController = new LevelController(model, view, this);
   }
 
   /**
@@ -119,5 +122,13 @@ public class AuthoringController {
     Map<String, ModeConfig> map = new HashMap<>();
     map.put("Default", defaultMode);
     return map;
+  }
+
+  /**
+   * Get Level Controller
+   * @return level controller
+   */
+  public LevelController getLevelController() {
+    return levelController;
   }
 }

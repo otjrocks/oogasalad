@@ -146,4 +146,11 @@ public class AuthoringModel {
     levels.clear();
   }
 
+  /**
+   * Set current level index
+   * @param index Set value
+   */
+  public void setCurrentLevelIndex(int index) {
+    this.currentLevelIndex = index;
+  }
 }
