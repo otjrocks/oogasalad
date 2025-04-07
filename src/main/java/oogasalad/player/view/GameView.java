@@ -61,7 +61,7 @@ public class GameView extends StackPane {
       }
 
       private boolean checkEnoughTimeHasPassed(double elapsedTime) {
-        return lastUpdateTime == 0 || elapsedTime > 1.0 / 60.0;
+        return lastUpdateTime == 0 || elapsedTime > 1.0 / 30.0;
       }
     };
     gameLoop.start(); // Start the game loop

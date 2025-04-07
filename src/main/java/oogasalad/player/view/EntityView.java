@@ -18,10 +18,10 @@ import oogasalad.engine.model.GameMap;
  */
 public class EntityView extends ImageView {
 
-  private ResourceBundle SPRITE_DATA = ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
+  private final ResourceBundle SPRITE_DATA = ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
 
   private SpriteAnimationView mySprite;
-  private EntityPlacement myEntityPlacement;
+  private final EntityPlacement myEntityPlacement;
   private final int myTotalFrames;
   private final int myOffsetX;
   private final int myOffsetY;
@@ -48,8 +48,8 @@ public class EntityView extends ImageView {
   }
 
   private void setupAnimation() {
-    int frameDimension = 32;
-    int x = (myEntityPlacement.getCurrentFrame() % myTotalFrames) * frameDimension + myOffsetX;
-    this.setViewport(new Rectangle2D(x, myOffsetY, frameDimension, frameDimension));
+    int dimension = Integer.parseInt(SPRITE_DATA.getString((myEntityPlacement.getTypeString() + "_DIM").toUpperCase()));;
+    int x = (myEntityPlacement.getCurrentFrame() % myTotalFrames) * dimension + myOffsetX;
+    this.setViewport(new Rectangle2D(x, myOffsetY, dimension, dimension));
   }
 }
