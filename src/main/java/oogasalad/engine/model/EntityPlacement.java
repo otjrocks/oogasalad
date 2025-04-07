@@ -17,6 +17,7 @@ public class EntityPlacement {
   private double x;
   private double y;
   private String mode;
+  private int currentFrame;
 
   /** Default constructor for deserialization. */
   public EntityPlacement() {
@@ -36,6 +37,7 @@ public class EntityPlacement {
     this.x = x;
     this.y = y;
     this.mode = mode;
+    this.currentFrame = 0;
   }
 
   /**
@@ -128,6 +130,13 @@ public class EntityPlacement {
     this.mode = mode;
   }
 
+  public int getCurrentFrame() {
+    return currentFrame;
+  }
+
+  public void increaseCurrentFrame() {
+    currentFrame++;
+  }
   /**
    * Moves the entity to a new (x, y) location on the map.
    *

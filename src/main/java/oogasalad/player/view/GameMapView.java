@@ -1,11 +1,7 @@
 package oogasalad.player.view;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import javafx.scene.layout.Pane;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
@@ -22,6 +18,7 @@ import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
  */
 public class GameMapView extends Pane {
 
+  private final ResourceBundle SPRITE_DATA = ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
   public static final int PACMAN_INITIAL_X = 13;
   public static final int PACMAN_INITIAL_Y = 23;
   public static final String PACMAN = "Pacman";
@@ -47,7 +44,7 @@ public class GameMapView extends Pane {
     this.getChildren().clear();
     for (Iterator<Entity> it = myGameMap.iterator(); it.hasNext(); ) {
       Entity entity = it.next();
-      EntityView entityView = new EntityView(myGameMap, entity.getEntityPlacement());
+      EntityView entityView = new EntityView(myGameMap, entity.getEntityPlacement(), Integer.parseInt(SPRITE_DATA.getString((entity.getEntityPlacement().getTypeString() + "_FRAMES").toUpperCase())));
       entityView.setLayoutX(
           entity.getEntityPlacement().getX() * ((double) GameView.WIDTH / myGameMap.getWidth()));
       entityView.setLayoutY(entity.getEntityPlacement().getY() * ((double) GameView.HEIGHT
