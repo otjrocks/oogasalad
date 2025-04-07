@@ -52,7 +52,7 @@ public class AuthoringController {
     EntityType newType = new EntityType();
     newType.setType("NewEntity" + UUID.randomUUID().toString().substring(0, 4));
     newType.setModes(defaultModeMap());
-    model.addEntityTemplate(newType);
+    model.addEntityType(newType);
 
     selectedType = newType;
     updateEntitySelector();
@@ -69,7 +69,7 @@ public class AuthoringController {
    * @param typeName the string name of the selected entity type
    */
   public void selectEntityType(String typeName) {
-    model.findEntityTemplateByType(typeName).ifPresent(type -> {
+    model.findEntityType(typeName).ifPresent(type -> {
       selectedType = type;
       view.getEntityEditorView().setEntityType(type);
     });
@@ -78,43 +78,38 @@ public class AuthoringController {
   /**
    * Places a new instance of an entity on the canvas at the given coordinates.
    * If the given type name is valid, a new {@link EntityPlacement} is created,
-   * added to the model, and rendered visually.
-   * <p>
-   * Triggered when a tile is dragged and dropped onto the canvas.
-   * </p>
+   * added to the current level, and rendered visually.
    *
    * @param typeName the name of the entity type being placed
    * @param x        the X-coordinate of the placement (in pixels)
    * @param y        the Y-coordinate of the placement (in pixels)
    */
   public void placeEntity(String typeName, double x, double y) {
-    EntityPlacement placement = model.findEntityTemplateByType(typeName)
-        .map(template -> model.createAndAddEntityPlacement(template, x, y))
-        .orElse(null);
+    model.findEntityType(typeName)
+        .map(template -> model.getCurrentLevel().createAndAddEntityPlacement(template, x, y))
+        .ifPresent(placement -> view.getCanvasView().addEntityVisual(placement));
 
-    if (placement != null) {
-      view.getCanvasView().addEntityVisual(placement); // visually display on canvas
-    }
   }
+
 
   /**
    * Refreshes the entity selector view grid to reflect the current
-   * set of entity templates stored in the model.
+   * set of entity types stored in the model.
    */
   public void updateEntitySelector() {
-    view.getEntitySelectorView().updateEntities(model.getEntityTemplates());
+    view.getEntitySelectorView().updateEntities(new ArrayList<>(model.getEntityTypes()));
   }
+
 
   /**
    * Reloads and re-renders all entity visuals on the canvas based on the
-   * model's list of current {@link EntityPlacement}s.
-   * <p>
-   * This may be called after editing an entity’s visual properties.
-   * </p>
+   * current level’s list of {@link EntityPlacement}s.
    */
   public void updateCanvas() {
-    view.getCanvasView().reloadFromPlacements(model.getEntityPlacements());
+    List<EntityPlacement> placements = model.getCurrentLevel().getEntityPlacements();
+    view.getCanvasView().reloadFromPlacements(placements);
   }
+
 
   // Private helper to provide default values for a new entity's mode config
   private Map<String, ModeConfig> defaultModeMap() {
