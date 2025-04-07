@@ -54,6 +54,9 @@ public class EntityView extends ImageView {
     this.setViewport(new Rectangle2D(x, myOffsetY, dimension, dimension));
   }
 
+  /**
+   * Ensures a valid X-Offset key is sent even when the entity doesn't have a current direction
+   */
   public void getOffsetX() {
     if(myEntity.getEntityDirection() == ' ' || myEntity.getEntityDirection() == '\0') {
       myOffsetX = Integer.parseInt(SPRITE_DATA.getString((myEntity.getEntityPlacement().getTypeString() + "_R_X_OFFSET").toUpperCase()));
@@ -63,6 +66,9 @@ public class EntityView extends ImageView {
     }
   }
 
+  /**
+   * Ensures a valid Y-Offset key is sent even when the entity doesn't have a current direction
+   */
   public void getOffsetY() {
     if(myEntity.getEntityDirection() == ' ' || myEntity.getEntityDirection() == '\0') {
       myOffsetY = Integer.parseInt(SPRITE_DATA.getString((myEntity.getEntityPlacement().getTypeString() + "_R_Y_OFFSET").toUpperCase()));
