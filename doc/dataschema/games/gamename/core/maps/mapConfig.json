@@ -9,7 +9,7 @@
           "type": "object",
           "properties": {
             "entity": {
-              "description": "path to entity",
+              "description": "file name of where this entity is",
               "type": "string"
             },
             "id": {
@@ -45,6 +45,7 @@
     "layout": {
       "type": "array",
       "items": {
+        "description": "x.y, x is the type id, y is the mode, if no .y uses 0 as y, y is indexed based on mode's index order",
         "type": "string"
       }
     }

@@ -1,0 +1,21 @@
+{
+  "entityType": {
+    "name": "Wall",
+    "controlType": {
+      "controlType": "None"
+    },
+    "movementSpeed": 0
+  },
+  "modes": [
+    {
+      "name": "Default",
+      "image": {
+        "imagePath": "wall",
+        "tileWidth": 8,
+        "tileHeight": 8,
+        "tilesToCycle": 0,
+        "animationSpeed": 1.0
+      }
+    }
+  ]
+}
