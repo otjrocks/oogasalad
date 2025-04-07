@@ -10,10 +10,12 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "pellet",
+        "imagePath": "powerpellet",
         "tileWidth": 8,
         "tileHeight": 8,
-        "tilesToCycle": 1,
+        "tilesToCycle": [
+          0
+        ],
         "animationSpeed": 1.0
       }
     }
