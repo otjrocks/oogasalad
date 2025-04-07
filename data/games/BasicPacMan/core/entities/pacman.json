@@ -1,0 +1,44 @@
+{
+  "entityType": {
+    "name": "Pacman",
+    "controlType": {
+      "controlType": "Keyboard"
+    },
+    "movementSpeed": 100
+  },
+  "modes": [
+    {
+      "name": "Default",
+      "image": {
+        "imagePath": "pacman",
+        "tileWidth": 13,
+        "tileHeight": 13,
+        "tilesToCycle": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "animationSpeed": 1.0
+      }
+    },
+    {
+      "name": "PoweredUp",
+      "movementSpeed": 150,
+      "image": {
+        "imagePath": "pacman",
+        "tileWidth": 13,
+        "tileHeight": 13,
+        "tilesToCycle": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "animationSpeed": 1.0
+      }
+    }
+  ]
+}

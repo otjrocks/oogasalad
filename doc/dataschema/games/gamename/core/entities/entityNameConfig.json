@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "entityType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Display name of a type.",
+          "type": "string"
+        },
+        "controlType": {
+          "type": "object",
+          "properties": {
+            "controlType": {
+              "type": "string"
+            },
+            "controlTypeConfig": {
+              "type": "object",
+              "properties": {
+                "targetType": {
+                  "type": "string"
+                },
+                "tilesAhead": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "required": [
+            "controlType"
+          ]
+        },
+        "movementSpeed": {
+          "type": "number"
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "description": "This string would be the name of the entity it blocks",
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "controlType",
+        "movementType"
+      ]
+    },
+    "modes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "controlType": {
+            "type": "object",
+            "properties": {
+              "controlType": {
+                "type": "string"
+              },
+              "controlTypeConfig": {
+                "type": "object",
+                "properties": {
+                  "targetType": {
+                    "type": "string"
+                  },
+                  "tilesAhead": {
+                    "type": "integer"
+                  }
+                }
+              }
+            },
+            "required": [
+              "controlType"
+            ]
+          },
+          "movementSpeed": {
+            "type": "number"
+          },
+          "image": {
+            "type": "object",
+            "properties": {
+              "imagePath": {
+                "description": "name of the tileset in assets",
+                "type": "string"
+              },
+              "tileWidth": {
+                "type": "integer"
+              },
+              "tileHeight": {
+                "type": "integer"
+              },
+              "tilesToCycle": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "animationSpeed": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "imagePath",
+              "tileWidth",
+              "tileHeight",
+              "tilesToCycle",
+              "animationSpeed"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "image"
+        ]
+      }
+    },
+    "collisions":
+    {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "entityB": {
+            "type": "string"
+          },
+          "modeB": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "entityB",
+          "events"
+        ]
+      }
+    }
+  },
+  "required": [
+    "type",
+    "modes"
+  ]
+}

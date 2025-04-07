@@ -20,6 +20,8 @@ public class AuthoringView extends BorderPane {
   private CanvasView canvasView;
   private EntityEditorView entityEditorView;
   private AuthoringController controller;
+  private LevelSelectorView levelSelectorView;
+
 //  private final GameSettingsView gameSettingsView;
 //  private final CollisionRuleEditorView collisionEditorView;
 
@@ -99,6 +101,8 @@ public class AuthoringView extends BorderPane {
     // Sidebar - entity selector and editor
     selectorView = new EntitySelectorView(controller);
     entityEditorView = new EntityEditorView(controller);
+    levelSelectorView = new LevelSelectorView(controller.getLevelController());
+    controller.getLevelController().initDefaultLevelIfEmpty();
 //    VBox leftPanel = new VBox(selectorView, entityEditorView);
 //    leftPanel.getStyleClass().add("left-panel");
 
@@ -112,7 +116,16 @@ public class AuthoringView extends BorderPane {
     this.setBottom(selectorView);
     this.setCenter(canvasView);
     this.setRight(entityEditorView);
+    this.setLeft(levelSelectorView);
 //    this.setBottom(bottomPanel);
 //    this.getStyleClass().add("authoring-view");
+  }
+
+  /**
+   * Get level selector view
+   * @return level selector view
+   */
+  public LevelSelectorView getLevelSelectorView() {
+    return levelSelectorView;
   }
 }

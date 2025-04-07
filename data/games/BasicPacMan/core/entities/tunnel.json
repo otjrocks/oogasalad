@@ -1,0 +1,21 @@
+{
+  "entityType": {
+    "name": "Tunnel",
+    "controlType": {
+      "controlType": "None"
+    },
+    "movementSpeed": 0
+  },
+  "modes": [
+    {
+      "name": "Default",
+      "image": {
+        "imagePath": "tunnel",
+        "tileWidth": 100,
+        "tileHeight": 100,
+        "tilesToCycle": [0],
+        "animationSpeed": 1.0
+      }
+    }
+  ]
+}
