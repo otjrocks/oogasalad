@@ -1,6 +1,8 @@
 package oogasalad.engine.model.strategies.gameoutcome;
 
 import oogasalad.engine.model.GameState;
+import oogasalad.engine.model.entity.Entity;
+import oogasalad.engine.records.GameContext;
 
 /**
  * The {@code EntityBasedOutcomeStrategy} class implements the {@link GameOutcomeStrategy}
@@ -16,26 +18,30 @@ import oogasalad.engine.model.GameState;
 public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
 
   /**
-   * Determines if the game has ended based on the current {@link GameState}.
-   * Check conditions such as whether all pellets have been consumed.
+   * Determines if the game has ended based on the current {@link GameState}. Check conditions such
+   * as whether all pellets have been consumed.
    *
-   * @param gameState the current state of the game
+   * @param gameContext contains gameScore and gameMap
    * @return {@code true} if the game has ended, {@code false} otherwise
    */
   @Override
-  public boolean hasGameEnded(GameState gameState) {
-//    return gameState.getPellets() <= 0;
+  public boolean hasGameEnded(GameContext gameContext) {
+    for (Entity entity : gameContext.gameMap()) {
+      if (entity.getEntityPlacement().getType().getType().equals("Dot")) {
+        return false;
+      }
+    }
     return true;
   }
 
   /**
    * Returns the outcome of the game based on the current {@link GameState}.
    *
-   * @param gameState the current state of the game
+   * @param gameContext contains gameScore and gameMap
    * @return a string representing the game outcome
    */
   @Override
-  public String getGameOutcome(GameState gameState) {
-    return hasGameEnded(gameState) ? "Victory!" : "Game ongoing";
+  public String getGameOutcome(GameContext gameContext) {
+    return hasGameEnded(gameContext) ? "Victory!" : "Game ongoing";
   }
 }
