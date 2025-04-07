@@ -9,11 +9,6 @@ public class ModeConfig {
   private int movementSpeed;
   private String imagePath;
 
-  /** Default constructor for serialization or reflective instantiation. */
-  public ModeConfig() {
-    // Empty
-  }
-
   /**
    * Returns the movement speed associated with this mode.
    *

@@ -125,8 +125,8 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
   private boolean isEmpty(GameMap map, int x, int y, EntityPlacement thisEntity) {
     Optional<Entity> entity = map.getEntityAt(x, y);
 
-    return entity.map(value -> value.getEntityPlacement().getType().getBlocks() == null ||
-        value.getEntityPlacement().getType().getBlocks().stream()
+    return entity.map(value -> value.getEntityPlacement().getType().blocks() == null ||
+        value.getEntityPlacement().getType().blocks().stream()
             .noneMatch(block -> block.equalsIgnoreCase(thisEntity.getTypeString()))).orElse(true);
 
   }

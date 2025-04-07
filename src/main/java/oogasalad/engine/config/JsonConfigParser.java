@@ -72,10 +72,10 @@ public class JsonConfigParser implements ConfigParser {
    * @throws IllegalArgumentException if a referenced entity type is not found
    */
   public void resolveEntityTypes(ConfigModel config) {
-    Map<String, EntityType> typeMap = config.getEntityTypes().stream()
-        .collect(Collectors.toMap(EntityType::getType, Function.identity()));
+    Map<String, EntityType> typeMap = config.entityTypes().stream()
+        .collect(Collectors.toMap(EntityType::type, Function.identity()));
 
-    for (EntityPlacement placement : config.getEntityPlacements()) {
+    for (EntityPlacement placement : config.entityPlacements()) {
       EntityType matchedType = typeMap.get(placement.getTypeString());
       if (matchedType == null) {
         throw new IllegalArgumentException("Unknown entity type: " + placement.getType());

@@ -11,7 +11,6 @@ import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.config.TileMapParser;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
@@ -58,7 +57,7 @@ public class GamePlayerView extends StackPane {
       if (configModel != null) {
         gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), configModel);
 
-        if (configModel.getTiles() != null && !configModel.getTiles().isEmpty()) {
+        if (configModel.tiles() != null && !configModel.tiles().isEmpty()) {
           parseTilesToGameMap(configModel, gameMap);
         }
       }
@@ -82,12 +81,12 @@ public class GamePlayerView extends StackPane {
   private void parseTilesToGameMap(ConfigModel configModel, GameMap gameMap)
       throws InvalidPositionException {
 
-    String[] layout = configModel.getTiles().getFirst().getLayout();
+    String[] layout = configModel.tiles().getFirst().getLayout();
     TileMapParser tileParser = new TileMapParser();
 
     Map<String, EntityPlacement> templateMap = new HashMap<>();
-    for (EntityPlacement data : configModel.getEntityPlacements()) {
-      templateMap.put(data.getType().getType(), data);
+    for (EntityPlacement data : configModel.entityPlacements()) {
+      templateMap.put(data.getType().type(), data);
     }
 
     tileParser.parseTiles(layout, myMainController.getInputManager(), gameMap, templateMap);
