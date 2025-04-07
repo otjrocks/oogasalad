@@ -22,6 +22,7 @@ public class EntityPlacement {
    * A default constructor is required for the file parsing API.
    */
   public EntityPlacement() {
+    // Empty constructor for file parsing API.
   }
 
   /**
