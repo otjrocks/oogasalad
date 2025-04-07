@@ -1,0 +1,25 @@
+{
+  "entityType": {
+    "name": "BlueGhost",
+    "controlType": {
+      "controlType": "TargetAheadOfEntity",
+      "controlTypeConfig": {
+        "targetType": "Pacman",
+        "tilesAhead": 4
+      }
+    },
+    "movementSpeed": 90
+  },
+  "modes": [
+    {
+      "name": "Default",
+      "image": {
+        "imagePath": "ghost",
+        "tileWidth": 8,
+        "tileHeight": 8,
+        "tilesToCycle": 1,
+        "animationSpeed": 1.0
+      }
+    }
+  ]
+}
