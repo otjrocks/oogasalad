@@ -328,16 +328,15 @@ public class CanvasView extends Pane {
    */
   public void reloadFromPlacements(java.util.List<EntityPlacement> placements) {
     this.getChildren().clear();
-    for (int r = 0; r < ROWS; r++) {
-      for (int c = 0; c < COLS; c++) {
-        gridEntities[r][c] = null;
-      }
-    }
-    entityViews.clear();
-    initializeHoverHighlight();
-    initializeSelectionHighlight();
+
+    // Add visuals back
     for (EntityPlacement placement : placements) {
       addEntityVisual(placement);
     }
+
+    // Restore hover highlight after clearing
+    this.getChildren().add(hoverHighlight);
   }
+
+
 }
