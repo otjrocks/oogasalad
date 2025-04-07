@@ -69,25 +69,35 @@ public class AuthoringModel {
   }
 
   /**
-   * Updates an existing entity type by name.
-   * If the name has changed, removes the old type and replaces it with the new one.
-   * Also updates all entity placements in all levels to reference the new type.
+   * Updates an existing entity type by name. If the name has changed, removes the old type and
+   * replaces it with the new one. Also updates all entity placements in all levels to reference the
+   * new type.
    *
    * @param oldTypeName the name of the type to replace
-   * @param newType the new EntityType data
-   * @return true if the update was successful; false if the old type was not found
+   * @param newType     the new EntityType data
    */
-  public boolean updateEntityType(String oldTypeName, EntityType newType) {
-    EntityType oldType = entityTypeMap.get(oldTypeName);
-    if (oldType == null || newType == null) {
-      return false;
+  public void updateEntityType(String oldTypeName, EntityType newType) {
+    if (!isValidUpdate(oldTypeName, newType)) {
+      return;
     }
 
+    updateEntityTypeMap(oldTypeName, newType);
+    updateEntityPlacements(oldTypeName, newType);
+  }
+
+  private boolean isValidUpdate(String oldTypeName, EntityType newType) {
+    return oldTypeName != null && newType != null && entityTypeMap.containsKey(oldTypeName);
+  }
+
+  private void updateEntityTypeMap(String oldTypeName, EntityType newType) {
     if (!oldTypeName.equals(newType.getType())) {
       entityTypeMap.remove(oldTypeName);
     }
-
     entityTypeMap.put(newType.getType(), newType);
+  }
+
+  private void updateEntityPlacements(String oldTypeName, EntityType newType) {
+    EntityType oldType = entityTypeMap.get(newType.getType());
 
     for (LevelDraft level : levels) {
       for (EntityPlacement placement : level.getEntityPlacements()) {
@@ -97,7 +107,6 @@ public class AuthoringModel {
         }
       }
     }
-    return true;
   }
 
   /**
