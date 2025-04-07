@@ -1,5 +1,6 @@
 package oogasalad.authoring.view;
 
+import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
@@ -326,7 +327,7 @@ public class CanvasView extends Pane {
   /**
    * Reload all visuals (e.g., after editing types or modes).
    */
-  public void reloadFromPlacements(java.util.List<EntityPlacement> placements) {
+  public void reloadFromPlacements(List<EntityPlacement> placements) {
     this.getChildren().clear();
 
     // Add visuals back
@@ -337,6 +338,5 @@ public class CanvasView extends Pane {
     // Restore hover highlight after clearing
     this.getChildren().add(hoverHighlight);
   }
-
 
 }
