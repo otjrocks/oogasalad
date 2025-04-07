@@ -9,11 +9,28 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import oogasalad.engine.config.ConfigException;
+import oogasalad.engine.newconfig.api.ConfigParser;
 import oogasalad.engine.newconfig.model.Level;
 import oogasalad.engine.newconfig.model.Metadata;
 import oogasalad.engine.newconfig.model.Settings;
 
-public class JsonConfigParser {
+/**
+ * The {@code JsonConfigParser} class is responsible for parsing game configuration files in JSON
+ * format and converting them into {@link GameConfig} objects. It uses the Jackson library to handle
+ * JSON parsing and mapping.
+ *
+ * <p>This class implements the {@link ConfigParser} interface and provides methods to
+ * load configuration data from a file, merge settings, and extract folder paths.
+ *
+ * <p>Example usage:
+ * <pre>
+ * JsonConfigParser parser = new JsonConfigParser();
+ * GameConfig config = parser.loadFromFile("path/to/config.json");
+ * </pre>
+ *
+ * @author Jessica Chen
+ */
+public class JsonConfigParser implements ConfigParser {
 
   private final ObjectMapper mapper;
 
@@ -22,6 +39,14 @@ public class JsonConfigParser {
   }
 
   public GameConfig loadFromFile(String filepath) throws ConfigException {
+    GameConfig gameConfig = loadGameConfig(filepath);
+
+    String folderPath = gameConfig.gameFolderPath();
+
+    return gameConfig;
+  }
+
+  private GameConfig loadGameConfig(String filepath) throws ConfigException {
     try {
       JsonNode root = mapper.readTree(new File(filepath));
 
@@ -48,7 +73,9 @@ public class JsonConfigParser {
   }
 
   private Settings mergeSettings(Settings defaults, Settings override) {
-    if (override == null) return defaults;
+    if (override == null) {
+      return defaults;
+    }
 
     return new Settings(
         override.gameSpeed() != null ? override.gameSpeed() : defaults.gameSpeed(),

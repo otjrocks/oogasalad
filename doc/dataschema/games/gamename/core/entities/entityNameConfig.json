@@ -45,7 +45,7 @@
       "required": [
         "name",
         "controlType",
-        "movementType"
+        "movementSpeed"
       ]
     },
     "modes": {
@@ -155,7 +155,7 @@
     }
   },
   "required": [
-    "type",
+    "entityType",
     "modes"
   ]
 }
