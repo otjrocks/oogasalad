@@ -147,17 +147,10 @@ public class JsonConfigParser implements ConfigParser {
 
       JsonNode entityTypeNode = root.get("entityType");
       EntityProperties defaultProps = parseEntityProperties(entityTypeNode, filepath);
-      List<String> blocks = parseBlocks(entityTypeNode);
       List<ModeConfig> modes = parseModes(root.get("modes"), defaultProps, filepath);
-
-      double initialX = 0;
-      double initialY = 0;
 
       return new EntityConfig(
           defaultProps.name(),
-          initialX,
-          initialY,
-          blocks,
           defaultProps,
           modes
       );
@@ -174,16 +167,6 @@ public class JsonConfigParser implements ConfigParser {
     } catch (JsonProcessingException e) {
       throw new ConfigException("Failed to process entityType in json: " + filepath, e);
     }
-  }
-
-  private List<String> parseBlocks(JsonNode entityTypeNode) {
-    List<String> blocks = new ArrayList<>();
-    if (entityTypeNode.has("blocks")) {
-      for (JsonNode block : entityTypeNode.get("blocks")) {
-        blocks.add(block.asText());
-      }
-    }
-    return blocks;
   }
 
   private List<ModeConfig> parseModes(JsonNode modesNode, EntityProperties defaultProps,
@@ -203,10 +186,12 @@ public class JsonConfigParser implements ConfigParser {
     }
   }
 
-  private EntityProperties mergeProperties(String modeName, EntityProperties defaultProps, JsonNode modeNode)
+  private EntityProperties mergeProperties(String modeName, EntityProperties defaultProps,
+      JsonNode modeNode)
       throws JsonProcessingException {
     final String CONTROL_TYPE = "controlType";
     final String MOVEMENT_SPEED = "movementSpeed";
+    final String BLOCKS = "blocks";
 
     ControlType controlType = modeNode.has(CONTROL_TYPE)
         ? mapper.treeToValue(modeNode.get(CONTROL_TYPE), ControlType.class)
@@ -216,10 +201,16 @@ public class JsonConfigParser implements ConfigParser {
         ? modeNode.get(MOVEMENT_SPEED).asDouble()
         : defaultProps.movementSpeed();
 
+    List<String> blocks = modeNode.has(BLOCKS)
+        ? mapper.convertValue(modeNode.get(BLOCKS),
+        mapper.getTypeFactory().constructCollectionType(List.class, String.class))
+        : defaultProps.blocks();
+
     return new EntityProperties(
         modeName,
         controlType,
-        movementSpeed
+        movementSpeed,
+        blocks
     );
   }
 

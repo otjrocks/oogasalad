@@ -152,9 +152,6 @@ class JsonConfigParserTest {
 
     // Act & Assert
     assertEquals("Ghost", config.name());
-    assertEquals(0.0, config.initialX());
-    assertEquals(0.0, config.initialY());
-    assertEquals(List.of("Player"), config.blocks());
 
     // Default properties
     EntityProperties baseProps = config.entityProperties();
@@ -163,6 +160,7 @@ class JsonConfigParserTest {
     assertEquals("Player", baseProps.controlType().controlTypeConfig().targetType());
     assertEquals(2, baseProps.controlType().controlTypeConfig().tilesAhead());
     assertEquals(1.5, baseProps.movementSpeed());
+    assertEquals(List.of("Player"), baseProps.blocks());
 
     // Modes
     List<ModeConfig> modes = config.modes();
@@ -172,6 +170,8 @@ class JsonConfigParserTest {
     assertEquals("Frightened", frightened.name());
     assertEquals("Random", frightened.entityProperties().controlType().controlType());
     assertEquals(1.0, frightened.entityProperties().movementSpeed());
+    assertEquals("Frightened", frightened.entityProperties().name()); // now mode name
+    assertEquals(List.of("Player"), frightened.entityProperties().blocks()); // inherited
 
     ImageConfig frightImg = frightened.image();
     assertEquals("ghost.png", frightImg.imagePath());
@@ -182,6 +182,8 @@ class JsonConfigParserTest {
     assertEquals("Normal", normal.name());
     assertEquals("Chase", normal.entityProperties().controlType().controlType()); // inherited
     assertEquals(1.5, normal.entityProperties().movementSpeed()); // inherited
+    assertEquals("Normal", normal.entityProperties().name());
+    assertEquals(List.of("Player"), normal.entityProperties().blocks()); // inherited
     assertEquals(List.of(0, 1), normal.image().tilesToCycle());
   }
 
