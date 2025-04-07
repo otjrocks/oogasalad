@@ -1,24 +1,34 @@
 package oogasalad.authoring.model;
 
-import oogasalad.engine.model.EntityType;
-import oogasalad.engine.model.EntityPlacement;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.model.EntityType;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class AuthoringModelTest {
 
     private AuthoringModel model;
     private EntityType mockTemplate1;
     private EntityType mockTemplate2;
+    private LevelDraft level;
 
     @BeforeEach
     public void setUp() {
         model = new AuthoringModel();
+        level = new LevelDraft("Level 1", "level1_map.json");
+        model.addLevel(level);
 
         mockTemplate1 = mock(EntityType.class);
         when(mockTemplate1.getType()).thenReturn("Player");
@@ -28,168 +38,151 @@ class AuthoringModelTest {
     }
 
     @Test
-    public void testAddEntityTemplate() {
-        assertTrue(model.addEntityTemplate(mockTemplate1), "Should return true when adding a valid template");
-        assertEquals(1, model.getEntityTemplates().size(), "Template list should have one element");
-        assertEquals(mockTemplate1, model.getEntityTemplates().get(0), "Added template should be in the list");
-
-        assertFalse(model.addEntityTemplate(null), "Should return false when adding null");
+    public void addOrUpdateEntityType_NewEntityType_EntityAdded() {
+        model.addEntityType(mockTemplate1);
+        assertEquals(1, model.getEntityTypes().size());
+        assertTrue(model.getEntityTypes().contains(mockTemplate1));
     }
 
     @Test
-    public void testRemoveEntityTemplate() {
-        model.addEntityTemplate(mockTemplate1);
-        model.addEntityTemplate(mockTemplate2);
-        assertEquals(2, model.getEntityTemplates().size(), "Should have two templates");
+    public void addOrUpdateEntityType_ExistingEntityType_EntityReplaced() {
+        model.addEntityType(mockTemplate1);
+        EntityType replacement = mock(EntityType.class);
+        when(replacement.getType()).thenReturn("Player");
 
-        assertTrue(model.removeEntityTemplate(mockTemplate1), "Should return true when removing existing template");
-        assertEquals(1, model.getEntityTemplates().size(), "Should have one template left");
-        assertEquals(mockTemplate2, model.getEntityTemplates().get(0), "Remaining template should be mockTemplate2");
-
-        EntityType nonExistentTemplate = mock(EntityType.class);
-        assertFalse(model.removeEntityTemplate(nonExistentTemplate), "Should return false when template not found");
+        model.addEntityType(replacement);
+        assertEquals(1, model.getEntityTypes().size());
+        assertTrue(model.getEntityTypes().contains(replacement));
     }
 
     @Test
-    public void testUpdateEntityTemplate() {
-        model.addEntityTemplate(mockTemplate1);
+    public void findEntityType_EntityExists_ReturnsEntity() {
+        model.addEntityType(mockTemplate1);
+        Optional<EntityType> result = model.findEntityType("Player");
 
-        EntityType newTemplate = mock(EntityType.class);
-        when(newTemplate.getType()).thenReturn("UpdatedPlayer");
-
-        assertTrue(model.updateEntityTemplate(mockTemplate1, newTemplate), "Should return true on successful update");
-        assertEquals(1, model.getEntityTemplates().size(), "Should still have one template");
-        assertEquals(newTemplate, model.getEntityTemplates().get(0), "Template should be updated to new one");
-
-        EntityType nonExistentTemplate = mock(EntityType.class);
-        assertFalse(model.updateEntityTemplate(nonExistentTemplate, newTemplate), "Should return false when template not found");
+        assertTrue(result.isPresent());
+        assertEquals(mockTemplate1, result.get());
     }
 
     @Test
-    public void testUpdateEntityTemplateAffectsPlacements() {
-        model.addEntityTemplate(mockTemplate1);
-        EntityPlacement placement = model.createAndAddEntityPlacement(mockTemplate1, 10, 20);
-
-        EntityType newTemplate = mock(EntityType.class);
-        when(newTemplate.getType()).thenReturn("UpdatedPlayer");
-
-        model.updateEntityTemplate(mockTemplate1, newTemplate);
-
-        assertEquals(newTemplate, placement.getType(), "Placement should reference the new template");
+    public void findEntityType_EntityMissing_ReturnsEmptyOptional() {
+        assertFalse(model.findEntityType("Ghost").isPresent());
     }
 
     @Test
-    public void testFindEntityTemplateByType() {
-        model.addEntityTemplate(mockTemplate1);
-        model.addEntityTemplate(mockTemplate2);
+    public void updateEntityType_EntityExists_PlacementsUpdated() {
+        model.addEntityType(mockTemplate1);
+        EntityPlacement placement = level.createAndAddEntityPlacement(mockTemplate1, 10, 20);
 
-        Optional<EntityType> result = model.findEntityTemplateByType("Player");
-        assertTrue(result.isPresent(), "Should find existing template");
-        assertEquals(mockTemplate1, result.get(), "Should return the correct template");
+        EntityType updated = mock(EntityType.class);
+        when(updated.getType()).thenReturn("Player");
 
-        result = model.findEntityTemplateByType("NonExistent");
-        assertFalse(result.isPresent(), "Should return empty Optional for non-existent template");
+        model.updateEntityType(mockTemplate1.getType(), updated);
+
+        assertEquals(updated, placement.getType());
     }
 
     @Test
-    public void testAddEntityPlacement() {
+    public void addEntityPlacement_ValidPlacement_PlacementAdded() {
         EntityPlacement placement = new EntityPlacement(mockTemplate1, 10, 20, "Default");
-
-        assertTrue(model.addEntityPlacement(placement), "Should return true when adding valid placement");
-        assertEquals(1, model.getEntityPlacements().size(), "Should have one placement");
-        assertEquals(placement, model.getEntityPlacements().get(0), "Added placement should be in the list");
-
-        assertFalse(model.addEntityPlacement(null), "Should return false when adding null");
+        assertTrue(level.addEntityPlacement(placement));
+        assertEquals(1, level.getEntityPlacements().size());
     }
 
     @Test
-    public void testCreateAndAddEntityPlacement() {
-        EntityPlacement placement = model.createAndAddEntityPlacement(mockTemplate1, 15, 25);
-
-        assertNotNull(placement, "Should return a non-null placement");
-        assertEquals(1, model.getEntityPlacements().size(), "Should have one placement");
-        assertEquals(mockTemplate1, placement.getType(), "Placement should have the correct template");
-        assertEquals(15, placement.getX(), "Placement should have the correct X coordinate");
-        assertEquals(25, placement.getY(), "Placement should have the correct Y coordinate");
-
-        assertNull(model.createAndAddEntityPlacement(null, 30, 40), "Should return null for null template");
-        assertEquals(1, model.getEntityPlacements().size(), "Placement list size should not change");
+    public void addEntityPlacement_NullPlacement_ReturnsFalse() {
+        assertFalse(level.addEntityPlacement(null));
     }
 
     @Test
-    public void testRemoveEntityPlacement() {
-        EntityPlacement placement1 = model.createAndAddEntityPlacement(mockTemplate1, 10, 20);
-        EntityPlacement placement2 = model.createAndAddEntityPlacement(mockTemplate2, 30, 40);
-        assertEquals(2, model.getEntityPlacements().size(), "Should have two placements");
-
-        assertTrue(model.removeEntityPlacement(placement1), "Should return true when removing existing placement");
-        assertEquals(1, model.getEntityPlacements().size(), "Should have one placement left");
-        assertEquals(placement2, model.getEntityPlacements().get(0), "Remaining placement should be placement2");
-
-        EntityPlacement nonExistentPlacement = new EntityPlacement(mockTemplate1, 50, 60, "Default");
-        assertFalse(model.removeEntityPlacement(nonExistentPlacement), "Should return false when placement not found");
+    public void removeEntityPlacement_ExistingPlacement_PlacementRemoved() {
+        EntityPlacement placement = level.createAndAddEntityPlacement(mockTemplate1, 10, 20);
+        assertTrue(level.removeEntityPlacement(placement));
+        assertTrue(level.getEntityPlacements().isEmpty());
     }
 
     @Test
-    public void testFindEntityPlacementAt() {
-        EntityPlacement placement1 = model.createAndAddEntityPlacement(mockTemplate1, 100, 200);
-        EntityPlacement placement2 = model.createAndAddEntityPlacement(mockTemplate2, 300, 400);
-
-        Optional<EntityPlacement> result = model.findEntityPlacementAt(100, 200, 0.1);
-        assertTrue(result.isPresent(), "Should find exact match");
-        assertEquals(placement1, result.get(), "Should return correct placement");
-
-        result = model.findEntityPlacementAt(102, 198, 5);
-        assertTrue(result.isPresent(), "Should find placement within threshold");
-        assertEquals(placement1, result.get(), "Should return correct placement");
-
-        result = model.findEntityPlacementAt(110, 210, 5);
-        assertFalse(result.isPresent(), "Should not find placement outside threshold");
-
-        EntityPlacement placement3 = model.createAndAddEntityPlacement(mockTemplate1, 101, 201);
-        result = model.findEntityPlacementAt(100, 200, 5);
-        assertTrue(result.isPresent(), "Should find a placement");
-        assertEquals(placement1, result.get(), "Should return the first matching placement");
+    public void removeEntityPlacement_NonexistentPlacement_ReturnsFalse() {
+        EntityPlacement placement = new EntityPlacement(mockTemplate1, 10, 20, "Default");
+        assertFalse(level.removeEntityPlacement(placement));
     }
 
     @Test
-    public void testClearEntityPlacements() {
-        model.addEntityTemplate(mockTemplate1);
-        model.createAndAddEntityPlacement(mockTemplate1, 10, 20);
-        model.createAndAddEntityPlacement(mockTemplate1, 30, 40);
-        assertEquals(2, model.getEntityPlacements().size(), "Should have two placements");
-
-        model.clearEntityPlacements();
-        assertTrue(model.getEntityPlacements().isEmpty(), "Placement list should be empty");
-        assertFalse(model.getEntityTemplates().isEmpty(), "Template list should still have elements");
+    public void createAndAddEntityPlacement_ValidTemplate_ReturnsPlacement() {
+        EntityPlacement placement = level.createAndAddEntityPlacement(mockTemplate1, 15, 25);
+        assertNotNull(placement);
+        assertEquals(mockTemplate1, placement.getType());
+        assertEquals(15, placement.getX());
+        assertEquals(25, placement.getY());
     }
 
     @Test
-    public void testClearAll() {
-        model.addEntityTemplate(mockTemplate1);
-        model.addEntityTemplate(mockTemplate2);
-        model.createAndAddEntityPlacement(mockTemplate1, 10, 20);
+    public void createAndAddEntityPlacement_NullTemplate_ReturnsNull() {
+        EntityPlacement placement = level.createAndAddEntityPlacement(null, 15, 25);
+        assertNull(placement);
+    }
+
+    @Test
+    public void findEntityPlacementAt_ExactMatch_FindsPlacement() {
+        EntityPlacement placement = level.createAndAddEntityPlacement(mockTemplate1, 100, 200);
+        Optional<EntityPlacement> found = level.findEntityPlacementAt(100, 200, 0.1);
+
+        assertTrue(found.isPresent());
+        assertEquals(placement, found.get());
+    }
+
+    @Test
+    public void findEntityPlacementAt_WithinThreshold_FindsPlacement() {
+        EntityPlacement placement = level.createAndAddEntityPlacement(mockTemplate1, 100, 200);
+        Optional<EntityPlacement> found = level.findEntityPlacementAt(102, 198, 5);
+
+        assertTrue(found.isPresent());
+        assertEquals(placement, found.get());
+    }
+
+    @Test
+    public void findEntityPlacementAt_OutsideThreshold_ReturnsEmpty() {
+        level.createAndAddEntityPlacement(mockTemplate1, 100, 200);
+        Optional<EntityPlacement> found = level.findEntityPlacementAt(110, 210, 5);
+
+        assertFalse(found.isPresent());
+    }
+
+    @Test
+    public void clearPlacements_HasPlacements_ClearsAll() {
+        level.createAndAddEntityPlacement(mockTemplate1, 10, 20);
+        level.clearPlacements();
+
+        assertTrue(level.getEntityPlacements().isEmpty());
+    }
+
+    @Test
+    public void clearAll_HasEntitiesAndLevels_ClearsAll() {
+        model.addEntityType(mockTemplate1);
+        level.createAndAddEntityPlacement(mockTemplate1, 10, 20);
 
         model.clearAll();
-        assertTrue(model.getEntityTemplates().isEmpty(), "Template list should be empty");
-        assertTrue(model.getEntityPlacements().isEmpty(), "Placement list should be empty");
+        assertTrue(model.getEntityTypes().isEmpty());
+        assertTrue(model.getLevels().isEmpty());
     }
 
     @Test
-    public void testGettersReturnUnmodifiableCollections() {
-        model.addEntityTemplate(mockTemplate1);
-        model.createAndAddEntityPlacement(mockTemplate1, 10, 20);
-
-        List<EntityType> templates = model.getEntityTemplates();
-        List<EntityPlacement> placements = model.getEntityPlacements();
+    public void getEntityTypes_ModifyReturnedCollection_ThrowsException() {
+        model.addEntityType(mockTemplate1);
+        Collection<EntityType> types = model.getEntityTypes();
 
         assertThrows(UnsupportedOperationException.class, () -> {
-            templates.add(mockTemplate2);
-        }, "Should throw exception when trying to modify templates list");
-
-        assertThrows(UnsupportedOperationException.class, () -> {
-            placements.clear();
-        }, "Should throw exception when trying to modify placements list");
+            types.clear();
+        });
     }
 
+    @Test
+    public void getEntityPlacements_ModifyReturnedList_ThrowsException() {
+        level.createAndAddEntityPlacement(mockTemplate1, 10, 20);
+        List<EntityPlacement> placements = level.getEntityPlacements();
+
+        assertThrows(UnsupportedOperationException.class, () -> {
+            placements.add(new EntityPlacement(mockTemplate1, 0, 0, "Default"));
+        });
+    }
 }

@@ -1,8 +1,7 @@
-package oogasalad.authoring.model;
+package oogasalad.engine.model;
 
 import static org.junit.jupiter.api.Assertions.*;
-import oogasalad.engine.model.EntityType;
-import oogasalad.engine.model.EntityPlacement;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

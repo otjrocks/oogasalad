@@ -1,191 +1,84 @@
 package oogasalad.authoring.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.GameSettings;
 
-import java.util.*;
-
-/**
- * Top-level model that manages all authoring data for the game.
- * Stores entity templates, entity placements, collision rules, and game settings.
- *
- * @author Angela Predolac
- */
 public class AuthoringModel {
+  private String gameTitle;
+  private String author;
+  private String gameDescription;
+  private GameSettings defaultSettings;
 
-  private List<EntityType> entityTemplates;
-  private List<EntityPlacement> entityPlacements;
-  // private CollisionRuleEditorModel collisionRuleModel;
-  // private GameSettingsModel gameSettingsModel;
 
-  /**
-   * Creates a new AuthoringModel with empty collections and default models.
-   */
+  private Map<String, EntityType> entityTypeMap;
+  private List<LevelDraft> levels;
+  private int currentLevelIndex;
+
   public AuthoringModel() {
-    entityTemplates = new ArrayList<>();
-    entityPlacements = new ArrayList<>();
-    // collisionRuleModel = new CollisionRuleEditorModel();
-    // gameSettingsModel = new GameSettingsModel();
+    this.entityTypeMap = new LinkedHashMap<>();
+    this.levels = new ArrayList<>();
+    this.defaultSettings = new GameSettings();
   }
 
-  /**
-   * Return an unmodifiable list of all entity templates.
-   *
-   * @return An unmodifiable list of all entity templates
-   */
-  public List<EntityType> getEntityTemplates() {
-    return Collections.unmodifiableList(entityTemplates);
+  public LevelDraft getCurrentLevel() {
+    return levels.get(currentLevelIndex);
   }
 
-  /**
-   * Adds a new entity template to the model.
-   *
-   * @param template The entity template to add
-   * @return true if the template was added successfully
-   */
-  public boolean addEntityTemplate(EntityType template) {
-    if (template == null || findEntityTemplateByType(template.getType()).isPresent()) {
+  public void addLevel(LevelDraft level) {
+    levels.add(level);
+    currentLevelIndex = levels.size() - 1;
+  }
+
+  public void addEntityType(EntityType type) {
+    entityTypeMap.put(type.getType(), type);
+  }
+
+  public boolean updateEntityType(String oldTypeName, EntityType newType) {
+    EntityType oldType = entityTypeMap.get(oldTypeName);
+    if (oldType == null || newType == null) {
       return false;
     }
-    return entityTemplates.add(template);
-  }
 
-  /**
-   * Removes an entity template from the model.
-   *
-   * @param template The entity template to remove
-   * @return true if the template was removed successfully
-   */
-  public boolean removeEntityTemplate(EntityType template) {
-    return entityTemplates.remove(template);
-  }
+    if (!oldTypeName.equals(newType.getType())) {
+      entityTypeMap.remove(oldTypeName);
+    }
 
-  /**
-   * Updates an existing entity template.
-   *
-   * @param oldTemplate The template to replace
-   * @param newTemplate The new template data
-   * @return true if the template was updated successfully
-   */
-  public boolean updateEntityTemplate(EntityType oldTemplate, EntityType newTemplate) {
-    int index = entityTemplates.indexOf(oldTemplate);
-    if (index >= 0) {
-      entityTemplates.set(index, newTemplate);
+    entityTypeMap.put(newType.getType(), newType);
 
-      // Update any placements using this template
-      for (EntityPlacement placement : entityPlacements) {
-        if (placement.getType() == oldTemplate) {
-          placement.setResolvedEntityType(newTemplate);
+    for (LevelDraft level : levels) {
+      for (EntityPlacement placement : level.getEntityPlacements()) {
+        if (placement.getType() == oldType) {
+          placement.setType(newType.getType());
+          placement.setResolvedEntityType(newType);
         }
       }
-      return true;
     }
-    return false;
+    return true;
   }
 
-  /**
-   * Finds an entity template by its type.
-   *
-   * @param type The type of the entity template to find
-   * @return An Optional containing the found template, or empty if not found
-   */
-  public Optional<EntityType> findEntityTemplateByType(String type) {
-    return entityTemplates.stream()
-        .filter(template -> template.getType().equals(type))
-        .findFirst();
+
+  public Collection<EntityType> getEntityTypes() {
+    return Collections.unmodifiableCollection(entityTypeMap.values());
   }
 
-  /**
-   * Returns an unmodifiable list of all entity placements.
-   *
-   * @return An unmodifiable list of all entity placements
-   */
-  public List<EntityPlacement> getEntityPlacements() {
-    return Collections.unmodifiableList(entityPlacements);
+  public Optional<EntityType> findEntityType(String typeName) {
+    return Optional.ofNullable(entityTypeMap.get(typeName));
   }
 
-  /**
-   * Adds a new entity placement to the model.
-   *
-   * @param placement The entity placement to add
-   * @return true if the placement was added successfully
-   */
-  public boolean addEntityPlacement(EntityPlacement placement) {
-    if (placement == null) {
-      return false;
-    }
-    return entityPlacements.add(placement);
+  public List<LevelDraft> getLevels() {
+    return levels;
   }
 
-  /**
-   * Creates and adds a new entity placement using an existing template.
-   *
-   * @param template The entity template to use
-   * @param x        The x coordinate for placement
-   * @param y        The y coordinate for placement
-   * @return The newly created EntityPlacement, or null if template was null
-   */
-  public EntityPlacement createAndAddEntityPlacement(EntityType template, double x, double y) {
-    if (template == null) {
-      return null;
-    }
-    EntityPlacement placement = new EntityPlacement(template, x, y, "Default");
-    entityPlacements.add(placement);
-    return placement;
-  }
-
-  /**
-   * Removes an entity placement from the model.
-   *
-   * @param placement The entity placement to remove
-   * @return true if the placement was removed successfully
-   */
-  public boolean removeEntityPlacement(EntityPlacement placement) {
-    return entityPlacements.remove(placement);
-  }
-
-  /**
-   * Finds an entity placement at or near the specified coordinates.
-   *
-   * @param x         The x coordinate to search at
-   * @param y         The y coordinate to search at
-   * @param threshold The maximum distance to consider for a match
-   * @return An Optional containing the found placement, or empty if not found
-   */
-  public Optional<EntityPlacement> findEntityPlacementAt(double x, double y, double threshold) {
-    return entityPlacements.stream()
-        .filter(placement -> {
-          double dx = placement.getX() - x;
-          double dy = placement.getY() - y;
-          return Math.sqrt(dx * dx + dy * dy) <= threshold;
-        })
-        .findFirst();
-  }
-
-  /*
-  public CollisionRuleEditorModel getCollisionRuleModel() {
-      return collisionRuleModel;
-  }
-
-  public GameSettingsModel getGameSettingsModel() {
-      return gameSettingsModel;
-  }
-  */
-
-  /**
-   * Clears all entity placements from the model.
-   */
-  public void clearEntityPlacements() {
-    entityPlacements.clear();
-  }
-
-  /**
-   * Clears all data in the model, including templates, placements, and settings.
-   */
   public void clearAll() {
-    entityTemplates.clear();
-    entityPlacements.clear();
-    // collisionRuleModel = new CollisionRuleEditorModel();
-    // gameSettingsModel = new GameSettingsModel();
+    entityTypeMap.clear();
+    levels.clear();
   }
 }
