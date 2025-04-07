@@ -131,10 +131,16 @@ public class EntityPlacement {
     this.mode = mode;
   }
 
+  /**
+   * Gets the current frame of animation the entity is on
+   */
   public int getCurrentFrame() {
     return currentFrame;
   }
 
+  /**
+   * Increments the current frame of the animation by 1
+   */
   public void increaseCurrentFrame() {
     currentFrame++;
   }
