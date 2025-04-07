@@ -1,12 +1,12 @@
 package oogasalad.engine.model;
 
 /**
- * Represents a specific instance of an {@link EntityType} placed at a location on the map.
- * Each placement includes an (x, y) coordinate and a mode (e.g., "Default", "PoweredUp").
- * Used to instantiate and track the position and state of individual entities.
- *
- * The `type` field is used during deserialization, while `resolvedEntityType` is populated
- * later when matching string types to actual {@link EntityType} objects.
+ * Represents a specific instance of an {@link EntityType} placed at a location on the map. Each
+ * placement includes an (x, y) coordinate and a mode (e.g., "Default", "PoweredUp"). Used to
+ * instantiate and track the position and state of individual entities.
+ * <p>
+ * The `type` field is used during deserialization, while `resolvedEntityType` is populated later
+ * when matching string types to actual {@link EntityType} objects.
  *
  * @author Will He, Angela Predolac
  */
@@ -17,6 +17,12 @@ public class EntityPlacement {
   private double x;
   private double y;
   private String mode;
+
+  /**
+   * A default constructor is required for the file parsing API.
+   */
+  public EntityPlacement() {
+  }
 
   /**
    * Constructs a new EntityPlacement with a given type, position, and mode.
@@ -136,8 +142,8 @@ public class EntityPlacement {
   }
 
   /**
-   * Returns a string representation of this EntityPlacement,
-   * including resolved type and position info.
+   * Returns a string representation of this EntityPlacement, including resolved type and position
+   * info.
    *
    * @return a string summary of the entity placement
    */
