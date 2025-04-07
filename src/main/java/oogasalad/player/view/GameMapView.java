@@ -45,7 +45,7 @@ public class GameMapView extends Pane {
     for (Iterator<Entity> it = myGameMap.iterator(); it.hasNext(); ) {
       Entity entity = it.next();
       entity.getEntityPlacement().increaseCurrentFrame();
-      EntityView entityView = new EntityView(myGameMap, entity.getEntityPlacement(), Integer.parseInt(SPRITE_DATA.getString((entity.getEntityPlacement().getTypeString() + "_FRAMES").toUpperCase())));
+      EntityView entityView = new EntityView(myGameMap, entity, Integer.parseInt(SPRITE_DATA.getString((entity.getEntityPlacement().getTypeString() + "_FRAMES").toUpperCase())));
       entityView.setLayoutX(
           entity.getEntityPlacement().getX() * ((double) GameView.WIDTH / myGameMap.getWidth()));
       entityView.setLayoutY(entity.getEntityPlacement().getY() * ((double) GameView.HEIGHT
