@@ -101,7 +101,8 @@ public class AuthoringView extends BorderPane {
     // Sidebar - entity selector and editor
     selectorView = new EntitySelectorView(controller);
     entityEditorView = new EntityEditorView(controller);
-    levelSelectorView = new LevelSelectorView(controller);
+    levelSelectorView = new LevelSelectorView(controller.getLevelController());
+    controller.getLevelController().initDefaultLevelIfEmpty();
 //    VBox leftPanel = new VBox(selectorView, entityEditorView);
 //    leftPanel.getStyleClass().add("left-panel");
 

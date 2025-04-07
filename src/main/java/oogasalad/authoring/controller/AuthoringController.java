@@ -124,11 +124,7 @@ public class AuthoringController {
     return map;
   }
 
-  public void handleAddLevel() {
-    levelController.addNewLevel();
-  }
-
-  public void handleSwitchLevel(int index) {
-    levelController.switchToLevel(index);
+  public LevelController getLevelController() {
+    return levelController;
   }
 }

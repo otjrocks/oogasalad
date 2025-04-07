@@ -25,24 +25,24 @@ public class LevelSelectorView extends HBox {
 
   private final ComboBox<String> levelDropdown = new ComboBox<>();
   private final Button addLevelButton = new Button("+ Add Level");
-  private AuthoringController controller;
+  private LevelController controller;
 
   /**
    * Constructs the LevelSelectorView and wires up interactions.
    *
    * @param controller the controller responsible for managing level logic
    */
-  public LevelSelectorView(AuthoringController controller) {
+  public LevelSelectorView(LevelController controller) {
     this.controller = controller;
     levelDropdown.setPromptText("Select Level");
     levelDropdown.setOnAction(e -> {
       int selectedIndex = levelDropdown.getSelectionModel().getSelectedIndex();
       if (selectedIndex >= 0) {
-        controller.handleSwitchLevel(selectedIndex);
+        controller.switchToLevel(selectedIndex);
       }
     });
 
-    addLevelButton.setOnAction(e -> controller.handleAddLevel());
+    addLevelButton.setOnAction(e -> controller.addNewLevel());
 
     this.setSpacing(10);
     this.getChildren().addAll(levelDropdown, addLevelButton);
