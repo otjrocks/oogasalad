@@ -3,7 +3,6 @@ package oogasalad.engine.model.entity;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.strategies.collision.StopStrategy;
 
 /**
  * An entity that can use keyboard input.
@@ -72,7 +71,7 @@ public class KeyboardControlledEntity extends Entity {
 
   private boolean checkNoWall(int x, int y) {
     return gameMap.getEntityAt(x, y)
-        .filter(entity -> entity.getEntityPlacement().getType().getType().equals("Wall"))
+        .filter(entity -> entity.getEntityPlacement().getType().type().equals("Wall"))
         .isEmpty();
   }
 }

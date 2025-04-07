@@ -100,8 +100,8 @@ public class GameMapView extends Pane {
 
   private void handlePacManDeath(Entity e1, Entity e2) {
     // TODO: remove hard coded later, just for testing
-    if (e1.getEntityPlacement().getType().getType().equals(PACMAN) && e2.getEntityPlacement()
-        .getType().getType().equals("RedGhost")) {
+    if (e1.getEntityPlacement().getType().type().equals(PACMAN) && e2.getEntityPlacement()
+        .getType().type().equals("RedGhost")) {
       myGameState.updateLives(-1);
       e1.getEntityPlacement().setX(PACMAN_INITIAL_X);
       e1.getEntityPlacement().setY(PACMAN_INITIAL_Y);
@@ -109,8 +109,8 @@ public class GameMapView extends Pane {
       e2.getEntityPlacement().setX(GHOST_INITIAL_POSITION);
       e2.getEntityPlacement().setY(GHOST_INITIAL_POSITION);
     }
-    if (e1.getEntityPlacement().getType().getType().equals(PACMAN) && e2.getEntityPlacement()
-        .getType().getType().equals("BlueGhost")) {
+    if (e1.getEntityPlacement().getType().type().equals(PACMAN) && e2.getEntityPlacement()
+        .getType().type().equals("BlueGhost")) {
       try {
         myGameMap.removeEntity(e2);
       } catch (EntityNotFoundException e) {
@@ -122,8 +122,8 @@ public class GameMapView extends Pane {
 
   private void handlePacManFoodDot(Entity e1, Entity e2) {
     // TODO: remove hard coded later, just for testing
-    if (e1.getEntityPlacement().getType().getType().equals(PACMAN) && e2.getEntityPlacement()
-        .getType().getType().equals("Dot")) {
+    if (e1.getEntityPlacement().getType().type().equals(PACMAN) && e2.getEntityPlacement()
+        .getType().type().equals("Dot")) {
       ConsumeStrategy consumeStrategy = new ConsumeStrategy();
       try {
         consumeStrategy.handleCollision(e1, e2, myGameMap, myGameState);
@@ -138,8 +138,8 @@ public class GameMapView extends Pane {
   private void handleEntityWallStop(Entity e1, Entity e2, String entityType) {
     StopStrategy stopStrategy = new StopStrategy();
     // TODO: remove hard coded later, just for testing
-    if (e1.getEntityPlacement().getType().getType().equals(entityType) &&
-        e2.getEntityPlacement().getType().getType().equals("Wall")) {
+    if (e1.getEntityPlacement().getType().type().equals(entityType) &&
+        e2.getEntityPlacement().getType().type().equals("Wall")) {
       try {
         stopStrategy.handleCollision(e1, e2, myGameMap, myGameState);
       } catch (EntityNotFoundException e) {

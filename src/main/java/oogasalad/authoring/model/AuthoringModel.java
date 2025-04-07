@@ -6,22 +6,22 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameSettings;
 
 /**
- * The central model for the Authoring Environment.
- * Stores global game settings, entity templates, and multiple level drafts.
- *
- * Manages adding, updating, and retrieving entity types and level data,
- * and synchronizes changes across levels as needed.
+ * The central model for the Authoring Environment. Stores global game settings, entity templates,
+ * and multiple level drafts.
+ * <p>
+ * Manages adding, updating, and retrieving entity types and level data, and synchronizes changes
+ * across levels as needed.
  *
  * @author Will He, Angela Predolac
  */
 public class AuthoringModel {
+
   private String gameTitle;
   private String author;
   private String gameDescription;
@@ -37,7 +37,7 @@ public class AuthoringModel {
   public AuthoringModel() {
     this.entityTypeMap = new LinkedHashMap<>();
     this.levels = new ArrayList<>();
-    this.defaultSettings = new GameSettings();
+    this.defaultSettings = new GameSettings(1.0, 3, 0, "EDGE", 10, 10);
   }
 
   /**
@@ -60,13 +60,13 @@ public class AuthoringModel {
   }
 
   /**
-   * Adds or replaces an entity type in the global entity type map.
-   * If a type with the same name already exists, it is overwritten.
+   * Adds or replaces an entity type in the global entity type map. If a type with the same name
+   * already exists, it is overwritten.
    *
    * @param type the EntityType to add
    */
   public void addEntityType(EntityType type) {
-    entityTypeMap.put(type.getType(), type);
+    entityTypeMap.put(type.type(), type);
   }
 
   /**
@@ -91,7 +91,7 @@ public class AuthoringModel {
   }
 
   private void updateEntityTypeMap(String oldTypeName, EntityType newType) {
-    if (!oldTypeName.equals(newType.getType())) {
+    if (!oldTypeName.equals(newType.type())) {
       entityTypeMap.remove(oldTypeName);
     }
     addEntityType(newType);
@@ -102,7 +102,7 @@ public class AuthoringModel {
     for (LevelDraft level : levels) {
       for (EntityPlacement placement : level.getEntityPlacements()) {
         if (placement.getTypeString().equals(oldTypeName)) {
-          placement.setType(newType.getType());
+          placement.setType(newType.type());
           placement.setResolvedEntityType(newType);
         }
       }
@@ -138,8 +138,7 @@ public class AuthoringModel {
   }
 
   /**
-   * Clears all entity types and levels from the model.
-   * Use with caution — this is a full reset.
+   * Clears all entity types and levels from the model. Use with caution — this is a full reset.
    */
   public void clearAll() {
     entityTypeMap.clear();
@@ -148,6 +147,7 @@ public class AuthoringModel {
 
   /**
    * Set current level index
+   *
    * @param index Set value
    */
   public void setCurrentLevelIndex(int index) {

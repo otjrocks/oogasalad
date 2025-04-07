@@ -31,10 +31,10 @@ class AuthoringModelTest {
         model.addLevel(level);
 
         mockTemplate1 = mock(EntityType.class);
-        when(mockTemplate1.getType()).thenReturn("Player");
+        when(mockTemplate1.type()).thenReturn("Player");
 
         mockTemplate2 = mock(EntityType.class);
-        when(mockTemplate2.getType()).thenReturn("Enemy");
+        when(mockTemplate2.type()).thenReturn("Enemy");
     }
 
     @Test
@@ -64,9 +64,9 @@ class AuthoringModelTest {
         EntityPlacement placement = level.createAndAddEntityPlacement(mockTemplate1, 10, 20);
 
         EntityType updated = mock(EntityType.class);
-        when(updated.getType()).thenReturn("Player");
+        when(updated.type()).thenReturn("Player");
 
-        model.updateEntityType(mockTemplate1.getType(), updated);
+        model.updateEntityType(mockTemplate1.type(), updated);
 
         assertEquals(updated, placement.getType());
     }
