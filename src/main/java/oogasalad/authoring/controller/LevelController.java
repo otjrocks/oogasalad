@@ -67,6 +67,9 @@ public class LevelController {
     view.getLevelSelectorView().updateLevels(levels);
   }
 
+  /**
+   * Default level 1
+   */
   public void initDefaultLevelIfEmpty() {
     if (model.getLevels().isEmpty()) {
       LevelDraft defaultLevel = new LevelDraft("Level 1", "level1_map.json");

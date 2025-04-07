@@ -124,6 +124,10 @@ public class AuthoringController {
     return map;
   }
 
+  /**
+   * Get Level Controller
+   * @return level controller
+   */
   public LevelController getLevelController() {
     return levelController;
   }

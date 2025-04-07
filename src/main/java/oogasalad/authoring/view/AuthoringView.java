@@ -121,6 +121,10 @@ public class AuthoringView extends BorderPane {
 //    this.getStyleClass().add("authoring-view");
   }
 
+  /**
+   * Get level selector view
+   * @return level selector view
+   */
   public LevelSelectorView getLevelSelectorView() {
     return levelSelectorView;
   }
