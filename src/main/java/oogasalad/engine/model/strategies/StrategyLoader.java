@@ -45,17 +45,6 @@ public class StrategyLoader {
   }
 
   /**
-   * Retrieves a list of available effect strategy classes.
-   *
-   * @return a list of classes implementing the {@code EffectStrategy} interface.
-   * @throws LoadStrategyException if effect strategies cannot be loaded.
-   */
-  List<Class<? extends EffectStrategy>> getAvailableEffectStrategies()
-      throws LoadStrategyException {
-    return List.of();
-  }
-
-  /**
    * Retrieves a list of available game outcome strategy classes.
    *
    * @return a list of classes implementing the {@code GameOutcomeStrategy} interface.

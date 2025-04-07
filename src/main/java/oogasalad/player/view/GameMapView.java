@@ -14,6 +14,7 @@ import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
 import oogasalad.engine.model.strategies.collision.StopStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
+import oogasalad.engine.records.CollisionContext;
 
 /**
  * The view used to display the game map.
@@ -124,16 +125,17 @@ public class GameMapView extends Pane {
 
   private void handlePacManFoodDot(Entity e1, Entity e2) {
     // TODO: remove hard coded later, just for testing
+    CollisionContext collisionContext = new CollisionContext(e1, e2, myGameMap, myGameState);
     if (e1.getEntityPlacement().getType().getType().equals(PACMAN) && e2.getEntityPlacement()
         .getType().getType().equals("Dot")) {
       ConsumeStrategy consumeStrategy = new ConsumeStrategy();
       try {
-        consumeStrategy.handleCollision(e1, e2, myGameMap, myGameState);
+        consumeStrategy.handleCollision(collisionContext);
       } catch (EntityNotFoundException e) {
         throw new RuntimeException(e);
       }
       UpdateScoreStrategy scoreStrategy = new UpdateScoreStrategy(10);
-      scoreStrategy.handleCollision(e1, e2, myGameMap, myGameState);
+      scoreStrategy.handleCollision(collisionContext);
     }
   }
 
@@ -143,7 +145,7 @@ public class GameMapView extends Pane {
     if (e1.getEntityPlacement().getType().getType().equals(entityType) &&
         e2.getEntityPlacement().getType().getType().equals("Wall")) {
       try {
-        stopStrategy.handleCollision(e1, e2, myGameMap, myGameState);
+        stopStrategy.handleCollision(new CollisionContext(e1, e2, myGameMap, myGameState));
       } catch (EntityNotFoundException e) {
         throw new RuntimeException(e);
       }
