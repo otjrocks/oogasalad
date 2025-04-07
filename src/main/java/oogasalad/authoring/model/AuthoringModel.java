@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
@@ -93,15 +94,14 @@ public class AuthoringModel {
     if (!oldTypeName.equals(newType.getType())) {
       entityTypeMap.remove(oldTypeName);
     }
-    entityTypeMap.put(newType.getType(), newType);
+    addEntityType(newType);
   }
 
   private void updateEntityPlacements(String oldTypeName, EntityType newType) {
-    EntityType oldType = entityTypeMap.get(newType.getType());
 
     for (LevelDraft level : levels) {
       for (EntityPlacement placement : level.getEntityPlacements()) {
-        if (placement.getType() == oldType) {
+        if (placement.getTypeString().equals(oldTypeName)) {
           placement.setType(newType.getType());
           placement.setResolvedEntityType(newType);
         }

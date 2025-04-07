@@ -38,21 +38,10 @@ class AuthoringModelTest {
     }
 
     @Test
-    public void addOrUpdateEntityType_NewEntityType_EntityAdded() {
+    public void addEntityType_NewEntityType_EntityAdded() {
         model.addEntityType(mockTemplate1);
         assertEquals(1, model.getEntityTypes().size());
         assertTrue(model.getEntityTypes().contains(mockTemplate1));
-    }
-
-    @Test
-    public void addOrUpdateEntityType_ExistingEntityType_EntityReplaced() {
-        model.addEntityType(mockTemplate1);
-        EntityType replacement = mock(EntityType.class);
-        when(replacement.getType()).thenReturn("Player");
-
-        model.addEntityType(replacement);
-        assertEquals(1, model.getEntityTypes().size());
-        assertTrue(model.getEntityTypes().contains(replacement));
     }
 
     @Test

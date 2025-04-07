@@ -33,6 +33,7 @@ public class EntityPlacement {
    */
   public EntityPlacement(EntityType type, double x, double y, String mode) {
     this.resolvedEntityType = type;
+    this.type = type.getType();
     this.x = x;
     this.y = y;
     this.mode = mode;
