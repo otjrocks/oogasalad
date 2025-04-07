@@ -11,9 +11,15 @@
       "name": "Default",
       "image": {
         "imagePath": "pacman",
-        "tileWidth": 8,
-        "tileHeight": 8,
-        "tilesToCycle": 0,
+        "tileWidth": 13,
+        "tileHeight": 13,
+        "tilesToCycle": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
         "animationSpeed": 1.0
       }
     },
@@ -22,9 +28,15 @@
       "movementSpeed": 150,
       "image": {
         "imagePath": "pacman",
-        "tileWidth": 8,
-        "tileHeight": 8,
-        "tilesToCycle": 1,
+        "tileWidth": 13,
+        "tileHeight": 13,
+        "tilesToCycle": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
         "animationSpeed": 1.0
       }
     }

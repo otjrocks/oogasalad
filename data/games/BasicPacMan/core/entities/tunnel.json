@@ -11,9 +11,9 @@
       "name": "Default",
       "image": {
         "imagePath": "tunnel",
-        "tileWidth": 8,
-        "tileHeight": 8,
-        "tilesToCycle": 0,
+        "tileWidth": 100,
+        "tileHeight": 100,
+        "tilesToCycle": [0],
         "animationSpeed": 1.0
       }
     }
