@@ -197,75 +197,130 @@ public class CanvasView extends Pane {
   }
 
   private void handleEntityMouseDragged(MouseEvent e) {
-    if (selectedEntity != null && selectedImageView != null) {
-      double offsetX = e.getSceneX() - dragStartX;
-      double offsetY = e.getSceneY() - dragStartY;
+    if (selectedEntity == null || selectedImageView == null) {
+      return;
+    }
 
-      // Update the visual position during drag
-      double newX = selectedEntity.getX() + offsetX;
-      double newY = selectedEntity.getY() + offsetY;
+    double offsetX = e.getSceneX() - dragStartX;
+    double offsetY = e.getSceneY() - dragStartY;
+    double newX = selectedEntity.getX() + offsetX;
+    double newY = selectedEntity.getY() + offsetY;
 
-      // Snap to grid during drag
-      int col = (int)(newX / TILE_SIZE);
-      int row = (int)(newY / TILE_SIZE);
+    int col = (int)(newX / TILE_SIZE);
+    int row = (int)(newY / TILE_SIZE);
 
-      if (isValidCell(row, col)) {
-        double snappedX = col * TILE_SIZE;
-        double snappedY = row * TILE_SIZE;
+    updateEntityPositionDuringDrag(row, col);
 
-        // Only update visuals if the cell is empty or it's the original cell
-        if (gridEntities[row][col] == null || (row == origRow && col == origCol)) {
-          selectedImageView.setX(snappedX);
-          selectedImageView.setY(snappedY);
-          selectionHighlight.setX(snappedX);
-          selectionHighlight.setY(snappedY);
-        }
-      }
+    dragStartX = e.getSceneX();
+    dragStartY = e.getSceneY();
 
-      // Update drag start for next event
-      dragStartX = e.getSceneX();
-      dragStartY = e.getSceneY();
+    e.consume();
+  }
 
-      e.consume();
+  /**
+   * Updates the visual position of the selected entity during drag if the target cell is valid.
+   *
+   * @param row target grid row
+   * @param col target grid column
+   */
+  private void updateEntityPositionDuringDrag(int row, int col) {
+    if (!isValidCell(row, col)) {
+      return;
+    }
+
+    boolean isCellAvailable = gridEntities[row][col] == null ||
+            (row == origRow && col == origCol);
+
+    if (isCellAvailable) {
+      double snappedX = col * TILE_SIZE;
+      double snappedY = row * TILE_SIZE;
+
+      selectedImageView.setX(snappedX);
+      selectedImageView.setY(snappedY);
+      selectionHighlight.setX(snappedX);
+      selectionHighlight.setY(snappedY);
     }
   }
 
   private void handleEntityMouseReleased(MouseEvent e) {
-    if (selectedEntity != null && selectedImageView != null) {
-      // Get the final grid position
-      int newCol = (int)(selectedImageView.getX() / TILE_SIZE);
-      int newRow = (int)(selectedImageView.getY() / TILE_SIZE);
-
-      // Only move if the position is valid and either empty or the original position
-      if (isValidCell(newRow, newCol) &&
-              (gridEntities[newRow][newCol] == null || (newRow == origRow && newCol == origCol))) {
-
-        // If actually moved to a new position
-        if (newRow != origRow || newCol != origCol) {
-          // Update grid tracking
-          gridEntities[origRow][origCol] = null;
-          gridEntities[newRow][newCol] = selectedEntity;
-
-          // Get the snapped coordinates
-          double snappedX = newCol * TILE_SIZE;
-          double snappedY = newRow * TILE_SIZE;
-
-          // Update the model through controller
-          controller.moveEntity(selectedEntity, snappedX, snappedY);
-        }
-      } else {
-        // Invalid move, return to original position
-        selectedImageView.setX(origCol * TILE_SIZE);
-        selectedImageView.setY(origRow * TILE_SIZE);
-      }
-
-      // Reset selection
-      selectionHighlight.setVisible(false);
-      selectedEntity = null;
-      selectedImageView = null;
-
-      e.consume();
+    if (selectedEntity == null || selectedImageView == null) {
+      return;
     }
+
+    int newCol = (int)(selectedImageView.getX() / TILE_SIZE);
+    int newRow = (int)(selectedImageView.getY() / TILE_SIZE);
+
+    finalizeEntityMovement(newRow, newCol);
+
+    selectionHighlight.setVisible(false);
+    selectedEntity = null;
+    selectedImageView = null;
+
+    e.consume();
+  }
+
+  /**
+   * Finalizes the movement of an entity to its new position or reverts it to the original position
+   * if the new position is invalid.
+   *
+   * @param newRow target grid row
+   * @param newCol target grid column
+   */
+  private void finalizeEntityMovement(int newRow, int newCol) {
+    // Check if movement is valid and actually changed position
+    boolean isValidMove = isValidPosition(newRow, newCol) && hasPositionChanged(newRow, newCol);
+
+    if (isValidMove) {
+      applyValidMove(newRow, newCol);
+      return;
+    }
+
+    // If position is invalid, revert to original position
+    if (!isValidPosition(newRow, newCol)) {
+      revertToOriginalPosition();
+    }
+  }
+
+  /**
+   * Checks if the given position is valid for entity placement.
+   */
+  private boolean isValidPosition(int row, int col) {
+    if (!isValidCell(row, col)) {
+      return false;
+    }
+
+    return gridEntities[row][col] == null || (row == origRow && col == origCol);
+  }
+
+  /**
+   * Checks if the position has changed from the original.
+   */
+  private boolean hasPositionChanged(int row, int col) {
+    return row != origRow || col != origCol;
+  }
+
+  /**
+   * Applies a valid entity move to the new position.
+   */
+  private void applyValidMove(int newRow, int newCol) {
+    // Update grid tracking
+    gridEntities[origRow][origCol] = null;
+    gridEntities[newRow][newCol] = selectedEntity;
+
+    // Get the snapped coordinates
+    double snappedX = newCol * TILE_SIZE;
+    double snappedY = newRow * TILE_SIZE;
+
+    // Update the model through controller
+    controller.moveEntity(selectedEntity, snappedX, snappedY);
+  }
+
+  /**
+   * Reverts entity position to its original location.
+   */
+  private void revertToOriginalPosition() {
+    selectedImageView.setX(origCol * TILE_SIZE);
+    selectedImageView.setY(origRow * TILE_SIZE);
   }
 
   /**
