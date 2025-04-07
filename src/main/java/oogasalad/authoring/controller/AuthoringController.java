@@ -12,7 +12,6 @@ import java.util.*;
  * Coordinates updates between the {@link AuthoringModel} and {@link AuthoringView}.
  * This controller responds to user actions in the authoring interface,
  * managing entity templates and placements on the canvas.
- *
  * Responsibilities include:
  * <ul>
  *   <li>Creating and registering new entity types</li>
@@ -20,7 +19,7 @@ import java.util.*;
  *   <li>Syncing view components with model data</li>
  * </ul>
  *
- * @author Will He
+ * @author Will He, Angela Predolac
  */
 public class AuthoringController {
 
@@ -94,6 +93,20 @@ public class AuthoringController {
 
   }
 
+  /**
+   * Moves an existing entity placement to a new position on the canvas.
+   * Updates both the model and visual representation of the entity.
+   *
+   * @param placement the EntityPlacement being moved
+   * @param x         the new X-coordinate (in pixels)
+   * @param y         the new Y-coordinate (in pixels)
+   */
+  public void moveEntity(EntityPlacement placement, double x, double y) {
+    if (placement == null) {
+      return;
+    }
+    placement.moveTo(x, y);
+  }
 
   /**
    * Refreshes the entity selector view grid to reflect the current
