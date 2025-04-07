@@ -165,11 +165,18 @@ public class CanvasView extends Pane {
   }
 
   private void handleEntityMousePressed(MouseEvent e) {
-    if (e.getSource() instanceof ImageView) {
-      ImageView clickedImageView = (ImageView) e.getSource();
-      EntityPlacement clickedEntity = entityViews.get(clickedImageView);
+    if (e == null || !(e.getSource() instanceof ImageView clickedImageView)) {
+      return;
+    }
 
-      if (clickedEntity != null) {
+    EntityPlacement clickedEntity = entityViews.get(clickedImageView);
+
+    if (clickedEntity == null) {
+      return;
+    }
+
+    if (e.getSource() instanceof ImageView) {
+
         // Select this entity
         selectedEntity = clickedEntity;
         selectedImageView = clickedImageView;
@@ -186,7 +193,6 @@ public class CanvasView extends Pane {
         selectionHighlight.setVisible(true);
 
         e.consume();
-      }
     }
   }
 

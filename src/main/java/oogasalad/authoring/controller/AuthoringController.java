@@ -12,7 +12,6 @@ import java.util.*;
  * Coordinates updates between the {@link AuthoringModel} and {@link AuthoringView}.
  * This controller responds to user actions in the authoring interface,
  * managing entity templates and placements on the canvas.
- *
  * Responsibilities include:
  * <ul>
  *   <li>Creating and registering new entity types</li>
@@ -100,6 +99,9 @@ public class AuthoringController {
    * @param y         the new Y-coordinate (in pixels)
    */
   public void moveEntity(EntityPlacement placement, double x, double y) {
+    if (placement == null) {
+      return;
+    }
     placement.moveTo(x, y);
   }
 
