@@ -21,7 +21,7 @@ public class LevelDraftTest {
     level = new LevelDraft("Test Level", "test_map.json");
 
     mockType = mock(EntityType.class);
-    when(mockType.getType()).thenReturn("TestEntity");
+    when(mockType.type()).thenReturn("TestEntity");
   }
 
   @Test

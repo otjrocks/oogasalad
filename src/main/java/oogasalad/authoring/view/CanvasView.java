@@ -140,7 +140,7 @@ public class CanvasView extends Pane {
    */
   public void addEntityVisual(EntityPlacement placement) {
     String imagePath = placement.getType()
-        .getModes()
+        .modes()
         .get(placement.getMode())
         .getImagePath();
 

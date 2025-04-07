@@ -32,6 +32,6 @@ public class EntityView extends ImageView {
   private void initializeView() {
     this.setImage(new Image(
         Objects.requireNonNull(
-            this.getClass().getClassLoader().getResourceAsStream(myPlacement.getType().getModes().get("Default").getImagePath()))));
+            this.getClass().getClassLoader().getResourceAsStream(myPlacement.getType().modes().get("Default").getImagePath()))));
   }
 }

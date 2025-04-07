@@ -9,10 +9,9 @@ import oogasalad.engine.config.ModeConfig;
 import java.util.*;
 
 /**
- * Coordinates updates between the {@link AuthoringModel} and {@link AuthoringView}.
- * This controller responds to user actions in the authoring interface,
- * managing entity templates and placements on the canvas.
- * Responsibilities include:
+ * Coordinates updates between the {@link AuthoringModel} and {@link AuthoringView}. This controller
+ * responds to user actions in the authoring interface, managing entity templates and placements on
+ * the canvas. Responsibilities include:
  * <ul>
  *   <li>Creating and registering new entity types</li>
  *   <li>Responding to entity selection and placement actions</li>
@@ -43,17 +42,16 @@ public class AuthoringController {
   }
 
   /**
-   * Creates a new {@link EntityType} with a default mode and registers it
-   * in the model. Updates the entity selector and opens the entity editor
-   * for the newly created type.
+   * Creates a new {@link EntityType} with a default mode and registers it in the model. Updates the
+   * entity selector and opens the entity editor for the newly created type.
    * <p>
    * Triggered when the user clicks the "+ Add Entity Type" button.
    * </p>
    */
   public void createNewEntityType() {
-    EntityType newType = new EntityType();
-    newType.setType("NewEntity" + UUID.randomUUID().toString().substring(0, 4));
-    newType.setModes(defaultModeMap());
+    String newTypeName = "NewEntity" + UUID.randomUUID().toString().substring(0, 4);
+    EntityType newType = new EntityType(newTypeName, "", "", defaultModeMap(), null, null);
+    // TODO: update this to include all required fields such as control type and effect type instead of providing null.
     model.addEntityType(newType);
 
     selectedType = newType;
@@ -62,8 +60,8 @@ public class AuthoringController {
   }
 
   /**
-   * Selects an existing {@link EntityType} by its name and updates the
-   * entity editor with its details.
+   * Selects an existing {@link EntityType} by its name and updates the entity editor with its
+   * details.
    * <p>
    * Triggered when a tile is clicked in the EntitySelectorView.
    * </p>
@@ -78,9 +76,9 @@ public class AuthoringController {
   }
 
   /**
-   * Places a new instance of an entity on the canvas at the given coordinates.
-   * If the given type name is valid, a new {@link EntityPlacement} is created,
-   * added to the current level, and rendered visually.
+   * Places a new instance of an entity on the canvas at the given coordinates. If the given type
+   * name is valid, a new {@link EntityPlacement} is created, added to the current level, and
+   * rendered visually.
    *
    * @param typeName the name of the entity type being placed
    * @param x        the X-coordinate of the placement (in pixels)
@@ -94,8 +92,8 @@ public class AuthoringController {
   }
 
   /**
-   * Moves an existing entity placement to a new position on the canvas.
-   * Updates both the model and visual representation of the entity.
+   * Moves an existing entity placement to a new position on the canvas. Updates both the model and
+   * visual representation of the entity.
    *
    * @param placement the EntityPlacement being moved
    * @param x         the new X-coordinate (in pixels)
@@ -109,8 +107,8 @@ public class AuthoringController {
   }
 
   /**
-   * Refreshes the entity selector view grid to reflect the current
-   * set of entity types stored in the model.
+   * Refreshes the entity selector view grid to reflect the current set of entity types stored in
+   * the model.
    */
   public void updateEntitySelector() {
     view.getEntitySelectorView().updateEntities(new ArrayList<>(model.getEntityTypes()));
@@ -118,8 +116,8 @@ public class AuthoringController {
 
 
   /**
-   * Reloads and re-renders all entity visuals on the canvas based on the
-   * current level’s list of {@link EntityPlacement}s.
+   * Reloads and re-renders all entity visuals on the canvas based on the current level’s list of
+   * {@link EntityPlacement}s.
    */
   public void updateCanvas() {
     List<EntityPlacement> placements = model.getCurrentLevel().getEntityPlacements();
@@ -139,6 +137,7 @@ public class AuthoringController {
 
   /**
    * Get Level Controller
+   *
    * @return level controller
    */
   public LevelController getLevelController() {
