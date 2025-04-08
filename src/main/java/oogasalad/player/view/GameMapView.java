@@ -85,6 +85,12 @@ public class GameMapView extends Canvas {
   }
 
   private void updateEntityModels() {
+    // Handle collisions
+    for (List<Entity> collision : checkCollisions()) {
+      Entity e1 = collision.get(0);
+      Entity e2 = collision.get(1);
+      handleCollision(e1, e2);
+    }
     // Move entities and advance animation frame
     for (Iterator<Entity> it = gameMap.iterator(); it.hasNext(); ) {
       Entity entity = it.next();
@@ -94,18 +100,12 @@ public class GameMapView extends Canvas {
           entity.getEntityPlacement().getY() + entity.getDy());
       entity.getEntityPlacement().increaseCurrentFrame();
     }
-    // Handle collisions
-    for (List<Entity> collision : checkCollisions()) {
-      Entity e1 = collision.get(0);
-      Entity e2 = collision.get(1);
-      handleCollision(e1, e2);
-    }
   }
 
   private void handleCollision(Entity e1, Entity e2) {
     handlePacManDeath(e1, e2);
     handleBlueGhost(e1, e2);
-    handlePacManDotCollsion(e1, e2);
+    handlePacManDotCollision(e1, e2);
     handleWallCollisions(e1, e2);
   }
 
@@ -122,7 +122,7 @@ public class GameMapView extends Canvas {
     }
   }
 
-  private void handlePacManDotCollsion(Entity e1, Entity e2) {
+  private void handlePacManDotCollision(Entity e1, Entity e2) {
     // Pac-Man eats Dot
     if (e1.getEntityPlacement().getType().type().equals(PACMAN)
         && e2.getEntityPlacement().getType().type().equals("Dot")) {
