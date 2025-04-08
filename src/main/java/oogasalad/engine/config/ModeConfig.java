@@ -6,6 +6,7 @@ package oogasalad.engine.config;
  */
 public class ModeConfig {
 
+  private String modeName;
   private int movementSpeed;
   private String imagePath;
 
@@ -43,5 +44,21 @@ public class ModeConfig {
    */
   public void setImagePath(String imagePath) {
     this.imagePath = imagePath;
+  }
+
+  /**
+   * Get mode name
+   * @return mode name
+   */
+  public String getModeName() {
+    return modeName;
+  }
+
+  /**
+   * Set mode name
+   * @param modeName name of mode
+   */
+  public void setModeName(String modeName) {
+    this.modeName = modeName;
   }
 }
