@@ -34,10 +34,16 @@ public class GameView extends StackPane {
     myGameLoopController = new GameLoopController(gameContext, myGameMapView);
   }
 
+  /**
+   * Pause the game loop from the game loop controller associated with this game view.
+   */
   public void pauseGame() {
     myGameLoopController.pauseGame();
   }
 
+  /**
+   * Resume the game loop from the game loop controller associated with this game view.
+   */
   public void resumeGame() {
     myGameLoopController.resumeGame();
   }
