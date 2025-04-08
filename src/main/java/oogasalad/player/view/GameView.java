@@ -6,6 +6,11 @@ import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 
+/**
+ * The main game view of the player. Primarily encapsulates the game map view.
+ *
+ * @author Owen Jennings
+ */
 public class GameView extends StackPane {
 
   public static final int WIDTH = GameConfig.WIDTH - 2 * GameConfig.MARGIN;
@@ -15,6 +20,11 @@ public class GameView extends StackPane {
   private final GameMap myGameMap;
   private AnimationTimer gameLoop; // ✅ store as field
 
+  /**
+   * Create the game view.
+   *
+   * @param gameMap The game map model you wish to use.
+   */
   public GameView(GameMap gameMap, GameState gameState) {
     super();
     myGameMapView = new GameMapView(gameMap, gameState);
@@ -29,31 +39,53 @@ public class GameView extends StackPane {
     initializeGameLoop();
   }
 
+  // this and following methods are written by ChatGPT
+
+  /**
+   * Initializes and starts the game loop using AnimationTimer.
+   */
   private void initializeGameLoop() {
+    // Calculate elapsed time in seconds (optional, for frame-dependent logic)
+    // Only update if enough time has passed (e.g., 60 FPS)
     gameLoop = new AnimationTimer() {
       private long lastUpdateTime = 0;
 
       @Override
       public void handle(long now) {
+        // Calculate elapsed time in seconds (optional, for frame-dependent logic)
         double elapsedTime = (now - lastUpdateTime) / 1_000_000_000.0;
-        if (lastUpdateTime == 0 || elapsedTime > 1.0 / 60.0) {
+        if (checkEnoughTimeHasPassed(elapsedTime)) {
           updateGame();
           lastUpdateTime = now;
         }
       }
+
+      private boolean checkEnoughTimeHasPassed(double elapsedTime) {
+        return lastUpdateTime == 0 || elapsedTime > 1.0 / 60.0;
+      }
     };
-    gameLoop.start();
+    gameLoop.start(); // Start the game loop
   }
 
+  /**
+   * Updates the game state and refreshes the entity positions.
+   */
   private void updateGame() {
+    //Updates the game map and entity positions
     myGameMap.update();
     myGameMapView.updateEntityPositions();
   }
 
+  /**
+   * Stops the loop when called
+   */
   public void pauseGame() {
     if (gameLoop != null) gameLoop.stop();
   }
 
+  /**
+   * Starts the loop again
+   */
   public void resumeGame() {
     if (gameLoop != null) gameLoop.start();
   }

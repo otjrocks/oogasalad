@@ -17,12 +17,20 @@ import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.api.GameMapFactory;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 
+/**
+ * The view that displays only the game grid.
+ *
+ * @author Owen Jennings
+ */
 public class GamePlayerView extends StackPane {
 
   private final MainController myMainController;
   private final GameState myGameState;
   private GameView myGameView; // ✅ stored
 
+  /**
+   * Create the Game Player View.
+   */
   public GamePlayerView(MainController controller, GameState gameState) {
     super();
     myMainController = controller;
@@ -63,21 +71,32 @@ public class GamePlayerView extends StackPane {
     }
   }
 
+  /**
+   * Parses tile layout from config and adds entities to the game map.
+   *
+   * @param configModel the loaded config data
+   * @param gameMap     the game map to populate
+   * @throws InvalidPositionException if an entity cannot be added to the map
+   */
   private void parseTilesToGameMap(ConfigModel configModel, GameMap gameMap)
-      throws InvalidPositionException {
+        throws InvalidPositionException {
 
-    String[] layout = configModel.tiles().getFirst().getLayout();
-    TileMapParser tileParser = new TileMapParser();
+      String[] layout = configModel.tiles().getFirst().getLayout();
+      TileMapParser tileParser = new TileMapParser();
 
-    Map<String, EntityPlacement> templateMap = new HashMap<>();
-    for (EntityPlacement data : configModel.entityPlacements()) {
-      templateMap.put(data.getType().type(), data);
+      Map<String, EntityPlacement> templateMap = new HashMap<>();
+      for (EntityPlacement data : configModel.entityPlacements()) {
+        templateMap.put(data.getType().type(), data);
+      }
+
+      tileParser.parseTiles(layout, myMainController.getInputManager(), gameMap, templateMap);
     }
 
-    tileParser.parseTiles(layout, myMainController.getInputManager(), gameMap, templateMap);
-  }
-
+  /**
+   * Returns privately stored GameView
+   *
+   */
   public GameView getGameView() {
-    return myGameView;
+      return myGameView;
+    }
   }
-}
