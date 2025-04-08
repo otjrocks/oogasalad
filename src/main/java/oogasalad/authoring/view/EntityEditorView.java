@@ -24,6 +24,7 @@ public class EntityEditorView extends VBox {
 
   /**
    * Edit parameters for an entityType
+   *
    * @param controller Wires with model
    */
   public EntityEditorView(AuthoringController controller) {
@@ -46,42 +47,39 @@ public class EntityEditorView extends VBox {
 
   /**
    * Set's entity type
+   *
    * @param type of type EntityType
    */
   public void setEntityType(EntityType type) {
     this.current = type;
-    if (type == null) return;
+    if (type == null) {
+      return;
+    }
 
-    typeField.setText(type.getType());
+    typeField.setText(type.type());
     typeField.setOnAction(e -> commitChanges());
     typeField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-      if (!newVal) commitChanges(); // when field loses focus
+      if (!newVal) {
+        commitChanges(); // when field loses focus
+      }
     });
 
-    controlTypeBox.setValue(type.getControlType());
+    controlTypeBox.setValue(type.controlType());
 
     modeList.getChildren().clear();
-    for (Map.Entry<String, ModeConfig> entry : type.getModes().entrySet()) {
+    for (Map.Entry<String, ModeConfig> entry : type.modes().entrySet()) {
       String modeName = entry.getKey();
       ModeConfig config = entry.getValue();
-      Label label = new Label(modeName + ": " + config.getImagePath() + ", speed=" + config.getMovementSpeed());
+      Label label = new Label(
+          modeName + ": " + config.getImagePath() + ", speed=" + config.getMovementSpeed());
       modeList.getChildren().add(label);
     }
   }
 
-  /**
-   * Getter for entityType
-   * @return entity Type
-   */
-  public EntityType getEditedEntityType() {
-    current.setType(typeField.getText());
-    current.setControlType(controlTypeBox.getValue());
-    return current;
-  }
-
   private void commitChanges() {
     if (current != null) {
-      current.setType(typeField.getText());
+      current = new EntityType(typeField.getText(), current.controlType(), current.effect(),
+          current.modes(), current.blocks(), current.strategyConfig());
       controller.updateEntitySelector(); // refresh tile labels if needed
     }
   }

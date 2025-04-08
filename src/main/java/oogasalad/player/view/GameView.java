@@ -18,6 +18,7 @@ public class GameView extends StackPane {
 
   private final GameMapView myGameMapView;
   private final GameMap myGameMap;
+  private AnimationTimer gameLoop; // ✅ store as field
 
   /**
    * Create the game view.
@@ -34,6 +35,7 @@ public class GameView extends StackPane {
     this.getChildren().add(myGameMapView);
     this.getStyleClass().add("game-view");
 
+    this.setFocusTraversable(true); // 🔑 ensure key input
     initializeGameLoop();
   }
 
@@ -45,7 +47,7 @@ public class GameView extends StackPane {
   private void initializeGameLoop() {
     // Calculate elapsed time in seconds (optional, for frame-dependent logic)
     // Only update if enough time has passed (e.g., 60 FPS)
-    AnimationTimer gameLoop = new AnimationTimer() {
+    gameLoop = new AnimationTimer() {
       private long lastUpdateTime = 0;
 
       @Override
@@ -71,10 +73,22 @@ public class GameView extends StackPane {
    * Updates the game state and refreshes the entity positions.
    */
   private void updateGame() {
-    // Update the game map and entity positions
-
-    myGameMap.update(); // Update game state (e.g., entity movements)
-    myGameMapView.updateEntityPositions(); // Update entity views to reflect changes
+    //Updates the game map and entity positions
+    myGameMap.update();
+    myGameMapView.update();
   }
 
+  /**
+   * Stops the loop when called
+   */
+  public void pauseGame() {
+    if (gameLoop != null) gameLoop.stop();
+  }
+
+  /**
+   * Starts the loop again
+   */
+  public void resumeGame() {
+    if (gameLoop != null) gameLoop.start();
+  }
 }

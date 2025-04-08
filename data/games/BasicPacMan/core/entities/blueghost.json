@@ -14,10 +14,19 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "ghost",
-        "tileWidth": 8,
-        "tileHeight": 8,
-        "tilesToCycle": 1,
+        "imagePath": "blueghost",
+        "tileWidth": 14,
+        "tileHeight": 14,
+        "tilesToCycle": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
         "animationSpeed": 1.0
       }
     }

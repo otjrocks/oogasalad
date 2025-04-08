@@ -1,7 +1,6 @@
 package oogasalad.engine.model.entity;
 
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
 
 /**
  * A basic entity.

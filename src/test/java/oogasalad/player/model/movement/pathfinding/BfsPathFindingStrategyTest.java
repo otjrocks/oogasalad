@@ -73,7 +73,7 @@ class BfsPathFindingStrategyTest {
     when(mockMap.getEntityAt(anyInt(), anyInt())).thenReturn(Optional.of(blockedEntity));
     when(blockedEntity.getEntityPlacement()).thenReturn(blockedPlacement);
     when(blockedPlacement.getType()).thenReturn(blockedType);
-    when(blockedType.getBlocks()).thenReturn(List.of("type"));
+    when(blockedType.blocks()).thenReturn(List.of("type"));
 
     when(mockEntityPlacement.getTypeString()).thenReturn("notType");
 
@@ -132,7 +132,7 @@ class BfsPathFindingStrategyTest {
     when(mockMap.getEntityAt(anyInt(), anyInt())).thenReturn(Optional.of(blockedEntity));
     when(blockedEntity.getEntityPlacement()).thenReturn(blockedPlacement);
     when(blockedPlacement.getType()).thenReturn(blockedType);
-    when(blockedType.getBlocks()).thenReturn(List.of("type"));
+    when(blockedType.blocks()).thenReturn(List.of("type"));
 
     when(mockEntityPlacement.getTypeString()).thenReturn("type");
 
