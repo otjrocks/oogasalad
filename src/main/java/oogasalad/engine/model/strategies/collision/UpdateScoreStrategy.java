@@ -3,6 +3,7 @@ package oogasalad.engine.model.strategies.collision;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
+import oogasalad.engine.records.CollisionContext;
 
 /**
  * The {@code UpdateScore} class implements the {@link CollisionStrategy} interface
@@ -29,14 +30,11 @@ public class UpdateScoreStrategy implements CollisionStrategy {
    * <p>When a collision occurs, this method updates the score in the provided
    * {@link GameState} by the configured {@code scoreIncrement} value.</p>
    *
-   * @param entity1 the first entity involved in the collision
-   * @param entity2 the second entity involved in the collision
-   * @param gameMap the game map containing all entities (unused in this strategy)
-   * @param gameState the current state of the game, where the score will be updated
+   * @param collisionContext the context of the collision, containing both entities,
+   *                         the game map, and the current game state
    */
   @Override
-  public void handleCollision(Entity entity1, Entity entity2, GameMap gameMap,
-      GameState gameState) {
-    gameState.updateScore(scoreIncrement);
+  public void handleCollision(CollisionContext collisionContext) {
+    collisionContext.gameState().updateScore(scoreIncrement);
   }
 }

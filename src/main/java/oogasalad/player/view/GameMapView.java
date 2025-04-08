@@ -1,4 +1,3 @@
-
 package oogasalad.player.view;
 
 import java.util.ArrayList;
@@ -12,9 +11,11 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
+import oogasalad.engine.model.strategies.collision.CollisionStrategy;
 import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
 import oogasalad.engine.model.strategies.collision.StopStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
+import oogasalad.engine.records.CollisionContext;
 
 /**
  * A Canvas-based view for rendering the entire GameMap and all its corresponding entities.
@@ -121,7 +122,7 @@ public class GameMapView extends Canvas {
         && (e1.getEntityPlacement().getType().type().equals(PACMAN)
         || e1.getEntityPlacement().getType().type().endsWith("Ghost"))) {
       try {
-        new StopStrategy().handleCollision(e1, e2, gameMap, gameState);
+        new StopStrategy().handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
       } catch (EntityNotFoundException ex) {
         throw new RuntimeException(ex);
       }
@@ -133,12 +134,12 @@ public class GameMapView extends Canvas {
     if (e1.getEntityPlacement().getType().type().equals(PACMAN)
         && e2.getEntityPlacement().getType().type().equals("Dot")) {
       try {
-        new ConsumeStrategy().handleCollision(e1, e2, gameMap, gameState);
+        new ConsumeStrategy().handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
       } catch (EntityNotFoundException ex) {
         throw new RuntimeException(ex);
       }
       new UpdateScoreStrategy(10)
-          .handleCollision(e1, e2, gameMap, gameState);
+          .handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
     }
   }
 
@@ -152,7 +153,8 @@ public class GameMapView extends Canvas {
         throw new RuntimeException(ex);
       }
       new UpdateScoreStrategy(200)
-          .handleCollision(e1, e2, gameMap, gameState);
+          .handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
+
     }
   }
 
