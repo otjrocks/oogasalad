@@ -2,6 +2,7 @@ package oogasalad.player.model.movement.targetcalculation;
 
 import java.util.Map;
 import java.util.Optional;
+import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.player.model.exceptions.TargetStrategyException;
@@ -46,6 +47,7 @@ public class TargetAheadOfEntityStrategy implements TargetStrategy {
   private final GameMap myGameMap;
   private final String myTargetType;
   private final int myTilesAhead;
+  private final String myType;
 
   /**
    * Constructs a TargetAheadOfEntityStrategy object. This strategy calculates the target based on
@@ -54,13 +56,16 @@ public class TargetAheadOfEntityStrategy implements TargetStrategy {
    * @param gameMap        the game map used to determine the positions of entities and tiles
    * @param strategyConfig a map containing configuration parameters for the strategy, including the
    *                       target type and the number of tiles ahead to consider
+   * @param typeOfCaller   type of caller to use in checking if target is not a blocked position
    * @throws IllegalArgumentException if the strategyConfig is invalid or missing required
    *                                  parameters
    */
-  public TargetAheadOfEntityStrategy(GameMap gameMap, Map<String, Object> strategyConfig) {
+  public TargetAheadOfEntityStrategy(GameMap gameMap, Map<String, Object> strategyConfig,
+      String typeOfCaller) {
     myGameMap = gameMap;
     myTargetType = TargetStrategyHelperMethods.validateAndGetTargetType(strategyConfig);
     myTilesAhead = validateAndGetTilesAhead(strategyConfig);
+    myType = typeOfCaller;
   }
 
   @Override
@@ -70,9 +75,20 @@ public class TargetAheadOfEntityStrategy implements TargetStrategy {
 
     // if no entity, no target so stay where you are
     // or random movement (design choice for later)
-    return entity.map(value -> calcTargetPosition(value.getEntityDirection(),
-        (int) value.getEntityPlacement().getX(),
-        (int) value.getEntityPlacement().getY())).orElseGet(() -> new int[]{0, 0});
+    Optional<int[]> potentialTarget = entity.map(
+        value -> calcTargetPosition(value.getEntityDirection(),
+            (int) value.getEntityPlacement().getX(),
+            (int) value.getEntityPlacement().getY()));
+
+    if (potentialTarget.isPresent() && myGameMap.isValidPosition(potentialTarget.get()[0],
+        potentialTarget.get()[1]) && myGameMap.isNotBlocked(myType, potentialTarget.get()[0],
+        potentialTarget.get()[1])) {
+      return potentialTarget.get();
+    }
+    else {
+      return entity.map(value -> new int[]{(int) value.getEntityPlacement().getX(),
+          (int) value.getEntityPlacement().getY()}).orElseGet(() -> new int[]{0, 0});
+    }
 
   }
 
@@ -100,12 +116,13 @@ public class TargetAheadOfEntityStrategy implements TargetStrategy {
 
   private static int validateAndGetTilesAhead(Map<String, Object> strategyConfig) {
     final String TILES_AHEAD_KEY = "tilesAhead";
-    
-    if (strategyConfig.containsKey(TILES_AHEAD_KEY) && strategyConfig.get(TILES_AHEAD_KEY) != null) {
+
+    if (strategyConfig.containsKey(TILES_AHEAD_KEY)
+        && strategyConfig.get(TILES_AHEAD_KEY) != null) {
       try {
-      return Integer.parseInt(strategyConfig.get(TILES_AHEAD_KEY).toString());
+        return Integer.parseInt(strategyConfig.get(TILES_AHEAD_KEY).toString());
       } catch (NumberFormatException e) {
-      throw new TargetStrategyException("tilesAhead must be an integer", e);
+        throw new TargetStrategyException("tilesAhead must be an integer", e);
       }
     }
 

@@ -127,4 +127,19 @@ public class GameMapImpl implements GameMap {
       entityFrequencyMap.put(entityType, entityFrequencyMap.get(entityType) - 1);
     }
   }
+
+  @Override
+  public boolean isValidPosition(int x, int y) {
+    return x >= 0 && y >= 0 && x < myWidth && y < myHeight;
+  }
+
+  @Override
+  public boolean isNotBlocked(String entityType, int x, int y) {
+    Optional<Entity> entity = getEntityAt(x, y);
+
+    return entity.map(value -> value.getEntityPlacement().getType().blocks() == null ||
+        value.getEntityPlacement().getType().blocks().stream()
+            .noneMatch(block -> block.equalsIgnoreCase(entityType))).orElse(true);
+
+  }
 }
