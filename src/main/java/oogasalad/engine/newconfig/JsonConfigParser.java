@@ -30,14 +30,21 @@ import oogasalad.engine.newconfig.model.Settings;
 import oogasalad.engine.utility.FileUtility;
 
 /**
- * The {@code JsonConfigParser} class is responsible for parsing game configuration files in JSON
- * format and converting them into {@link GameConfig} objects. It uses the Jackson library to handle
+ * The {@code JsonConfigParser} class is responsible for parsing game
+ * configuration files in JSON
+ * format and converting them into {@link GameConfig} objects. It uses the
+ * Jackson library to handle
  * JSON parsing and mapping.
  *
- * <p>This class implements the {@link ConfigParser} interface and provides methods to
- * load configuration data from a file, merge settings, and extract folder paths.
+ * <p>
+ * This class implements the {@link ConfigParser} interface and provides methods
+ * to
+ * load configuration data from a file, merge settings, and extract folder
+ * paths.
  *
- * <p>Example usage:
+ * <p>
+ * Example usage:
+ * 
  * <pre>
  * JsonConfigParser parser = new JsonConfigParser();
  * GameConfig config = parser.loadFromFile("path/to/config.json");
@@ -50,7 +57,8 @@ public class JsonConfigParser implements ConfigParser {
   private final ObjectMapper mapper;
 
   /**
-   * Constructs a new JsonConfigParser instance and initializes the ObjectMapper used for parsing
+   * Constructs a new JsonConfigParser instance and initializes the ObjectMapper
+   * used for parsing
    * JSON configurations.
    */
   public JsonConfigParser() {
@@ -60,8 +68,11 @@ public class JsonConfigParser implements ConfigParser {
   /**
    * Loads a {@link ConfigModel} from a JSON file at the specified file path.
    *
-   * <p>After deserializing the file, this method also resolves the entity types of each
-   * {@link EntityPlacement} by matching their type strings to defined {@link EntityType}s.
+   * <p>
+   * After deserializing the file, this method also resolves the entity types of
+   * each
+   * {@link EntityPlacement} by matching their type strings to defined
+   * {@link EntityType}s.
    *
    * @param filepath the path to the JSON configuration file to be loaded
    * @return the fully populated {@link ConfigModel} object
@@ -69,61 +80,26 @@ public class JsonConfigParser implements ConfigParser {
    */
   public ConfigModel loadFromFile(String filepath) throws ConfigException {
     GameConfig gameConfig = loadGameConfig(filepath);
+
     MetaData metaData = extractMetaData(gameConfig);
     GameSettings settings = createGameSettings(gameConfig);
-    Map<String, EntityConfig> entityMap = constructEntities(gameConfig.gameFolderPath());
 
-    List<EntityType> entityTypes;
-    List<EntityPlacement> entityPlacements;
-    EntityData entityData = buildEntityData(entityMap);
-    entityTypes = entityData.types();
-    entityPlacements = entityData.placements();
+    List<EntityType> entityTypes = new ArrayList<>();
+    List<EntityPlacement> entityPlacements = new ArrayList<>();
+    createEntityTypes(gameConfig, entityTypes, entityPlacements);
 
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
     List<Tiles> tiles = new ArrayList<>();
 
-    return buildConfigModel(metaData, settings, entityTypes, entityPlacements, collisionRules,
-        gameConfig, tiles);
-  }
-
-  private EntityData buildEntityData(Map<String, EntityConfig> entityMap) {
-    List<EntityType> entityTypes = new ArrayList<>();
-    List<EntityPlacement> entityPlacements = new ArrayList<>();
-    populateEntities(entityMap, entityTypes, entityPlacements);
-    return new EntityData(entityTypes, entityPlacements);
-  }
-
-  private ConfigModel buildConfigModel(
-      MetaData metaData,
-      GameSettings settings,
-      List<EntityType> entityTypes,
-      List<EntityPlacement> entityPlacements,
-      List<CollisionRule> collisionRules,
-      GameConfig gameConfig,
-      List<Tiles> tiles
-  ) {
-    return new ConfigModel(
-        metaData,
-        settings,
-        entityTypes,
-        entityPlacements,
-        collisionRules,
-        gameConfig.settings().winCondition(),
-        tiles
-    );
-  }
-
-  // Helper record or class for bundling entity data
-  record EntityData(List<EntityType> types, List<EntityPlacement> placements) {
-
+    return new ConfigModel(metaData, settings, entityTypes, entityPlacements, collisionRules,
+        gameConfig.settings().winCondition(), tiles);
   }
 
   private MetaData extractMetaData(GameConfig gameConfig) {
     return new MetaData(
         gameConfig.metadata().gameTitle(),
         gameConfig.metadata().author(),
-        gameConfig.metadata().gameDescription()
-    );
+        gameConfig.metadata().gameDescription());
   }
 
   private GameSettings createGameSettings(GameConfig gameConfig) {
@@ -131,31 +107,27 @@ public class JsonConfigParser implements ConfigParser {
         gameConfig.settings().gameSpeed(),
         gameConfig.settings().startingLives(),
         gameConfig.settings().initialScore(),
-        "", 0, 0              // TODO: Replace with actual parsed map data
+        "", 0, 0 // TODO: Replace with actual parsed map data
     );
-  }
-
-  private void populateEntities(Map<String, EntityConfig> entityMap,
-      List<EntityType> entityTypes,
-      List<EntityPlacement> entityPlacements) {
-    createEntityTypes(entityMap, entityTypes, entityPlacements);
   }
 
   private List<CollisionRule> convertToCollisionRules(GameConfig gameConfig) {
     List<CollisionRule> collisionRules = new ArrayList<>();
 
     for (CollisionConfig collision : gameConfig.collisions()) {
-      // TODO: for now I just hardcoded to any, since these are still with string modes
+      // TODO: for now I just hardcoded to any, since these are still with string
+      // modes
       collisionRules.add(
           new CollisionRule(collision.entityA(), "Any", collision.entityB(), "Any",
-              collision.eventsA(), collision.eventsB())
-      );
+              collision.eventsA(), collision.eventsB()));
     }
     return collisionRules;
   }
 
-  private void createEntityTypes(Map<String, EntityConfig> entityMap, List<EntityType> entityTypes,
-      List<EntityPlacement> entityPlacements) {
+  private void createEntityTypes(GameConfig gameConfig, List<EntityType> entityTypes,
+      List<EntityPlacement> entityPlacements) throws ConfigException {
+
+    Map<String, EntityConfig> entityMap = constructEntities(gameConfig.gameFolderPath());
 
     for (EntityConfig entity : entityMap.values()) {
       Map<String, oogasalad.engine.config.ModeConfig> modes = new HashMap<>();
@@ -236,8 +208,7 @@ public class JsonConfigParser implements ConfigParser {
         override.startingLives() != null ? override.startingLives() : defaults.startingLives(),
         override.initialScore() != null ? override.initialScore() : defaults.initialScore(),
         override.scoreStrategy() != null ? override.scoreStrategy() : defaults.scoreStrategy(),
-        override.winCondition() != null ? override.winCondition() : defaults.winCondition()
-    );
+        override.winCondition() != null ? override.winCondition() : defaults.winCondition());
   }
 
   private String getFolderPath(String filepath) throws ConfigException {
@@ -267,7 +238,7 @@ public class JsonConfigParser implements ConfigParser {
 
     for (String entity : entities) {
       EntityConfig entityConfig = loadEntityConfig(entityFolderPath + entity + ".json");
-      entitiesMap.put(entity, entityConfig);  // map the entity file name to the entityConfig
+      entitiesMap.put(entity, entityConfig); // map the entity file name to the entityConfig
     }
 
     return entitiesMap;
@@ -284,8 +255,7 @@ public class JsonConfigParser implements ConfigParser {
       return new EntityConfig(
           defaultProps.name(),
           defaultProps,
-          modes
-      );
+          modes);
 
     } catch (IOException e) {
       throw new ConfigException("Failed to parse config file: " + filepath, e);
@@ -335,17 +305,15 @@ public class JsonConfigParser implements ConfigParser {
 
     List<String> blocks = modeNode.has(BLOCKS)
         ? mapper.convertValue(modeNode.get(BLOCKS),
-        mapper.getTypeFactory().constructCollectionType(List.class, String.class))
+            mapper.getTypeFactory().constructCollectionType(List.class, String.class))
         : defaultProps.blocks();
 
     return new EntityProperties(
         modeName,
         controlType,
         movementSpeed,
-        blocks
-    );
+        blocks);
   }
-
 
   private static List<String> getAvailableEntities(String folderPath) {
     return FileUtility.getFileNamesInDirectory(folderPath, ".json");
