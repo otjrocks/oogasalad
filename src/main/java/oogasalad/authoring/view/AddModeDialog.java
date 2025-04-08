@@ -13,6 +13,9 @@ import oogasalad.engine.config.ModeConfig;
  */
 public class AddModeDialog extends Dialog<ModeConfig> {
 
+  /**
+   * Represents the dialog to add a new mode
+   */
   public AddModeDialog() {
     this.setTitle("Add New Mode");
 
