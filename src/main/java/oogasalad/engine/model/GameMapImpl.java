@@ -113,7 +113,7 @@ public class GameMapImpl implements GameMap {
     }
     int count = 0;
     for (Entity entity1 : myEntityList) {
-      if (entity1.getEntityPlacement().getType().getType().equals(entityType)) {
+      if (entity1.getEntityPlacement().getType().type().equals(entityType)) {
         count++;
       }
     }
