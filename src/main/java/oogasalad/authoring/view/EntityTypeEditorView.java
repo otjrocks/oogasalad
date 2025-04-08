@@ -41,7 +41,7 @@ public class EntityTypeEditorView extends VBox {
     modeList = new VBox(5);
 
     addModeButton = new Button("+ Add Mode");
-    addModeButton.setOnAction(e -> showAddModeDialog());
+    addModeButton.setOnAction(e -> openAddModeDialog());
 
     this.getChildren().addAll(
         new Label("Entity Type:"), typeField,
@@ -76,9 +76,10 @@ public class EntityTypeEditorView extends VBox {
     for (Map.Entry<String, ModeConfig> entry : type.modes().entrySet()) {
       String modeName = entry.getKey();
       ModeConfig config = entry.getValue();
-      Label label = new Label(
-          modeName + ": " + config.getImagePath() + ", speed=" + config.getMovementSpeed());
-      modeList.getChildren().add(label);
+      Label label = new Label(modeName);
+      Button editButton = new Button("Edit");
+      editButton.setOnAction(e -> openEditModeDialog(modeName, config));
+      modeList.getChildren().addAll(label, editButton);
     }
   }
 
@@ -90,8 +91,8 @@ public class EntityTypeEditorView extends VBox {
     }
   }
 
-  private void showAddModeDialog() {
-    AddModeDialog dialog = new AddModeDialog();
+  private void openAddModeDialog() {
+    ModeEditorDialog dialog = new ModeEditorDialog();
     dialog.showAndWait().ifPresent(config -> {
       String modeName = config.getModeName();
       if (!modeName.isEmpty() && !current.modes().containsKey(modeName)) {
@@ -100,6 +101,14 @@ public class EntityTypeEditorView extends VBox {
       } else {
         showError("Invalid or duplicate mode name.");
       }
+    });
+  }
+
+  private void openEditModeDialog(String modeName, ModeConfig oldConfig) {
+    ModeEditorDialog dialog = new ModeEditorDialog(oldConfig);
+    dialog.showAndWait().ifPresent(newConfig -> {
+      current.modes().put(modeName, newConfig);
+      setEntityType(current); // refresh view
     });
   }
 

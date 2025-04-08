@@ -16,7 +16,7 @@ import java.io.File;
  *
  * @author Will He
  */
-public class AddModeDialog extends Dialog<ModeConfig> {
+public class ModeEditorDialog extends Dialog<ModeConfig> {
 
   private TextField nameField;
   private TextField speedField;
@@ -28,7 +28,7 @@ public class AddModeDialog extends Dialog<ModeConfig> {
   /**
    * Represents the dialog to add a new mode
    */
-  public AddModeDialog() {
+  public ModeEditorDialog() {
     this.setTitle("Add New Mode");
 
     GridPane grid = new GridPane();
@@ -74,10 +74,11 @@ public class AddModeDialog extends Dialog<ModeConfig> {
     });
   }
 
-  public AddModeDialog(ModeConfig existingConfig) {
+  public ModeEditorDialog(ModeConfig existingConfig) {
     this(); // call default constructor
     if (existingConfig != null) {
       nameField.setText(existingConfig.getModeName());
+      nameField.setEditable(false);
       speedField.setText(String.valueOf(existingConfig.getMovementSpeed()));
       selectedImageFile = new File(URI.create(existingConfig.getImagePath()));
       imagePathField.setText(selectedImageFile.getName());
