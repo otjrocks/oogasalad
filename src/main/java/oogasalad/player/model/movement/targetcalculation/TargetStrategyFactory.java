@@ -42,27 +42,16 @@ public class TargetStrategyFactory {
   }
 
   private static TargetStrategy instantiateStrategy(Class<?> strategyClass,
-      EntityPlacement placement, GameMap gameMap)
+      EntityPlacement placement,
+      GameMap gameMap)
       throws TargetStrategyException {
     try {
       for (Constructor<?> constructor : strategyClass.getConstructors()) {
-        if (!Modifier.isPublic(constructor.getModifiers())) {
-          continue;
-        }
-
-        if (matchesTwoArgConstructor(constructor)) {
-          return (TargetStrategy) constructor.newInstance(
-              gameMap,
-              placement.getType().strategyConfig()
-          );
-        }
-
-        if (matchesThreeArgConstructor(constructor)) {
-          return (TargetStrategy) constructor.newInstance(
-              gameMap,
-              placement.getType().strategyConfig(),
-              placement.getTypeString()
-          );
+        if (isPublicConstructor(constructor)) {
+          TargetStrategy strategy = tryInstantiateStrategy(constructor, gameMap, placement);
+          if (strategy != null) {
+            return strategy;
+          }
         }
       }
     } catch (Exception e) {
@@ -70,6 +59,37 @@ public class TargetStrategyFactory {
     }
 
     throw new TargetStrategyException("No valid constructor found for: " + strategyClass.getName());
+  }
+
+  private static boolean isPublicConstructor(Constructor<?> constructor) {
+    return Modifier.isPublic(constructor.getModifiers());
+  }
+
+  private static TargetStrategy tryInstantiateStrategy(Constructor<?> constructor,
+      GameMap gameMap,
+      EntityPlacement placement)
+      throws TargetStrategyException {
+    try {
+      if (matchesTwoArgConstructor(constructor)) {
+        return (TargetStrategy) constructor.newInstance(
+            gameMap,
+            placement.getType().strategyConfig()
+        );
+      }
+
+      if (matchesThreeArgConstructor(constructor)) {
+        return (TargetStrategy) constructor.newInstance(
+            gameMap,
+            placement.getType().strategyConfig(),
+            placement.getTypeString()
+        );
+      }
+
+      return null;
+    }
+    catch (Exception e) {
+      throw new TargetStrategyException("Failed to instantiate strategy", e);
+    }
   }
 
   private static boolean matchesTwoArgConstructor(Constructor<?> constructor) {
