@@ -1,5 +1,6 @@
 package oogasalad.engine.model;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import oogasalad.engine.config.ModeConfig;
@@ -49,7 +50,7 @@ public class EntityType {
 
   /** Default constructor required for deserialization or reflection. */
   public EntityType() {
-    // Empty
+    this.modes = new HashMap<>();
   }
 
   /**

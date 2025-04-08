@@ -53,13 +53,19 @@ public class AuthoringController {
   public void createNewEntityType() {
     EntityType newType = new EntityType();
     newType.setType("NewEntity" + UUID.randomUUID().toString().substring(0, 4));
-    newType.setModes(defaultModeMap());
-    model.addEntityType(newType);
 
+    ModeConfig defaultMode = new ModeConfig();
+    defaultMode.setImagePath("assets/images/pacman.png");
+    defaultMode.setMovementSpeed(100);
+
+    newType.getModes().put("Default", defaultMode);
+
+    model.addEntityType(newType);
     selectedType = newType;
     updateEntitySelector();
     view.getEntityEditorView().setEntityType(newType);
   }
+
 
   /**
    * Selects an existing {@link EntityType} by its name and updates the

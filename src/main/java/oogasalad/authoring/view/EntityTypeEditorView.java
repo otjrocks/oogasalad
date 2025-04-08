@@ -14,19 +14,20 @@ import java.util.Map;
  *
  * @author Will He
  */
-public class EntityEditorView extends VBox {
+public class EntityTypeEditorView extends VBox {
 
   private final TextField typeField;
   private final ComboBox<String> controlTypeBox;
   private final VBox modeList;
   private final AuthoringController controller;
   private EntityType current;
+  private Button addModeButton;
 
   /**
    * Edit parameters for an entityType
    * @param controller Wires with model
    */
-  public EntityEditorView(AuthoringController controller) {
+  public EntityTypeEditorView(AuthoringController controller) {
     this.controller = controller;
     this.setSpacing(10);
     this.setPadding(new Insets(10));
@@ -34,13 +35,18 @@ public class EntityEditorView extends VBox {
 
     typeField = new TextField();
     controlTypeBox = new ComboBox<>();
+    // TODO: Remove hardcoded values
     controlTypeBox.getItems().addAll("Keyboard", "FollowMouse", "TargetEntity", "BFS");
     modeList = new VBox(5);
+
+    addModeButton = new Button("+ Add Mode");
+    addModeButton.setOnAction(e -> showAddModeDialog());
 
     this.getChildren().addAll(
         new Label("Entity Type:"), typeField,
         new Label("Control Strategy:"), controlTypeBox,
-        new Label("Modes:"), modeList
+        new Label("Modes:"), modeList,
+        addModeButton
     );
   }
 
@@ -85,5 +91,24 @@ public class EntityEditorView extends VBox {
       controller.updateEntitySelector(); // refresh tile labels if needed
     }
   }
+
+  private void showAddModeDialog() {
+    AddModeDialog dialog = new AddModeDialog();
+    dialog.showAndWait().ifPresent(config -> {
+      String modeName = config.getModeName();
+      if (!modeName.isEmpty() && !current.getModes().containsKey(modeName)) {
+        current.getModes().put(modeName, config);
+        setEntityType(current);
+      } else {
+        showError("Invalid or duplicate mode name.");
+      }
+    });
+  }
+
+  private void showError(String msg) {
+    Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
+    alert.showAndWait();
+  }
+
 
 }

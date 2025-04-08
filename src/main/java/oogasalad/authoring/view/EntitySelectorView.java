@@ -2,7 +2,6 @@ package oogasalad.authoring.view;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -80,7 +79,7 @@ public class EntitySelectorView extends VBox {
     ImageView imageView = new ImageView();
     imageView.setFitWidth(48);
     imageView.setFitHeight(48);
-    String imagePath = getFirstModeImage(type);
+    String imagePath = getDefaultModeImage(type);
     if (imagePath != null) {
       imageView.setImage(new Image(imagePath));
     }
@@ -107,10 +106,10 @@ public class EntitySelectorView extends VBox {
     return tile;
   }
 
-  private String getFirstModeImage(EntityType type) {
+  private String getDefaultModeImage(EntityType type) {
     Map<String, ModeConfig> modes = type.getModes();
     if (modes == null || modes.isEmpty()) return null;
-    return modes.values().iterator().next().getImagePath();
+    return modes.get("Default").getImagePath();
   }
 
   private void highlightSelectedTile(VBox tile) {
