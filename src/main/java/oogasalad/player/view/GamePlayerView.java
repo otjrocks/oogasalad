@@ -17,19 +17,12 @@ import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.api.GameMapFactory;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 
-/**
- * The view that displays only the game grid.
- *
- * @author Owen Jennings
- */
 public class GamePlayerView extends StackPane {
 
   private final MainController myMainController;
   private final GameState myGameState;
+  private GameView myGameView; // ✅ stored
 
-  /**
-   * Create the Game Player View.
-   */
   public GamePlayerView(MainController controller, GameState gameState) {
     super();
     myMainController = controller;
@@ -56,7 +49,6 @@ public class GamePlayerView extends StackPane {
     try {
       if (configModel != null) {
         gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), configModel);
-
         if (configModel.tiles() != null && !configModel.tiles().isEmpty()) {
           parseTilesToGameMap(configModel, gameMap);
         }
@@ -66,18 +58,11 @@ public class GamePlayerView extends StackPane {
     }
 
     if (gameMap != null) {
-      GameView gameView = new GameView(gameMap, myGameState);
-      this.getChildren().add(gameView);
+      myGameView = new GameView(gameMap, myGameState);
+      this.getChildren().add(myGameView);
     }
   }
 
-  /**
-   * Parses tile layout from config and adds entities to the game map.
-   *
-   * @param configModel the loaded config data
-   * @param gameMap     the game map to populate
-   * @throws InvalidPositionException if an entity cannot be added to the map
-   */
   private void parseTilesToGameMap(ConfigModel configModel, GameMap gameMap)
       throws InvalidPositionException {
 
@@ -90,5 +75,9 @@ public class GamePlayerView extends StackPane {
     }
 
     tileParser.parseTiles(layout, myMainController.getInputManager(), gameMap, templateMap);
+  }
+
+  public GameView getGameView() {
+    return myGameView;
   }
 }
