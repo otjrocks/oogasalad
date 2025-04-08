@@ -10,6 +10,24 @@ public class ModeConfig {
   private String imagePath;
 
   /**
+   * Constructs a ModeConfig object with the specified movement speed and image path.
+   *
+   * @param movementSpeed the speed of movement, which will be converted to an integer
+   * @param imagePath the file path to the image associated with this mode
+   */
+  public ModeConfig(Double movementSpeed, String imagePath) {
+    this.movementSpeed = movementSpeed.intValue();
+    this.imagePath = imagePath;
+  }
+
+  /**
+   * Default constructor necessary for AuthoringController
+   */
+  public ModeConfig() {
+    // needs to be here
+  }
+
+  /**
    * Returns the movement speed associated with this mode.
    *
    * @return the movement speed value

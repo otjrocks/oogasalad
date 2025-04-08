@@ -8,7 +8,7 @@ import javafx.scene.layout.StackPane;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.ConfigModel;
-import oogasalad.engine.config.JsonConfigParser;
+import oogasalad.engine.newconfig.JsonConfigParser;
 import oogasalad.engine.config.TileMapParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.EntityPlacement;
@@ -26,6 +26,7 @@ public class GamePlayerView extends StackPane {
 
   private final MainController myMainController;
   private final GameState myGameState;
+  private GameView myGameView; // ✅ stored
 
   /**
    * Create the Game Player View.
@@ -46,7 +47,7 @@ public class GamePlayerView extends StackPane {
     ConfigModel configModel = null;
 
     try {
-      configModel = configParser.loadFromFile("data/basic.json");
+      configModel = configParser.loadFromFile("data/games/BasicPacMan/gameConfig.json");
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
     }
@@ -56,7 +57,6 @@ public class GamePlayerView extends StackPane {
     try {
       if (configModel != null) {
         gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), configModel);
-
         if (configModel.tiles() != null && !configModel.tiles().isEmpty()) {
           parseTilesToGameMap(configModel, gameMap);
         }
@@ -66,8 +66,8 @@ public class GamePlayerView extends StackPane {
     }
 
     if (gameMap != null) {
-      GameView gameView = new GameView(gameMap, myGameState);
-      this.getChildren().add(gameView);
+      myGameView = new GameView(gameMap, myGameState);
+      this.getChildren().add(myGameView);
     }
   }
 
@@ -79,16 +79,24 @@ public class GamePlayerView extends StackPane {
    * @throws InvalidPositionException if an entity cannot be added to the map
    */
   private void parseTilesToGameMap(ConfigModel configModel, GameMap gameMap)
-      throws InvalidPositionException {
+        throws InvalidPositionException {
 
-    String[] layout = configModel.tiles().getFirst().getLayout();
-    TileMapParser tileParser = new TileMapParser();
+      String[] layout = configModel.tiles().getFirst().getLayout();
+      TileMapParser tileParser = new TileMapParser();
 
-    Map<String, EntityPlacement> templateMap = new HashMap<>();
-    for (EntityPlacement data : configModel.entityPlacements()) {
-      templateMap.put(data.getType().type(), data);
+      Map<String, EntityPlacement> templateMap = new HashMap<>();
+      for (EntityPlacement data : configModel.entityPlacements()) {
+        templateMap.put(data.getType().type(), data);
+      }
+
+      tileParser.parseTiles(layout, myMainController.getInputManager(), gameMap, templateMap);
     }
 
-    tileParser.parseTiles(layout, myMainController.getInputManager(), gameMap, templateMap);
+  /**
+   * Returns privately stored GameView
+   *
+   */
+  public GameView getGameView() {
+      return myGameView;
+    }
   }
-}
