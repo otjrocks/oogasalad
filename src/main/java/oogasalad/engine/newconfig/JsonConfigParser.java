@@ -57,30 +57,55 @@ public class JsonConfigParser implements ConfigParser {
     this.mapper = new ObjectMapper();
   }
 
+  /**
+   * Loads a {@link ConfigModel} from a JSON file at the specified file path.
+   *
+   * <p>After deserializing the file, this method also resolves the entity types of each
+   * {@link EntityPlacement} by matching their type strings to defined {@link EntityType}s.
+   *
+   * @param filepath the path to the JSON configuration file to be loaded
+   * @return the fully populated {@link ConfigModel} object
+   * @throws ConfigException if the file is missing or cannot be parsed correctly
+   */  
   public ConfigModel loadFromFile(String filepath) throws ConfigException {
     GameConfig gameConfig = loadGameConfig(filepath);
 
-    String folderPath = gameConfig.gameFolderPath();
-    Map<String, EntityConfig> entityMap = constructEntities(folderPath);
-
-    MetaData metaData = new MetaData(gameConfig.metadata().gameTitle(),
-        gameConfig.metadata().author(), gameConfig.metadata().gameDescription());
-
-    // TODO: need to parse map
-    GameSettings settings = new GameSettings(gameConfig.settings().gameSpeed(),
-        gameConfig.settings().startingLives(), gameConfig.settings().initialScore(),
-        "", 0, 0);
+    MetaData metaData = extractMetaData(gameConfig);
+    GameSettings settings = createGameSettings(gameConfig);
+    Map<String, EntityConfig> entityMap = constructEntities(gameConfig.gameFolderPath());
 
     List<EntityType> entityTypes = new ArrayList<>();
     List<EntityPlacement> entityPlacements = new ArrayList<>();
-    createEntityTypes(entityMap, entityTypes, entityPlacements);
+    populateEntities(entityMap, entityTypes, entityPlacements);
 
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
-
     List<Tiles> tiles = new ArrayList<>();
 
     return new ConfigModel(metaData, settings, entityTypes, entityPlacements, collisionRules,
         gameConfig.settings().winCondition(), tiles);
+  }
+
+  private MetaData extractMetaData(GameConfig gameConfig) {
+    return new MetaData(
+        gameConfig.metadata().gameTitle(),
+        gameConfig.metadata().author(),
+        gameConfig.metadata().gameDescription()
+    );
+  }
+
+  private GameSettings createGameSettings(GameConfig gameConfig) {
+    return new GameSettings(
+        gameConfig.settings().gameSpeed(),
+        gameConfig.settings().startingLives(),
+        gameConfig.settings().initialScore(),
+        "", 0, 0              // TODO: Replace with actual parsed map data
+    );
+  }
+
+  private void populateEntities(Map<String, EntityConfig> entityMap,
+      List<EntityType> entityTypes,
+      List<EntityPlacement> entityPlacements) {
+    createEntityTypes(entityMap, entityTypes, entityPlacements);
   }
 
   private List<CollisionRule> convertToCollisionRules(GameConfig gameConfig) {

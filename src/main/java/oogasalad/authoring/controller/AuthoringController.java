@@ -127,14 +127,12 @@ public class AuthoringController {
 
   // Private helper to provide default values for a new entity's mode config
   private Map<String, ModeConfig> defaultModeMap() {
-//    ModeConfig defaultMode = new ModeConfig();
-//    defaultMode.setImagePath("assets/images/pacman.png");
-//    defaultMode.setMovementSpeed(100);
-//    Map<String, ModeConfig> map = new HashMap<>();
-//    map.put("Default", defaultMode);
-//    return map;
-
-    return null;
+    ModeConfig defaultMode = new ModeConfig();
+    defaultMode.setImagePath("assets/images/pacman.png");
+    defaultMode.setMovementSpeed(100);
+    Map<String, ModeConfig> map = new HashMap<>();
+    map.put("Default", defaultMode);
+    return map;
   }
 
   /**

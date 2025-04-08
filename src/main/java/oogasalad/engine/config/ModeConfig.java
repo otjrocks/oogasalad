@@ -9,6 +9,12 @@ public class ModeConfig {
   private int movementSpeed;
   private String imagePath;
 
+  /**
+   * Constructs a ModeConfig object with the specified movement speed and image path.
+   *
+   * @param movementSpeed the speed of movement, which will be converted to an integer
+   * @param imagePath the file path to the image associated with this mode
+   */
   public ModeConfig(Double movementSpeed, String imagePath) {
     this.movementSpeed = movementSpeed.intValue();
     this.imagePath = imagePath;
