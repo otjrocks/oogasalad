@@ -34,24 +34,7 @@ public class GameScreenView extends VBox {
     hudContainer.getStyleClass().add("hud-container");
 
     GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState);
-    GameView gameView = gamePlayerView.getGameView();
-
-    // ✅ Add Pause and Play buttons
-    Button pauseButton = new Button("⏸");
-    Button playButton = new Button("▶");
-    pauseButton.setFocusTraversable(false);
-    playButton.setFocusTraversable(false);
-    pauseButton.setOnAction(e -> {
-      gameView.pauseGame();
-      gameView.requestFocus(); // 🔑 regain arrow key control
-    });
-
-    playButton.setOnAction(e -> {
-      gameView.resumeGame();
-      gameView.requestFocus(); // 🔑 regain arrow key control
-    });
-
-    HBox controlBox = new HBox(10, playButton, pauseButton);
+    HBox controlBox = getHBox(gamePlayerView);
 
     this.getChildren().addAll(hudContainer, controlBox, gamePlayerView);
     this.getStyleClass().add("game-screen-view");
@@ -65,6 +48,27 @@ public class GameScreenView extends VBox {
     );
     hudUpdater.setCycleCount(Timeline.INDEFINITE);
     hudUpdater.play();
+  }
+
+  private static HBox getHBox(GamePlayerView gamePlayerView) {
+    GameView gameView = gamePlayerView.getGameView();
+
+    Button pauseButton = new Button("⏸");
+    Button playButton = new Button("▶");
+    pauseButton.setFocusTraversable(false);
+    playButton.setFocusTraversable(false);
+    pauseButton.setOnAction(e -> {
+      gameView.pauseGame();
+      gameView.requestFocus();
+    });
+
+    playButton.setOnAction(e -> {
+      gameView.resumeGame();
+      gameView.requestFocus();
+    });
+    HBox buttonBox = new HBox(10, playButton, pauseButton);
+    buttonBox.getStyleClass().add("hud-container");
+    return buttonBox;
   }
 
   private void checkAndUpdateHud() {
