@@ -31,7 +31,7 @@ public class GameMapView extends Canvas {
    * @param gameContext The game context object for this view.
    */
   public GameMapView(GameContext gameContext) {
-    super(GameView.WIDTH, GameView.HEIGHT);
+    super(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
     myGameContext = gameContext;
     myGameMapController = new GameMapController(myGameContext);
     initializeEntityViews();
