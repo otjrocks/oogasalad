@@ -72,4 +72,19 @@ public interface GameMap {
    * added this for now to reflect game loop update, eventually in controller.
    */
   void update();
+
+  /**
+   * Gets the frequency of an entity in GameMap.
+   *
+   * @param entityType entity type to get frequency of
+   * @return int count of entityType
+   */
+  int getEntityCount(String entityType);
+
+  /**
+   * Decrement count of entity type.
+   *
+   * @param entityType entity type that we want to decrement.
+   */
+  void decrementEntityCount(String entityType);
 }
