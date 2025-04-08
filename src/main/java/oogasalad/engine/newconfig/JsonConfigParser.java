@@ -89,10 +89,11 @@ public class JsonConfigParser implements ConfigParser {
     createEntityTypes(gameConfig, entityTypes, entityPlacements);
 
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
+    String winCondition = gameConfig.settings().winCondition();
     List<Tiles> tiles = new ArrayList<>();
 
     return new ConfigModel(metaData, settings, entityTypes, entityPlacements, collisionRules,
-        gameConfig.settings().winCondition(), tiles);
+        winCondition, tiles);
   }
 
   private MetaData extractMetaData(GameConfig gameConfig) {
