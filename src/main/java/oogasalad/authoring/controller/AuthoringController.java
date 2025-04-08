@@ -62,10 +62,8 @@ public class AuthoringController {
     newType.modes().put("Default", defaultMode);
 
     model.addEntityType(newType);
-
-    selectedType = newType;
     updateEntitySelector();
-    view.getEntityEditorView().setEntityType(newType);
+    selectEntityType(newTypeName);
   }
 
   /**
@@ -78,9 +76,15 @@ public class AuthoringController {
    * @param typeName the string name of the selected entity type
    */
   public void selectEntityType(String typeName) {
-    model.findEntityType(typeName).ifPresent(type -> {
+    model.findEntityType(typeName).ifPresentOrElse(type -> {
       selectedType = type;
       view.getEntityEditorView().setEntityType(type);
+      view.getEntityEditorView().setVisible(true);
+      view.getEntitySelectorView().highlightEntityTile(typeName); // 🔥 New!
+    }, () -> {
+      selectedType = null;
+      view.getEntityEditorView().setEntityType(null);
+      view.getEntityEditorView().setVisible(false);
     });
   }
 
