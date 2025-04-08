@@ -1,7 +1,6 @@
 package oogasalad.engine.model.strategies.gameoutcome;
 
 import oogasalad.engine.model.GameState;
-import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.records.GameContext;
 
 /**

@@ -14,7 +14,10 @@ import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
 import oogasalad.engine.model.strategies.collision.StopStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
+import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
+import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategy;
 import oogasalad.engine.records.CollisionContext;
+import oogasalad.engine.records.GameContext;
 
 /**
  * The view used to display the game map.
@@ -136,6 +139,13 @@ public class GameMapView extends Pane {
       }
       UpdateScoreStrategy scoreStrategy = new UpdateScoreStrategy(10);
       scoreStrategy.handleCollision(collisionContext);
+      // working on implementing victory condition
+//      GameOutcomeStrategy entityBasedOutcomeStrategy = new EntityBasedOutcomeStrategy("Dot");
+//      System.out.println(myGameMap.getEntityCount("Dot"));
+//      System.out.println(entityBasedOutcomeStrategy.getGameOutcome(new GameContext(myGameMap, myGameState)));
+//      if (entityBasedOutcomeStrategy.getGameOutcome(new GameContext(myGameMap, myGameState)).equals("Victory!")) {
+//
+//      }
     }
   }
 
