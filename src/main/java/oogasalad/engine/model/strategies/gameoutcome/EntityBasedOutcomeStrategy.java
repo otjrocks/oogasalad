@@ -18,6 +18,13 @@ public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
 
   private String entityType;
 
+  /**
+   * Constructs an {@code EntityBasedOutcomeStrategy} that determines the end of the game
+   * based on the remaining count of a specific entity type in the game map.
+   *
+   * @param entityType the type of entity to track for game completion must match the type used
+   *                   within the entity placement
+   */
   public EntityBasedOutcomeStrategy(String entityType) {
     this.entityType = entityType;
   }
