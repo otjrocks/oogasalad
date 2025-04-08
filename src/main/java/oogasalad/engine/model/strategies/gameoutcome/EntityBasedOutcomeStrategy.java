@@ -17,6 +17,12 @@ import oogasalad.engine.records.GameContext;
  */
 public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
 
+  private String entityType;
+
+  public EntityBasedOutcomeStrategy(String entityType) {
+    this.entityType = entityType;
+  }
+
   /**
    * Determines if the game has ended based on the current {@link GameState}. Check conditions such
    * as whether all pellets have been consumed.
@@ -26,12 +32,11 @@ public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
    */
   @Override
   public boolean hasGameEnded(GameContext gameContext) {
-    for (Entity entity : gameContext.gameMap()) {
-      if (entity.getEntityPlacement().getType().getType().equals("Dot")) {
-        return false;
-      }
+    if (gameContext.gameMap().getEntityCount(entityType) <= 0) {
+      return true;
     }
-    return true;
+    gameContext.gameMap().decrementEntityCount(entityType);
+    return false;
   }
 
   /**
