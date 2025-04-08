@@ -14,20 +14,21 @@ import java.util.Map;
  *
  * @author Will He
  */
-public class EntityEditorView extends VBox {
+public class EntityTypeEditorView extends VBox {
 
   private final TextField typeField;
   private final ComboBox<String> controlTypeBox;
   private final VBox modeList;
   private final AuthoringController controller;
   private EntityType current;
+  private Button addModeButton;
 
   /**
    * Edit parameters for an entityType
    *
    * @param controller Wires with model
    */
-  public EntityEditorView(AuthoringController controller) {
+  public EntityTypeEditorView(AuthoringController controller) {
     this.controller = controller;
     this.setSpacing(10);
     this.setPadding(new Insets(10));
@@ -35,13 +36,18 @@ public class EntityEditorView extends VBox {
 
     typeField = new TextField();
     controlTypeBox = new ComboBox<>();
+    // TODO: Remove hardcoded values
     controlTypeBox.getItems().addAll("Keyboard", "FollowMouse", "TargetEntity", "BFS");
     modeList = new VBox(5);
+
+    addModeButton = new Button("+ Add Mode");
+    addModeButton.setOnAction(e -> openAddModeDialog());
 
     this.getChildren().addAll(
         new Label("Entity Type:"), typeField,
         new Label("Control Strategy:"), controlTypeBox,
-        new Label("Modes:"), modeList
+        new Label("Modes:"), modeList,
+        addModeButton
     );
   }
 
@@ -70,9 +76,10 @@ public class EntityEditorView extends VBox {
     for (Map.Entry<String, ModeConfig> entry : type.modes().entrySet()) {
       String modeName = entry.getKey();
       ModeConfig config = entry.getValue();
-      Label label = new Label(
-          modeName + ": " + config.getImagePath() + ", speed=" + config.getMovementSpeed());
-      modeList.getChildren().add(label);
+      Label label = new Label(modeName);
+      Button editButton = new Button("Edit");
+      editButton.setOnAction(e -> openEditModeDialog(modeName, config));
+      modeList.getChildren().addAll(label, editButton);
     }
   }
 
@@ -83,5 +90,32 @@ public class EntityEditorView extends VBox {
       controller.updateEntitySelector(); // refresh tile labels if needed
     }
   }
+
+  private void openAddModeDialog() {
+    ModeEditorDialog dialog = new ModeEditorDialog();
+    dialog.showAndWait().ifPresent(config -> {
+      String modeName = config.getModeName();
+      if (!modeName.isEmpty() && !current.modes().containsKey(modeName)) {
+        current.modes().put(modeName, config);
+        setEntityType(current);
+      } else {
+        showError("Invalid or duplicate mode name.");
+      }
+    });
+  }
+
+  private void openEditModeDialog(String modeName, ModeConfig oldConfig) {
+    ModeEditorDialog dialog = new ModeEditorDialog(oldConfig);
+    dialog.showAndWait().ifPresent(newConfig -> {
+      current.modes().put(modeName, newConfig);
+      setEntityType(current); // refresh view
+    });
+  }
+
+  private void showError(String msg) {
+    Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
+    alert.showAndWait();
+  }
+
 
 }
