@@ -154,4 +154,11 @@ public class EntityPlacement {
         ", y=" + y +
         '}';
   }
+
+  public String getEntityImagePath() {
+    return this.getType()
+            .getModes()
+            .get(this.getMode())
+            .getImagePath();
+  }
 }
