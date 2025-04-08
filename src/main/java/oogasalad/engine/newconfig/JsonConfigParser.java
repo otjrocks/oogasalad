@@ -167,37 +167,52 @@ public class JsonConfigParser implements ConfigParser {
   GameConfig loadGameConfig(String filepath) throws ConfigException {
     try {
       JsonNode root = mapper.readTree(new File(filepath));
-
-      // Parse each section manually
-      Metadata metadata = mapper.treeToValue(root.get("metadata"), Metadata.class);
-      Settings defaultSettings = mapper.treeToValue(root.get("defaultSettings"), Settings.class);
-
-      List<Level> levels = new ArrayList<>();
-      for (JsonNode levelNode : root.get("levels")) {
-        JsonNode settingsNode = levelNode.get("settings");
-        Settings levelSettings = settingsNode != null
-            ? mapper.treeToValue(settingsNode, Settings.class)
-            : null;
-        String levelMap = levelNode.get("levelMap").asText();
-        Settings merged = mergeSettings(defaultSettings, levelSettings);
-        levels.add(new Level(merged, levelMap));
-      }
-
-      List<CollisionConfig> collisions = new ArrayList<>();
-      JsonNode collisionsNode = root.get("collisions");
-      if (collisionsNode != null && collisionsNode.isArray()) {
-        for (JsonNode collisionNode : collisionsNode) {
-          CollisionConfig collision = mapper.treeToValue(collisionNode, CollisionConfig.class);
-          collisions.add(collision);
-        }
-      }
-
+  
+      Metadata metadata = parseMetadata(root);
+      Settings defaultSettings = parseDefaultSettings(root);
+      List<Level> levels = parseLevels(root, defaultSettings);
+      List<CollisionConfig> collisions = parseCollisions(root);
+  
       return new GameConfig(metadata, defaultSettings, levels, collisions, getFolderPath(filepath));
-
+  
     } catch (IOException e) {
       throw new ConfigException("Failed to parse config file: " + filepath, e);
     }
   }
+  
+  private Metadata parseMetadata(JsonNode root) throws JsonProcessingException {
+    return mapper.treeToValue(root.get("metadata"), Metadata.class);
+  }
+  
+  private Settings parseDefaultSettings(JsonNode root) throws JsonProcessingException {
+    return mapper.treeToValue(root.get("defaultSettings"), Settings.class);
+  }
+  
+  private List<Level> parseLevels(JsonNode root, Settings defaultSettings) throws JsonProcessingException {
+    List<Level> levels = new ArrayList<>();
+    for (JsonNode levelNode : root.get("levels")) {
+      Settings levelSettings = null;
+      JsonNode settingsNode = levelNode.get("settings");
+      if (settingsNode != null) {
+        levelSettings = mapper.treeToValue(settingsNode, Settings.class);
+      }
+      String levelMap = levelNode.get("levelMap").asText();
+      Settings merged = mergeSettings(defaultSettings, levelSettings);
+      levels.add(new Level(merged, levelMap));
+    }
+    return levels;
+  }
+  
+  private List<CollisionConfig> parseCollisions(JsonNode root) throws JsonProcessingException {
+    List<CollisionConfig> collisions = new ArrayList<>();
+    JsonNode collisionsNode = root.get("collisions");
+    if (collisionsNode != null && collisionsNode.isArray()) {
+      for (JsonNode collisionNode : collisionsNode) {
+        collisions.add(mapper.treeToValue(collisionNode, CollisionConfig.class));
+      }
+    }
+    return collisions;
+  }  
 
   private Settings mergeSettings(Settings defaults, Settings override) {
     if (override == null) {
