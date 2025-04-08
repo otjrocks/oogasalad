@@ -259,38 +259,10 @@ public class CanvasView extends Pane {
       return;
     }
 
-    // Only process as a move if dragging actually occurred
     if (hasMoved) {
-      // Get the final grid position
-      int newCol = (int)(selectedImageView.getX() / TILE_SIZE);
-      int newRow = (int)(selectedImageView.getY() / TILE_SIZE);
-
-      // Check if position is valid
-      boolean validNewPosition = isValidCell(newRow, newCol) &&
-              (gridEntities[newRow][newCol] == null || gridEntities[newRow][newCol] == selectedEntity);
-
-      // If the new position is valid and different from the original
-      if (validNewPosition && (newRow != origRow || newCol != origCol)) {
-        // Update the grid references
-        gridEntities[origRow][origCol] = null;
-        gridEntities[newRow][newCol] = selectedEntity;
-
-        // Calculate pixel coordinates
-        double newX = newCol * TILE_SIZE;
-        double newY = newRow * TILE_SIZE;
-
-        // Update the model
-        controller.moveEntity(selectedEntity, newX, newY);
-      } else if (!validNewPosition) {
-        // If invalid position, revert to original
-        selectedImageView.setX(origCol * TILE_SIZE);
-        selectedImageView.setY(origRow * TILE_SIZE);
-        selectionHighlight.setX(origCol * TILE_SIZE);
-        selectionHighlight.setY(origRow * TILE_SIZE);
-      }
+      finalizeEntityPosition();
     }
 
-    // Reset tracking variables but keep highlight visible
     selectedEntity = null;
     selectedImageView = null;
     hasMoved = false;
@@ -298,6 +270,41 @@ public class CanvasView extends Pane {
     e.consume();
   }
 
+  private void finalizeEntityPosition() {
+    int newCol = (int)(selectedImageView.getX() / TILE_SIZE);
+    int newRow = (int)(selectedImageView.getY() / TILE_SIZE);
+
+    boolean validNewPosition = isValidCell(newRow, newCol) &&
+            (gridEntities[newRow][newCol] == null || gridEntities[newRow][newCol] == selectedEntity);
+    boolean positionChanged = (newRow != origRow || newCol != origCol);
+
+    if (validNewPosition && positionChanged) {
+      updateEntityPosition(newRow, newCol);
+    } else if (!validNewPosition) {
+      revertToOriginalPosition();
+    }
+  }
+
+  private void updateEntityPosition(int newRow, int newCol) {
+    // Update the grid references
+    gridEntities[origRow][origCol] = null;
+    gridEntities[newRow][newCol] = selectedEntity;
+
+    // Calculate pixel coordinates
+    double newX = newCol * TILE_SIZE;
+    double newY = newRow * TILE_SIZE;
+
+    // Update the model
+    controller.moveEntity(selectedEntity, newX, newY);
+  }
+
+  private void revertToOriginalPosition() {
+    // If invalid position, revert to original
+    selectedImageView.setX(origCol * TILE_SIZE);
+    selectedImageView.setY(origRow * TILE_SIZE);
+    selectionHighlight.setX(origCol * TILE_SIZE);
+    selectionHighlight.setY(origRow * TILE_SIZE);
+  }
 
   /**
    * Reload all visuals (e.g., after editing types or modes).
