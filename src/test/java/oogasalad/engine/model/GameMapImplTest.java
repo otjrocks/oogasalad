@@ -39,8 +39,7 @@ class GameMapImplTest extends DukeApplicationTest {
   @BeforeEach
   void setUp() {
     myGameMap = new GameMapImpl(width, height);
-    EntityType data = new EntityType();
-    data.setControlType("Keyboard");
+    EntityType data = new EntityType("test", "Keyboard", "Damage", null, null, null);
     EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
     myEntity = EntityFactory.createEntity(myInput, placement, myGameMap);
   }
@@ -75,7 +74,7 @@ class GameMapImplTest extends DukeApplicationTest {
   void getEntityAt_attemptGetEntityAt_ReturnsEntityAtPosition() {
     assertDoesNotThrow(() -> myGameMap.addEntity(myEntity));
     Optional<Entity> result = myGameMap.getEntityAt((int) myEntity.getEntityPlacement().getX(),
-            (int) myEntity.getEntityPlacement().getY());
+        (int) myEntity.getEntityPlacement().getY());
     assertTrue(result.isPresent());
     assertEquals(myEntity, result.get());
   }
@@ -90,8 +89,7 @@ class GameMapImplTest extends DukeApplicationTest {
   @Test
   void iterator_ensureEntityIteratorContainsAddedEntities_Success() {
     assertDoesNotThrow(() -> myGameMap.addEntity(myEntity));
-    EntityType data = new EntityType();
-    data.setControlType("Keyboard");
+    EntityType data = new EntityType("test", "Keyboard", "Damage", null, null, null);
     EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
     Entity secondEntity = EntityFactory.createEntity(myInput, placement, myGameMap);
     assertDoesNotThrow(() -> myGameMap.addEntity(secondEntity));

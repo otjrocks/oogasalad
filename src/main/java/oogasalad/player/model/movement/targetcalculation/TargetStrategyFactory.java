@@ -28,14 +28,14 @@ public class TargetStrategyFactory {
    */
   public static TargetStrategy createTargetStrategy(EntityPlacement placement, GameMap gameMap)
       throws TargetStrategyException {
-    String controlType = placement.getType().getControlType();
+    String controlType = placement.getType().controlType();
     String className = STRATEGY_PACKAGE + capitalize(controlType) + "Strategy";
 
     try {
       Class<?> clazz = Class.forName(className);
       Constructor<?> constructor = clazz.getConstructor(GameMap.class, Map.class);
       return (TargetStrategy) constructor.newInstance(gameMap,
-          placement.getType().getStrategyConfig());
+          placement.getType().strategyConfig());
     } catch (Exception e) {
       throw new TargetStrategyException(
           "Failed to create strategy for control type: " + controlType, e);

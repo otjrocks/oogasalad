@@ -33,8 +33,8 @@ public class TargetStrategyFactoryTest {
     Map<String, Object> config = new HashMap<>();
     config.put("targetType", "enemy");
 
-    when(mockEntityType.getControlType()).thenReturn("targetEntity");
-    when(mockEntityType.getStrategyConfig()).thenReturn(config);
+    when(mockEntityType.controlType()).thenReturn("targetEntity");
+    when(mockEntityType.strategyConfig()).thenReturn(config);
 
     TargetStrategy strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
 
@@ -48,8 +48,8 @@ public class TargetStrategyFactoryTest {
     config.put("targetType", "enemy");
     config.put("tilesAhead", 1);
 
-    when(mockEntityType.getControlType()).thenReturn("targetAheadOfEntity");
-    when(mockEntityType.getStrategyConfig()).thenReturn(config);
+    when(mockEntityType.controlType()).thenReturn("targetAheadOfEntity");
+    when(mockEntityType.strategyConfig()).thenReturn(config);
 
     TargetStrategy strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
 
@@ -59,8 +59,8 @@ public class TargetStrategyFactoryTest {
 
   @Test
   void createTargetStrategy_invalidControlType_throwsException() {
-    when(mockEntityType.getControlType()).thenReturn("nonExistentStrategy");
-    when(mockEntityType.getStrategyConfig()).thenReturn(new HashMap<>());
+    when(mockEntityType.controlType()).thenReturn("nonExistentStrategy");
+    when(mockEntityType.strategyConfig()).thenReturn(new HashMap<>());
 
     assertThrows(TargetStrategyException.class,
         () -> TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap));
@@ -71,8 +71,8 @@ public class TargetStrategyFactoryTest {
     Map<String, Object> config = new HashMap<>();
     config.put("targetType", "enemy");
 
-    when(mockEntityType.getControlType()).thenReturn("target_entity");
-    when(mockEntityType.getStrategyConfig()).thenReturn(config);
+    when(mockEntityType.controlType()).thenReturn("target_entity");
+    when(mockEntityType.strategyConfig()).thenReturn(config);
 
     TargetStrategy strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
     assertNotNull(strategy);
@@ -82,8 +82,8 @@ public class TargetStrategyFactoryTest {
   @Test
   void createTargetStrategy_missingConstructor_throwsException() {
     // simulate a controlType that refers to a class that doesn't match expected constructor
-    when(mockEntityType.getControlType()).thenReturn("string"); // java.lang.String doesn't have right constructor
-    when(mockEntityType.getStrategyConfig()).thenReturn(new HashMap<>());
+    when(mockEntityType.controlType()).thenReturn("string"); // java.lang.String doesn't have right constructor
+    when(mockEntityType.strategyConfig()).thenReturn(new HashMap<>());
 
     assertThrows(TargetStrategyException.class,
         () -> TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap));

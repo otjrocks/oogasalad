@@ -1,12 +1,13 @@
+
 package oogasalad.player.view;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import javafx.scene.layout.Pane;
+import java.util.ResourceBundle;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
@@ -16,163 +17,171 @@ import oogasalad.engine.model.strategies.collision.StopStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
 
 /**
- * The view used to display the game map.
+ * A Canvas-based view for rendering the entire GameMap and all its corresponding entities.
+ * <p>
+ * This class was refactored to use a canvas using ChatGPT.
  *
  * @author Owen Jennings
  */
-public class GameMapView extends Pane {
+public class GameMapView extends Canvas {
 
+  // TODO: This should be removed when hardcoded methods are refactored
   public static final int PACMAN_INITIAL_X = 13;
   public static final int PACMAN_INITIAL_Y = 23;
-  public static final String PACMAN = "Pacman";
-  private final GameMap myGameMap;
-  private final GameState myGameState;
-  private final Map<Entity, EntityView> entityViewsMap = new HashMap<>();
   private static final double GHOST_INITIAL_POSITION = 15;
+  private static final String PACMAN = "Pacman";
+  private static final int SPRITE_ANIMATION_SPEED = 6;
+
+  private final GameMap gameMap;
+  private final GameState gameState;
+  private final List<EntityView> entityViews = new ArrayList<>();
+  private final ResourceBundle SPRITE_DATA =
+      ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
+
+  private int frameCount = 0;
 
   /**
-   * Create the GameMap view instance.
+   * Initialize a game map view.
    *
-   * @param gameMap The game map model to use when creating the view.
+   * @param gameMap   The game map model which is represented in this view.
+   * @param gameState The game state model which is used in this view.
    */
   public GameMapView(GameMap gameMap, GameState gameState) {
-    super();
-    myGameMap = gameMap;
-    myGameState = gameState;
-    updateEntityViewsMap();
+    super(GameView.WIDTH, GameView.HEIGHT);
+    this.gameMap = gameMap;
+    this.gameState = gameState;
+    initializeEntityViews();
   }
 
-  private void updateEntityViewsMap() {
-    entityViewsMap.clear();
-    this.getChildren().clear();
-    for (Iterator<Entity> it = myGameMap.iterator(); it.hasNext(); ) {
+  private void initializeEntityViews() {
+    entityViews.clear();
+    for (Iterator<Entity> it = gameMap.iterator(); it.hasNext(); ) {
       Entity entity = it.next();
-      EntityView entityView = new EntityView(myGameMap, entity.getEntityPlacement());
-      entityView.setLayoutX(
-          entity.getEntityPlacement().getX() * ((double) GameView.WIDTH / myGameMap.getWidth()));
-      entityView.setLayoutY(entity.getEntityPlacement().getY() * ((double) GameView.HEIGHT
-          / myGameMap.getHeight()));
-      entityViewsMap.put(entity, entityView);
-      this.getChildren().add(entityView);
+      int frames = Integer.parseInt(
+          SPRITE_DATA.getString(
+              (entity.getEntityPlacement().getTypeString() + "_FRAMES").toUpperCase()
+          )
+      );
+      entityViews.add(new EntityView(entity, frames));
     }
   }
 
   /**
-   * Update the positions of entities in this game map view.
+   * Call on each game tick to update models, handle removals, and redraw the canvas.
    */
-  public void updateEntityPositions() {
-    updateEntityModels(); // update all models. First move objects, then check for collisions
-    updateEntityViewsMap(); // update the mapping of entity models to entity views
-    updateEntityViewsFromModel(); // update the entity views from their model information
+  public void update() {
+    updateEntityModels();
+    initializeEntityViews();  // rebuild views to reflect current entities (removals/additions)
+    drawAll();
   }
 
-  private void moveEntityModels() {
-    for (Entity entity : entityViewsMap.keySet()) {
-      moveEntity(entity);
+  private void drawAll() {
+    GraphicsContext gc = getGraphicsContext2D();
+    gc.clearRect(0, 0, getWidth(), getHeight());
+
+    double tileWidth = getWidth() / gameMap.getWidth();
+    double tileHeight = getHeight() / gameMap.getHeight();
+
+    for (EntityView ev : entityViews) {
+      ev.draw(gc, tileWidth, tileHeight);
     }
-  }
-
-  private void updateEntityViewsFromModel() {
-    for (Entity entity : entityViewsMap.keySet()) {
-      EntityView entityView = entityViewsMap.get(entity);
-      entityView.setLayoutX(
-          entity.getEntityPlacement().getX() * ((double) GameView.WIDTH / myGameMap.getWidth()));
-      entityView.setLayoutY(entity.getEntityPlacement().getY() * ((double) GameView.HEIGHT
-          / myGameMap.getHeight()));
-    }
-  }
-
-  private void moveEntity(Entity entity) {
-    entity.getEntityPlacement().setX(entity.getEntityPlacement().getX() + entity.getDx());
-    entity.getEntityPlacement().setY(entity.getEntityPlacement().getY() + entity.getDy());
   }
 
   private void updateEntityModels() {
-    moveEntityModels();
+    frameCount++;
+    // Move entities and advance animation frame
+    for (Iterator<Entity> it = gameMap.iterator(); it.hasNext(); ) {
+      Entity entity = it.next();
+      entity.getEntityPlacement().setX(
+          entity.getEntityPlacement().getX() + entity.getDx());
+      entity.getEntityPlacement().setY(
+          entity.getEntityPlacement().getY() + entity.getDy());
+      if (frameCount % SPRITE_ANIMATION_SPEED == 0) {
+        entity.getEntityPlacement().increaseCurrentFrame();
+      }
+    }
+    // Handle collisions
     for (List<Entity> collision : checkCollisions()) {
       Entity e1 = collision.get(0);
       Entity e2 = collision.get(1);
-      handleEntityWallStop(e1, e2, PACMAN);
-      handleEntityWallStop(e1, e2, "BlueGhost");
-      handleEntityWallStop(e1, e2, "RedGhost");
-      handlePacManFoodDot(e1, e2);
-      handlePacManDeath(e1, e2);
+      handleCollision(e1, e2);
+    }
+  }
+
+  private void handleCollision(Entity e1, Entity e2) {
+    handlePacManDeath(e1, e2);
+    handleBlueGhost(e1, e2);
+    handlePacManDotCollision(e1, e2);
+    handleWallCollisions(e1, e2);
+  }
+
+  private void handleWallCollisions(Entity e1, Entity e2) {
+    // Stop at Wall for Pac-Man and Ghosts
+    if (e2.getEntityPlacement().getType().type().equals("Wall")
+        && (e1.getEntityPlacement().getType().type().equals(PACMAN)
+        || e1.getEntityPlacement().getType().type().endsWith("Ghost"))) {
+      try {
+        new StopStrategy().handleCollision(e1, e2, gameMap, gameState);
+      } catch (EntityNotFoundException ex) {
+        throw new RuntimeException(ex);
+      }
+    }
+  }
+
+  private void handlePacManDotCollision(Entity e1, Entity e2) {
+    // Pac-Man eats Dot
+    if (e1.getEntityPlacement().getType().type().equals(PACMAN)
+        && e2.getEntityPlacement().getType().type().equals("Dot")) {
+      try {
+        new ConsumeStrategy().handleCollision(e1, e2, gameMap, gameState);
+      } catch (EntityNotFoundException ex) {
+        throw new RuntimeException(ex);
+      }
+      new UpdateScoreStrategy(10)
+          .handleCollision(e1, e2, gameMap, gameState);
+    }
+  }
+
+  private void handleBlueGhost(Entity e1, Entity e2) {
+    // Pac-Man eats BlueGhost
+    if (e1.getEntityPlacement().getType().type().equals(PACMAN)
+        && e2.getEntityPlacement().getType().type().equals("BlueGhost")) {
+      try {
+        gameMap.removeEntity(e2);
+      } catch (EntityNotFoundException ex) {
+        throw new RuntimeException(ex);
+      }
+      new UpdateScoreStrategy(200)
+          .handleCollision(e1, e2, gameMap, gameState);
     }
   }
 
   private void handlePacManDeath(Entity e1, Entity e2) {
-    // TODO: remove hard coded later, just for testing
-    if (e1.getEntityPlacement().getType().getType().equals(PACMAN) && e2.getEntityPlacement()
-        .getType().getType().equals("RedGhost")) {
-      myGameState.updateLives(-1);
+    // Pac-Man death by RedGhost
+    if (e1.getEntityPlacement().getType().type().equals(PACMAN)
+        && e2.getEntityPlacement().getType().type().equals("RedGhost")) {
+      gameState.updateLives(-1);
       e1.getEntityPlacement().setX(PACMAN_INITIAL_X);
       e1.getEntityPlacement().setY(PACMAN_INITIAL_Y);
       e1.setEntityDirection(' ');
       e2.getEntityPlacement().setX(GHOST_INITIAL_POSITION);
       e2.getEntityPlacement().setY(GHOST_INITIAL_POSITION);
     }
-    if (e1.getEntityPlacement().getType().getType().equals(PACMAN) && e2.getEntityPlacement()
-        .getType().getType().equals("BlueGhost")) {
-      try {
-        myGameMap.removeEntity(e2);
-      } catch (EntityNotFoundException e) {
-        throw new RuntimeException(e);
-      }
-      myGameState.updateScore(200);
-    }
   }
 
-  private void handlePacManFoodDot(Entity e1, Entity e2) {
-    // TODO: remove hard coded later, just for testing
-    if (e1.getEntityPlacement().getType().getType().equals(PACMAN) && e2.getEntityPlacement()
-        .getType().getType().equals("Dot")) {
-      ConsumeStrategy consumeStrategy = new ConsumeStrategy();
-      try {
-        consumeStrategy.handleCollision(e1, e2, myGameMap, myGameState);
-      } catch (EntityNotFoundException e) {
-        throw new RuntimeException(e);
-      }
-      UpdateScoreStrategy scoreStrategy = new UpdateScoreStrategy(10);
-      scoreStrategy.handleCollision(e1, e2, myGameMap, myGameState);
-    }
-  }
-
-  private void handleEntityWallStop(Entity e1, Entity e2, String entityType) {
-    StopStrategy stopStrategy = new StopStrategy();
-    // TODO: remove hard coded later, just for testing
-    if (e1.getEntityPlacement().getType().getType().equals(entityType) &&
-        e2.getEntityPlacement().getType().getType().equals("Wall")) {
-      try {
-        stopStrategy.handleCollision(e1, e2, myGameMap, myGameState);
-      } catch (EntityNotFoundException e) {
-        throw new RuntimeException(e);
-      }
-    }
-  }
-
-
-  /**
-   * Checks for collisions between entity views.
-   *
-   * @return A list of entity pairs that are colliding.
-   */
-  public List<List<Entity>> checkCollisions() {
+  private List<List<Entity>> checkCollisions() {
     List<List<Entity>> collisions = new ArrayList<>();
-
-    for (Entity entityA : entityViewsMap.keySet()) {
-      for (Entity entityB : entityViewsMap.keySet()) {
-        // Detect collision between two entities from their x and y values.
-        // A collision is defined as any two entities that intersect at some point in the "grid".
-        if (entityA != entityB &&
-            Math.abs(entityA.getEntityPlacement().getX() - entityB.getEntityPlacement().getX()) < 1
-            &&
-            Math.abs(entityA.getEntityPlacement().getY() - entityB.getEntityPlacement().getY())
-                < 1) {
-          collisions.add(Arrays.asList(entityA, entityB));
+    for (Iterator<Entity> it = gameMap.iterator(); it.hasNext(); ) {
+      Entity a = it.next();
+      for (Iterator<Entity> iter = gameMap.iterator(); iter.hasNext(); ) {
+        Entity b = iter.next();
+        if (a != b
+            && Math.abs(a.getEntityPlacement().getX() - b.getEntityPlacement().getX()) < 1
+            && Math.abs(a.getEntityPlacement().getY() - b.getEntityPlacement().getY()) < 1) {
+          collisions.add(Arrays.asList(a, b));
         }
       }
     }
-    return collisions; // Returns a list of all colliding entity pairs
+    return collisions;
   }
-
 }

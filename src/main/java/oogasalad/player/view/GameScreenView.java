@@ -11,7 +11,6 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.GameState;
 
 /**

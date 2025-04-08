@@ -2,6 +2,7 @@ package oogasalad.authoring.view;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -89,7 +90,7 @@ public class EntitySelectorView extends VBox {
 
     // Click to open in EntityEditor
     tile.setOnMouseClicked(e -> {
-      controller.selectEntityType(type.getType());
+      controller.selectEntityType(type.type());
       highlightSelectedTile(tile);
     });
 
@@ -98,7 +99,7 @@ public class EntitySelectorView extends VBox {
       Dragboard db = tile.startDragAndDrop(TransferMode.COPY);
       @SuppressWarnings("PMD.LooseCoupling")
       ClipboardContent content = new ClipboardContent();
-      content.putString(type.getType());
+      content.putString(type.type());
       db.setContent(content);
       e.consume();
     });
@@ -107,7 +108,7 @@ public class EntitySelectorView extends VBox {
   }
 
   private String getDefaultModeImage(EntityType type) {
-    Map<String, ModeConfig> modes = type.getModes();
+    Map<String, ModeConfig> modes = type.modes();
     if (modes == null || modes.isEmpty()) return null;
     return modes.get("Default").getImagePath();
   }
