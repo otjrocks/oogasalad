@@ -1,31 +1,29 @@
 package oogasalad.authoring.view;
 
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.model.GameSettings;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 /**
  * GameSettingsView provides a form-style UI for editing game settings
  * such as game speed, starting lives, initial score, edge policy, width, and height.
- * Also includes a button to open the CollisionRuleEditorView as a popup.
- * Uses composition rather than inheritance for JavaFX components.
+ * Includes a button to open a CollisionRuleEditorView popup.
  *
  * @author Angela Predolac
  */
 public class GameSettingsView {
 
-    private static final String TITLE = "Game Settings";
     private static final double DEFAULT_SPACING = 10;
     private static final double DEFAULT_PADDING = 15;
 
@@ -38,7 +36,6 @@ public class GameSettingsView {
 
     private static final int MIN_SCORE = 0;
     private static final int MAX_SCORE = 1000;
-    private static final int SCORE_STEP = 50;
 
     private static final int MIN_SIZE = 200;
     private static final int MAX_SIZE = 2000;
@@ -46,11 +43,11 @@ public class GameSettingsView {
 
     private static final String[] EDGE_POLICIES = {"Wrap", "Stop", "Bounce"};
 
-    private final AuthoringController controller;
+    private AuthoringController controller;
     private GameSettings gameSettings;
 
     // Root node containing the view
-    private final VBox rootNode;
+    private HBox rootNode;
 
     // UI Components
     private Spinner<Double> gameSpeedSpinner;
@@ -66,9 +63,11 @@ public class GameSettingsView {
     public GameSettingsView(AuthoringController controller) {
         this.controller = controller;
 
+        // Get the current game settings from the model
         this.gameSettings = controller.getModel().getDefaultSettings();
 
-        this.rootNode = new VBox();
+        // Create the UI
+        this.rootNode = new HBox();
         setupUI();
         bindToModel();
     }
@@ -84,76 +83,66 @@ public class GameSettingsView {
      * Set up the UI components
      */
     private void setupUI() {
-        // Setup the main container
+        // Setup the main container - horizontal layout to match the image
         rootNode.setSpacing(DEFAULT_SPACING);
         rootNode.setPadding(new Insets(DEFAULT_PADDING));
+        rootNode.setAlignment(Pos.CENTER_LEFT);
         rootNode.getStyleClass().add("game-settings-view");
 
-        // Create a title label
-        Label titleLabel = new Label(TITLE);
+        // Label for the view
+        Label titleLabel = new Label("Game Settings");
         titleLabel.getStyleClass().add("settings-title");
 
-        // Create a grid for form fields
+        // Create a grid for form fields - more compact to fit at bottom of window
         GridPane formGrid = new GridPane();
-        formGrid.setHgap(10);
+        formGrid.setHgap(15);
         formGrid.setVgap(10);
-        formGrid.setPadding(new Insets(10));
-        formGrid.getStyleClass().add("grid-pane");
+        formGrid.setPadding(new Insets(5));
 
         // Game Speed
-        Label gameSpeedLabel = new Label("Game Speed:");
+        formGrid.add(new Label("Game Speed:"), 0, 0);
         gameSpeedSpinner = createDoubleSpinner(MIN_GAME_SPEED, MAX_GAME_SPEED, GAME_SPEED_STEP);
-        formGrid.add(gameSpeedLabel, 0, 0);
         formGrid.add(gameSpeedSpinner, 1, 0);
 
         // Starting Lives
-        Label startingLivesLabel = new Label("Starting Lives:");
+        formGrid.add(new Label("Starting Lives:"), 2, 0);
         startingLivesSpinner = createIntegerSpinner(MIN_LIVES, MAX_LIVES, 1);
-        formGrid.add(startingLivesLabel, 0, 1);
-        formGrid.add(startingLivesSpinner, 1, 1);
+        formGrid.add(startingLivesSpinner, 3, 0);
 
         // Initial Score
-        Label initialScoreLabel = new Label("Initial Score:");
-        initialScoreSpinner = createIntegerSpinner(MIN_SCORE, MAX_SCORE, SCORE_STEP);
-        formGrid.add(initialScoreLabel, 0, 2);
-        formGrid.add(initialScoreSpinner, 1, 2);
+        formGrid.add(new Label("Initial Score:"), 0, 1);
+        initialScoreSpinner = createIntegerSpinner(MIN_SCORE, MAX_SCORE, 50);
+        formGrid.add(initialScoreSpinner, 1, 1);
 
         // Edge Policy
-        Label edgePolicyLabel = new Label("Edge Policy:");
+        formGrid.add(new Label("Edge Policy:"), 2, 1);
         edgePolicyComboBox = new ComboBox<>(FXCollections.observableArrayList(EDGE_POLICIES));
-        edgePolicyComboBox.setPrefWidth(150);
-        formGrid.add(edgePolicyLabel, 0, 3);
-        formGrid.add(edgePolicyComboBox, 1, 3);
+        formGrid.add(edgePolicyComboBox, 3, 1);
 
-        // Width
-        Label widthLabel = new Label("Game Width:");
+        // Width and Height
+        formGrid.add(new Label("Width:"), 0, 2);
         widthSpinner = createIntegerSpinner(MIN_SIZE, MAX_SIZE, SIZE_STEP);
-        formGrid.add(widthLabel, 0, 4);
-        formGrid.add(widthSpinner, 1, 4);
+        formGrid.add(widthSpinner, 1, 2);
 
-        // Height
-        Label heightLabel = new Label("Game Height:");
+        formGrid.add(new Label("Height:"), 2, 2);
         heightSpinner = createIntegerSpinner(MIN_SIZE, MAX_SIZE, SIZE_STEP);
-        formGrid.add(heightLabel, 0, 5);
-        formGrid.add(heightSpinner, 1, 5);
+        formGrid.add(heightSpinner, 3, 2);
 
-        // Button container for save and collision rules
-        HBox buttonContainer = new HBox(10);
-        buttonContainer.setAlignment(Pos.CENTER);
-
-        // Add save button
+        // Buttons
         Button saveButton = new Button("Save Settings");
         saveButton.setOnAction(e -> saveSettings());
 
-        // Add collision rules button
         Button collisionRulesButton = new Button("Collision Rules");
         collisionRulesButton.setOnAction(e -> showCollisionRulesPopup());
-        collisionRulesButton.getStyleClass().add("collision-button");
 
-        buttonContainer.getChildren().addAll(saveButton, collisionRulesButton);
+        HBox buttonBox = new HBox(10, saveButton, collisionRulesButton);
+        buttonBox.setAlignment(Pos.CENTER);
 
-        // Add all components to the view
-        rootNode.getChildren().addAll(titleLabel, formGrid, buttonContainer);
+        // Add components to root
+        VBox formAndButtons = new VBox(5, formGrid, buttonBox);
+        formAndButtons.setAlignment(Pos.CENTER);
+
+        rootNode.getChildren().addAll(titleLabel, formAndButtons);
     }
 
     /**
@@ -165,15 +154,9 @@ public class GameSettingsView {
         popupStage.setTitle("Collision Rules Editor");
         popupStage.initModality(Modality.APPLICATION_MODAL);
 
-        // Check if the CollisionRuleEditorView already exists in the view
-        // If not, assume we need to create it
-        Node collisionEditorNode;
-        if (controller.getView().getCollisionEditorView() != null) {
-            collisionEditorNode = controller.getView().getCollisionEditorView().getNode();
-        } else {
-            CollisionRuleEditorView collisionEditor = new CollisionRuleEditorView(controller);
-            collisionEditorNode = collisionEditor.getNode();
-        }
+        // Create a new CollisionRuleEditorView
+        CollisionRuleEditorView collisionEditor = new CollisionRuleEditorView(controller);
+        Node collisionEditorNode = collisionEditor.getNode();
 
         // Create a scene with the collision editor
         Scene scene = new Scene(new VBox(collisionEditorNode), 600, 400);
@@ -192,7 +175,7 @@ public class GameSettingsView {
 
         Spinner<Double> spinner = new Spinner<>(factory);
         spinner.setEditable(true);
-        spinner.setPrefWidth(150);
+        spinner.setPrefWidth(100);
 
         // Format to show only one decimal place
         StringConverter<Double> converter = new StringConverter<Double>() {
@@ -225,7 +208,7 @@ public class GameSettingsView {
 
         Spinner<Integer> spinner = new Spinner<>(factory);
         spinner.setEditable(true);
-        spinner.setPrefWidth(150);
+        spinner.setPrefWidth(100);
 
         return spinner;
     }

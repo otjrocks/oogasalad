@@ -89,36 +89,46 @@ public class AuthoringView extends BorderPane {
   }
 
   /**
-   * Initializes the main subviews (canvas, entity selector, editor),
-   * and adds them to the appropriate layout positions.
+   * Initializes the main subviews and arranges them according to the specified layout.
    * Called internally after setting the controller.
    */
   private void setupSubViews() {
-    // Main canvas area
+    // Initialize all views
     canvasView = new CanvasView(controller);
-
-    // Sidebar - entity selector and editor
     selectorView = new EntitySelectorView(controller);
     entityEditorView = new EntityEditorView(controller);
     levelSelectorView = new LevelSelectorView(controller.getLevelController());
-    controller.getLevelController().initDefaultLevelIfEmpty();
-//    VBox leftPanel = new VBox(selectorView, entityEditorView);
-//    leftPanel.getStyleClass().add("left-panel");
-
-    // Bottom panel - game settings and collision rules
     gameSettingsView = new GameSettingsView(controller);
-    collisionEditorView = new CollisionRuleEditorView(controller);
-    HBox bottomPanel = new HBox(gameSettingsView.getNode(), collisionEditorView.getNode());
-    bottomPanel.getStyleClass().add("bottom-panel");
 
-    // Layout
-    this.setBottom(selectorView);
-    this.setCenter(canvasView);
-    this.setRight(entityEditorView);
-    this.setLeft(levelSelectorView);
-    this.setBottom(bottomPanel);
-    this.getStyleClass().add("authoring-view");
+    // Make sure controller is initialized for level management
+    controller.getLevelController().initDefaultLevelIfEmpty();
 
+    // Create the main center area with canvas
+    BorderPane centerArea = new BorderPane();
+    centerArea.setCenter(canvasView);
+
+    // Create the right sidebar with entity selector and entity editor
+    VBox rightSidebar = new VBox();
+    rightSidebar.getChildren().addAll(selectorView, entityEditorView);
+
+    // Place the center and right areas
+    BorderPane mainArea = new BorderPane();
+    mainArea.setCenter(centerArea);
+    mainArea.setRight(rightSidebar);
+    mainArea.setLeft(levelSelectorView); // Level selection on far right
+
+    // Create a full layout with the settings at the bottom
+    BorderPane fullLayout = new BorderPane();
+    fullLayout.setCenter(mainArea);
+    fullLayout.setBottom(gameSettingsView.getNode()); // Game settings at bottom
+
+    // Set the full layout as the root
+    this.setCenter(fullLayout);
+
+    // Apply any styling needed
+    rightSidebar.getStyleClass().add("right-sidebar");
+    fullLayout.getStyleClass().add("full-layout");
+    gameSettingsView.getNode().getStyleClass().add("bottom-settings");
   }
 
   /**
