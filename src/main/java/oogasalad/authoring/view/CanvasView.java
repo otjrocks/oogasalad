@@ -254,20 +254,34 @@ public class CanvasView extends Pane {
     e.consume();
   }
 
+  /**
+   * Handles the mouse release event for dragged entities.
+   * Simply processes event and delegates to appropriate helper methods.
+   */
   private void handleEntityMouseReleased(MouseEvent e) {
-    if (selectedEntity == null || selectedImageView == null) {
+    // Return early if no entity is selected
+    if (selectedEntity == null) {
+      e.consume();
       return;
     }
 
+    // Process drag if movement occurred
     if (hasMoved) {
       finalizeEntityPosition();
     }
 
+    // Reset tracking variables
+    resetEntityTracking();
+    e.consume();
+  }
+
+  /**
+   * Reset all tracking variables related to entity dragging.
+   */
+  private void resetEntityTracking() {
     selectedEntity = null;
     selectedImageView = null;
     hasMoved = false;
-
-    e.consume();
   }
 
   private void finalizeEntityPosition() {
