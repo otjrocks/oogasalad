@@ -2,9 +2,11 @@ package oogasalad.authoring.controller;
 
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
+import oogasalad.authoring.view.GameSettingsView;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.config.ModeConfig;
+import oogasalad.engine.model.GameSettings;
 
 import java.util.*;
 
@@ -143,5 +145,37 @@ public class AuthoringController {
    */
   public LevelController getLevelController() {
     return levelController;
+  }
+
+  /**
+   * Updates the game settings in the model when changes are made in the view
+   *
+   * @param updatedSettings the updated GameSettings object
+   */
+  public void updateGameSettings(GameSettings updatedSettings) {
+    model.setDefaultSettings(updatedSettings);
+  }
+
+  /**
+   * Gets the model for view components to access
+   *
+   * @return the AuthoringModel instance
+   */
+  public AuthoringModel getModel() {
+    return model;
+  }
+
+  /**
+   * Helper method to refresh the game settings view
+   * Call this whenever the model's settings change from another source
+   */
+  public void refreshGameSettingsView() {
+    if (view.getGameSettingsView() != null) {
+      view.getGameSettingsView().updateFromModel();
+    }
+  }
+
+  public AuthoringView getView() {
+    return view;
   }
 }

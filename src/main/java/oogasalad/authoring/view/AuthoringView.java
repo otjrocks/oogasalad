@@ -21,9 +21,8 @@ public class AuthoringView extends BorderPane {
   private EntityEditorView entityEditorView;
   private AuthoringController controller;
   private LevelSelectorView levelSelectorView;
-
-//  private final GameSettingsView gameSettingsView;
-//  private final CollisionRuleEditorView collisionEditorView;
+  private GameSettingsView gameSettingsView;
+  private CollisionRuleEditorView collisionEditorView;
 
   /**
    * Constructs the full authoring environment interface without a controller.
@@ -60,23 +59,23 @@ public class AuthoringView extends BorderPane {
     return entityEditorView;
   }
 
-//  /**
-//   * Returns the view for editing global game settings.
-//   *
-//   * @return the game settings view component
-//   */
-//  public GameSettingsView getGameSettingsView() {
-//    return gameSettingsView;
-//  }
-//
-//  /**
-//   * Returns the view for editing collision rules between entities.
-//   *
-//   * @return the collision rule editor view component
-//   */
-//  public CollisionRuleEditorView getCollisionEditorView() {
-//    return collisionEditorView;
-//  }
+  /**
+   * Returns the view for editing global game settings.
+   *
+   * @return the game settings view component
+   */
+  public GameSettingsView getGameSettingsView() {
+    return gameSettingsView;
+  }
+
+  /**
+   * Returns the view for editing collision rules between entities.
+   *
+   * @return the collision rule editor view component
+   */
+  public CollisionRuleEditorView getCollisionEditorView() {
+    return collisionEditorView;
+  }
 
   /**
    * Sets the {@link AuthoringController} to be used by all child components.
@@ -107,18 +106,19 @@ public class AuthoringView extends BorderPane {
 //    leftPanel.getStyleClass().add("left-panel");
 
     // Bottom panel - game settings and collision rules
-//    gameSettingsView = new GameSettingsView(controller);
-//    collisionEditorView = new CollisionRuleEditorView(controller);
-//    HBox bottomPanel = new HBox(gameSettingsView, collisionEditorView);
-//    bottomPanel.getStyleClass().add("bottom-panel");
+    gameSettingsView = new GameSettingsView(controller);
+    collisionEditorView = new CollisionRuleEditorView(controller);
+    HBox bottomPanel = new HBox(gameSettingsView.getNode(), collisionEditorView.getNode());
+    bottomPanel.getStyleClass().add("bottom-panel");
 
     // Layout
     this.setBottom(selectorView);
     this.setCenter(canvasView);
     this.setRight(entityEditorView);
     this.setLeft(levelSelectorView);
-//    this.setBottom(bottomPanel);
-//    this.getStyleClass().add("authoring-view");
+    this.setBottom(bottomPanel);
+    this.getStyleClass().add("authoring-view");
+
   }
 
   /**
