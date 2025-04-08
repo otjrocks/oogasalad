@@ -26,31 +26,47 @@ class JsonConfigParserTest {
 
     // Arrange: Sample JSON content
     String json = """
-          {
-            "metadata": {
-              "gameTitle": "Test Game",
-              "author": "Alice",
-              "gameDescription": "A sample test game"
-            },
-            "defaultSettings": {
-              "gameSpeed": 1.5,
-              "startingLives": 3,
-              "initialScore": 0,
-              "scoreStrategy": "Standard",
-              "winCondition": "CollectAllItems"
-            },
-            "levels": [
-              {
-                "settings": {
-                  "gameSpeed": 2.0
-                },
-                "levelMap": "level1.map"
+        {
+          "metadata": {
+            "gameTitle": "Test Game",
+            "author": "Alice",
+            "gameDescription": "A sample test game"
+          },
+          "defaultSettings": {
+            "gameSpeed": 1.5,
+            "startingLives": 3,
+            "initialScore": 0,
+            "scoreStrategy": "Standard",
+            "winCondition": "CollectAllItems"
+          },
+          "levels": [
+            {
+              "settings": {
+                "gameSpeed": 2.0
               },
-              {
-                "levelMap": "level2.map"
-              }
-            ]
-          }
+              "levelMap": "level1.map"
+            },
+            {
+              "levelMap": "level2.map"
+            }
+          ],
+          "collisions": [
+            {
+              "entityA": "Player",
+              "modeA": [1, 2],
+              "entityB": "Enemy",
+              "modeB": [3],
+              "eventsA": ["LoseLife", "Flash"],
+              "eventsB": ["BounceBack"]
+            },
+            {
+              "entityA": "Player",
+              "entityB": "Coin",
+              "eventsA": ["IncreaseScore"],
+              "eventsB": []
+            }
+          ]
+        }
         """;
 
     // Create a temp JSON file
@@ -60,7 +76,7 @@ class JsonConfigParserTest {
     JsonConfigParser parser = new JsonConfigParser();
 
     // Act
-    GameConfig config = parser.loadFromFile(configFile.getAbsolutePath());
+    GameConfig config = parser.loadGameConfig(configFile.getAbsolutePath());
 
     // Assert
     assertNotNull(config);
@@ -92,8 +108,29 @@ class JsonConfigParserTest {
     assertEquals(1.5, level2.gameSpeed()); // From default
     assertEquals(3, level2.startingLives());
 
+    // Collision check
+    List<CollisionConfig> collisions = config.collisions();
+    assertNotNull(collisions);
+    assertEquals(2, collisions.size());
+
+    CollisionConfig c1 = collisions.get(0);
+    assertEquals("Player", c1.entityA());
+    assertEquals(List.of(1, 2), c1.modeA());
+    assertEquals("Enemy", c1.entityB());
+    assertEquals(List.of(3), c1.modeB());
+    assertEquals(List.of("LoseLife", "Flash"), c1.eventsA());
+    assertEquals(List.of("BounceBack"), c1.eventsB());
+
+    CollisionConfig c2 = collisions.get(1);
+    assertEquals("Player", c2.entityA());
+    assertNull(c2.modeA()); // optional
+    assertEquals("Coin", c2.entityB());
+    assertNull(c2.modeB()); // optional
+    assertEquals(List.of("IncreaseScore"), c2.eventsA());
+    assertEquals(List.of(), c2.eventsB());
+
     // Folder path
-    assertEquals(tempDir.getPath()+'/', config.gameFolderPath());
+    assertEquals(tempDir.getPath() + '/', config.gameFolderPath());
   }
 
   @Test
@@ -102,47 +139,47 @@ class JsonConfigParserTest {
 
     // Arrange: Entity JSON with base and one overriding mode
     String json = """
-      {
-        "entityType": {
-          "name": "Ghost",
-          "controlType": {
-            "controlType": "Chase",
-            "controlTypeConfig": {
-              "targetType": "Player",
-              "tilesAhead": 2
-            }
-          },
-          "movementSpeed": 1.5,
-          "blocks": ["Player"]
-        },
-        "modes": [
           {
-            "name": "Frightened",
-            "controlType": {
-              "controlType": "Random"
+            "entityType": {
+              "name": "Ghost",
+              "controlType": {
+                "controlType": "Chase",
+                "controlTypeConfig": {
+                  "targetType": "Player",
+                  "tilesAhead": 2
+                }
+              },
+              "movementSpeed": 1.5,
+              "blocks": ["Player"]
             },
-            "movementSpeed": 1.0,
-            "image": {
-              "imagePath": "ghost.png",
-              "tileWidth": 32,
-              "tileHeight": 32,
-              "tilesToCycle": [0,1,2],
-              "animationSpeed": 0.5
-            }
-          },
-          {
-            "name": "Normal",
-            "image": {
-              "imagePath": "ghost.png",
-              "tileWidth": 32,
-              "tileHeight": 32,
-              "tilesToCycle": [0,1],
-              "animationSpeed": 0.25
-            }
+            "modes": [
+              {
+                "name": "Frightened",
+                "controlType": {
+                  "controlType": "Random"
+                },
+                "movementSpeed": 1.0,
+                "image": {
+                  "imagePath": "ghost.png",
+                  "tileWidth": 32,
+                  "tileHeight": 32,
+                  "tilesToCycle": [0,1,2],
+                  "animationSpeed": 0.5
+                }
+              },
+              {
+                "name": "Normal",
+                "image": {
+                  "imagePath": "ghost.png",
+                  "tileWidth": 32,
+                  "tileHeight": 32,
+                  "tilesToCycle": [0,1],
+                  "animationSpeed": 0.25
+                }
+              }
+            ]
           }
-        ]
-      }
-    """;
+        """;
 
     File entityFile = new File(tempDir, "ghost.json");
     Files.writeString(entityFile.toPath(), json);
@@ -166,7 +203,7 @@ class JsonConfigParserTest {
     List<ModeConfig> modes = config.modes();
     assertEquals(2, modes.size());
 
-    ModeConfig frightened = modes.get(0);
+    ModeConfig frightened = modes.getFirst();
     assertEquals("Frightened", frightened.name());
     assertEquals("Random", frightened.entityProperties().controlType().controlType());
     assertEquals(1.0, frightened.entityProperties().movementSpeed());

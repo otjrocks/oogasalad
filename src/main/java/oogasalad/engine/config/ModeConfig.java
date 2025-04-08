@@ -9,6 +9,11 @@ public class ModeConfig {
   private int movementSpeed;
   private String imagePath;
 
+  public ModeConfig(Double movementSpeed, String imagePath) {
+    this.movementSpeed = movementSpeed.intValue();
+    this.imagePath = imagePath;
+  }
+
   /**
    * Returns the movement speed associated with this mode.
    *

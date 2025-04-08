@@ -8,7 +8,7 @@ import javafx.scene.layout.StackPane;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.ConfigModel;
-import oogasalad.engine.config.JsonConfigParser;
+import oogasalad.engine.newconfig.JsonConfigParser;
 import oogasalad.engine.config.TileMapParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.EntityPlacement;
@@ -46,7 +46,7 @@ public class GamePlayerView extends StackPane {
     ConfigModel configModel = null;
 
     try {
-      configModel = configParser.loadFromFile("data/basic.json");
+      configModel = configParser.loadFromFile("data/games/BasicPacMan/gameConfig.json");
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
     }

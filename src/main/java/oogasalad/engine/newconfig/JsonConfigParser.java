@@ -14,7 +14,14 @@ import java.util.regex.Pattern;
 import oogasalad.engine.ConstantsManager;
 import oogasalad.engine.ConstantsManagerException;
 import oogasalad.engine.config.ConfigException;
-import oogasalad.engine.newconfig.api.ConfigParser;
+import oogasalad.engine.config.ConfigModel;
+import oogasalad.engine.config.api.ConfigParser;
+import oogasalad.engine.model.CollisionRule;
+import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.GameSettings;
+import oogasalad.engine.model.MetaData;
+import oogasalad.engine.model.Tiles;
 import oogasalad.engine.newconfig.model.ControlType;
 import oogasalad.engine.newconfig.model.EntityProperties;
 import oogasalad.engine.newconfig.model.Level;
@@ -50,25 +57,83 @@ public class JsonConfigParser implements ConfigParser {
     this.mapper = new ObjectMapper();
   }
 
-  /**
-   * Loads a game configuration from the specified file path.
-   *
-   * @param filepath the path to the configuration file to be loaded
-   * @return a GameConfig object representing the loaded configuration
-   * @throws ConfigException if there is an error during the loading process
-   */
-  public GameConfig loadFromFile(String filepath) throws ConfigException {
+  public ConfigModel loadFromFile(String filepath) throws ConfigException {
     GameConfig gameConfig = loadGameConfig(filepath);
 
     String folderPath = gameConfig.gameFolderPath();
     Map<String, EntityConfig> entityMap = constructEntities(folderPath);
 
-    return gameConfig;
+    MetaData metaData = new MetaData(gameConfig.metadata().gameTitle(),
+        gameConfig.metadata().author(), gameConfig.metadata().gameDescription());
+
+    // TODO: need to parse map
+    GameSettings settings = new GameSettings(gameConfig.settings().gameSpeed(),
+        gameConfig.settings().startingLives(), gameConfig.settings().initialScore(),
+        "", 0, 0);
+
+    List<EntityType> entityTypes = new ArrayList<>();
+    List<EntityPlacement> entityPlacements = new ArrayList<>();
+    createEntityTypes(entityMap, entityTypes, entityPlacements);
+
+    List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
+
+    List<Tiles> tiles = new ArrayList<>();
+
+    return new ConfigModel(metaData, settings, entityTypes, entityPlacements, collisionRules,
+        gameConfig.settings().winCondition(), tiles);
+  }
+
+  private List<CollisionRule> convertToCollisionRules(GameConfig gameConfig) {
+    List<CollisionRule> collisionRules = new ArrayList<>();
+
+    for (CollisionConfig collision : gameConfig.collisions()) {
+      // TODO: for now I just hardcoded to any, since these are still with string modes
+      collisionRules.add(
+          new CollisionRule(collision.entityA(), "Any", collision.entityB(), "Any",
+              collision.eventsA(), collision.eventsB())
+      );
+    }
+    return collisionRules;
+  }
+
+  private void createEntityTypes(Map<String, EntityConfig> entityMap, List<EntityType> entityTypes,
+      List<EntityPlacement> entityPlacements) {
+
+    for (EntityConfig entity : entityMap.values()) {
+      Map<String, oogasalad.engine.config.ModeConfig> modes = new HashMap<>();
+
+      // create modes
+      for (ModeConfig mode : entity.modes()) {
+        oogasalad.engine.config.ModeConfig modeConfig = new oogasalad.engine.config.ModeConfig(
+            mode.entityProperties().movementSpeed(), mode.image().imagePath());
+        modes.put(mode.name(), modeConfig);
+      }
+
+      Map<String, Object> strategyConfig = new HashMap<>();
+      if (entity.entityProperties().controlType().controlTypeConfig() != null) {
+        strategyConfig.put("targetType",
+            entity.entityProperties().controlType().controlTypeConfig().targetType());
+        strategyConfig.put("tilesAhead",
+            entity.entityProperties().controlType().controlTypeConfig().tilesAhead());
+      }
+
+      // TODO: effects is currently hardcoded because I think we getting rid of it
+      EntityType entityType = new EntityType(entity.name(),
+          entity.entityProperties().controlType().controlType(), "",
+          modes, entity.entityProperties().blocks(), strategyConfig);
+      entityTypes.add(entityType);
+
+      EntityPlacement entityPlacement = new EntityPlacement(entityType, 0, 0,
+          entity.modes().getFirst().name());
+      entityPlacement.setType(entity.name());
+
+      entityPlacements.add(entityPlacement);
+    }
   }
 
   // ---- Methods for loading Game Config ----
 
-  private GameConfig loadGameConfig(String filepath) throws ConfigException {
+  GameConfig loadGameConfig(String filepath) throws ConfigException {
     try {
       JsonNode root = mapper.readTree(new File(filepath));
 
@@ -87,7 +152,16 @@ public class JsonConfigParser implements ConfigParser {
         levels.add(new Level(merged, levelMap));
       }
 
-      return new GameConfig(metadata, defaultSettings, levels, getFolderPath(filepath));
+      List<CollisionConfig> collisions = new ArrayList<>();
+      JsonNode collisionsNode = root.get("collisions");
+      if (collisionsNode != null && collisionsNode.isArray()) {
+        for (JsonNode collisionNode : collisionsNode) {
+          CollisionConfig collision = mapper.treeToValue(collisionNode, CollisionConfig.class);
+          collisions.add(collision);
+        }
+      }
+
+      return new GameConfig(metadata, defaultSettings, levels, collisions, getFolderPath(filepath));
 
     } catch (IOException e) {
       throw new ConfigException("Failed to parse config file: " + filepath, e);
