@@ -74,6 +74,10 @@ public class ModeEditorDialog extends Dialog<ModeConfig> {
     });
   }
 
+  /**
+   * Constructor for editing an existing mode
+   * @param existingConfig already existing mode config
+   */
   public ModeEditorDialog(ModeConfig existingConfig) {
     this(); // call default constructor
     if (existingConfig != null) {

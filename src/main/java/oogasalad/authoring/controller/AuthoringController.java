@@ -52,7 +52,7 @@ public class AuthoringController {
    */
   public void createNewEntityType() {
     ModeConfig defaultMode = new ModeConfig();
-    defaultMode.setImagePath("assets/images/pacman.png");
+    defaultMode.setImagePath("file:/C:/Users/willi/OneDrive/Documents/College/CS308/oogasalad_team01/src/main/resources/assets/images/pacman.png");
     defaultMode.setMovementSpeed(100);
 
 

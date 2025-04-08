@@ -130,6 +130,7 @@ public class EntitySelectorView extends VBox {
     // Drag-and-drop support
     tile.setOnDragDetected(e -> {
       Dragboard db = tile.startDragAndDrop(TransferMode.COPY);
+      @SuppressWarnings("PMD.LooseCoupling")
       ClipboardContent content = new ClipboardContent();
       content.putString(type.type());
       db.setContent(content);
