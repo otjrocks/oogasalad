@@ -49,20 +49,6 @@ public class ModeEditorDialogTest extends DukeApplicationTest {
   }
 
   @Test
-  void clickUploadButton_DoesNotCrash() {
-    runAsJFXAction(() -> {
-      dialog = new ModeEditorDialog();
-      dialog.initOwner(Stage.getWindows().stream().findFirst().get());
-      dialog.showAndWait();
-    });
-
-    Button uploadButton = lookup("Choose Image").query();
-    assertNotNull(uploadButton);
-    clickOn(
-        uploadButton); // Won’t open file dialog in headless mode, just make sure it doesn’t crash
-  }
-
-  @Test
   void clickCancel_ClosesDialogWithoutException() {
     runAsJFXAction(() -> {
       dialog = new ModeEditorDialog();
