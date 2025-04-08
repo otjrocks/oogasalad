@@ -3,6 +3,7 @@ package oogasalad.engine.model.strategies;
 import java.util.List;
 import oogasalad.engine.model.exceptions.LoadStrategyException;
 import oogasalad.engine.model.strategies.collision.CollisionStrategy;
+import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategy;
 
 /**
  * A class to handle the loading of strategy patterns for entities.
@@ -40,17 +41,6 @@ public class StrategyLoader {
    * @throws LoadStrategyException if edge strategies cannot be loaded.
    */
   List<Class<? extends EdgeStrategy>> getAvailableEdgeStrategies() throws LoadStrategyException {
-    return List.of();
-  }
-
-  /**
-   * Retrieves a list of available effect strategy classes.
-   *
-   * @return a list of classes implementing the {@code EffectStrategy} interface.
-   * @throws LoadStrategyException if effect strategies cannot be loaded.
-   */
-  List<Class<? extends EffectStrategy>> getAvailableEffectStrategies()
-      throws LoadStrategyException {
     return List.of();
   }
 

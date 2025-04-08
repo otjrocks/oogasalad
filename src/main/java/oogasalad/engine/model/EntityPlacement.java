@@ -17,6 +17,7 @@ public class EntityPlacement {
   private double x;
   private double y;
   private String mode;
+  private int currentFrame;
 
   /**
    * A default constructor is required for the file parsing API.
@@ -39,6 +40,7 @@ public class EntityPlacement {
     this.x = x;
     this.y = y;
     this.mode = mode;
+    this.currentFrame = 0;
   }
 
   /**
@@ -131,6 +133,19 @@ public class EntityPlacement {
     this.mode = mode;
   }
 
+  /**
+   * Gets the current frame of animation the entity is on
+   */
+  public int getCurrentFrame() {
+    return currentFrame;
+  }
+
+  /**
+   * Increments the current frame of the animation by 1
+   */
+  public void increaseCurrentFrame() {
+    currentFrame++;
+  }
   /**
    * Moves the entity to a new (x, y) location on the map.
    *

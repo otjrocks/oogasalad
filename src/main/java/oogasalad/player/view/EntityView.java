@@ -1,37 +1,83 @@
 package oogasalad.player.view;
 
 import java.util.Objects;
+import java.util.ResourceBundle;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.entity.Entity;
 
 /**
- * A view used to display a specific Entity from the {@code Entity} model API.
+ * A class used to display a specific Entity from the {@code Entity} model API. This view has a
+ * {@code draw()} method which is called by the {@code GameMapView} class which extends a javafx
+ * canvas.
+ * <p>
+ * This class was refactored from original extension of an ImageView to a draw method for a javafx
+ * canvas using assistance from ChatGPT
  *
  * @author Owen Jennings
+ * @author Troy Ludwig
  */
-public class EntityView extends ImageView {
+public class EntityView {
 
-  private final EntityPlacement myPlacement;
+  private static final ResourceBundle SPRITE_DATA =
+      ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
+  private static final Image SPRITE_SHEET = new Image(
+      Objects.requireNonNull(
+          EntityView.class.getClassLoader()
+              .getResourceAsStream("sprites/Pacman.png"))
+  );
+
+  private final Entity entity;
+  private final int totalFrames;
+  private final int dimension;
 
   /**
-   * Create an Entity view using the entity data provided.
+   * Initialize an Entity view.
    *
-   * @param gameMap    The game map being used for this entity view.
-   * @param entityPlacement The entity data used to initialize the view.
+   * @param entity      The Entity model used to represent this view.
+   * @param totalFrames The total number of frames in the sprite file for this entity view.
    */
-  public EntityView(GameMap gameMap, EntityPlacement entityPlacement) {
-    super();
-    myPlacement = entityPlacement;
-    this.setFitWidth((double) GameView.WIDTH / gameMap.getWidth());
-    this.setFitHeight((double) GameView.HEIGHT / gameMap.getHeight());
-    initializeView();
+  public EntityView(Entity entity, int totalFrames) {
+    this.entity = entity;
+    this.totalFrames = totalFrames;
+    // Dimension of each frame in the sprite sheet
+    this.dimension = Integer.parseInt(
+        SPRITE_DATA.getString(
+            (entity.getEntityPlacement().getTypeString() + "_DIM").toUpperCase()
+        )
+    );
   }
 
-  private void initializeView() {
-    this.setImage(new Image(
-        Objects.requireNonNull(
-            this.getClass().getClassLoader().getResourceAsStream(myPlacement.getType().modes().get("Default").getImagePath()))));
+  /**
+   * Draws this entity onto the provided GraphicsContext.
+   *
+   * @param gc         the canvas GraphicsContext
+   * @param tileWidth  width of one map tile in pixels
+   * @param tileHeight height of one map tile in pixels
+   */
+  public void draw(GraphicsContext gc, double tileWidth, double tileHeight) {
+    int frameIndex = entity.getEntityPlacement().getCurrentFrame() % totalFrames;
+    char dir = entity.getEntityDirection();
+    String prefix = (entity.getEntityPlacement().getTypeString()
+        + (dir == ' ' || dir == '\0' ? "_R" : "_" + dir))
+        .toUpperCase();
+
+    int offsetX = Integer.parseInt(SPRITE_DATA.getString(prefix + "_X_OFFSET"));
+    int offsetY = Integer.parseInt(SPRITE_DATA.getString(prefix + "_Y_OFFSET"));
+
+    double destX = entity.getEntityPlacement().getX() * tileWidth;
+    double destY = entity.getEntityPlacement().getY() * tileHeight;
+
+    gc.drawImage(
+        SPRITE_SHEET,
+        frameIndex * dimension + offsetX,
+        offsetY,
+        dimension,
+        dimension,
+        destX,
+        destY,
+        tileWidth,
+        tileHeight
+    );
   }
 }
