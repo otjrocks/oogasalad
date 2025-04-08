@@ -7,15 +7,17 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import oogasalad.engine.model.GameEndHandler;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
-import oogasalad.engine.model.strategies.collision.CollisionStrategy;
 import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
 import oogasalad.engine.model.strategies.collision.StopStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
+import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.records.CollisionContext;
+import oogasalad.engine.records.GameContext;
 
 /**
  * A Canvas-based view for rendering the entire GameMap and all its corresponding entities.
@@ -38,6 +40,7 @@ public class GameMapView extends Canvas {
   private final List<EntityView> entityViews = new ArrayList<>();
   private final ResourceBundle SPRITE_DATA =
       ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
+  private GameEndHandler gameEndHandler;
 
   private int frameCount = 0;
 
@@ -140,6 +143,10 @@ public class GameMapView extends Canvas {
       }
       new UpdateScoreStrategy(10)
           .handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
+      if (new EntityBasedOutcomeStrategy("Dot")
+          .getGameOutcome(new GameContext(gameMap, gameState)).equals("Victory!")) {
+        stopGameLoop();
+      }
     }
   }
 
@@ -168,6 +175,9 @@ public class GameMapView extends Canvas {
       e1.setEntityDirection(' ');
       e2.getEntityPlacement().setX(GHOST_INITIAL_POSITION);
       e2.getEntityPlacement().setY(GHOST_INITIAL_POSITION);
+      if (gameState.getLives() <= 0) {
+        stopGameLoop();
+      }
     }
   }
 
@@ -185,5 +195,20 @@ public class GameMapView extends Canvas {
       }
     }
     return collisions;
+  }
+
+  /**
+   * Sets the handler to be called when the game ends.
+   *
+   * @param handler the callback to execute when the game ends
+   */
+  public void setGameEndHandler(GameEndHandler handler) {
+    this.gameEndHandler = handler;
+  }
+
+  private void stopGameLoop() {
+    if (gameEndHandler != null) {
+      gameEndHandler.onGameEnd();
+    }
   }
 }

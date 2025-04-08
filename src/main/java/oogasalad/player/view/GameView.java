@@ -29,6 +29,7 @@ public class GameView extends StackPane {
     super();
     myGameMapView = new GameMapView(gameMap, gameState);
     myGameMap = gameMap;
+    myGameMapView.setGameEndHandler(this::pauseGame);
     this.setPrefSize(WIDTH, HEIGHT);
     this.setMinSize(WIDTH, HEIGHT);
     this.setMaxSize(WIDTH, HEIGHT);
@@ -82,13 +83,17 @@ public class GameView extends StackPane {
    * Stops the loop when called
    */
   public void pauseGame() {
-    if (gameLoop != null) gameLoop.stop();
+    if (gameLoop != null)  {
+      gameLoop.stop();
+    }
   }
 
   /**
    * Starts the loop again
    */
   public void resumeGame() {
-    if (gameLoop != null) gameLoop.start();
+    if (gameLoop != null) {
+      gameLoop.start();
+    }
   }
 }
