@@ -51,16 +51,11 @@ public class AuthoringController {
    * </p>
    */
   public void createNewEntityType() {
-    ModeConfig defaultMode = new ModeConfig();
-    defaultMode.setImagePath("file:/C:/Users/willi/OneDrive/Documents/College/CS308/oogasalad_team01/src/main/resources/assets/images/pacman.png");
-    defaultMode.setMovementSpeed(100);
 
 
     String newTypeName = "NewEntity" + UUID.randomUUID().toString().substring(0, 4);
     EntityType newType = new EntityType(newTypeName, "", "", defaultModeMap(), null, null);
     // TODO: update this to include all required fields such as control type and effect type instead of providing null.
-    newType.modes().put("Default", defaultMode);
-
     model.addEntityType(newType);
     updateEntitySelector();
     selectEntityType(newTypeName);
@@ -141,7 +136,8 @@ public class AuthoringController {
   // Private helper to provide default values for a new entity's mode config
   private Map<String, ModeConfig> defaultModeMap() {
     ModeConfig defaultMode = new ModeConfig();
-    defaultMode.setImagePath("assets/images/pacman.png");
+    defaultMode.setModeName("Default");
+    defaultMode.setImagePath("file:/C:/Users/willi/OneDrive/Documents/College/CS308/oogasalad_team01/src/main/resources/assets/images/pacman.png");
     defaultMode.setMovementSpeed(100);
     Map<String, ModeConfig> map = new HashMap<>();
     map.put("Default", defaultMode);

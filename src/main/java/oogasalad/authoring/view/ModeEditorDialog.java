@@ -29,7 +29,7 @@ public class ModeEditorDialog extends Dialog<ModeConfig> {
    * Represents the dialog to add a new mode
    */
   public ModeEditorDialog() {
-    this.setTitle("Add New Mode");
+    this.setTitle("Mode Editor");
 
     GridPane grid = new GridPane();
     grid.setHgap(10);
@@ -82,7 +82,6 @@ public class ModeEditorDialog extends Dialog<ModeConfig> {
     this(); // call default constructor
     if (existingConfig != null) {
       nameField.setText(existingConfig.getModeName());
-      nameField.setEditable(false);
       speedField.setText(String.valueOf(existingConfig.getMovementSpeed()));
       selectedImageFile = new File(URI.create(existingConfig.getImagePath()));
       imagePathField.setText(selectedImageFile.getName());
