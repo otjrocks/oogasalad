@@ -10,7 +10,6 @@ import oogasalad.engine.model.GameMap;
  * @author Troy Ludwig
  */
 public class KeyboardControlledEntity extends Entity {
-
   private final GameInputManager inputManager;
   private final GameMap gameMap;
 
@@ -46,25 +45,25 @@ public class KeyboardControlledEntity extends Entity {
   }
 
   private void setRightDirection(int myX, int myY) {
-    if (inputManager.isMovingRight() && checkNoWall(myX + 1, myY)) {
+    if (canMove('R') && inputManager.isMovingRight() && checkNoWall(myX + 1, myY)) {
       this.setEntityDirection('R');
     }
   }
 
   private void setLeftDirection(int myX, int myY) {
-    if (inputManager.isMovingLeft() && checkNoWall(myX - 1, myY)) {
+    if (canMove('L') && inputManager.isMovingLeft() && checkNoWall(myX - 1, myY)) {
       this.setEntityDirection('L');
     }
   }
 
   private void setDownDirection(int myX, int myY) {
-    if (inputManager.isMovingDown() && checkNoWall(myX, myY + 1)) {
+    if (canMove('D') && inputManager.isMovingDown() && checkNoWall(myX, myY + 1)) {
       this.setEntityDirection('D');
     }
   }
 
   private void setUpDirection(int myX, int myY) {
-    if (inputManager.isMovingUp() && checkNoWall(myX, myY - 1)) {
+    if (canMove('U') && inputManager.isMovingUp() && checkNoWall(myX, myY - 1)) {
       this.setEntityDirection('U');
     }
   }
@@ -74,4 +73,5 @@ public class KeyboardControlledEntity extends Entity {
         .filter(entity -> entity.getEntityPlacement().getType().type().equals("Wall"))
         .isEmpty();
   }
+
 }

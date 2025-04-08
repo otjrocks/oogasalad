@@ -75,7 +75,8 @@ Label, Text {
 
 /* Game player views */
 .game-view {
-  -fx-background-color: -fx-primary;
+  -fx-background-color: rgb(19, 19, 19);
+  /* Force background color to be dark to ensure enough contrast with image sprites */
 }
 
 .game-screen-view {
@@ -83,7 +84,7 @@ Label, Text {
 }
 
 .hud-container {
-  -fx-padding: 20px;
+  -fx-padding: 10px 0 40px 0;
   -fx-background-color: -fx-primary;
   -fx-alignment: center;
   -fx-spacing: 20px;

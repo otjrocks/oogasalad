@@ -54,6 +54,8 @@ public class GameView extends StackPane {
       public void handle(long now) {
         // Calculate elapsed time in seconds (optional, for frame-dependent logic)
         double elapsedTime = (now - lastUpdateTime) / 1_000_000_000.0;
+
+        // Only update if enough time has passed (e.g., 60 FPS)
         if (checkEnoughTimeHasPassed(elapsedTime)) {
           updateGame();
           lastUpdateTime = now;
@@ -73,7 +75,7 @@ public class GameView extends StackPane {
   private void updateGame() {
     //Updates the game map and entity positions
     myGameMap.update();
-    myGameMapView.updateEntityPositions();
+    myGameMapView.update();
   }
 
   /**
