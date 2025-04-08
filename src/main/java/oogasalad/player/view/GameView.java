@@ -4,7 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.layout.StackPane;
 import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.GameState;
+import oogasalad.engine.records.GameContext;
 
 /**
  * The main game view of the player. Primarily encapsulates the game map view.
@@ -18,17 +18,17 @@ public class GameView extends StackPane {
 
   private final GameMapView myGameMapView;
   private final GameMap myGameMap;
-  private AnimationTimer gameLoop; // ✅ store as field
+  private AnimationTimer gameLoop;
 
   /**
    * Create the game view.
    *
-   * @param gameMap The game map model you wish to use.
+   * @param gameContext The game context for this view.
    */
-  public GameView(GameMap gameMap, GameState gameState) {
+  public GameView(GameContext gameContext) {
     super();
-    myGameMapView = new GameMapView(gameMap, gameState);
-    myGameMap = gameMap;
+    myGameMapView = new GameMapView(gameContext);
+    myGameMap = gameContext.gameMap();
     this.setPrefSize(WIDTH, HEIGHT);
     this.setMinSize(WIDTH, HEIGHT);
     this.setMaxSize(WIDTH, HEIGHT);
@@ -82,13 +82,17 @@ public class GameView extends StackPane {
    * Stops the loop when called
    */
   public void pauseGame() {
-    if (gameLoop != null) gameLoop.stop();
+    if (gameLoop != null) {
+      gameLoop.stop();
+    }
   }
 
   /**
    * Starts the loop again
    */
   public void resumeGame() {
-    if (gameLoop != null) gameLoop.start();
+    if (gameLoop != null) {
+      gameLoop.start();
+    }
   }
 }
