@@ -19,7 +19,6 @@ public class BfsEntity extends Entity {
 
   private final GameMap myGameMap;
   // TODO: would be nice if this was static, so each class don't need own for path
-  // finidng
   private final PathFindingStrategy myPathFindingStrategy;
   private final TargetStrategy myTargetStrategy;
 
@@ -61,13 +60,13 @@ public class BfsEntity extends Entity {
   private void setEntityDirection(int dx, int dy) {
     // by chatGPT
 
-    if (dx > 0) {
+    if (dx > 0 && canMove('R')) {
       this.setEntityDirection('R');
-    } else if (dx < 0) {
+    } else if (dx < 0 && canMove('L')) {
       this.setEntityDirection('L');
-    } else if (dy > 0) {
+    } else if (dy > 0 && canMove('D')) {
       this.setEntityDirection('D');
-    } else if (dy < 0) {
+    } else if (dy < 0 && canMove('U')) {
       this.setEntityDirection('U');
     }
   }

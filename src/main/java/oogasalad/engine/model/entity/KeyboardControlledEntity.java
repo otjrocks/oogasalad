@@ -74,13 +74,4 @@ public class KeyboardControlledEntity extends Entity {
         .isEmpty();
   }
 
-
-  private boolean canMove(char direction) {
-    if (direction == 'R' || direction == 'L') {
-      return this.getEntityPlacement().getY() - (int) this.getEntityPlacement().getY() < ENTITY_SPEED;
-    } else {
-      return this.getEntityPlacement().getX() - (int) this.getEntityPlacement().getX() < ENTITY_SPEED;
-    }
-  }
-
 }

@@ -30,7 +30,7 @@ public class GameMapView extends Canvas {
   public static final int PACMAN_INITIAL_Y = 23;
   private static final double GHOST_INITIAL_POSITION = 15;
   private static final String PACMAN = "Pacman";
-  private static final int SPRITE_ANIMATION_SPEED = 4;
+  private static final int SPRITE_ANIMATION_SPEED = 6;
 
   private final GameMap gameMap;
   private final GameState gameState;
