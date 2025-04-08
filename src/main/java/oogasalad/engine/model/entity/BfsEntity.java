@@ -58,17 +58,24 @@ public class BfsEntity extends Entity {
   }
 
   private void setEntityDirection(int dx, int dy) {
-    // by chatGPT
-
-    if (dx > 0 && canMove('R')) {
-      this.setEntityDirection('R');
-    } else if (dx < 0 && canMove('L')) {
-      this.setEntityDirection('L');
-    } else if (dy > 0 && canMove('D')) {
-      this.setEntityDirection('D');
-    } else if (dy < 0 && canMove('U')) {
-      this.setEntityDirection('U');
+    char[] directions = {'R', 'L', 'D', 'U'};
+    for (char direction : directions) {
+      if (isValidDirection(dx, dy, direction)) {
+        setEntityDirection(direction);
+        return;
+      }
     }
   }
+
+  private boolean isValidDirection(int dx, int dy, char direction) {
+    return switch (direction) {
+      case 'R' -> dx > 0 && canMove('R');
+      case 'L' -> dx < 0 && canMove('L');
+      case 'D' -> dy > 0 && canMove('D');
+      case 'U' -> dy < 0 && canMove('U');
+      default -> false;
+    };
+  }
+
 
 }
