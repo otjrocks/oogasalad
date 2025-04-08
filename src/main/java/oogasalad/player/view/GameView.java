@@ -61,7 +61,7 @@ public class GameView extends StackPane {
       }
 
       private boolean checkEnoughTimeHasPassed(double elapsedTime) {
-        return lastUpdateTime == 0 || elapsedTime > 1.0 / 30.0;
+        return lastUpdateTime == 0 || elapsedTime > 1.0 / 60.0;
       }
     };
     gameLoop.start(); // Start the game loop
@@ -74,7 +74,7 @@ public class GameView extends StackPane {
     // Update the game map and entity positions
 
     myGameMap.update(); // Update game state (e.g., entity movements)
-    myGameMapView.updateEntityPositions(); // Update entity views to reflect changes
+    myGameMapView.update(); // Update entity views to reflect changes
   }
 
 }
