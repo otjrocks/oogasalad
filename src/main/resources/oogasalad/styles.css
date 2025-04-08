@@ -97,6 +97,18 @@ Label, Text {
   -fx-font-family: "Press Start 2P";
 }
 
+.hud-container .button {
+  -fx-font-size: 15px;
+  -fx-padding: 10px 20px;
+  -fx-min-width: 200px;
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 3px;
+  -fx-background-radius: 5px;
+  -fx-border-radius: 5px;
+}
+
 .canvas-view {
   -fx-border-color: black;
   -fx-border-width: 2px;
