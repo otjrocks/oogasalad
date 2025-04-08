@@ -30,12 +30,15 @@ public class GameMapView extends Canvas {
   public static final int PACMAN_INITIAL_Y = 23;
   private static final double GHOST_INITIAL_POSITION = 15;
   private static final String PACMAN = "Pacman";
+  private static final int SPRITE_ANIMATION_SPEED = 4;
 
   private final GameMap gameMap;
   private final GameState gameState;
   private final List<EntityView> entityViews = new ArrayList<>();
   private final ResourceBundle SPRITE_DATA =
       ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
+
+  private int frameCount = 0;
 
   /**
    * Initialize a game map view.
@@ -85,12 +88,7 @@ public class GameMapView extends Canvas {
   }
 
   private void updateEntityModels() {
-    // Handle collisions
-    for (List<Entity> collision : checkCollisions()) {
-      Entity e1 = collision.get(0);
-      Entity e2 = collision.get(1);
-      handleCollision(e1, e2);
-    }
+    frameCount++;
     // Move entities and advance animation frame
     for (Iterator<Entity> it = gameMap.iterator(); it.hasNext(); ) {
       Entity entity = it.next();
@@ -98,7 +96,15 @@ public class GameMapView extends Canvas {
           entity.getEntityPlacement().getX() + entity.getDx());
       entity.getEntityPlacement().setY(
           entity.getEntityPlacement().getY() + entity.getDy());
-      entity.getEntityPlacement().increaseCurrentFrame();
+      if (frameCount % SPRITE_ANIMATION_SPEED == 0) {
+        entity.getEntityPlacement().increaseCurrentFrame();
+      }
+    }
+    // Handle collisions
+    for (List<Entity> collision : checkCollisions()) {
+      Entity e1 = collision.get(0);
+      Entity e2 = collision.get(1);
+      handleCollision(e1, e2);
     }
   }
 
