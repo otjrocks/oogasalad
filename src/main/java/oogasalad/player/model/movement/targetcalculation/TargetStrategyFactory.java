@@ -36,29 +36,37 @@ public class TargetStrategyFactory {
       Class<?> strategyClass = Class.forName(className);
       return instantiateStrategy(strategyClass, placement, gameMap);
     } catch (Exception e) {
-      throw new TargetStrategyException("Failed to create strategy for control type: " + controlType, e);
+      throw new TargetStrategyException(
+          "Failed to create strategy for control type: " + controlType, e);
     }
   }
 
-  private static TargetStrategy instantiateStrategy(Class<?> strategyClass, EntityPlacement placement, GameMap gameMap)
-      throws Exception {
-    for (Constructor<?> constructor : strategyClass.getConstructors()) {
-      if (!Modifier.isPublic(constructor.getModifiers())) continue;
+  private static TargetStrategy instantiateStrategy(Class<?> strategyClass,
+      EntityPlacement placement, GameMap gameMap)
+      throws TargetStrategyException {
+    try {
+      for (Constructor<?> constructor : strategyClass.getConstructors()) {
+        if (!Modifier.isPublic(constructor.getModifiers())) {
+          continue;
+        }
 
-      if (matchesTwoArgConstructor(constructor)) {
-        return (TargetStrategy) constructor.newInstance(
-            gameMap,
-            placement.getType().strategyConfig()
-        );
-      }
+        if (matchesTwoArgConstructor(constructor)) {
+          return (TargetStrategy) constructor.newInstance(
+              gameMap,
+              placement.getType().strategyConfig()
+          );
+        }
 
-      if (matchesThreeArgConstructor(constructor)) {
-        return (TargetStrategy) constructor.newInstance(
-            gameMap,
-            placement.getType().strategyConfig(),
-            placement.getTypeString()
-        );
+        if (matchesThreeArgConstructor(constructor)) {
+          return (TargetStrategy) constructor.newInstance(
+              gameMap,
+              placement.getType().strategyConfig(),
+              placement.getTypeString()
+          );
+        }
       }
+    } catch (Exception e) {
+      throw new TargetStrategyException("Failed to instantiate strategy", e);
     }
 
     throw new TargetStrategyException("No valid constructor found for: " + strategyClass.getName());
