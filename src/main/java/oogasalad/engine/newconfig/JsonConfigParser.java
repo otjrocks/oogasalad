@@ -66,23 +66,56 @@ public class JsonConfigParser implements ConfigParser {
    * @param filepath the path to the JSON configuration file to be loaded
    * @return the fully populated {@link ConfigModel} object
    * @throws ConfigException if the file is missing or cannot be parsed correctly
-   */  
+   */
   public ConfigModel loadFromFile(String filepath) throws ConfigException {
     GameConfig gameConfig = loadGameConfig(filepath);
-
     MetaData metaData = extractMetaData(gameConfig);
     GameSettings settings = createGameSettings(gameConfig);
     Map<String, EntityConfig> entityMap = constructEntities(gameConfig.gameFolderPath());
 
-    List<EntityType> entityTypes = new ArrayList<>();
-    List<EntityPlacement> entityPlacements = new ArrayList<>();
-    populateEntities(entityMap, entityTypes, entityPlacements);
+    List<EntityType> entityTypes;
+    List<EntityPlacement> entityPlacements;
+    EntityData entityData = buildEntityData(entityMap);
+    entityTypes = entityData.types();
+    entityPlacements = entityData.placements();
 
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
     List<Tiles> tiles = new ArrayList<>();
 
-    return new ConfigModel(metaData, settings, entityTypes, entityPlacements, collisionRules,
-        gameConfig.settings().winCondition(), tiles);
+    return buildConfigModel(metaData, settings, entityTypes, entityPlacements, collisionRules,
+        gameConfig, tiles);
+  }
+
+  private EntityData buildEntityData(Map<String, EntityConfig> entityMap) {
+    List<EntityType> entityTypes = new ArrayList<>();
+    List<EntityPlacement> entityPlacements = new ArrayList<>();
+    populateEntities(entityMap, entityTypes, entityPlacements);
+    return new EntityData(entityTypes, entityPlacements);
+  }
+
+  private ConfigModel buildConfigModel(
+      MetaData metaData,
+      GameSettings settings,
+      List<EntityType> entityTypes,
+      List<EntityPlacement> entityPlacements,
+      List<CollisionRule> collisionRules,
+      GameConfig gameConfig,
+      List<Tiles> tiles
+  ) {
+    return new ConfigModel(
+        metaData,
+        settings,
+        entityTypes,
+        entityPlacements,
+        collisionRules,
+        gameConfig.settings().winCondition(),
+        tiles
+    );
+  }
+
+  // Helper record or class for bundling entity data
+  record EntityData(List<EntityType> types, List<EntityPlacement> placements) {
+
   }
 
   private MetaData extractMetaData(GameConfig gameConfig) {

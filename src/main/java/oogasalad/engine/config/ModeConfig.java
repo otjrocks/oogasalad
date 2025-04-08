@@ -21,6 +21,13 @@ public class ModeConfig {
   }
 
   /**
+   * Default constructor necessary for AuthoringController
+   */
+  public ModeConfig() {
+    // needs to be here
+  }
+
+  /**
    * Returns the movement speed associated with this mode.
    *
    * @return the movement speed value
