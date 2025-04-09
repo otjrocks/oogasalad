@@ -166,14 +166,9 @@ public class GameSettingsView {
 
         // Create a new CollisionRuleEditorView
         CollisionRuleEditorView collisionEditor = new CollisionRuleEditorView(controller);
-        Node collisionEditorNode = collisionEditor.getNode();
-
-        // Create a scene with the collision editor
-        Scene scene = new Scene(new VBox(collisionEditorNode), 600, 400);
-
-        // Set the scene and show the popup
-        popupStage.setScene(scene);
-        popupStage.showAndWait();
+        collisionEditor.showAndWait().ifPresent(updatedRules -> {
+            controller.getModel().setCollisionRules(updatedRules);
+        });
     }
 
     /**

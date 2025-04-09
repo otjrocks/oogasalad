@@ -83,17 +83,29 @@ public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
         HBox buttonBox = getHBox();
 
         ruleListView.setItems(FXCollections.observableArrayList(workingRules));
-        ruleListView.setPrefHeight(200);
+        ruleListView.setPrefHeight(300);
+        ScrollPane ruleScrollPane = new ScrollPane(ruleListView);
+        ruleScrollPane.setFitToWidth(true);
+        ruleScrollPane.setPrefHeight(300);
 
         root.getChildren().addAll(
             selectionGrid,
             actionBox,
             buttonBox,
             new Label("Defined Rules:"),
-            ruleListView
+            ruleScrollPane
         );
 
-        getDialogPane().setContent(root);
+        ScrollPane scrollPane = new ScrollPane(root);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true); // optional
+        scrollPane.setPadding(new Insets(10));
+
+        getDialogPane().setContent(scrollPane);
+        getDialogPane().setPrefSize(800, 600);
+
+
+
         getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         setResultConverter(button -> {
