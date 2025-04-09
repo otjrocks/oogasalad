@@ -71,6 +71,7 @@ public class EntityTypeEditorView extends VBox {
     });
 
     controlTypeBox.setValue(type.controlType());
+    controlTypeBox.setOnAction(e -> commitChanges());
 
     modeList.getChildren().clear();
     for (Map.Entry<String, ModeConfig> entry : type.modes().entrySet()) {
@@ -85,9 +86,12 @@ public class EntityTypeEditorView extends VBox {
 
   private void commitChanges() {
     if (current != null) {
-      current = new EntityType(typeField.getText(), current.controlType(), current.effect(),
+      EntityType newEntity = new EntityType(typeField.getText(), controlTypeBox.getValue(), current.effect(),
           current.modes(), current.blocks(), current.strategyConfig());
+      controller.getModel().updateEntityType(current.type(), newEntity);
+
       controller.updateEntitySelector(); // refresh tile labels if needed
+      current = newEntity;
     }
   }
 

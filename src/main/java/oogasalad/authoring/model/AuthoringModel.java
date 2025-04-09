@@ -3,10 +3,13 @@ package oogasalad.authoring.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import oogasalad.engine.config.ModeConfig;
+import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameSettings;
@@ -26,6 +29,7 @@ public class AuthoringModel {
   private String author;
   private String gameDescription;
   private GameSettings defaultSettings;
+  private List<CollisionRule> collisionRules;
 
   private Map<String, EntityType> entityTypeMap;
   private List<LevelDraft> levels;
@@ -37,6 +41,7 @@ public class AuthoringModel {
   public AuthoringModel() {
     this.entityTypeMap = new LinkedHashMap<>();
     this.levels = new ArrayList<>();
+    this.collisionRules = new ArrayList<>();
     this.defaultSettings = new GameSettings(1.0, 3, 0, "EDGE", 10, 10);
   }
 
@@ -171,4 +176,63 @@ public class AuthoringModel {
   public void setDefaultSettings(GameSettings settings) {
     this.defaultSettings = settings;
   }
+
+  public String getGameTitle() {
+    return gameTitle;
+  }
+
+  public void setGameTitle(String gameTitle) {
+    this.gameTitle = gameTitle;
+  }
+
+  public String getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(String author) {
+    this.author = author;
+  }
+
+  public String getGameDescription() {
+    return gameDescription;
+  }
+
+  public void setGameDescription(String gameDescription) {
+    this.gameDescription = gameDescription;
+  }
+
+  public List<CollisionRule> getCollisionRules() {
+    return collisionRules;
+  }
+
+  public void setCollisionRules(List<CollisionRule> collisionRules) {
+    this.collisionRules = collisionRules;
+  }
+
+  public Map<String, EntityType> getEntityTypeMap() {
+    return entityTypeMap;
+  }
+
+  public void setEntityTypeMap(
+      Map<String, EntityType> entityTypeMap) {
+    this.entityTypeMap = entityTypeMap;
+  }
+
+  public void setLevels(List<LevelDraft> levels) {
+    this.levels = levels;
+  }
+
+  public int getCurrentLevelIndex() {
+    return currentLevelIndex;
+  }
+
+  public Map<String, List<String>> getEntityTypeToModes() {
+    Map<String, List<String>> result = new HashMap<>();
+    for (EntityType entity : entityTypeMap.values()) {
+      Map<String, ModeConfig> modeMap = entity.modes();
+      result.put(entity.type(), new ArrayList<>(modeMap.keySet()));
+    }
+    return result;
+  }
+
 }
