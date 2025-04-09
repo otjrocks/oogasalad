@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import oogasalad.engine.model.GameEndHandler;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
@@ -11,6 +12,7 @@ import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
 import oogasalad.engine.model.strategies.collision.StopStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
+import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.records.CollisionContext;
 import oogasalad.engine.records.GameContext;
 
@@ -31,6 +33,7 @@ public class GameMapController {
   private final GameMap gameMap;
   private final GameState gameState;
   private int frameCount = 0;
+  private GameEndHandler gameEndHandler;
 
   /**
    * Create a game map controller with the provided game context.
@@ -100,6 +103,10 @@ public class GameMapController {
       new UpdateScoreStrategy(10)
           .handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
     }
+    if (new EntityBasedOutcomeStrategy("Dot")
+        .getGameOutcome(new GameContext(gameMap, gameState)).equals("Victory!")) {
+      stopGameLoop();
+    }
   }
 
   private void handleBlueGhost(Entity e1, Entity e2) {
@@ -127,6 +134,7 @@ public class GameMapController {
       e1.setEntityDirection(' ');
       e2.getEntityPlacement().setX(GHOST_INITIAL_POSITION);
       e2.getEntityPlacement().setY(GHOST_INITIAL_POSITION);
+      stopGameLoop();
     }
   }
 
@@ -144,5 +152,20 @@ public class GameMapController {
       }
     }
     return collisions;
+  }
+
+  /**
+   * Sets the handler to be called when the game ends.
+   *
+   * @param handler the callback to execute when the game ends
+   */
+  public void setGameEndHandler(GameEndHandler handler) {
+    this.gameEndHandler = handler;
+  }
+
+  private void stopGameLoop() {
+    if (gameEndHandler != null) {
+      gameEndHandler.onGameEnd();
+    }
   }
 }
