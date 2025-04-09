@@ -1,5 +1,6 @@
 package oogasalad.authoring.controller;
 
+import java.io.File;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
 import oogasalad.engine.model.EntityPlacement;
@@ -137,7 +138,11 @@ public class AuthoringController {
   private Map<String, ModeConfig> defaultModeMap() {
     ModeConfig defaultMode = new ModeConfig();
     defaultMode.setModeName("Default");
-    defaultMode.setImagePath("file:/C:/Users/willi/OneDrive/Documents/College/CS308/oogasalad_team01/src/main/resources/assets/images/pacman.png");
+
+    File imageFile = new File("src/main/resources/assets/images/pacman.png");
+    defaultMode.setImagePath(imageFile.toURI().toString());
+    System.out.println(imageFile.toURI().toString());
+
     defaultMode.setMovementSpeed(100);
     Map<String, ModeConfig> map = new HashMap<>();
     map.put("Default", defaultMode);
