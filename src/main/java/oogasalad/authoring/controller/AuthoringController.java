@@ -141,7 +141,6 @@ public class AuthoringController {
 
     File imageFile = new File("src/main/resources/assets/images/pacman.png");
     defaultMode.setImagePath(imageFile.toURI().toString());
-    System.out.println(imageFile.toURI().toString());
 
     defaultMode.setMovementSpeed(100);
     Map<String, ModeConfig> map = new HashMap<>();
