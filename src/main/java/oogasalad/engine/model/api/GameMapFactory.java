@@ -25,10 +25,10 @@ public class GameMapFactory {
    */
   public static GameMap createGameMap(GameInputManager input, ConfigModel configModel)
       throws InvalidPositionException {
-    int width = configModel.getSettings().getWidth();
-    int height = configModel.getSettings().getHeight();
+    int width = configModel.settings().width();
+    int height = configModel.settings().height();
     GameMapImpl gameMap = new GameMapImpl(width, height); // Hardcoded for now
-    for (EntityPlacement entityPlacement : configModel.getEntityPlacements()) {
+    for (EntityPlacement entityPlacement : configModel.entityPlacements()) {
       Entity entity = EntityFactory.createEntity(input, entityPlacement, gameMap);
       gameMap.addEntity(entity);
     }

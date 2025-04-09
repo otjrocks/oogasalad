@@ -75,7 +75,8 @@ Label, Text {
 
 /* Game player views */
 .game-view {
-  -fx-background-color: -fx-primary;
+  -fx-background-color: rgb(19, 19, 19);
+  /* Force background color to be dark to ensure enough contrast with image sprites */
 }
 
 .game-screen-view {
@@ -83,7 +84,7 @@ Label, Text {
 }
 
 .hud-container {
-  -fx-padding: 20px;
+  -fx-padding: 10px 0 40px 0;
   -fx-background-color: -fx-primary;
   -fx-alignment: center;
   -fx-spacing: 20px;
@@ -94,6 +95,18 @@ Label, Text {
   -fx-font-weight: bold;
   -fx-text-fill: -fx-secondary;
   -fx-font-family: "Press Start 2P";
+}
+
+.hud-container .button {
+  -fx-font-size: 15px;
+  -fx-padding: 10px 20px;
+  -fx-min-width: 200px;
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 3px;
+  -fx-background-radius: 5px;
+  -fx-border-radius: 5px;
 }
 
 .canvas-view {
@@ -122,5 +135,24 @@ Label, Text {
 .entity-selector-view .button:hover {
   -fx-background-color: -fx-highlight;
 }
+
+.entity-tile {
+  -fx-background-color: white;
+  -fx-border-color: #ccc;
+  -fx-border-width: 1;
+  -fx-padding: 6;
+  -fx-cursor: hand;
+}
+
+.entity-tile:hover {
+  -fx-background-color: #f9f9f9;
+}
+
+.selected-tile {
+  -fx-border-color: gold;
+  -fx-border-width: 2;
+  -fx-background-color: rgba(255, 215, 0, 0.15);
+}
+
 
 

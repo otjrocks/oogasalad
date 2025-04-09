@@ -23,7 +23,8 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
   @Override
   public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY,
       EntityPlacement thisEntity) {
-    if (!isValidPosition(map, startX, startY) || !isValidPosition(map, targetX, targetY)) {
+    if (!map.isValidPosition(startX, startY) || !map.isValidPosition(targetX, targetY)) {
+      // change thiis so it instead uses a wandering strategy
       return new int[]{0, 0};
     }
 
@@ -109,26 +110,13 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
       int nx = x + d[0];
       int ny = y + d[1];
 
-      if (isValidPosition(map, nx, ny) && isEmpty(map, nx, ny, thisEntity)) {
+      if (map.isValidPosition(nx, ny) && map.isNotBlocked(thisEntity.getTypeString(), nx, ny)) {
         neighbors.add(new int[]{nx, ny});
       }
 
     }
 
     return neighbors;
-  }
-
-  private boolean isValidPosition(GameMap map, int x, int y) {
-    return x >= 0 && y >= 0 && x < map.getWidth() && y < map.getHeight();
-  }
-
-  private boolean isEmpty(GameMap map, int x, int y, EntityPlacement thisEntity) {
-    Optional<Entity> entity = map.getEntityAt(x, y);
-
-    return entity.map(value -> value.getEntityPlacement().getType().getBlocks() == null ||
-        value.getEntityPlacement().getType().getBlocks().stream()
-            .noneMatch(block -> block.equalsIgnoreCase(thisEntity.getTypeString()))).orElse(true);
-
   }
 
   private String key(int x, int y) {

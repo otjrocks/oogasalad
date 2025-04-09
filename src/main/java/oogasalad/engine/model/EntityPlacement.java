@@ -1,12 +1,12 @@
 package oogasalad.engine.model;
 
 /**
- * Represents a specific instance of an {@link EntityType} placed at a location on the map.
- * Each placement includes an (x, y) coordinate and a mode (e.g., "Default", "PoweredUp").
- * Used to instantiate and track the position and state of individual entities.
- *
- * The `type` field is used during deserialization, while `resolvedEntityType` is populated
- * later when matching string types to actual {@link EntityType} objects.
+ * Represents a specific instance of an {@link EntityType} placed at a location on the map. Each
+ * placement includes an (x, y) coordinate and a mode (e.g., "Default", "PoweredUp"). Used to
+ * instantiate and track the position and state of individual entities.
+ * <p>
+ * The `type` field is used during deserialization, while `resolvedEntityType` is populated later
+ * when matching string types to actual {@link EntityType} objects.
  *
  * @author Will He, Angela Predolac
  */
@@ -17,10 +17,13 @@ public class EntityPlacement {
   private double x;
   private double y;
   private String mode;
+  private int currentFrame;
 
-  /** Default constructor for deserialization. */
+  /**
+   * A default constructor is required for the file parsing API.
+   */
   public EntityPlacement() {
-    // Empty
+    // Empty constructor for file parsing API.
   }
 
   /**
@@ -33,10 +36,11 @@ public class EntityPlacement {
    */
   public EntityPlacement(EntityType type, double x, double y, String mode) {
     this.resolvedEntityType = type;
-    this.type = type.getType();
+    this.type = type.type();
     this.x = x;
     this.y = y;
     this.mode = mode;
+    this.currentFrame = 0;
   }
 
   /**
@@ -130,6 +134,19 @@ public class EntityPlacement {
   }
 
   /**
+   * Gets the current frame of animation the entity is on
+   */
+  public int getCurrentFrame() {
+    return currentFrame;
+  }
+
+  /**
+   * Increments the current frame of the animation by 1
+   */
+  public void increaseCurrentFrame() {
+    currentFrame++;
+  }
+  /**
    * Moves the entity to a new (x, y) location on the map.
    *
    * @param x the new X-coordinate
@@ -141,15 +158,15 @@ public class EntityPlacement {
   }
 
   /**
-   * Returns a string representation of this EntityPlacement,
-   * including resolved type and position info.
+   * Returns a string representation of this EntityPlacement, including resolved type and position
+   * info.
    *
    * @return a string summary of the entity placement
    */
   @Override
   public String toString() {
     return "EntityPlacement{" +
-        "entityData=" + resolvedEntityType.getType() +
+        "entityData=" + resolvedEntityType.type() +
         ", x=" + x +
         ", y=" + y +
         '}';

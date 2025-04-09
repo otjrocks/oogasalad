@@ -23,7 +23,7 @@ public class EntityFactory {
    * @see Entity
    */
   public static Entity createEntity(GameInputManager input, EntityPlacement data, GameMap gameMap) {
-    String controlType = data.getType().getControlType();
+    String controlType = data.getType().controlType();
 
     if (isBasicEntity(controlType)) {
       return new BasicEntity(data);

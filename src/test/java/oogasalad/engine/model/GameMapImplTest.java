@@ -3,6 +3,7 @@ package oogasalad.engine.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -39,8 +40,7 @@ class GameMapImplTest extends DukeApplicationTest {
   @BeforeEach
   void setUp() {
     myGameMap = new GameMapImpl(width, height);
-    EntityType data = new EntityType();
-    data.setControlType("Keyboard");
+    EntityType data = new EntityType("test", "Keyboard", "Damage", null, null, null);
     EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
     myEntity = EntityFactory.createEntity(myInput, placement, myGameMap);
   }
@@ -75,7 +75,7 @@ class GameMapImplTest extends DukeApplicationTest {
   void getEntityAt_attemptGetEntityAt_ReturnsEntityAtPosition() {
     assertDoesNotThrow(() -> myGameMap.addEntity(myEntity));
     Optional<Entity> result = myGameMap.getEntityAt((int) myEntity.getEntityPlacement().getX(),
-            (int) myEntity.getEntityPlacement().getY());
+        (int) myEntity.getEntityPlacement().getY());
     assertTrue(result.isPresent());
     assertEquals(myEntity, result.get());
   }
@@ -90,8 +90,7 @@ class GameMapImplTest extends DukeApplicationTest {
   @Test
   void iterator_ensureEntityIteratorContainsAddedEntities_Success() {
     assertDoesNotThrow(() -> myGameMap.addEntity(myEntity));
-    EntityType data = new EntityType();
-    data.setControlType("Keyboard");
+    EntityType data = new EntityType("test", "Keyboard", "Damage", null, null, null);
     EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
     Entity secondEntity = EntityFactory.createEntity(myInput, placement, myGameMap);
     assertDoesNotThrow(() -> myGameMap.addEntity(secondEntity));
@@ -112,4 +111,44 @@ class GameMapImplTest extends DukeApplicationTest {
     assertEquals(height, myGameMap.getHeight());
   }
 
+  @Test
+  void isValidPosition_attemptGetValidPosition_ReturnsTrue() {
+    assertTrue(myGameMap.isValidPosition(0, 0));
+    assertTrue(myGameMap.isValidPosition(width - 1, height - 1));
+  }
+
+  @Test
+  void isValidPosition_attemptGetInvalidPosition_ReturnsFalse() {
+    assertFalse(myGameMap.isValidPosition(-1, 0));
+    assertFalse(myGameMap.isValidPosition(0, -1));
+    assertFalse(myGameMap.isValidPosition(width, height));
+  }
+
+  @Test
+  void isNotBlocked_attemptNoEntityAtPosition_ReturnsTrue() {
+    assertTrue(myGameMap.isNotBlocked("Anything", 1, 1));
+  }
+
+  @Test
+  void isNotBlocked_attemptNonBlockingEntityAtPosition_ReturnsTrue()
+      throws InvalidPositionException {
+    // Create an entity that does NOT block anything
+    EntityType data = new EntityType("nonBlocker", "Keyboard", "Damage", null, List.of(), null);
+    EntityPlacement placement = new EntityPlacement(data, 3, 3, "Default");
+    Entity nonBlockingEntity = EntityFactory.createEntity(myInput, placement, myGameMap);
+    myGameMap.addEntity(nonBlockingEntity);
+
+    assertTrue(myGameMap.isNotBlocked("anyType", 3, 3));
+  }
+
+  @Test
+  void isNotBlocked_attemptBlockingEntityAtPosition_ReturnsFalse() throws InvalidPositionException {
+    // Create an entity that blocks "Player"
+    EntityType data = new EntityType("blocker", "Keyboard", "Damage", null, List.of("Player"), null);
+    EntityPlacement placement = new EntityPlacement(data, 4, 4, "Default");
+    Entity blockingEntity = EntityFactory.createEntity(myInput, placement, myGameMap);
+    myGameMap.addEntity(blockingEntity);
+
+    assertFalse(myGameMap.isNotBlocked("Player", 4, 4));
+  }
 }

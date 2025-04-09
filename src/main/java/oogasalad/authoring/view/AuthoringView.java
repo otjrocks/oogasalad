@@ -20,7 +20,7 @@ public class AuthoringView extends BorderPane {
 
   private EntitySelectorView selectorView;
   private CanvasView canvasView;
-  private EntityEditorView entityEditorView;
+  private EntityTypeEditorView entityTypeEditorView;
   private AuthoringController controller;
   private LevelSelectorView levelSelectorView;
   private GameSettingsView gameSettingsView;
@@ -53,12 +53,12 @@ public class AuthoringView extends BorderPane {
   }
 
   /**
-   * Returns the {@link EntityEditorView}, which provides controls for editing a selected entity type.
+   * Returns the {@link EntityTypeEditorView}, which provides controls for editing a selected entity type.
    *
    * @return the entity editor view component
    */
-  public EntityEditorView getEntityEditorView() {
-    return entityEditorView;
+  public EntityTypeEditorView getEntityEditorView() {
+    return entityTypeEditorView;
   }
 
   /**
@@ -98,7 +98,10 @@ public class AuthoringView extends BorderPane {
     // Initialize all views
     canvasView = new CanvasView(controller);
     selectorView = new EntitySelectorView(controller);
-    entityEditorView = new EntityEditorView(controller);
+
+    entityTypeEditorView = new EntityTypeEditorView(controller);
+    entityTypeEditorView.setVisible(false);
+
     levelSelectorView = new LevelSelectorView(controller.getLevelController());
     gameSettingsView = new GameSettingsView(controller);
 
