@@ -23,13 +23,14 @@ import javafx.stage.Stage;
  */
 public class GameSettingsView {
 
-    private static final double DEFAULT_PADDING = 8;
+    private static final double DEFAULT_PADDING = 5;
+    private static final double DEFAULT_SPACING = 5;
 
     private AuthoringController controller;
     private GameSettings gameSettings;
 
     // Root node containing the view
-    private GridPane rootNode;
+    private HBox rootNode;
 
     // UI Components
     private Spinner<Double> gameSpeedSpinner;
@@ -49,7 +50,7 @@ public class GameSettingsView {
         this.gameSettings = controller.getModel().getDefaultSettings();
 
         // Create the UI
-        this.rootNode = new GridPane();
+        this.rootNode = new HBox();
         setupUI();
         bindToModel();
     }
@@ -62,18 +63,25 @@ public class GameSettingsView {
     }
 
     /**
-     * Set up the UI components in a compact layout matching the wireframe
+     * Set up the UI components in a compact layout making sure buttons are visible
      */
     private void setupUI() {
-        // Setup the grid container
-        rootNode.setHgap(20);
-        rootNode.setVgap(10);
+        // Setup the root container
+        rootNode.setSpacing(15);
         rootNode.setPadding(new Insets(DEFAULT_PADDING));
+        rootNode.setAlignment(Pos.CENTER_LEFT);
         rootNode.getStyleClass().add("game-settings-view");
 
         // Create "Game Settings" label
         Label titleLabel = new Label("Game Settings");
         titleLabel.getStyleClass().add("settings-title");
+        titleLabel.setPrefWidth(120);
+
+        // Create compact grid layout for settings
+        GridPane settingsGrid = new GridPane();
+        settingsGrid.setHgap(8);
+        settingsGrid.setVgap(5);
+        settingsGrid.setPadding(new Insets(0));
 
         // Create compact spinners and combo boxes
         gameSpeedSpinner = createDoubleSpinner(0.5, 3.0, 0.1, 0.5);
@@ -81,40 +89,33 @@ public class GameSettingsView {
         initialScoreSpinner = createIntegerSpinner(0, 1000, 50, 0);
         edgePolicyComboBox = new ComboBox<>(FXCollections.observableArrayList("Wrap", "Stop", "Bounce"));
         edgePolicyComboBox.setPrefWidth(120);
-        widthSpinner = createIntegerSpinner(200, 2000, 50, 200);
-        heightSpinner = createIntegerSpinner(200, 2000, 50, 200);
 
-        // Add components to grid in exact layout from wireframe
-        rootNode.add(titleLabel, 0, 0, 1, 2); // Spanning 1 column, 2 rows
+        // Add first row of settings
+        settingsGrid.add(new Label("Game Speed:"), 0, 0);
+        settingsGrid.add(gameSpeedSpinner, 1, 0);
+        settingsGrid.add(new Label("Starting Lives:"), 2, 0);
+        settingsGrid.add(startingLivesSpinner, 3, 0);
 
-        // First row of settings
-        rootNode.add(new Label("Game Speed:"), 1, 0);
-        rootNode.add(gameSpeedSpinner, 2, 0);
-        rootNode.add(new Label("Starting Lives:"), 3, 0);
-        rootNode.add(startingLivesSpinner, 4, 0);
+        // Add second row of settings
+        settingsGrid.add(new Label("Initial Score:"), 0, 1);
+        settingsGrid.add(initialScoreSpinner, 1, 1);
+        settingsGrid.add(new Label("Edge Policy:"), 2, 1);
+        settingsGrid.add(edgePolicyComboBox, 3, 1);
 
-        // Second row of settings
-        rootNode.add(new Label("Initial Score:"), 1, 1);
-        rootNode.add(initialScoreSpinner, 2, 1);
-        rootNode.add(new Label("Edge Policy:"), 3, 1);
-        rootNode.add(edgePolicyComboBox, 4, 1);
-
-        // Third row of settings
-        rootNode.add(new Label("Width:"), 1, 2);
-        rootNode.add(widthSpinner, 2, 2);
-        rootNode.add(new Label("Height:"), 3, 2);
-        rootNode.add(heightSpinner, 4, 2);
-
-        // Buttons
+        // Create buttons
         Button saveButton = new Button("Save Settings");
         saveButton.setOnAction(e -> saveSettings());
 
         Button collisionRulesButton = new Button("Collision Rules");
         collisionRulesButton.setOnAction(e -> showCollisionRulesPopup());
 
+        // Create button container
         HBox buttonBox = new HBox(10, saveButton, collisionRulesButton);
         buttonBox.setAlignment(Pos.CENTER_LEFT);
-        rootNode.add(buttonBox, 1, 3, 4, 1); // Spanning 4 columns, 1 row
+        buttonBox.setPrefWidth(250);
+
+        // Add components to root
+        rootNode.getChildren().addAll(titleLabel, settingsGrid, buttonBox);
     }
 
     /**
@@ -180,8 +181,6 @@ public class GameSettingsView {
         startingLivesSpinner.getValueFactory().setValue(gameSettings.getStartingLives());
         initialScoreSpinner.getValueFactory().setValue(gameSettings.getInitialScore());
         edgePolicyComboBox.setValue(gameSettings.getEdgePolicy());
-        widthSpinner.getValueFactory().setValue(gameSettings.getWidth());
-        heightSpinner.getValueFactory().setValue(gameSettings.getHeight());
     }
 
     /**
@@ -200,12 +199,6 @@ public class GameSettingsView {
 
         edgePolicyComboBox.valueProperty().addListener((obs, oldVal, newVal) ->
                 gameSettings.setEdgePolicy(newVal));
-
-        widthSpinner.valueProperty().addListener((obs, oldVal, newVal) ->
-                gameSettings.setWidth(newVal));
-
-        heightSpinner.valueProperty().addListener((obs, oldVal, newVal) ->
-                gameSettings.setHeight(newVal));
 
         // Initialize values from the model
         updateFromModel();
@@ -233,35 +226,39 @@ public class GameSettingsView {
      * Helper method to commit any edited values in spinners
      */
     private void commitSpinnerValues() {
-        // Commit values from all spinners
+        // Commit values from all spinners using helper methods
         commitDoubleSpinnerValue(gameSpeedSpinner, 0.5);
         commitIntegerSpinnerValue(startingLivesSpinner, 1);
         commitIntegerSpinnerValue(initialScoreSpinner, 0);
-        commitIntegerSpinnerValue(widthSpinner, 200);
-        commitIntegerSpinnerValue(heightSpinner, 200);
     }
 
+    /**
+     * Helper method to safely commit a double spinner value
+     */
     private void commitDoubleSpinnerValue(Spinner<Double> spinner, double defaultValue) {
-        if (spinner.isEditable()) {
-            try {
-                String text = spinner.getEditor().getText();
-                double value = Double.parseDouble(text);
-                spinner.getValueFactory().setValue(value);
-            } catch (NumberFormatException e) {
-                spinner.getValueFactory().setValue(defaultValue);
-            }
+        if (!spinner.isEditable()) return;
+
+        try {
+            String text = spinner.getEditor().getText();
+            double value = Double.parseDouble(text);
+            spinner.getValueFactory().setValue(value);
+        } catch (NumberFormatException e) {
+            spinner.getValueFactory().setValue(defaultValue);
         }
     }
 
+    /**
+     * Helper method to safely commit an integer spinner value
+     */
     private void commitIntegerSpinnerValue(Spinner<Integer> spinner, int defaultValue) {
-        if (spinner.isEditable()) {
-            try {
-                String text = spinner.getEditor().getText();
-                int value = Integer.parseInt(text);
-                spinner.getValueFactory().setValue(value);
-            } catch (NumberFormatException e) {
-                spinner.getValueFactory().setValue(defaultValue);
-            }
+        if (!spinner.isEditable()) return;
+
+        try {
+            String text = spinner.getEditor().getText();
+            int value = Integer.parseInt(text);
+            spinner.getValueFactory().setValue(value);
+        } catch (NumberFormatException e) {
+            spinner.getValueFactory().setValue(defaultValue);
         }
     }
 }
