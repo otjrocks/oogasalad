@@ -50,7 +50,7 @@ public class GameSettingsView {
 
         this.rootNode = new HBox();
         setupUI();
-//        bindToModel();
+        bindToModel();
     }
 
     /**
@@ -82,11 +82,17 @@ public class GameSettingsView {
         settingsGrid.setPadding(new Insets(0));
 
         // Create compact spinners and combo boxes
-        gameSpeedSpinner = createDoubleSpinner(0.5, 3.0, 0.1, 0.5);
-        startingLivesSpinner = createIntegerSpinner(1, 10, 1, 1);
-        initialScoreSpinner = createIntegerSpinner(0, 1000, 50, 0);
-        edgePolicyComboBox = new ComboBox<>(FXCollections.observableArrayList("Wrap", "Stop", "Bounce"));
+        gameSpeedSpinner = createDoubleSpinner(0.5, 3.0, 0.1, gameSettings.gameSpeed());
+        startingLivesSpinner = createIntegerSpinner(1, 10, 1, gameSettings.startingLives());
+        initialScoreSpinner = createIntegerSpinner(0, 1000, 50, gameSettings.initialScore());
+
+        edgePolicyComboBox = new ComboBox<>(FXCollections.observableArrayList("WRAP", "STOP", "BOUNCE", "EDGE"));
+        edgePolicyComboBox.setValue(gameSettings.edgePolicy());
         edgePolicyComboBox.setPrefWidth(120);
+
+        widthSpinner = createIntegerSpinner(5, 100, 1, gameSettings.width());
+        heightSpinner = createIntegerSpinner(5, 100, 1, gameSettings.height());
+
 
         // Add first row of settings
         settingsGrid.add(new Label("Game Speed:"), 0, 0);
@@ -182,57 +188,14 @@ public class GameSettingsView {
         startingLivesSpinner.getValueFactory().setValue(gameSettings.startingLives());
         initialScoreSpinner.getValueFactory().setValue(gameSettings.initialScore());
         edgePolicyComboBox.setValue(gameSettings.edgePolicy());
+        widthSpinner.getValueFactory().setValue(gameSettings.width());
+        heightSpinner.getValueFactory().setValue(gameSettings.height());
     }
 
     /**
      * Set up listeners to update the model when UI elements change
      */
     private void bindToModel() {
-        gameSpeedSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
-
-            gameSettings = new GameSettings(
-                    newVal,  // New game speed value
-                    gameSettings.startingLives(),
-                    gameSettings.initialScore(),
-                    gameSettings.edgePolicy(),
-                    gameSettings.width(),
-                    gameSettings.height()
-            );
-        });
-
-        startingLivesSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
-            gameSettings = new GameSettings(
-                    gameSettings.gameSpeed(),
-                    newVal,  // New starting lives value
-                    gameSettings.initialScore(),
-                    gameSettings.edgePolicy(),
-                    gameSettings.width(),
-                    gameSettings.height()
-            );
-        });
-
-        initialScoreSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
-            gameSettings = new GameSettings(
-                    gameSettings.gameSpeed(),
-                    gameSettings.startingLives(),
-                    newVal,  // New initial score value
-                    gameSettings.edgePolicy(),
-                    gameSettings.width(),
-                    gameSettings.height()
-            );
-        });
-
-        edgePolicyComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
-            gameSettings = new GameSettings(
-                    gameSettings.gameSpeed(),
-                    gameSettings.startingLives(),
-                    gameSettings.initialScore(),
-                    newVal,  // New edge policy value
-                    gameSettings.width(),
-                    gameSettings.height()
-            );
-        });
-
         updateFromModel();
     }
 
@@ -272,6 +235,8 @@ public class GameSettingsView {
         commitDoubleSpinnerValue(gameSpeedSpinner, 0.5);
         commitIntegerSpinnerValue(startingLivesSpinner, 1);
         commitIntegerSpinnerValue(initialScoreSpinner, 0);
+        commitIntegerSpinnerValue(widthSpinner, 10);
+        commitIntegerSpinnerValue(heightSpinner, 10);
     }
 
     /**
@@ -283,7 +248,13 @@ public class GameSettingsView {
         try {
             String text = spinner.getEditor().getText();
             double value = Double.parseDouble(text);
-            spinner.getValueFactory().setValue(value);
+            SpinnerValueFactory<Double> factory = spinner.getValueFactory();
+
+            double min = ((SpinnerValueFactory.DoubleSpinnerValueFactory)factory).getMin();
+            double max = ((SpinnerValueFactory.DoubleSpinnerValueFactory)factory).getMax();
+            value = Math.max(min, Math.min(max, value));
+
+            factory.setValue(value);
         } catch (NumberFormatException e) {
             spinner.getValueFactory().setValue(defaultValue);
         }
@@ -298,7 +269,13 @@ public class GameSettingsView {
         try {
             String text = spinner.getEditor().getText();
             int value = Integer.parseInt(text);
-            spinner.getValueFactory().setValue(value);
+            SpinnerValueFactory<Integer> factory = spinner.getValueFactory();
+
+            int min = ((SpinnerValueFactory.IntegerSpinnerValueFactory)factory).getMin();
+            int max = ((SpinnerValueFactory.IntegerSpinnerValueFactory)factory).getMax();
+            value = Math.max(min, Math.min(max, value));
+
+            factory.setValue(value);
         } catch (NumberFormatException e) {
             spinner.getValueFactory().setValue(defaultValue);
         }
