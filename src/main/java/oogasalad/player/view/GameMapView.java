@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.records.GameContext;
+import oogasalad.player.controller.GameLoopController;
 import oogasalad.player.controller.GameMapController;
 
 /**
@@ -24,6 +25,7 @@ public class GameMapView extends Canvas {
   private final List<EntityView> entityViews = new ArrayList<>();
   private final ResourceBundle SPRITE_DATA =
       ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
+  private GameLoopController myGameLoopController;
 
   /**
    * Initialize a game map view.
@@ -34,6 +36,7 @@ public class GameMapView extends Canvas {
     super(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
     myGameContext = gameContext;
     myGameMapController = new GameMapController(myGameContext);
+    myGameMapController.setGameEndHandler(this::pauseGame);
     initializeEntityViews();
   }
 
@@ -68,6 +71,24 @@ public class GameMapView extends Canvas {
 
     for (EntityView ev : entityViews) {
       ev.draw(gc, tileWidth, tileHeight);
+    }
+  }
+
+  /**
+   * Sets the {@link GameLoopController} associated with this {@code GameMapView}.
+   *
+   * This method is used to link the game loop controller so that the view can
+   * trigger game loop operations, such as pausing the game when a victory condition is met.
+   *
+   * @param controller the {@code GameLoopController} that manages the game's animation loop
+   */
+  public void setGameLoopController(GameLoopController controller) {
+    this.myGameLoopController = controller;
+  }
+
+  private void pauseGame() {
+    if (myGameLoopController != null) {
+      myGameLoopController.pauseGame();
     }
   }
 }

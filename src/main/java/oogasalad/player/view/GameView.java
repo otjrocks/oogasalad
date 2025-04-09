@@ -32,6 +32,7 @@ public class GameView extends StackPane {
     this.getStyleClass().add("game-view");
     this.setFocusTraversable(true);
     myGameLoopController = new GameLoopController(gameContext, myGameMapView);
+    myGameMapView.setGameLoopController(myGameLoopController);
   }
 
   /**
