@@ -14,7 +14,7 @@ import oogasalad.authoring.controller.AuthoringController;
  *
  * Intended to be used as the main root node for the authoring scene.
  *
- * @author Will He
+ * @author Will He, Angela Predolac
  */
 public class AuthoringView extends BorderPane {
 
@@ -25,6 +25,7 @@ public class AuthoringView extends BorderPane {
   private LevelSelectorView levelSelectorView;
   private GameSettingsView gameSettingsView;
   private CollisionRuleEditorView collisionEditorView;
+  private EntityPlacementView entityPlacementView;
 
   /**
    * Constructs the full authoring environment interface without a controller.
@@ -102,6 +103,8 @@ public class AuthoringView extends BorderPane {
     entityTypeEditorView = new EntityTypeEditorView(controller);
     entityTypeEditorView.setVisible(false);
 
+    entityPlacementView = new EntityPlacementView(controller);
+
     levelSelectorView = new LevelSelectorView(controller.getLevelController());
     gameSettingsView = new GameSettingsView(controller);
 
@@ -121,7 +124,7 @@ public class AuthoringView extends BorderPane {
 
     // Create a VBox for the main layout
     VBox fullLayout = new VBox(10);
-    fullLayout.getChildren().addAll(mainContent, gameSettingsView.getNode());
+    fullLayout.getChildren().addAll(mainContent, gameSettingsView.getNode(), entityPlacementView.getNode());
     VBox.setVgrow(mainContent, Priority.ALWAYS);
 
     // Set the main layout as the center of this BorderPane
@@ -146,4 +149,17 @@ public class AuthoringView extends BorderPane {
   public LevelSelectorView getLevelSelectorView() {
     return levelSelectorView;
   }
+
+  // Add this getter method:
+  /**
+   * Returns the {@link EntityPlacementView}, which provides controls for editing a selected entity placement.
+   *
+   * @return the entity placement view component
+   */
+  public EntityPlacementView getEntityPlacementView() {
+    return entityPlacementView;
+  }
+
+
+
 }

@@ -175,7 +175,9 @@ public class CanvasView extends Pane {
     selectedImageView.toFront();
     selectionHighlight.toFront();
 
+    controller.selectEntityPlacement(clickedEntity);
     e.consume();
+
   }
 
   void handleEntityMouseDragged(MouseEvent e) {
@@ -392,5 +394,7 @@ public class CanvasView extends Pane {
   public boolean hasSelectedEntity() {
     return selectedEntity != null;
   }
+
+
 
 }

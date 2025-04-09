@@ -3,6 +3,7 @@ package oogasalad.authoring.controller;
 import java.io.File;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
+import oogasalad.authoring.view.EntityPlacementView;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.config.ModeConfig;
@@ -192,5 +193,48 @@ public class AuthoringController {
    */
   public AuthoringView getView() {
     return view;
+  }
+
+  /**
+   * Selects an entity placement on the canvas.
+   * This is called when a user clicks on an entity in the canvas.
+   *
+   * @param placement the entity placement that was selected, or null to deselect
+   */
+  public void selectEntityPlacement(EntityPlacement placement) {
+    EntityPlacementView placementView = view.getEntityPlacementView();
+
+    if (placement != null) {
+      // Show the placement view and hide the type editor
+      placementView.setEntityPlacement(placement);
+      placementView.setVisible(true);
+      view.getEntityEditorView().setVisible(false);
+    } else {
+      placementView.setVisible(false);
+    }
+  }
+
+  /**
+   * Updates an entity placement's properties and refreshes views.
+   * Called when the properties of an entity are edited in the EntityPlacementView.
+   *
+   * @param placement the updated entity placement
+   */
+  public void updateEntityPlacement(EntityPlacement placement) {
+    updateCanvas();
+  }
+
+  /**
+   * Removes an entity placement from the current level.
+   * Called when the delete button is clicked in the EntityPlacementView.
+   *
+   * @param placement the entity placement to remove
+   */
+  public void removeEntityPlacement(EntityPlacement placement) {
+    if (placement == null) return;
+
+    model.getCurrentLevel().removeEntityPlacement(placement);
+
+    updateCanvas();
   }
 }
