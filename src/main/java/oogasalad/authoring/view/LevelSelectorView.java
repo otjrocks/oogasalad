@@ -35,6 +35,11 @@ public class LevelSelectorView extends HBox {
   public LevelSelectorView(LevelController controller) {
     this.controller = controller;
     levelDropdown.setPromptText("Select Level");
+
+    levelDropdown.setPrefWidth(130);
+    addLevelButton.setPrefWidth(130);
+    this.setPrefWidth(280);
+
     levelDropdown.setOnAction(e -> {
       int selectedIndex = levelDropdown.getSelectionModel().getSelectedIndex();
       if (selectedIndex >= 0) {
