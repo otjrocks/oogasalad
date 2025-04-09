@@ -46,10 +46,8 @@ public class GameSettingsView {
     public GameSettingsView(AuthoringController controller) {
         this.controller = controller;
 
-        // Get the current game settings from the model
         this.gameSettings = controller.getModel().getDefaultSettings();
 
-        // Create the UI
         this.rootNode = new HBox();
         setupUI();
         bindToModel();
@@ -102,19 +100,22 @@ public class GameSettingsView {
         settingsGrid.add(new Label("Edge Policy:"), 2, 1);
         settingsGrid.add(edgePolicyComboBox, 3, 1);
 
-        // Create buttons
         Button saveButton = new Button("Save Settings");
         saveButton.setOnAction(e -> saveSettings());
+        saveButton.setPrefWidth(130);
+        saveButton.setMinWidth(130);
+        saveButton.setStyle("-fx-padding: 5px 12px; -fx-font-size: 12px;");
 
         Button collisionRulesButton = new Button("Collision Rules");
         collisionRulesButton.setOnAction(e -> showCollisionRulesPopup());
+        collisionRulesButton.setPrefWidth(130);
+        collisionRulesButton.setMinWidth(130);
+        collisionRulesButton.setStyle("-fx-padding: 5px 12px; -fx-font-size: 12px;");
 
-        // Create button container
-        HBox buttonBox = new HBox(10, saveButton, collisionRulesButton);
+        // Create button container with more space between buttons
+        HBox buttonBox = new HBox(15, saveButton, collisionRulesButton);
         buttonBox.setAlignment(Pos.CENTER_LEFT);
-        buttonBox.setPrefWidth(250);
 
-        // Add components to root
         rootNode.getChildren().addAll(titleLabel, settingsGrid, buttonBox);
     }
 
