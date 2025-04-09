@@ -3,8 +3,8 @@ package oogasalad.authoring.view;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.model.EntityPlacement;
 
@@ -23,7 +23,6 @@ public class EntityPlacementView {
     private EntityPlacement currentPlacement;
     private final VBox rootNode;
 
-    // UI Components
     private Label entityTypeLabel;
     private Label positionValueLabel;
     private ComboBox<String> modeSelector;
@@ -38,12 +37,13 @@ public class EntityPlacementView {
     public EntityPlacementView(AuthoringController controller) {
         this.controller = controller;
         this.rootNode = new VBox(10);
+        rootNode.setPadding(new Insets(10));
+        rootNode.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, null, null)));
+        rootNode.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, null, new BorderWidths(2))));
 
-        // Setup the UI layout and components
         setupUI();
 
-        // Initially hide until an entity is selected
-        this.rootNode.setVisible(false);
+        this.setVisible(false);
     }
 
     /**

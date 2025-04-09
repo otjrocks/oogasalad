@@ -395,6 +395,4 @@ public class CanvasView extends Pane {
     return selectedEntity != null;
   }
 
-
-
 }

@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 
@@ -104,6 +105,7 @@ public class AuthoringView extends BorderPane {
     entityTypeEditorView.setVisible(false);
 
     entityPlacementView = new EntityPlacementView(controller);
+    entityPlacementView.setVisible(false);
 
     levelSelectorView = new LevelSelectorView(controller.getLevelController());
     gameSettingsView = new GameSettingsView(controller);
@@ -118,13 +120,30 @@ public class AuthoringView extends BorderPane {
     mainContent.setLeft(levelSelectorView);
     mainContent.setCenter(canvasView);
 
+    AnchorPane editorContainer = new AnchorPane();
+    editorContainer.setPrefHeight(400);
+    editorContainer.setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, null, new BorderWidths(1))));
+
+    editorContainer.getChildren().add(entityTypeEditorView);
+    AnchorPane.setTopAnchor(entityTypeEditorView, 0.0);
+    AnchorPane.setLeftAnchor(entityTypeEditorView, 0.0);
+    AnchorPane.setRightAnchor(entityTypeEditorView, 0.0);
+    AnchorPane.setBottomAnchor(entityTypeEditorView, 0.0);
+
+    Node placementNode = entityPlacementView.getNode();
+    editorContainer.getChildren().add(placementNode);
+    AnchorPane.setTopAnchor(placementNode, 0.0);
+    AnchorPane.setLeftAnchor(placementNode, 0.0);
+    AnchorPane.setRightAnchor(placementNode, 0.0);
+    AnchorPane.setBottomAnchor(placementNode, 0.0);
+
     VBox rightPanel = new VBox(10);
-    rightPanel.getChildren().addAll(selectorView, entityTypeEditorView);
+    rightPanel.getChildren().addAll(selectorView, editorContainer);
     mainContent.setRight(rightPanel);
 
     // Create a VBox for the main layout
     VBox fullLayout = new VBox(10);
-    fullLayout.getChildren().addAll(mainContent, gameSettingsView.getNode(), entityPlacementView.getNode());
+    fullLayout.getChildren().addAll(mainContent, gameSettingsView.getNode());
     VBox.setVgrow(mainContent, Priority.ALWAYS);
 
     // Set the main layout as the center of this BorderPane
@@ -133,6 +152,7 @@ public class AuthoringView extends BorderPane {
     // Direct style settings (no CSS)
     rightPanel.setPrefWidth(300);
     levelSelectorView.setPrefWidth(200);
+    VBox.setVgrow(editorContainer, Priority.ALWAYS);
     gameSettingsView.getNode().setStyle("-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0; -fx-padding: 10px;");
 
     // Setup event listener to maximize window on startup

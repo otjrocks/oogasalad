@@ -1,6 +1,8 @@
 package oogasalad.authoring.controller;
 
 import java.io.File;
+
+import javafx.application.Platform;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
 import oogasalad.authoring.view.EntityPlacementView;
@@ -78,7 +80,9 @@ public class AuthoringController {
       selectedType = type;
       view.getEntityEditorView().setEntityType(type);
       view.getEntityEditorView().setVisible(true);
-      view.getEntitySelectorView().highlightEntityTile(typeName); // 🔥 New!
+      view.getEntitySelectorView().highlightEntityTile(typeName);
+
+      view.getEntityPlacementView().setVisible(false);
     }, () -> {
       selectedType = null;
       view.getEntityEditorView().setEntityType(null);
@@ -207,8 +211,9 @@ public class AuthoringController {
     if (placement != null) {
       // Show the placement view and hide the type editor
       placementView.setEntityPlacement(placement);
-      placementView.setVisible(true);
       view.getEntityEditorView().setVisible(false);
+      placementView.setVisible(true);
+
     } else {
       placementView.setVisible(false);
     }
