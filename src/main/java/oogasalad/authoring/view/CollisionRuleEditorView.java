@@ -282,20 +282,42 @@ public class CollisionRuleEditorView {
         private final javafx.beans.property.SimpleStringProperty entityB;
         private final javafx.beans.property.SimpleStringProperty strategy;
 
+        /**
+         * Constructs a new collision rule with the specified entities and strategy.
+         *
+         * @param entityA the name of the first entity type
+         * @param entityB the name of the second entity type
+         * @param strategy the collision strategy to apply when these entities collide
+         */
         public CollisionRule(String entityA, String entityB, String strategy) {
             this.entityA = new javafx.beans.property.SimpleStringProperty(entityA);
             this.entityB = new javafx.beans.property.SimpleStringProperty(entityB);
             this.strategy = new javafx.beans.property.SimpleStringProperty(strategy);
         }
 
+        /**
+         * Gets the property for the first entity type.
+         *
+         * @return the StringProperty for entity A
+         */
         public javafx.beans.property.StringProperty entityAProperty() {
             return entityA;
         }
 
+        /**
+         * Gets the property for the second entity type.
+         *
+         * @return the StringProperty for entity B
+         */
         public javafx.beans.property.StringProperty entityBProperty() {
             return entityB;
         }
 
+        /**
+         * Gets the property for the collision strategy.
+         *
+         * @return the StringProperty for the strategy
+         */
         public javafx.beans.property.StringProperty strategyProperty() {
             return strategy;
         }

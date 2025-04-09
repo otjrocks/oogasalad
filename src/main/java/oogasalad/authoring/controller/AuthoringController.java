@@ -2,7 +2,6 @@ package oogasalad.authoring.controller;
 
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
-import oogasalad.authoring.view.GameSettingsView;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.config.ModeConfig;
@@ -175,6 +174,11 @@ public class AuthoringController {
     }
   }
 
+  /**
+   * Gets the view for components to access
+   *
+   * @return the AuthoringView instance
+   */
   public AuthoringView getView() {
     return view;
   }
