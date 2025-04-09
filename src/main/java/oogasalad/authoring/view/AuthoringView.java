@@ -116,7 +116,7 @@ public class AuthoringView extends BorderPane {
     mainContent.setCenter(canvasView);
 
     VBox rightPanel = new VBox(10);
-    rightPanel.getChildren().addAll(selectorView, entityEditorView);
+    rightPanel.getChildren().addAll(selectorView, entityTypeEditorView);
     mainContent.setRight(rightPanel);
 
     // Create a VBox for the main layout

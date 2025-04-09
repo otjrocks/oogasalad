@@ -180,7 +180,7 @@ public class EntityPlacement {
    */
   public String getEntityImagePath() {
     return this.getType()
-            .getModes()
+            .modes()
             .get(this.getMode())
             .getImagePath();
   }

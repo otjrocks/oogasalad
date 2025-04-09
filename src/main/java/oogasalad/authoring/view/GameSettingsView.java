@@ -50,7 +50,7 @@ public class GameSettingsView {
 
         this.rootNode = new HBox();
         setupUI();
-        bindToModel();
+//        bindToModel();
     }
 
     /**
@@ -178,32 +178,32 @@ public class GameSettingsView {
         this.gameSettings = controller.getModel().getDefaultSettings();
 
         // Update UI elements with model values
-        gameSpeedSpinner.getValueFactory().setValue(gameSettings.getGameSpeed());
-        startingLivesSpinner.getValueFactory().setValue(gameSettings.getStartingLives());
-        initialScoreSpinner.getValueFactory().setValue(gameSettings.getInitialScore());
-        edgePolicyComboBox.setValue(gameSettings.getEdgePolicy());
+        gameSpeedSpinner.getValueFactory().setValue(gameSettings.gameSpeed());
+        startingLivesSpinner.getValueFactory().setValue(gameSettings.startingLives());
+        initialScoreSpinner.getValueFactory().setValue(gameSettings.initialScore());
+        edgePolicyComboBox.setValue(gameSettings.edgePolicy());
     }
 
-    /**
-     * Set up listeners to update the model when UI elements change
-     */
-    private void bindToModel() {
-        // Listen for UI changes and update the model accordingly
-        gameSpeedSpinner.valueProperty().addListener((obs, oldVal, newVal) ->
-                gameSettings.setGameSpeed(newVal));
-
-        startingLivesSpinner.valueProperty().addListener((obs, oldVal, newVal) ->
-                gameSettings.setStartingLives(newVal));
-
-        initialScoreSpinner.valueProperty().addListener((obs, oldVal, newVal) ->
-                gameSettings.setInitialScore(newVal));
-
-        edgePolicyComboBox.valueProperty().addListener((obs, oldVal, newVal) ->
-                gameSettings.setEdgePolicy(newVal));
-
-        // Initialize values from the model
-        updateFromModel();
-    }
+//    /**
+//     * Set up listeners to update the model when UI elements change
+//     */
+//    private void bindToModel() {
+//        // Listen for UI changes and update the model accordingly
+//        gameSpeedSpinner.valueProperty().addListener((obs, oldVal, newVal) ->
+//                gameSettings.setGameSpeed(newVal));
+//
+//        startingLivesSpinner.valueProperty().addListener((obs, oldVal, newVal) ->
+//                gameSettings.setStartingLives(newVal));
+//
+//        initialScoreSpinner.valueProperty().addListener((obs, oldVal, newVal) ->
+//                gameSettings.setInitialScore(newVal));
+//
+//        edgePolicyComboBox.valueProperty().addListener((obs, oldVal, newVal) ->
+//                gameSettings.setEdgePolicy(newVal));
+//
+//        // Initialize values from the model
+//        updateFromModel();
+//    }
 
     /**
      * Save the current settings to the controller

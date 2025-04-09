@@ -201,7 +201,7 @@ public class CollisionRuleEditorView {
 
         // Get entity types from the model
         for (EntityType type : controller.getModel().getEntityTypes()) {
-            entityTypes.add(type.getType());
+            entityTypes.add(type.type());
         }
 
         // Update combo boxes
