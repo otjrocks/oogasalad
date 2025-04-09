@@ -1,325 +1,216 @@
 package oogasalad.authoring.view;
 
-import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.engine.model.EntityType;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-
-import java.util.ArrayList;
-import java.util.List;
+import javafx.scene.layout.*;
+import java.util.*;
+import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.engine.model.CollisionRule;
 
 /**
- * A view for editing collision rules between entity types.
- * Uses a grid/table UI to define collision strategies between entity pairs.
+ * A dialog view that allows the user to define and edit collision rules
+ * between pairs of entity types and their modes.
  *
- * This is a skeleton implementation that can be expanded with your actual collision rule
- * data model and functionality.
+ * Each rule specifies:
+ * - An Entity A and Mode A
+ * - An Entity B and Mode B
+ * - A set of actions for Entity A
+ * - A set of actions for Entity B
  *
- * @author Angela Predolac
+ * Users can add, delete, and view defined collision rules.
+ * This dialog returns a list of CollisionRule objects via showAndWait().
+ *
+ * @author Angela Predolac, Will He
  */
-public class CollisionRuleEditorView {
+public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
 
-    private static final String TITLE = "Collision Rules Editor";
-    private static final double DEFAULT_SPACING = 10;
-    private static final double DEFAULT_PADDING = 15;
+    private final ComboBox<String> entityASelector = new ComboBox<>();
+    private final ComboBox<String> modeASelector = new ComboBox<>();
+    private final ComboBox<String> entityBSelector = new ComboBox<>();
+    private final ComboBox<String> modeBSelector = new ComboBox<>();
+    private final ListView<String> actionASelector = new ListView<>();
+    private final ListView<String> actionBSelector = new ListView<>();
+    private final ListView<CollisionRule> ruleListView = new ListView<>();
 
-    private static final String[] COLLISION_STRATEGIES = {
-            "NoAction", "LoseLife", "GainPoints", "RemoveEntity", "TriggerEffect"
-    };
+    private Map<String, List<String>> entityToModes;
+    private final List<CollisionRule> workingRules = new ArrayList<>();
+    private VBox root;
+    private final AuthoringController controller;
 
-    private AuthoringController controller;
-
-    // Root node containing the view
-    private BorderPane rootNode;
-
-    // UI Components
-    private TableView<CollisionRule> rulesTable;
-    private ComboBox<String> entityAComboBox;
-    private ComboBox<String> entityBComboBox;
-    private ComboBox<String> strategyComboBox;
 
     /**
-     * Constructor initializes the view with the given controller
+     * Constructs a dialog for editing collision rules.
+     * Initializes the UI based on entity types and existing rules from the controller's model.
+     *
+     * @param controller the AuthoringController used to fetch entity types and collision rules
      */
     public CollisionRuleEditorView(AuthoringController controller) {
+        this.entityToModes = controller.getModel().getEntityTypeToModes();
         this.controller = controller;
+        List<CollisionRule> existingRules = controller.getModel().getCollisionRules();
+        if (existingRules != null) workingRules.addAll(existingRules);
 
-        // Create the UI
-        this.rootNode = new BorderPane();
-        rootNode.getStyleClass().add("collision-editor-view");
+        setTitle("Edit Collision Rules");
+        getDialogPane().setPrefWidth(800);
 
-        setupUI();
-        loadEntityTypes();
-    }
+        root = new VBox(15);
+        root.setPadding(new Insets(20));
 
-    /**
-     * Returns the JavaFX node that represents this view
-     */
-    public Node getNode() {
-        return rootNode;
-    }
+        setupEntityAndModeSelectors();
+        setupActionSelectors();
 
-    /**
-     * Set up the UI components
-     */
-    private void setupUI() {
-        // Setup the main container with padding
-        rootNode.setPadding(new Insets(DEFAULT_PADDING));
+        GridPane selectionGrid = new GridPane();
+        selectionGrid.setHgap(10);
+        selectionGrid.setVgap(10);
 
-        // Create a title label
-        Label titleLabel = new Label(TITLE);
-        titleLabel.getStyleClass().add("editor-title");
+        selectionGrid.add(new Label("Entity A:"), 0, 0);
+        selectionGrid.add(entityASelector, 1, 0);
+        selectionGrid.add(new Label("Mode A:"), 2, 0);
+        selectionGrid.add(modeASelector, 3, 0);
 
-        // Create the rules table
-        setupRulesTable();
+        selectionGrid.add(new Label("Entity B:"), 0, 1);
+        selectionGrid.add(entityBSelector, 1, 1);
+        selectionGrid.add(new Label("Mode B:"), 2, 1);
+        selectionGrid.add(modeBSelector, 3, 1);
 
-        // Create a form for adding new rules
-        VBox addRuleForm = createAddRuleForm();
+        HBox actionBox = new HBox(30,
+            new VBox(new Label("Actions for Entity A:"), actionASelector),
+            new VBox(new Label("Actions for Entity B:"), actionBSelector)
+        );
 
-        // Add components to the layout
-        VBox topSection = new VBox(DEFAULT_SPACING);
-        topSection.getChildren().addAll(titleLabel, addRuleForm);
+        HBox buttonBox = getHBox();
 
-        rootNode.setTop(topSection);
-        rootNode.setCenter(rulesTable);
-    }
+        ruleListView.setItems(FXCollections.observableArrayList(workingRules));
+        ruleListView.setPrefHeight(200);
 
-    /**
-     * Set up the table view for displaying collision rules
-     */
-    private void setupRulesTable() {
-        rulesTable = new TableView<>();
+        root.getChildren().addAll(
+            selectionGrid,
+            actionBox,
+            buttonBox,
+            new Label("Defined Rules:"),
+            ruleListView
+        );
 
-        // Entity A column
-        TableColumn<CollisionRule, String> entityAColumn = new TableColumn<>("Entity A");
-        entityAColumn.setCellValueFactory(data -> data.getValue().entityAProperty());
-        entityAColumn.setPrefWidth(150);
+        getDialogPane().setContent(root);
+        getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-        // Entity B column
-        TableColumn<CollisionRule, String> entityBColumn = new TableColumn<>("Entity B");
-        entityBColumn.setCellValueFactory(data -> data.getValue().entityBProperty());
-        entityBColumn.setPrefWidth(150);
-
-        // Strategy column
-        TableColumn<CollisionRule, String> strategyColumn = new TableColumn<>("Collision Strategy");
-        strategyColumn.setCellValueFactory(data -> data.getValue().strategyProperty());
-        strategyColumn.setPrefWidth(200);
-
-        // Actions column
-        TableColumn<CollisionRule, Void> actionsColumn = new TableColumn<>("Actions");
-        actionsColumn.setPrefWidth(100);
-        actionsColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button deleteButton = new Button("Delete");
-
-            {
-                deleteButton.setOnAction(event -> {
-                    CollisionRule rule = getTableView().getItems().get(getIndex());
-                    deleteRule(rule);
-                });
+        setResultConverter(button -> {
+            if (button == ButtonType.OK) {
+                return new ArrayList<>(ruleListView.getItems());
             }
+            return null;
+        });
+    }
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(deleteButton);
-                }
+    private HBox getHBox() {
+        Button addRuleButton = new Button("Add Rule");
+        addRuleButton.setOnAction(e -> handleAddRule());
+
+        Button deleteRuleButton = new Button("Delete Selected Rule");
+        deleteRuleButton.setOnAction(e -> {
+            CollisionRule selected = ruleListView.getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                workingRules.remove(selected);
+                ruleListView.getItems().remove(selected);
             }
         });
 
-        rulesTable.getColumns().addAll(entityAColumn, entityBColumn, strategyColumn, actionsColumn);
-
-        // Add some sample data (replace with actual data loading)
-        loadSampleRules();
+      return new HBox(10, addRuleButton, deleteRuleButton);
     }
 
     /**
-     * Create the form for adding new collision rules
+     * Initializes the entity and mode selectors with data from the model.
+     * Sets listeners to dynamically populate mode dropdowns based on selected entity.
      */
-    private VBox createAddRuleForm() {
-        VBox formContainer = new VBox(DEFAULT_SPACING);
-        formContainer.getStyleClass().add("add-rule-form");
+    private void setupEntityAndModeSelectors() {
+        List<String> entities = new ArrayList<>(entityToModes.keySet());
 
-        // Create a grid for form fields
-        GridPane formGrid = new GridPane();
-        formGrid.setHgap(10);
-        formGrid.setVgap(10);
-        formGrid.setPadding(new Insets(10));
+        entityASelector.setItems(FXCollections.observableArrayList(entities));
+        entityBSelector.setItems(FXCollections.observableArrayList(entities));
 
-        // Entity A selection
-        Label entityALabel = new Label("Entity A:");
-        entityAComboBox = new ComboBox<>();
-        entityAComboBox.setPromptText("Select Entity Type");
-        entityAComboBox.setPrefWidth(150);
-        formGrid.add(entityALabel, 0, 0);
-        formGrid.add(entityAComboBox, 1, 0);
+        entityASelector.setOnAction(e -> updateModes(modeASelector, entityASelector.getValue()));
+        entityBSelector.setOnAction(e -> updateModes(modeBSelector, entityBSelector.getValue()));
 
-        // Entity B selection
-        Label entityBLabel = new Label("Entity B:");
-        entityBComboBox = new ComboBox<>();
-        entityBComboBox.setPromptText("Select Entity Type");
-        entityBComboBox.setPrefWidth(150);
-        formGrid.add(entityBLabel, 0, 1);
-        formGrid.add(entityBComboBox, 1, 1);
-
-        // Strategy selection
-        Label strategyLabel = new Label("Collision Strategy:");
-        strategyComboBox = new ComboBox<>(FXCollections.observableArrayList(COLLISION_STRATEGIES));
-        strategyComboBox.setPromptText("Select Strategy");
-        strategyComboBox.setPrefWidth(150);
-        formGrid.add(strategyLabel, 0, 2);
-        formGrid.add(strategyComboBox, 1, 2);
-
-        // Add rule button
-        Button addButton = new Button("Add Rule");
-        addButton.setOnAction(e -> addRule());
-
-        // Form title and container
-        Label formTitle = new Label("Add New Collision Rule");
-        formTitle.getStyleClass().add("form-title");
-
-        HBox buttonRow = new HBox(10);
-        buttonRow.getChildren().add(addButton);
-
-        formContainer.getChildren().addAll(formTitle, formGrid, buttonRow);
-        return formContainer;
-    }
-
-    /**
-     * Load entity types from the model to populate the entity selection dropdowns
-     */
-    private void loadEntityTypes() {
-        List<String> entityTypes = new ArrayList<>();
-
-        // Get entity types from the model
-        for (EntityType type : controller.getModel().getEntityTypes()) {
-            entityTypes.add(type.type());
+        if (!entities.isEmpty()) {
+            entityASelector.getSelectionModel().selectFirst();
+            entityBSelector.getSelectionModel().selectFirst();
+            updateModes(modeASelector, entityASelector.getValue());
+            updateModes(modeBSelector, entityBSelector.getValue());
         }
-
-        // Update combo boxes
-        entityAComboBox.setItems(FXCollections.observableArrayList(entityTypes));
-        entityBComboBox.setItems(FXCollections.observableArrayList(entityTypes));
     }
 
     /**
-     * Load sample collision rules (replace with actual data)
+     * Updates the mode selector with the list of modes for the selected entity.
+     * Includes a default "Any" option for wildcard matching.
+     *
+     * @param modeBox the ComboBox to populate
+     * @param entityName the selected entity name
      */
-    private void loadSampleRules() {
-        // This would be replaced with loading actual rules from your model
-        List<CollisionRule> sampleRules = new ArrayList<>();
-        sampleRules.add(new CollisionRule("Pacman", "Ghost", "LoseLife"));
-        sampleRules.add(new CollisionRule("Pacman", "PowerPellet", "TriggerEffect"));
-
-        rulesTable.setItems(FXCollections.observableArrayList(sampleRules));
+    private void updateModes(ComboBox<String> modeBox, String entityName) {
+        entityToModes = controller.getModel().getEntityTypeToModes();
+        List<String> modes = new ArrayList<>();
+        if (entityToModes.containsKey(entityName)) {
+            modes.addAll(entityToModes.get(entityName));
+        }
+        modeBox.setItems(FXCollections.observableArrayList(modes));
+        modeBox.getSelectionModel().select("Default");
     }
 
     /**
-     * Add a new collision rule based on the form inputs
+     * Initializes the ListViews for selecting multiple actions for Entity A and B.
      */
-    private void addRule() {
-        String entityA = entityAComboBox.getValue();
-        String entityB = entityBComboBox.getValue();
-        String strategy = strategyComboBox.getValue();
+    private void setupActionSelectors() {
+        List<String> actions = List.of("REMOVE", "DIE", "STOP", "WIN", "SCORE", "RESPAWN", "IGNORE");
 
-        if (entityA == null || entityB == null || strategy == null) {
-            // Show error if any fields are empty
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Input Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Please select values for all fields.");
-            alert.showAndWait();
+        actionASelector.setItems(FXCollections.observableArrayList(actions));
+        actionASelector.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        actionBSelector.setItems(FXCollections.observableArrayList(actions));
+        actionBSelector.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    }
+
+    /**
+     * Handles adding a new collision rule to the rule list.
+     * Validates all fields before adding.
+     */
+    private void handleAddRule() {
+        String a = entityASelector.getValue();
+        String aMode = modeASelector.getValue();
+        String b = entityBSelector.getValue();
+        String bMode = modeBSelector.getValue();
+
+        List<String> aActions = new ArrayList<>(actionASelector.getSelectionModel().getSelectedItems());
+        List<String> bActions = new ArrayList<>(actionBSelector.getSelectionModel().getSelectedItems());
+
+        if (a == null || aMode == null || b == null || bMode == null || aActions.isEmpty() || bActions.isEmpty()) {
+            showError("Please fill out both entities, both modes, and select at least one action for each.");
             return;
         }
 
-        // Create a new rule
-        CollisionRule newRule = new CollisionRule(entityA, entityB, strategy);
-
-        // Add to the table
-        rulesTable.getItems().add(newRule);
-
-        // Clear selections
-        entityAComboBox.getSelectionModel().clearSelection();
-        entityBComboBox.getSelectionModel().clearSelection();
-        strategyComboBox.getSelectionModel().clearSelection();
-
-        // TODO: Add the rule to your collision rules model
+        CollisionRule rule = new CollisionRule(a, aMode, b, bMode, aActions, bActions);
+        workingRules.add(rule);
+        ruleListView.getItems().add(rule);
     }
 
     /**
-     * Delete a collision rule
+     * Displays an error alert dialog with the given message.
+     *
+     * @param msg the error message to display
      */
-    private void deleteRule(CollisionRule rule) {
-        // Remove from the table
-        rulesTable.getItems().remove(rule);
-
-        // TODO: Remove the rule from your collision rules model
+    private void showError(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
+        alert.initOwner(getDialogPane().getScene().getWindow());
+        alert.showAndWait();
     }
 
     /**
-     * Update the view to reflect the current model state
+     * Returns the root layout node of the dialog (for testing/debugging).
+     *
+     * @return the root VBox node
      */
-    public void updateFromModel() {
-        // Re-load entity types
-        loadEntityTypes();
-
-        // TODO: Re-load collision rules from your model
-    }
-
-    /**
-     * Inner class to represent a collision rule in the UI
-     * This would be replaced with your actual collision rule model class
-     */
-    public static class CollisionRule {
-        private final javafx.beans.property.SimpleStringProperty entityA;
-        private final javafx.beans.property.SimpleStringProperty entityB;
-        private final javafx.beans.property.SimpleStringProperty strategy;
-
-        /**
-         * Constructs a new collision rule with the specified entities and strategy.
-         *
-         * @param entityA the name of the first entity type
-         * @param entityB the name of the second entity type
-         * @param strategy the collision strategy to apply when these entities collide
-         */
-        public CollisionRule(String entityA, String entityB, String strategy) {
-            this.entityA = new javafx.beans.property.SimpleStringProperty(entityA);
-            this.entityB = new javafx.beans.property.SimpleStringProperty(entityB);
-            this.strategy = new javafx.beans.property.SimpleStringProperty(strategy);
-        }
-
-        /**
-         * Gets the property for the first entity type.
-         *
-         * @return the StringProperty for entity A
-         */
-        public javafx.beans.property.StringProperty entityAProperty() {
-            return entityA;
-        }
-
-        /**
-         * Gets the property for the second entity type.
-         *
-         * @return the StringProperty for entity B
-         */
-        public javafx.beans.property.StringProperty entityBProperty() {
-            return entityB;
-        }
-
-        /**
-         * Gets the property for the collision strategy.
-         *
-         * @return the StringProperty for the strategy
-         */
-        public javafx.beans.property.StringProperty strategyProperty() {
-            return strategy;
-        }
+    public Node getNode() {
+        return root;
     }
 }

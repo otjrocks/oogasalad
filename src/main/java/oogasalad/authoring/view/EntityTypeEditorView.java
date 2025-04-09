@@ -1,5 +1,6 @@
 package oogasalad.authoring.view;
 
+import java.util.HashMap;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -71,6 +72,7 @@ public class EntityTypeEditorView extends VBox {
     });
 
     controlTypeBox.setValue(type.controlType());
+    controlTypeBox.setOnAction(e -> commitChanges());
 
     modeList.getChildren().clear();
     for (Map.Entry<String, ModeConfig> entry : type.modes().entrySet()) {
@@ -85,9 +87,12 @@ public class EntityTypeEditorView extends VBox {
 
   private void commitChanges() {
     if (current != null) {
-      current = new EntityType(typeField.getText(), current.controlType(), current.effect(),
+      EntityType newEntity = new EntityType(typeField.getText(), controlTypeBox.getValue(), current.effect(),
           current.modes(), current.blocks(), current.strategyConfig());
+      controller.getModel().updateEntityType(current.type(), newEntity);
+
       controller.updateEntitySelector(); // refresh tile labels if needed
+      current = newEntity;
     }
   }
 
@@ -107,8 +112,12 @@ public class EntityTypeEditorView extends VBox {
   private void openEditModeDialog(String modeName, ModeConfig oldConfig) {
     ModeEditorDialog dialog = new ModeEditorDialog(oldConfig);
     dialog.showAndWait().ifPresent(newConfig -> {
-      current.modes().put(modeName, newConfig);
-      setEntityType(current); // refresh view
+      if (!modeName.equals(newConfig.getModeName())) {
+        // Mode name changed → remove old key and insert new one
+        current.modes().remove(modeName);
+      }
+      current.modes().put(newConfig.getModeName(), newConfig);
+      setEntityType(current);
     });
   }
 
