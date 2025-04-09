@@ -153,4 +153,22 @@ public class AuthoringModel {
   public void setCurrentLevelIndex(int index) {
     this.currentLevelIndex = index;
   }
+
+  /**
+   * Gets the default game settings for the project
+   *
+   * @return the GameSettings object
+   */
+  public GameSettings getDefaultSettings() {
+    return defaultSettings;
+  }
+
+  /**
+   * Sets the default game settings for the project
+   *
+   * @param settings the new GameSettings to use
+   */
+  public void setDefaultSettings(GameSettings settings) {
+    this.defaultSettings = settings;
+  }
 }

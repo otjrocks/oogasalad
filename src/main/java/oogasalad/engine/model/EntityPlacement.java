@@ -171,4 +171,17 @@ public class EntityPlacement {
         ", y=" + y +
         '}';
   }
+
+  /**
+   * Gets the image path for the current entity based on its type and mode.
+   * Retrieves the image path from the mode configuration of the entity's current mode.
+   *
+   * @return the string path to the entity's image
+   */
+  public String getEntityImagePath() {
+    return this.getType()
+            .modes()
+            .get(this.getMode())
+            .getImagePath();
+  }
 }
