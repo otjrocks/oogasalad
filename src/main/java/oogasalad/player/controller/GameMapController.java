@@ -102,10 +102,12 @@ public class GameMapController {
       }
       new UpdateScoreStrategy(10)
           .handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
-    }
-    if (new EntityBasedOutcomeStrategy("Dot")
-        .getGameOutcome(new GameContext(gameMap, gameState)).equals("Victory!")) {
-      stopGameLoop();
+
+
+      if (new EntityBasedOutcomeStrategy("Dot")
+          .hasGameEnded(new GameContext(gameMap, gameState))) {
+        stopGameLoop();
+      }
     }
   }
 
