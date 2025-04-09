@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import oogasalad.engine.model.GameEndHandler;
 
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
@@ -16,6 +17,7 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
 import oogasalad.engine.model.strategies.collision.StopStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
+import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.records.CollisionContext;
 import oogasalad.engine.records.GameContext;
 import oogasalad.player.view.GameMapView;
@@ -40,6 +42,7 @@ public class GameMapController {
   private final GameState gameState;
   private final GameMapView gameView;
   private int frameCount = 0;
+  private GameEndHandler gameEndHandler;
 
   /**
    * Create a game map controller with the provided game context.
@@ -115,6 +118,12 @@ public class GameMapController {
       }
       new UpdateScoreStrategy(10)
           .handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
+
+
+      if (new EntityBasedOutcomeStrategy("Dot")
+          .hasGameEnded(new GameContext(gameMap, gameState))) {
+        stopGameLoop();
+      }
     }
   }
 
@@ -138,8 +147,12 @@ public class GameMapController {
     if (e1.getEntityPlacement().getType().type().equals(PACMAN)
         && e2.getEntityPlacement().getType().type().equals("RedGhost")) {
       gameState.updateLives(-1);
+      e1.getEntityPlacement().setX(PACMAN_INITIAL_X);
+      e1.getEntityPlacement().setY(PACMAN_INITIAL_Y);
+      e1.setEntityDirection(' ');
       e2.getEntityPlacement().setX(GHOST_INITIAL_POSITION);
       e2.getEntityPlacement().setY(GHOST_INITIAL_POSITION);
+      stopGameLoop();
 
       e1.getEntityPlacement().setInDeathAnimation(true);
       gameView.triggerPacManDeathAnimation(e1);
@@ -160,5 +173,20 @@ public class GameMapController {
       }
     }
     return collisions;
+  }
+
+  /**
+   * Sets the handler to be called when the game ends.
+   *
+   * @param handler the callback to execute when the game ends
+   */
+  public void setGameEndHandler(GameEndHandler handler) {
+    this.gameEndHandler = handler;
+  }
+
+  private void stopGameLoop() {
+    if (gameEndHandler != null) {
+      gameEndHandler.onGameEnd();
+    }
   }
 }
