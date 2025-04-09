@@ -11,6 +11,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.util.Duration;
 import oogasalad.engine.model.entity.Entity;
+import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContext;
 import oogasalad.player.controller.GameMapController;
 
@@ -112,8 +113,12 @@ public class GameMapView extends Canvas {
    * Call on each game tick to update models, handle removals, and redraw the canvas.
    */
   public void update() {
-    myGameMapController.updateEntityModels();
-    initializeEntityViews();  // rebuild views to reflect current entities (removals/additions)
+      try {
+          myGameMapController.updateEntityModels();
+      } catch (InvalidPositionException e) {
+          throw new RuntimeException(e);
+      }
+      initializeEntityViews();  // rebuild views to reflect current entities (removals/additions)
     drawAll();
   }
 

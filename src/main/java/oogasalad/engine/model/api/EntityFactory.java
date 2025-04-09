@@ -34,7 +34,8 @@ public class EntityFactory {
   private static boolean isBasicEntity(String controlType) {
     return controlType == null || controlType.isBlank() ||
         controlType.equalsIgnoreCase("wall") ||
-        controlType.equalsIgnoreCase("dot");
+        controlType.equalsIgnoreCase("dot") ||
+            controlType.equalsIgnoreCase("fruit");
   }
 
   private static Entity createControlledEntity(String controlType, GameInputManager input,

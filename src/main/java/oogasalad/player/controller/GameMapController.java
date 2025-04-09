@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
+import oogasalad.engine.model.entity.BasicEntity;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
+import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
 import oogasalad.engine.model.strategies.collision.StopStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
@@ -26,6 +31,8 @@ public class GameMapController {
   // TODO: This should be removed when hardcoded methods are refactored
   public static final int PACMAN_INITIAL_X = 13;
   public static final int PACMAN_INITIAL_Y = 23;
+  public static final int FRUIT_INITIAL_X= 13;
+  public static final int FRUIT_INITIAL_Y = 17;
   private static final double GHOST_INITIAL_POSITION = 15;
   private static final String PACMAN = "Pacman";
   private static final int SPRITE_ANIMATION_SPEED = 6;
@@ -48,8 +55,14 @@ public class GameMapController {
   /**
    * Update the entity models that are part of the game map.
    */
-  public void updateEntityModels() {
+  public void updateEntityModels() throws InvalidPositionException {
     frameCount++;
+    if(gameState.getScore() == 700){
+      EntityType fruitType = new EntityType("fruit", "wall", null, null, null, null);
+      EntityPlacement fruitPlacement = new EntityPlacement(fruitType, FRUIT_INITIAL_X, FRUIT_INITIAL_Y, "Default");
+      Entity fruit = new BasicEntity(fruitPlacement);
+      gameMap.addEntity(fruit);
+    }
     // Move entities and advance animation frame
     for (Iterator<Entity> it = gameMap.iterator(); it.hasNext(); ) {
       Entity entity = it.next();
