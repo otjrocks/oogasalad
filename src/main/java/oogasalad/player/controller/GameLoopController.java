@@ -63,7 +63,7 @@ public class GameLoopController {
    * Stops the loop when called
    */
   public void pauseGame() {
-    if (myGameLoop != null) {
+    if (myGameLoop != null || myGameMapView.isDeathAnimationRunning()){
       myGameLoop.stop();
     }
   }
@@ -72,7 +72,7 @@ public class GameLoopController {
    * Starts the loop again
    */
   public void resumeGame() {
-    if (myGameLoop != null) {
+    if (myGameLoop != null && !myGameMapView.isDeathAnimationRunning()) {
       myGameLoop.start();
     }
   }

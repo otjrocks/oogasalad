@@ -4,11 +4,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.util.Duration;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.records.GameContext;
 import oogasalad.player.controller.GameMapController;
+
+import static oogasalad.player.controller.GameMapController.PACMAN_INITIAL_X;
+import static oogasalad.player.controller.GameMapController.PACMAN_INITIAL_Y;
 
 /**
  * A Canvas-based view for rendering the entire GameMap and all its corresponding entities.
@@ -25,6 +32,8 @@ public class GameMapView extends Canvas {
   private final ResourceBundle SPRITE_DATA =
       ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
 
+  private boolean isDeathAnimationRunning = false;
+  private Timeline deathAnimationTimeline;
   /**
    * Initialize a game map view.
    *
@@ -33,7 +42,7 @@ public class GameMapView extends Canvas {
   public GameMapView(GameContext gameContext) {
     super(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
     myGameContext = gameContext;
-    myGameMapController = new GameMapController(myGameContext);
+    myGameMapController = new GameMapController(myGameContext, this);
     initializeEntityViews();
   }
 
@@ -48,6 +57,55 @@ public class GameMapView extends Canvas {
       );
       entityViews.add(new EntityView(entity, frames));
     }
+  }
+
+  /**
+   * Starts the death animation when Pac-Man dies.
+   */
+  public void triggerPacManDeathAnimation(Entity pacManEntity) {
+    if (isDeathAnimationRunning) return;
+
+    isDeathAnimationRunning = true;
+
+    deathAnimationTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(0.1), e -> {
+              pacManEntity.getEntityPlacement().incrementDeathFrame();
+
+              EntityView view = null;
+              for (EntityView entityView : entityViews) {
+                if(entityView.getEntity().equals(pacManEntity)) {
+                  view = entityView;
+                }
+              }
+
+              if(view == null) {
+                entityViews.remove(view);
+                entityViews.add(new EntityView(pacManEntity, 11));
+              }
+
+              drawAll();
+
+              if (pacManEntity.getEntityPlacement().getDeathFrame() >= 11) {
+                endDeathAnimation(pacManEntity);
+              }
+            })
+    );
+    deathAnimationTimeline.setCycleCount(Timeline.INDEFINITE);
+    deathAnimationTimeline.play();
+  }
+
+  /**
+   * Ends the death animation and resets Pac-Man's state.
+   */
+  public void endDeathAnimation(Entity pacManEntity) {
+    isDeathAnimationRunning = false;
+    pacManEntity.getEntityPlacement().setX(PACMAN_INITIAL_X);
+    pacManEntity.getEntityPlacement().setY(PACMAN_INITIAL_Y);
+    pacManEntity.getEntityPlacement().setDeathFrame(0);
+    pacManEntity.getEntityPlacement().setInDeathAnimation(false);
+
+    deathAnimationTimeline.stop();
+    update();
   }
 
   /**
@@ -69,5 +127,9 @@ public class GameMapView extends Canvas {
     for (EntityView ev : entityViews) {
       ev.draw(gc, tileWidth, tileHeight);
     }
+  }
+
+  public boolean isDeathAnimationRunning() {
+    return isDeathAnimationRunning;
   }
 }

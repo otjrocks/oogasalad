@@ -13,6 +13,7 @@ import oogasalad.engine.model.strategies.collision.StopStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
 import oogasalad.engine.records.CollisionContext;
 import oogasalad.engine.records.GameContext;
+import oogasalad.player.view.GameMapView;
 
 /**
  * A controller that handles all the updates of the game map models whenever the game map view is
@@ -30,6 +31,7 @@ public class GameMapController {
   private static final int SPRITE_ANIMATION_SPEED = 6;
   private final GameMap gameMap;
   private final GameState gameState;
+  private final GameMapView gameView;
   private int frameCount = 0;
 
   /**
@@ -37,9 +39,10 @@ public class GameMapController {
    *
    * @param gameContext The game context object for this controller.
    */
-  public GameMapController(GameContext gameContext) {
+  public GameMapController(GameContext gameContext, GameMapView view) {
     gameMap = gameContext.gameMap();
     gameState = gameContext.gameState();
+    gameView = view;
   }
 
   /**
@@ -122,11 +125,11 @@ public class GameMapController {
     if (e1.getEntityPlacement().getType().type().equals(PACMAN)
         && e2.getEntityPlacement().getType().type().equals("RedGhost")) {
       gameState.updateLives(-1);
-      e1.getEntityPlacement().setX(PACMAN_INITIAL_X);
-      e1.getEntityPlacement().setY(PACMAN_INITIAL_Y);
-      e1.setEntityDirection(' ');
       e2.getEntityPlacement().setX(GHOST_INITIAL_POSITION);
       e2.getEntityPlacement().setY(GHOST_INITIAL_POSITION);
+
+      e1.getEntityPlacement().setInDeathAnimation(true);
+      gameView.triggerPacManDeathAnimation(e1);
     }
   }
 

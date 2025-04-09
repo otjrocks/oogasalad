@@ -18,6 +18,8 @@ public class EntityPlacement {
   private double y;
   private String mode;
   private int currentFrame;
+  private int deathFrame = 0;
+  private boolean inDeathAnimation = false;
 
   /**
    * A default constructor is required for the file parsing API.
@@ -138,6 +140,30 @@ public class EntityPlacement {
    */
   public int getCurrentFrame() {
     return currentFrame;
+  }
+
+  public void resetCurrentFrame() {
+    currentFrame = 0;
+  }
+
+  public int getDeathFrame() {
+    return deathFrame;
+  }
+
+  public void setDeathFrame(int deathFrame) {
+    this.deathFrame = deathFrame;
+  }
+
+  public boolean isInDeathAnimation() {
+    return inDeathAnimation;
+  }
+
+  public void setInDeathAnimation(boolean inDeathAnimation) {
+    this.inDeathAnimation = inDeathAnimation;
+  }
+
+  public void incrementDeathFrame() {
+    this.deathFrame++;
   }
 
   /**
