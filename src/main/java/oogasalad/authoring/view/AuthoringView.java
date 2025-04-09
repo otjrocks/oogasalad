@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 
@@ -14,7 +15,7 @@ import oogasalad.authoring.controller.AuthoringController;
  *
  * Intended to be used as the main root node for the authoring scene.
  *
- * @author Will He
+ * @author Will He, Angela Predolac
  */
 public class AuthoringView extends BorderPane {
 
@@ -25,6 +26,7 @@ public class AuthoringView extends BorderPane {
   private LevelSelectorView levelSelectorView;
   private GameSettingsView gameSettingsView;
   private CollisionRuleEditorView collisionEditorView;
+  private EntityPlacementView entityPlacementView;
 
   /**
    * Constructs the full authoring environment interface without a controller.
@@ -102,6 +104,9 @@ public class AuthoringView extends BorderPane {
     entityTypeEditorView = new EntityTypeEditorView(controller);
     entityTypeEditorView.setVisible(false);
 
+    entityPlacementView = new EntityPlacementView(controller);
+    entityPlacementView.setVisible(false);
+
     levelSelectorView = new LevelSelectorView(controller.getLevelController());
     gameSettingsView = new GameSettingsView(controller);
 
@@ -115,8 +120,25 @@ public class AuthoringView extends BorderPane {
     mainContent.setLeft(levelSelectorView);
     mainContent.setCenter(canvasView);
 
+    AnchorPane editorContainer = new AnchorPane();
+    editorContainer.setPrefHeight(400);
+    editorContainer.setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, null, new BorderWidths(1))));
+
+    editorContainer.getChildren().add(entityTypeEditorView);
+    AnchorPane.setTopAnchor(entityTypeEditorView, 0.0);
+    AnchorPane.setLeftAnchor(entityTypeEditorView, 0.0);
+    AnchorPane.setRightAnchor(entityTypeEditorView, 0.0);
+    AnchorPane.setBottomAnchor(entityTypeEditorView, 0.0);
+
+    Node placementNode = entityPlacementView.getNode();
+    editorContainer.getChildren().add(placementNode);
+    AnchorPane.setTopAnchor(placementNode, 0.0);
+    AnchorPane.setLeftAnchor(placementNode, 0.0);
+    AnchorPane.setRightAnchor(placementNode, 0.0);
+    AnchorPane.setBottomAnchor(placementNode, 0.0);
+
     VBox rightPanel = new VBox(10);
-    rightPanel.getChildren().addAll(selectorView, entityTypeEditorView);
+    rightPanel.getChildren().addAll(selectorView, editorContainer);
     mainContent.setRight(rightPanel);
 
     // Create a VBox for the main layout
@@ -130,6 +152,7 @@ public class AuthoringView extends BorderPane {
     // Direct style settings (no CSS)
     rightPanel.setPrefWidth(300);
     levelSelectorView.setPrefWidth(200);
+    VBox.setVgrow(editorContainer, Priority.ALWAYS);
     gameSettingsView.getNode().setStyle("-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0; -fx-padding: 10px;");
 
     // Setup event listener to maximize window on startup
@@ -146,4 +169,17 @@ public class AuthoringView extends BorderPane {
   public LevelSelectorView getLevelSelectorView() {
     return levelSelectorView;
   }
+
+  // Add this getter method:
+  /**
+   * Returns the {@link EntityPlacementView}, which provides controls for editing a selected entity placement.
+   *
+   * @return the entity placement view component
+   */
+  public EntityPlacementView getEntityPlacementView() {
+    return entityPlacementView;
+  }
+
+
+
 }
