@@ -147,9 +147,6 @@ public class GameMapController {
     if (e1.getEntityPlacement().getType().type().equals(PACMAN)
         && e2.getEntityPlacement().getType().type().equals("RedGhost")) {
       gameState.updateLives(-1);
-      e1.getEntityPlacement().setX(PACMAN_INITIAL_X);
-      e1.getEntityPlacement().setY(PACMAN_INITIAL_Y);
-      e1.setEntityDirection(' ');
       e2.getEntityPlacement().setX(GHOST_INITIAL_POSITION);
       e2.getEntityPlacement().setY(GHOST_INITIAL_POSITION);
       stopGameLoop();
