@@ -184,26 +184,57 @@ public class GameSettingsView {
         edgePolicyComboBox.setValue(gameSettings.edgePolicy());
     }
 
-//    /**
-//     * Set up listeners to update the model when UI elements change
-//     */
-//    private void bindToModel() {
-//        // Listen for UI changes and update the model accordingly
-//        gameSpeedSpinner.valueProperty().addListener((obs, oldVal, newVal) ->
-//                gameSettings.setGameSpeed(newVal));
-//
-//        startingLivesSpinner.valueProperty().addListener((obs, oldVal, newVal) ->
-//                gameSettings.setStartingLives(newVal));
-//
-//        initialScoreSpinner.valueProperty().addListener((obs, oldVal, newVal) ->
-//                gameSettings.setInitialScore(newVal));
-//
-//        edgePolicyComboBox.valueProperty().addListener((obs, oldVal, newVal) ->
-//                gameSettings.setEdgePolicy(newVal));
-//
-//        // Initialize values from the model
-//        updateFromModel();
-//    }
+    /**
+     * Set up listeners to update the model when UI elements change
+     */
+    private void bindToModel() {
+        gameSpeedSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
+
+            gameSettings = new GameSettings(
+                    newVal,  // New game speed value
+                    gameSettings.startingLives(),
+                    gameSettings.initialScore(),
+                    gameSettings.edgePolicy(),
+                    gameSettings.width(),
+                    gameSettings.height()
+            );
+        });
+
+        startingLivesSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
+            gameSettings = new GameSettings(
+                    gameSettings.gameSpeed(),
+                    newVal,  // New starting lives value
+                    gameSettings.initialScore(),
+                    gameSettings.edgePolicy(),
+                    gameSettings.width(),
+                    gameSettings.height()
+            );
+        });
+
+        initialScoreSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
+            gameSettings = new GameSettings(
+                    gameSettings.gameSpeed(),
+                    gameSettings.startingLives(),
+                    newVal,  // New initial score value
+                    gameSettings.edgePolicy(),
+                    gameSettings.width(),
+                    gameSettings.height()
+            );
+        });
+
+        edgePolicyComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            gameSettings = new GameSettings(
+                    gameSettings.gameSpeed(),
+                    gameSettings.startingLives(),
+                    gameSettings.initialScore(),
+                    newVal,  // New edge policy value
+                    gameSettings.width(),
+                    gameSettings.height()
+            );
+        });
+
+        updateFromModel();
+    }
 
     /**
      * Save the current settings to the controller
@@ -211,6 +242,16 @@ public class GameSettingsView {
     private void saveSettings() {
         // Commit any edited values in spinners
         commitSpinnerValues();
+
+        // Create a final GameSettings instance with all current values
+        GameSettings finalSettings = new GameSettings(
+                gameSpeedSpinner.getValue(),
+                startingLivesSpinner.getValue(),
+                initialScoreSpinner.getValue(),
+                edgePolicyComboBox.getValue(),
+                gameSettings.width(),  // Maintain the original width
+                gameSettings.height()  // Maintain the original height
+        );
 
         // Update the model with the current settings
         controller.getModel().setDefaultSettings(gameSettings);
