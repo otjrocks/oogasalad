@@ -1,5 +1,6 @@
 package oogasalad.authoring.view;
 
+import java.util.HashMap;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -111,8 +112,12 @@ public class EntityTypeEditorView extends VBox {
   private void openEditModeDialog(String modeName, ModeConfig oldConfig) {
     ModeEditorDialog dialog = new ModeEditorDialog(oldConfig);
     dialog.showAndWait().ifPresent(newConfig -> {
-      current.modes().put(modeName, newConfig);
-      setEntityType(current); // refresh view
+      if (!modeName.equals(newConfig.getModeName())) {
+        // Mode name changed → remove old key and insert new one
+        current.modes().remove(modeName);
+      }
+      current.modes().put(newConfig.getModeName(), newConfig);
+      setEntityType(current);
     });
   }
 

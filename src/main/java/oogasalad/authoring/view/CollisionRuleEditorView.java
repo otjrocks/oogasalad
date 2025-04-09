@@ -34,9 +34,11 @@ public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
     private final ListView<String> actionBSelector = new ListView<>();
     private final ListView<CollisionRule> ruleListView = new ListView<>();
 
-    private final Map<String, List<String>> entityToModes;
+    private Map<String, List<String>> entityToModes;
     private final List<CollisionRule> workingRules = new ArrayList<>();
     private VBox root;
+    private final AuthoringController controller;
+
 
     /**
      * Constructs a dialog for editing collision rules.
@@ -46,6 +48,7 @@ public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
      */
     public CollisionRuleEditorView(AuthoringController controller) {
         this.entityToModes = controller.getModel().getEntityTypeToModes();
+        this.controller = controller;
         List<CollisionRule> existingRules = controller.getModel().getCollisionRules();
         if (existingRules != null) workingRules.addAll(existingRules);
 
@@ -77,19 +80,7 @@ public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
             new VBox(new Label("Actions for Entity B:"), actionBSelector)
         );
 
-        Button addRuleButton = new Button("Add Rule");
-        addRuleButton.setOnAction(e -> handleAddRule());
-
-        Button deleteRuleButton = new Button("Delete Selected Rule");
-        deleteRuleButton.setOnAction(e -> {
-            CollisionRule selected = ruleListView.getSelectionModel().getSelectedItem();
-            if (selected != null) {
-                workingRules.remove(selected);
-                ruleListView.getItems().remove(selected);
-            }
-        });
-
-        HBox buttonBox = new HBox(10, addRuleButton, deleteRuleButton);
+        HBox buttonBox = getHBox();
 
         ruleListView.setItems(FXCollections.observableArrayList(workingRules));
         ruleListView.setPrefHeight(200);
@@ -113,6 +104,22 @@ public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
         });
     }
 
+    private HBox getHBox() {
+        Button addRuleButton = new Button("Add Rule");
+        addRuleButton.setOnAction(e -> handleAddRule());
+
+        Button deleteRuleButton = new Button("Delete Selected Rule");
+        deleteRuleButton.setOnAction(e -> {
+            CollisionRule selected = ruleListView.getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                workingRules.remove(selected);
+                ruleListView.getItems().remove(selected);
+            }
+        });
+
+      return new HBox(10, addRuleButton, deleteRuleButton);
+    }
+
     /**
      * Initializes the entity and mode selectors with data from the model.
      * Sets listeners to dynamically populate mode dropdowns based on selected entity.
@@ -129,6 +136,8 @@ public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
         if (!entities.isEmpty()) {
             entityASelector.getSelectionModel().selectFirst();
             entityBSelector.getSelectionModel().selectFirst();
+            updateModes(modeASelector, entityASelector.getValue());
+            updateModes(modeBSelector, entityBSelector.getValue());
         }
     }
 
@@ -140,13 +149,13 @@ public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
      * @param entityName the selected entity name
      */
     private void updateModes(ComboBox<String> modeBox, String entityName) {
+        entityToModes = controller.getModel().getEntityTypeToModes();
         List<String> modes = new ArrayList<>();
-        modes.add("Any");
         if (entityToModes.containsKey(entityName)) {
             modes.addAll(entityToModes.get(entityName));
         }
         modeBox.setItems(FXCollections.observableArrayList(modes));
-        modeBox.getSelectionModel().select("Any");
+        modeBox.getSelectionModel().select("Default");
     }
 
     /**
