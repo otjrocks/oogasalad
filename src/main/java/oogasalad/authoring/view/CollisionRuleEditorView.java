@@ -201,7 +201,13 @@ public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
             return;
         }
 
-        CollisionRule rule = new CollisionRule(a, aMode, b, bMode, aActions, bActions);
+        CollisionRule rule = new CollisionRule();
+        rule.setEntityTypeA(a);
+        rule.setEntityTypeB(b);
+        rule.setEventsA(aActions);
+        rule.setEventsB(bActions);
+        rule.setModeA(aMode);
+        rule.setModeB(bMode);
         workingRules.add(rule);
         ruleListView.getItems().add(rule);
     }
