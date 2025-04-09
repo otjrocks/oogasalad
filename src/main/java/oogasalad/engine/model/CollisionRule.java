@@ -22,11 +22,6 @@ public class CollisionRule {
   private List<String> eventsA;
   private List<String> eventsB;
 
-  /** Default constructor for deserialization or reflection. */
-  public CollisionRule() {
-    // Empty
-  }
-
   /**
    * Returns the type of the first entity involved in the collision.
    *

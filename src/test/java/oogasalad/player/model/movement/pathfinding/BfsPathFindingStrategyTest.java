@@ -1,7 +1,9 @@
 package oogasalad.player.model.movement.pathfinding;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -33,15 +35,16 @@ class BfsPathFindingStrategyTest {
     int width = 5;
     int height = 5;
 
-    when(mockMap.getWidth()).thenReturn(width);
-    when(mockMap.getHeight()).thenReturn(height);
-
     // All tiles are empty
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         when(mockMap.getEntityAt(x, y)).thenReturn(Optional.empty());
       }
     }
+
+    when(mockMap.isNotBlocked(anyString(), anyInt(), anyInt())).thenReturn(true);
+    when(mockMap.isValidPosition(anyInt(), anyInt())).thenReturn(true);
+    when(mockEntityPlacement.getTypeString()).thenReturn("someType");
 
     int startX = 2, startY = 2;
     int targetX = 2, targetY = 3;
@@ -57,9 +60,6 @@ class BfsPathFindingStrategyTest {
     int width = 5;
     int height = 5;
 
-    when(mockMap.getWidth()).thenReturn(width);
-    when(mockMap.getHeight()).thenReturn(height);
-
     // All tiles are empty
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
@@ -67,22 +67,16 @@ class BfsPathFindingStrategyTest {
       }
     }
 
-    Entity blockedEntity = mock(Entity.class);
-    EntityPlacement blockedPlacement = mock(EntityPlacement.class);
-    EntityType blockedType = mock(EntityType.class);
-    when(mockMap.getEntityAt(anyInt(), anyInt())).thenReturn(Optional.of(blockedEntity));
-    when(blockedEntity.getEntityPlacement()).thenReturn(blockedPlacement);
-    when(blockedPlacement.getType()).thenReturn(blockedType);
-    when(blockedType.getBlocks()).thenReturn(List.of("type"));
+    when(mockMap.isNotBlocked(anyString(), anyInt(), anyInt())).thenReturn(true);
+    when(mockMap.isValidPosition(anyInt(), anyInt())).thenReturn(true);
+    when(mockEntityPlacement.getTypeString()).thenReturn("someType");
 
-    when(mockEntityPlacement.getTypeString()).thenReturn("notType");
-
-    when(mockMap.getEntityAt(2, 3)).thenReturn(Optional.of(blockedEntity));
+    when(mockMap.isValidPosition(2, 3)).thenReturn(false);
 
     int startX = 2, startY = 2;
     int targetX = 2, targetY = 3;
 
-    int[] expected = {0, 1};
+    int[] expected = {0, 0};
 
     int[] actual = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntityPlacement);
     assertArrayEquals(expected, actual);
@@ -132,7 +126,7 @@ class BfsPathFindingStrategyTest {
     when(mockMap.getEntityAt(anyInt(), anyInt())).thenReturn(Optional.of(blockedEntity));
     when(blockedEntity.getEntityPlacement()).thenReturn(blockedPlacement);
     when(blockedPlacement.getType()).thenReturn(blockedType);
-    when(blockedType.getBlocks()).thenReturn(List.of("type"));
+    when(blockedType.blocks()).thenReturn(List.of("type"));
 
     when(mockEntityPlacement.getTypeString()).thenReturn("type");
 

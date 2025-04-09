@@ -14,7 +14,7 @@ public abstract class Entity {
   private double dx;
   private double dy;
   private char currentDirection;
-  public static final double ENTITY_SPEED = 0.4;
+  public static final double ENTITY_SPEED = 0.12;
 
   /**
    * Initialize the entity with the provided entity data.
@@ -54,6 +54,7 @@ public abstract class Entity {
 
   /**
    * Get the entity direction
+   *
    * @return The direction character for this entity.
    */
   public char getEntityDirection() {
@@ -118,4 +119,15 @@ public abstract class Entity {
   public void setDy(double dy) {
     this.dy = dy;
   }
+
+  protected boolean canMove(char direction) {
+    if (direction == 'R' || direction == 'L') {
+      return this.getEntityPlacement().getY() - (int) this.getEntityPlacement().getY()
+          < ENTITY_SPEED;
+    } else {
+      return this.getEntityPlacement().getX() - (int) this.getEntityPlacement().getX()
+          < ENTITY_SPEED;
+    }
+  }
+
 }

@@ -4,6 +4,7 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
+import oogasalad.engine.records.CollisionContext;
 
 /**
  * The {@code ConsumeStrategy} class implements the {@link CollisionStrategy} interface
@@ -28,17 +29,15 @@ public class ConsumeStrategy implements CollisionStrategy {
    * <p>If {@code entity2} is not found in the {@link GameMap}, an {@link EntityNotFoundException}
    * is thrown.</p>
    *
-   * @param entity1 the first entity involved in the collision
-   * @param entity2 the second entity involved in the collision (which will be removed)
-   * @param gameMap the game map that tracks entities
-   * @param gameState the current state of the game
+   * @param collisionContext the context of the collision, containing both entities,
+   *                         the game map, and the current game state
    * @throws EntityNotFoundException if {@code entity2} does not exist in {@code gameMap}
    */
   @Override
-  public void handleCollision(Entity entity1, Entity entity2, GameMap gameMap, GameState gameState)
+  public void handleCollision(CollisionContext collisionContext)
       throws EntityNotFoundException {
     try {
-      gameMap.removeEntity(entity2);
+      collisionContext.gameMap().removeEntity(collisionContext.entity2());
     }
     catch (EntityNotFoundException e) {
       throw new EntityNotFoundException(

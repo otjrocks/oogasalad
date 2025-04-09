@@ -51,14 +51,14 @@ public class AuthoringController {
    * </p>
    */
   public void createNewEntityType() {
-    EntityType newType = new EntityType();
-    newType.setType("NewEntity" + UUID.randomUUID().toString().substring(0, 4));
-    newType.setModes(defaultModeMap());
-    model.addEntityType(newType);
 
-    selectedType = newType;
+
+    String newTypeName = "NewEntity" + UUID.randomUUID().toString().substring(0, 4);
+    EntityType newType = new EntityType(newTypeName, "", "", defaultModeMap(), null, null);
+    // TODO: update this to include all required fields such as control type and effect type instead of providing null.
+    model.addEntityType(newType);
     updateEntitySelector();
-    view.getEntityEditorView().setEntityType(newType);
+    selectEntityType(newTypeName);
   }
 
   /**
@@ -71,9 +71,15 @@ public class AuthoringController {
    * @param typeName the string name of the selected entity type
    */
   public void selectEntityType(String typeName) {
-    model.findEntityType(typeName).ifPresent(type -> {
+    model.findEntityType(typeName).ifPresentOrElse(type -> {
       selectedType = type;
       view.getEntityEditorView().setEntityType(type);
+      view.getEntityEditorView().setVisible(true);
+      view.getEntitySelectorView().highlightEntityTile(typeName); // 🔥 New!
+    }, () -> {
+      selectedType = null;
+      view.getEntityEditorView().setEntityType(null);
+      view.getEntityEditorView().setVisible(false);
     });
   }
 
@@ -130,7 +136,8 @@ public class AuthoringController {
   // Private helper to provide default values for a new entity's mode config
   private Map<String, ModeConfig> defaultModeMap() {
     ModeConfig defaultMode = new ModeConfig();
-    defaultMode.setImagePath("assets/images/pacman.png");
+    defaultMode.setModeName("Default");
+    defaultMode.setImagePath("file:/C:/Users/willi/OneDrive/Documents/College/CS308/oogasalad_team01/src/main/resources/assets/images/pacman.png");
     defaultMode.setMovementSpeed(100);
     Map<String, ModeConfig> map = new HashMap<>();
     map.put("Default", defaultMode);

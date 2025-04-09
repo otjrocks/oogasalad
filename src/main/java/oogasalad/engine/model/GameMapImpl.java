@@ -1,8 +1,10 @@
 package oogasalad.engine.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.model.entity.Entity;
@@ -19,6 +21,7 @@ public class GameMapImpl implements GameMap {
   private final List<Entity> myEntityList;
   private final int myWidth;
   private final int myHeight;
+  private final Map<String, Integer> entityFrequencyMap;
 
   /**
    * The constructor for a game map.
@@ -30,6 +33,7 @@ public class GameMapImpl implements GameMap {
     myEntityList = new ArrayList<>();
     myWidth = width;
     myHeight = height;
+    entityFrequencyMap = new HashMap<>();
   }
 
   @Override
@@ -100,5 +104,42 @@ public class GameMapImpl implements GameMap {
     double newY = (entity.getEntityPlacement().getY() + myHeight) % myHeight;
     entity.getEntityPlacement().setX(newX);
     entity.getEntityPlacement().setY(newY);
+  }
+
+  @Override
+  public int getEntityCount(String entityType) {
+    if (entityFrequencyMap.containsKey(entityType)) {
+      return entityFrequencyMap.get(entityType);
+    }
+    int count = 0;
+    for (Entity entity1 : myEntityList) {
+      if (entity1.getEntityPlacement().getType().type().equals(entityType)) {
+        count++;
+      }
+    }
+    entityFrequencyMap.put(entityType, count);
+    return count;
+  }
+
+  @Override
+  public void decrementEntityCount(String entityType) {
+    if (entityFrequencyMap.containsKey(entityType)) {
+      entityFrequencyMap.put(entityType, entityFrequencyMap.get(entityType) - 1);
+    }
+  }
+
+  @Override
+  public boolean isValidPosition(int x, int y) {
+    return x >= 0 && y >= 0 && x < myWidth && y < myHeight;
+  }
+
+  @Override
+  public boolean isNotBlocked(String entityType, int x, int y) {
+    Optional<Entity> entity = getEntityAt(x, y);
+
+    return entity.map(value -> value.getEntityPlacement().getType().blocks() == null ||
+        value.getEntityPlacement().getType().blocks().stream()
+            .noneMatch(block -> block.equalsIgnoreCase(entityType))).orElse(true);
+
   }
 }

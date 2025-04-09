@@ -1,8 +1,6 @@
 package oogasalad.authoring.view;
 
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
 
 /**
@@ -18,7 +16,7 @@ public class AuthoringView extends BorderPane {
 
   private EntitySelectorView selectorView;
   private CanvasView canvasView;
-  private EntityEditorView entityEditorView;
+  private EntityTypeEditorView entityTypeEditorView;
   private AuthoringController controller;
   private LevelSelectorView levelSelectorView;
 
@@ -52,12 +50,12 @@ public class AuthoringView extends BorderPane {
   }
 
   /**
-   * Returns the {@link EntityEditorView}, which provides controls for editing a selected entity type.
+   * Returns the {@link EntityTypeEditorView}, which provides controls for editing a selected entity type.
    *
    * @return the entity editor view component
    */
-  public EntityEditorView getEntityEditorView() {
-    return entityEditorView;
+  public EntityTypeEditorView getEntityEditorView() {
+    return entityTypeEditorView;
   }
 
 //  /**
@@ -100,10 +98,13 @@ public class AuthoringView extends BorderPane {
 
     // Sidebar - entity selector and editor
     selectorView = new EntitySelectorView(controller);
-    entityEditorView = new EntityEditorView(controller);
+
+    entityTypeEditorView = new EntityTypeEditorView(controller);
+    entityTypeEditorView.setVisible(false);
+
     levelSelectorView = new LevelSelectorView(controller.getLevelController());
     controller.getLevelController().initDefaultLevelIfEmpty();
-//    VBox leftPanel = new VBox(selectorView, entityEditorView);
+//    VBox leftPanel = new VBox(selectorView, entityTypeEditorView);
 //    leftPanel.getStyleClass().add("left-panel");
 
     // Bottom panel - game settings and collision rules
@@ -115,7 +116,7 @@ public class AuthoringView extends BorderPane {
     // Layout
     this.setBottom(selectorView);
     this.setCenter(canvasView);
-    this.setRight(entityEditorView);
+    this.setRight(entityTypeEditorView);
     this.setLeft(levelSelectorView);
 //    this.setBottom(bottomPanel);
 //    this.getStyleClass().add("authoring-view");

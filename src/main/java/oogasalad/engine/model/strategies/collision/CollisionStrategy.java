@@ -4,6 +4,7 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
+import oogasalad.engine.records.CollisionContext;
 
 /**
  * Represents a strategy for handling the outcome of collisions between entities in the game.
@@ -24,6 +25,12 @@ import oogasalad.engine.model.exceptions.EntityNotFoundException;
  *     strategy.handleCollision(entity1, entity2, gameMap, gameState);
  * </pre>
  *
+ *  @see CollisionContext
+ *  @see Entity
+ *  @see GameMap
+ *  @see GameState
+ *  @see EntityNotFoundException
+ *
  * @author Austin Huang
  */
 public interface CollisionStrategy {
@@ -34,12 +41,10 @@ public interface CollisionStrategy {
    * <p>This method is called whenever two entities collide, allowing for different
    * collision outcomes depending on the strategy implementation.</p>
    *
-   * @param entity1 the entity that initiates the collision
-   * @param entity2 the entity that is collided against
-   * @param gameMap the game map containing all entities
-   * @param gameState the current state of the game, used to apply collision effects
-   * @throws EntityNotFoundException if an error occurs while processing the collision
+   * @param collisionContext the context of the collision, containing both entities,
+   *                         the game map, and the current game state
+   * @throws EntityNotFoundException if an entity involved in the collision cannot
+   *                                  be found in the game map during processing
    */
-  void handleCollision(Entity entity1, Entity entity2, GameMap gameMap, GameState gameState)
-      throws EntityNotFoundException;
+  void handleCollision(CollisionContext collisionContext) throws EntityNotFoundException;
 }
