@@ -23,24 +23,6 @@ public class CollisionRule {
   private List<String> eventsB;
 
   /**
-   * For use cases where the values are pre-known
-   * @param a entityType A
-   * @param aMode mode of entityType a
-   * @param b entityType b
-   * @param bMode mode of entityType b
-   * @param aActions events on collision occurring to a
-   * @param bActions events on collision occurring to b
-   */
-  public CollisionRule(String a, String aMode, String b, String bMode, List<String> aActions, List<String> bActions) {
-    entityTypeA = a;
-    modeA = aMode;
-    entityTypeB = b;
-    modeB = bMode;
-    eventsA = aActions;
-    eventsB = bActions;
-  }
-
-  /**
    * Returns the type of the first entity involved in the collision.
    *
    * @return the string identifier for entity A
