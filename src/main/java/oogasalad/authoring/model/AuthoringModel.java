@@ -177,55 +177,119 @@ public class AuthoringModel {
     this.defaultSettings = settings;
   }
 
+  /**
+   * Returns the current title of the game.
+   *
+   * @return the game title as a String
+   */
   public String getGameTitle() {
     return gameTitle;
   }
 
+  /**
+   * Sets the title of the game.
+   *
+   * @param gameTitle the new title of the game
+   */
   public void setGameTitle(String gameTitle) {
     this.gameTitle = gameTitle;
   }
 
+  /**
+   * Returns the name of the game's author.
+   *
+   * @return the author name as a String
+   */
   public String getAuthor() {
     return author;
   }
 
+  /**
+   * Sets the name of the game's author.
+   *
+   * @param author the name of the author
+   */
   public void setAuthor(String author) {
     this.author = author;
   }
 
+  /**
+   * Returns the game's description.
+   *
+   * @return the game description as a String
+   */
   public String getGameDescription() {
     return gameDescription;
   }
 
+  /**
+   * Sets the description for the game.
+   *
+   * @param gameDescription a summary or explanation of the game
+   */
   public void setGameDescription(String gameDescription) {
     this.gameDescription = gameDescription;
   }
 
+  /**
+   * Returns the list of defined collision rules for the game.
+   *
+   * @return a list of CollisionRule objects
+   */
   public List<CollisionRule> getCollisionRules() {
     return collisionRules;
   }
 
+  /**
+   * Sets the list of collision rules for the game.
+   *
+   * @param collisionRules a list of rules describing interactions between entities
+   */
   public void setCollisionRules(List<CollisionRule> collisionRules) {
     this.collisionRules = collisionRules;
   }
 
+  /**
+   * Returns the mapping of entity type names to their EntityType configurations.
+   *
+   * @return a map from entity name (String) to EntityType
+   */
   public Map<String, EntityType> getEntityTypeMap() {
     return entityTypeMap;
   }
 
-  public void setEntityTypeMap(
-      Map<String, EntityType> entityTypeMap) {
+  /**
+   * Sets the mapping of entity type names to their configurations.
+   *
+   * @param entityTypeMap a map from entity name to EntityType
+   */
+  public void setEntityTypeMap(Map<String, EntityType> entityTypeMap) {
     this.entityTypeMap = entityTypeMap;
   }
 
+  /**
+   * Sets the list of level drafts in the game.
+   *
+   * @param levels the list of LevelDrafts to use
+   */
   public void setLevels(List<LevelDraft> levels) {
     this.levels = levels;
   }
 
+  /**
+   * Returns the index of the currently selected level.
+   *
+   * @return the index of the current level
+   */
   public int getCurrentLevelIndex() {
     return currentLevelIndex;
   }
 
+  /**
+   * Returns a mapping from entity type names to their list of available mode names.
+   *
+   * @return a map from entity name to a list of mode names
+   */
   public Map<String, List<String>> getEntityTypeToModes() {
     Map<String, List<String>> result = new HashMap<>();
     for (EntityType entity : entityTypeMap.values()) {
@@ -234,5 +298,6 @@ public class AuthoringModel {
     }
     return result;
   }
+
 
 }
