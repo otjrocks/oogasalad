@@ -81,7 +81,7 @@ public class GameMapFactoryTest {
   }
 
   @Test
-  void createGameMap_invalidConfig_throwsException() throws InvalidPositionException {
+  void createGameMap_invalidConfig_throwsException() {
     when(settings.width()).thenReturn(10);
     when(settings.height()).thenReturn(10);
     when(configModel.settings()).thenReturn(settings);
@@ -110,5 +110,23 @@ public class GameMapFactoryTest {
           () -> GameMapFactory.createGameMap(inputManager, configModel));
     }
   }
+
+  @Test
+  void createGameMap_emptyEntityList_createsEmptyMap() throws InvalidPositionException {
+    when(settings.width()).thenReturn(5);
+    when(settings.height()).thenReturn(5);
+    when(configModel.settings()).thenReturn(settings);
+    when(configModel.entityPlacements()).thenReturn(List.of());
+
+    GameMap gameMap = GameMapFactory.createGameMap(inputManager, configModel);
+
+    assertNotNull(gameMap);
+    for (int x = 0; x < 5; x++) {
+      for (int y = 0; y < 5; y++) {
+        assertTrue(gameMap.getEntityAt(x, y).isEmpty());
+      }
+    }
+  }
+
 
 }
