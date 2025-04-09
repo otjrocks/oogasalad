@@ -1,8 +1,12 @@
 package oogasalad.authoring.view;
 
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 
 /**
@@ -100,35 +104,62 @@ public class AuthoringView extends BorderPane {
     levelSelectorView = new LevelSelectorView(controller.getLevelController());
     gameSettingsView = new GameSettingsView(controller);
 
-    // Make sure controller is initialized for level management
     controller.getLevelController().initDefaultLevelIfEmpty();
 
-    // Create the main center area with canvas
-    BorderPane centerArea = new BorderPane();
-    centerArea.setCenter(canvasView);
 
-    // Create the right sidebar with entity selector and entity editor
-    VBox rightSidebar = new VBox();
-    rightSidebar.getChildren().addAll(selectorView, entityEditorView);
+    // Set size constraints for panels to ensure proportional layout
+    levelSelectorView.setPrefWidth(200);
+    levelSelectorView.setMinWidth(150);
 
-    // Place the center and right areas
-    BorderPane mainArea = new BorderPane();
-    mainArea.setCenter(centerArea);
-    mainArea.setRight(rightSidebar);
-    mainArea.setLeft(levelSelectorView); // Level selection on far right
+    selectorView.setPrefHeight(300);
+    selectorView.setMinHeight(200);
 
-    // Create a full layout with the settings at the bottom
-    BorderPane fullLayout = new BorderPane();
-    fullLayout.setCenter(mainArea);
-    fullLayout.setBottom(gameSettingsView.getNode()); // Game settings at bottom
+    entityEditorView.setPrefHeight(400);
+    entityEditorView.setMinHeight(300);
 
-    // Set the full layout as the root
-    this.setCenter(fullLayout);
+    // Create right panel with proper constraints
+    VBox rightPanel = new VBox();
+    rightPanel.getChildren().addAll(selectorView, entityEditorView);
+    rightPanel.setPrefWidth(300);
+    rightPanel.setMinWidth(250);
+    rightPanel.setSpacing(5);
 
-    // Apply any styling needed
-    rightSidebar.getStyleClass().add("right-sidebar");
-    fullLayout.getStyleClass().add("full-layout");
-    gameSettingsView.getNode().getStyleClass().add("bottom-settings");
+    // Make sure canvas expands to fill available space
+    canvasView.setMinSize(400, 400);
+
+    // Create the layout structure
+    BorderPane mainContent = new BorderPane();
+
+    // Left panel for level selector
+    mainContent.setLeft(levelSelectorView);
+
+    // Center panel for canvas
+    mainContent.setCenter(canvasView);
+
+    // Right panel for entity selector and editor
+    mainContent.setRight(rightPanel);
+
+    // Make the main content expand to fill available space
+    VBox.setVgrow(mainContent, Priority.ALWAYS);
+
+    // Set up the main structure
+    this.setCenter(mainContent);
+
+    // Add game settings at the bottom with fixed height
+    Node settingsNode = gameSettingsView.getNode();
+    this.setBottom(settingsNode);
+
+    // Apply styling
+    levelSelectorView.getStyleClass().add("level-selector");
+    canvasView.getStyleClass().add("canvas-view");
+    rightPanel.getStyleClass().add("right-panel");
+    settingsNode.getStyleClass().add("game-settings-view");
+
+    // Setup event listener to maximize window on startup
+    Platform.runLater(() -> {
+      Stage stage = (Stage) this.getScene().getWindow();
+      stage.setMaximized(true); // Start maximized to ensure everything fits
+    });
   }
 
   /**

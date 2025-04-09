@@ -1,0 +1,47 @@
+.game-settings-view {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px 0 0 0; /* Top border only */
+    -fx-padding: 8px;
+}
+
+.settings-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 10px 0 0;
+}
+
+.compact-spinner {
+    -fx-pref-width: 80px;
+    -fx-max-width: 80px;
+}
+
+.compact-spinner .text-field {
+    -fx-alignment: CENTER-RIGHT;
+    -fx-font-size: 12px;
+}
+
+.game-settings-view .button {
+    -fx-background-color: #e8e8e8;
+    -fx-border-color: #b8b8b8;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-padding: 5px 10px;
+    -fx-font-size: 12px;
+}
+
+.game-settings-view .button:hover {
+    -fx-background-color: #d8d8d8;
+}
+
+.game-settings-view .combo-box {
+    -fx-pref-width: 120px;
+    -fx-max-width: 120px;
+    -fx-font-size: 12px;
+}
+
+.game-settings-view .label {
+    -fx-font-size: 12px;
+    -fx-padding: 0 5px 0 0;
+    -fx-alignment: CENTER-RIGHT;
+}
