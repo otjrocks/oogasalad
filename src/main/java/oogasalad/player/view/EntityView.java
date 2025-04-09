@@ -88,6 +88,9 @@ public class EntityView {
     );
   }
 
+  /**
+   * returns the entity object associated with the current EntityView
+   */
   public Entity getEntity() {
     return entity;
   }

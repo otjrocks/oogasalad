@@ -71,31 +71,36 @@ public class GameMapView extends Canvas {
 
     isDeathAnimationRunning = true;
 
-    deathAnimationTimeline = new Timeline(
-            new KeyFrame(Duration.seconds(0.1), e -> {
-              pacManEntity.getEntityPlacement().incrementDeathFrame();
+    deathAnimationTimeline = defineDeathAnimation(pacManEntity);
 
-              EntityView view = null;
-              for (EntityView entityView : entityViews) {
-                if(entityView.getEntity().equals(pacManEntity)) {
-                  view = entityView;
-                }
-              }
-
-              if(view == null) {
-                entityViews.remove(view);
-                entityViews.add(new EntityView(pacManEntity, 11));
-              }
-
-              drawAll();
-
-              if (pacManEntity.getEntityPlacement().getDeathFrame() >= 11) {
-                endDeathAnimation(pacManEntity);
-              }
-            })
-    );
     deathAnimationTimeline.setCycleCount(Timeline.INDEFINITE);
     deathAnimationTimeline.play();
+  }
+
+  private Timeline defineDeathAnimation(Entity pacManEntity) {
+
+      return new Timeline(
+              new KeyFrame(Duration.seconds(0.1), e -> {
+                pacManEntity.getEntityPlacement().incrementDeathFrame();
+
+                EntityView view = null;
+                for (EntityView entityView : entityViews) {
+                  if(entityView.getEntity().equals(pacManEntity)) {
+                    view = entityView;
+                  }
+                }
+
+                if(view == null) {
+                  entityViews.remove(view);
+                  entityViews.add(new EntityView(pacManEntity, 11));
+                }
+
+                drawAll();
+
+                if (pacManEntity.getEntityPlacement().getDeathFrame() >= 11) {
+                  endDeathAnimation(pacManEntity);
+                }
+              }));
   }
 
   /**
@@ -155,6 +160,9 @@ public class GameMapView extends Canvas {
     }
   }
 
+  /**
+   * Checks if death animation is currently running
+   */
   public boolean isDeathAnimationRunning() {
     return isDeathAnimationRunning;
   }

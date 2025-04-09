@@ -142,26 +142,37 @@ public class EntityPlacement {
     return currentFrame;
   }
 
-  public void resetCurrentFrame() {
-    currentFrame = 0;
-  }
-
+  /**
+   * Gets the current frame for the death animation
+   */
   public int getDeathFrame() {
     return deathFrame;
   }
 
+  /**
+   * Used for resetting the death animation
+   */
   public void setDeathFrame(int deathFrame) {
     this.deathFrame = deathFrame;
   }
 
+  /**
+   * Checks if entity is in the process of a death animation
+   */
   public boolean isInDeathAnimation() {
     return inDeathAnimation;
   }
 
+  /**
+   * Allows user to set in death animation boolean
+   */
   public void setInDeathAnimation(boolean inDeathAnimation) {
     this.inDeathAnimation = inDeathAnimation;
   }
 
+  /**
+   * Increases the current death frame by one
+   */
   public void incrementDeathFrame() {
     this.deathFrame++;
   }
