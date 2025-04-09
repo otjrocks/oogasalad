@@ -87,4 +87,24 @@ public interface GameMap {
    * @param entityType entity type that we want to decrement.
    */
   void decrementEntityCount(String entityType);
+
+  /**
+   * Checks if the given position (x, y) is valid within the game map.
+   *
+   * @param x the x-coordinate of the position to check
+   * @param y the y-coordinate of the position to check
+   * @return true if valid, false otherwise
+   */
+  boolean isValidPosition(int x, int y);
+
+  /**
+   * Checks if the entity at the specified location on the game map does not block the given entity
+   * type.
+   *
+   * @param entityType the type of entity attempting to access the location
+   * @param x          the x-coordinate of the location to check
+   * @param y          the y-coordinate of the location to check
+   * @return true if not blocked, false otherwise
+   */
+  boolean isNotBlocked(String entityType, int x, int y);
 }
