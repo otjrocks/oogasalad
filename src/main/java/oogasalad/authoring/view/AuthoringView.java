@@ -1,8 +1,11 @@
 package oogasalad.authoring.view;
 
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 
 /**
@@ -12,18 +15,18 @@ import oogasalad.authoring.controller.AuthoringController;
  *
  * Intended to be used as the main root node for the authoring scene.
  *
- * @author Will He
+ * @author Will He, Angela Predolac
  */
 public class AuthoringView extends BorderPane {
 
   private EntitySelectorView selectorView;
   private CanvasView canvasView;
-  private EntityEditorView entityEditorView;
+  private EntityTypeEditorView entityTypeEditorView;
   private AuthoringController controller;
   private LevelSelectorView levelSelectorView;
-
-//  private final GameSettingsView gameSettingsView;
-//  private final CollisionRuleEditorView collisionEditorView;
+  private GameSettingsView gameSettingsView;
+  private CollisionRuleEditorView collisionEditorView;
+  private EntityPlacementView entityPlacementView;
 
   /**
    * Constructs the full authoring environment interface without a controller.
@@ -52,31 +55,31 @@ public class AuthoringView extends BorderPane {
   }
 
   /**
-   * Returns the {@link EntityEditorView}, which provides controls for editing a selected entity type.
+   * Returns the {@link EntityTypeEditorView}, which provides controls for editing a selected entity type.
    *
    * @return the entity editor view component
    */
-  public EntityEditorView getEntityEditorView() {
-    return entityEditorView;
+  public EntityTypeEditorView getEntityEditorView() {
+    return entityTypeEditorView;
   }
 
-//  /**
-//   * Returns the view for editing global game settings.
-//   *
-//   * @return the game settings view component
-//   */
-//  public GameSettingsView getGameSettingsView() {
-//    return gameSettingsView;
-//  }
-//
-//  /**
-//   * Returns the view for editing collision rules between entities.
-//   *
-//   * @return the collision rule editor view component
-//   */
-//  public CollisionRuleEditorView getCollisionEditorView() {
-//    return collisionEditorView;
-//  }
+  /**
+   * Returns the view for editing global game settings.
+   *
+   * @return the game settings view component
+   */
+  public GameSettingsView getGameSettingsView() {
+    return gameSettingsView;
+  }
+
+  /**
+   * Returns the view for editing collision rules between entities.
+   *
+   * @return the collision rule editor view component
+   */
+  public CollisionRuleEditorView getCollisionEditorView() {
+    return collisionEditorView;
+  }
 
   /**
    * Sets the {@link AuthoringController} to be used by all child components.
@@ -90,35 +93,73 @@ public class AuthoringView extends BorderPane {
   }
 
   /**
-   * Initializes the main subviews (canvas, entity selector, editor),
-   * and adds them to the appropriate layout positions.
+   * Initializes the main subviews and arranges them according to the specified layout.
    * Called internally after setting the controller.
    */
   private void setupSubViews() {
-    // Main canvas area
+    // Initialize all views
     canvasView = new CanvasView(controller);
-
-    // Sidebar - entity selector and editor
     selectorView = new EntitySelectorView(controller);
-    entityEditorView = new EntityEditorView(controller);
+
+    entityTypeEditorView = new EntityTypeEditorView(controller);
+    entityTypeEditorView.setVisible(false);
+
+    entityPlacementView = new EntityPlacementView(controller);
+    entityPlacementView.setVisible(false);
+
     levelSelectorView = new LevelSelectorView(controller.getLevelController());
+    gameSettingsView = new GameSettingsView(controller);
+
+    // Make sure controller is initialized for level management
     controller.getLevelController().initDefaultLevelIfEmpty();
-//    VBox leftPanel = new VBox(selectorView, entityEditorView);
-//    leftPanel.getStyleClass().add("left-panel");
 
-    // Bottom panel - game settings and collision rules
-//    gameSettingsView = new GameSettingsView(controller);
-//    collisionEditorView = new CollisionRuleEditorView(controller);
-//    HBox bottomPanel = new HBox(gameSettingsView, collisionEditorView);
-//    bottomPanel.getStyleClass().add("bottom-panel");
+    // Create a simple layout
+    BorderPane mainContent = new BorderPane();
 
-    // Layout
-    this.setBottom(selectorView);
-    this.setCenter(canvasView);
-    this.setRight(entityEditorView);
-    this.setLeft(levelSelectorView);
-//    this.setBottom(bottomPanel);
-//    this.getStyleClass().add("authoring-view");
+    // Add components to layout
+    mainContent.setLeft(levelSelectorView);
+    mainContent.setCenter(canvasView);
+
+    AnchorPane editorContainer = new AnchorPane();
+    editorContainer.setPrefHeight(400);
+    editorContainer.setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, null, new BorderWidths(1))));
+
+    editorContainer.getChildren().add(entityTypeEditorView);
+    AnchorPane.setTopAnchor(entityTypeEditorView, 0.0);
+    AnchorPane.setLeftAnchor(entityTypeEditorView, 0.0);
+    AnchorPane.setRightAnchor(entityTypeEditorView, 0.0);
+    AnchorPane.setBottomAnchor(entityTypeEditorView, 0.0);
+
+    Node placementNode = entityPlacementView.getNode();
+    editorContainer.getChildren().add(placementNode);
+    AnchorPane.setTopAnchor(placementNode, 0.0);
+    AnchorPane.setLeftAnchor(placementNode, 0.0);
+    AnchorPane.setRightAnchor(placementNode, 0.0);
+    AnchorPane.setBottomAnchor(placementNode, 0.0);
+
+    VBox rightPanel = new VBox(10);
+    rightPanel.getChildren().addAll(selectorView, editorContainer);
+    mainContent.setRight(rightPanel);
+
+    // Create a VBox for the main layout
+    VBox fullLayout = new VBox(10);
+    fullLayout.getChildren().addAll(mainContent, gameSettingsView.getNode());
+    VBox.setVgrow(mainContent, Priority.ALWAYS);
+
+    // Set the main layout as the center of this BorderPane
+    this.setCenter(fullLayout);
+
+    // Direct style settings (no CSS)
+    rightPanel.setPrefWidth(300);
+    levelSelectorView.setPrefWidth(200);
+    VBox.setVgrow(editorContainer, Priority.ALWAYS);
+    gameSettingsView.getNode().setStyle("-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0; -fx-padding: 10px;");
+
+    // Setup event listener to maximize window on startup
+    Platform.runLater(() -> {
+      Stage stage = (Stage) this.getScene().getWindow();
+      stage.setMaximized(true); // Start maximized to ensure everything fits
+    });
   }
 
   /**
@@ -128,4 +169,17 @@ public class AuthoringView extends BorderPane {
   public LevelSelectorView getLevelSelectorView() {
     return levelSelectorView;
   }
+
+  // Add this getter method:
+  /**
+   * Returns the {@link EntityPlacementView}, which provides controls for editing a selected entity placement.
+   *
+   * @return the entity placement view component
+   */
+  public EntityPlacementView getEntityPlacementView() {
+    return entityPlacementView;
+  }
+
+
+
 }

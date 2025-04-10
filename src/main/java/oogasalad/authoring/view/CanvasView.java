@@ -98,7 +98,7 @@ public class CanvasView extends Pane {
     e.consume();
   }
 
-  private void handleDragDropped(DragEvent e) {
+  void handleDragDropped(DragEvent e) {
     Dragboard db = e.getDragboard();
     if (!db.hasString()) return;
 
@@ -132,32 +132,8 @@ public class CanvasView extends Pane {
     e.consume();
   }
 
-  private boolean isValidCell(int row, int col) {
+  boolean isValidCell(int row, int col) {
     return row >= 0 && row < ROWS && col >= 0 && col < COLS;
-  }
-
-  /**
-   * Show a new image on canvas for an EntityPlacement.
-   */
-  public void addEntityVisual(EntityPlacement placement) {
-    String imagePath = placement.getType()
-        .modes()
-        .get(placement.getMode())
-        .getImagePath();
-
-    ImageView imageView = new ImageView(new Image(imagePath));
-    imageView.setX(placement.getX());
-    imageView.setY(placement.getY());
-    imageView.setFitWidth(32);
-    imageView.setFitHeight(32);
-    this.getChildren().add(imageView);
-
-    int row = (int)(placement.getY() / TILE_SIZE);
-    int col = (int)(placement.getX() / TILE_SIZE);
-    gridEntities[row][col] = placement;
-
-    entityViews.put(imageView, placement);
-    setupEntityMouseHandlers(imageView);
   }
 
   private void setupEntityMouseHandlers(ImageView imageView) {
@@ -169,7 +145,7 @@ public class CanvasView extends Pane {
     imageView.setMouseTransparent(false);
   }
 
-  private void handleEntityMousePressed(MouseEvent e) {
+  void handleEntityMousePressed(MouseEvent e) {
     if (e == null || !(e.getSource() instanceof ImageView clickedImageView)) {
       return;
     }
@@ -191,7 +167,6 @@ public class CanvasView extends Pane {
     hasMoved = false;
 
     // Show selection highlight at current position
-    // (no position change, just showing selection)
     selectionHighlight.setX(clickedImageView.getX());
     selectionHighlight.setY(clickedImageView.getY());
     selectionHighlight.setVisible(true);
@@ -200,10 +175,12 @@ public class CanvasView extends Pane {
     selectedImageView.toFront();
     selectionHighlight.toFront();
 
+    controller.selectEntityPlacement(clickedEntity);
     e.consume();
+
   }
 
-  private void handleEntityMouseDragged(MouseEvent e) {
+  void handleEntityMouseDragged(MouseEvent e) {
     if (selectedEntity == null || selectedImageView == null) {
       return;
     }
@@ -258,7 +235,7 @@ public class CanvasView extends Pane {
    * Handles the mouse release event for dragged entities.
    * Simply processes event and delegates to appropriate helper methods.
    */
-  private void handleEntityMouseReleased(MouseEvent e) {
+  void handleEntityMouseReleased(MouseEvent e) {
     // Return early if no entity is selected
     if (selectedEntity == null) {
       e.consume();
@@ -278,13 +255,13 @@ public class CanvasView extends Pane {
   /**
    * Reset all tracking variables related to entity dragging.
    */
-  private void resetEntityTracking() {
+  void resetEntityTracking() {
     selectedEntity = null;
     selectedImageView = null;
     hasMoved = false;
   }
 
-  private void finalizeEntityPosition() {
+  void finalizeEntityPosition() {
     int newCol = (int)(selectedImageView.getX() / TILE_SIZE);
     int newRow = (int)(selectedImageView.getY() / TILE_SIZE);
 
@@ -334,4 +311,88 @@ public class CanvasView extends Pane {
     // Restore hover highlight after clearing
     this.getChildren().add(hoverHighlight);
   }
+
+  /**
+   * Gets the image path for this entity.
+   * This is a temporary method until the Mode class is fully implemented.
+   *
+   * @return the path to the entity's image
+   */
+  public String getEntityImagePath() {
+    return "default-entity.png";
+  }
+
+  /**
+   * Show a new image on canvas for an EntityPlacement.
+   */
+  public void addEntityVisual(EntityPlacement placement) {
+    String imagePath = placement.getEntityImagePath();
+
+    ImageView imageView = createImageViewForEntity(imagePath, placement);
+    this.getChildren().add(imageView);
+
+    int row = (int)(placement.getY() / TILE_SIZE);
+    int col = (int)(placement.getX() / TILE_SIZE);
+    gridEntities[row][col] = placement;
+
+    entityViews.put(imageView, placement);
+    setupEntityMouseHandlers(imageView);
+  }
+
+  /**
+   * Creates an ImageView for the entity. Extracted to a method to allow for mocking in tests.
+   *
+   * @param imagePath the path to the image
+   * @param placement the entity placement
+   * @return the created ImageView
+   */
+  protected ImageView createImageViewForEntity(String imagePath, EntityPlacement placement) {
+    ImageView imageView = new ImageView(new Image(imagePath));
+    imageView.setX(placement.getX());
+    imageView.setY(placement.getY());
+    imageView.setFitWidth(32);
+    imageView.setFitHeight(32);
+    return imageView;
+  }
+
+  /**
+   * Gets whether the selection highlight is currently visible.
+   * For testing purposes only.
+   *
+   * @return true if the selection highlight is visible
+   */
+  public boolean getSelectionHighlightVisible() {
+    return selectionHighlight.isVisible();
+  }
+
+  /**
+   * Gets the X position of the selection highlight.
+   * For testing purposes only.
+   *
+   * @return the X position of the selection highlight
+   */
+  public double getSelectionHighlightX() {
+    return selectionHighlight.getX();
+  }
+
+  /**
+   * Gets the Y position of the selection highlight.
+   * For testing purposes only.
+   *
+   * @return the Y position of the selection highlight
+   */
+  public double getSelectionHighlightY() {
+    return selectionHighlight.getY();
+  }
+
+  /**
+   * Gets whether any entity is currently selected.
+   * For testing purposes only.
+   *
+   * @return true if an entity is selected
+   */
+  public boolean hasSelectedEntity() {
+    return selectedEntity != null;
+  }
+
 }

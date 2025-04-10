@@ -18,6 +18,8 @@ public class EntityPlacement {
   private double y;
   private String mode;
   private int currentFrame;
+  private int deathFrame = 0;
+  private boolean inDeathAnimation = false;
 
   /**
    * A default constructor is required for the file parsing API.
@@ -141,6 +143,41 @@ public class EntityPlacement {
   }
 
   /**
+   * Gets the current frame for the death animation
+   */
+  public int getDeathFrame() {
+    return deathFrame;
+  }
+
+  /**
+   * Used for resetting the death animation
+   */
+  public void setDeathFrame(int deathFrame) {
+    this.deathFrame = deathFrame;
+  }
+
+  /**
+   * Checks if entity is in the process of a death animation
+   */
+  public boolean isInDeathAnimation() {
+    return inDeathAnimation;
+  }
+
+  /**
+   * Allows user to set in death animation boolean
+   */
+  public void setInDeathAnimation(boolean inDeathAnimation) {
+    this.inDeathAnimation = inDeathAnimation;
+  }
+
+  /**
+   * Increases the current death frame by one
+   */
+  public void incrementDeathFrame() {
+    this.deathFrame++;
+  }
+
+  /**
    * Increments the current frame of the animation by 1
    */
   public void increaseCurrentFrame() {
@@ -170,5 +207,18 @@ public class EntityPlacement {
         ", x=" + x +
         ", y=" + y +
         '}';
+  }
+
+  /**
+   * Gets the image path for the current entity based on its type and mode.
+   * Retrieves the image path from the mode configuration of the entity's current mode.
+   *
+   * @return the string path to the entity's image
+   */
+  public String getEntityImagePath() {
+    return this.getType()
+            .modes()
+            .get(this.getMode())
+            .getImagePath();
   }
 }

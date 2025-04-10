@@ -16,7 +16,7 @@ import oogasalad.engine.records.GameContext;
  */
 public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
 
-  private String entityType;
+  private final String entityType;
 
   /**
    * Constructs an {@code EntityBasedOutcomeStrategy} that determines the end of the game

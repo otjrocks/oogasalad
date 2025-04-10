@@ -151,4 +151,13 @@ public class CollisionRule {
   public void setEventsB(List<String> eventsB) {
     this.eventsB = eventsB;
   }
+
+  @Override
+  public String toString() {
+    return String.format("(%s:%s) ↔ (%s:%s) | A: %s, B: %s",
+        entityTypeA, modeA, entityTypeB, modeB,
+        String.join(",", eventsA),
+        String.join(",", eventsB));
+  }
+
 }
