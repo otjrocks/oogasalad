@@ -8,7 +8,7 @@ import javafx.scene.layout.StackPane;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.ConfigModel;
-import oogasalad.engine.newconfig.JsonConfigParser;
+import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.config.TileMapParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.EntityPlacement;

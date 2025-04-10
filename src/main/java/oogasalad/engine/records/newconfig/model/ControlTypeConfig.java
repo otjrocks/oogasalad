@@ -1,4 +1,4 @@
-package oogasalad.engine.newconfig.model;
+package oogasalad.engine.records.newconfig.model;
 
 public record ControlTypeConfig(
     String targetType,

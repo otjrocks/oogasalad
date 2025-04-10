@@ -1,4 +1,4 @@
-package oogasalad.engine.newconfig.model;
+package oogasalad.engine.records.newconfig.model;
 
 /**
  * Represents a game level with its associated settings and map.

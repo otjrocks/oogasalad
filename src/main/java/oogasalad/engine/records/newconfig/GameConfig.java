@@ -1,9 +1,9 @@
-package oogasalad.engine.newconfig;
+package oogasalad.engine.records.newconfig;
 
 import java.util.List;
-import oogasalad.engine.newconfig.model.Level;
-import oogasalad.engine.newconfig.model.Metadata;
-import oogasalad.engine.newconfig.model.Settings;
+import oogasalad.engine.records.newconfig.model.Level;
+import oogasalad.engine.records.newconfig.model.Metadata;
+import oogasalad.engine.records.newconfig.model.Settings;
 
 /**
  * Represents the configuration for a game, containing metadata, settings, levels, and the path to

@@ -1,4 +1,4 @@
-package oogasalad.engine.newconfig;
+package oogasalad.engine.records.newconfig;
 
 import java.util.List;
 

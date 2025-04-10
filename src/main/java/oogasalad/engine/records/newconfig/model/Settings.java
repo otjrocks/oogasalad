@@ -1,4 +1,4 @@
-package oogasalad.engine.newconfig.model;
+package oogasalad.engine.records.newconfig.model;
 
 /**
  * Represents the configuration settings for a game. This record encapsulates various parameters

@@ -1,10 +1,13 @@
-package oogasalad.engine.newconfig;
+package oogasalad.engine.config;
 
-import oogasalad.engine.config.ConfigException;
-import oogasalad.engine.newconfig.model.EntityProperties;
-import oogasalad.engine.newconfig.model.Level;
-import oogasalad.engine.newconfig.model.Metadata;
-import oogasalad.engine.newconfig.model.Settings;
+import oogasalad.engine.records.newconfig.CollisionConfig;
+import oogasalad.engine.records.newconfig.EntityConfig;
+import oogasalad.engine.records.newconfig.GameConfig;
+import oogasalad.engine.records.newconfig.ImageConfig;
+import oogasalad.engine.records.newconfig.model.EntityProperties;
+import oogasalad.engine.records.newconfig.model.Level;
+import oogasalad.engine.records.newconfig.model.Metadata;
+import oogasalad.engine.records.newconfig.model.Settings;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -200,10 +203,10 @@ class JsonConfigParserTest {
     assertEquals(List.of("Player"), baseProps.blocks());
 
     // Modes
-    List<ModeConfig> modes = config.modes();
+    List<oogasalad.engine.records.newconfig.ModeConfig> modes = config.modes();
     assertEquals(2, modes.size());
 
-    ModeConfig frightened = modes.getFirst();
+    oogasalad.engine.records.newconfig.ModeConfig frightened = modes.getFirst();
     assertEquals("Frightened", frightened.name());
     assertEquals("Random", frightened.entityProperties().controlType().controlType());
     assertEquals(1.0, frightened.entityProperties().movementSpeed());
@@ -215,7 +218,7 @@ class JsonConfigParserTest {
     assertEquals(32, frightImg.tileWidth());
     assertEquals(List.of(0, 1, 2), frightImg.tilesToCycle());
 
-    ModeConfig normal = modes.get(1);
+    oogasalad.engine.records.newconfig.ModeConfig normal = modes.get(1);
     assertEquals("Normal", normal.name());
     assertEquals("Chase", normal.entityProperties().controlType().controlType()); // inherited
     assertEquals(1.5, normal.entityProperties().movementSpeed()); // inherited
