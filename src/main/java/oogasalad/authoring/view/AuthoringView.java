@@ -124,7 +124,7 @@ public class AuthoringView {
     selectorView = new EntitySelectorView(controller);
 
     entityTypeEditorView = new EntityTypeEditorView(controller);
-    entityTypeEditorView.setVisible(false);
+    entityTypeEditorView.getRoot().setVisible(false);
 
     entityPlacementView = new EntityPlacementView(controller);
     entityPlacementView.setVisible(false);
@@ -146,7 +146,7 @@ public class AuthoringView {
     BorderPane mainContent = new BorderPane();
 
     // Add components to layout
-    mainContent.setLeft(levelSelectorView);
+    mainContent.setLeft(levelSelectorView.getRoot());
     
 mainContent.setCenter(canvasView.getNode());
     AnchorPane editorContainer = new AnchorPane();
@@ -154,11 +154,11 @@ mainContent.setCenter(canvasView.getNode());
     editorContainer.setBorder(new Border(
         new BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, null, new BorderWidths(1))));
 
-    editorContainer.getChildren().add(entityTypeEditorView);
-    AnchorPane.setTopAnchor(entityTypeEditorView, 0.0);
-    AnchorPane.setLeftAnchor(entityTypeEditorView, 0.0);
-    AnchorPane.setRightAnchor(entityTypeEditorView, 0.0);
-    AnchorPane.setBottomAnchor(entityTypeEditorView, 0.0);
+    editorContainer.getChildren().add(entityTypeEditorView.getRoot());
+    AnchorPane.setTopAnchor(entityTypeEditorView.getRoot(), 0.0);
+    AnchorPane.setLeftAnchor(entityTypeEditorView.getRoot(), 0.0);
+    AnchorPane.setRightAnchor(entityTypeEditorView.getRoot(), 0.0);
+    AnchorPane.setBottomAnchor(entityTypeEditorView.getRoot(), 0.0);
 
     Node placementNode = entityPlacementView.getNode();
     editorContainer.getChildren().add(placementNode);
@@ -181,7 +181,7 @@ mainContent.setCenter(canvasView.getNode());
 
     // Direct style settings (no CSS)
     rightPanel.setPrefWidth(300);
-    levelSelectorView.setPrefWidth(200);
+    levelSelectorView.getRoot().setPrefWidth(200);
     VBox.setVgrow(editorContainer, Priority.ALWAYS);
     gameSettingsView.getNode().setStyle(
         "-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0; -fx-padding: 10px;");

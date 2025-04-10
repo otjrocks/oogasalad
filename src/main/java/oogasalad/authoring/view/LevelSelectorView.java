@@ -60,7 +60,7 @@ public class LevelSelectorView {
    * 
    * @return the root node
    */
-  public Parent getRoot() {
+  public HBox getRoot() {
     return root;
   }
 
