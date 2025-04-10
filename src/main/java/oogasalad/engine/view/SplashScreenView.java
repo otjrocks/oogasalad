@@ -1,6 +1,8 @@
 package oogasalad.engine.view;
 
 
+import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
+
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,6 +26,7 @@ public class SplashScreenView extends VBox {
   private final ThemeManager myThemeManager;
   private Selector myThemeSelector;
   private final MainController myMainController;
+  private final VBox myConfigurationBox;
 
   /**
    * Create a splash screen view.
@@ -34,6 +37,7 @@ public class SplashScreenView extends VBox {
     super();
     myThemeManager = new ThemeManager(mainController.getStage());
     myMainController = mainController;
+    myConfigurationBox = new VBox(ELEMENT_SPACING);
     this.getStyleClass().add("splash-screen-view");
     this.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
     initializeSplashScreen();
@@ -56,11 +60,19 @@ public class SplashScreenView extends VBox {
     List<EventHandler<ActionEvent>> actions = List.of(
         e -> activateGamePlayerMode(),
         e -> activateAuthoringMode(),
-        e -> {
-        }
+        e -> toggleConfigurationMenu()
     );
     Vmenu splashMenu = new Vmenu(options, actions);
     this.getChildren().add(splashMenu);
+  }
+
+  private void toggleConfigurationMenu() {
+    // if configuration settings are being shown toggle off, otherwise toggle on
+    if (this.getChildren().contains(myConfigurationBox)) {
+      this.getChildren().remove(myConfigurationBox);
+    } else {
+      this.getChildren().add(myConfigurationBox);
+    }
   }
 
   private void activateGamePlayerMode() {
@@ -78,7 +90,7 @@ public class SplashScreenView extends VBox {
     myThemeSelector = new Selector(myThemeManager.getAvailableThemes(),
         ThemeManager.DEFAULT_THEME, "themeSelector",
         LanguageManager.getMessage("THEME_SELECTOR_TITLE"), e -> switchTheme());
-    this.getChildren().add(myThemeSelector);
+    myConfigurationBox.getChildren().add(myThemeSelector);
   }
 
   private void initializeLanguageSelector() {
@@ -86,7 +98,7 @@ public class SplashScreenView extends VBox {
         LanguageManager.getLanguage(),
         "languageSelector", LanguageManager.getMessage("LANGUAGE_SELECTOR_TITLE"),
         e -> handleLanguageSelection());
-    this.getChildren().add(myLanguageSelector);
+    myConfigurationBox.getChildren().add(myLanguageSelector);
   }
 
   private void initializeTitle() {
@@ -108,6 +120,7 @@ public class SplashScreenView extends VBox {
 
   private void refresh() {
     this.getChildren().clear();
+    myConfigurationBox.getChildren().clear();
     initializeSplashScreen();
   }
 }
