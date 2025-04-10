@@ -58,7 +58,7 @@ class EntityBasedOutcomeStrategyTest {
 
     String outcome = strategy.getGameOutcome(context);
 
-    assertEquals("Victory!", outcome);
+    assertEquals("Level Passed", outcome);
   }
 
   @Test

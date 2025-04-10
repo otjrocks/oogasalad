@@ -54,14 +54,14 @@ class LivesBasedOutcomeTest {
   void hasGameEnded_livesNegative_returnsGameOver() {
     when(gameState.getLives()).thenReturn(-1);
 
-    assertEquals("Game Over! You ran out of lives!", strategy.getGameOutcome(context));
+    assertEquals("Game Over", strategy.getGameOutcome(context));
   }
 
   @Test
   void hasGameEnded_livesZero_returnsGameOver() {
     when(gameState.getLives()).thenReturn(0);
 
-    assertEquals("Game Over! You ran out of lives!", strategy.getGameOutcome(context));
+    assertEquals("Game Over", strategy.getGameOutcome(context));
   }
 
 }
