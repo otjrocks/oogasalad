@@ -39,8 +39,10 @@ public class GameScreenView extends VBox {
     super();
     this.gameState = gameState;
 
-    scoreLabel = new Label(String.format(LanguageManager.getMessage("SCORE_LABEL"), gameState.getScore()));
-    livesLabel = new Label(String.format(LanguageManager.getMessage("LIVES_LABEL"), gameState.getLives()));
+    scoreLabel = new Label(
+        String.format(LanguageManager.getMessage("SCORE_LABEL"), gameState.getScore()));
+    livesLabel = new Label(
+        String.format(LanguageManager.getMessage("LIVES_LABEL"), gameState.getLives()));
     HBox hudContainer = new HBox(scoreLabel, livesLabel);
     hudContainer.getStyleClass().add("hud-container");
 
@@ -102,14 +104,9 @@ public class GameScreenView extends VBox {
    * Updates the HUD display based on game state changes.
    */
   public void updateHud() {
-    scoreLabel.setText("Score: " + gameState.getScore());
-    livesLabel.setText("Lives: " + gameState.getLives());
-  }
-
-  /**
-   * Stops the HUD updater when the game ends.
-   */
-  public void stopHudUpdater() {
-    hudUpdater.stop();
+    scoreLabel.setText(
+        String.format(LanguageManager.getMessage("SCORE_LABEL"), gameState.getScore()));
+    livesLabel.setText(
+        String.format(LanguageManager.getMessage("LIVES_LABEL"), gameState.getLives()));
   }
 }
