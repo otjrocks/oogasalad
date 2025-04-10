@@ -147,8 +147,8 @@ public class AuthoringView {
 
     // Add components to layout
     mainContent.setLeft(levelSelectorView);
-    mainContent.setCenter(canvasView);
-
+    
+mainContent.setCenter(canvasView.getNode());
     AnchorPane editorContainer = new AnchorPane();
     editorContainer.setPrefHeight(400);
     editorContainer.setBorder(new Border(
