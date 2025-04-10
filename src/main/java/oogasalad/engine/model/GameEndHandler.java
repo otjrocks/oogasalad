@@ -10,11 +10,14 @@ package oogasalad.engine.model;
  *
  * @author Austin Huang
  */
+@FunctionalInterface
 public interface GameEndHandler {
 
   /**
    * Called when the game ends. The implementing method should define
    * the behavior that occurs after the end condition is met.
+   *
+   * @param status specifies reason for stopping game.
    */
-  void onGameEnd();
+  void onGameEnd(GameEndStatus status);
 }
