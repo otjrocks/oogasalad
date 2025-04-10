@@ -22,6 +22,7 @@ import oogasalad.engine.model.GameState;
  */
 public class GameScreenView extends VBox {
 
+  private final MainController mainController;
   private final GameState gameState;
   private final Label scoreLabel;
   private final Label livesLabel;
@@ -38,6 +39,7 @@ public class GameScreenView extends VBox {
   public GameScreenView(MainController controller, GameState gameState) {
     super();
     this.gameState = gameState;
+    this.mainController = controller;
 
     scoreLabel = new Label(
         String.format(LanguageManager.getMessage("SCORE_LABEL"), gameState.getScore()));
@@ -68,13 +70,17 @@ public class GameScreenView extends VBox {
   /**
    * Returns Horizontal Box With Pause and Play
    */
-  private static HBox getHBox(GamePlayerView gamePlayerView) {
+  private HBox getHBox(GamePlayerView gamePlayerView) {
     GameView gameView = gamePlayerView.getGameView();
 
     Button pauseButton = new Button("⏸");
     Button playButton = new Button("▶");
+    Button returnToMenuButton = new Button(LanguageManager.getMessage("RETURN_TO_MENU"));
+
     pauseButton.setFocusTraversable(false);
     playButton.setFocusTraversable(false);
+    returnToMenuButton.setFocusTraversable(false);
+
     pauseButton.setOnAction(e -> {
       gameView.pauseGame();
       gameView.requestFocus();
@@ -84,7 +90,13 @@ public class GameScreenView extends VBox {
       gameView.resumeGame();
       gameView.requestFocus();
     });
-    HBox buttonBox = new HBox(ELEMENT_SPACING, playButton, pauseButton);
+
+    returnToMenuButton.setOnAction(e -> {
+      mainController.getInputManager().getRoot().getChildren().remove(this);
+      mainController.showSplashScreen();
+    });
+
+    HBox buttonBox = new HBox(ELEMENT_SPACING, playButton, pauseButton, returnToMenuButton);
     buttonBox.getStyleClass().add("hud-container");
     return buttonBox;
   }
