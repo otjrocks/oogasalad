@@ -19,9 +19,9 @@ import oogasalad.engine.model.CollisionRule;
  * Users can add, delete, and view defined collision rules. This dialog returns a list of
  * CollisionRule objects via showAndWait().
  *
- * @author Angela Predolac, Will He
+ * @author Angela Predolac, Will He, Ishan Madan
  */
-public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
+public class CollisionRuleEditorView {
 
   private final ComboBox<String> entityASelector = new ComboBox<>();
   private final ComboBox<String> modeASelector = new ComboBox<>();
@@ -30,6 +30,7 @@ public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
   private final ListView<String> actionASelector = new ListView<>();
   private final ListView<String> actionBSelector = new ListView<>();
   private final ListView<CollisionRule> ruleListView = new ListView<>();
+  private final Dialog<List<CollisionRule>> dialog;
 
   private Map<String, List<String>> entityToModes;
   private final List<CollisionRule> workingRules = new ArrayList<>();
@@ -51,8 +52,10 @@ public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
           workingRules.addAll(existingRules);
       }
 
-    setTitle("Edit Collision Rules");
-    getDialogPane().setPrefWidth(800);
+    // Create dialog instance
+    dialog = new Dialog<>();
+    dialog.setTitle("Edit Collision Rules");
+    dialog.getDialogPane().setPrefWidth(800);
 
     root = new VBox(15);
     root.setPadding(new Insets(20));
@@ -100,17 +103,35 @@ public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
     scrollPane.setFitToHeight(true); // optional
     scrollPane.setPadding(new Insets(10));
 
-    getDialogPane().setContent(scrollPane);
-    getDialogPane().setPrefSize(800, 600);
+    dialog.getDialogPane().setContent(scrollPane);
+    dialog.getDialogPane().setPrefSize(800, 600);
 
-    getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+    dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-    setResultConverter(button -> {
+    dialog.setResultConverter(button -> {
       if (button == ButtonType.OK) {
         return new ArrayList<>(ruleListView.getItems());
       }
       return null;
     });
+  }
+
+  /**
+   * Shows the dialog and waits for user input.
+   *
+   * @return Optional containing the list of collision rules if OK was pressed, empty Optional otherwise
+   */
+  public Optional<List<CollisionRule>> showAndWait() {
+    return dialog.showAndWait();
+  }
+
+  /**
+   * Returns the underlying dialog instance
+   * 
+   * @return the dialog
+   */
+  public Dialog<List<CollisionRule>> getDialog() {
+    return dialog;
   }
 
   private HBox getHBox() {
@@ -217,7 +238,7 @@ public class CollisionRuleEditorView extends Dialog<List<CollisionRule>> {
    */
   private void showError(String msg) {
     Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
-    alert.initOwner(getDialogPane().getScene().getWindow());
+    alert.initOwner(dialog.getDialogPane().getScene().getWindow());
     alert.showAndWait();
   }
 
