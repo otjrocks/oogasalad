@@ -7,7 +7,7 @@ import oogasalad.engine.model.GameState.HudComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class GameStateImplTests {
+public class GameStateImplTest {
 
   private GameStateImpl gameState;
 
