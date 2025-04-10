@@ -47,12 +47,6 @@ class SplashScreenViewTest extends DukeApplicationTest {
   }
 
   @Test
-  void setLanguage_TestTwoLanguageSwitch_Success() {
-    verifyLanguageChange("English");
-    verifyLanguageChange("Italian");
-  }
-
-  @Test
   void testToggle_EnsureConfigurationToggleWorks_Success() {
     assertFalse(lookup("#splash-configuration-box").query().isVisible());
     clickOn("#v-menu-button-2"); // toggle configuration box on

@@ -10,6 +10,7 @@ import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.util.Duration;
+import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContext;
@@ -42,12 +43,12 @@ public class GameMapView extends Canvas {
    * Initialize a game map view.
    *
    * @param gameContext The game context object for this view.
+   * @param configModel The game config model for this view.
    */
-  public GameMapView(GameContext gameContext) {
+  public GameMapView(GameContext gameContext, ConfigModel configModel) {
     super(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
     myGameContext = gameContext;
-    myGameMapController = new GameMapController(myGameContext, this);
-    myGameMapController.setGameEndHandler(this::pauseGame);
+    myGameMapController = new GameMapController(myGameContext, configModel);
     initializeEntityViews();
   }
 
