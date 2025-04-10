@@ -167,7 +167,7 @@ public class EntityPlacementView {
         if (currentMode != null && modeSelector.getItems().contains(currentMode)) {
             modeSelector.setValue(currentMode);
         } else if (!modeSelector.getItems().isEmpty()) {
-            modeSelector.setValue(modeSelector.getItems().get(0));
+            modeSelector.setValue(modeSelector.getItems().getFirst());
         }
     }
 
@@ -181,6 +181,7 @@ public class EntityPlacementView {
         String newMode = modeSelector.getValue();
         if (newMode != null && !newMode.equals(currentPlacement.getMode())) {
             currentPlacement.setMode(newMode);
+            controller.updateCanvas();
             showStatusMessage("Mode updated to: " + newMode);
 
             controller.moveEntity(currentPlacement, currentPlacement.getX(), currentPlacement.getY());

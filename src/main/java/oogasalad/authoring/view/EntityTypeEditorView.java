@@ -118,6 +118,8 @@ public class EntityTypeEditorView extends VBox {
       }
       current.modes().put(newConfig.getModeName(), newConfig);
       setEntityType(current);
+      controller.updateEntitySelector();
+      controller.updateCanvas();
     });
   }
 
