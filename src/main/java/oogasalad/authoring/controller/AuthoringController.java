@@ -2,7 +2,6 @@ package oogasalad.authoring.controller;
 
 import java.io.File;
 
-import javafx.application.Platform;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
 import oogasalad.authoring.view.EntityPlacementView;

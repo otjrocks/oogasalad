@@ -3,7 +3,6 @@ package oogasalad.authoring.view;
 import java.io.File;
 import java.nio.file.Path;
 import javafx.application.Platform;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -20,10 +19,10 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.config.ConfigException;
 
 /**
- * Top-level view for the Authoring Environment.
- * Combines and arranges all major UI components including the canvas, entity selector,
- * and entity editor. This class initializes its subviews and injects the controller as needed.
- *
+ * Top-level view for the Authoring Environment. Combines and arranges all major UI components
+ * including the canvas, entity selector, and entity editor. This class initializes its subviews and
+ * injects the controller as needed.
+ * <p>
  * Intended to be used as the main root node for the authoring scene.
  *
  * @author Will He, Angela Predolac
@@ -40,8 +39,8 @@ public class AuthoringView extends BorderPane {
   private EntityPlacementView entityPlacementView;
 
   /**
-   * Constructs the full authoring environment interface without a controller.
-   * The controller should be set separately via {@link #setController(AuthoringController)}.
+   * Constructs the full authoring environment interface without a controller. The controller should
+   * be set separately via {@link #setController(AuthoringController)}.
    */
   public AuthoringView() {
     this.controller = null;
@@ -57,7 +56,8 @@ public class AuthoringView extends BorderPane {
   }
 
   /**
-   * Returns the {@link EntitySelectorView}, which allows users to choose from defined entity types.
+   * Returns the {@link EntitySelectorView}, which allows users to choose from defined entity
+   * types.
    *
    * @return the entity selector view component
    */
@@ -66,7 +66,8 @@ public class AuthoringView extends BorderPane {
   }
 
   /**
-   * Returns the {@link EntityTypeEditorView}, which provides controls for editing a selected entity type.
+   * Returns the {@link EntityTypeEditorView}, which provides controls for editing a selected entity
+   * type.
    *
    * @return the entity editor view component
    */
@@ -93,8 +94,8 @@ public class AuthoringView extends BorderPane {
   }
 
   /**
-   * Sets the {@link AuthoringController} to be used by all child components.
-   * Also initializes the subviews and injects the controller into them.
+   * Sets the {@link AuthoringController} to be used by all child components. Also initializes the
+   * subviews and injects the controller into them.
    *
    * @param controller the controller coordinating model and view interactions
    */
@@ -104,8 +105,8 @@ public class AuthoringView extends BorderPane {
   }
 
   /**
-   * Initializes the main subviews and arranges them according to the specified layout.
-   * Called internally after setting the controller.
+   * Initializes the main subviews and arranges them according to the specified layout. Called
+   * internally after setting the controller.
    */
   private void setupSubViews() {
     // Initialize all views
@@ -140,7 +141,8 @@ public class AuthoringView extends BorderPane {
 
     AnchorPane editorContainer = new AnchorPane();
     editorContainer.setPrefHeight(400);
-    editorContainer.setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, null, new BorderWidths(1))));
+    editorContainer.setBorder(new Border(
+        new BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, null, new BorderWidths(1))));
 
     editorContainer.getChildren().add(entityTypeEditorView);
     AnchorPane.setTopAnchor(entityTypeEditorView, 0.0);
@@ -171,7 +173,8 @@ public class AuthoringView extends BorderPane {
     rightPanel.setPrefWidth(300);
     levelSelectorView.setPrefWidth(200);
     VBox.setVgrow(editorContainer, Priority.ALWAYS);
-    gameSettingsView.getNode().setStyle("-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0; -fx-padding: 10px;");
+    gameSettingsView.getNode().setStyle(
+        "-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0; -fx-padding: 10px;");
 
     // Setup event listener to maximize window on startup
     Platform.runLater(() -> {
@@ -182,6 +185,7 @@ public class AuthoringView extends BorderPane {
 
   /**
    * Get level selector view
+   *
    * @return level selector view
    */
   public LevelSelectorView getLevelSelectorView() {
@@ -189,8 +193,10 @@ public class AuthoringView extends BorderPane {
   }
 
   // Add this getter method:
+
   /**
-   * Returns the {@link EntityPlacementView}, which provides controls for editing a selected entity placement.
+   * Returns the {@link EntityPlacementView}, which provides controls for editing a selected entity
+   * placement.
    *
    * @return the entity placement view component
    */

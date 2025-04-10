@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.entity.Entity;
 
 /**
  * A pathfinding strategy using Breadth-First Search. Returns the next direction to move from start
