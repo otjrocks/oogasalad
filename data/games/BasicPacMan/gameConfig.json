@@ -15,5 +15,27 @@
     {
       "levelMap": "level1"
     }
+  ],
+  "collisions": [
+    {
+      "entityA": "pacman",
+      "modeA": [0],
+      "entityB": "redghost",
+      "eventsA": [
+        "LoseLife"
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "pacman",
+      "modeA": [1],
+      "entityB": "redghost",
+      "eventsA": [
+        "AddScore(100)"
+      ],
+      "eventsB": [
+        "Destroy"
+      ]
+    }
   ]
 }

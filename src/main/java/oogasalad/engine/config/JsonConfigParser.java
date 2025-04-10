@@ -53,6 +53,8 @@ import oogasalad.engine.utility.FileUtility;
 public class JsonConfigParser implements ConfigParser {
 
   private final ObjectMapper mapper;
+  private GameConfig gameConfig;
+  private Map<String, EntityConfig> entityMap;
 
   /**
    * Constructs a new JsonConfigParser instance and initializes the ObjectMapper used for parsing
@@ -75,16 +77,23 @@ public class JsonConfigParser implements ConfigParser {
    */
   public ConfigModel loadFromFile(String filepath) throws ConfigException {
     // parse all the stuff from new configuation
-    GameConfig gameConfig = loadGameConfig(filepath);
-    Map<String, EntityConfig> entityMap = constructEntities(gameConfig.gameFolderPath());
+    gameConfig = loadGameConfig(filepath);
+    entityMap = constructEntities(gameConfig.gameFolderPath());
 
     // map all the new information to the old model
     MetaData metaData = extractMetaData(gameConfig);
     GameSettings settings = createGameSettings(gameConfig);
 
     List<EntityType> entityTypes = new ArrayList<>();
+    createEntityTypes(entityTypes);
+
+    // TODO: loading the map create the entityPlacements for each level
+    // esentially take each parsed thing, create a new entityPlacement, use the fact like with collisions
+    // that you can use entityMaps to get any entity specific info such as the mode name for the corresponding mode
+    // if no ._ specified just do the first mode by default
+    // TODO: currently sicne we only have one map, can stay with just one entityPlacements, in the
+    // future might want to make this a list of lists
     List<EntityPlacement> entityPlacements = new ArrayList<>();
-    createEntityTypes(entityMap, entityTypes, entityPlacements);
 
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
     String winCondition = gameConfig.settings().winCondition();
@@ -93,6 +102,8 @@ public class JsonConfigParser implements ConfigParser {
     return new ConfigModel(metaData, settings, entityTypes, entityPlacements, collisionRules,
         winCondition, tiles);
   }
+
+  // Methods to convert from multiple config files to a singular config model
 
   private MetaData extractMetaData(GameConfig gameConfig) {
     return new MetaData(
@@ -115,17 +126,36 @@ public class JsonConfigParser implements ConfigParser {
     List<CollisionRule> collisionRules = new ArrayList<>();
 
     for (CollisionConfig collision : gameConfig.collisions()) {
-      // TODO: for now I just hardcoded to any, since these are still with string
-      // modes
+      EntityConfig entityA = entityMap.get(collision.entityA());
+      EntityConfig entityB = entityMap.get(collision.entityB());
+
+      // TODO: refactor this so it not so duplicated
+      String modeA;
+      if (collision.modeA() == null || collision.modeA().isEmpty()) {
+        modeA = "Any";
+      }
+      else {
+        // TODO: currently just taking first because in collision rule only allow for single string
+        modeA = entityA.modes().get(collision.modeA().getFirst()).name();
+      }
+
+      String modeB;
+      if (collision.modeB() == null || collision.modeB().isEmpty()) {
+        modeB = "Any";
+      }
+      else {
+        // TODO: currently just taking first because in collision rule only allow for single string
+        modeB = entityB.modes().get(collision.modeB().getFirst()).name();
+      }
+
       collisionRules.add(
-          new CollisionRule(collision.entityA(), "Any", collision.entityB(), "Any",
+          new CollisionRule(entityA.name(), modeA, entityB.name(), modeB,
               collision.eventsA(), collision.eventsB()));
     }
     return collisionRules;
   }
 
-  private void createEntityTypes(Map<String, EntityConfig> entityMap, List<EntityType> entityTypes,
-      List<EntityPlacement> entityPlacements) {
+  private void createEntityTypes(List<EntityType> entityTypes) {
 
     for (EntityConfig entity : entityMap.values()) {
       Map<String, oogasalad.engine.config.ModeConfig> modes = new HashMap<>();
@@ -137,26 +167,25 @@ public class JsonConfigParser implements ConfigParser {
         modes.put(mode.name(), modeConfig);
       }
 
-      Map<String, Object> strategyConfig = new HashMap<>();
-      if (entity.entityProperties().controlType().controlTypeConfig() != null) {
-        strategyConfig.put("targetType",
-            entity.entityProperties().controlType().controlTypeConfig().targetType());
-        strategyConfig.put("tilesAhead",
-            entity.entityProperties().controlType().controlTypeConfig().tilesAhead());
-      }
-
-      // TODO: effects is currently hardcoded because I think we getting rid of it
-      EntityType entityType = new EntityType(entity.name(),
-          entity.entityProperties().controlType().controlType(), "",
-          modes, entity.entityProperties().blocks(), strategyConfig);
+      EntityType entityType = getEntityType(entity, modes);
       entityTypes.add(entityType);
-
-      EntityPlacement entityPlacement = new EntityPlacement(entityType, 0, 0,
-          entity.modes().getFirst().name());
-      entityPlacement.setType(entity.name());
-
-      entityPlacements.add(entityPlacement);
     }
+  }
+
+  private static EntityType getEntityType(EntityConfig entity, Map<String, ModeConfig> modes) {
+    Map<String, Object> strategyConfig = new HashMap<>();
+    if (entity.entityProperties().controlType().controlTypeConfig() != null) {
+      strategyConfig.put("targetType",
+          entity.entityProperties().controlType().controlTypeConfig().targetType());
+      strategyConfig.put("tilesAhead",
+          entity.entityProperties().controlType().controlTypeConfig().tilesAhead());
+    }
+
+    // TODO: remove effects
+    EntityType entityType = new EntityType(entity.name(),
+        entity.entityProperties().controlType().controlType(), "",
+        modes, entity.entityProperties().blocks(), strategyConfig);
+    return entityType;
   }
 
   // ---- Methods for loading Game Config ----

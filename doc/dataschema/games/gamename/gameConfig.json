@@ -88,7 +88,7 @@
         "type": "object",
         "properties": {
           "entityA": {
-            "description": "name of entity A",
+            "description": "file name for the entity (similar to the one in level)",
             "type": "string"
           },
           "modeA": {

@@ -44,6 +44,9 @@ public class CollisionRule {
     this.eventsB = eventsB;
   }
 
+  /**
+   * Empty constructor for use by authoring environment to create a blank new collision rule.
+   */
   public CollisionRule() {
     // needs empty constructor
   }
