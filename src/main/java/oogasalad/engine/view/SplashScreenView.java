@@ -38,6 +38,7 @@ public class SplashScreenView extends VBox {
     myThemeManager = new ThemeManager(mainController.getStage());
     myMainController = mainController;
     myConfigurationBox = new VBox(ELEMENT_SPACING);
+    myConfigurationBox.setId("splash-configuration-box");
     this.getStyleClass().add("splash-screen-view");
     this.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
     initializeSplashScreen();
@@ -51,6 +52,8 @@ public class SplashScreenView extends VBox {
     initializeLanguageSelector();
     initializeThemeSelector();
     initializeSplashMenu();
+    this.getChildren().add(myConfigurationBox);
+    myConfigurationBox.setVisible(false);
   }
 
   private void initializeSplashMenu() {
@@ -68,11 +71,7 @@ public class SplashScreenView extends VBox {
 
   private void toggleConfigurationMenu() {
     // if configuration settings are being shown toggle off, otherwise toggle on
-    if (this.getChildren().contains(myConfigurationBox)) {
-      this.getChildren().remove(myConfigurationBox);
-    } else {
-      this.getChildren().add(myConfigurationBox);
-    }
+    myConfigurationBox.setVisible(!myConfigurationBox.isVisible());
   }
 
   private void activateGamePlayerMode() {
