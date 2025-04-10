@@ -75,14 +75,16 @@ public class GameMapView extends Canvas {
    * Starts the death animation when Pac-Man dies.
    */
   public void triggerPacManDeathAnimation(Entity pacManEntity) {
-    if (isDeathAnimationRunning) return;
+    if (isDeathAnimationRunning) {
+      return;
+    }
 
     isDeathAnimationRunning = true;
 
     initializeOrReplaceEntityView(pacManEntity);
 
     deathAnimationTimeline = new Timeline(
-            new KeyFrame(Duration.seconds(0.1), e -> updateDeathAnimationFrame(pacManEntity))
+        new KeyFrame(Duration.seconds(0.1), e -> updateDeathAnimationFrame(pacManEntity))
     );
     deathAnimationTimeline.setCycleCount(Timeline.INDEFINITE);
     deathAnimationTimeline.play();
@@ -133,12 +135,12 @@ public class GameMapView extends Canvas {
    * Call on each game tick to update models, handle removals, and redraw the canvas.
    */
   public void update() {
-      try {
-          myGameMapController.updateEntityModels();
-      } catch (InvalidPositionException e) {
-          throw new RuntimeException(e);
-      }
-      initializeEntityViews();  // rebuild views to reflect current entities (removals/additions)
+    try {
+      myGameMapController.updateEntityModels();
+    } catch (InvalidPositionException e) {
+      throw new RuntimeException(e);
+    }
+    initializeEntityViews();  // rebuild views to reflect current entities (removals/additions)
     drawAll();
   }
 
@@ -156,9 +158,9 @@ public class GameMapView extends Canvas {
 
   /**
    * Sets the {@link GameLoopController} associated with this {@code GameMapView}.
-   *
-   * This method is used to link the game loop controller so that the view can
-   * trigger game loop operations, such as pausing the game when a victory condition is met.
+   * <p>
+   * This method is used to link the game loop controller so that the view can trigger game loop
+   * operations, such as pausing the game when a victory condition is met.
    *
    * @param controller the {@code GameLoopController} that manages the game's animation loop
    */

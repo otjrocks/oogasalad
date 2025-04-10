@@ -1,31 +1,57 @@
 package oogasalad.engine.config.api;
 
-import java.util.List;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.nio.file.Path;
 import oogasalad.engine.config.ConfigException;
-import oogasalad.engine.config.ConfigModel;
 
 /**
- * Interface for saving configuration data to a file. Implementations of this interface should
- * handle the process of writing configuration data given in {@link ConfigModel} to a specified file
- * format and location.
+ * Interface for saving various parts of a game configuration into separate JSON files.
+ * <p>
+ * This interface supports saving the top-level game metadata, individual level configurations,
+ * and entity type definitions using Jackson {@link ObjectNode}s. Implementing classes are responsible
+ * for writing these JSON objects to a specified folder in the desired format (e.g., pretty-printed JSON).
+ * </p>
+ *
+ * <p>Typical usage involves calling {@code saveGameConfig} to write the root configuration file,
+ * {@code saveLevel} for each level layout, and {@code saveEntityType} for each entity's behavior and visual data.</p>
  *
  * @author Will He
  */
 public interface ConfigSaver {
 
   /**
-   * Saves the given configuration model to a file at the specified filepath.
+   * Saves the overall game metadata and high-level structure to a JSON file in the specified folder.
+   * <p>
+   * This includes game title, author, description, default settings, and level references.
+   * </p>
    *
-   * @param config   the configuration model to be saved
-   * @param filepath the path of the file where the configuration will be saved
-   * @throws ConfigException if an error occurs during the saving process
+   * @param gameConfigJson the JSON object representing the game configuration
+   * @param gameFolder     the folder to save the game config into (e.g., "output/")
    */
-  void saveToFile(ConfigModel config, String filepath) throws ConfigException;
+  void saveGameConfig(ObjectNode gameConfigJson, Path gameFolder) throws ConfigException;
 
   /**
-   * Retrieves a list of supported file extensions for saving configuration files.
+   * Saves the configuration for a single game level to a separate JSON file in the specified folder.
+   * <p>
+   * The level file typically contains the grid layout, entity ID mappings, and settings like grid size or edge policy.
+   * </p>
    *
-   * @return a list of strings representing the supported file extensions
+   * @param levelName  the name of the level file to create (without ".json" extension)
+   * @param levelJson  the JSON object representing the level configuration
+   * @param gameFolder the folder to save the level file into
    */
-  List<String> getSupportedFileExtensions();
+  void saveLevel(String levelName, ObjectNode levelJson, Path gameFolder) throws ConfigException;
+
+  /**
+   * Saves a specific entity type's configuration to its own JSON file in the given folder.
+   * <p>
+   * This includes control strategy, modes, movement speed, image data, and collision rules.
+   * </p>
+   *
+   * @param entityName the name of the entity (used as the filename)
+   * @param entityJson the JSON object representing the entity's configuration
+   * @param gameFolder the folder to save the entity file into
+   */
+  void saveEntityType(String entityName, ObjectNode entityJson, Path gameFolder)
+      throws ConfigException;
 }
