@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * View for editing a selected EntityType.
  *
- * @author Will He
+ * @author Will He, Ishan Madan
  */
 public class EntityTypeEditorView {
 

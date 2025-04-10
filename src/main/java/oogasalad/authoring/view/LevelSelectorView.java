@@ -18,7 +18,7 @@ import java.util.List;
  * <p>
  * Example: Used by AuthoringView to allow switching between levels.
  *
- * @author Will He
+ * @author Will He, Ishan Madan
  */
 public class LevelSelectorView {
 

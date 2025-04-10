@@ -1,12 +1,16 @@
 package oogasalad.authoring.view;
 
 import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import oogasalad.engine.config.ModeConfig;
+import oogasalad.engine.model.CollisionRule;
 
 import java.io.File;
 
@@ -14,9 +18,9 @@ import java.io.File;
  * Dialog for creating a new ModeConfig with a user-uploaded image.
  * Returns a ModeConfig object via showAndWait().ifPresent(...)
  *
- * @author Will He
+ * @author Will He, Ishan Madan
  */
-public class ModeEditorDialog extends Dialog<ModeConfig> {
+public class ModeEditorDialog {
 
   private TextField nameField;
   private TextField speedField;
@@ -24,12 +28,16 @@ public class ModeEditorDialog extends Dialog<ModeConfig> {
   private File selectedImageFile;
   private ModeConfig preparedResult;
 
+  private final Dialog<ModeConfig> dialog;
+
 
   /**
    * Represents the dialog to add a new mode
    */
   public ModeEditorDialog() {
-    this.setTitle("Mode Editor");
+    // Create dialog instance
+    dialog = new Dialog<>();
+    dialog.setTitle("Mode Editor");
 
     GridPane grid = new GridPane();
     grid.setHgap(10);
@@ -56,22 +64,31 @@ public class ModeEditorDialog extends Dialog<ModeConfig> {
 
     ButtonType okButtonType = ButtonType.OK;
 
-    this.getDialogPane().setContent(grid);
-    this.getDialogPane().getButtonTypes().addAll(okButtonType, ButtonType.CANCEL);
+    dialog.getDialogPane().setContent(grid);
+    dialog.getDialogPane().getButtonTypes().addAll(okButtonType, ButtonType.CANCEL);
 
-    Button okButton = (Button) this.getDialogPane().lookupButton(okButtonType);
+    Button okButton = (Button) dialog.getDialogPane().lookupButton(okButtonType);
     okButton.addEventFilter(javafx.event.ActionEvent.ACTION, event -> {
       if (!validateAndPrepareResult()) {
         event.consume(); // prevent dialog from closing
       }
     });
 
-    this.setResultConverter(button -> {
+    dialog.setResultConverter(button -> {
       if (button == okButtonType) {
         return preparedResult; // set during validation
       }
       return null;
     });
+  }
+
+  /**
+   * Shows the dialog and waits for user input.
+   *
+   * @return Optional containing the list of collision rules if OK was pressed, empty Optional otherwise
+   */
+  public Optional<ModeConfig> showAndWait() {
+    return dialog.showAndWait();
   }
 
   /**
@@ -103,7 +120,7 @@ public class ModeEditorDialog extends Dialog<ModeConfig> {
   }
 
   private Stage getOwnerWindow() {
-    return (Stage) this.getDialogPane().getScene().getWindow();
+    return (Stage) dialog.getDialogPane().getScene().getWindow();
   }
 
   private void showError(String msg) {

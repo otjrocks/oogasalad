@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  * GameSettingsView provides a compact form for editing game settings
  * Designed to fit at the bottom of the screen as shown in the wireframe
  *
- * @author Angela Predolac
+ * @author Angela Predolac, Ishan Madan
  */
 public class GameSettingsView {
 
