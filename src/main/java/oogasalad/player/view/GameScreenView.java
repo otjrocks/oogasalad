@@ -1,5 +1,6 @@
 package oogasalad.player.view;
 
+import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
 import static oogasalad.engine.config.GameConfig.HEIGHT;
 import static oogasalad.engine.config.GameConfig.WIDTH;
 
@@ -24,7 +25,6 @@ public class GameScreenView extends VBox {
   private final GameState gameState;
   private final Label scoreLabel;
   private final Label livesLabel;
-  private final Timeline hudUpdater;
 
   private int lastScore;
   private int lastLives;
@@ -58,7 +58,7 @@ public class GameScreenView extends VBox {
     lastLives = gameState.getLives();
 
     // Timeline to check for changes every 100ms
-    hudUpdater = new Timeline(
+    Timeline hudUpdater = new Timeline(
         new KeyFrame(Duration.millis(100), event -> checkAndUpdateHud())
     );
     hudUpdater.setCycleCount(Timeline.INDEFINITE);
@@ -84,7 +84,7 @@ public class GameScreenView extends VBox {
       gameView.resumeGame();
       gameView.requestFocus();
     });
-    HBox buttonBox = new HBox(10, playButton, pauseButton);
+    HBox buttonBox = new HBox(ELEMENT_SPACING, playButton, pauseButton);
     buttonBox.getStyleClass().add("hud-container");
     return buttonBox;
   }
