@@ -19,14 +19,15 @@ import java.util.Map;
 /**
  * Visual canvas where entity instances are placed via drag and drop.
  *
- * @author Will He, Angela Predolac
+ * @author Will He, Angela Predolac, Ishan Madan
  */
-public class CanvasView extends Pane {
+public class CanvasView {
 
   private static final int TILE_SIZE = 40;
   private static final int ROWS = 15;
   private static final int COLS = 20;
 
+  private final Pane root;
   private final AuthoringController controller;
   private final Rectangle hoverHighlight = new Rectangle(TILE_SIZE, TILE_SIZE);
   private final Rectangle selectionHighlight = new Rectangle(TILE_SIZE, TILE_SIZE);
@@ -47,20 +48,30 @@ public class CanvasView extends Pane {
    * @param controller wires up with model
    */
   public CanvasView(AuthoringController controller) {
+    this.root = new Pane();
     this.controller = controller;
-    this.setPrefSize(800, 600);
-    this.getStyleClass().add("canvas-view");
+    root.setPrefSize(800, 600);
+    root.getStyleClass().add("canvas-view");
 
     initializeHoverHighlight();
     initializeSelectionHighlight();
     setupDragAndDropHandlers();
+  }
+  
+  /**
+   * Returns the root JavaFX node for this view.
+   *
+   * @return the root node that can be added to a scene
+   */
+  public Pane getNode() {
+    return root;
   }
 
   private void initializeHoverHighlight() {
     hoverHighlight.setFill(Color.TRANSPARENT);
     hoverHighlight.setStroke(Color.GRAY);
     hoverHighlight.setVisible(false);
-    this.getChildren().add(hoverHighlight);
+    root.getChildren().add(hoverHighlight);
   }
 
   private void initializeSelectionHighlight() {
@@ -68,14 +79,14 @@ public class CanvasView extends Pane {
     selectionHighlight.setStroke(Color.BLUE);
     selectionHighlight.setStrokeWidth(2);
     selectionHighlight.setVisible(false);
-    this.getChildren().add(selectionHighlight);
+    root.getChildren().add(selectionHighlight);
   }
 
   private void setupDragAndDropHandlers() {
-    this.setOnDragOver(this::handleDragOver);
-    this.setOnDragDropped(this::handleDragDropped);
-    this.setOnDragEntered(this::handleDragEntered);
-    this.setOnDragExited(this::handleDragExited);
+    root.setOnDragOver(this::handleDragOver);
+    root.setOnDragDropped(this::handleDragDropped);
+    root.setOnDragEntered(this::handleDragEntered);
+    root.setOnDragExited(this::handleDragExited);
   }
 
   private void handleDragOver(DragEvent e) {
@@ -301,7 +312,7 @@ public class CanvasView extends Pane {
    * Reload all visuals (e.g., after editing types or modes).
    */
   public void reloadFromPlacements(List<EntityPlacement> placements) {
-    this.getChildren().clear();
+    root.getChildren().clear();
 
     // Add visuals back
     for (EntityPlacement placement : placements) {
@@ -309,7 +320,7 @@ public class CanvasView extends Pane {
     }
 
     // Restore hover highlight after clearing
-    this.getChildren().add(hoverHighlight);
+    root.getChildren().add(hoverHighlight);
   }
 
   /**
@@ -329,7 +340,7 @@ public class CanvasView extends Pane {
     String imagePath = placement.getEntityImagePath();
 
     ImageView imageView = createImageViewForEntity(imagePath, placement);
-    this.getChildren().add(imageView);
+    root.getChildren().add(imageView);
 
     int row = (int)(placement.getY() / TILE_SIZE);
     int col = (int)(placement.getX() / TILE_SIZE);

@@ -28,7 +28,7 @@ public class CanvasViewTest extends DukeApplicationTest {
   public void start(Stage stage) {
     mockController = mock(AuthoringController.class);
     canvasView = new CanvasView(mockController);
-    Scene scene = new Scene(canvasView, 800, 600);
+    Scene scene = new Scene(canvasView.getNode(), 800, 600);
     stage.setScene(scene);
     stage.show();
   }
@@ -50,7 +50,7 @@ public class CanvasViewTest extends DukeApplicationTest {
 
     interact(() -> canvasView.addEntityVisual(placement));
 
-    boolean found = canvasView.getChildren().stream()
+    boolean found = canvasView.getNode().getChildren().stream()
         .filter(n -> n instanceof ImageView)
         .anyMatch(n -> ((ImageView) n).getX() == 80.0 && ((ImageView) n).getY() == 120.0);
 
@@ -71,7 +71,7 @@ public class CanvasViewTest extends DukeApplicationTest {
 
     interact(() -> canvasView.reloadFromPlacements(List.of(p1, p2)));
 
-    long count = canvasView.getChildren().stream().filter(n -> n instanceof ImageView).count();
+    long count = canvasView.getNode().getChildren().stream().filter(n -> n instanceof ImageView).count();
     assertEquals(2, count, "Expected exactly 2 entity visuals after reload");
   }
 
@@ -84,7 +84,7 @@ public class CanvasViewTest extends DukeApplicationTest {
 
     interact(() -> canvasView.addEntityVisual(p));
 
-    ImageView image = (ImageView) canvasView.getChildren().stream()
+    ImageView image = (ImageView) canvasView.getNode().getChildren().stream()
         .filter(n -> n instanceof ImageView)
         .findFirst()
         .orElseThrow();
