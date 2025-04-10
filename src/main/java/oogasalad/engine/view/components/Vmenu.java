@@ -44,6 +44,7 @@ public class Vmenu extends VBox {
     for (int i = 0; i < values.size(); i++) {
       Button newButton = new Button(values.get(i));
       newButton.setOnAction(actions.get(i));
+      newButton.setId("v-menu-button-" + i);
       this.getChildren().add(newButton);
     }
   }
