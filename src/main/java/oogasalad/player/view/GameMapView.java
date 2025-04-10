@@ -71,36 +71,40 @@ public class GameMapView extends Canvas {
 
     isDeathAnimationRunning = true;
 
-    deathAnimationTimeline = defineDeathAnimation(pacManEntity);
+    initializeOrReplaceEntityView(pacManEntity);
 
+    deathAnimationTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(0.1), e -> updateDeathAnimationFrame(pacManEntity))
+    );
     deathAnimationTimeline.setCycleCount(Timeline.INDEFINITE);
     deathAnimationTimeline.play();
   }
 
-  private Timeline defineDeathAnimation(Entity pacManEntity) {
+  private void initializeOrReplaceEntityView(Entity entity) {
+    EntityView existingView = findEntityView(entity);
 
-      return new Timeline(
-              new KeyFrame(Duration.seconds(0.1), e -> {
-                pacManEntity.getEntityPlacement().incrementDeathFrame();
+    if (existingView == null) {
+      entityViews.add(new EntityView(entity, 11));
+    }
+  }
 
-                EntityView view = null;
-                for (EntityView entityView : entityViews) {
-                  if(entityView.getEntity().equals(pacManEntity)) {
-                    view = entityView;
-                  }
-                }
+  private EntityView findEntityView(Entity entity) {
+    for (EntityView view : entityViews) {
+      if (view.getEntity().equals(entity)) {
+        return view;
+      }
+    }
+    return null;
+  }
 
-                if(view == null) {
-                  entityViews.remove(view);
-                  entityViews.add(new EntityView(pacManEntity, 11));
-                }
+  private void updateDeathAnimationFrame(Entity pacManEntity) {
+    pacManEntity.getEntityPlacement().incrementDeathFrame();
 
-                drawAll();
+    drawAll();
 
-                if (pacManEntity.getEntityPlacement().getDeathFrame() >= 11) {
-                  endDeathAnimation(pacManEntity);
-                }
-              }));
+    if (pacManEntity.getEntityPlacement().getDeathFrame() >= 11) {
+      endDeathAnimation(pacManEntity);
+    }
   }
 
   /**
