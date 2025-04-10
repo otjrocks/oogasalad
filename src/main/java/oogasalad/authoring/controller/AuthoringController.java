@@ -34,6 +34,7 @@ public class AuthoringController {
 
 
   private EntityType selectedType;
+  private EntityPlacement selectedPlacement;
 
   /**
    * Constructs an AuthoringController with the given model and view.
@@ -82,6 +83,7 @@ public class AuthoringController {
       view.getEntityEditorView().setVisible(true);
       view.getEntitySelectorView().highlightEntityTile(typeName);
 
+      selectedPlacement = null;
       view.getEntityPlacementView().setVisible(false);
     }, () -> {
       selectedType = null;
@@ -119,6 +121,9 @@ public class AuthoringController {
       return;
     }
     placement.moveTo(x, y);
+    if (selectedPlacement == placement) {
+      view.getEntityPlacementView().updatePositionDisplay();
+    }
   }
 
   /**
@@ -137,6 +142,15 @@ public class AuthoringController {
   public void updateCanvas() {
     List<EntityPlacement> placements = model.getCurrentLevel().getEntityPlacements();
     view.getCanvasView().reloadFromPlacements(placements);
+
+    // Re-select the currently selected placement after canvas update
+    if (selectedPlacement != null && placements.contains(selectedPlacement)) {
+      selectEntityPlacement(selectedPlacement);
+    } else {
+      // If the selected placement was removed, clear the selection
+      selectedPlacement = null;
+      view.getEntityPlacementView().setVisible(false);
+    }
   }
 
 
@@ -207,6 +221,7 @@ public class AuthoringController {
    */
   public void selectEntityPlacement(EntityPlacement placement) {
     EntityPlacementView placementView = view.getEntityPlacementView();
+    selectedPlacement = placement;
 
     if (placement != null) {
       // Show the placement view and hide the type editor
@@ -226,7 +241,25 @@ public class AuthoringController {
    * @param placement the updated entity placement
    */
   public void updateEntityPlacement(EntityPlacement placement) {
+    if (placement == null) return;
     updateCanvas();
+  }
+
+  /**
+   * Updates the mode of an entity placement.
+   * Called when the mode is changed in the EntityPlacementView.
+   *
+   * @param placement the entity placement to update
+   * @param newMode the new mode to set
+   */
+  public void updateEntityPlacementMode(EntityPlacement placement, String newMode) {
+    if (placement == null || newMode == null) return;
+
+    // Verify that the mode exists for this entity type
+    if (placement.getType().modes().containsKey(newMode)) {
+      placement.setMode(newMode);
+      updateCanvas();
+    }
   }
 
   /**
@@ -240,6 +273,28 @@ public class AuthoringController {
 
     model.getCurrentLevel().removeEntityPlacement(placement);
 
+    if (placement == selectedPlacement) {
+      selectedPlacement = null;
+    }
+
     updateCanvas();
+  }
+
+  /**
+   * Returns the currently selected entity placement, if any.
+   *
+   * @return the currently selected placement, or null if none is selected
+   */
+  public EntityPlacement getSelectedPlacement() {
+    return selectedPlacement;
+  }
+
+  /**
+   * Returns the currently selected entity type, if any.
+   *
+   * @return the currently selected entity type, or null if none is selected
+   */
+  public EntityType getSelectedType() {
+    return selectedType;
   }
 }
