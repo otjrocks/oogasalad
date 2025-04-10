@@ -45,6 +45,7 @@ public class GameMapController {
   private final GameMapView gameView;
   private int frameCount = 0;
   private GameEndHandler gameEndHandler;
+  private final LivesBasedOutcome livesBasedOutcome = new LivesBasedOutcome();
 
   /**
    * Create a game map controller with the provided game context.
@@ -154,12 +155,9 @@ public class GameMapController {
       e1.getEntityPlacement().setInDeathAnimation(true);
       gameView.triggerPacManDeathAnimation(e1);
 
-      if (gameState.getLives() <= 0) {
-        LivesBasedOutcome livesBasedOutcome = new LivesBasedOutcome();
-        if (livesBasedOutcome.hasGameEnded(new GameContext(gameMap, gameState))) {
-          gameState.setGameOver(true);
-          stopGameLoop(GameEndStatus.LOSS);
-        }
+      if (livesBasedOutcome.hasGameEnded(new GameContext(gameMap, gameState))) {
+        gameState.setGameOver(true);
+        stopGameLoop(GameEndStatus.LOSS);
       }
     }
   }
