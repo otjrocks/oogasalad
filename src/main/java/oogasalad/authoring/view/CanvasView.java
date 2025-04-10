@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Will He, Angela Predolac, Ishan Madan
  */
-public class CanvasView extends Pane {
+public class CanvasView {
 
   private static final int TILE_SIZE = 40;
   private static final int ROWS = 15;
@@ -50,8 +50,8 @@ public class CanvasView extends Pane {
   public CanvasView(AuthoringController controller) {
     this.root = new Pane();
     this.controller = controller;
-    this.setPrefSize(800, 600);
-    this.getStyleClass().add("canvas-view");
+    root.setPrefSize(800, 600);
+    root.getStyleClass().add("canvas-view");
 
     initializeHoverHighlight();
     initializeSelectionHighlight();
