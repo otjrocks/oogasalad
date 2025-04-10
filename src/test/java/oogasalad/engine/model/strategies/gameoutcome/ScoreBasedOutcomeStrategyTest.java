@@ -51,7 +51,7 @@ class ScoreBasedOutcomeStrategyTest {
     ScoreBasedOutcomeStrategy strategy = new ScoreBasedOutcomeStrategy(100);
 
     String outcome = strategy.getGameOutcome(context);
-    assertEquals("Victory!", outcome);
+    assertEquals("Level Passed", outcome);
   }
 
   @Test
