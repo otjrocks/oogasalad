@@ -54,6 +54,7 @@ public class EntitySelectorView {
 
     // Grid that holds entity tiles
     tileGrid = new FlowPane();
+    tileGrid.getStyleClass().add("flow-pane");
     tileGrid.setHgap(10);
     tileGrid.setVgap(10);
     tileGrid.setPrefWrapLength(1000);
