@@ -1,11 +1,22 @@
 package oogasalad.authoring.view;
 
+import java.io.File;
+import java.nio.file.Path;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.engine.config.ConfigException;
 
 /**
  * Top-level view for the Authoring Environment. Combines and arranges all major UI components
@@ -114,6 +125,13 @@ public class AuthoringView extends BorderPane {
     // Make sure controller is initialized for level management
     controller.getLevelController().initDefaultLevelIfEmpty();
 
+    MenuBar menuBar = new MenuBar();
+    Menu fileMenu = new Menu("File");
+    MenuItem saveItem = new MenuItem("Save Game");
+    saveItem.setOnAction(e -> openSaveDialog());
+    fileMenu.getItems().add(saveItem);
+    menuBar.getMenus().add(fileMenu);
+
     // Create a simple layout
     BorderPane mainContent = new BorderPane();
 
@@ -145,7 +163,7 @@ public class AuthoringView extends BorderPane {
 
     // Create a VBox for the main layout
     VBox fullLayout = new VBox(10);
-    fullLayout.getChildren().addAll(mainContent, gameSettingsView.getNode());
+    fullLayout.getChildren().addAll(menuBar, mainContent, gameSettingsView.getNode());
     VBox.setVgrow(mainContent, Priority.ALWAYS);
 
     // Set the main layout as the center of this BorderPane
@@ -184,6 +202,30 @@ public class AuthoringView extends BorderPane {
    */
   public EntityPlacementView getEntityPlacementView() {
     return entityPlacementView;
+  }
+
+
+  private void openSaveDialog() {
+    DirectoryChooser chooser = new DirectoryChooser();
+    chooser.setTitle("Choose Save Location");
+
+    File selectedDirectory = chooser.showDialog(this.getScene().getWindow());
+    if (selectedDirectory != null) {
+      Path savePath = selectedDirectory.toPath().resolve("output");
+      try {
+        controller.getModel().saveGame(savePath);
+        showAlert("Save Successful", "Successfully saved json to output folder", AlertType.CONFIRMATION);
+      } catch (ConfigException e) {
+        showAlert("Error saving", e.getMessage(), Alert.AlertType.ERROR);
+      }
+    }
+  }
+
+  private void showAlert(String title, String message, Alert.AlertType type) {
+    Alert alert = new Alert(type, message, ButtonType.OK);
+    alert.setTitle(title);
+    alert.initOwner(this.getScene().getWindow());
+    alert.showAndWait();
   }
 
 
