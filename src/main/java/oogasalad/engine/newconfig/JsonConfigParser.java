@@ -108,7 +108,7 @@ public class JsonConfigParser implements ConfigParser {
         gameConfig.settings().gameSpeed(),
         gameConfig.settings().startingLives(),
         gameConfig.settings().initialScore(),
-        "", 0, 0 // TODO: Replace with actual parsed map data
+        "", 1, 1 // TODO: Replace with actual parsed map data
     );
   }
 

@@ -44,6 +44,10 @@ public class CollisionRule {
     this.eventsB = eventsB;
   }
 
+  public CollisionRule() {
+    // needs empty constructor
+  }
+
   /**
    * Returns the type of the first entity involved in the collision.
    *
