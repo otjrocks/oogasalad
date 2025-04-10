@@ -40,6 +40,7 @@ public class GameMapController {
   private final GameState gameState;
   private int frameCount = 0;
   private final ConfigModel myConfigModel;
+  private boolean fruitSpawned = false;
 
   /**
    * Create a game map controller with the provided game context.
@@ -79,12 +80,14 @@ public class GameMapController {
   }
 
   private void addFruitAfterScoreGoal() throws InvalidPositionException {
-    if (gameState.getScore() == 700) {
+
+    if (gameState.getScore() == 700 && !fruitSpawned) {
       EntityType fruitType = new EntityType("fruit", "wall", null, null, null, null);
       EntityPlacement fruitPlacement = new EntityPlacement(fruitType, FRUIT_INITIAL_X,
           FRUIT_INITIAL_Y, "Default");
       Entity fruit = new BasicEntity(fruitPlacement);
       gameMap.addEntity(fruit);
+      fruitSpawned = true;
     }
   }
 
