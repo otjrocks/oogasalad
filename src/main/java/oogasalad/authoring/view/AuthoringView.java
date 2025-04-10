@@ -168,7 +168,7 @@ mainContent.setCenter(canvasView.getNode());
     AnchorPane.setBottomAnchor(placementNode, 0.0);
 
     VBox rightPanel = new VBox(10);
-    rightPanel.getChildren().addAll(selectorView, editorContainer);
+    rightPanel.getChildren().addAll(selectorView.getRoot(), editorContainer);
     mainContent.setRight(rightPanel);
 
     // Create a VBox for the main layout

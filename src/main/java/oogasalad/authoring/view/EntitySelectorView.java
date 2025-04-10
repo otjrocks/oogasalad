@@ -27,7 +27,7 @@ import java.util.Map;
  *
  * @author Will He, Ishan Madan
  */
-public class EntitySelectorView extends VBox {
+public class EntitySelectorView {
 
   private final VBox root;
   private final FlowPane tileGrid;
