@@ -39,9 +39,6 @@ public class GameView extends StackPane {
     myGameMapView.setGameLoopController(myGameLoopController);
     endLabel.setVisible(false);
     endLabel.getStyleClass().add("end-label");
-    // temporary css styling
-    endLabel.setStyle("-fx-font-size: 48px; -fx-text-fill: white;"
-        + " -fx-background-color: rgba(0,0,0,0.7); -fx-padding: 20px;");
     this.getChildren().add(endLabel); // overlay it on top
     StackPane.setAlignment(endLabel, Pos.CENTER);
     myGameMapView.setGameLoopController(myGameLoopController);
