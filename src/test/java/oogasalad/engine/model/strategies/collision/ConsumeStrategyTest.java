@@ -1,6 +1,5 @@
 package oogasalad.engine.model.strategies.collision;
 
-import java.util.Iterator;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;

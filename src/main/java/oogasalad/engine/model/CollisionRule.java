@@ -3,14 +3,14 @@ package oogasalad.engine.model;
 import java.util.List;
 
 /**
- * Represents a rule for handling a collision between two entity types,
- * each potentially in a specific mode. Specifies a list of events that
- * should be triggered for each entity upon collision.
- *
- * Used in the game engine to define conditional, mode-based collision behavior.
- * Example: "Pacman" in "PoweredUp" mode colliding with "Ghost" in "Default" mode
- * could trigger "EatGhost" for Pacman and "Die" for Ghost.
- *
+ * Represents a rule for handling a collision between two entity types, each potentially in a
+ * specific mode. Specifies a list of events that should be triggered for each entity upon
+ * collision.
+ * <p>
+ * Used in the game engine to define conditional, mode-based collision behavior. Example: "Pacman"
+ * in "PoweredUp" mode colliding with "Ghost" in "Default" mode could trigger "EatGhost" for Pacman
+ * and "Die" for Ghost.
+ * <p>
  * Author: Will He
  */
 public class CollisionRule {

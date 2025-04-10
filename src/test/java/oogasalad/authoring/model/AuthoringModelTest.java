@@ -160,9 +160,7 @@ class AuthoringModelTest {
         model.addEntityType(mockTemplate1);
         Collection<EntityType> types = model.getEntityTypes();
 
-        assertThrows(UnsupportedOperationException.class, () -> {
-            types.clear();
-        });
+        assertThrows(UnsupportedOperationException.class, types::clear);
     }
 
     @Test

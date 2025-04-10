@@ -6,11 +6,9 @@ import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -106,6 +104,12 @@ public class GameSettingsView {
         settingsGrid.add(new Label("Edge Policy:"), 2, 1);
         settingsGrid.add(edgePolicyComboBox, 3, 1);
 
+        HBox buttonBox = getHBox();
+
+        rootNode.getChildren().addAll(titleLabel, settingsGrid, buttonBox);
+    }
+
+    private HBox getHBox() {
         Button saveButton = new Button("Save Settings");
         saveButton.setOnAction(e -> saveSettings());
         saveButton.setPrefWidth(130);
@@ -121,8 +125,7 @@ public class GameSettingsView {
         // Create button container with more space between buttons
         HBox buttonBox = new HBox(15, saveButton, collisionRulesButton);
         buttonBox.setAlignment(Pos.CENTER_LEFT);
-
-        rootNode.getChildren().addAll(titleLabel, settingsGrid, buttonBox);
+        return buttonBox;
     }
 
     /**

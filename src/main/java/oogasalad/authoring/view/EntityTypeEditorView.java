@@ -1,6 +1,5 @@
 package oogasalad.authoring.view;
 
-import java.util.HashMap;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;

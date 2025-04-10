@@ -8,9 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import java.util.Optional;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 import org.junit.jupiter.api.BeforeEach;
