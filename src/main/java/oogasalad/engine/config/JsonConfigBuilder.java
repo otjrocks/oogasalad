@@ -163,11 +163,12 @@ public class JsonConfigBuilder {
       modeNode.put("name", mode.getModeName());
 
       ObjectNode imageNode = modeNode.putObject("image");
-      imageNode.put("imagePath", mode.getImagePath());
+      imageNode.put("imagePath", getRelativeImagePath(mode.getImagePath()));
 
-      // Temporary hardcoded size and animation data; replace if dynamic
+      // TODO: Temporary hardcoded size and animation data; replace if dynamic
       imageNode.put("tileWidth", 14);
       imageNode.put("tileHeight", 14);
+
       ArrayNode tilesToCycleArray = imageNode.putArray("tilesToCycle");
       tilesToCycleArray.add(1); // Replace with mode.getTilesToCycle() if available
       imageNode.put("animationSpeed", 2);
@@ -195,4 +196,12 @@ public class JsonConfigBuilder {
 
     return result;
   }
+
+  private String getRelativeImagePath(String fullPath) {
+    // Assume your assets root is in `src/main/resources/assets/`
+    String marker = "assets/";
+    int index = fullPath.indexOf(marker);
+    return index >= 0 ? fullPath.substring(index) : fullPath;
+  }
+
 }
