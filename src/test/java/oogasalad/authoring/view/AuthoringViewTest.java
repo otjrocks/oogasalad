@@ -32,7 +32,7 @@ public class AuthoringViewTest extends DukeApplicationTest {
     authoringView = new AuthoringView();
     authoringView.setController(mockController);
 
-    Scene scene = new Scene(authoringView, 1200, 800);
+    Scene scene = new Scene(authoringView.getNode(), 1200, 800);
     stage.setScene(scene);
     stage.show();
   }
@@ -66,7 +66,7 @@ public class AuthoringViewTest extends DukeApplicationTest {
 
   @Test
   public void getEntityEditorView_DefaultVisibility_NotVisible() {
-    assertFalse(authoringView.getEntityEditorView().isVisible(), "EntityTypeEditorView should be hidden by default");
+    assertFalse(authoringView.getEntityEditorView().getRoot().isVisible(), "EntityTypeEditorView should be hidden by default");
   }
 
   @Test
@@ -77,6 +77,6 @@ public class AuthoringViewTest extends DukeApplicationTest {
 
   @Test
   public void setController_WindowMaximized_PlatformRunLaterExecuted() {
-    assertNotNull(authoringView.getScene(), "Scene should be set when shown");
+    assertNotNull(authoringView.getNode().getScene(), "Scene should be set when shown");
   }
 }
