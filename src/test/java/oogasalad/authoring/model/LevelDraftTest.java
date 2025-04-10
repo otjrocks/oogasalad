@@ -121,7 +121,7 @@ public class LevelDraftTest {
     level.setOutputFileName("new_map.json");
     level.setWidth(15);
     level.setHeight(20);
-    level.setEdgePolicy(2);
+    level.setEdgePolicy("EDGE");
 
     assertEquals("New Level", level.getName());
     assertEquals("new_map.json", level.getOutputFileName());

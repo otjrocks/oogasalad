@@ -1,5 +1,7 @@
 package oogasalad.engine.config.api;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.nio.file.Path;
 import java.util.List;
 import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.ConfigModel;
@@ -12,20 +14,7 @@ import oogasalad.engine.config.ConfigModel;
  * @author Will He
  */
 public interface ConfigSaver {
-
-  /**
-   * Saves the given configuration model to a file at the specified filepath.
-   *
-   * @param config   the configuration model to be saved
-   * @param filepath the path of the file where the configuration will be saved
-   * @throws ConfigException if an error occurs during the saving process
-   */
-  void saveToFile(ConfigModel config, String filepath) throws ConfigException;
-
-  /**
-   * Retrieves a list of supported file extensions for saving configuration files.
-   *
-   * @return a list of strings representing the supported file extensions
-   */
-  List<String> getSupportedFileExtensions();
+  void saveGameConfig(ObjectNode gameConfigJson, Path gameFolder);
+  void saveLevel(String levelName, ObjectNode levelJson, Path gameFolder);
+  void saveEntityType(String entityName, ObjectNode entityJson, Path gameFolder);
 }

@@ -1,5 +1,8 @@
 package oogasalad.authoring.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -8,6 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import oogasalad.engine.config.ConfigException;
+import oogasalad.engine.config.JsonConfigBuilder;
+import oogasalad.engine.config.JsonConfigSaver;
 import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
@@ -299,5 +305,28 @@ public class AuthoringModel {
     return result;
   }
 
+  public void saveGame(Path outputFolder) {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonConfigSaver saver = new JsonConfigSaver();
+    JsonConfigBuilder builder = new JsonConfigBuilder();
 
+    // GameConfig
+    ObjectNode gameJson = builder.buildGameConfig(this, mapper);
+    saver.saveGameConfig(gameJson, outputFolder);
+
+    // EntityType -> ID mapping
+    Map<String, Integer> entityToId = builder.assignIds(entityTypeMap);
+
+    // Levels
+    for (int i = 0; i < levels.size(); i++) {
+      ObjectNode levelJson = builder.buildLevelConfig(levels.get(i), entityToId, mapper);
+      saver.saveLevel("level" + (i + 1), levelJson, outputFolder);
+    }
+
+    // EntityTypes
+    for (EntityType e : entityTypeMap.values()) {
+      ObjectNode entityJson = builder.buildEntityTypeConfig(e, mapper);
+      saver.saveEntityType(e.type(), entityJson, outputFolder);
+    }
+  }
 }

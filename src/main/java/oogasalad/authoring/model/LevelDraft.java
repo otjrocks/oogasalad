@@ -19,7 +19,7 @@ public class LevelDraft {
   private String outputFileName;
   private int width;
   private int height;
-  private int edgePolicy;
+  private String edgePolicy;
 
   private List<EntityPlacement> entityPlacements;
 
@@ -33,6 +33,11 @@ public class LevelDraft {
     this.name = name;
     this.outputFileName = outputFileName;
     this.entityPlacements = new ArrayList<>();
+
+    // TODO: change constructor to have this not hard coded
+    this.width = 20;
+    this.height = 15;
+    this.edgePolicy = "";
   }
 
   /**
@@ -180,9 +185,9 @@ public class LevelDraft {
   /**
    * Returns the edge policy used for the level (e.g., regular, toroidal).
    *
-   * @return the edge policy as an integer
+   * @return the edge policy as a String
    */
-  public int getEdgePolicy() {
+  public String getEdgePolicy() {
     return edgePolicy;
   }
 
@@ -191,7 +196,7 @@ public class LevelDraft {
    *
    * @param edgePolicy the new edge policy
    */
-  public void setEdgePolicy(int edgePolicy) {
+  public void setEdgePolicy(String edgePolicy) {
     this.edgePolicy = edgePolicy;
   }
 }
