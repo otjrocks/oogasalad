@@ -56,14 +56,21 @@ public class EntityView {
    * @param tileHeight height of one map tile in pixels
    */
   public void draw(GraphicsContext gc, double tileWidth, double tileHeight) {
-    int frameIndex = entity.getEntityPlacement().getCurrentFrame() % totalFrames;
-    char dir = entity.getEntityDirection();
-    String prefix = (entity.getEntityPlacement().getTypeString()
-        + (dir == ' ' || dir == '\0' ? "_R" : "_" + dir))
-        .toUpperCase();
+    int frameIndex, offsetX, offsetY;
+    if (entity.getEntityPlacement().isInDeathAnimation()) {
+      frameIndex = entity.getEntityPlacement().getDeathFrame();
+      offsetX = Integer.parseInt(SPRITE_DATA.getString("PACMAN_DEATH_X_OFFSET"));
+      offsetY = Integer.parseInt(SPRITE_DATA.getString("PACMAN_DEATH_Y_OFFSET"));
+    } else {
+      frameIndex = entity.getEntityPlacement().getCurrentFrame() % totalFrames;
+      char dir = entity.getEntityDirection();
+      String prefix = (entity.getEntityPlacement().getTypeString()
+              + (dir == ' ' || dir == '\0' ? "_R" : "_" + dir))
+              .toUpperCase();
 
-    int offsetX = Integer.parseInt(SPRITE_DATA.getString(prefix + "_X_OFFSET"));
-    int offsetY = Integer.parseInt(SPRITE_DATA.getString(prefix + "_Y_OFFSET"));
+      offsetX = Integer.parseInt(SPRITE_DATA.getString(prefix + "_X_OFFSET"));
+      offsetY = Integer.parseInt(SPRITE_DATA.getString(prefix + "_Y_OFFSET"));
+    }
 
     double destX = entity.getEntityPlacement().getX() * tileWidth;
     double destY = entity.getEntityPlacement().getY() * tileHeight;
@@ -79,5 +86,12 @@ public class EntityView {
         tileWidth,
         tileHeight
     );
+  }
+
+  /**
+   * returns the entity object associated with the current EntityView
+   */
+  public Entity getEntity() {
+    return entity;
   }
 }
