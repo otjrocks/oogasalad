@@ -10,10 +10,8 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.BasicEntity;
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContext;
 import oogasalad.player.view.GameMapView;
-import oogasalad.engine.model.GameEndHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
