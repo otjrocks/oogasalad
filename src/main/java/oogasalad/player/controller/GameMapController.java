@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.ConfigModel;
-import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.GameEndHandler;
 
@@ -21,10 +19,6 @@ import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.model.strategies.collision.CollisionStrategy;
-import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
-import oogasalad.engine.model.strategies.collision.StopStrategy;
-import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
-import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.records.CollisionContext;
 import oogasalad.engine.records.GameContext;
 import oogasalad.player.view.GameMapView;
@@ -102,20 +96,28 @@ public class GameMapController {
   }
 
   private void handleCollision(Entity e1, Entity e2) {
-    appleCollisionStrategiesFromCollisionRules(e1, e2);
+    applyCollisionStrategiesFromCollisionRules(e1, e2);
   }
 
-  private void appleCollisionStrategiesFromCollisionRules(Entity e1, Entity e2) {
+  private void applyCollisionStrategiesFromCollisionRules(Entity e1, Entity e2) {
     for (CollisionRule collisionRule : myConfigModel.collisionRules()) {
-      if (checkCollisionRuleEntityAMatches(e1, collisionRule)) {
-        for (String eventA : collisionRule.getEventsA()) {
-          createAndApplyCollisionStrategy(e1, e2, eventA);
-        }
+      applyEntityACollisionStrategy(e1, e2, collisionRule);
+      applyEntityBCollisionStrategy(e1, e2, collisionRule);
+    }
+  }
+
+  private void applyEntityBCollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
+    if (checkCollisionRuleEntityBMatches(e2, collisionRule)) {
+      for (String eventB : collisionRule.getEventsB()) {
+        createAndApplyCollisionStrategy(e1, e2, eventB);
       }
-      if (checkCollisionRuleEntityBMatches(e2, collisionRule)) {
-        for (String eventB : collisionRule.getEventsB()) {
-          createAndApplyCollisionStrategy(e1, e2, eventB);
-        }
+    }
+  }
+
+  private void applyEntityACollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
+    if (checkCollisionRuleEntityAMatches(e1, collisionRule)) {
+      for (String eventA : collisionRule.getEventsA()) {
+        createAndApplyCollisionStrategy(e1, e2, eventA);
       }
     }
   }
