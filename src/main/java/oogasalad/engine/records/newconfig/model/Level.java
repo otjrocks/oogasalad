@@ -1,12 +1,13 @@
 package oogasalad.engine.records.newconfig.model;
 
+import oogasalad.engine.model.MapInfo;
+
 /**
  * Represents a game level with its associated settings and map.
  *
- * @param settings the settings associated with the level, such as difficulty or rules
  * @param levelMap the string representation of the level's map
  * @author Jessica Chen
  */
-public record Level(Settings settings, String levelMap) {
+public record Level(String levelMap) {
 
 }

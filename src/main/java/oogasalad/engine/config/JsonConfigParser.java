@@ -18,6 +18,7 @@ import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameSettings;
+import oogasalad.engine.model.MapInfo;
 import oogasalad.engine.model.MetaData;
 import oogasalad.engine.model.Tiles;
 import oogasalad.engine.records.newconfig.CollisionConfig;
@@ -28,6 +29,7 @@ import oogasalad.engine.records.newconfig.model.ControlType;
 import oogasalad.engine.records.newconfig.model.EntityProperties;
 import oogasalad.engine.records.newconfig.model.Level;
 import oogasalad.engine.records.newconfig.model.Metadata;
+import oogasalad.engine.records.newconfig.model.ParsedLevel;
 import oogasalad.engine.records.newconfig.model.Settings;
 import oogasalad.engine.utility.FileUtility;
 
@@ -77,63 +79,108 @@ public class JsonConfigParser implements ConfigParser {
    * @throws ConfigException if the file is missing or cannot be parsed correctly
    */
   public ConfigModel loadFromFile(String filepath) throws ConfigException {
-    // parse all the stuff from new configuation
+    // Step 1: Load primary game config JSON (e.g., gameConfig.json)
     gameConfig = loadGameConfig(filepath);
+
+    // Step 2: Load entities from the entity folder
     entityMap = constructEntities(gameConfig.gameFolderPath());
 
-
-    // map all the new information to the old model
+    // Step 3: Extract basic metadata
     MetaData metaData = extractMetaData(gameConfig);
-    GameSettings settings = createGameSettings(gameConfig);
 
+    // Step 4: Build all entity types
     List<EntityType> entityTypes = new ArrayList<>();
     createEntityTypes(entityTypes);
 
-    // TODO: loading the map create the entityPlacements for each level
-    // esentially take each parsed thing, create a new entityPlacement, use the fact like with collisions
-    // that you can use entityMaps to get any entity specific info such as the mode name for the corresponding mode
-    // if no ._ specified just do the first mode by default
-    // TODO: currently sicne we only have one map, can stay with just one entityPlacements, in the
-    // future might want to make this a list of lists
+    // Step 5: Parse level entity placements + map info
     List<List<EntityPlacement>> levels = new ArrayList<>();
+    List<MapInfo> mapInfos = new ArrayList<>();
     String levelFolderPath;
 
     try {
       levelFolderPath = gameConfig.gameFolderPath() + ConstantsManager.getMessage("Config", "MAPS_FOLDER");
     } catch (ConstantsManagerException e) {
-      throw new ConfigException("Error in getting entities folder from constants:", e);
+      throw new ConfigException("Error in getting maps folder from constants:", e);
     }
 
     for (Level level : gameConfig.levels()) {
-      List<EntityPlacement> entityPlacements = loadLevelConfig(levelFolderPath + level.levelMap() + ".json");
-
-      levels.add(entityPlacements);
+      ParsedLevel parsed = loadLevelConfig(levelFolderPath + level.levelMap() + ".json");
+      levels.add(parsed.placements());
+      mapInfos.add(parsed.mapInfo());
     }
 
+    // Step 6: Create game settings with merged defaults and level-specific map info
+    GameSettings settings = createGameSettings(gameConfig, mapInfos);
+
+    // Step 7: Parse collision rules and win condition
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
     String winCondition = gameConfig.settings().winCondition();
+
+    // Step 8: Tiles currently unused — placeholder
     List<Tiles> tiles = new ArrayList<>();
 
-    return new ConfigModel(metaData, settings, entityTypes, levels.getFirst(), collisionRules,
-        winCondition, tiles);
+    // Step 9: Return the full config model using the first level only for now
+    return new ConfigModel(metaData, settings, entityTypes, levels.getFirst(), collisionRules, winCondition, tiles);
   }
 
-  private List<EntityPlacement> loadLevelConfig(String filepath) throws ConfigException {
+
+  private ParsedLevel loadLevelConfig(String filepath) throws ConfigException {
+    List<EntityPlacement> placements = new ArrayList<>();
+
     try {
       JsonNode root = mapper.readTree(new File(filepath));
 
-      Map<Integer, EntityType> entityMappings = new HashMap<>();
-      for ( [[all the entity mappings from the JSON]] ) {
-        [[map (id, to entityTypeMap(entity))]]
+      // Read mapInfo from level1.json
+      MapInfo mapInfo = mapper.treeToValue(root.get("mapInfo"), MapInfo.class);
+
+      // Step A: Build ID → EntityType mapping
+      Map<Integer, EntityType> idToEntityType = new HashMap<>();
+      Map<Integer, String> idToEntityName = new HashMap<>();
+      for (JsonNode mapping : root.get("entityMappings")) {
+        int id = mapping.get("id").asInt();
+        String entityName = mapping.get("entity").asText();
+        EntityType type = entityTypeMap.get(entityName);
+
+        if (type == null) {
+          throw new ConfigException("EntityType for '" + entityName + "' not found in map.");
+        }
+
+        idToEntityType.put(id, type);
+        idToEntityName.put(id, entityName);
       }
 
-      // somehow set the settings
+      // Step B: Parse layout
+      JsonNode layout = root.get("layout");
+      for (int y = 0; y < layout.size(); y++) {
+        String row = layout.get(y).asText();
+        String[] entitiesInRow = row.trim().split("\\s+");
 
-      // then for each thing in the layout you would make a placement
+        for (int x = 0; x < entitiesInRow.length; x++) {
+          String entry = entitiesInRow[x];
+          if (entry.equals("0")) continue;
+
+          String[] split = entry.split("\\.");
+          int entityId = Integer.parseInt(split[0]);
+          int modeIndex = (split.length > 1) ? Integer.parseInt(split[1]) : 0;
+
+          String entityName = idToEntityName.get(entityId);
+          EntityType entityType = idToEntityType.get(entityId);
+
+          String modeName = resolveMode(entityMap.get(entityName), List.of(modeIndex));
+          placements.add(new EntityPlacement(entityType, x, y, modeName));
+        }
+      }
+
+      return new ParsedLevel(placements, mapInfo);
+
     } catch (IOException e) {
       throw new ConfigException("Error in loading level config", e);
     }
   }
+
+
+
+
 
   // Methods to convert from multiple config files to a singular config model
 
@@ -144,14 +191,22 @@ public class JsonConfigParser implements ConfigParser {
         gameConfig.metadata().gameDescription());
   }
 
-  private GameSettings createGameSettings(GameConfig gameConfig) {
+  private GameSettings createGameSettings(GameConfig gameConfig, List<MapInfo> mapInfos) {
+    Settings baseSettings = gameConfig.settings();
+
     return new GameSettings(
-        gameConfig.settings().gameSpeed(),
-        gameConfig.settings().startingLives(),
-        gameConfig.settings().initialScore(),
-        "", 1, 1 // TODO: Replace with actual parsed map data
+        baseSettings.gameSpeed(),
+        baseSettings.startingLives(),
+        baseSettings.initialScore(),
+        "wrap",
+        28,
+        32
     );
   }
+
+
+
+
 
   private List<CollisionRule> convertToCollisionRules(GameConfig gameConfig) {
     List<CollisionRule> collisionRules = new ArrayList<>();
@@ -246,18 +301,11 @@ public class JsonConfigParser implements ConfigParser {
     return mapper.treeToValue(root.get("defaultSettings"), Settings.class);
   }
 
-  private List<Level> parseLevels(JsonNode root, Settings defaultSettings)
-      throws JsonProcessingException {
+  private List<Level> parseLevels(JsonNode root, Settings defaultSettings) {
     List<Level> levels = new ArrayList<>();
     for (JsonNode levelNode : root.get("levels")) {
-      Settings levelSettings = null;
-      JsonNode settingsNode = levelNode.get("settings");
-      if (settingsNode != null) {
-        levelSettings = mapper.treeToValue(settingsNode, Settings.class);
-      }
       String levelMap = levelNode.get("levelMap").asText();
-      Settings merged = mergeSettings(defaultSettings, levelSettings);
-      levels.add(new Level(merged, levelMap));
+      levels.add(new Level(levelMap));
     }
     return levels;
   }
