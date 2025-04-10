@@ -305,6 +305,21 @@ public class AuthoringModel {
     return result;
   }
 
+  /**
+   * Saves the current authoring environment into a set of JSON configuration files
+   * within the specified output folder. This method serializes the game metadata, default
+   * settings, levels, and entity type definitions using a {@link JsonConfigBuilder} and
+   * {@link JsonConfigSaver}.
+   * <p>
+   * The output includes:
+   * <ul>
+   *   <li><b>gameConfig.json</b>: top-level metadata and game structure</li>
+   *   <li><b>levelX.json</b>: layout files for each level (where X is the level number)</li>
+   *   <li><b>[entity].json</b>: configuration files for each entity type</li>
+   * </ul>
+   *
+   * @param outputFolder the folder to which all generated JSON files will be saved
+   */
   public void saveGame(Path outputFolder) {
     ObjectMapper mapper = new ObjectMapper();
     JsonConfigSaver saver = new JsonConfigSaver();
@@ -329,4 +344,5 @@ public class AuthoringModel {
       saver.saveEntityType(e.type(), entityJson, outputFolder);
     }
   }
+
 }
