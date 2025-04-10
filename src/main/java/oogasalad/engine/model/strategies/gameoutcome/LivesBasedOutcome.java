@@ -35,6 +35,6 @@ public class LivesBasedOutcome implements GameOutcomeStrategy {
    */
   @Override
   public String getGameOutcome(GameContext gameContext) {
-    return hasGameEnded(gameContext) ? "Game Over! You ran out of lives!" : "Game ongoing";
+    return hasGameEnded(gameContext) ? "Game Over" : "Game ongoing";
   }
 }
