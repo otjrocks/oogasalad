@@ -69,12 +69,9 @@ public class MainController {
    * Show the game player view if it is not already being displayed.
    */
   public void showGamePlayerView() {
-    if (myGameScreenView == null) {
-      myGameScreenView = new GameScreenView(this, myGameState);
-    }
-    if (!myRoot.getChildren().contains(myGameScreenView)) {
-      myInputManager.getRoot().getChildren().add(myGameScreenView);
-    }
+    myGameState.resetState();
+    myGameScreenView = new GameScreenView(this, myGameState);
+    myInputManager.getRoot().getChildren().add(myGameScreenView);
   }
 
   /**
