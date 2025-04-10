@@ -156,33 +156,77 @@
     {
       "entityTypeA": "Pacman",
       "modeA": "Default",
-      "entityTypeB": "RedGhost",
+      "entityTypeB": "Wall",
       "modeB": "Any",
       "eventsA": [
-        "LoseLife"
+        "Stop"
       ],
       "eventsB": []
     },
     {
       "entityTypeA": "Pacman",
-      "modeA": "PoweredUp",
-      "entityTypeB": "RedGhost",
-      "modeB": "Any",
+      "modeA": "Default",
+      "entityTypeB": "BlueGhost",
+      "modeB": "Default",
       "eventsA": [
-        "AddScore(100)"
+        "UpdateScore(200)"
       ],
       "eventsB": [
-        "Destroy"
+        "Consume"
       ]
     },
     {
       "entityTypeA": "Pacman",
-      "modeA": "Any",
-      "entityTypeB": "PowerPellet",
+      "modeA": "Default",
+      "entityTypeB": "Dot",
+      "modeB": "Default",
+      "eventsA": [
+        "UpdateScore(10)"
+      ],
+      "eventsB": [
+        "Consume"
+      ]
+    },
+    {
+      "entityTypeA": "Pacman",
+      "modeA": "Default",
+      "entityTypeB": "RedGhost",
+      "modeB": "Default",
+      "eventsA": [
+        "UpdateLives(-1)"
+      ],
+      "eventsB": [
+      ]
+    },
+    {
+      "entityTypeA": "Pacman",
+      "modeA": "Default",
+      "entityTypeB": "fruit",
+      "modeB": "Default",
+      "eventsA": [
+        "UpdateScore(200)"
+      ],
+      "eventsB": [
+        "Consume"
+      ]
+    },
+    {
+      "entityTypeA": "RedGhost",
+      "modeA": "Default",
+      "entityTypeB": "Wall",
       "modeB": "Any",
       "eventsA": [
-        "TriggerEffectOnA",
-        "ChangeMode(PoweredUp)"
+        "Stop"
+      ],
+      "eventsB": []
+    },
+    {
+      "entityTypeA": "BlueGhost",
+      "modeA": "Default",
+      "entityTypeB": "Wall",
+      "modeB": "Any",
+      "eventsA": [
+        "Stop"
       ],
       "eventsB": []
     }

@@ -3,7 +3,6 @@ package oogasalad.authoring.view;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.util.HashMap;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;

@@ -53,6 +53,6 @@ public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
    */
   @Override
   public String getGameOutcome(GameContext gameContext) {
-    return hasGameEnded(gameContext) ? "Victory!" : "Game ongoing";
+    return hasGameEnded(gameContext) ? "Level Passed" : "Game ongoing";
   }
 }

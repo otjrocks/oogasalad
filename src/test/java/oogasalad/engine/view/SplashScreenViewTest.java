@@ -1,6 +1,8 @@
 package oogasalad.engine.view;
 
 import static oogasalad.engine.LanguageManager.getMessage;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
 import javafx.scene.Group;
@@ -45,19 +47,23 @@ class SplashScreenViewTest extends DukeApplicationTest {
   }
 
   @Test
-  void setLanguage_TestTwoLanguageSwitch_Success() {
-    verifyLanguageChange("Italian");
-    verifyLanguageChange("English");
+  void testToggle_EnsureConfigurationToggleWorks_Success() {
+    assertFalse(lookup("#splash-configuration-box").query().isVisible());
+    clickOn("#v-menu-button-2"); // toggle configuration box on
+    assertTrue(lookup("#splash-configuration-box").query().isVisible());
   }
 
-
   private void verifyLanguageChange(String language) {
+    clickOn("#v-menu-button-2"); // show configuration menu
     waitForFxEvents();
     clickOn("#languageSelector");
+    waitForFxEvents();
     clickOn(language);
     waitForFxEvents();  // Ensure that all UI events and updates are processed before assertions
     // Verify text elements and buttons change on language change
     myTestUtils.verifyText("#splashScreenTitle", getMessage("TITLE"));
+    clickOn("#v-menu-button-2");
+    waitForFxEvents();
     myTestUtils.verifyText("#languageSelector-label", getMessage("LANGUAGE_SELECTOR_TITLE"));
   }
 

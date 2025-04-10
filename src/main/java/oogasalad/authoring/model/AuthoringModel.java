@@ -1,5 +1,10 @@
 package oogasalad.authoring.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -8,6 +13,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import oogasalad.engine.config.ConfigException;
+import oogasalad.engine.config.JsonConfigBuilder;
+import oogasalad.engine.config.JsonConfigSaver;
 import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
@@ -297,6 +305,52 @@ public class AuthoringModel {
       result.put(entity.type(), new ArrayList<>(modeMap.keySet()));
     }
     return result;
+  }
+
+  /**
+   * Saves the current authoring environment into a set of JSON configuration files within the
+   * specified output folder. This method serializes the game metadata, default settings, levels,
+   * and entity type definitions using a {@link JsonConfigBuilder} and {@link JsonConfigSaver}.
+   * <p>
+   * The output includes:
+   * <ul>
+   *   <li><b>gameConfig.json</b>: top-level metadata and game structure</li>
+   *   <li><b>levelX.json</b>: layout files for each level (where X is the level number)</li>
+   *   <li><b>[entity].json</b>: configuration files for each entity type</li>
+   * </ul>
+   *
+   * @param outputFolder the folder to which all generated JSON files will be saved
+   */
+  public void saveGame(Path outputFolder) throws ConfigException {
+    try {
+      // Ensure the output directory exists before writing any files
+      Files.createDirectories(outputFolder);
+    } catch (IOException e) {
+      throw new ConfigException("Failed to create output directory: " + outputFolder, e);
+    }
+
+    ObjectMapper mapper = new ObjectMapper();
+    JsonConfigSaver saver = new JsonConfigSaver();
+    JsonConfigBuilder builder = new JsonConfigBuilder();
+
+    // GameConfig
+    ObjectNode gameJson = builder.buildGameConfig(this, mapper);
+    saver.saveGameConfig(gameJson, outputFolder);
+
+    // EntityType -> ID mapping
+    Map<String, Integer> entityToId = builder.assignIds(entityTypeMap);
+
+    // Levels
+    for (int i = 0; i < levels.size(); i++) {
+      ObjectNode levelJson = builder.buildLevelConfig(levels.get(i), entityToId, mapper);
+      saver.saveLevel("level" + (i + 1), levelJson, outputFolder);
+    }
+
+    // EntityTypes
+    for (EntityType e : entityTypeMap.values()) {
+      ObjectNode entityJson = builder.buildEntityTypeConfig(e, mapper);
+      saver.saveEntityType(e.type(), entityJson, outputFolder);
+    }
   }
 
 

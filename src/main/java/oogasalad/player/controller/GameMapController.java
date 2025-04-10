@@ -8,6 +8,7 @@ import oogasalad.engine.model.GameEndHandler;
 
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.GameEndStatus;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.BasicEntity;
@@ -18,6 +19,7 @@ import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
 import oogasalad.engine.model.strategies.collision.StopStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
 import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
+import oogasalad.engine.model.strategies.gameoutcome.LivesBasedOutcome;
 import oogasalad.engine.records.CollisionContext;
 import oogasalad.engine.records.GameContext;
 import oogasalad.player.view.GameMapView;
@@ -43,6 +45,7 @@ public class GameMapController {
   private final GameMapView gameView;
   private int frameCount = 0;
   private GameEndHandler gameEndHandler;
+  private final LivesBasedOutcome livesBasedOutcome = new LivesBasedOutcome();
 
   /**
    * Create a game map controller with the provided game context.
@@ -119,10 +122,10 @@ public class GameMapController {
       new UpdateScoreStrategy(10)
           .handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
 
-
       if (new EntityBasedOutcomeStrategy("Dot")
           .hasGameEnded(new GameContext(gameMap, gameState))) {
-        stopGameLoop();
+        stopGameLoop(GameEndStatus.WIN);
+        gameState.setGameOver(true);
       }
     }
   }
@@ -138,7 +141,6 @@ public class GameMapController {
       }
       new UpdateScoreStrategy(200)
           .handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
-
     }
   }
 
@@ -149,10 +151,14 @@ public class GameMapController {
       gameState.updateLives(-1);
       e2.getEntityPlacement().setX(GHOST_INITIAL_POSITION);
       e2.getEntityPlacement().setY(GHOST_INITIAL_POSITION);
-      stopGameLoop();
-
+      stopGameLoop(GameEndStatus.PAUSE_ONLY);
       e1.getEntityPlacement().setInDeathAnimation(true);
       gameView.triggerPacManDeathAnimation(e1);
+
+      if (livesBasedOutcome.hasGameEnded(new GameContext(gameMap, gameState))) {
+        gameState.setGameOver(true);
+        stopGameLoop(GameEndStatus.LOSS);
+      }
     }
   }
 
@@ -181,9 +187,9 @@ public class GameMapController {
     this.gameEndHandler = handler;
   }
 
-  private void stopGameLoop() {
+  private void stopGameLoop(GameEndStatus status) {
     if (gameEndHandler != null) {
-      gameEndHandler.onGameEnd();
+      gameEndHandler.onGameEnd(status);
     }
   }
 }

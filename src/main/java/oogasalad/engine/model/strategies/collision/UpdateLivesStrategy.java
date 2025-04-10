@@ -1,16 +1,15 @@
 package oogasalad.engine.model.strategies.collision;
 
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.GameState;
-import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.records.CollisionContext;
 
 /**
- * The {@code UpdateLivesStrategy} class implements the {@link CollisionStrategy} interface
- * to update the player's lives when a collision occurs.
+ * The {@code UpdateLivesStrategy} class implements the {@link CollisionStrategy} interface to
+ * update the player's lives when a collision occurs.
  *
- * <p>When two entities collide, this strategy modifies the number of lives in the {@code GameState}
- * by a specified amount. The increment value can be positive (to add lives) or negative (to decrease lives).</p>
+ * <p>When two entities collide, this strategy modifies the number of lives in the
+ * {@code GameState}
+ * by a specified amount. The increment value can be positive (to add lives) or negative (to
+ * decrease lives).</p>
  *
  * <p>Example usage:</p>
  * <pre>
@@ -21,6 +20,7 @@ import oogasalad.engine.records.CollisionContext;
  * @author Austin Huang
  */
 public class UpdateLivesStrategy implements CollisionStrategy {
+
   private final int livesIncrement;
 
   /**
@@ -36,11 +36,11 @@ public class UpdateLivesStrategy implements CollisionStrategy {
    * Handles a collision by updating the number of lives in the game state.
    *
    * <p>This method modifies the player's remaining lives based on the
-   * {@code livesIncrement} value. A positive value increases lives, while a
-   * negative value decreases them.</p>
+   * {@code livesIncrement} value. A positive value increases lives, while a negative value
+   * decreases them.</p>
    *
-   * @param collisionContext the context of the collision, containing both entities,
-   *                         the game map, and the current game state
+   * @param collisionContext the context of the collision, containing both entities, the game map,
+   *                         and the current game state
    */
   @Override
   public void handleCollision(CollisionContext collisionContext) {

@@ -14,6 +14,7 @@ public class GameStateImpl implements GameState {
 
     private int score;
     private int lives;
+    private boolean gameOver;
     private final List<HudComponent> hudComponents;
 
     /**
@@ -23,6 +24,7 @@ public class GameStateImpl implements GameState {
     public GameStateImpl(int initialLives) {
         this.score = 0;
         this.lives = initialLives;
+        this.gameOver = false;
         this.hudComponents = new ArrayList<>();
     }
 
@@ -85,6 +87,16 @@ public class GameStateImpl implements GameState {
         this.score = 0;
         this.lives = 3;
         this.hudComponents.clear();
+    }
+
+    @Override
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    @Override
+    public boolean isGameOver() {
+        return gameOver;
     }
 }
 

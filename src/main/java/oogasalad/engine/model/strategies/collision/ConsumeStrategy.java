@@ -1,8 +1,6 @@
 package oogasalad.engine.model.strategies.collision;
 
 import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.GameState;
-import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContext;
 

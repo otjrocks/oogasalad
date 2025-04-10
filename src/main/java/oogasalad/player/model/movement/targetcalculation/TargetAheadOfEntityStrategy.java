@@ -2,7 +2,6 @@ package oogasalad.player.model.movement.targetcalculation;
 
 import java.util.Map;
 import java.util.Optional;
-import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.player.model.exceptions.TargetStrategyException;
