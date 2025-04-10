@@ -55,6 +55,7 @@ public class JsonConfigParser implements ConfigParser {
   private final ObjectMapper mapper;
   private GameConfig gameConfig;
   private Map<String, EntityConfig> entityMap;
+  private Map<String, EntityType> entityTypeMap = new HashMap<>();
 
   /**
    * Constructs a new JsonConfigParser instance and initializes the ObjectMapper used for parsing
@@ -80,6 +81,7 @@ public class JsonConfigParser implements ConfigParser {
     gameConfig = loadGameConfig(filepath);
     entityMap = constructEntities(gameConfig.gameFolderPath());
 
+
     // map all the new information to the old model
     MetaData metaData = extractMetaData(gameConfig);
     GameSettings settings = createGameSettings(gameConfig);
@@ -93,14 +95,44 @@ public class JsonConfigParser implements ConfigParser {
     // if no ._ specified just do the first mode by default
     // TODO: currently sicne we only have one map, can stay with just one entityPlacements, in the
     // future might want to make this a list of lists
-    List<EntityPlacement> entityPlacements = new ArrayList<>();
+    List<List<EntityPlacement>> levels = new ArrayList<>();
+    String levelFolderPath;
+
+    try {
+      levelFolderPath = gameConfig.gameFolderPath() + ConstantsManager.getMessage("Config", "MAPS_FOLDER");
+    } catch (ConstantsManagerException e) {
+      throw new ConfigException("Error in getting entities folder from constants:", e);
+    }
+
+    for (Level level : gameConfig.levels()) {
+      List<EntityPlacement> entityPlacements = loadLevelConfig(levelFolderPath + level.levelMap() + ".json");
+
+      levels.add(entityPlacements);
+    }
 
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
     String winCondition = gameConfig.settings().winCondition();
     List<Tiles> tiles = new ArrayList<>();
 
-    return new ConfigModel(metaData, settings, entityTypes, entityPlacements, collisionRules,
+    return new ConfigModel(metaData, settings, entityTypes, levels.getFirst(), collisionRules,
         winCondition, tiles);
+  }
+
+  private List<EntityPlacement> loadLevelConfig(String filepath) throws ConfigException {
+    try {
+      JsonNode root = mapper.readTree(new File(filepath));
+
+      Map<Integer, EntityType> entityMappings = new HashMap<>();
+      for ( [[all the entity mappings from the JSON]] ) {
+        [[map (id, to entityTypeMap(entity))]]
+      }
+
+      // somehow set the settings
+
+      // then for each thing in the layout you would make a placement
+    } catch (IOException e) {
+      throw new ConfigException("Error in loading level config", e);
+    }
   }
 
   // Methods to convert from multiple config files to a singular config model
@@ -148,9 +180,12 @@ public class JsonConfigParser implements ConfigParser {
   }
 
 
-  private void createEntityTypes(List<EntityType> entityTypes) {
+  private List<EntityType> createEntityTypes(List<EntityType> entityTypes) {
+    entityTypeMap.clear(); // Clear existing mappings if needed
 
-    for (EntityConfig entity : entityMap.values()) {
+    for (Map.Entry<String, EntityConfig> entry : entityMap.entrySet()) {
+      String key = entry.getKey();
+      EntityConfig entity = entry.getValue();
       Map<String, oogasalad.engine.config.ModeConfig> modes = new HashMap<>();
 
       // create modes
@@ -162,8 +197,12 @@ public class JsonConfigParser implements ConfigParser {
 
       EntityType entityType = getEntityType(entity, modes);
       entityTypes.add(entityType);
+      entityTypeMap.put(key, entityType);
     }
+
+    return entityTypes;
   }
+
 
   private static EntityType getEntityType(EntityConfig entity, Map<String, ModeConfig> modes) {
     Map<String, Object> strategyConfig = new HashMap<>();
