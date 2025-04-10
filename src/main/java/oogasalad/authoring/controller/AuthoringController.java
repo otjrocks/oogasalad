@@ -79,7 +79,7 @@ public class AuthoringController {
     model.findEntityType(typeName).ifPresentOrElse(type -> {
       selectedType = type;
       view.getEntityEditorView().setEntityType(type);
-      view.getEntityEditorView().setVisible(true);
+      view.getEntityEditorView().getRoot().setVisible(true);
       view.getEntitySelectorView().highlightEntityTile(typeName);
 
       selectedPlacement = null;
@@ -87,7 +87,7 @@ public class AuthoringController {
     }, () -> {
       selectedType = null;
       view.getEntityEditorView().setEntityType(null);
-      view.getEntityEditorView().setVisible(false);
+      view.getEntityEditorView().getRoot().setVisible(false);
     });
   }
 
@@ -225,7 +225,7 @@ public class AuthoringController {
     if (placement != null) {
       // Show the placement view and hide the type editor
       placementView.setEntityPlacement(placement);
-      view.getEntityEditorView().setVisible(false);
+      view.getEntityEditorView().getRoot().setVisible(false);
       placementView.setVisible(true);
 
     } else {

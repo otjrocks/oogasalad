@@ -85,7 +85,7 @@ public class MainController {
       myAuthoringView.setController(controller);
     }
     if (!myInputManager.getRoot().getChildren().contains(myAuthoringView)) {
-      myInputManager.getRoot().getChildren().add(myAuthoringView);
+      myInputManager.getRoot().getChildren().add(myAuthoringView.getNode());
     }
   }
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -52,7 +53,7 @@ public class AuthoringView {
    *
    * @return the root node that can be added to a scene
    */
-  public Node getNode() {
+  public Parent getNode() {
     return root;
   }
 

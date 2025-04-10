@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -80,6 +81,15 @@ public class ModeEditorDialog {
       }
       return null;
     });
+  }
+
+  /**
+   * Returns the Mode Config Dialog.
+   *
+   * @return the mode config dialog
+   */
+  public Dialog<ModeConfig> getDialog() {
+    return dialog;
   }
 
   /**
