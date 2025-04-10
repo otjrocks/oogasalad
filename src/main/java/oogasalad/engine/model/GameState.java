@@ -40,6 +40,20 @@ public interface GameState {
   int getLives();
 
   /**
+   * Update game over to reflect game status.
+   *
+   * @param gameOver status of game over.
+   */
+  void setGameOver(boolean gameOver);
+
+  /**
+   * Retrieves status of if game is over.
+   *
+   * @return if game is over.
+   */
+  boolean isGameOver();
+
+  /**
    * Saves the current game state to a file.
    *
    * @param filePath the path to the file where the game state should be saved.
