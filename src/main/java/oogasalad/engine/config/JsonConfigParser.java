@@ -121,39 +121,32 @@ public class JsonConfigParser implements ConfigParser {
     );
   }
 
-  private List<CollisionRule> convertToCollisionRules(
-      GameConfig gameConfig) {
+  private List<CollisionRule> convertToCollisionRules(GameConfig gameConfig) {
     List<CollisionRule> collisionRules = new ArrayList<>();
 
     for (CollisionConfig collision : gameConfig.collisions()) {
       EntityConfig entityA = entityMap.get(collision.entityA());
       EntityConfig entityB = entityMap.get(collision.entityB());
 
-      // TODO: refactor this so it not so duplicated
-      String modeA;
-      if (collision.modeA() == null || collision.modeA().isEmpty()) {
-        modeA = "Any";
-      }
-      else {
-        // TODO: currently just taking first because in collision rule only allow for single string
-        modeA = entityA.modes().get(collision.modeA().getFirst()).name();
-      }
+      String modeA = resolveMode(entityA, collision.modeA());
+      String modeB = resolveMode(entityB, collision.modeB());
 
-      String modeB;
-      if (collision.modeB() == null || collision.modeB().isEmpty()) {
-        modeB = "Any";
-      }
-      else {
-        // TODO: currently just taking first because in collision rule only allow for single string
-        modeB = entityB.modes().get(collision.modeB().getFirst()).name();
-      }
-
-      collisionRules.add(
-          new CollisionRule(entityA.name(), modeA, entityB.name(), modeB,
-              collision.eventsA(), collision.eventsB()));
+      collisionRules.add(new CollisionRule(
+          entityA.name(), modeA, entityB.name(), modeB,
+          collision.eventsA(), collision.eventsB()));
     }
+
     return collisionRules;
   }
+
+  private String resolveMode(EntityConfig entity, List<Integer> modeList) {
+    if (modeList == null || modeList.isEmpty()) {
+      return "Any";   // default behave if no specified mode
+    }
+    // TODO: taking first for now
+    return entity.modes().get(modeList.getFirst()).name();
+  }
+
 
   private void createEntityTypes(List<EntityType> entityTypes) {
 
