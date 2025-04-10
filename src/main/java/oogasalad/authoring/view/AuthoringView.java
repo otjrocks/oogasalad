@@ -13,7 +13,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.config.ConfigException;
@@ -25,10 +24,11 @@ import oogasalad.engine.config.ConfigException;
  * <p>
  * Intended to be used as the main root node for the authoring scene.
  *
- * @author Will He, Angela Predolac
+ * @author Will He, Angela Predolac, Ishan Madan
  */
-public class AuthoringView extends BorderPane {
+public class AuthoringView {
 
+  private BorderPane root;
   private EntitySelectorView selectorView;
   private CanvasView canvasView;
   private EntityTypeEditorView entityTypeEditorView;
@@ -43,7 +43,17 @@ public class AuthoringView extends BorderPane {
    * be set separately via {@link #setController(AuthoringController)}.
    */
   public AuthoringView() {
+    this.root = new BorderPane();
     this.controller = null;
+  }
+
+  /**
+   * Returns the root JavaFX node for this view.
+   *
+   * @return the root node that can be added to a scene
+   */
+  public Node getNode() {
+    return root;
   }
 
   /**
@@ -167,7 +177,7 @@ public class AuthoringView extends BorderPane {
     VBox.setVgrow(mainContent, Priority.ALWAYS);
 
     // Set the main layout as the center of this BorderPane
-    this.setCenter(fullLayout);
+    root.setCenter(fullLayout);
 
     // Direct style settings (no CSS)
     rightPanel.setPrefWidth(300);
@@ -178,7 +188,7 @@ public class AuthoringView extends BorderPane {
 
     // Setup event listener to maximize window on startup
     Platform.runLater(() -> {
-      Stage stage = (Stage) this.getScene().getWindow();
+      Stage stage = (Stage) root.getScene().getWindow();
       stage.setMaximized(true); // Start maximized to ensure everything fits
     });
   }
@@ -209,7 +219,7 @@ public class AuthoringView extends BorderPane {
     DirectoryChooser chooser = new DirectoryChooser();
     chooser.setTitle("Choose Save Location");
 
-    File selectedDirectory = chooser.showDialog(this.getScene().getWindow());
+    File selectedDirectory = chooser.showDialog(root.getScene().getWindow());
     if (selectedDirectory != null) {
       Path savePath = selectedDirectory.toPath().resolve("output");
       try {
@@ -224,7 +234,7 @@ public class AuthoringView extends BorderPane {
   private void showAlert(String title, String message, Alert.AlertType type) {
     Alert alert = new Alert(type, message, ButtonType.OK);
     alert.setTitle(title);
-    alert.initOwner(this.getScene().getWindow());
+    alert.initOwner(root.getScene().getWindow());
     alert.showAndWait();
   }
 
