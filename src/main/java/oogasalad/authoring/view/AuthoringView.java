@@ -1,19 +1,23 @@
 package oogasalad.authoring.view;
 
 import java.io.File;
+import java.nio.file.Path;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.engine.config.ConfigException;
 
 /**
  * Top-level view for the Authoring Environment.
@@ -196,17 +200,17 @@ public class AuthoringView extends BorderPane {
 
 
   private void openSaveDialog() {
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle("Save Game Configuration");
-    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-    File file = fileChooser.showSaveDialog(this.getScene().getWindow());
+    DirectoryChooser chooser = new DirectoryChooser();
+    chooser.setTitle("Choose Save Location");
 
-    if (file != null) {
+    File selectedDirectory = chooser.showDialog(this.getScene().getWindow());
+    if (selectedDirectory != null) {
+      Path savePath = selectedDirectory.toPath().resolve("output");
       try {
-        controller.getModel().saveGame(file.toPath().getParent()); // Save to folder
-        showAlert("Success", "Game saved to: " + file.getAbsolutePath(), Alert.AlertType.INFORMATION);
-      } catch (Exception e) {
-        showAlert("Error", "Failed to save: " + e.getMessage(), Alert.AlertType.ERROR);
+        controller.getModel().saveGame(savePath);
+        showAlert("Save Successful", "Successfully saved json to output folder", AlertType.CONFIRMATION);
+      } catch (ConfigException e) {
+        showAlert("Error saving", e.getMessage(), Alert.AlertType.ERROR);
       }
     }
   }

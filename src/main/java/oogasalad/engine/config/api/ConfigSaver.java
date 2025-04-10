@@ -28,7 +28,7 @@ public interface ConfigSaver {
    * @param gameConfigJson the JSON object representing the game configuration
    * @param gameFolder     the folder to save the game config into (e.g., "output/")
    */
-  void saveGameConfig(ObjectNode gameConfigJson, Path gameFolder);
+  void saveGameConfig(ObjectNode gameConfigJson, Path gameFolder) throws ConfigException;
 
   /**
    * Saves the configuration for a single game level to a separate JSON file in the specified folder.
@@ -40,7 +40,7 @@ public interface ConfigSaver {
    * @param levelJson  the JSON object representing the level configuration
    * @param gameFolder the folder to save the level file into
    */
-  void saveLevel(String levelName, ObjectNode levelJson, Path gameFolder);
+  void saveLevel(String levelName, ObjectNode levelJson, Path gameFolder) throws ConfigException;
 
   /**
    * Saves a specific entity type's configuration to its own JSON file in the given folder.
@@ -52,5 +52,6 @@ public interface ConfigSaver {
    * @param entityJson the JSON object representing the entity's configuration
    * @param gameFolder the folder to save the entity file into
    */
-  void saveEntityType(String entityName, ObjectNode entityJson, Path gameFolder);
+  void saveEntityType(String entityName, ObjectNode entityJson, Path gameFolder)
+      throws ConfigException;
 }

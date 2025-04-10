@@ -54,7 +54,7 @@ public class JsonConfigSaver implements ConfigSaver {
    * @param folder the folder to save to
    */
   @Override
-  public void saveGameConfig(ObjectNode config, Path folder) {
+  public void saveGameConfig(ObjectNode config, Path folder) throws ConfigException {
     writeJson(config, folder.resolve("gameConfig.json"));
   }
 
@@ -67,7 +67,7 @@ public class JsonConfigSaver implements ConfigSaver {
    * @param folder the folder to save to
    */
   @Override
-  public void saveLevel(String name, ObjectNode config, Path folder) {
+  public void saveLevel(String name, ObjectNode config, Path folder) throws ConfigException {
     writeJson(config, folder.resolve(name + ".json"));
   }
 
@@ -80,7 +80,7 @@ public class JsonConfigSaver implements ConfigSaver {
    * @param folder the folder to save to
    */
   @Override
-  public void saveEntityType(String name, ObjectNode config, Path folder) {
+  public void saveEntityType(String name, ObjectNode config, Path folder) throws ConfigException {
     writeJson(config, folder.resolve(name.toLowerCase() + ".json"));
   }
 
@@ -91,11 +91,11 @@ public class JsonConfigSaver implements ConfigSaver {
    * @param path   the file path to write to
    * @throws RuntimeException if the file cannot be written
    */
-  private void writeJson(ObjectNode config, Path path) {
+  private void writeJson(ObjectNode config, Path path) throws ConfigException {
     try {
       mapper.writeValue(path.toFile(), config);
     } catch (IOException e) {
-      throw new RuntimeException("Failed to write: " + path, e);
+      throw new ConfigException("Failed to write: " + path, e);
     }
   }
 }

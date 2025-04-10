@@ -2,6 +2,8 @@ package oogasalad.authoring.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -306,10 +308,9 @@ public class AuthoringModel {
   }
 
   /**
-   * Saves the current authoring environment into a set of JSON configuration files
-   * within the specified output folder. This method serializes the game metadata, default
-   * settings, levels, and entity type definitions using a {@link JsonConfigBuilder} and
-   * {@link JsonConfigSaver}.
+   * Saves the current authoring environment into a set of JSON configuration files within the
+   * specified output folder. This method serializes the game metadata, default settings, levels,
+   * and entity type definitions using a {@link JsonConfigBuilder} and {@link JsonConfigSaver}.
    * <p>
    * The output includes:
    * <ul>
@@ -320,7 +321,14 @@ public class AuthoringModel {
    *
    * @param outputFolder the folder to which all generated JSON files will be saved
    */
-  public void saveGame(Path outputFolder) {
+  public void saveGame(Path outputFolder) throws ConfigException {
+    try {
+      // Ensure the output directory exists before writing any files
+      Files.createDirectories(outputFolder);
+    } catch (IOException e) {
+      throw new ConfigException("Failed to create output directory: " + outputFolder, e);
+    }
+
     ObjectMapper mapper = new ObjectMapper();
     JsonConfigSaver saver = new JsonConfigSaver();
     JsonConfigBuilder builder = new JsonConfigBuilder();
@@ -344,5 +352,6 @@ public class AuthoringModel {
       saver.saveEntityType(e.type(), entityJson, outputFolder);
     }
   }
+
 
 }
