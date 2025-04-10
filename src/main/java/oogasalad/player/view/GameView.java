@@ -1,6 +1,7 @@
 package oogasalad.player.view;
 
 import javafx.scene.layout.StackPane;
+import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.records.GameContext;
 import oogasalad.player.controller.GameLoopController;
@@ -21,10 +22,11 @@ public class GameView extends StackPane {
    * Create the game view.
    *
    * @param gameContext The game context for this view.
+   * @param configModel The configuration model for this game view.
    */
-  public GameView(GameContext gameContext) {
+  public GameView(GameContext gameContext, ConfigModel configModel) {
     super();
-    GameMapView myGameMapView = new GameMapView(gameContext);
+    GameMapView myGameMapView = new GameMapView(gameContext, configModel);
     this.setPrefSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
     this.setMinSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
     this.setMaxSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
