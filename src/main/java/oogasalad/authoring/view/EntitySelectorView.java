@@ -1,6 +1,7 @@
 package oogasalad.authoring.view;
 
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -24,10 +25,11 @@ import java.util.Map;
  * Clicking on a tile notifies the controller to open an editor.
  * Selected tile is visually highlighted.
  *
- * @author Will He
+ * @author Will He, Ishan Madan
  */
-public class EntitySelectorView extends VBox {
+public class EntitySelectorView {
 
+  private final VBox root;
   private final FlowPane tileGrid;
   private final AuthoringController controller;
   private final Map<String, VBox> tileMap = new HashMap<>();
@@ -40,9 +42,11 @@ public class EntitySelectorView extends VBox {
    */
   public EntitySelectorView(AuthoringController controller) {
     this.controller = controller;
-    this.getStyleClass().add("entity-selector-view");
-    this.setSpacing(10);
-    this.setPadding(new Insets(10));
+
+    root = new VBox();
+    root.getStyleClass().add("entity-selector-view");
+    root.setSpacing(10);
+    root.setPadding(new Insets(10));
 
     // Button to add new entity types
     Button addButton = new Button("+ Add Entity Type");
@@ -59,7 +63,16 @@ public class EntitySelectorView extends VBox {
     scrollPane.setFitToWidth(true);
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
 
-    this.getChildren().addAll(addButton, scrollPane);
+    root.getChildren().addAll(addButton, scrollPane);
+  }
+
+  /**
+   * Returns the root JavaFX node of this view
+   * 
+   * @return the root node
+   */
+  public Parent getRoot() {
+    return root;
   }
 
   /**

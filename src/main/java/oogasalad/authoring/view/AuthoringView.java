@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -13,7 +14,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.config.ConfigException;
@@ -25,10 +25,11 @@ import oogasalad.engine.config.ConfigException;
  * <p>
  * Intended to be used as the main root node for the authoring scene.
  *
- * @author Will He, Angela Predolac
+ * @author Will He, Angela Predolac, Ishan Madan
  */
-public class AuthoringView extends BorderPane {
+public class AuthoringView {
 
+  private BorderPane root;
   private EntitySelectorView selectorView;
   private CanvasView canvasView;
   private EntityTypeEditorView entityTypeEditorView;
@@ -43,7 +44,17 @@ public class AuthoringView extends BorderPane {
    * be set separately via {@link #setController(AuthoringController)}.
    */
   public AuthoringView() {
+    this.root = new BorderPane();
     this.controller = null;
+  }
+
+  /**
+   * Returns the root JavaFX node for this view.
+   *
+   * @return the root node that can be added to a scene
+   */
+  public Parent getNode() {
+    return root;
   }
 
   /**
@@ -114,7 +125,7 @@ public class AuthoringView extends BorderPane {
     selectorView = new EntitySelectorView(controller);
 
     entityTypeEditorView = new EntityTypeEditorView(controller);
-    entityTypeEditorView.setVisible(false);
+    entityTypeEditorView.getRoot().setVisible(false);
 
     entityPlacementView = new EntityPlacementView(controller);
     entityPlacementView.setVisible(false);
@@ -136,19 +147,19 @@ public class AuthoringView extends BorderPane {
     BorderPane mainContent = new BorderPane();
 
     // Add components to layout
-    mainContent.setLeft(levelSelectorView);
-    mainContent.setCenter(canvasView);
-
+    mainContent.setLeft(levelSelectorView.getRoot());
+    
+mainContent.setCenter(canvasView.getNode());
     AnchorPane editorContainer = new AnchorPane();
     editorContainer.setPrefHeight(400);
     editorContainer.setBorder(new Border(
         new BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, null, new BorderWidths(1))));
 
-    editorContainer.getChildren().add(entityTypeEditorView);
-    AnchorPane.setTopAnchor(entityTypeEditorView, 0.0);
-    AnchorPane.setLeftAnchor(entityTypeEditorView, 0.0);
-    AnchorPane.setRightAnchor(entityTypeEditorView, 0.0);
-    AnchorPane.setBottomAnchor(entityTypeEditorView, 0.0);
+    editorContainer.getChildren().add(entityTypeEditorView.getRoot());
+    AnchorPane.setTopAnchor(entityTypeEditorView.getRoot(), 0.0);
+    AnchorPane.setLeftAnchor(entityTypeEditorView.getRoot(), 0.0);
+    AnchorPane.setRightAnchor(entityTypeEditorView.getRoot(), 0.0);
+    AnchorPane.setBottomAnchor(entityTypeEditorView.getRoot(), 0.0);
 
     Node placementNode = entityPlacementView.getNode();
     editorContainer.getChildren().add(placementNode);
@@ -158,7 +169,7 @@ public class AuthoringView extends BorderPane {
     AnchorPane.setBottomAnchor(placementNode, 0.0);
 
     VBox rightPanel = new VBox(10);
-    rightPanel.getChildren().addAll(selectorView, editorContainer);
+    rightPanel.getChildren().addAll(selectorView.getRoot(), editorContainer);
     mainContent.setRight(rightPanel);
 
     // Create a VBox for the main layout
@@ -167,18 +178,18 @@ public class AuthoringView extends BorderPane {
     VBox.setVgrow(mainContent, Priority.ALWAYS);
 
     // Set the main layout as the center of this BorderPane
-    this.setCenter(fullLayout);
+    root.setCenter(fullLayout);
 
     // Direct style settings (no CSS)
     rightPanel.setPrefWidth(300);
-    levelSelectorView.setPrefWidth(200);
+    levelSelectorView.getRoot().setPrefWidth(200);
     VBox.setVgrow(editorContainer, Priority.ALWAYS);
     gameSettingsView.getNode().setStyle(
         "-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0; -fx-padding: 10px;");
 
     // Setup event listener to maximize window on startup
     Platform.runLater(() -> {
-      Stage stage = (Stage) this.getScene().getWindow();
+      Stage stage = (Stage) root.getScene().getWindow();
       stage.setMaximized(true); // Start maximized to ensure everything fits
     });
   }
@@ -209,7 +220,7 @@ public class AuthoringView extends BorderPane {
     DirectoryChooser chooser = new DirectoryChooser();
     chooser.setTitle("Choose Save Location");
 
-    File selectedDirectory = chooser.showDialog(this.getScene().getWindow());
+    File selectedDirectory = chooser.showDialog(root.getScene().getWindow());
     if (selectedDirectory != null) {
       Path savePath = selectedDirectory.toPath().resolve("output");
       try {
@@ -224,7 +235,7 @@ public class AuthoringView extends BorderPane {
   private void showAlert(String title, String message, Alert.AlertType type) {
     Alert alert = new Alert(type, message, ButtonType.OK);
     alert.setTitle(title);
-    alert.initOwner(this.getScene().getWindow());
+    alert.initOwner(root.getScene().getWindow());
     alert.showAndWait();
   }
 
