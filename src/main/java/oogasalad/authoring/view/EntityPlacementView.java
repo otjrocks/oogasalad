@@ -28,6 +28,7 @@ public class EntityPlacementView {
     private ComboBox<String> modeSelector;
     private Button applyButton;
     private Button deleteButton;
+    private Label statusLabel;
 
     /**
      * Constructs a new view for displaying entity placement details.
@@ -75,6 +76,9 @@ public class EntityPlacementView {
 
         updateModeSelector();
 
+        statusLabel.setText("");
+        statusLabel.setVisible(false);
+
         this.rootNode.setVisible(true);
     }
 
@@ -88,20 +92,30 @@ public class EntityPlacementView {
         // Title
         Label titleLabel = new Label("Selected Entity");
         titleLabel.getStyleClass().add("section-header");
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
         // Entity type display (non-editable)
         Label typeLabel = new Label("Type:");
         entityTypeLabel = new Label("[No entity selected]");
         entityTypeLabel.getStyleClass().add("info-value");
+        entityTypeLabel.setStyle("-fx-font-weight: bold;");
 
         // Position display (non-editable)
         Label positionLabel = new Label("Position:");
         positionValueLabel = new Label("X: 0.0, Y: 0.0");
         positionValueLabel.getStyleClass().add("info-value");
+        positionValueLabel.setStyle("-fx-font-weight: bold;");
 
         // Mode selection
         Label modeLabel = new Label("Mode:");
         modeSelector = new ComboBox<>();
+        modeSelector.setMaxWidth(Double.MAX_VALUE);
+
+        statusLabel = new Label();
+        statusLabel.setVisible(false);
+        statusLabel.setWrapText(true);
+        statusLabel.setMaxWidth(Double.MAX_VALUE);
+        statusLabel.setStyle("-fx-text-fill: green; -fx-font-style: italic;");
 
         // Action buttons
         applyButton = new Button("Apply Changes");
@@ -109,6 +123,7 @@ public class EntityPlacementView {
 
         deleteButton = new Button("Delete Entity");
         deleteButton.getStyleClass().add("delete-button");
+        deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
         deleteButton.setOnAction(e -> deleteEntity());
 
         // Create a grid for the labels and values
@@ -122,9 +137,14 @@ public class EntityPlacementView {
         infoGrid.add(modeLabel, 0, 2);
         infoGrid.add(modeSelector, 1, 2);
 
+        Separator separator = new Separator();
+        separator.setPadding(new Insets(5, 0, 5, 0));
+
         rootNode.getChildren().addAll(
                 titleLabel,
                 infoGrid,
+                statusLabel,
+                separator,
                 applyButton,
                 deleteButton
         );
@@ -147,7 +167,7 @@ public class EntityPlacementView {
         if (currentMode != null && modeSelector.getItems().contains(currentMode)) {
             modeSelector.setValue(currentMode);
         } else if (!modeSelector.getItems().isEmpty()) {
-            modeSelector.setValue(modeSelector.getItems().get(0));
+            modeSelector.setValue(modeSelector.getItems().getFirst());
         }
     }
 
@@ -161,8 +181,12 @@ public class EntityPlacementView {
         String newMode = modeSelector.getValue();
         if (newMode != null && !newMode.equals(currentPlacement.getMode())) {
             currentPlacement.setMode(newMode);
+            controller.updateCanvas();
+            showStatusMessage("Mode updated to: " + newMode);
 
             controller.moveEntity(currentPlacement, currentPlacement.getX(), currentPlacement.getY());
+        } else {
+            showStatusMessage("No changes to apply");
         }
     }
 
@@ -188,6 +212,29 @@ public class EntityPlacementView {
             // Clear the view
             setEntityPlacement(null);
         }
+    }
+
+    /**
+     * Displays a status message in the view for user feedback.
+     *
+     * @param message the message to display
+     */
+    private void showStatusMessage(String message) {
+        statusLabel.setText(message);
+        statusLabel.setVisible(true);
+
+        // Hide the message after a delay
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        javafx.application.Platform.runLater(() -> {
+                            statusLabel.setVisible(false);
+                        });
+                    }
+                },
+                3000 // 3 seconds
+        );
     }
 
     /**
