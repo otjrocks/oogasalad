@@ -1,5 +1,6 @@
 package oogasalad.engine.model.api;
 
+import oogasalad.engine.LoggingManager;
 import oogasalad.engine.model.strategies.collision.CollisionStrategy;
 import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
 import oogasalad.engine.model.strategies.collision.StopStrategy;
@@ -17,15 +18,25 @@ public class StrategyFactory {
    * Create a collision strategy from the provided name. If the provided collision strategy name
    * does not exist, returns a consume strategy by default.
    *
-   * @param name The name of the strategy you are requesting.
-   * @param args The required arguments of the initialization of the strategy.
+   * @param strategyString The name of the strategy you are requesting.
    * @return The collision strategy requested.
    */
-  public static CollisionStrategy createCollisionStrategy(String name, Object... args) {
-    return switch (name) {
+  public static CollisionStrategy createCollisionStrategy(String strategyString) {
+    int parameter = 0;
+    if (strategyString.contains("(")) {
+      try {
+        parameter = Integer.parseInt(
+            strategyString.substring(strategyString.indexOf("(") + 1, strategyString.indexOf(")")));
+      } catch (NumberFormatException ex) {
+        LoggingManager.LOGGER.warn("Could not parse parameter for: {}", strategyString, ex);
+        throw ex;
+      }
+      strategyString = strategyString.substring(0, strategyString.indexOf("("));
+    }
+    return switch (strategyString) {
       case "Stop" -> new StopStrategy();
-      case "UpdateLives" -> new UpdateLivesStrategy((Integer) args[0]);
-      case "UpdateScore" -> new UpdateScoreStrategy((Integer) args[0]);
+      case "UpdateLives" -> new UpdateLivesStrategy(parameter);
+      case "UpdateScore" -> new UpdateScoreStrategy(parameter);
       default -> new ConsumeStrategy();
     };
   }

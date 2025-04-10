@@ -1,6 +1,5 @@
 package oogasalad.player.view;
 
-import java.io.ObjectInputFilter.Config;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -49,7 +48,7 @@ public class GameMapView extends Canvas {
   public GameMapView(GameContext gameContext, ConfigModel configModel) {
     super(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
     myGameContext = gameContext;
-    myGameMapController = new GameMapController(myGameContext, this, configModel);
+    myGameMapController = new GameMapController(myGameContext, configModel);
     myGameMapController.setGameEndHandler(this::pauseGame);
     initializeEntityViews();
   }

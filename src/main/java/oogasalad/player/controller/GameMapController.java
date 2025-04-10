@@ -21,7 +21,6 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.model.strategies.collision.CollisionStrategy;
 import oogasalad.engine.records.CollisionContext;
 import oogasalad.engine.records.GameContext;
-import oogasalad.player.view.GameMapView;
 
 /**
  * A controller that handles all the updates of the game map models whenever the game map view is
@@ -36,27 +35,21 @@ public class GameMapController {
   public static final int PACMAN_INITIAL_Y = 23;
   public static final int FRUIT_INITIAL_X = 13;
   public static final int FRUIT_INITIAL_Y = 17;
-  private static final double GHOST_INITIAL_POSITION = 15;
-  private static final String PACMAN = "Pacman";
   private static final int SPRITE_ANIMATION_SPEED = 6;
   private final GameMap gameMap;
   private final GameState gameState;
-  private final GameMapView gameView;
   private int frameCount = 0;
-  private GameEndHandler gameEndHandler;
-  private ConfigModel myConfigModel;
+  private final ConfigModel myConfigModel;
 
   /**
    * Create a game map controller with the provided game context.
    *
    * @param gameContext The game context object for this controller.
-   * @param view        The game map view.
    * @param configModel The game's config model information.
    */
-  public GameMapController(GameContext gameContext, GameMapView view, ConfigModel configModel) {
+  public GameMapController(GameContext gameContext, ConfigModel configModel) {
     gameMap = gameContext.gameMap();
     gameState = gameContext.gameState();
-    gameView = view;
     myConfigModel = configModel;
   }
 
@@ -107,7 +100,7 @@ public class GameMapController {
   }
 
   private void applyEntityBCollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
-    if (checkCollisionRuleEntityBMatches(e2, collisionRule)) {
+    if (checkEntityTypesMatch(e1, e2, collisionRule)) {
       for (String eventB : collisionRule.getEventsB()) {
         createAndApplyCollisionStrategy(e1, e2, eventB);
       }
@@ -115,7 +108,7 @@ public class GameMapController {
   }
 
   private void applyEntityACollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
-    if (checkCollisionRuleEntityAMatches(e1, collisionRule)) {
+    if (checkEntityTypesMatch(e1, e2, collisionRule)) {
       for (String eventA : collisionRule.getEventsA()) {
         createAndApplyCollisionStrategy(e1, e2, eventA);
       }
@@ -123,13 +116,18 @@ public class GameMapController {
   }
 
   private void createAndApplyCollisionStrategy(Entity e1, Entity e2, String eventName) {
-    CollisionStrategy collisionStrategy = StrategyFactory.createCollisionStrategy(eventName, 1);
+    CollisionStrategy collisionStrategy = StrategyFactory.createCollisionStrategy(eventName);
     try {
       collisionStrategy.handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
     } catch (EntityNotFoundException e) {
       LoggingManager.LOGGER.warn("Unable to handle collision event: {}", eventName, e);
       throw new RuntimeException(e);
     }
+  }
+
+  private static boolean checkEntityTypesMatch(Entity e1, Entity e2, CollisionRule collisionRule) {
+    return checkCollisionRuleEntityAMatches(e1, collisionRule) && checkCollisionRuleEntityBMatches(
+        e2, collisionRule);
   }
 
   private static boolean checkCollisionRuleEntityBMatches(Entity e2, CollisionRule collisionRule) {
@@ -155,14 +153,4 @@ public class GameMapController {
     }
     return collisions;
   }
-
-  /**
-   * Sets the handler to be called when the game ends.
-   *
-   * @param handler the callback to execute when the game ends
-   */
-  public void setGameEndHandler(GameEndHandler handler) {
-    this.gameEndHandler = handler;
-  }
-
 }

@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 
 import java.util.List;
 import oogasalad.engine.config.ConfigModel;
-import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
@@ -32,7 +31,7 @@ public class GameMapControllerTest {
     mockGameState = mock(GameState.class);
     mockGameView = mock(GameMapView.class);
     gameContext = new GameContext(mockGameMap, mockGameState);
-    controller = new GameMapController(gameContext, mockGameView, Mockito.mock(ConfigModel.class));
+    controller = new GameMapController(gameContext, Mockito.mock(ConfigModel.class));
   }
 
   @Test
