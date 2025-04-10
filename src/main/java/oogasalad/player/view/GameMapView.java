@@ -5,11 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import java.util.function.Consumer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.util.Duration;
+import oogasalad.engine.model.GameEndStatus;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContext;
@@ -34,9 +36,10 @@ public class GameMapView extends Canvas {
   private final ResourceBundle SPRITE_DATA =
       ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
   private GameLoopController myGameLoopController;
-
   private boolean isDeathAnimationRunning = false;
   private Timeline deathAnimationTimeline;
+  private Consumer<Boolean> endGameCallback;
+
   /**
    * Initialize a game map view.
    *
@@ -46,7 +49,12 @@ public class GameMapView extends Canvas {
     super(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
     myGameContext = gameContext;
     myGameMapController = new GameMapController(myGameContext, this);
-    myGameMapController.setGameEndHandler(this::pauseGame);
+    myGameMapController.setGameEndHandler(status -> {
+      pauseGame();
+      if (endGameCallback != null && status != GameEndStatus.PAUSE_ONLY) {
+        endGameCallback.accept(status == GameEndStatus.WIN);
+      }
+    });
     initializeEntityViews();
   }
 
@@ -169,5 +177,18 @@ public class GameMapView extends Canvas {
    */
   public boolean isDeathAnimationRunning() {
     return isDeathAnimationRunning;
+  }
+
+  /**
+   * Sets the callback to be executed when the game ends.
+   *
+   * <p>This method allows external components (e.g., {@code GameView}) to register a handler
+   * that responds to the end of gameplay, such as displaying a message or transitioning
+   * to another screen.</p>
+   *
+   * @param callback trigger for callback.
+   */
+  public void setEndGameCallback(Consumer<Boolean> callback) {
+    this.endGameCallback = callback;
   }
 }
