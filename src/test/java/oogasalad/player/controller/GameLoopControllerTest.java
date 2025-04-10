@@ -1,5 +1,6 @@
 package oogasalad.player.controller;
 
+import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameMapImpl;
 import oogasalad.engine.model.GameStateImpl;
@@ -27,7 +28,7 @@ class GameLoopControllerTest extends DukeApplicationTest {
   void setUp() {
     gameMap = Mockito.spy(new GameMapImpl(10, 10));
     GameContext gameContext = new GameContext(gameMap, new GameStateImpl(5));
-    gameMapView = Mockito.spy(new GameMapView(gameContext));
+    gameMapView = Mockito.spy(new GameMapView(gameContext, Mockito.mock(ConfigModel.class)));
     gameLoopController = Mockito.spy(new GameLoopController(gameContext, gameMapView));
   }
 

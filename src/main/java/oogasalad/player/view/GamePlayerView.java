@@ -67,7 +67,7 @@ public class GamePlayerView extends StackPane {
     }
 
     if (gameMap != null) {
-      myGameView = new GameView(new GameContext(gameMap, myGameState));
+      myGameView = new GameView(new GameContext(gameMap, myGameState), configModel);
       this.getChildren().add(myGameView);
     }
   }
