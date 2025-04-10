@@ -18,6 +18,8 @@ public class EntityPlacement {
   private double y;
   private String mode;
   private int currentFrame;
+  private int deathFrame = 0;
+  private boolean inDeathAnimation = false;
 
   /**
    * A default constructor is required for the file parsing API.
@@ -138,6 +140,41 @@ public class EntityPlacement {
    */
   public int getCurrentFrame() {
     return currentFrame;
+  }
+
+  /**
+   * Gets the current frame for the death animation
+   */
+  public int getDeathFrame() {
+    return deathFrame;
+  }
+
+  /**
+   * Used for resetting the death animation
+   */
+  public void setDeathFrame(int deathFrame) {
+    this.deathFrame = deathFrame;
+  }
+
+  /**
+   * Checks if entity is in the process of a death animation
+   */
+  public boolean isInDeathAnimation() {
+    return inDeathAnimation;
+  }
+
+  /**
+   * Allows user to set in death animation boolean
+   */
+  public void setInDeathAnimation(boolean inDeathAnimation) {
+    this.inDeathAnimation = inDeathAnimation;
+  }
+
+  /**
+   * Increases the current death frame by one
+   */
+  public void incrementDeathFrame() {
+    this.deathFrame++;
   }
 
   /**

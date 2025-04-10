@@ -56,14 +56,16 @@ public class GameLoopController {
   private void updateGame() {
     //Updates the game map and entity positions
     myGameContext.gameMap().update();
-    myGameMapView.update();
+    if(!myGameMapView.isDeathAnimationRunning()) {
+      myGameMapView.update();
+    }
   }
 
   /**
    * Stops the loop when called
    */
   public void pauseGame() {
-    if (myGameLoop != null) {
+    if (myGameLoop != null){
       myGameLoop.stop();
     }
   }
