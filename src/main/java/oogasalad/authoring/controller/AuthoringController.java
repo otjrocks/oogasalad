@@ -11,6 +11,7 @@ import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.model.GameSettings;
 
 import java.util.*;
+import oogasalad.engine.records.newconfig.model.Settings;
 
 /**
  * Coordinates updates between the {@link AuthoringModel} and {@link AuthoringView}.
@@ -180,7 +181,7 @@ public class AuthoringController {
    *
    * @param updatedSettings the updated GameSettings object
    */
-  public void updateGameSettings(GameSettings updatedSettings) {
+  public void updateGameSettings(Settings updatedSettings) {
     model.setDefaultSettings(updatedSettings);
   }
 

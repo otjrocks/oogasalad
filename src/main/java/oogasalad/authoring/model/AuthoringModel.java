@@ -21,6 +21,7 @@ import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameSettings;
+import oogasalad.engine.records.newconfig.model.Settings;
 
 /**
  * The central model for the Authoring Environment. Stores global game settings, entity templates,
@@ -36,7 +37,7 @@ public class AuthoringModel {
   private String gameTitle;
   private String author;
   private String gameDescription;
-  private GameSettings defaultSettings;
+  private Settings defaultSettings;
   private List<CollisionRule> collisionRules;
 
   private Map<String, EntityType> entityTypeMap;
@@ -50,7 +51,8 @@ public class AuthoringModel {
     this.entityTypeMap = new LinkedHashMap<>();
     this.levels = new ArrayList<>();
     this.collisionRules = new ArrayList<>();
-    this.defaultSettings = new GameSettings(1.0, 3, 0, "EDGE", 10, 10);
+    // TODO: add score strategy and win condition
+    this.defaultSettings = new Settings(1.0, 3, 0, "", "");
   }
 
   /**
@@ -170,18 +172,18 @@ public class AuthoringModel {
   /**
    * Gets the default game settings for the project
    *
-   * @return the GameSettings object
+   * @return the Settings object
    */
-  public GameSettings getDefaultSettings() {
+  public Settings getDefaultSettings() {
     return defaultSettings;
   }
 
   /**
    * Sets the default game settings for the project
    *
-   * @param settings the new GameSettings to use
+   * @param settings the new Settings to use
    */
-  public void setDefaultSettings(GameSettings settings) {
+  public void setDefaultSettings(Settings settings) {
     this.defaultSettings = settings;
   }
 

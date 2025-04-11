@@ -13,10 +13,6 @@
       "id": 3
     },
     {
-      "entity": "powerpellet",
-      "id": 4
-    },
-    {
       "entity": "wall",
       "id": 5
     },
@@ -29,7 +25,7 @@
       "id": 7
     }
   ],
-  "settings": {
+  "mapInfo": {
     "width": 28,
     "height": 32,
     "edgePolicy": "Wrap"

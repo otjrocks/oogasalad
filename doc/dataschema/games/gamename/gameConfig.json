@@ -80,6 +80,52 @@
           "levelMap"
         ]
       }
+    },
+    "collisions":
+    {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "entityA": {
+            "description": "file name for the entity (similar to the one in level)",
+            "type": "string"
+          },
+          "modeA": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "entityB": {
+            "type": "string"
+          },
+          "modeB": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "eventsA": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "eventsB": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "entityA",
+          "entityB",
+          "eventsA",
+          "eventsB"
+        ]
+      }
     }
   },
   "required": [

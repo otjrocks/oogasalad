@@ -45,7 +45,7 @@
       "required": [
         "name",
         "controlType",
-        "movementType"
+        "movementSpeed"
       ]
     },
     "modes": {
@@ -81,10 +81,18 @@
           "movementSpeed": {
             "type": "number"
           },
+          "blocks": {
+            "type": "array",
+            "items": {
+              "description": "This string would be the name of the entity it blocks",
+              "type": "string"
+            }
+          },
           "image": {
             "type": "object",
             "properties": {
               "imagePath": {
+                "description": "name of the tileset in assets",
                 "type": "string"
               },
               "tileWidth": {
@@ -117,44 +125,10 @@
           "image"
         ]
       }
-    },
-    "collisions":
-    {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "mode": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            }
-          },
-          "entityB": {
-            "type": "string"
-          },
-          "modeB": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            }
-          },
-          "events": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "entityB",
-          "events"
-        ]
-      }
     }
   },
   "required": [
-    "type",
+    "entityType",
     "modes"
   ]
 }

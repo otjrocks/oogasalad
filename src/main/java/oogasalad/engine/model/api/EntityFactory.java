@@ -35,7 +35,7 @@ public class EntityFactory {
     return controlType == null || controlType.isBlank() ||
         controlType.equalsIgnoreCase("wall") ||
         controlType.equalsIgnoreCase("dot") ||
-            controlType.equalsIgnoreCase("fruit");
+            controlType.equalsIgnoreCase("fruit") || controlType.equalsIgnoreCase("none");
   }
 
   private static Entity createControlledEntity(String controlType, GameInputManager input,

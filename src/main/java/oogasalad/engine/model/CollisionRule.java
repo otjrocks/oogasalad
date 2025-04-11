@@ -23,6 +23,35 @@ public class CollisionRule {
   private List<String> eventsB;
 
   /**
+   * Represents a rule that defines the behavior of a collision between two entities in a game. Each
+   * rule specifies the types and modes of the two entities involved in the collision, as well as
+   * the events triggered for each entity upon collision.
+   *
+   * @param entityTypeA the type of the first entity involved in the collision
+   * @param modeA       the mode of the first entity during the collision
+   * @param entityTypeB the type of the second entity involved in the collision
+   * @param modeB       the mode of the second entity during the collision
+   * @param eventsA     a list of events triggered for the first entity upon collision
+   * @param eventsB     a list of events triggered for the second entity upon collision
+   */
+  public CollisionRule(String entityTypeA, String modeA, String entityTypeB, String modeB,
+      List<String> eventsA, List<String> eventsB) {
+    this.entityTypeA = entityTypeA;
+    this.modeA = modeA;
+    this.entityTypeB = entityTypeB;
+    this.modeB = modeB;
+    this.eventsA = eventsA;
+    this.eventsB = eventsB;
+  }
+
+  /**
+   * Empty constructor for use by authoring environment to create a blank new collision rule.
+   */
+  public CollisionRule() {
+    // needs empty constructor
+  }
+
+  /**
    * Returns the type of the first entity involved in the collision.
    *
    * @return the string identifier for entity A
