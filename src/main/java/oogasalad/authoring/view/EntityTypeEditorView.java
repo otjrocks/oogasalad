@@ -6,9 +6,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.model.EntityType;
-import oogasalad.engine.config.ModeConfig;
 
 import java.util.Map;
+import oogasalad.engine.records.newconfig.ModeConfig;
 
 /**
  * View for editing a selected EntityType.
@@ -90,7 +90,7 @@ public class EntityTypeEditorView {
 
   /**
    * Returns the root JavaFX node of this view
-   * 
+   *
    * @return the root node
    */
   public Parent getRoot() {
@@ -111,7 +111,7 @@ public class EntityTypeEditorView {
   private void openAddModeDialog() {
     ModeEditorDialog dialog = new ModeEditorDialog();
     dialog.showAndWait().ifPresent(config -> {
-      String modeName = config.getModeName();
+      String modeName = config.name();
       if (!modeName.isEmpty() && !current.modes().containsKey(modeName)) {
         current.modes().put(modeName, config);
         setEntityType(current);
@@ -124,11 +124,11 @@ public class EntityTypeEditorView {
   private void openEditModeDialog(String modeName, ModeConfig oldConfig) {
     ModeEditorDialog dialog = new ModeEditorDialog(oldConfig);
     dialog.showAndWait().ifPresent(newConfig -> {
-      if (!modeName.equals(newConfig.getModeName())) {
+      if (!modeName.equals(newConfig.name())) {
         // Mode name changed → remove old key and insert new one
         current.modes().remove(modeName);
       }
-      current.modes().put(newConfig.getModeName(), newConfig);
+      current.modes().put(newConfig.name(), newConfig);
       setEntityType(current);
       controller.updateEntitySelector();
       controller.updateCanvas();

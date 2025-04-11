@@ -219,6 +219,6 @@ public class EntityPlacement {
     return this.getType()
             .modes()
             .get(this.getMode())
-            .getImagePath();
+            .image().imagePath();
   }
 }

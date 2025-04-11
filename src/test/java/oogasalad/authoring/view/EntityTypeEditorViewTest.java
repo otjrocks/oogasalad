@@ -17,8 +17,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
-import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.model.EntityType;
+import oogasalad.engine.records.newconfig.ImageConfig;
+import oogasalad.engine.records.newconfig.ModeConfig;
+import oogasalad.engine.records.newconfig.model.ControlType;
+import oogasalad.engine.records.newconfig.model.ControlTypeConfig;
+import oogasalad.engine.records.newconfig.model.EntityProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -34,17 +38,36 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
     mockController = mock(AuthoringController.class);
     view = new EntityTypeEditorView(mockController);
 
+    // === Construct ModeConfig using new record-based structure ===
+    String imagePath = "mock.png";
+    ImageConfig image = new ImageConfig(
+        imagePath,
+        14,
+        14,
+        List.of(0, 1),
+        1.0
+    );
+
+    ControlTypeConfig controlTypeConfig = new ControlTypeConfig("None", 0);
+    ControlType controlType = new ControlType("Keyboard", controlTypeConfig);
+
+    EntityProperties entityProps = new EntityProperties(
+        "Default",
+        controlType,
+        2.0,
+        List.of()
+    );
+
+    ModeConfig mockMode = new ModeConfig("Default", entityProps, image);
     Map<String, ModeConfig> modeMap = new HashMap<>();
-    ModeConfig mockMode = new ModeConfig();
-    mockMode.setModeName("Default");
-    mockMode.setImagePath("mock.png");
-    mockMode.setMovementSpeed(2);
     modeMap.put("Default", mockMode);
 
-    mockEntityType = new EntityType("Pacman", "Keyboard", "", modeMap, List.of(new String[]{}),
-        new HashMap<>());
-    when(mockController.getModel()).thenReturn(mock(AuthoringModel.class));
+    mockEntityType = new EntityType("Pacman", "Keyboard", "", modeMap, List.of(), new HashMap<>());
+
+    AuthoringModel mockModel = mock(AuthoringModel.class);
+    when(mockController.getModel()).thenReturn(mockModel);
   }
+
 
   @Test
   public void setEntityType_InitializesFields() {

@@ -7,10 +7,12 @@ import oogasalad.authoring.view.AuthoringView;
 import oogasalad.authoring.view.EntityPlacementView;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
-import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.model.GameSettings;
-
 import java.util.*;
+import oogasalad.engine.records.newconfig.ImageConfig;
+import oogasalad.engine.records.newconfig.ModeConfig;
+import oogasalad.engine.records.newconfig.model.ControlType;
+import oogasalad.engine.records.newconfig.model.ControlTypeConfig;
+import oogasalad.engine.records.newconfig.model.EntityProperties;
 import oogasalad.engine.records.newconfig.model.Settings;
 
 /**
@@ -154,19 +156,44 @@ public class AuthoringController {
   }
 
 
-  // Private helper to provide default values for a new entity's mode config
   private Map<String, ModeConfig> defaultModeMap() {
-    ModeConfig defaultMode = new ModeConfig();
-    defaultMode.setModeName("Default");
-
+    // Default image config (you can change dimensions and animation settings)
     File imageFile = new File("src/main/resources/assets/images/pacman.png");
-    defaultMode.setImagePath(imageFile.toURI().toString());
+    String imagePath = imageFile.toURI().toString();
 
-    defaultMode.setMovementSpeed(100);
+    ImageConfig imageConfig = new ImageConfig(
+        imagePath,
+        14,
+        14,
+        List.of(0, 1, 2, 3), // Default animation frames
+        1.0
+    );
+
+    // Default control configuration
+    return getStringModeConfigMap(
+        imageConfig);
+  }
+
+  private static Map<String, ModeConfig> getStringModeConfigMap(ImageConfig imageConfig) {
+    ControlTypeConfig controlTypeConfig = new ControlTypeConfig("None", 0);
+    ControlType controlType = new ControlType("Keyboard", controlTypeConfig);
+
+    // Default entity properties
+    EntityProperties entityProperties = new EntityProperties(
+        "Default",
+        controlType,
+        100.0,
+        List.of()  // No blocked entities
+    );
+
+    // Final default mode config
+    ModeConfig defaultMode = new ModeConfig("Default", entityProperties, imageConfig);
+
     Map<String, ModeConfig> map = new HashMap<>();
     map.put("Default", defaultMode);
     return map;
   }
+
 
   /**
    * Get Level Controller

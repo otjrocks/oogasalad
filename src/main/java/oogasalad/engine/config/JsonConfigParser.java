@@ -25,6 +25,7 @@ import oogasalad.engine.records.newconfig.CollisionConfig;
 import oogasalad.engine.records.newconfig.EntityConfig;
 import oogasalad.engine.records.newconfig.GameConfig;
 import oogasalad.engine.records.newconfig.ImageConfig;
+import oogasalad.engine.records.newconfig.ModeConfig;
 import oogasalad.engine.records.newconfig.model.ControlType;
 import oogasalad.engine.records.newconfig.model.EntityProperties;
 import oogasalad.engine.records.newconfig.model.Level;
@@ -260,12 +261,11 @@ public class JsonConfigParser implements ConfigParser {
     for (Map.Entry<String, EntityConfig> entry : entityMap.entrySet()) {
       String key = entry.getKey();
       EntityConfig entity = entry.getValue();
-      Map<String, oogasalad.engine.config.ModeConfig> modes = new HashMap<>();
+      Map<String, ModeConfig> modes = new HashMap<>();
 
       // create modes
       for (oogasalad.engine.records.newconfig.ModeConfig mode : entity.modes()) {
-        oogasalad.engine.config.ModeConfig modeConfig = new oogasalad.engine.config.ModeConfig(
-            mode.entityProperties().movementSpeed(), mode.image().imagePath());
+        ModeConfig modeConfig = new ModeConfig(mode.name(), mode.entityProperties(), mode.image());
         modes.put(mode.name(), modeConfig);
       }
 
