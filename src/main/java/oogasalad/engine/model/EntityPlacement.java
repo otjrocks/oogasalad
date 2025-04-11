@@ -16,6 +16,8 @@ public class EntityPlacement {
   private EntityType resolvedEntityType;
   private double x;
   private double y;
+  private double initialX;
+  private double initialY;
   private String mode;
   private int currentFrame;
   private int deathFrame = 0;
@@ -41,6 +43,8 @@ public class EntityPlacement {
     this.type = type.type();
     this.x = x;
     this.y = y;
+    this.initialX = x;
+    this.initialY = y;
     this.mode = mode;
     this.currentFrame = 0;
   }
@@ -91,6 +95,16 @@ public class EntityPlacement {
   }
 
   /**
+   * Returns the initial X-coordinate of this entity when it was initialized. Not updated when setX
+   * is called.
+   *
+   * @return A double representing the initial x value of this entity.
+   */
+  public double getInitialX() {
+    return initialX;
+  }
+
+  /**
    * Sets the X-coordinate of this entity on the map.
    *
    * @param x the new X position
@@ -106,6 +120,16 @@ public class EntityPlacement {
    */
   public double getY() {
     return y;
+  }
+
+  /**
+   * Returns the initial Y-coordinate of this entity when it was initialized. Not updated when setY
+   * is called.
+   *
+   * @return A double representing the initial y value of this entity.
+   */
+  public double getInitialY() {
+    return initialY;
   }
 
   /**
@@ -183,6 +207,7 @@ public class EntityPlacement {
   public void increaseCurrentFrame() {
     currentFrame++;
   }
+
   /**
    * Moves the entity to a new (x, y) location on the map.
    *
@@ -210,15 +235,15 @@ public class EntityPlacement {
   }
 
   /**
-   * Gets the image path for the current entity based on its type and mode.
-   * Retrieves the image path from the mode configuration of the entity's current mode.
+   * Gets the image path for the current entity based on its type and mode. Retrieves the image path
+   * from the mode configuration of the entity's current mode.
    *
    * @return the string path to the entity's image
    */
   public String getEntityImagePath() {
     return this.getType()
-            .modes()
-            .get(this.getMode())
-            .image().imagePath();
+        .modes()
+        .get(this.getMode())
+        .image().imagePath();
   }
 }
