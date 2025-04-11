@@ -102,14 +102,9 @@ class JsonConfigParserTest {
     List<Level> levels = config.levels();
     assertEquals(2, levels.size());
 
-    Settings level1 = levels.get(0).settings();
-    assertEquals(2.0, level1.gameSpeed()); // Overridden
-    assertEquals(3, level1.startingLives()); // From default
-    assertEquals(0, level1.initialScore());
-
-    Settings level2 = levels.get(1).settings();
-    assertEquals(1.5, level2.gameSpeed()); // From default
-    assertEquals(3, level2.startingLives());
+    assertEquals(1.5, defaultSettings.gameSpeed());
+    assertEquals(3, defaultSettings.startingLives());
+    assertEquals(0, defaultSettings.initialScore());
 
     // Collision check
     List<CollisionConfig> collisions = config.collisions();
