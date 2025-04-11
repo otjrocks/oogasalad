@@ -3,6 +3,7 @@ package oogasalad.engine.model.api;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.model.strategies.collision.CollisionStrategy;
 import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
+import oogasalad.engine.model.strategies.collision.ReturnToSpawnLocationStrategy;
 import oogasalad.engine.model.strategies.collision.StopStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateLivesStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
@@ -37,6 +38,7 @@ public class StrategyFactory {
       case "Stop" -> new StopStrategy();
       case "UpdateLives" -> new UpdateLivesStrategy(parameter);
       case "UpdateScore" -> new UpdateScoreStrategy(parameter);
+      case "ReturnToSpawnLocation" -> new ReturnToSpawnLocationStrategy();
       default -> new ConsumeStrategy();
     };
   }
