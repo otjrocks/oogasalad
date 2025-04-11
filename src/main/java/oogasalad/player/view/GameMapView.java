@@ -11,6 +11,7 @@ import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.util.Duration;
+import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.model.GameEndStatus;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
@@ -44,11 +45,12 @@ public class GameMapView extends Canvas {
    * Initialize a game map view.
    *
    * @param gameContext The game context object for this view.
+   * @param configModel The config model for this view.
    */
-  public GameMapView(GameContext gameContext) {
+  public GameMapView(GameContext gameContext, ConfigModel configModel) {
     super(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
     myGameContext = gameContext;
-    myGameMapController = new GameMapController(myGameContext, this);
+    myGameMapController = new GameMapController(myGameContext, this, configModel);
     myGameMapController.setGameEndHandler(status -> {
       pauseGame();
       if (endGameCallback != null && status != GameEndStatus.PAUSE_ONLY) {
@@ -185,8 +187,8 @@ public class GameMapView extends Canvas {
    * Sets the callback to be executed when the game ends.
    *
    * <p>This method allows external components (e.g., {@code GameView}) to register a handler
-   * that responds to the end of gameplay, such as displaying a message or transitioning
-   * to another screen.</p>
+   * that responds to the end of gameplay, such as displaying a message or transitioning to another
+   * screen.</p>
    *
    * @param callback trigger for callback.
    */
