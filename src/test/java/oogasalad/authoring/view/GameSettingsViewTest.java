@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.engine.model.GameSettings;
+import oogasalad.engine.records.newconfig.model.Settings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -20,14 +21,14 @@ public class GameSettingsViewTest extends DukeApplicationTest {
   private GameSettingsView view;
   private AuthoringController mockController;
   private AuthoringModel mockModel;
-  private GameSettings defaultSettings;
+  private Settings defaultSettings;
 
   @Override
   public void start(Stage stage) {
     mockController = mock(AuthoringController.class);
     mockModel = mock(AuthoringModel.class);
 
-    defaultSettings = new GameSettings(1.0, 3, 100, "WRAP", 28, 32);
+    defaultSettings = new Settings(1.0, 3, 100, "", "");
     when(mockController.getModel()).thenReturn(mockModel);
     when(mockModel.getDefaultSettings()).thenReturn(defaultSettings);
 
