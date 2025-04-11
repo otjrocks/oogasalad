@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import oogasalad.engine.records.newconfig.model.Settings;
 
 
 /**
@@ -25,7 +26,7 @@ public class GameSettingsView {
     private static final double DEFAULT_SPACING = 5;
 
     private AuthoringController controller;
-    private GameSettings gameSettings;
+    private Settings gameSettings;
 
     // Root node containing the view
     private HBox rootNode;
@@ -34,9 +35,6 @@ public class GameSettingsView {
     private Spinner<Double> gameSpeedSpinner;
     private Spinner<Integer> startingLivesSpinner;
     private Spinner<Integer> initialScoreSpinner;
-    private ComboBox<String> edgePolicyComboBox;
-    private Spinner<Integer> widthSpinner;
-    private Spinner<Integer> heightSpinner;
 
     /**
      * Constructor initializes the view with the given controller
@@ -84,14 +82,6 @@ public class GameSettingsView {
         startingLivesSpinner = createIntegerSpinner(1, 10, 1, gameSettings.startingLives());
         initialScoreSpinner = createIntegerSpinner(0, 1000, 50, gameSettings.initialScore());
 
-        edgePolicyComboBox = new ComboBox<>(FXCollections.observableArrayList("WRAP", "STOP", "BOUNCE", "EDGE"));
-        edgePolicyComboBox.setValue(gameSettings.edgePolicy());
-        edgePolicyComboBox.setPrefWidth(120);
-
-        widthSpinner = createIntegerSpinner(5, 100, 1, gameSettings.width());
-        heightSpinner = createIntegerSpinner(5, 100, 1, gameSettings.height());
-
-
         // Add first row of settings
         settingsGrid.add(new Label("Game Speed:"), 0, 0);
         settingsGrid.add(gameSpeedSpinner, 1, 0);
@@ -102,8 +92,6 @@ public class GameSettingsView {
         settingsGrid.add(new Label("Initial Score:"), 0, 1);
         settingsGrid.add(initialScoreSpinner, 1, 1);
         settingsGrid.add(new Label("Edge Policy:"), 2, 1);
-        settingsGrid.add(edgePolicyComboBox, 3, 1);
-
         HBox buttonBox = getHBox();
 
         rootNode.getChildren().addAll(titleLabel, settingsGrid, buttonBox);
@@ -185,9 +173,6 @@ public class GameSettingsView {
         gameSpeedSpinner.getValueFactory().setValue(gameSettings.gameSpeed());
         startingLivesSpinner.getValueFactory().setValue(gameSettings.startingLives());
         initialScoreSpinner.getValueFactory().setValue(gameSettings.initialScore());
-        edgePolicyComboBox.setValue(gameSettings.edgePolicy());
-        widthSpinner.getValueFactory().setValue(gameSettings.width());
-        heightSpinner.getValueFactory().setValue(gameSettings.height());
     }
 
     /**
@@ -203,17 +188,6 @@ public class GameSettingsView {
     private void saveSettings() {
         // Commit any edited values in spinners
         commitSpinnerValues();
-
-        // Create a final GameSettings instance with all current values
-        GameSettings finalSettings = new GameSettings(
-                gameSpeedSpinner.getValue(),
-                startingLivesSpinner.getValue(),
-                initialScoreSpinner.getValue(),
-                edgePolicyComboBox.getValue(),
-                gameSettings.width(),  // Maintain the original width
-                gameSettings.height()  // Maintain the original height
-        );
-
         // Update the model with the current settings
         controller.getModel().setDefaultSettings(gameSettings);
 
@@ -233,8 +207,6 @@ public class GameSettingsView {
         commitDoubleSpinnerValue(gameSpeedSpinner, 0.5);
         commitIntegerSpinnerValue(startingLivesSpinner, 1);
         commitIntegerSpinnerValue(initialScoreSpinner, 0);
-        commitIntegerSpinnerValue(widthSpinner, 10);
-        commitIntegerSpinnerValue(heightSpinner, 10);
     }
 
     /**
