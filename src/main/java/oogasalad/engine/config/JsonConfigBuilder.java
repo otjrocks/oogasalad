@@ -8,7 +8,6 @@ import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 
 import java.util.*;
-import oogasalad.engine.records.newconfig.ModeConfig;
 
 /**
  * Utility class for converting the internal AuthoringModel data structures

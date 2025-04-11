@@ -19,7 +19,7 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.records.newconfig.ImageConfig;
-import oogasalad.engine.records.newconfig.ModeConfig;
+import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.records.newconfig.model.ControlType;
 import oogasalad.engine.records.newconfig.model.ControlTypeConfig;
 import oogasalad.engine.records.newconfig.model.EntityProperties;

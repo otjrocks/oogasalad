@@ -19,7 +19,7 @@ import oogasalad.engine.config.JsonConfigSaver;
 import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
-import oogasalad.engine.records.newconfig.ModeConfig;
+import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.records.newconfig.model.Settings;
 
 /**

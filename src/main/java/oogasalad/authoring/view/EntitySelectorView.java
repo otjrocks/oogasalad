@@ -18,7 +18,7 @@ import oogasalad.engine.model.EntityType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import oogasalad.engine.records.newconfig.ModeConfig;
+import oogasalad.engine.config.ModeConfig;
 
 /**
  * View displaying all defined EntityTypes in a draggable grid.

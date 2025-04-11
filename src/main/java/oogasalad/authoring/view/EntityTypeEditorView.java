@@ -8,7 +8,7 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.model.EntityType;
 
 import java.util.Map;
-import oogasalad.engine.records.newconfig.ModeConfig;
+import oogasalad.engine.config.ModeConfig;
 
 /**
  * View for editing a selected EntityType.

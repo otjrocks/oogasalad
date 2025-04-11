@@ -199,10 +199,10 @@ class JsonConfigParserTest {
     assertEquals(List.of("Player"), baseProps.blocks());
 
     // Modes
-    List<oogasalad.engine.records.newconfig.ModeConfig> modes = config.modes();
+    List<ModeConfig> modes = config.modes();
     assertEquals(2, modes.size());
 
-    oogasalad.engine.records.newconfig.ModeConfig frightened = modes.getFirst();
+    ModeConfig frightened = modes.getFirst();
     assertEquals("Frightened", frightened.name());
     assertEquals("Random", frightened.entityProperties().controlType().controlType());
     assertEquals(1.0, frightened.entityProperties().movementSpeed());
@@ -214,7 +214,7 @@ class JsonConfigParserTest {
     assertEquals(32, frightImg.tileWidth());
     assertEquals(List.of(0, 1, 2), frightImg.tilesToCycle());
 
-    oogasalad.engine.records.newconfig.ModeConfig normal = modes.get(1);
+    ModeConfig normal = modes.get(1);
     assertEquals("Normal", normal.name());
     assertEquals("Chase", normal.entityProperties().controlType().controlType()); // inherited
     assertEquals(1.5, normal.entityProperties().movementSpeed()); // inherited

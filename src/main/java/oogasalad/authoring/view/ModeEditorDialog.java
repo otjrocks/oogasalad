@@ -5,16 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import oogasalad.engine.model.CollisionRule;
 
 import java.io.File;
 import oogasalad.engine.records.newconfig.ImageConfig;
-import oogasalad.engine.records.newconfig.ModeConfig;
+import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.records.newconfig.model.ControlType;
 import oogasalad.engine.records.newconfig.model.ControlTypeConfig;
 import oogasalad.engine.records.newconfig.model.EntityProperties;
