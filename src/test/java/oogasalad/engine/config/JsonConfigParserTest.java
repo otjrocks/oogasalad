@@ -1,5 +1,6 @@
 package oogasalad.engine.config;
 
+import java.nio.file.Path;
 import oogasalad.engine.records.newconfig.CollisionConfig;
 import oogasalad.engine.records.newconfig.EntityConfig;
 import oogasalad.engine.records.newconfig.GameConfig;
@@ -128,7 +129,7 @@ class JsonConfigParserTest {
     assertEquals(List.of(), c2.eventsB());
 
     // Folder path
-    assertEquals(tempDir.getPath() + '/', config.gameFolderPath());
+    assertEquals(Path.of(tempDir.getPath()).normalize(), Path.of(config.gameFolderPath()).normalize());
   }
 
   @Test
