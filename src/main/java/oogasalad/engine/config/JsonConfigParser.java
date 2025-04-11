@@ -166,30 +166,42 @@ public class JsonConfigParser implements ConfigParser {
     return idToName;
   }
 
-  private List<EntityPlacement> parseLayout(JsonNode layout, Map<Integer, EntityType> idToType,
-      Map<Integer, String> idToName) {
+  private List<EntityPlacement> parseLayout(
+      JsonNode layout,
+      Map<Integer, EntityType> idToType,
+      Map<Integer, String> idToName
+  ) {
     List<EntityPlacement> placements = new ArrayList<>();
 
     for (int y = 0; y < layout.size(); y++) {
       String[] rowEntries = layout.get(y).asText().trim().split("\\s+");
       for (int x = 0; x < rowEntries.length; x++) {
-        if (rowEntries[x].equals("0")) {
-          continue;
+        String entry = rowEntries[x];
+        if (!entry.equals("0")) {
+          placements.add(parseEntityPlacement(entry, x, y, idToType, idToName));
         }
-
-        String[] parts = rowEntries[x].split("\\.");
-        int entityId = Integer.parseInt(parts[0]);
-        int modeIndex = (parts.length > 1) ? Integer.parseInt(parts[1]) : 0;
-
-        EntityType type = idToType.get(entityId);
-        String entityName = idToName.get(entityId);
-        String modeName = resolveMode(entityMap.get(entityName), List.of(modeIndex));
-
-        placements.add(new EntityPlacement(type, x, y, modeName));
       }
     }
 
     return placements;
+  }
+
+  private EntityPlacement parseEntityPlacement(
+      String entry,
+      int x,
+      int y,
+      Map<Integer, EntityType> idToType,
+      Map<Integer, String> idToName
+  ) {
+    String[] parts = entry.split("\\.");
+    int entityId = Integer.parseInt(parts[0]);
+    int modeIndex = (parts.length > 1) ? Integer.parseInt(parts[1]) : 0;
+
+    EntityType type = idToType.get(entityId);
+    String entityName = idToName.get(entityId);
+    String modeName = resolveMode(entityMap.get(entityName), List.of(modeIndex));
+
+    return new EntityPlacement(type, x, y, modeName);
   }
 
   // Methods to convert from multiple config files to a singular config model
