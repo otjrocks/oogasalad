@@ -14,11 +14,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.model.EntityType;
-import oogasalad.engine.config.ModeConfig;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import oogasalad.engine.config.ModeConfig;
 
 /**
  * View displaying all defined EntityTypes in a draggable grid.
@@ -157,6 +157,6 @@ public class EntitySelectorView {
   private String getDefaultModeImage(EntityType type) {
     Map<String, ModeConfig> modes = type.modes();
     if (modes == null || !modes.containsKey("Default")) return null;
-    return modes.get("Default").getImagePath();
+    return modes.get("Default").image().imagePath();
   }
 }

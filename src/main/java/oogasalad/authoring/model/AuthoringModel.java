@@ -16,11 +16,10 @@ import java.util.Optional;
 import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.JsonConfigBuilder;
 import oogasalad.engine.config.JsonConfigSaver;
-import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
-import oogasalad.engine.model.GameSettings;
+import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.records.newconfig.model.Settings;
 
 /**

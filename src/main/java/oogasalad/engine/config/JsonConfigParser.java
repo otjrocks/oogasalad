@@ -260,12 +260,11 @@ public class JsonConfigParser implements ConfigParser {
     for (Map.Entry<String, EntityConfig> entry : entityMap.entrySet()) {
       String key = entry.getKey();
       EntityConfig entity = entry.getValue();
-      Map<String, oogasalad.engine.config.ModeConfig> modes = new HashMap<>();
+      Map<String, ModeConfig> modes = new HashMap<>();
 
       // create modes
-      for (oogasalad.engine.records.newconfig.ModeConfig mode : entity.modes()) {
-        oogasalad.engine.config.ModeConfig modeConfig = new oogasalad.engine.config.ModeConfig(
-            mode.entityProperties().movementSpeed(), mode.image().imagePath());
+      for (ModeConfig mode : entity.modes()) {
+        ModeConfig modeConfig = new ModeConfig(mode.name(), mode.entityProperties(), mode.image());
         modes.put(mode.name(), modeConfig);
       }
 
@@ -392,7 +391,7 @@ public class JsonConfigParser implements ConfigParser {
 
       JsonNode entityTypeNode = root.get("entityType");
       EntityProperties defaultProps = parseEntityProperties(entityTypeNode, filepath);
-      List<oogasalad.engine.records.newconfig.ModeConfig> modes = parseModes(root.get("modes"),
+      List<ModeConfig> modes = parseModes(root.get("modes"),
           defaultProps, filepath);
 
       return new EntityConfig(
@@ -414,17 +413,17 @@ public class JsonConfigParser implements ConfigParser {
     }
   }
 
-  private List<oogasalad.engine.records.newconfig.ModeConfig> parseModes(JsonNode modesNode,
+  private List<ModeConfig> parseModes(JsonNode modesNode,
       EntityProperties defaultProps,
       String filepath)
       throws ConfigException {
     try {
-      List<oogasalad.engine.records.newconfig.ModeConfig> modes = new ArrayList<>();
+      List<ModeConfig> modes = new ArrayList<>();
       for (JsonNode modeNode : modesNode) {
         String name = modeNode.get("name").asText();
         EntityProperties overrideProps = mergeProperties(name, defaultProps, modeNode);
         ImageConfig image = mapper.treeToValue(modeNode.get("image"), ImageConfig.class);
-        modes.add(new oogasalad.engine.records.newconfig.ModeConfig(name, overrideProps, image));
+        modes.add(new ModeConfig(name, overrideProps, image));
       }
       return modes;
     } catch (JsonProcessingException e) {

@@ -5,15 +5,17 @@ import java.util.List;
 import java.util.Optional;
 
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.model.CollisionRule;
 
 import java.io.File;
+import oogasalad.engine.records.newconfig.ImageConfig;
+import oogasalad.engine.config.ModeConfig;
+import oogasalad.engine.records.newconfig.model.ControlType;
+import oogasalad.engine.records.newconfig.model.ControlTypeConfig;
+import oogasalad.engine.records.newconfig.model.EntityProperties;
 
 /**
  * Dialog for creating a new ModeConfig with a user-uploaded image.
@@ -108,9 +110,9 @@ public class ModeEditorDialog {
   public ModeEditorDialog(ModeConfig existingConfig) {
     this(); // call default constructor
     if (existingConfig != null) {
-      nameField.setText(existingConfig.getModeName());
-      speedField.setText(String.valueOf(existingConfig.getMovementSpeed()));
-      selectedImageFile = new File(URI.create(existingConfig.getImagePath()));
+      nameField.setText(existingConfig.name());
+      speedField.setText(String.valueOf(existingConfig.entityProperties().movementSpeed()));
+      selectedImageFile = new File(URI.create(existingConfig.image().imagePath()));
       imagePathField.setText(selectedImageFile.getName());
     }
   }
@@ -140,28 +142,49 @@ public class ModeEditorDialog {
   }
 
   private boolean validateAndPrepareResult() {
+    if (selectedImageFile == null) {
+      showError("You must choose an image.");
+      return false;
+    }
+
+    String name = nameField.getText().trim();
+    if (name.isEmpty()) {
+      showError("Mode name cannot be empty.");
+      return false;
+    }
+
+    int speed;
     try {
-      if (selectedImageFile == null) {
-        showError("You must choose an image.");
-        return false;
-      }
-
-      int speed = Integer.parseInt(speedField.getText());
-      String name = nameField.getText().trim();
-      if (name.isEmpty()) {
-        showError("Mode name cannot be empty.");
-        return false;
-      }
-
-      ModeConfig config = new ModeConfig();
-      config.setImagePath(selectedImageFile.toURI().toString());
-      config.setMovementSpeed(speed);
-      config.setModeName(name);
-      preparedResult = config;
-      return true;
+      speed = Integer.parseInt(speedField.getText());
     } catch (NumberFormatException ex) {
       showError("Invalid speed. Please enter a number.");
       return false;
     }
+
+    // === Build ImageConfig ===
+    String imagePath = selectedImageFile.toURI().toString();
+    ImageConfig imageConfig = new ImageConfig(
+        imagePath,
+        14,
+        14,
+        List.of(0, 1, 2, 3), // Default animation cycle
+        1.0
+    );
+
+    // === Build EntityProperties ===
+    ControlTypeConfig controlConfig = new ControlTypeConfig("None", 0);
+    ControlType controlType = new ControlType("Keyboard", controlConfig);
+
+    EntityProperties entityProps = new EntityProperties(
+        name,
+        controlType,
+        (double) speed,
+        List.of()
+    );
+
+    // === Build ModeConfig ===
+    preparedResult = new ModeConfig(name, entityProps, imageConfig);
+    return true;
   }
+
 }
