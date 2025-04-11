@@ -61,7 +61,20 @@
       ],
       "entityB": "redghost",
       "eventsA": [
-        "UpdateLives(-1)"
+        "UpdateLives(-1)",
+        "ReturnToSpawnLocation"
+      ],
+      "eventsB": [
+      ]
+    },
+    {
+      "entityA": "redghost",
+      "modeA": [
+        1
+      ],
+      "entityB": "pacman",
+      "eventsA": [
+        "ReturnToSpawnLocation"
       ],
       "eventsB": [
       ]
