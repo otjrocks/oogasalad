@@ -1,6 +1,5 @@
 package oogasalad.player.controller;
 
-import java.io.ObjectInputFilter.Config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -21,14 +20,9 @@ import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.model.strategies.collision.CollisionStrategy;
-import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
-import oogasalad.engine.model.strategies.collision.StopStrategy;
-import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
-import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.model.strategies.gameoutcome.LivesBasedOutcome;
 import oogasalad.engine.records.CollisionContext;
 import oogasalad.engine.records.GameContext;
-import oogasalad.player.view.GameMapView;
 
 /**
  * A controller that handles all the updates of the game map models whenever the game map view is
@@ -39,16 +33,11 @@ import oogasalad.player.view.GameMapView;
 public class GameMapController {
 
   // TODO: This should be removed when hardcoded methods are refactored
-  public static final int PACMAN_INITIAL_X = 13;
-  public static final int PACMAN_INITIAL_Y = 23;
   public static final int FRUIT_INITIAL_X = 13;
   public static final int FRUIT_INITIAL_Y = 17;
-  private static final double GHOST_INITIAL_POSITION = 15;
-  private static final String PACMAN = "Pacman";
   private static final int SPRITE_ANIMATION_SPEED = 6;
   private final GameMap gameMap;
   private final GameState gameState;
-  private final GameMapView gameView;
   private int frameCount = 0;
   private GameEndHandler gameEndHandler;
   private final LivesBasedOutcome livesBasedOutcome = new LivesBasedOutcome();
@@ -58,13 +47,11 @@ public class GameMapController {
    * Create a game map controller with the provided game context.
    *
    * @param gameContext The game context object for this controller.
-   * @param view        The game map view for this controller.
    * @param configModel The game config model for this controller.
    */
-  public GameMapController(GameContext gameContext, GameMapView view, ConfigModel configModel) {
+  public GameMapController(GameContext gameContext, ConfigModel configModel) {
     gameMap = gameContext.gameMap();
     gameState = gameContext.gameState();
-    gameView = view;
     myConfigModel = configModel;
   }
 
@@ -96,6 +83,11 @@ public class GameMapController {
       Entity e1 = collision.get(0);
       Entity e2 = collision.get(1);
       handleCollision(e1, e2);
+    }
+    // Handle game over conditions:
+    if (livesBasedOutcome.hasGameEnded(new GameContext(gameMap, gameState))) {
+      gameState.setGameOver(true);
+      stopGameLoop(GameEndStatus.LOSS);
     }
   }
 
@@ -149,72 +141,6 @@ public class GameMapController {
 
   private static boolean checkCollisionRuleEntityAMatches(Entity e1, CollisionRule collisionRule) {
     return collisionRule.getEntityTypeA().equals(e1.getEntityPlacement().getType().type());
-  }
-
-
-  private void handleWallCollisions(Entity e1, Entity e2) {
-    // Stop at Wall for Pac-Man and Ghosts
-    if (e2.getEntityPlacement().getType().type().equals("Wall")
-        && (e1.getEntityPlacement().getType().type().equals(PACMAN)
-        || e1.getEntityPlacement().getType().type().endsWith("Ghost"))) {
-      try {
-        new StopStrategy().handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
-      } catch (EntityNotFoundException ex) {
-        throw new RuntimeException(ex);
-      }
-    }
-  }
-
-  private void handlePacManDotCollision(Entity e1, Entity e2) {
-    // Pac-Man eats Dot
-    if (e1.getEntityPlacement().getType().type().equals(PACMAN)
-        && e2.getEntityPlacement().getType().type().equals("Dot")) {
-      try {
-        new ConsumeStrategy().handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
-      } catch (EntityNotFoundException ex) {
-        throw new RuntimeException(ex);
-      }
-      new UpdateScoreStrategy(10)
-          .handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
-
-      if (new EntityBasedOutcomeStrategy("Dot")
-          .hasGameEnded(new GameContext(gameMap, gameState))) {
-        stopGameLoop(GameEndStatus.WIN);
-        gameState.setGameOver(true);
-      }
-    }
-  }
-
-  private void handleBlueGhost(Entity e1, Entity e2) {
-    // Pac-Man eats BlueGhost
-    if (e1.getEntityPlacement().getType().type().equals(PACMAN)
-        && e2.getEntityPlacement().getType().type().equals("BlueGhost")) {
-      try {
-        gameMap.removeEntity(e2);
-      } catch (EntityNotFoundException ex) {
-        throw new RuntimeException(ex);
-      }
-      new UpdateScoreStrategy(200)
-          .handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
-    }
-  }
-
-  private void handlePacManDeath(Entity e1, Entity e2) {
-    // Pac-Man death by RedGhost
-    if (e1.getEntityPlacement().getType().type().equals(PACMAN)
-        && e2.getEntityPlacement().getType().type().equals("RedGhost")) {
-      gameState.updateLives(-1);
-      e2.getEntityPlacement().setX(GHOST_INITIAL_POSITION);
-      e2.getEntityPlacement().setY(GHOST_INITIAL_POSITION);
-      stopGameLoop(GameEndStatus.PAUSE_ONLY);
-      e1.getEntityPlacement().setInDeathAnimation(true);
-      gameView.triggerPacManDeathAnimation(e1);
-
-      if (livesBasedOutcome.hasGameEnded(new GameContext(gameMap, gameState))) {
-        gameState.setGameOver(true);
-        stopGameLoop(GameEndStatus.LOSS);
-      }
-    }
   }
 
   private List<List<Entity>> getAllCollisions() {
