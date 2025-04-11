@@ -9,13 +9,10 @@ import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.GameEndHandler;
 
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameEndStatus;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.api.StrategyFactory;
-import oogasalad.engine.model.entity.BasicEntity;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
@@ -33,8 +30,6 @@ import oogasalad.engine.records.GameContext;
 public class GameMapController {
 
   // TODO: This should be removed when hardcoded methods are refactored
-  public static final int FRUIT_INITIAL_X = 13;
-  public static final int FRUIT_INITIAL_Y = 17;
   private static final int SPRITE_ANIMATION_SPEED = 6;
   private final GameMap gameMap;
   private final GameState gameState;
@@ -60,13 +55,6 @@ public class GameMapController {
    */
   public void updateEntityModels() throws InvalidPositionException {
     frameCount++;
-    if (gameState.getScore() == 700) {
-      EntityType fruitType = new EntityType("fruit", "wall", null, null, null, null);
-      EntityPlacement fruitPlacement = new EntityPlacement(fruitType, FRUIT_INITIAL_X,
-          FRUIT_INITIAL_Y, "Default");
-      Entity fruit = new BasicEntity(fruitPlacement);
-      gameMap.addEntity(fruit);
-    }
     // Move entities and advance animation frame
     for (Iterator<Entity> it = gameMap.iterator(); it.hasNext(); ) {
       Entity entity = it.next();
