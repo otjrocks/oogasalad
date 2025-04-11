@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import oogasalad.engine.ConstantsManager;
 import oogasalad.engine.ConstantsManagerException;
+import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.api.ConfigParser;
 import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
@@ -250,6 +251,11 @@ public class JsonConfigParser implements ConfigParser {
       return "Any";   // default behave if no specified mode
     }
     // TODO: taking first for now
+    if (entity == null || entity.modes() == null
+        || !entity.modes().contains(modeList.getFirst())) {
+      LoggingManager.LOGGER.warn("Unable to resolve mode. For config: {}", entity);
+      return "Any";
+    }
     return entity.modes().get(modeList.getFirst()).name();
   }
 

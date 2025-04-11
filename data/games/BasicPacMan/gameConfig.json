@@ -19,22 +19,75 @@
   "collisions": [
     {
       "entityA": "pacman",
-      "modeA": [0],
-      "entityB": "redghost",
+      "modeA": [
+        0
+      ],
+      "entityB": "wall",
       "eventsA": [
-        "LoseLife"
+        "Stop"
       ],
       "eventsB": []
     },
     {
       "entityA": "pacman",
-      "modeA": [1],
-      "entityB": "redghost",
+      "modeA": [
+        1
+      ],
+      "entityB": "blueghost",
       "eventsA": [
-        "AddScore(100)"
+        "UpdateScore(200)"
       ],
       "eventsB": [
-        "Destroy"
+        "Consume"
+      ]
+    },
+    {
+      "entityA": "pacman",
+      "modeA": [
+        1
+      ],
+      "entityB": "dot",
+      "eventsA": [
+        "UpdateScore(10)"
+      ],
+      "eventsB": [
+        "Consume"
+      ]
+    },
+    {
+      "entityA": "pacman",
+      "modeA": [
+        1
+      ],
+      "entityB": "redghost",
+      "eventsA": [
+        "UpdateLives(-1)"
+      ],
+      "eventsB": [
+      ]
+    },
+    {
+      "entityA": "redghost",
+      "modeA": [
+        1
+      ],
+      "entityB": "wall",
+      "eventsA": [
+        "Stop"
+      ],
+      "eventsB": [
+      ]
+    },
+    {
+      "entityA": "blueghost",
+      "modeA": [
+        1
+      ],
+      "entityB": "wall",
+      "eventsA": [
+        "Stop"
+      ],
+      "eventsB": [
       ]
     }
   ]

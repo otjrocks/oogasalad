@@ -24,6 +24,7 @@ public class GamePlayerView extends StackPane {
   private final MainController myMainController;
   private final GameState myGameState;
   private GameView myGameView;
+  private ConfigModel myConfigModel = null;
 
   /**
    * Create the Game Player View.
@@ -41,10 +42,8 @@ public class GamePlayerView extends StackPane {
 
   private void createExampleMap() {
     JsonConfigParser configParser = new JsonConfigParser();
-    ConfigModel configModel = null;
-
     try {
-      configModel = configParser.loadFromFile("data/games/BasicPacMan/gameConfig.json");
+      myConfigModel = configParser.loadFromFile("data/games/BasicPacMan/gameConfig.json");
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
     }
@@ -52,15 +51,15 @@ public class GamePlayerView extends StackPane {
     GameMap gameMap = null;
 
     try {
-      if (configModel != null) {
-        gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), configModel);
+      if (myConfigModel != null) {
+        gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel);
       }
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn("Failed to create or populate GameMap: ", e);
     }
 
     if (gameMap != null) {
-      myGameView = new GameView(new GameContext(gameMap, myGameState));
+      myGameView = new GameView(new GameContext(gameMap, myGameState), myConfigModel);
       this.getChildren().add(myGameView);
     }
   }

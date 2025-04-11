@@ -6,20 +6,15 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import java.util.function.Consumer;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.util.Duration;
+import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.model.GameEndStatus;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContext;
 import oogasalad.player.controller.GameLoopController;
 import oogasalad.player.controller.GameMapController;
-
-import static oogasalad.player.controller.GameMapController.PACMAN_INITIAL_X;
-import static oogasalad.player.controller.GameMapController.PACMAN_INITIAL_Y;
 
 /**
  * A Canvas-based view for rendering the entire GameMap and all its corresponding entities.
@@ -36,19 +31,18 @@ public class GameMapView extends Canvas {
   private final ResourceBundle SPRITE_DATA =
       ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
   private GameLoopController myGameLoopController;
-  private boolean isDeathAnimationRunning = false;
-  private Timeline deathAnimationTimeline;
   private Consumer<Boolean> endGameCallback;
 
   /**
    * Initialize a game map view.
    *
    * @param gameContext The game context object for this view.
+   * @param configModel The config model for this view.
    */
-  public GameMapView(GameContext gameContext) {
+  public GameMapView(GameContext gameContext, ConfigModel configModel) {
     super(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
     myGameContext = gameContext;
-    myGameMapController = new GameMapController(myGameContext, this);
+    myGameMapController = new GameMapController(myGameContext, configModel);
     myGameMapController.setGameEndHandler(status -> {
       pauseGame();
       if (endGameCallback != null && status != GameEndStatus.PAUSE_ONLY) {
@@ -69,66 +63,6 @@ public class GameMapView extends Canvas {
       );
       entityViews.add(new EntityView(entity, frames));
     }
-  }
-
-  /**
-   * Starts the death animation when Pac-Man dies.
-   */
-  public void triggerPacManDeathAnimation(Entity pacManEntity) {
-    if (isDeathAnimationRunning) {
-      return;
-    }
-
-    isDeathAnimationRunning = true;
-
-    initializeOrReplaceEntityView(pacManEntity);
-
-    deathAnimationTimeline = new Timeline(
-        new KeyFrame(Duration.seconds(0.1), e -> updateDeathAnimationFrame(pacManEntity))
-    );
-    deathAnimationTimeline.setCycleCount(Timeline.INDEFINITE);
-    deathAnimationTimeline.play();
-  }
-
-  private void initializeOrReplaceEntityView(Entity entity) {
-    EntityView existingView = findEntityView(entity);
-
-    if (existingView == null) {
-      entityViews.add(new EntityView(entity, 11));
-    }
-  }
-
-  private EntityView findEntityView(Entity entity) {
-    for (EntityView view : entityViews) {
-      if (view.getEntity().equals(entity)) {
-        return view;
-      }
-    }
-    return null;
-  }
-
-  private void updateDeathAnimationFrame(Entity pacManEntity) {
-    pacManEntity.getEntityPlacement().incrementDeathFrame();
-
-    drawAll();
-
-    if (pacManEntity.getEntityPlacement().getDeathFrame() >= 11) {
-      endDeathAnimation(pacManEntity);
-    }
-  }
-
-  /**
-   * Ends the death animation and resets Pac-Man's state.
-   */
-  public void endDeathAnimation(Entity pacManEntity) {
-    isDeathAnimationRunning = false;
-    pacManEntity.getEntityPlacement().setX(PACMAN_INITIAL_X);
-    pacManEntity.getEntityPlacement().setY(PACMAN_INITIAL_Y);
-    pacManEntity.getEntityPlacement().setDeathFrame(0);
-    pacManEntity.getEntityPlacement().setInDeathAnimation(false);
-
-    deathAnimationTimeline.stop();
-    update();
   }
 
   /**
@@ -175,18 +109,11 @@ public class GameMapView extends Canvas {
   }
 
   /**
-   * Checks if death animation is currently running
-   */
-  public boolean isDeathAnimationRunning() {
-    return isDeathAnimationRunning;
-  }
-
-  /**
    * Sets the callback to be executed when the game ends.
    *
    * <p>This method allows external components (e.g., {@code GameView}) to register a handler
-   * that responds to the end of gameplay, such as displaying a message or transitioning
-   * to another screen.</p>
+   * that responds to the end of gameplay, such as displaying a message or transitioning to another
+   * screen.</p>
    *
    * @param callback trigger for callback.
    */
