@@ -34,6 +34,10 @@ public class StrategyFactory {
       }
       strategyString = strategyString.substring(0, strategyString.indexOf("("));
     }
+    return getCollisionStrategy(strategyString, parameter);
+  }
+
+  private static CollisionStrategy getCollisionStrategy(String strategyString, int parameter) {
     return switch (strategyString) {
       case "Stop" -> new StopStrategy();
       case "UpdateLives" -> new UpdateLivesStrategy(parameter);
