@@ -38,6 +38,8 @@ public class AuthoringController {
   private EntityType selectedType;
   private EntityPlacement selectedPlacement;
 
+  private static final String DEFAULT_MODE = "Default";
+
   /**
    * Constructs an AuthoringController with the given model and view.
    *
@@ -51,15 +53,13 @@ public class AuthoringController {
   }
 
   /**
-   * Creates a new {@link EntityType} with a default mode and registers it
-   * in the model. Updates the entity selector and opens the entity editor
-   * for the newly created type.
+   * Creates a new {@link EntityType} with a default mode and registers it in the model. Updates the
+   * entity selector and opens the entity editor for the newly created type.
    * <p>
    * Triggered when the user clicks the "+ Add Entity Type" button.
    * </p>
    */
   public void createNewEntityType() {
-
 
     String newTypeName = "NewEntity" + UUID.randomUUID().toString().substring(0, 4);
     EntityType newType = new EntityType(newTypeName, "", "", defaultModeMap(), null, null);
@@ -70,8 +70,8 @@ public class AuthoringController {
   }
 
   /**
-   * Selects an existing {@link EntityType} by its name and updates the
-   * entity editor with its details.
+   * Selects an existing {@link EntityType} by its name and updates the entity editor with its
+   * details.
    * <p>
    * Triggered when a tile is clicked in the EntitySelectorView.
    * </p>
@@ -95,9 +95,9 @@ public class AuthoringController {
   }
 
   /**
-   * Places a new instance of an entity on the canvas at the given coordinates.
-   * If the given type name is valid, a new {@link EntityPlacement} is created,
-   * added to the current level, and rendered visually.
+   * Places a new instance of an entity on the canvas at the given coordinates. If the given type
+   * name is valid, a new {@link EntityPlacement} is created, added to the current level, and
+   * rendered visually.
    *
    * @param typeName the name of the entity type being placed
    * @param x        the X-coordinate of the placement (in pixels)
@@ -111,8 +111,8 @@ public class AuthoringController {
   }
 
   /**
-   * Moves an existing entity placement to a new position on the canvas.
-   * Updates both the model and visual representation of the entity.
+   * Moves an existing entity placement to a new position on the canvas. Updates both the model and
+   * visual representation of the entity.
    *
    * @param placement the EntityPlacement being moved
    * @param x         the new X-coordinate (in pixels)
@@ -129,8 +129,8 @@ public class AuthoringController {
   }
 
   /**
-   * Refreshes the entity selector view grid to reflect the current
-   * set of entity types stored in the model.
+   * Refreshes the entity selector view grid to reflect the current set of entity types stored in
+   * the model.
    */
   public void updateEntitySelector() {
     view.getEntitySelectorView().updateEntities(new ArrayList<>(model.getEntityTypes()));
@@ -138,8 +138,8 @@ public class AuthoringController {
 
 
   /**
-   * Reloads and re-renders all entity visuals on the canvas based on the
-   * current level’s list of {@link EntityPlacement}s.
+   * Reloads and re-renders all entity visuals on the canvas based on the current level’s list of
+   * {@link EntityPlacement}s.
    */
   public void updateCanvas() {
     List<EntityPlacement> placements = model.getCurrentLevel().getEntityPlacements();
@@ -180,36 +180,28 @@ public class AuthoringController {
 
     // Default entity properties
     EntityProperties entityProperties = new EntityProperties(
-        "Default",
+        DEFAULT_MODE,
         controlType,
         100.0,
         List.of()  // No blocked entities
     );
 
     // Final default mode config
-    ModeConfig defaultMode = new ModeConfig("Default", entityProperties, imageConfig);
+    ModeConfig defaultMode = new ModeConfig(DEFAULT_MODE, entityProperties, imageConfig);
 
     Map<String, ModeConfig> map = new HashMap<>();
-    map.put("Default", defaultMode);
+    map.put(DEFAULT_MODE, defaultMode);
     return map;
   }
 
 
   /**
    * Get Level Controller
+   *
    * @return level controller
    */
   public LevelController getLevelController() {
     return levelController;
-  }
-
-  /**
-   * Updates the game settings in the model when changes are made in the view
-   *
-   * @param updatedSettings the updated GameSettings object
-   */
-  public void updateGameSettings(Settings updatedSettings) {
-    model.setDefaultSettings(updatedSettings);
   }
 
   /**
@@ -221,15 +213,6 @@ public class AuthoringController {
     return model;
   }
 
-  /**
-   * Helper method to refresh the game settings view
-   * Call this whenever the model's settings change from another source
-   */
-  public void refreshGameSettingsView() {
-    if (view.getGameSettingsView() != null) {
-      view.getGameSettingsView().updateFromModel();
-    }
-  }
 
   /**
    * Gets the view for components to access
@@ -241,8 +224,8 @@ public class AuthoringController {
   }
 
   /**
-   * Selects an entity placement on the canvas.
-   * This is called when a user clicks on an entity in the canvas.
+   * Selects an entity placement on the canvas. This is called when a user clicks on an entity in
+   * the canvas.
    *
    * @param placement the entity placement that was selected, or null to deselect
    */
@@ -261,67 +244,4 @@ public class AuthoringController {
     }
   }
 
-  /**
-   * Updates an entity placement's properties and refreshes views.
-   * Called when the properties of an entity are edited in the EntityPlacementView.
-   *
-   * @param placement the updated entity placement
-   */
-  public void updateEntityPlacement(EntityPlacement placement) {
-    if (placement == null) return;
-    updateCanvas();
-  }
-
-  /**
-   * Updates the mode of an entity placement.
-   * Called when the mode is changed in the EntityPlacementView.
-   *
-   * @param placement the entity placement to update
-   * @param newMode the new mode to set
-   */
-  public void updateEntityPlacementMode(EntityPlacement placement, String newMode) {
-    if (placement == null || newMode == null) return;
-
-    // Verify that the mode exists for this entity type
-    if (placement.getType().modes().containsKey(newMode)) {
-      placement.setMode(newMode);
-      updateCanvas();
-    }
-  }
-
-  /**
-   * Removes an entity placement from the current level.
-   * Called when the delete button is clicked in the EntityPlacementView.
-   *
-   * @param placement the entity placement to remove
-   */
-  public void removeEntityPlacement(EntityPlacement placement) {
-    if (placement == null) return;
-
-    model.getCurrentLevel().removeEntityPlacement(placement);
-
-    if (placement == selectedPlacement) {
-      selectedPlacement = null;
-    }
-
-    updateCanvas();
-  }
-
-  /**
-   * Returns the currently selected entity placement, if any.
-   *
-   * @return the currently selected placement, or null if none is selected
-   */
-  public EntityPlacement getSelectedPlacement() {
-    return selectedPlacement;
-  }
-
-  /**
-   * Returns the currently selected entity type, if any.
-   *
-   * @return the currently selected entity type, or null if none is selected
-   */
-  public EntityType getSelectedType() {
-    return selectedType;
-  }
 }
