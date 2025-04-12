@@ -26,6 +26,7 @@ public class CanvasView {
   private static final int TILE_SIZE = 40;
   private static final int ROWS = 15;
   private static final int COLS = 20;
+  private static final double DRAG_THRESHOLD = 5.0;
 
   private final Pane root;
   private final AuthoringController controller;
@@ -38,8 +39,8 @@ public class CanvasView {
   private EntityPlacement selectedEntity = null;
   private ImageView selectedImageView = null;
   private int origRow, origCol;
-  private double mouseOffsetX, mouseOffsetY;
-  private double lastMouseSceneX, lastMouseSceneY;
+  private double startDragX, startDragY;
+  private double startImageX, startImageY;
   private boolean hasMoved = false;
 
 
@@ -171,8 +172,10 @@ public class CanvasView {
     origCol = (int)(clickedEntity.getX() / TILE_SIZE);
 
     // Store the initial mouse position in scene coordinates
-    lastMouseSceneX = e.getSceneX();
-    lastMouseSceneY = e.getSceneY();
+    startDragX = e.getSceneX();
+    startDragY = e.getSceneY();
+    startImageX = clickedImageView.getX();
+    startImageY = clickedImageView.getY();
 
     // Reset the movement flag
     hasMoved = false;
@@ -197,42 +200,38 @@ public class CanvasView {
     }
 
     // Calculate delta movement from last mouse position
-    double deltaX = e.getSceneX() - lastMouseSceneX;
-    double deltaY = e.getSceneY() - lastMouseSceneY;
+    double deltaX = e.getSceneX() - startDragX;
+    double deltaY = e.getSceneY() - startDragY;
 
-    // Update the last known mouse position
-    lastMouseSceneX = e.getSceneX();
-    lastMouseSceneY = e.getSceneY();
-
-    // Only move if there's significant delta to avoid unintended movement
-    if (Math.abs(deltaX) < 1 && Math.abs(deltaY) < 1 && !hasMoved) {
-      return;
+    // Only initiate a drag if the movement exceeds our threshold
+    if (!hasMoved && (Math.abs(deltaX) > DRAG_THRESHOLD || Math.abs(deltaY) > DRAG_THRESHOLD)) {
+      hasMoved = true;
     }
 
-    hasMoved = true;
+    if (!hasMoved) {
+      return; // Not yet considered a drag
+    }
 
-    // Get current position
-    double currentX = selectedImageView.getX();
-    double currentY = selectedImageView.getY();
+    // Calculate new position directly from the start position plus delta
+    double newX = startImageX + deltaX;
+    double newY = startImageY + deltaY;
 
-    // Calculate new position by adding delta
-    double newX = currentX + deltaX;
-    double newY = currentY + deltaY;
+    // Get grid cell
+    int col = (int)Math.floor(newX / TILE_SIZE);
+    int row = (int)Math.floor(newY / TILE_SIZE);
 
-    // Snap to grid
-    int col = Math.max(0, Math.min(COLS - 1, (int)Math.round(newX / TILE_SIZE)));
-    int row = Math.max(0, Math.min(ROWS - 1, (int)Math.round(newY / TILE_SIZE)));
+    // Ensure we stay within grid bounds
+    col = Math.max(0, Math.min(COLS - 1, col));
+    row = Math.max(0, Math.min(ROWS - 1, row));
 
     double snappedX = col * TILE_SIZE;
     double snappedY = row * TILE_SIZE;
 
-    // Check if the target cell is available or it's the original cell
-    boolean isCellAvailable = !isValidCell(row, col) ||
-            gridEntities[row][col] == null ||
+    boolean isCellAvailable = gridEntities[row][col] == null ||
             gridEntities[row][col] == selectedEntity;
 
     if (isCellAvailable) {
-      // Update visual position
+      // Update visual position with snapped coordinates
       selectedImageView.setX(snappedX);
       selectedImageView.setY(snappedY);
       selectionHighlight.setX(snappedX);
@@ -270,6 +269,7 @@ public class CanvasView {
     selectedEntity = null;
     selectedImageView = null;
     hasMoved = false;
+    selectionHighlight.setVisible(false);
   }
 
   void finalizeEntityPosition() {
@@ -314,6 +314,13 @@ public class CanvasView {
   public void reloadFromPlacements(List<EntityPlacement> placements) {
     root.getChildren().clear();
 
+    for (int i = 0; i < ROWS; i++) {
+      for (int j = 0; j < COLS; j++) {
+        gridEntities[i][j] = null;
+      }
+    }
+    entityViews.clear();
+
     // Add visuals back
     for (EntityPlacement placement : placements) {
       addEntityVisual(placement);
@@ -321,6 +328,8 @@ public class CanvasView {
 
     // Restore hover highlight after clearing
     root.getChildren().add(hoverHighlight);
+    root.getChildren().add(selectionHighlight);
+    selectionHighlight.setVisible(false);
   }
 
   /**
