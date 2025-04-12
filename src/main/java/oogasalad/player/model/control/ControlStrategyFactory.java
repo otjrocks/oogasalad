@@ -9,33 +9,37 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.player.model.exceptions.ControlStrategyException;
 
 /**
- * The {@code ControlStrategyFactory} class is responsible for dynamically creating instances of 
- * {@link ControlStrategy} based on the control type specified in an {@link EntityPlacement}. 
- * It uses reflection to identify and instantiate the appropriate control strategy class, 
- * supporting constructors with varying argument requirements.
+ * The {@code ControlStrategyFactory} class is responsible for dynamically creating instances of
+ * {@link ControlStrategy} based on the control type specified in an {@link EntityPlacement}. It
+ * uses reflection to identify and instantiate the appropriate control strategy class, supporting
+ * constructors with varying argument requirements.
  *
- * <p>This factory class provides flexibility in creating control strategies by allowing 
- * different implementations to be dynamically loaded at runtime. It supports constructors 
- * with zero, two, or three arguments, ensuring compatibility with various control strategy 
+ * <p>This factory class provides flexibility in creating control strategies by allowing
+ * different implementations to be dynamically loaded at runtime. It supports constructors with
+ * zero, two, or three arguments, ensuring compatibility with various control strategy
  * implementations.</p>
  *
- * <p>Usage of this class involves providing a {@link GameInputManager}, an {@link EntityPlacement}, 
- * and a {@link GameMap} to the {@link #createControlStrategy(GameInputManager, EntityPlacement, GameMap)} 
- * method, which returns an instance of the appropriate {@link ControlStrategy}.</p>
+ * <p>Usage of this class involves providing a {@link GameInputManager}, an
+ * {@link EntityPlacement},
+ * and a {@link GameMap} to the
+ * {@link #createControlStrategy(GameInputManager, EntityPlacement, GameMap)} method, which returns
+ * an instance of the appropriate {@link ControlStrategy}.</p>
  *
- * <p>Note: This class assumes that the control strategy classes follow a specific naming convention 
- * and are located within the {@code oogasalad.player.model.control} package. If the required 
- * control strategy class cannot be found or instantiated, a {@link ControlStrategyException} 
- * is thrown.</p>
+ * <p>Note: This class assumes that the control strategy classes follow a specific naming
+ * convention
+ * and are located within the {@code oogasalad.player.model.control} package. If the required
+ * control strategy class cannot be found or instantiated, a {@link ControlStrategyException} is
+ * thrown.</p>
  *
- * <p>Example control strategy naming convention: If the control type is "Keyboard", the corresponding 
+ * <p>Example control strategy naming convention: If the control type is "Keyboard", the
+ * corresponding
  * class should be named {@code KeyboardControlStrategy} and located in the specified package.</p>
  *
  * <p>Potential exceptions include:</p>
  * <ul>
  *   <li>{@link ControlStrategyException} - Thrown if the control strategy cannot be created or instantiated.</li>
  * </ul>
- * 
+ *
  * @author Jessica Chen
  */
 public class ControlStrategyFactory {
@@ -44,7 +48,8 @@ public class ControlStrategyFactory {
       = "oogasalad.player.model.control.";
 
   /**
-   * Creates a {@link ControlStrategy} instance based on the control type of the given {@link EntityPlacement}.
+   * Creates a {@link ControlStrategy} instance based on the control type of the given
+   * {@link EntityPlacement}.
    *
    * @param input           the {@link GameInputManager} to be used by the control strategy
    * @param entityPlacement the {@link EntityPlacement} containing the control type
