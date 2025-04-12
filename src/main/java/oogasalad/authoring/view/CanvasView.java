@@ -194,12 +194,50 @@ public class CanvasView {
 
   }
 
+  /**
+   * Handles the mouse drag event for entities.
+   *
+   * @param e The mouse drag event
+   */
   void handleEntityMouseDragged(MouseEvent e) {
-    if (selectedEntity == null || selectedImageView == null) {
+    if (!isEntitySelected()) {
       return;
     }
 
-    // Calculate delta movement from last mouse position
+    if (!checkAndUpdateDragStatus(e)) {
+      return; // Not yet considered a drag
+    }
+
+    // Get the target grid position
+    int[] gridPos = calculateTargetGridCell(e);
+    int row = gridPos[0];
+    int col = gridPos[1];
+
+    // Update visual position if the target cell is available
+    if (isCellAvailable(row, col)) {
+      updateEntityVisualPosition(row, col);
+    }
+
+    e.consume();
+  }
+
+  /**
+   * Checks if any entity is currently selected.
+   *
+   * @return true if an entity is selected
+   */
+  private boolean isEntitySelected() {
+    return selectedEntity != null && selectedImageView != null;
+  }
+
+  /**
+   * Checks if the drag threshold has been exceeded and updates the drag status.
+   *
+   * @param e The mouse event
+   * @return true if we're in a drag state
+   */
+  private boolean checkAndUpdateDragStatus(MouseEvent e) {
+    // Calculate absolute delta from the starting position
     double deltaX = e.getSceneX() - startDragX;
     double deltaY = e.getSceneY() - startDragY;
 
@@ -208,9 +246,19 @@ public class CanvasView {
       hasMoved = true;
     }
 
-    if (!hasMoved) {
-      return; // Not yet considered a drag
-    }
+    return hasMoved;
+  }
+
+  /**
+   * Calculates the target grid cell based on mouse position.
+   *
+   * @param e The mouse event
+   * @return int array containing [row, col]
+   */
+  private int[] calculateTargetGridCell(MouseEvent e) {
+    // Calculate absolute delta from the starting position
+    double deltaX = e.getSceneX() - startDragX;
+    double deltaY = e.getSceneY() - startDragY;
 
     // Calculate new position directly from the start position plus delta
     double newX = startImageX + deltaX;
@@ -224,21 +272,34 @@ public class CanvasView {
     col = Math.max(0, Math.min(COLS - 1, col));
     row = Math.max(0, Math.min(ROWS - 1, row));
 
+    return new int[]{row, col};
+  }
+
+  /**
+   * Checks if the specified cell is available for placement.
+   *
+   * @param row The grid row
+   * @param col The grid column
+   * @return true if the cell is available
+   */
+  private boolean isCellAvailable(int row, int col) {
+    return gridEntities[row][col] == null || gridEntities[row][col] == selectedEntity;
+  }
+
+  /**
+   * Updates the visual position of the entity to the specified grid cell.
+   *
+   * @param row The grid row
+   * @param col The grid column
+   */
+  private void updateEntityVisualPosition(int row, int col) {
     double snappedX = col * TILE_SIZE;
     double snappedY = row * TILE_SIZE;
 
-    boolean isCellAvailable = gridEntities[row][col] == null ||
-            gridEntities[row][col] == selectedEntity;
-
-    if (isCellAvailable) {
-      // Update visual position with snapped coordinates
-      selectedImageView.setX(snappedX);
-      selectedImageView.setY(snappedY);
-      selectionHighlight.setX(snappedX);
-      selectionHighlight.setY(snappedY);
-    }
-
-    e.consume();
+    selectedImageView.setX(snappedX);
+    selectedImageView.setY(snappedY);
+    selectionHighlight.setX(snappedX);
+    selectionHighlight.setY(snappedY);
   }
 
   /**
