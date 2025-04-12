@@ -1,0 +1,28 @@
+{
+  "entityType" : {
+    "name" : "NewEntity0610",
+    "controlType" : {
+      "controlType" : "TargetEntity"
+    },
+    "movementSpeed" : 100
+  },
+  "modes" : [ {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "assets/images/pacman.png",
+      "tileWidth" : 14,
+      "tileHeight" : 14,
+      "tilesToCycle" : [ 1 ],
+      "animationSpeed" : 2
+    }
+  }, {
+    "name" : "BlueGhostMode",
+    "image" : {
+      "imagePath" : "assets/blueghost.png",
+      "tileWidth" : 14,
+      "tileHeight" : 14,
+      "tilesToCycle" : [ 1 ],
+      "animationSpeed" : 2
+    }
+  } ]
+}
