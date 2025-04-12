@@ -41,7 +41,6 @@ public class GameView extends StackPane {
     endLabel.getStyleClass().add("end-label");
     this.getChildren().add(endLabel); // overlay it on top
     StackPane.setAlignment(endLabel, Pos.CENTER);
-    myGameMapView.setGameLoopController(myGameLoopController);
     myGameMapView.setEndGameCallback(this::showEndMessage);
   }
 
@@ -60,7 +59,8 @@ public class GameView extends StackPane {
   }
 
   private void showEndMessage(boolean gameWon) {
-    endLabel.setText(gameWon ? LanguageManager.getMessage("LEVEL_PASSED") : LanguageManager.getMessage("GAME_OVER"));
+    endLabel.setText(gameWon ? LanguageManager.getMessage("LEVEL_PASSED") :
+        LanguageManager.getMessage("GAME_OVER"));
     endLabel.setVisible(true);
   }
 }
