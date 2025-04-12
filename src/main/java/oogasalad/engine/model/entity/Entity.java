@@ -1,16 +1,22 @@
 package oogasalad.engine.model.entity;
 
+import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.GameMap;
+import oogasalad.player.model.control.ControlStrategy;
+import oogasalad.player.model.control.ControlStrategyFactory;
 
 /**
  * An abstract class to represent an Entity in the game.
  *
  * @author Jessica Chen
  */
-public abstract class Entity {
+public class Entity {
 
   private final EntityPlacement myEntityPlacement;
+  private final GameInputManager inputManager;
+  private final GameMap gameMap;
   private double dx;
   private double dy;
   private char currentDirection;
@@ -20,9 +26,13 @@ public abstract class Entity {
    * Initialize the entity with the provided entity data.
    *
    * @param entityPlacement The data used to initialize this entity.
+   * @
    */
-  protected Entity(EntityPlacement entityPlacement) {
+  public Entity(GameInputManager input, EntityPlacement entityPlacement,
+      GameMap gameMap) {
     myEntityPlacement = entityPlacement;
+    this.inputManager = input;
+    this.gameMap = gameMap;
   }
 
   /**
@@ -40,7 +50,12 @@ public abstract class Entity {
   /**
    * Handle the update of an Entity.
    */
-  public abstract void update();
+  public void update() {
+    ControlStrategy strategy = ControlStrategyFactory.createControlStrategy(inputManager,
+        myEntityPlacement, gameMap);
+
+    strategy.update(this);
+  }
 
   /**
    * Set the movement direction of this entity.
@@ -120,7 +135,7 @@ public abstract class Entity {
     this.dy = dy;
   }
 
-  protected boolean canMove(char direction) {
+  public boolean canMove(char direction) {
     if (direction == 'R' || direction == 'L') {
       return this.getEntityPlacement().getY() - (int) this.getEntityPlacement().getY()
           < ENTITY_SPEED;

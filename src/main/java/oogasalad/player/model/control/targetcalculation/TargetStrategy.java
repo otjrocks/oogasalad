@@ -1,4 +1,4 @@
-package oogasalad.player.model.movement.targetcalculation;
+package oogasalad.player.model.control.targetcalculation;
 
 /**
  * Interface representing a strategy for calculating target positions.

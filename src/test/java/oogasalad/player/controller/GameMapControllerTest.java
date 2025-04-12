@@ -1,15 +1,15 @@
 package oogasalad.player.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
 import oogasalad.engine.config.ConfigModel;
+import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
-import oogasalad.engine.model.entity.BasicEntity;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.records.GameContext;
 import oogasalad.player.view.GameMapView;
@@ -40,7 +40,8 @@ public class GameMapControllerTest {
   public void updateEntityModels_setVelocityForEntity_entityPositionUpdates() throws Exception {
     EntityType type = new EntityType("SomeEntity", "wall", null, null, null, null);
     EntityPlacement placement = new EntityPlacement(type, 5, 5, "Default");
-    BasicEntity entity = new BasicEntity(placement);
+    GameInputManager mockInputManager = mock(GameInputManager.class);
+    Entity entity = new Entity(mockInputManager, placement, mockGameMap);
     entity.setDx(1);
     entity.setDy(-1);
 

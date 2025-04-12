@@ -1,4 +1,4 @@
-package oogasalad.player.model.movement.targetcalculation;
+package oogasalad.player.model.control.targetcalculation;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

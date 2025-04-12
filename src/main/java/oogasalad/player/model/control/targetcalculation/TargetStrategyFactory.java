@@ -1,4 +1,4 @@
-package oogasalad.player.model.movement.targetcalculation;
+package oogasalad.player.model.control.targetcalculation;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
@@ -15,7 +15,7 @@ import oogasalad.player.model.exceptions.TargetStrategyException;
 public class TargetStrategyFactory {
 
   private static final String STRATEGY_PACKAGE
-      = "oogasalad.player.model.movement.targetcalculation.";
+      = "oogasalad.player.model.control.targetcalculation.";
 
   /**
    * Factory method to create a TargetStrategy based on the control type of the given
@@ -37,7 +37,7 @@ public class TargetStrategyFactory {
       return instantiateStrategy(strategyClass, placement, gameMap);
     } catch (Exception e) {
       throw new TargetStrategyException(
-          "Failed to create strategy for control type: " + controlType, e);
+          "Failed to create strategy for control type: " + controlType + " " + className, e);
     }
   }
 
