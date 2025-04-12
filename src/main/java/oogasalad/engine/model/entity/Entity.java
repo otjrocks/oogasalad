@@ -135,6 +135,14 @@ public class Entity {
     this.dy = dy;
   }
 
+  /**
+   * Determines if the entity can move in the specified direction based on its current position
+   * and the defined movement speed.
+   *
+   * @param direction the direction to check for movement ('R' for right, 'L' for left, or other
+   *                  characters for vertical movement)
+   * @return true if the entity can move in the specified direction, false otherwise
+   */
   public boolean canMove(char direction) {
     if (direction == 'R' || direction == 'L') {
       return this.getEntityPlacement().getY() - (int) this.getEntityPlacement().getY()

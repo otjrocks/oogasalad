@@ -5,12 +5,31 @@ import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 
+/**
+ * The KeyboardControlStrategy class implements the ControlStrategy interface and provides
+ * functionality for controlling an entity's movement based on keyboard input. It uses a 
+ * GameInputManager to detect keyboard actions, a GameMap to check for obstacles, and an 
+ * EntityPlacement to determine the entity's current position.
+ *
+ * <p>This class updates the direction of an entity based on the current keyboard input, ensuring
+ * that the entity can only move in valid directions (e.g., no walls blocking the path).
+ *
+ * @author Jessica Chen
+ */
 public class KeyboardControlStrategy implements ControlStrategy {
 
   private final GameMap myGameMap;
   private final EntityPlacement myEntityPlacement;
   private final GameInputManager myInputManager;
 
+  /**
+   * Constructs a KeyboardControlStrategy with the specified input manager, game map, and
+   * entity placement.
+   *
+   * @param input           the GameInputManager that handles keyboard input
+   * @param gameMap         the GameMap representing the current game state
+   * @param entityPlacement the EntityPlacement representing the entity's position
+   */
   public KeyboardControlStrategy(GameInputManager input,
       GameMap gameMap, EntityPlacement entityPlacement) {
     myEntityPlacement = entityPlacement;
