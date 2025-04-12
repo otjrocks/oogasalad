@@ -1,0 +1,168 @@
+package oogasalad.player.model.control;
+
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+import oogasalad.engine.input.GameInputManager;
+import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.model.GameMap;
+import oogasalad.player.model.exceptions.ControlStrategyException;
+
+/**
+ * The {@code ControlStrategyFactory} class is responsible for dynamically creating instances of
+ * {@link ControlStrategy} based on the control type specified in an {@link EntityPlacement}. It
+ * uses reflection to identify and instantiate the appropriate control strategy class, supporting
+ * constructors with varying argument requirements.
+ *
+ * <p>This factory class provides flexibility in creating control strategies by allowing
+ * different implementations to be dynamically loaded at runtime. It supports constructors with
+ * zero, two, or three arguments, ensuring compatibility with various control strategy
+ * implementations.</p>
+ *
+ * <p>Usage of this class involves providing a {@link GameInputManager}, an
+ * {@link EntityPlacement},
+ * and a {@link GameMap} to the
+ * {@link #createControlStrategy(GameInputManager, EntityPlacement, GameMap)} method, which returns
+ * an instance of the appropriate {@link ControlStrategy}.</p>
+ *
+ * <p>Note: This class assumes that the control strategy classes follow a specific naming
+ * convention
+ * and are located within the {@code oogasalad.player.model.control} package. If the required
+ * control strategy class cannot be found or instantiated, a {@link ControlStrategyException} is
+ * thrown.</p>
+ *
+ * <p>Example control strategy naming convention: If the control type is "Keyboard", the
+ * corresponding
+ * class should be named {@code KeyboardControlStrategy} and located in the specified package.</p>
+ *
+ * <p>Potential exceptions include:</p>
+ * <ul>
+ *   <li>{@link ControlStrategyException} - Thrown if the control strategy cannot be created or instantiated.</li>
+ * </ul>
+ *
+ * @author Jessica Chen
+ */
+public class ControlStrategyFactory {
+
+  private static final String STRATEGY_PACKAGE
+      = "oogasalad.player.model.control.";
+
+  /**
+   * Creates a {@link ControlStrategy} instance based on the control type of the given
+   * {@link EntityPlacement}.
+   *
+   * @param input           the {@link GameInputManager} to be used by the control strategy
+   * @param entityPlacement the {@link EntityPlacement} containing the control type
+   * @param gameMap         the {@link GameMap} to be used by the control strategy
+   * @return an instance of {@link ControlStrategy} corresponding to the control type
+   * @throws ControlStrategyException if the control strategy cannot be created or instantiated
+   */
+  public static ControlStrategy createControlStrategy(
+      GameInputManager input, EntityPlacement entityPlacement,
+      GameMap gameMap)
+      throws ControlStrategyException {
+    String controlType = entityPlacement.getType().controlType();
+    String className = STRATEGY_PACKAGE + truncate(controlType) + "ControlStrategy";
+
+    try {
+      Class<?> strategyClass = Class.forName(className);
+      return instantiateStrategy(strategyClass, input, entityPlacement, gameMap);
+    } catch (Exception e) {
+      throw new ControlStrategyException(
+          "Failed to create strategy for control type: " + controlType + " " + className, e);
+    }
+  }
+
+  private static ControlStrategy instantiateStrategy(Class<?> strategyClass, GameInputManager input,
+      EntityPlacement placement,
+      GameMap gameMap)
+      throws ControlStrategyException {
+    try {
+      for (Constructor<?> constructor : strategyClass.getConstructors()) {
+        if (isPublicConstructor(constructor)) {
+          ControlStrategy strategy = tryInstantiateStrategy(constructor, input, gameMap, placement);
+          if (strategy != null) {
+            return strategy;
+          }
+        }
+      }
+    } catch (Exception e) {
+      throw new ControlStrategyException("Failed to instantiate strategy", e);
+    }
+
+    throw new ControlStrategyException(
+        "No valid constructor found for: " + strategyClass.getName());
+  }
+
+  private static ControlStrategy tryInstantiateStrategy(Constructor<?> constructor,
+      GameInputManager input,
+      GameMap gameMap,
+      EntityPlacement placement)
+      throws ControlStrategyException {
+    try {
+      // bfs uses 2, keyboard uses 3, basic uses 0
+      if (matchesZeroArgConstructor(constructor)) {
+        return (ControlStrategy) constructor.newInstance(
+        );
+      }
+
+      if (matchesTwoArgConstructor(constructor)) {
+        return (ControlStrategy) constructor.newInstance(
+            gameMap,
+            placement
+        );
+      }
+
+      if (matchesThreeArgConstructor(constructor)) {
+        return (ControlStrategy) constructor.newInstance(
+            input,
+            gameMap,
+            placement
+        );
+      }
+
+      return null;
+    } catch (Exception e) {
+      throw new ControlStrategyException("Failed to instantiate strategy", e);
+    }
+  }
+
+
+  private static boolean matchesZeroArgConstructor(Constructor<?> constructor) {
+    Class<?>[] paramTypes = constructor.getParameterTypes();
+    return paramTypes.length == 0;
+  }
+
+  private static boolean matchesTwoArgConstructor(Constructor<?> constructor) {
+    Class<?>[] paramTypes = constructor.getParameterTypes();
+    return paramTypes.length == 2 &&
+        paramTypes[0].equals(GameMap.class) &&
+        paramTypes[1].equals(EntityPlacement.class);
+  }
+
+  private static boolean matchesThreeArgConstructor(Constructor<?> constructor) {
+    Class<?>[] paramTypes = constructor.getParameterTypes();
+    return paramTypes.length == 3 &&
+        paramTypes[0].equals(GameInputManager.class) &&
+        paramTypes[1].equals(GameMap.class) &&
+        paramTypes[2].equals(EntityPlacement.class);
+  }
+
+  private static boolean isPublicConstructor(Constructor<?> constructor) {
+    return Modifier.isPublic(constructor.getModifiers());
+  }
+
+  private static String truncate(String input) {
+    // split by camelCase, snake_case, or spaces
+    String[] parts = input.split("(?=[A-Z])|_|\\s+");
+    for (String part : parts) {
+      if (!part.isEmpty()) {
+        // get only the first part and capitalize it correctly
+        return part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase();
+      }
+    }
+    return ""; // return empty string if no valid parts found
+  }
+
+
+}

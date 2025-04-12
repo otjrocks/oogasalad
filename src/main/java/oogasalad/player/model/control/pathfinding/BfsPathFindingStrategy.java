@@ -1,4 +1,4 @@
-package oogasalad.player.model.movement.pathfinding;
+package oogasalad.player.model.control.pathfinding;
 
 import java.util.ArrayList;
 import java.util.HashSet;

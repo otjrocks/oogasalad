@@ -1,4 +1,4 @@
-package oogasalad.player.model.movement.pathfinding;
+package oogasalad.player.model.control.pathfinding;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;

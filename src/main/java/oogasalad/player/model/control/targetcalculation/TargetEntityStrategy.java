@@ -1,4 +1,4 @@
-package oogasalad.player.model.movement.targetcalculation;
+package oogasalad.player.model.control.targetcalculation;
 
 import java.util.Map;
 import java.util.Optional;
