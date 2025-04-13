@@ -40,12 +40,19 @@ public class GameScreenView extends VBox {
     this.gameState = gameState;
     this.mainController = controller;
 
-    hudView = new HudView(gameState);
-
     GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState);
-    HBox controlBox = getHBox(gamePlayerView);
+    GameView gameView = gamePlayerView.getGameView();
 
-    this.getChildren().addAll(hudView, controlBox, gamePlayerView);
+    hudView = new HudView(
+        gameState,
+        gameView,
+        () -> {
+          mainController.getInputManager().getRoot().getChildren().remove(this);
+          mainController.showSplashScreen();
+        }
+    );
+
+    this.getChildren().addAll(hudView, gamePlayerView);
     this.getStyleClass().add("game-screen-view");
     this.setPrefSize(WIDTH, HEIGHT);
 
@@ -100,10 +107,11 @@ public class GameScreenView extends VBox {
    */
   private void checkAndUpdateHud() {
     if (gameState.getScore() != lastScore || gameState.getLives() != lastLives) {
-      hudView.update();
+      hudView.update(gameState);
       lastScore = gameState.getScore();
       lastLives = gameState.getLives();
     }
   }
+
 
 }
