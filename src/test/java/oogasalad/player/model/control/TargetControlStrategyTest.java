@@ -12,7 +12,6 @@ import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.player.model.control.pathfinding.BfsPathFindingStrategy;
-import oogasalad.player.model.control.pathfinding.PathFindingStrategy;
 import oogasalad.player.model.control.targetcalculation.TargetStrategy;
 import oogasalad.player.model.control.targetcalculation.TargetStrategyFactory;
 
@@ -75,7 +74,8 @@ public class TargetControlStrategyTest {
     runUpdateTest(new int[]{6, 5}, new int[]{1, 0}, Direction.R, false);
   }
 
-  private void runUpdateTest(int[] targetPosition, int[] directionVector, Direction expectedDirection, boolean canMove) {
+  private void runUpdateTest(int[] targetPosition, int[] directionVector,
+      Direction expectedDirection, boolean canMove) {
     TargetStrategy mockTargetStrategy = mock(TargetStrategy.class);
     when(mockTargetStrategy.getTargetPosition()).thenReturn(targetPosition);
 
@@ -90,10 +90,12 @@ public class TargetControlStrategyTest {
                       .thenReturn(directionVector);
                 })
     ) {
-      mockedFactory.when(() -> TargetStrategyFactory.createTargetStrategy(placement, gameMap))
+      mockedFactory.when(
+              () -> TargetStrategyFactory.createTargetStrategy(placement, gameMap))
           .thenReturn(mockTargetStrategy);
 
-      TargetControlStrategy strategy = new TargetControlStrategy(gameMap, placement);
+      TargetControlStrategy strategy = new TargetControlStrategy(gameMap, placement,
+          new BfsPathFindingStrategy());
 
       strategy.update(entity);
 

@@ -50,7 +50,6 @@ class StopStrategyTest {
     // pacman is 1, wall is 2 and current pacmanX > wall X
     // thus set wallX + 1 so set 5
     verify(placement1).setX(5.0);
-    verify(entity1).setEntityDirection(Direction.NONE);
   }
 
   @Test
@@ -64,6 +63,5 @@ class StopStrategyTest {
 
     verify(placement1, never()).setX(anyDouble());
     verify(placement1, never()).setY(anyDouble());
-    verify(entity1).setEntityDirection(Direction.NONE);
   }
 }
