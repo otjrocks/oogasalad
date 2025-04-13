@@ -15,25 +15,10 @@ public class EuclideanPathFindingStrategy implements PathFindingStrategy {
   public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY,
       EntityPlacement thisEntity, Direction thisDirection) {
 
-    List<int[]> possibleDirections = getValidDirections(map, startX, startY, thisEntity, thisDirection);
-    filterInvalidDirections(possibleDirections, map, thisEntity);
+    List<int[]> possibleDirections = PathFindingStrategyHelperMethods.getValidDirections(map, startX, startY, thisEntity, thisDirection);
     int[] bestDirection = findBestDirection(possibleDirections, targetX, targetY);
 
     return calculateOffset(startX, startY, bestDirection);
-  }
-
-  private List<int[]> getValidDirections(GameMap map, int startX, int startY,
-      EntityPlacement thisEntity, Direction thisDirection) {
-    if (thisDirection == null || thisDirection == Direction.NONE) {
-      return PathFindingStrategyHelperMethods.getAllValidNeighbors(map, startX, startY, thisEntity);
-    } else {
-      return PathFindingStrategyHelperMethods.getPreferredNeighbors(map, startX, startY, thisEntity, thisDirection);
-    }
-  }
-
-  private void filterInvalidDirections(List<int[]> directions, GameMap map, EntityPlacement entity) {
-    directions.removeIf(direction -> !map.isValidPosition(direction[0], direction[1]) ||
-        !map.isNotBlocked(entity.getTypeString(), direction[0], direction[1]));
   }
 
   private int[] findBestDirection(List<int[]> directions, int targetX, int targetY) {

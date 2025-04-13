@@ -118,6 +118,52 @@ class PathFindingStrategyHelperMethodsTest {
     assertContainsDirections(result, 5, 5, List.of(Direction.U, Direction.R));
   }
 
+  @Test
+  void getValidDirections_withNullDirection_returnsAllValid() {
+    List<int[]> result = PathFindingStrategyHelperMethods.getValidDirections(mockMap, 5, 5, mockEntity, null);
+
+    Set<List<Integer>> expectedOffsets = new HashSet<>();
+    for (Direction dir : Direction.values()) {
+      if (!dir.isNone()) {
+        expectedOffsets.add(List.of(5 + dir.getDx(), 5 + dir.getDy()));
+      }
+    }
+
+    Set<List<Integer>> actualOffsets = new HashSet<>();
+    for (int[] arr : result) {
+      actualOffsets.add(List.of(arr[0], arr[1]));
+    }
+
+    assertEquals(expectedOffsets, actualOffsets, "Should return all valid neighbors for null direction.");
+  }
+
+  @Test
+  void getValidDirections_withNoneDirection_returnsAllValid() {
+    List<int[]> result = PathFindingStrategyHelperMethods.getValidDirections(mockMap, 5, 5, mockEntity, Direction.NONE);
+
+    Set<List<Integer>> expectedOffsets = new HashSet<>();
+    for (Direction dir : Direction.values()) {
+      if (!dir.isNone()) {
+        expectedOffsets.add(List.of(5 + dir.getDx(), 5 + dir.getDy()));
+      }
+    }
+
+    Set<List<Integer>> actualOffsets = new HashSet<>();
+    for (int[] arr : result) {
+      actualOffsets.add(List.of(arr[0], arr[1]));
+    }
+
+    assertEquals(expectedOffsets, actualOffsets, "Should return all valid neighbors for NONE direction.");
+  }
+
+  @Test
+  void getValidDirections_withSpecificDirection_returnsPreferredOnly() {
+    List<int[]> result = PathFindingStrategyHelperMethods.getValidDirections(mockMap, 5, 5, mockEntity, Direction.D);
+
+    assertContainsDirections(result, 5, 5, List.of(Direction.D, Direction.L, Direction.R));
+  }
+
+
   private void blockPosition(int x, int y) {
     when(mockMap.isNotBlocked(anyString(), eq(x), eq(y))).thenReturn(false);
   }
