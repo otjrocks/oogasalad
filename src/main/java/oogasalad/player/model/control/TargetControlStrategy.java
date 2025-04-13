@@ -5,7 +5,6 @@ import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.BfsEntityException;
-import oogasalad.player.model.control.pathfinding.BfsPathFindingStrategy;
 import oogasalad.player.model.control.pathfinding.EuclideanPathFindingStrategy;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategy;
 import oogasalad.player.model.control.targetcalculation.TargetStrategy;

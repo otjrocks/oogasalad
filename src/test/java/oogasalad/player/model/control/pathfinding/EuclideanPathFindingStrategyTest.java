@@ -40,7 +40,7 @@ class EuclideanPathFindingStrategyTest {
 
     try (MockedStatic<PathFindingStrategyHelperMethods> utilities = mockStatic(PathFindingStrategyHelperMethods.class)) {
       utilities.when(() ->
-              PathFindingStrategyHelperMethods.getAllValidNeighbors(mockMap, startX, startY, mockEntity))
+              PathFindingStrategyHelperMethods.getValidDirections(mockMap, startX, startY, mockEntity, Direction.NONE))
           .thenReturn(neighbors);
 
       mockPositionValidity(neighbors, true);
@@ -66,7 +66,7 @@ class EuclideanPathFindingStrategyTest {
 
     try (MockedStatic<PathFindingStrategyHelperMethods> utilities = mockStatic(PathFindingStrategyHelperMethods.class)) {
       utilities.when(() ->
-              PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, startX, startY, mockEntity, Direction.D))
+              PathFindingStrategyHelperMethods.getValidDirections(mockMap, startX, startY, mockEntity, Direction.D))
           .thenReturn(preferred);
 
       int[] result = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntity, Direction.D);
@@ -74,7 +74,6 @@ class EuclideanPathFindingStrategyTest {
       assertArrayEquals(new int[]{0, 1}, result);
     }
   }
-
 
   private void mockPositionValidity(List<int[]> positions, boolean isValid) {
     for (int[] pos : positions) {
