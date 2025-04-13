@@ -78,6 +78,28 @@ public class PathFindingStrategyHelperMethods {
         allDirs);
   }
 
+
+  /**
+   * Determines the valid directions for an entity to move on the game map based on its current position
+   * and movement preferences. If a specific direction is provided, it returns the preferred neighbors
+   * in that direction. Otherwise, it returns all valid neighboring positions.
+   *
+   * @param map the game map representing the current state of the game
+   * @param startX the x-coordinate of the starting position
+   * @param startY the y-coordinate of the starting position
+   * @param thisEntity the entity for which valid directions are being determined
+   * @param thisDirection the preferred direction of movement, or null/Direction.NONE for no preference
+   * @return a list of valid neighboring positions represented as arrays of integers [x, y]
+   */
+  public static List<int[]> getValidDirections(GameMap map, int startX, int startY,
+      EntityPlacement thisEntity, Direction thisDirection) {
+    if (thisDirection == null || thisDirection == Direction.NONE) {
+      return getAllValidNeighbors(map, startX, startY, thisEntity);
+    } else {
+      return getPreferredNeighbors(map, startX, startY, thisEntity, thisDirection);
+    }
+  }
+
   private static List<int[]> getValidNeighborsFromDirections(GameMap map, int x, int y,
       EntityPlacement thisEntity, List<Direction> directions) {
     List<int[]> neighbors = new ArrayList<>();

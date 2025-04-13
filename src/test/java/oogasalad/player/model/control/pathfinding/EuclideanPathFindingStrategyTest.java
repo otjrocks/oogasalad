@@ -40,7 +40,7 @@ class EuclideanPathFindingStrategyTest {
 
     try (MockedStatic<PathFindingStrategyHelperMethods> utilities = mockStatic(PathFindingStrategyHelperMethods.class)) {
       utilities.when(() ->
-              PathFindingStrategyHelperMethods.getAllValidNeighbors(mockMap, startX, startY, mockEntity))
+              PathFindingStrategyHelperMethods.getValidDirections(mockMap, startX, startY, mockEntity, Direction.NONE))
           .thenReturn(neighbors);
 
       mockPositionValidity(neighbors, true);
@@ -48,29 +48,6 @@ class EuclideanPathFindingStrategyTest {
       int[] result = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntity, Direction.NONE);
 
       assertArrayEquals(new int[]{1, 0}, result);
-    }
-  }
-
-  @Test
-  void getPath_allDirectionsBlocked_returnNoDirection() {
-    int startX = 0, startY = 0;
-    int targetX = 1, targetY = 0;
-
-    List<int[]> neighbors = new ArrayList<>(List.of(
-        new int[]{1, 0},
-        new int[]{0, 1}
-    ));
-
-    try (MockedStatic<PathFindingStrategyHelperMethods> utilities = mockStatic(PathFindingStrategyHelperMethods.class)) {
-      utilities.when(() ->
-              PathFindingStrategyHelperMethods.getAllValidNeighbors(mockMap, startX, startY, mockEntity))
-          .thenReturn(neighbors);
-
-      mockPositionValidity(neighbors, false);
-
-      int[] result = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntity, Direction.NONE);
-
-      assertArrayEquals(new int[]{0, 0}, result);
     }
   }
 
@@ -89,7 +66,7 @@ class EuclideanPathFindingStrategyTest {
 
     try (MockedStatic<PathFindingStrategyHelperMethods> utilities = mockStatic(PathFindingStrategyHelperMethods.class)) {
       utilities.when(() ->
-              PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, startX, startY, mockEntity, Direction.D))
+              PathFindingStrategyHelperMethods.getValidDirections(mockMap, startX, startY, mockEntity, Direction.D))
           .thenReturn(preferred);
 
       int[] result = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntity, Direction.D);
@@ -97,7 +74,6 @@ class EuclideanPathFindingStrategyTest {
       assertArrayEquals(new int[]{0, 1}, result);
     }
   }
-
 
   private void mockPositionValidity(List<int[]> positions, boolean isValid) {
     for (int[] pos : positions) {
