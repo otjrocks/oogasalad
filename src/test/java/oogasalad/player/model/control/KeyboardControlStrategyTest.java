@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Optional;
+import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
@@ -36,18 +37,18 @@ public class KeyboardControlStrategyTest {
   @Test
   void update_movingUpNoWall_setsDirectionUp() {
     when(input.isMovingUp()).thenReturn(true);
-    when(entity.canMove('U')).thenReturn(true);
+    when(entity.canMove(Direction.U)).thenReturn(true);
     when(gameMap.getEntityAt(5, 4)).thenReturn(Optional.empty());
 
     strategy.update(entity);
 
-    verify(entity).setEntityDirection('U');
+    verify(entity).setEntityDirection(Direction.U);
   }
 
   @Test
   void update_movingDownWthWall_doesNotSetDirectionDown() {
     when(input.isMovingDown()).thenReturn(true);
-    when(entity.canMove('D')).thenReturn(true);
+    when(entity.canMove(Direction.D)).thenReturn(true);
 
     Entity wallEntity = mock(Entity.class);
     EntityPlacement wallPlacement = mock(EntityPlacement.class);
@@ -61,28 +62,28 @@ public class KeyboardControlStrategyTest {
 
     strategy.update(entity);
 
-    verify(entity, never()).setEntityDirection('D');
+    verify(entity, never()).setEntityDirection(Direction.D);
   }
 
   @Test
   void update_movingLeftCanMove_setsDirectionLeft() {
     when(input.isMovingLeft()).thenReturn(true);
-    when(entity.canMove('L')).thenReturn(true);
+    when(entity.canMove(Direction.L)).thenReturn(true);
     when(gameMap.getEntityAt(4, 5)).thenReturn(Optional.empty());
 
     strategy.update(entity);
 
-    verify(entity).setEntityDirection('L');
+    verify(entity).setEntityDirection(Direction.L);
   }
 
   @Test
   void update_movingRightCannotMove_doesNotSetDirection() {
     when(input.isMovingRight()).thenReturn(true);
-    when(entity.canMove('R')).thenReturn(false);
+    when(entity.canMove(Direction.R)).thenReturn(false);
 
     strategy.update(entity);
 
-    verify(entity, never()).setEntityDirection('R');
+    verify(entity, never()).setEntityDirection(Direction.R);
   }
 
   @Test
@@ -94,6 +95,6 @@ public class KeyboardControlStrategyTest {
 
     strategy.update(entity);
 
-    verify(entity, never()).setEntityDirection(anyChar());
+    verify(entity, never()).setEntityDirection(any(Direction.class));
   }
 }

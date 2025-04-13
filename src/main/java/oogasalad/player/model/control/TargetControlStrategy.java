@@ -1,5 +1,6 @@
 package oogasalad.player.model.control;
 
+import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
@@ -74,8 +75,8 @@ public class TargetControlStrategy implements ControlStrategy {
   }
 
   private void setEntityDirection(int dx, int dy, Entity entity) {
-    char[] directions = {'R', 'L', 'D', 'U'};
-    for (char direction : directions) {
+    for (Direction direction : Direction.values()) {
+      if (direction == Direction.NONE) continue; // skip NONE if it's not a valid movement
       if (isValidDirection(dx, dy, direction, entity)) {
         entity.setEntityDirection(direction);
         return;
@@ -83,13 +84,11 @@ public class TargetControlStrategy implements ControlStrategy {
     }
   }
 
-  private boolean isValidDirection(int dx, int dy, char direction, Entity entity) {
-    return switch (direction) {
-      case 'R' -> dx > 0 && entity.canMove('R');
-      case 'L' -> dx < 0 && entity.canMove('L');
-      case 'D' -> dy > 0 && entity.canMove('D');
-      case 'U' -> dy < 0 && entity.canMove('U');
-      default -> false;
-    };
+
+  private boolean isValidDirection(int dx, int dy, Direction direction, Entity entity) {
+    int normDx = Integer.compare(dx, 0);
+    int normDy = Integer.compare(dy, 0);
+    return normDx == direction.getDx() && normDy == direction.getDy() && entity.canMove(direction);
   }
+
 }

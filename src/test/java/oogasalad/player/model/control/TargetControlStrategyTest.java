@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
@@ -51,30 +52,30 @@ public class TargetControlStrategyTest {
 
   @Test
   void update_targetToRight_setsDirectionRight() {
-    runUpdateTest(new int[]{6, 5}, new int[]{1, 0}, 'R', true);
+    runUpdateTest(new int[]{6, 5}, new int[]{1, 0}, Direction.R, true);
   }
 
   @Test
   void update_targetToLeft_setsDirectionLeft() {
-    runUpdateTest(new int[]{4, 5}, new int[]{-1, 0}, 'L', true);
+    runUpdateTest(new int[]{4, 5}, new int[]{-1, 0}, Direction.L, true);
   }
 
   @Test
   void update_targetAbove_setsDirectionUp() {
-    runUpdateTest(new int[]{5, 4}, new int[]{0, -1}, 'U', true);
+    runUpdateTest(new int[]{5, 4}, new int[]{0, -1}, Direction.U, true);
   }
 
   @Test
   void update_targetBelow_setsDirectionDown() {
-    runUpdateTest(new int[]{5, 6}, new int[]{0, 1}, 'D', true);
+    runUpdateTest(new int[]{5, 6}, new int[]{0, 1}, Direction.D, true);
   }
 
   @Test
   void update_cannotMoveInDirection_doesNotSetDirection() {
-    runUpdateTest(new int[]{6, 5}, new int[]{1, 0}, 'R', false);
+    runUpdateTest(new int[]{6, 5}, new int[]{1, 0}, Direction.R, false);
   }
 
-  private void runUpdateTest(int[] targetPosition, int[] directionVector, char expectedDirection, boolean canMove) {
+  private void runUpdateTest(int[] targetPosition, int[] directionVector, Direction expectedDirection, boolean canMove) {
     TargetStrategy mockTargetStrategy = mock(TargetStrategy.class);
     when(mockTargetStrategy.getTargetPosition()).thenReturn(targetPosition);
 
@@ -103,7 +104,7 @@ public class TargetControlStrategyTest {
       if (canMove) {
         verify(entity).setEntityDirection(expectedDirection);
       } else {
-        verify(entity, never()).setEntityDirection(anyChar());
+        verify(entity, never()).setEntityDirection(any(Direction.class));
       }
     }
   }

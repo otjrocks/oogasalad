@@ -1,5 +1,6 @@
 package oogasalad.engine.model.entity;
 
+import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
@@ -19,7 +20,7 @@ public class Entity {
   private final GameMap gameMap;
   private double dx;
   private double dy;
-  private char currentDirection;
+  private Direction currentDirection;
   public static final double ENTITY_SPEED = 0.12;
 
   /**
@@ -62,7 +63,7 @@ public class Entity {
    *
    * @param direction The new movement direction.
    */
-  public void setEntityDirection(char direction) {
+  public void setEntityDirection(Direction direction) {
     currentDirection = direction;
     updateEntityVelocity();
   }
@@ -72,31 +73,13 @@ public class Entity {
    *
    * @return The direction character for this entity.
    */
-  public char getEntityDirection() {
+  public Direction getEntityDirection() {
     return currentDirection;
   }
 
   private void updateEntityVelocity() {
-    if (currentDirection == 'U') {
-      setDy(-ENTITY_SPEED);
-      setDx(0);
-    }
-    if (currentDirection == 'D') {
-      setDy(ENTITY_SPEED);
-      setDx(0);
-    }
-    if (currentDirection == 'L') {
-      setDx(-ENTITY_SPEED);
-      setDy(0);
-    }
-    if (currentDirection == 'R') {
-      setDx(ENTITY_SPEED);
-      setDy(0);
-    }
-    if (currentDirection == ' ') {
-      setDx(0);
-      setDy(0);
-    }
+    setDx(currentDirection.getDx() * ENTITY_SPEED);
+    setDy(currentDirection.getDy() * ENTITY_SPEED);
   }
 
   /**
@@ -143,8 +126,8 @@ public class Entity {
    *                  characters for vertical movement)
    * @return true if the entity can move in the specified direction, false otherwise
    */
-  public boolean canMove(char direction) {
-    if (direction == 'R' || direction == 'L') {
+  public boolean canMove(Direction direction) {
+    if (direction == Direction.R || direction == Direction.L) {
       return this.getEntityPlacement().getY() - (int) this.getEntityPlacement().getY()
           < ENTITY_SPEED;
     } else {
