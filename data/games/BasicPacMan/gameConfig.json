@@ -72,6 +72,19 @@
       "modeA": [
         1
       ],
+      "entityB": "strawberry",
+      "eventsA": [
+        "UpdateScore(300)"
+      ],
+      "eventsB": [
+        "Consume"
+      ]
+    },
+    {
+      "entityA": "pacman",
+      "modeA": [
+        1
+      ],
       "entityB": "redghost",
       "eventsA": [
         "UpdateLives(-1)",

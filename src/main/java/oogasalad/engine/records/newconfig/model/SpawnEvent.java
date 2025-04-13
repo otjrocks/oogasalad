@@ -1,5 +1,8 @@
 package oogasalad.engine.records.newconfig.model;
 
+import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.entity.Entity;
+
 /**
  * Represents an entity to spawn during gameplay based on specific conditions.
  *
@@ -12,11 +15,11 @@ package oogasalad.engine.records.newconfig.model;
  *                         "TimeElapsed(60)")
  * @author Owen Jennings
  */
-public record SpawnEvent(String entityType,
+public record SpawnEvent(EntityType entityType,
                          String spawnCondition,
                          double x,
                          double y,
-                         int mode,
+                         String mode,
                          String despawnCondition) {
 
 }

@@ -140,8 +140,7 @@ public class JsonConfigParser implements ConfigParser {
       List<EntityPlacement> placements = parseLayout(root.get("layout"), idToEntityType,
           idToEntityName);
 
-      List<SpawnEvent> spawnEvents = new ArrayList<>();
-      parseSpawnEvents(root, spawnEvents);
+      List<SpawnEvent> spawnEvents = parseSpawnEvents(root, idToEntityType);
 
       return new ParsedLevel(placements, mapInfo, spawnEvents);
 
@@ -150,17 +149,32 @@ public class JsonConfigParser implements ConfigParser {
     }
   }
 
-  private void parseSpawnEvents(JsonNode root, List<SpawnEvent> spawnEvents)
-      throws JsonProcessingException {
-    JsonNode spawnEventsNode = root.get("spawnEvents");
+  private List<SpawnEvent> parseSpawnEvents(JsonNode rootNode,
+      Map<Integer, EntityType> idToEntityType)
+      throws ConfigException {
+    // ChatGPT generated the code for this method.
+    List<SpawnEvent> spawnEvents = new ArrayList<>();
+    JsonNode eventsNode = rootNode.get("spawnEvents");
 
-    if (spawnEventsNode != null && spawnEventsNode.isArray()) {
-      for (JsonNode spawnNode : spawnEventsNode) {
-        SpawnEvent event = mapper.treeToValue(spawnNode, SpawnEvent.class);
-        spawnEvents.add(event);
+    for (JsonNode eventNode : eventsNode) {
+      int id = Integer.parseInt(eventNode.get("entityType").asText()); // old: "8"
+      EntityType type = idToEntityType.get(id);
+      if (type == null) {
+        throw new ConfigException("Unknown entity ID in spawnEvents: " + id);
       }
+
+      double x = eventNode.get("x").asDouble();
+      double y = eventNode.get("y").asDouble();
+      String mode = eventNode.get("mode").asText();
+      String spawnCondition = eventNode.get("spawnCondition").asText();
+      String despawnCondition = eventNode.get("despawnCondition").asText();
+
+      spawnEvents.add(new SpawnEvent(type, spawnCondition, x, y, mode, despawnCondition));
     }
+
+    return spawnEvents;
   }
+
 
   private Map<Integer, EntityType> buildEntityMappings(JsonNode mappings) throws ConfigException {
     Map<Integer, EntityType> idToType = new HashMap<>();

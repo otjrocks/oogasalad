@@ -25,6 +25,7 @@ public class GamePlayerView extends StackPane {
   private final GameState myGameState;
   private GameView myGameView;
   private ConfigModel myConfigModel = null;
+  private int myLevelIndex = 0;
 
   /**
    * Create the Game Player View.
@@ -53,14 +54,14 @@ public class GamePlayerView extends StackPane {
     try {
       if (myConfigModel != null) {
         gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel,
-            0);
+            myLevelIndex);
       }
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn("Failed to create or populate GameMap: ", e);
     }
 
     if (gameMap != null) {
-      myGameView = new GameView(new GameContext(gameMap, myGameState), myConfigModel);
+      myGameView = new GameView(new GameContext(gameMap, myGameState), myConfigModel, myLevelIndex);
       this.getChildren().add(myGameView);
     }
   }
