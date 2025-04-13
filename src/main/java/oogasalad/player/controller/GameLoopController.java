@@ -8,6 +8,7 @@ import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
+import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.records.GameContext;
 import oogasalad.engine.records.newconfig.model.ParsedLevel;
 import oogasalad.engine.records.newconfig.model.SpawnEvent;
@@ -83,6 +84,9 @@ public class GameLoopController {
       double spawnTime = parseTimeCondition(spawnEvent.spawnCondition());
       double despawnTime = parseTimeCondition(spawnEvent.despawnCondition());
       handleIndividualSpawnEvent(spawnEvent, spawnTime, despawnTime);
+    }
+    if (new EntityBasedOutcomeStrategy("dot").hasGameEnded(myGameContext)) {
+      System.out.println("Game Ended");
     }
   }
 

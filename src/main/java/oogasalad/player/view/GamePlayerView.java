@@ -51,7 +51,6 @@ public class GamePlayerView extends StackPane {
     }
 
     LevelController levelController = new LevelController(myMainController, myConfigModel);
-
     if (levelController.getCurrentLevelMap() != null) {
       myGameView = new GameView(new GameContext(levelController.getCurrentLevelMap(), myGameState),
           myConfigModel, levelController.getCurrentLevelIndex());
