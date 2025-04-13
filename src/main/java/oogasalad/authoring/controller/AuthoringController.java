@@ -4,6 +4,7 @@ import java.io.File;
 
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
+import oogasalad.authoring.view.CanvasView;
 import oogasalad.authoring.view.EntityPlacementView;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
@@ -244,4 +245,7 @@ public class AuthoringController {
     }
   }
 
+  public CanvasView getCanvasView() {
+    return view.getCanvasView();
+  }
 }
