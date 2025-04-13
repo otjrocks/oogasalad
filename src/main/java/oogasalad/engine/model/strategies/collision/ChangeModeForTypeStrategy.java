@@ -1,5 +1,6 @@
 package oogasalad.engine.model.strategies.collision;
 
+import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.records.CollisionContextRecord;
 
 public class ChangeModeForTypeStrategy implements CollisionStrategy {
@@ -13,6 +14,10 @@ public class ChangeModeForTypeStrategy implements CollisionStrategy {
 
   @Override
   public void handleCollision(CollisionContextRecord collisionContext) {
-
+    for (Entity entity : collisionContext.gameMap()) {
+      if (entity.getEntityPlacement().getTypeString().equals(entityType)) {
+        entity.getEntityPlacement().setMode(mode);
+      }
+    }
   }
 }
