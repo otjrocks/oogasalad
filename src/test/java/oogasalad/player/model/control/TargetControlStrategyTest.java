@@ -12,7 +12,6 @@ import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.player.model.control.pathfinding.BfsPathFindingStrategy;
-import oogasalad.player.model.control.pathfinding.PathFindingStrategy;
 import oogasalad.player.model.control.targetcalculation.TargetStrategy;
 import oogasalad.player.model.control.targetcalculation.TargetStrategyFactory;
 

@@ -1,6 +1,5 @@
 package oogasalad.player.model.control.pathfinding;
 
-import oogasalad.engine.enums.Directions;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;

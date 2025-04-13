@@ -1,7 +1,6 @@
 package oogasalad.engine.records.newconfig.model;
 
 import oogasalad.engine.model.EntityType;
-import oogasalad.engine.model.entity.Entity;
 
 /**
  * Represents an entity to spawn during gameplay based on specific conditions.

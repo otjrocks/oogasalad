@@ -82,37 +82,49 @@ public class GameLoopController {
     for (SpawnEvent spawnEvent : myLevel.spawnEvents()) {
       double spawnTime = parseTimeCondition(spawnEvent.spawnCondition());
       double despawnTime = parseTimeCondition(spawnEvent.despawnCondition());
+      handleIndividualSpawnEvent(spawnEvent, spawnTime, despawnTime);
+    }
+  }
 
-      boolean shouldBeSpawned = myTotalElapsedTime >= spawnTime;
-      boolean shouldBeDespawned = myTotalElapsedTime >= spawnTime + despawnTime;
+  private void handleIndividualSpawnEvent(SpawnEvent spawnEvent, double spawnTime,
+      double despawnTime) {
+    boolean shouldBeSpawned = myTotalElapsedTime >= spawnTime;
+    boolean shouldBeDespawned = myTotalElapsedTime >= spawnTime + despawnTime;
 
-      if (shouldBeSpawned && !activeSpawnedEntities.containsKey(spawnEvent)) {
-        // Create and spawn entity
-        Entity newEntity = new Entity(null,
-            new EntityPlacement(spawnEvent.entityType(), spawnEvent.x(), spawnEvent.y(),
-                spawnEvent.mode()),
-            myGameContext.gameMap());
-        try {
-          myGameContext.gameMap().addEntity(newEntity);
-          activeSpawnedEntities.put(spawnEvent, newEntity);
-        } catch (InvalidPositionException e) {
-          LoggingManager.LOGGER.warn("Could not add spawn entity {}", spawnEvent);
-          throw new RuntimeException(e);
-        }
+    // Spawn if time has passed
+    spawnEntityIfNecessary(spawnEvent, shouldBeSpawned);
+    // Despawn if time has passed
+    handleDespawnIfNecessary(spawnEvent, shouldBeDespawned);
+  }
+
+  private void spawnEntityIfNecessary(SpawnEvent spawnEvent, boolean shouldBeSpawned) {
+    if (shouldBeSpawned && !activeSpawnedEntities.containsKey(spawnEvent)) {
+      // Create and spawn entity
+      Entity newEntity = new Entity(null,
+          new EntityPlacement(spawnEvent.entityType(), spawnEvent.x(), spawnEvent.y(),
+              spawnEvent.mode()),
+          myGameContext.gameMap());
+      try {
+        myGameContext.gameMap().addEntity(newEntity);
+        activeSpawnedEntities.put(spawnEvent, newEntity);
+      } catch (InvalidPositionException e) {
+        LoggingManager.LOGGER.warn("Could not add spawn entity {}", spawnEvent);
+        throw new RuntimeException(e);
       }
+    }
+  }
 
-      // Despawn if time has passed
-      if (shouldBeDespawned && activeSpawnedEntities.containsKey(spawnEvent)) {
-        Entity entityToRemove = activeSpawnedEntities.get(spawnEvent);
-        try {
-          myGameContext.gameMap().removeEntity(entityToRemove);
-        } catch (EntityNotFoundException e) {
-          LoggingManager.LOGGER.info(
-              "Entity not despawned following configuration rules, since it no longer exists on the game map {}",
-              spawnEvent);
-        }
-        activeSpawnedEntities.remove(spawnEvent);
+  private void handleDespawnIfNecessary(SpawnEvent spawnEvent, boolean shouldBeDespawned) {
+    if (shouldBeDespawned && activeSpawnedEntities.containsKey(spawnEvent)) {
+      Entity entityToRemove = activeSpawnedEntities.get(spawnEvent);
+      try {
+        myGameContext.gameMap().removeEntity(entityToRemove);
+      } catch (EntityNotFoundException e) {
+        LoggingManager.LOGGER.info(
+            "Entity not despawned following configuration rules, since it no longer exists on the game map {}",
+            spawnEvent);
       }
+      activeSpawnedEntities.remove(spawnEvent);
     }
   }
 

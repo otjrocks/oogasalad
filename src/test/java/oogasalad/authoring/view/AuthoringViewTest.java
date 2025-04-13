@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.AuthoringModel;
-import oogasalad.engine.model.GameSettings;
 import oogasalad.engine.records.newconfig.model.Settings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
