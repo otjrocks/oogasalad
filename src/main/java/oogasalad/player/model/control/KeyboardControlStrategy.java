@@ -1,5 +1,6 @@
 package oogasalad.player.model.control;
 
+import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
@@ -57,26 +58,26 @@ public class KeyboardControlStrategy implements ControlStrategy {
   }
 
   private void setRightDirection(int myX, int myY, Entity entity) {
-    if (entity.canMove('R') && myInputManager.isMovingRight() && checkNoWall(myX + 1, myY)) {
-      entity.setEntityDirection('R');
+    if (entity.canMove(Direction.R) && myInputManager.isMovingRight() && checkNoWall(myX + 1, myY)) {
+      entity.setEntityDirection(Direction.R);
     }
   }
 
   private void setLeftDirection(int myX, int myY, Entity entity) {
-    if (entity.canMove('L') && myInputManager.isMovingLeft() && checkNoWall(myX - 1, myY)) {
-      entity.setEntityDirection('L');
+    if (entity.canMove(Direction.L) && myInputManager.isMovingLeft() && checkNoWall(myX - 1, myY)) {
+      entity.setEntityDirection(Direction.L);
     }
   }
 
   private void setDownDirection(int myX, int myY, Entity entity) {
-    if (entity.canMove('D') && myInputManager.isMovingDown() && checkNoWall(myX, myY + 1)) {
-      entity.setEntityDirection('D');
+    if (entity.canMove(Direction.D) && myInputManager.isMovingDown() && checkNoWall(myX, myY + 1)) {
+      entity.setEntityDirection(Direction.D);
     }
   }
 
   private void setUpDirection(int myX, int myY, Entity entity) {
-    if (entity.canMove('U') && myInputManager.isMovingUp() && checkNoWall(myX, myY - 1)) {
-      entity.setEntityDirection('U');
+    if (entity.canMove(Direction.U) && myInputManager.isMovingUp() && checkNoWall(myX, myY - 1)) {
+      entity.setEntityDirection(Direction.U);
     }
   }
 

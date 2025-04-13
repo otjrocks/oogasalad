@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
@@ -29,7 +30,7 @@ public class TargetAheadOfEntityStrategyTest {
 
   @Test
   void getTargetPosition_entityRightDirection_returnsCorrectLocation() {
-    when(mockEntity.getEntityDirection()).thenReturn('R');
+    when(mockEntity.getEntityDirection()).thenReturn(Direction.R);
     when(mockEntity.getEntityPlacement()).thenReturn(mockPlacement);
     when(mockPlacement.getTypeString()).thenReturn("enemy");
     when(mockPlacement.getX()).thenReturn(3.0);
@@ -52,7 +53,7 @@ public class TargetAheadOfEntityStrategyTest {
 
   @Test
   void getTargetPosition_targetEntityBlocksCaller_returnsTargetEntityPosition() {
-    when(mockEntity.getEntityDirection()).thenReturn('R');
+    when(mockEntity.getEntityDirection()).thenReturn(Direction.R);
     when(mockEntity.getEntityPlacement()).thenReturn(mockPlacement);
     when(mockPlacement.getTypeString()).thenReturn("enemy");
     when(mockPlacement.getX()).thenReturn(3.0);
@@ -74,8 +75,8 @@ public class TargetAheadOfEntityStrategyTest {
   }
 
   @Test
-  void getTargetPosition_unrecognizedDirection_defaultsToUp() {
-    when(mockEntity.getEntityDirection()).thenReturn('X');
+  void getTargetPosition_unrecognizedDirection_targetsEntity() {
+    when(mockEntity.getEntityDirection()).thenReturn(Direction.NONE);
     when(mockEntity.getEntityPlacement()).thenReturn(mockPlacement);
     when(mockPlacement.getTypeString()).thenReturn("enemy");
     when(mockPlacement.getX()).thenReturn(4.0);
@@ -93,7 +94,7 @@ public class TargetAheadOfEntityStrategyTest {
     TargetStrategy strategy = new TargetAheadOfEntityStrategy(mockMap, config, "someType");
     int[] result = strategy.getTargetPosition();
 
-    assertArrayEquals(new int[]{4, 3}, result);
+    assertArrayEquals(new int[]{4, 4}, result);
   }
 
   @Test

@@ -2,6 +2,7 @@ package oogasalad.player.model.control.targetcalculation;
 
 import java.util.Map;
 import java.util.Optional;
+import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.player.model.exceptions.TargetStrategyException;
@@ -91,27 +92,15 @@ public class TargetAheadOfEntityStrategy implements TargetStrategy {
 
   }
 
-  private int[] calcTargetPosition(char dir, int x, int y) {
-    int targetX = x;
-    int targetY = y;
-
-    switch (dir) {
-
-      case 'R':
-        targetX += myTilesAhead;
-        break;
-      case 'D':
-        targetY += myTilesAhead;
-        break;
-      case 'L':
-        targetX -= myTilesAhead;
-        break;
-      default: // default up
-        targetY -= myTilesAhead;
-        break;
+  private int[] calcTargetPosition(Direction dir, int x, int y) {
+    if (dir == null) {
+      return new int[]{x, y};
     }
+    int targetX = x + dir.getDx() * myTilesAhead;
+    int targetY = y + dir.getDy() * myTilesAhead;
     return new int[]{targetX, targetY};
   }
+
 
   private static int validateAndGetTilesAhead(Map<String, Object> strategyConfig) {
     final String TILES_AHEAD_KEY = "tilesAhead";

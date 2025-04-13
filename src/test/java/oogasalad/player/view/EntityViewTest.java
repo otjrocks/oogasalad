@@ -1,6 +1,7 @@
 package oogasalad.player.view;
 
 import javafx.scene.canvas.GraphicsContext;
+import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.entity.Entity;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,25 +36,25 @@ class EntityViewTest extends DukeApplicationTest {
   // Code refactored using ChatGPT.
   @Test
   void draw_RightDirectionSpritePacMan_CorrectDrawCall() {
-    testDrawDirection('R');
+    testDrawDirection(Direction.R);
   }
 
   @Test
   void draw_LeftDirectionSpritePacMan_CorrectDrawCall() {
-    testDrawDirection('L');
+    testDrawDirection(Direction.L);
   }
 
   @Test
   void draw_UpDirectionSpritePacMan_CorrectDrawCall() {
-    testDrawDirection('U');
+    testDrawDirection(Direction.U);
   }
 
   @Test
   void draw_DownDirectionSpritePacMan_CorrectDrawCall() {
-    testDrawDirection('D');
+    testDrawDirection(Direction.D);
   }
 
-  private void testDrawDirection(char direction) {
+  private void testDrawDirection(Direction direction) {
     when(mockEntity.getEntityDirection()).thenReturn(direction);
 
     ResourceBundle spriteData = ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
