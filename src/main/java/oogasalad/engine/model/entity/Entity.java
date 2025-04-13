@@ -75,26 +75,36 @@ public class Entity {
    * @param direction The new movement direction.
    */
   public void setEntitySnapDirection(Direction direction) {
-    boolean wasHorizontal = currentDirection == Direction.L || currentDirection == Direction.R;
-    boolean wasVertical = currentDirection == Direction.U || currentDirection == Direction.D;
-    boolean nowHorizontal = direction == Direction.L || direction == Direction.R;
-    boolean nowVertical = direction == Direction.U || direction == Direction.D;
+    boolean isChangingFromHorizontalToVertical =
+        isHorizontal(currentDirection) && isVertical(direction);
+    boolean isChangingFromVerticalToHorizontal =
+        isVertical(currentDirection) && isHorizontal(direction);
 
-    if (wasHorizontal && nowVertical) {
-      double nearestWholeX = Math.round(myEntityPlacement.getX());
-      if (Math.abs(myEntityPlacement.getX() - nearestWholeX) <= 0.2) {
-        myEntityPlacement.setX(nearestWholeX);
-      }
-    } else if (wasVertical && nowHorizontal) {
-      double nearestWholeY = Math.round(myEntityPlacement.getY());
-      if (Math.abs(myEntityPlacement.getY() - nearestWholeY) <= 0.2) {
-        myEntityPlacement.setY(nearestWholeY);
-      }
+    if (isChangingFromHorizontalToVertical) {
+      snapToNearestWhole(myEntityPlacement.getX(), myEntityPlacement::setX);
+    } else if (isChangingFromVerticalToHorizontal) {
+      snapToNearestWhole(myEntityPlacement.getY(), myEntityPlacement::setY);
     }
 
     currentDirection = direction;
     updateEntityVelocity();
   }
+
+  private boolean isHorizontal(Direction dir) {
+    return dir == Direction.L || dir == Direction.R;
+  }
+
+  private boolean isVertical(Direction dir) {
+    return dir == Direction.U || dir == Direction.D;
+  }
+
+  private void snapToNearestWhole(double value, java.util.function.DoubleConsumer setter) {
+    double nearest = Math.round(value);
+    if (Math.abs(value - nearest) <= 0.2) {
+      setter.accept(nearest);
+    }
+  }
+
 
   /**
    * Get the entity direction
