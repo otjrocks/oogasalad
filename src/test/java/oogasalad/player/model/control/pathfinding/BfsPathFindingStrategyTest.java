@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
+import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.entity.Entity;
@@ -50,7 +51,8 @@ class BfsPathFindingStrategyTest {
 
     int[] expected = {0, 1};
 
-    int[] actual = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntityPlacement);
+    int[] actual = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntityPlacement,
+        Direction.NONE);
     assertArrayEquals(expected, actual);
   }
 
@@ -77,7 +79,8 @@ class BfsPathFindingStrategyTest {
 
     int[] expected = {0, 0};
 
-    int[] actual = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntityPlacement);
+    int[] actual = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntityPlacement,
+        Direction.NONE);
     assertArrayEquals(expected, actual);
   }
 
@@ -100,7 +103,8 @@ class BfsPathFindingStrategyTest {
 
     int[] expected = {0, 0};
 
-    int[] actual = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntityPlacement);
+    int[] actual = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntityPlacement,
+        Direction.NONE);
     assertArrayEquals(expected, actual);
   }
 
@@ -109,7 +113,8 @@ class BfsPathFindingStrategyTest {
     when(mockMap.getWidth()).thenReturn(3);
     when(mockMap.getHeight()).thenReturn(3);
 
-    int[] actual = strategy.getPath(mockMap, -1, 1, 2, 2, mockEntityPlacement);
+    int[] actual = strategy.getPath(mockMap, -1, 1, 2, 2, mockEntityPlacement,
+        Direction.NONE);
     assertArrayEquals(new int[]{0, 0}, actual);
   }
 
@@ -129,7 +134,8 @@ class BfsPathFindingStrategyTest {
 
     when(mockEntityPlacement.getTypeString()).thenReturn("type");
 
-    int[] actual = strategy.getPath(mockMap, 0, 0, 2, 2, mockEntityPlacement);
+    int[] actual = strategy.getPath(mockMap, 0, 0, 2, 2, mockEntityPlacement,
+        Direction.NONE);
 
 
     assertArrayEquals(new int[]{0, 0}, actual);

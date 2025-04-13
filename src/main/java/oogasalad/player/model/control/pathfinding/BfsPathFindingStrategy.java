@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+import oogasalad.engine.enums.Directions;
+import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 
@@ -20,21 +22,20 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
 
   @Override
   public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY,
-      EntityPlacement thisEntity) {
+      EntityPlacement thisEntity, Direction thisDirection) {
     if (!map.isValidPosition(startX, startY) || !map.isValidPosition(targetX, targetY)) {
-      // change thiis so it instead uses a wandering strategy
       return new int[]{0, 0};
     }
 
-    Node targetNode = bfs(map, startX, startY, targetX, targetY, thisEntity);
+    Node targetNode = bfs(map, startX, startY, targetX, targetY, thisEntity, thisDirection);
     return buildDirection(startX, startY, targetNode);
   }
 
   private Node bfs(GameMap map, int startX, int startY, int targetX, int targetY,
-      EntityPlacement thisEntity) {
+      EntityPlacement thisEntity, Direction thisDirection) {
     Queue<Node> queue = new LinkedList<>();
     Set<String> visited = new HashSet<>();
-    Node startNode = new Node(startX, startY, null);
+    Node startNode = new Node(startX, startY, null, 0);
 
     enqueue(queue, visited, startNode);
 
@@ -45,7 +46,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
         return current;
       }
 
-      processNeighbors(map, current, queue, visited, thisEntity);
+      processNeighbors(map, current, queue, visited, thisEntity, thisDirection);
     }
 
     return null; // no path found
@@ -61,14 +62,21 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
   }
 
   private void processNeighbors(GameMap map, Node current, Queue<Node> queue, Set<String> visited,
-      EntityPlacement thisEntity) {
-    for (int[] neighbor : getNeighbors(map, current.x, current.y, thisEntity)) {
+      EntityPlacement thisEntity, Direction thisDirection) {
+    List<int[]> neighbors;
+    if (current.depth == 0) {
+      neighbors = getPreferredNeighbors(map, current.x, current.y, thisEntity, thisDirection);
+    } else {
+      neighbors = getAllValidNeighbors(map, current.x, current.y, thisEntity);
+    }
+
+    for (int[] neighbor : neighbors) {
       int newX = neighbor[0];
       int newY = neighbor[1];
       String neighborKey = key(newX, newY);
 
       if (!visited.contains(neighborKey)) {
-        enqueue(queue, visited, new Node(newX, newY, current));
+        enqueue(queue, visited, new Node(newX, newY, current, current.depth + 1));
       }
     }
   }
@@ -79,7 +87,6 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
       path.addFirst(new int[]{node.x, node.y});
       node = node.parent;
     }
-
     return path;
   }
 
@@ -89,8 +96,6 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     }
 
     List<int[]> path = reconstructPath(targetNode);
-    // TODO: in the future should make this wander instead of standing still, since
-    // standing still is kinda silly
     if (path.isEmpty()) {
       return new int[]{0, 0};
     }
@@ -99,21 +104,42 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     return new int[]{nextPos[0] - startX, nextPos[1] - startY};
   }
 
-  private List<int[]> getNeighbors(GameMap map, int x, int y,
-      EntityPlacement thisEntity) {
+  private List<int[]> getPreferredNeighbors(GameMap map, int x, int y, EntityPlacement thisEntity,
+      Direction thisDirection) {
     List<int[]> neighbors = new ArrayList<>();
-    int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
-    for (int[] d : directions) {
-      int nx = x + d[0];
-      int ny = y + d[1];
+    if (thisDirection == null || thisDirection.isNone() || thisDirection.getAngle() == null) {
+      return getAllValidNeighbors(map, x, y, thisEntity);
+    }
 
+    int baseAngle = thisDirection.getAngle();
+    List<Directions.Direction> preferredDirs = List.of(
+        Directions.Direction.fromAngle(baseAngle),         // Forward
+        Directions.Direction.fromAngle(baseAngle + 90),    // Right
+        Directions.Direction.fromAngle(baseAngle - 90)     // Left
+    );
+
+    for (Directions.Direction dir : preferredDirs) {
+      int nx = x + dir.getDx();
+      int ny = y + dir.getDy();
       if (map.isValidPosition(nx, ny) && map.isNotBlocked(thisEntity.getTypeString(), nx, ny)) {
         neighbors.add(new int[]{nx, ny});
       }
-
     }
 
+    return neighbors;
+  }
+
+  private List<int[]> getAllValidNeighbors(GameMap map, int x, int y, EntityPlacement thisEntity) {
+    List<int[]> neighbors = new ArrayList<>();
+    for (Directions.Direction dir : Directions.Direction.values()) {
+      if (dir.isNone()) continue;
+      int nx = x + dir.getDx();
+      int ny = y + dir.getDy();
+      if (map.isValidPosition(nx, ny) && map.isNotBlocked(thisEntity.getTypeString(), nx, ny)) {
+        neighbors.add(new int[]{nx, ny});
+      }
+    }
     return neighbors;
   }
 
@@ -121,7 +147,5 @@ public class BfsPathFindingStrategy implements PathFindingStrategy {
     return x + "," + y;
   }
 
-  private record Node(int x, int y, Node parent) {
-
-  }
+  private record Node(int x, int y, Node parent, int depth) { }
 }

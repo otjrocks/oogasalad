@@ -79,10 +79,6 @@ public class TargetControlStrategyTest {
     TargetStrategy mockTargetStrategy = mock(TargetStrategy.class);
     when(mockTargetStrategy.getTargetPosition()).thenReturn(targetPosition);
 
-    PathFindingStrategy mockPathFinding = mock(PathFindingStrategy.class);
-    when(mockPathFinding.getPath(eq(gameMap), eq(5), eq(5), eq(targetPosition[0]), eq(targetPosition[1]), eq(placement)))
-        .thenReturn(directionVector);
-
     when(entity.canMove(expectedDirection)).thenReturn(canMove);
 
     try (
@@ -90,7 +86,7 @@ public class TargetControlStrategyTest {
         MockedConstruction<BfsPathFindingStrategy> mockedConstruction =
             mockConstruction(BfsPathFindingStrategy.class,
                 (mock, context) -> {
-                  when(mock.getPath(any(), anyInt(), anyInt(), anyInt(), anyInt(), any()))
+                  when(mock.getPath(any(), anyInt(), anyInt(), anyInt(), anyInt(), any(), any()))
                       .thenReturn(directionVector);
                 })
     ) {
@@ -108,4 +104,5 @@ public class TargetControlStrategyTest {
       }
     }
   }
+
 }

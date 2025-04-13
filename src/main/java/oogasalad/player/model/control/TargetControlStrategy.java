@@ -61,7 +61,7 @@ public class TargetControlStrategy implements ControlStrategy {
         (int) Math.round(myEntityPlacement.getX()),
         (int) Math.round(myEntityPlacement.getY()),
         target[0], target[1],
-        myEntityPlacement);
+        myEntityPlacement, entity.getEntityDirection());
 
     setEntityDirection(dir[0], dir[1], entity);
   }
