@@ -1,7 +1,7 @@
 package oogasalad.engine.model.strategies.gameoutcome;
 
 import oogasalad.engine.model.GameState;
-import oogasalad.engine.records.GameContext;
+import oogasalad.engine.records.GameContextRecord;
 
 /**
  * The {@code EntityBasedOutcomeStrategy} class implements the {@link GameOutcomeStrategy}
@@ -37,7 +37,7 @@ public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
    * @return {@code true} if the game has ended, {@code false} otherwise
    */
   @Override
-  public boolean hasGameEnded(GameContext gameContext) {
+  public boolean hasGameEnded(GameContextRecord gameContext) {
     if (gameContext.gameMap().getEntityCount(entityType) <= 0) {
       return true;
     }
@@ -52,7 +52,7 @@ public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
    * @return a string representing the game outcome
    */
   @Override
-  public String getGameOutcome(GameContext gameContext) {
+  public String getGameOutcome(GameContextRecord gameContext) {
     return hasGameEnded(gameContext) ? "Level Passed" : "Game ongoing";
   }
 }

@@ -17,7 +17,7 @@ class CollisionContextTest {
 
   @Test
   void collisionContext_validInputs_createsCollisionContextSuccessfully() {
-    CollisionContext context = new CollisionContext(entity1, entity2, gameMap, gameState);
+    CollisionContextRecord context = new CollisionContextRecord(entity1, entity2, gameMap, gameState);
 
     assertEquals(entity1, context.entity1());
     assertEquals(entity2, context.entity2());
@@ -30,24 +30,24 @@ class CollisionContextTest {
   @Test
   void collisionContext_nullEntity1_throwsIllegalArgumentException() {
     assertThrows(IllegalArgumentException.class, () ->
-        new CollisionContext(null, entity2, gameMap, gameState));
+        new CollisionContextRecord(null, entity2, gameMap, gameState));
   }
 
   @Test
   void collisionContext_nullEntity2_throwsIllegalArgumentException() {
     assertThrows(IllegalArgumentException.class, () ->
-        new CollisionContext(entity1, null, gameMap, gameState));
+        new CollisionContextRecord(entity1, null, gameMap, gameState));
   }
 
   @Test
   void collisionContext_nullGameMap_throwsIllegalArgumentException() {
     assertThrows(IllegalArgumentException.class, () ->
-        new CollisionContext(entity1, entity2, null, gameState));
+        new CollisionContextRecord(entity1, entity2, null, gameState));
   }
 
   @Test
   void collisionContext_nullGameState_throwsIllegalArgumentException() {
     assertThrows(IllegalArgumentException.class, () ->
-        new CollisionContext(entity1, entity2, gameMap, null));
+        new CollisionContextRecord(entity1, entity2, gameMap, null));
   }
 }

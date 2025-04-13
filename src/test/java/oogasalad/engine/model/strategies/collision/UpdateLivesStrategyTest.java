@@ -1,7 +1,7 @@
 package oogasalad.engine.model.strategies.collision;
 
 import oogasalad.engine.model.GameState;
-import oogasalad.engine.records.CollisionContext;
+import oogasalad.engine.records.CollisionContextRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,12 +10,12 @@ import static org.mockito.Mockito.*;
 class UpdateLivesStrategyTest {
 
   private GameState gameState;
-  private CollisionContext context;
+  private CollisionContextRecord context;
 
   @BeforeEach
   void setUp() {
     gameState = mock(GameState.class);
-    context = mock(CollisionContext.class);
+    context = mock(CollisionContextRecord.class);
 
     when(context.gameState()).thenReturn(gameState);
   }

@@ -12,7 +12,7 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.api.GameMapFactory;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
-import oogasalad.engine.records.GameContext;
+import oogasalad.engine.records.GameContextRecord;
 
 /**
  * The view that displays only the game grid.
@@ -61,7 +61,7 @@ public class GamePlayerView extends StackPane {
     }
 
     if (gameMap != null) {
-      myGameView = new GameView(new GameContext(gameMap, myGameState), myConfigModel, myLevelIndex);
+      myGameView = new GameView(new GameContextRecord(gameMap, myGameState), myConfigModel, myLevelIndex);
       this.getChildren().add(myGameView);
     }
   }

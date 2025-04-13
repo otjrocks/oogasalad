@@ -20,8 +20,8 @@ import oogasalad.engine.model.GameState;
  * @see GameMap
  * @see GameState
  */
-public record GameContext(GameMap gameMap, GameState gameState) {
-  public GameContext {
+public record GameContextRecord(GameMap gameMap, GameState gameState) {
+  public GameContextRecord {
     if (gameMap == null || gameState == null) {
       throw new IllegalArgumentException("GameContext can't contain null values.");
     }

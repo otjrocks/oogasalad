@@ -1,6 +1,6 @@
 package oogasalad.engine.model.strategies.gameoutcome;
 
-import oogasalad.engine.records.GameContext;
+import oogasalad.engine.records.GameContextRecord;
 
 /**
  * The {@code LivesBasedOutcome} class implements the {@link GameOutcomeStrategy}
@@ -21,7 +21,7 @@ public class LivesBasedOutcome implements GameOutcomeStrategy {
    *                           otherwise
    */
   @Override
-  public boolean hasGameEnded(GameContext gameContext) {
+  public boolean hasGameEnded(GameContextRecord gameContext) {
     return gameContext.gameState().getLives() <= 0;
   }
 
@@ -34,7 +34,7 @@ public class LivesBasedOutcome implements GameOutcomeStrategy {
    * @return a string representing the game outcome
    */
   @Override
-  public String getGameOutcome(GameContext gameContext) {
+  public String getGameOutcome(GameContextRecord gameContext) {
     return hasGameEnded(gameContext) ? "Game Over" : "Game ongoing";
   }
 }
