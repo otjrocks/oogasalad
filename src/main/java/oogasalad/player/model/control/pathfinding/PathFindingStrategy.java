@@ -1,5 +1,7 @@
 package oogasalad.player.model.control.pathfinding;
 
+import oogasalad.engine.enums.Directions;
+import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 
@@ -22,5 +24,5 @@ public interface PathFindingStrategy {
    * @return A int[] that represents the first direction on the path as (dx, dy).
    */
   int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY,
-      EntityPlacement thisEntity);
+      EntityPlacement thisEntity, Direction thisDirection);
 }
