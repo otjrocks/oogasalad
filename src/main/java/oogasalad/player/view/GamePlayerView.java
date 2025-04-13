@@ -13,6 +13,7 @@ import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.api.GameMapFactory;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContext;
+import oogasalad.player.controller.LevelController;
 
 /**
  * The view that displays only the game grid.
@@ -49,19 +50,11 @@ public class GamePlayerView extends StackPane {
       LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
     }
 
-    GameMap gameMap = null;
+    LevelController levelController = new LevelController(myMainController, myConfigModel);
 
-    try {
-      if (myConfigModel != null) {
-        gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel,
-            myLevelIndex);
-      }
-    } catch (InvalidPositionException e) {
-      LoggingManager.LOGGER.warn("Failed to create or populate GameMap: ", e);
-    }
-
-    if (gameMap != null) {
-      myGameView = new GameView(new GameContext(gameMap, myGameState), myConfigModel, myLevelIndex);
+    if (levelController.getCurrentLevelMap() != null) {
+      myGameView = new GameView(new GameContext(levelController.getCurrentLevelMap(), myGameState),
+          myConfigModel, levelController.getCurrentLevelIndex());
       this.getChildren().add(myGameView);
     }
   }

@@ -54,7 +54,8 @@ public class GameMapView extends Canvas {
 
   private void initializeEntityViews() {
     entityViews.clear();
-    for (Iterator<Entity> it = myGameContext.gameMap().iterator(); it.hasNext(); ) {
+    for (Iterator<Entity> it = myGameContext.gameMap().iterator();
+        it.hasNext(); ) {
       Entity entity = it.next();
       int frames = Integer.parseInt(
           SPRITE_DATA.getString(
@@ -83,7 +84,8 @@ public class GameMapView extends Canvas {
     gc.clearRect(0, 0, getWidth(), getHeight());
 
     double tileWidth = getWidth() / myGameContext.gameMap().getWidth();
-    double tileHeight = getHeight() / myGameContext.gameMap().getHeight();
+    double tileHeight =
+        getHeight() / myGameContext.gameMap().getHeight();
 
     for (EntityView ev : entityViews) {
       ev.draw(gc, tileWidth, tileHeight);

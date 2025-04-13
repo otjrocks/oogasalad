@@ -17,6 +17,7 @@ import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.model.strategies.collision.CollisionStrategy;
+import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.model.strategies.gameoutcome.LivesBasedOutcome;
 import oogasalad.engine.records.CollisionContext;
 import oogasalad.engine.records.GameContext;
@@ -33,6 +34,7 @@ public class GameMapController {
   private static final int SPRITE_ANIMATION_SPEED = 6;
   private final GameMap gameMap;
   private final GameState gameState;
+  private final GameContext gameContext;
   private int frameCount = 0;
   private GameEndHandler gameEndHandler;
   private final LivesBasedOutcome livesBasedOutcome = new LivesBasedOutcome();
@@ -47,6 +49,7 @@ public class GameMapController {
   public GameMapController(GameContext gameContext, ConfigModel configModel) {
     gameMap = gameContext.gameMap();
     gameState = gameContext.gameState();
+    this.gameContext = gameContext;
     myConfigModel = configModel;
   }
 
@@ -73,9 +76,12 @@ public class GameMapController {
       handleCollision(e1, e2);
     }
     // Handle game over conditions:
-    if (livesBasedOutcome.hasGameEnded(new GameContext(gameMap, gameState))) {
+    if (livesBasedOutcome.hasGameEnded(gameContext)) {
       gameState.setGameOver(true);
       stopGameLoop(GameEndStatus.LOSS);
+    }
+    if (new EntityBasedOutcomeStrategy("dot").hasGameEnded(gameContext)) {
+
     }
   }
 
