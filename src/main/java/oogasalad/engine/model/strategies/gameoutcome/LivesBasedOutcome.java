@@ -9,7 +9,7 @@ import oogasalad.engine.records.GameContextRecord;
  * If the player's lives reach zero or below, the game is considered over.
  * </p>
  *
- * @author [Your Name]
+ * @author Austin Huang
  */
 public class LivesBasedOutcome implements GameOutcomeStrategy {
 
