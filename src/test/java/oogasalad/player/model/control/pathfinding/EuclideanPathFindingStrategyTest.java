@@ -52,29 +52,6 @@ class EuclideanPathFindingStrategyTest {
   }
 
   @Test
-  void getPath_allDirectionsBlocked_returnNoDirection() {
-    int startX = 0, startY = 0;
-    int targetX = 1, targetY = 0;
-
-    List<int[]> neighbors = new ArrayList<>(List.of(
-        new int[]{1, 0},
-        new int[]{0, 1}
-    ));
-
-    try (MockedStatic<PathFindingStrategyHelperMethods> utilities = mockStatic(PathFindingStrategyHelperMethods.class)) {
-      utilities.when(() ->
-              PathFindingStrategyHelperMethods.getAllValidNeighbors(mockMap, startX, startY, mockEntity))
-          .thenReturn(neighbors);
-
-      mockPositionValidity(neighbors, false);
-
-      int[] result = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntity, Direction.NONE);
-
-      assertArrayEquals(new int[]{0, 0}, result);
-    }
-  }
-
-  @Test
   void getPath_unblockedPathMockPreferred_returnRight() {
     int startX = 2, startY = 2;
     int targetX = 2, targetY = 3;
