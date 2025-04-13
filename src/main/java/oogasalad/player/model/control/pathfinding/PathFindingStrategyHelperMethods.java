@@ -42,6 +42,10 @@ public class PathFindingStrategyHelperMethods {
   public static List<int[]> getPreferredNeighbors(GameMap map, int x, int y,
       EntityPlacement thisEntity,
       Direction thisDirection) {
+    if (thisDirection == Direction.NONE) {
+      return new ArrayList<>();
+    }
+
     int baseAngle = thisDirection.getAngle();
     List<Direction> preferredDirs = List.of(
         Direction.fromAngle(baseAngle),
@@ -77,6 +81,7 @@ public class PathFindingStrategyHelperMethods {
   private static List<int[]> getValidNeighborsFromDirections(GameMap map, int x, int y,
       EntityPlacement thisEntity, List<Direction> directions) {
     List<int[]> neighbors = new ArrayList<>();
+
     for (Direction dir : directions) {
       int nx = x + dir.getDx();
       int ny = y + dir.getDy();
