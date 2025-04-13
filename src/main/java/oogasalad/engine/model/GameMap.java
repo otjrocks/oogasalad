@@ -13,7 +13,7 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
  * @author Owen Jennings
  * @see Entity
  */
-public interface GameMap {
+public interface GameMap extends Iterable<Entity> {
   // I used ChatGPT to assist in writing the methods of this interface
 
   /**
