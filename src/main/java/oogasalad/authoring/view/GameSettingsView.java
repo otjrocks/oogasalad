@@ -1,8 +1,6 @@
 package oogasalad.authoring.view;
 
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.engine.model.GameSettings;
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;

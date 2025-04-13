@@ -10,7 +10,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.LevelDraft;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
 

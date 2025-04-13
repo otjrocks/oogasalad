@@ -27,8 +27,9 @@ public class GameView extends StackPane {
    *
    * @param gameContext The game context for this view.
    * @param configModel The config model for this view.
+   * @param levelIndex  The index of the level that is displayed on this view.
    */
-  public GameView(GameContext gameContext, ConfigModel configModel) {
+  public GameView(GameContext gameContext, ConfigModel configModel, int levelIndex) {
     super();
     GameMapView myGameMapView = new GameMapView(gameContext, configModel);
     this.setPrefSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
@@ -37,7 +38,8 @@ public class GameView extends StackPane {
     this.getChildren().add(myGameMapView);
     this.getStyleClass().add("game-view");
     this.setFocusTraversable(true);
-    myGameLoopController = new GameLoopController(gameContext, myGameMapView);
+    myGameLoopController = new GameLoopController(gameContext, myGameMapView,
+        configModel.levels().get(levelIndex));
     myGameMapView.setGameLoopController(myGameLoopController);
     endLabel.setVisible(false);
     endLabel.getStyleClass().add("end-label");
@@ -62,7 +64,8 @@ public class GameView extends StackPane {
   }
 
   private void showEndMessage(boolean gameWon) {
-    endLabel.setText(gameWon ? LanguageManager.getMessage("LEVEL_PASSED") : LanguageManager.getMessage("GAME_OVER"));
+    endLabel.setText(gameWon ? LanguageManager.getMessage("LEVEL_PASSED")
+        : LanguageManager.getMessage("GAME_OVER"));
     endLabel.setVisible(true);
   }
 }
