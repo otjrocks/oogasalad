@@ -7,6 +7,8 @@ import oogasalad.engine.model.GameSettings;
 import oogasalad.engine.model.MetaData;
 import oogasalad.engine.model.Tiles;
 import java.util.List;
+import oogasalad.engine.records.newconfig.model.ParsedLevel;
+import oogasalad.engine.records.newconfig.model.SpawnEvent;
 
 /**
  * The ConfigModel record serves as a container for the configuration data of a game. It
@@ -28,7 +30,7 @@ import java.util.List;
 public record ConfigModel(MetaData metadata,
                           GameSettings settings,
                           List<EntityType> entityTypes,
-                          List<EntityPlacement> entityPlacements,
+                          List<ParsedLevel> levels,
                           List<CollisionRule> collisionRules,
                           String winCondition,
                           List<Tiles> tiles) {

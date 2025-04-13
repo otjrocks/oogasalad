@@ -66,5 +66,15 @@
     "5 6 5 5 5 5 5 5 5 5 5 5 6 5 5 6 5 5 5 5 5 5 5 5 5 5 6 5",
     "5 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 5",
     "5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5"
+  ],
+  "spawnEvents": [
+    {
+      "entityType": "cherry",
+      "spawnCondition": "TimeElapsed(30)",
+      "x": 13,
+      "y": 17,
+      "mode": 0,
+      "despawnCondition": "TimeElapsed(30)"
+    }
   ]
 }

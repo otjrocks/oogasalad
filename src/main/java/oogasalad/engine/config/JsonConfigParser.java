@@ -32,6 +32,7 @@ import oogasalad.engine.records.newconfig.model.Level;
 import oogasalad.engine.records.newconfig.model.Metadata;
 import oogasalad.engine.records.newconfig.model.ParsedLevel;
 import oogasalad.engine.records.newconfig.model.Settings;
+import oogasalad.engine.records.newconfig.model.SpawnEvent;
 import oogasalad.engine.utility.FileUtility;
 
 /**
@@ -96,7 +97,7 @@ public class JsonConfigParser implements ConfigParser {
     createEntityTypes(entityTypes);
 
     // Step 5: Parse level entity placements + map info
-    List<List<EntityPlacement>> levels = new ArrayList<>();
+    List<ParsedLevel> levels = new ArrayList<>();
     List<MapInfo> mapInfos = new ArrayList<>();
     String levelFolderPath;
 
@@ -109,7 +110,7 @@ public class JsonConfigParser implements ConfigParser {
 
     for (Level level : gameConfig.levels()) {
       ParsedLevel parsed = loadLevelConfig(levelFolderPath + level.levelMap() + JSON_IDENTIFIER);
-      levels.add(parsed.placements());
+      levels.add(parsed);
       mapInfos.add(parsed.mapInfo());
     }
 
@@ -124,7 +125,7 @@ public class JsonConfigParser implements ConfigParser {
     List<Tiles> tiles = new ArrayList<>();
 
     // Step 9: Return the full config model using the first level only for now
-    return new ConfigModel(metaData, settings, entityTypes, levels.getFirst(), collisionRules,
+    return new ConfigModel(metaData, settings, entityTypes, levels, collisionRules,
         winCondition, tiles);
   }
 
@@ -138,10 +139,26 @@ public class JsonConfigParser implements ConfigParser {
 
       List<EntityPlacement> placements = parseLayout(root.get("layout"), idToEntityType,
           idToEntityName);
-      return new ParsedLevel(placements, mapInfo);
+
+      List<SpawnEvent> spawnEvents = new ArrayList<>();
+      parseSpawnEvents(root, spawnEvents);
+
+      return new ParsedLevel(placements, mapInfo, spawnEvents);
 
     } catch (IOException e) {
       throw new ConfigException("Error in loading level config", e);
+    }
+  }
+
+  private void parseSpawnEvents(JsonNode root, List<SpawnEvent> spawnEvents)
+      throws JsonProcessingException {
+    JsonNode spawnEventsNode = root.get("spawnEvents");
+
+    if (spawnEventsNode != null && spawnEventsNode.isArray()) {
+      for (JsonNode spawnNode : spawnEventsNode) {
+        SpawnEvent event = mapper.treeToValue(spawnNode, SpawnEvent.class);
+        spawnEvents.add(event);
+      }
     }
   }
 

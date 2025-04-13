@@ -28,7 +28,7 @@ public class GameMapFactory {
     int width = configModel.settings().width();
     int height = configModel.settings().height();
     GameMapImpl gameMap = new GameMapImpl(width, height); // Hardcoded for now
-    for (EntityPlacement entityPlacement : configModel.entityPlacements()) {
+    for (EntityPlacement entityPlacement : configModel.levels().getFirst().placements()) {
       Entity entity = EntityFactory.createEntity(input, entityPlacement, gameMap);
       gameMap.addEntity(entity);
     }
