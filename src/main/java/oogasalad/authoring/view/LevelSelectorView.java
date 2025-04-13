@@ -16,10 +16,11 @@ import java.util.List;
  * <p>
  * Example: Used by AuthoringView to allow switching between levels.
  *
- * @author Will He
+ * @author Will He, Ishan Madan
  */
-public class LevelSelectorView extends HBox {
+public class LevelSelectorView {
 
+  private final HBox root;
   private final ComboBox<String> levelDropdown = new ComboBox<>();
   private final Button addLevelButton = new Button("+ Add Level");
   private LevelController controller;
@@ -31,11 +32,13 @@ public class LevelSelectorView extends HBox {
    */
   public LevelSelectorView(LevelController controller) {
     this.controller = controller;
+
+    root = new HBox();
     levelDropdown.setPromptText("Select Level");
 
     levelDropdown.setPrefWidth(130);
     addLevelButton.setPrefWidth(130);
-    this.setPrefWidth(280);
+    root.setPrefWidth(280);
 
     levelDropdown.setOnAction(e -> {
       int selectedIndex = levelDropdown.getSelectionModel().getSelectedIndex();
@@ -46,8 +49,17 @@ public class LevelSelectorView extends HBox {
 
     addLevelButton.setOnAction(e -> controller.addNewLevel());
 
-    this.setSpacing(10);
-    this.getChildren().addAll(levelDropdown, addLevelButton);
+    root.setSpacing(10);
+    root.getChildren().addAll(levelDropdown, addLevelButton);
+  }
+
+  /**
+   * Returns the root JavaFX node of this view
+   * 
+   * @return the root node
+   */
+  public HBox getRoot() {
+    return root;
   }
 
   /**

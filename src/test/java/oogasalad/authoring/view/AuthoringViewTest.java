@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.AuthoringModel;
-import oogasalad.engine.model.GameSettings;
+import oogasalad.engine.records.newconfig.model.Settings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -27,12 +27,12 @@ public class AuthoringViewTest extends DukeApplicationTest {
 
     when(mockController.getLevelController()).thenReturn(mockLevelController);
     when(mockController.getModel()).thenReturn(mockModel);
-    when(mockModel.getDefaultSettings()).thenReturn(new GameSettings(2, 2, 2, "EDGE", 2, 2));
+    when(mockModel.getDefaultSettings()).thenReturn(new Settings(2.0, 2, 2, "", ""));
 
     authoringView = new AuthoringView();
     authoringView.setController(mockController);
 
-    Scene scene = new Scene(authoringView, 1200, 800);
+    Scene scene = new Scene(authoringView.getNode(), 1200, 800);
     stage.setScene(scene);
     stage.show();
   }
@@ -46,7 +46,7 @@ public class AuthoringViewTest extends DukeApplicationTest {
   @Test
   public void setController_ValidController_SubViewsInitialized() {
     AuthoringModel mockModel = mock(AuthoringModel.class);
-    when(mockModel.getDefaultSettings()).thenReturn(new GameSettings(2, 2, 2, "EDGE", 2, 2));
+    when(mockModel.getDefaultSettings()).thenReturn(new Settings(2.0, 2, 2, "", ""));
 
     when(mockController.getModel()).thenReturn(mockModel);
     when(mockController.getLevelController()).thenReturn(mockLevelController);
@@ -66,7 +66,7 @@ public class AuthoringViewTest extends DukeApplicationTest {
 
   @Test
   public void getEntityEditorView_DefaultVisibility_NotVisible() {
-    assertFalse(authoringView.getEntityEditorView().isVisible(), "EntityTypeEditorView should be hidden by default");
+    assertFalse(authoringView.getEntityEditorView().getRoot().isVisible(), "EntityTypeEditorView should be hidden by default");
   }
 
   @Test
@@ -77,6 +77,6 @@ public class AuthoringViewTest extends DukeApplicationTest {
 
   @Test
   public void setController_WindowMaximized_PlatformRunLaterExecuted() {
-    assertNotNull(authoringView.getScene(), "Scene should be set when shown");
+    assertNotNull(authoringView.getNode().getScene(), "Scene should be set when shown");
   }
 }

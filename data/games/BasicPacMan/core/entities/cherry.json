@@ -1,0 +1,21 @@
+{
+  "entityType": {
+    "name": "Cherry",
+    "controlType": {
+      "controlType": "None"
+    },
+    "movementSpeed": 0
+  },
+  "modes": [
+    {
+      "name": "Default",
+      "image": {
+        "imagePath": "cherry",
+        "tileWidth": 2,
+        "tileHeight": 2,
+        "tilesToCycle": [0],
+        "animationSpeed": 1.0
+      }
+    }
+  ]
+}

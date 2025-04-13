@@ -4,7 +4,12 @@
     "controlType": {
       "controlType": "None"
     },
-    "movementSpeed": 0
+    "movementSpeed": 0,
+    "blocks": [
+      "Pacman",
+      "RedGhost",
+      "BlueGhost"
+    ]
   },
   "modes": [
     {

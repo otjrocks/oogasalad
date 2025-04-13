@@ -1,5 +1,6 @@
 package oogasalad.engine.model.strategies.collision;
 
+import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContext;
 
@@ -35,6 +36,6 @@ public class StopStrategy implements CollisionStrategy {
       collisionContext.entity1().getEntityPlacement()
           .setY(collisionContext.entity2().getEntityPlacement().getY() - 1);
     }
-    collisionContext.entity1().setEntityDirection(' ');
+    collisionContext.entity1().setEntityDirection(Direction.NONE);
   }
 }

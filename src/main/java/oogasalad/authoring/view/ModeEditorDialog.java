@@ -1,22 +1,29 @@
 package oogasalad.authoring.view;
 
 import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import oogasalad.engine.config.ModeConfig;
 
 import java.io.File;
+import oogasalad.engine.records.newconfig.ImageConfig;
+import oogasalad.engine.config.ModeConfig;
+import oogasalad.engine.records.newconfig.model.ControlType;
+import oogasalad.engine.records.newconfig.model.ControlTypeConfig;
+import oogasalad.engine.records.newconfig.model.EntityProperties;
 
 /**
  * Dialog for creating a new ModeConfig with a user-uploaded image.
  * Returns a ModeConfig object via showAndWait().ifPresent(...)
  *
- * @author Will He
+ * @author Will He, Ishan Madan
  */
-public class ModeEditorDialog extends Dialog<ModeConfig> {
+public class ModeEditorDialog {
 
   private TextField nameField;
   private TextField speedField;
@@ -24,12 +31,16 @@ public class ModeEditorDialog extends Dialog<ModeConfig> {
   private File selectedImageFile;
   private ModeConfig preparedResult;
 
+  private final Dialog<ModeConfig> dialog;
+
 
   /**
    * Represents the dialog to add a new mode
    */
   public ModeEditorDialog() {
-    this.setTitle("Mode Editor");
+    // Create dialog instance
+    dialog = new Dialog<>();
+    dialog.setTitle("Mode Editor");
 
     GridPane grid = new GridPane();
     grid.setHgap(10);
@@ -56,22 +67,40 @@ public class ModeEditorDialog extends Dialog<ModeConfig> {
 
     ButtonType okButtonType = ButtonType.OK;
 
-    this.getDialogPane().setContent(grid);
-    this.getDialogPane().getButtonTypes().addAll(okButtonType, ButtonType.CANCEL);
+    dialog.getDialogPane().setContent(grid);
+    dialog.getDialogPane().getButtonTypes().addAll(okButtonType, ButtonType.CANCEL);
 
-    Button okButton = (Button) this.getDialogPane().lookupButton(okButtonType);
+    Button okButton = (Button) dialog.getDialogPane().lookupButton(okButtonType);
     okButton.addEventFilter(javafx.event.ActionEvent.ACTION, event -> {
       if (!validateAndPrepareResult()) {
         event.consume(); // prevent dialog from closing
       }
     });
 
-    this.setResultConverter(button -> {
+    dialog.setResultConverter(button -> {
       if (button == okButtonType) {
         return preparedResult; // set during validation
       }
       return null;
     });
+  }
+
+  /**
+   * Returns the Mode Config Dialog.
+   *
+   * @return the mode config dialog
+   */
+  public Dialog<ModeConfig> getDialog() {
+    return dialog;
+  }
+
+  /**
+   * Shows the dialog and waits for user input.
+   *
+   * @return Optional containing the list of collision rules if OK was pressed, empty Optional otherwise
+   */
+  public Optional<ModeConfig> showAndWait() {
+    return dialog.showAndWait();
   }
 
   /**
@@ -81,9 +110,9 @@ public class ModeEditorDialog extends Dialog<ModeConfig> {
   public ModeEditorDialog(ModeConfig existingConfig) {
     this(); // call default constructor
     if (existingConfig != null) {
-      nameField.setText(existingConfig.getModeName());
-      speedField.setText(String.valueOf(existingConfig.getMovementSpeed()));
-      selectedImageFile = new File(URI.create(existingConfig.getImagePath()));
+      nameField.setText(existingConfig.name());
+      speedField.setText(String.valueOf(existingConfig.entityProperties().movementSpeed()));
+      selectedImageFile = new File(URI.create(existingConfig.image().imagePath()));
       imagePathField.setText(selectedImageFile.getName());
     }
   }
@@ -103,7 +132,7 @@ public class ModeEditorDialog extends Dialog<ModeConfig> {
   }
 
   private Stage getOwnerWindow() {
-    return (Stage) this.getDialogPane().getScene().getWindow();
+    return (Stage) dialog.getDialogPane().getScene().getWindow();
   }
 
   private void showError(String msg) {
@@ -113,28 +142,49 @@ public class ModeEditorDialog extends Dialog<ModeConfig> {
   }
 
   private boolean validateAndPrepareResult() {
+    if (selectedImageFile == null) {
+      showError("You must choose an image.");
+      return false;
+    }
+
+    String name = nameField.getText().trim();
+    if (name.isEmpty()) {
+      showError("Mode name cannot be empty.");
+      return false;
+    }
+
+    int speed;
     try {
-      if (selectedImageFile == null) {
-        showError("You must choose an image.");
-        return false;
-      }
-
-      int speed = Integer.parseInt(speedField.getText());
-      String name = nameField.getText().trim();
-      if (name.isEmpty()) {
-        showError("Mode name cannot be empty.");
-        return false;
-      }
-
-      ModeConfig config = new ModeConfig();
-      config.setImagePath(selectedImageFile.toURI().toString());
-      config.setMovementSpeed(speed);
-      config.setModeName(name);
-      preparedResult = config;
-      return true;
+      speed = Integer.parseInt(speedField.getText());
     } catch (NumberFormatException ex) {
       showError("Invalid speed. Please enter a number.");
       return false;
     }
+
+    // === Build ImageConfig ===
+    String imagePath = selectedImageFile.toURI().toString();
+    ImageConfig imageConfig = new ImageConfig(
+        imagePath,
+        14,
+        14,
+        List.of(0, 1, 2, 3), // Default animation cycle
+        1.0
+    );
+
+    // === Build EntityProperties ===
+    ControlTypeConfig controlConfig = new ControlTypeConfig("None", 0);
+    ControlType controlType = new ControlType("Keyboard", controlConfig);
+
+    EntityProperties entityProps = new EntityProperties(
+        name,
+        controlType,
+        (double) speed,
+        List.of()
+    );
+
+    // === Build ModeConfig ===
+    preparedResult = new ModeConfig(name, entityProps, imageConfig);
+    return true;
   }
+
 }

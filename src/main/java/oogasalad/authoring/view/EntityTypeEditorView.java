@@ -1,21 +1,23 @@
 package oogasalad.authoring.view;
 
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.model.EntityType;
-import oogasalad.engine.config.ModeConfig;
 
 import java.util.Map;
+import oogasalad.engine.config.ModeConfig;
 
 /**
  * View for editing a selected EntityType.
  *
- * @author Will He
+ * @author Will He, Ishan Madan
  */
-public class EntityTypeEditorView extends VBox {
+public class EntityTypeEditorView {
 
+  private final VBox root;
   private final TextField typeField;
   private final ComboBox<String> controlTypeBox;
   private final VBox modeList;
@@ -30,9 +32,11 @@ public class EntityTypeEditorView extends VBox {
    */
   public EntityTypeEditorView(AuthoringController controller) {
     this.controller = controller;
-    this.setSpacing(10);
-    this.setPadding(new Insets(10));
-    this.getStyleClass().add("entity-editor-view");
+
+    root = new VBox();
+    root.setSpacing(10);
+    root.setPadding(new Insets(10));
+    root.getStyleClass().add("entity-editor-view");
 
     typeField = new TextField();
     controlTypeBox = new ComboBox<>();
@@ -43,7 +47,7 @@ public class EntityTypeEditorView extends VBox {
     addModeButton = new Button("+ Add Mode");
     addModeButton.setOnAction(e -> openAddModeDialog());
 
-    this.getChildren().addAll(
+    root.getChildren().addAll(
         new Label("Entity Type:"), typeField,
         new Label("Control Strategy:"), controlTypeBox,
         new Label("Modes:"), modeList,
@@ -84,6 +88,15 @@ public class EntityTypeEditorView extends VBox {
     }
   }
 
+  /**
+   * Returns the root JavaFX node of this view
+   *
+   * @return the root node
+   */
+  public Parent getRoot() {
+    return root;
+  }
+
   private void commitChanges() {
     if (current != null) {
       EntityType newEntity = new EntityType(typeField.getText(), controlTypeBox.getValue(), current.effect(),
@@ -98,7 +111,7 @@ public class EntityTypeEditorView extends VBox {
   private void openAddModeDialog() {
     ModeEditorDialog dialog = new ModeEditorDialog();
     dialog.showAndWait().ifPresent(config -> {
-      String modeName = config.getModeName();
+      String modeName = config.name();
       if (!modeName.isEmpty() && !current.modes().containsKey(modeName)) {
         current.modes().put(modeName, config);
         setEntityType(current);
@@ -111,11 +124,11 @@ public class EntityTypeEditorView extends VBox {
   private void openEditModeDialog(String modeName, ModeConfig oldConfig) {
     ModeEditorDialog dialog = new ModeEditorDialog(oldConfig);
     dialog.showAndWait().ifPresent(newConfig -> {
-      if (!modeName.equals(newConfig.getModeName())) {
+      if (!modeName.equals(newConfig.name())) {
         // Mode name changed → remove old key and insert new one
         current.modes().remove(modeName);
       }
-      current.modes().put(newConfig.getModeName(), newConfig);
+      current.modes().put(newConfig.name(), newConfig);
       setEntityType(current);
       controller.updateEntitySelector();
       controller.updateCanvas();

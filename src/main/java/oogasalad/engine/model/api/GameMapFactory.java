@@ -19,16 +19,18 @@ public class GameMapFactory {
    * Create a game map with the provided configuration model.
    *
    * @param configModel The configuration model you wish to use to create the game map.
+   * @param levelIndex  The index of the level you want to load a map for. (0 indexed)
    * @return A game map object
    * @throws InvalidPositionException Whenever the map cannot be created because an entity with an
    *                                  invalid position was added.
    */
-  public static GameMap createGameMap(GameInputManager input, ConfigModel configModel)
+  public static GameMap createGameMap(GameInputManager input, ConfigModel configModel,
+      int levelIndex)
       throws InvalidPositionException {
     int width = configModel.settings().width();
     int height = configModel.settings().height();
     GameMapImpl gameMap = new GameMapImpl(width, height); // Hardcoded for now
-    for (EntityPlacement entityPlacement : configModel.entityPlacements()) {
+    for (EntityPlacement entityPlacement : configModel.levels().get(levelIndex).placements()) {
       Entity entity = EntityFactory.createEntity(input, entityPlacement, gameMap);
       gameMap.addEntity(entity);
     }

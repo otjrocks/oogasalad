@@ -1,6 +1,7 @@
 package oogasalad.authoring.view;
 
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -13,21 +14,22 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.model.EntityType;
-import oogasalad.engine.config.ModeConfig;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import oogasalad.engine.config.ModeConfig;
 
 /**
  * View displaying all defined EntityTypes in a draggable grid.
  * Clicking on a tile notifies the controller to open an editor.
  * Selected tile is visually highlighted.
  *
- * @author Will He
+ * @author Will He, Ishan Madan
  */
-public class EntitySelectorView extends VBox {
+public class EntitySelectorView {
 
+  private final VBox root;
   private final FlowPane tileGrid;
   private final AuthoringController controller;
   private final Map<String, VBox> tileMap = new HashMap<>();
@@ -40,9 +42,11 @@ public class EntitySelectorView extends VBox {
    */
   public EntitySelectorView(AuthoringController controller) {
     this.controller = controller;
-    this.getStyleClass().add("entity-selector-view");
-    this.setSpacing(10);
-    this.setPadding(new Insets(10));
+
+    root = new VBox();
+    root.getStyleClass().add("entity-selector-view");
+    root.setSpacing(10);
+    root.setPadding(new Insets(10));
 
     // Button to add new entity types
     Button addButton = new Button("+ Add Entity Type");
@@ -50,6 +54,7 @@ public class EntitySelectorView extends VBox {
 
     // Grid that holds entity tiles
     tileGrid = new FlowPane();
+    tileGrid.getStyleClass().add("flow-pane");
     tileGrid.setHgap(10);
     tileGrid.setVgap(10);
     tileGrid.setPrefWrapLength(1000);
@@ -59,7 +64,16 @@ public class EntitySelectorView extends VBox {
     scrollPane.setFitToWidth(true);
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
 
-    this.getChildren().addAll(addButton, scrollPane);
+    root.getChildren().addAll(addButton, scrollPane);
+  }
+
+  /**
+   * Returns the root JavaFX node of this view
+   * 
+   * @return the root node
+   */
+  public Parent getRoot() {
+    return root;
   }
 
   /**
@@ -143,6 +157,6 @@ public class EntitySelectorView extends VBox {
   private String getDefaultModeImage(EntityType type) {
     Map<String, ModeConfig> modes = type.modes();
     if (modes == null || !modes.containsKey("Default")) return null;
-    return modes.get("Default").getImagePath();
+    return modes.get("Default").image().imagePath();
   }
 }

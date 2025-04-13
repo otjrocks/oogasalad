@@ -6,10 +6,8 @@ import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
-import oogasalad.engine.config.ModeConfig;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Utility class for converting the internal AuthoringModel data structures
@@ -153,17 +151,17 @@ public class JsonConfigBuilder {
     // Movement speed: extracted from "Default" mode if it exists
     ModeConfig defaultMode = type.modes().get("Default");
     if (defaultMode != null) {
-      entityTypeNode.put("movementSpeed", defaultMode.getMovementSpeed());
+      entityTypeNode.put("movementSpeed", defaultMode.entityProperties().movementSpeed());
     }
 
     // === Modes array ===
     ArrayNode modesArray = root.putArray("modes");
     for (ModeConfig mode : type.modes().values()) {
       ObjectNode modeNode = mapper.createObjectNode();
-      modeNode.put("name", mode.getModeName());
+      modeNode.put("name", mode.name());
 
       ObjectNode imageNode = modeNode.putObject("image");
-      imageNode.put("imagePath", getRelativeImagePath(mode.getImagePath()));
+      imageNode.put("imagePath", getRelativeImagePath(mode.image().imagePath()));
 
       // TODO: Temporary hardcoded size and animation data; replace if dynamic
       imageNode.put("tileWidth", 14);

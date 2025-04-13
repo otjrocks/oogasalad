@@ -26,7 +26,7 @@ public class ModeEditorDialogTest extends DukeApplicationTest {
   void openDialog_FieldsAreVisibleAndEditable() {
     runAsJFXAction(() -> {
       dialog = new ModeEditorDialog();
-      dialog.initOwner(Stage.getWindows().stream().findFirst().get());
+      dialog.getDialog().initOwner(Stage.getWindows().stream().findFirst().get());
       dialog.showAndWait();
     });
     TextField nameField = lookup(".dialog-pane .text-field").nth(0).query();
@@ -51,23 +51,23 @@ public class ModeEditorDialogTest extends DukeApplicationTest {
   void clickCancel_ClosesDialogWithoutException() {
     runAsJFXAction(() -> {
       dialog = new ModeEditorDialog();
-      dialog.initOwner(Stage.getWindows().stream().findFirst().get());
+      dialog.getDialog().initOwner(Stage.getWindows().stream().findFirst().get());
       dialog.showAndWait();
     });
 
     clickOn(lookup("Cancel").query());
-    assertTrue(dialog.getResult() == null);
+    assertTrue(dialog.getDialog().getResult() == null);
   }
 
   @Test
   void clickOk_WithEmptyFields_KeepsDialogOpen() {
     runAsJFXAction(() -> {
       dialog = new ModeEditorDialog();
-      dialog.initOwner(Stage.getWindows().stream().findFirst().get());
+      dialog.getDialog().initOwner(Stage.getWindows().stream().findFirst().get());
       dialog.showAndWait();
     });
     clickOn(lookup("OK").query());
     // Since required fields are empty and image isn't set, dialog should not close
-    assertTrue(dialog.isShowing()); // Still open
+    assertTrue(dialog.getDialog().isShowing()); // Still open
   }
 }

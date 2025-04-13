@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.entity.Entity;
 
 /**
@@ -63,10 +64,10 @@ public class EntityView {
       offsetY = Integer.parseInt(SPRITE_DATA.getString("PACMAN_DEATH_Y_OFFSET"));
     } else {
       frameIndex = entity.getEntityPlacement().getCurrentFrame() % totalFrames;
-      char dir = entity.getEntityDirection();
-      String prefix = (entity.getEntityPlacement().getTypeString()
-              + (dir == ' ' || dir == '\0' ? "_R" : "_" + dir))
-              .toUpperCase();
+      Direction dir = entity.getEntityDirection() != null ? entity.getEntityDirection() : Direction.NONE;
+      String suffix = dir == Direction.NONE ? "_R" : "_" + dir.name();
+      String prefix = (entity.getEntityPlacement().getTypeString() + suffix).toUpperCase();
+
 
       offsetX = Integer.parseInt(SPRITE_DATA.getString(prefix + "_X_OFFSET"));
       offsetY = Integer.parseInt(SPRITE_DATA.getString(prefix + "_Y_OFFSET"));

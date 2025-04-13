@@ -14,7 +14,7 @@ import oogasalad.engine.model.EntityPlacement;
  * selects an entity on the canvas, allowing them to modify its position, mode,
  * and other instance-specific attributes.
  *
- * @author Angela Predolac
+ * @author Angela Predolac, Ishan Madan
  */
 
 public class EntityPlacementView {
