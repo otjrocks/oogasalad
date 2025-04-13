@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.model.EntityPlacement;
@@ -85,15 +86,22 @@ public class CanvasViewTest extends DukeApplicationTest {
     interact(() -> canvasView.addEntityVisual(p));
 
     ImageView image = (ImageView) canvasView.getNode().getChildren().stream()
-        .filter(n -> n instanceof ImageView)
-        .findFirst()
-        .orElseThrow();
+            .filter(n -> n instanceof ImageView)
+            .findFirst()
+            .orElseThrow();
 
-    clickOn(image);
+    MouseEvent mockEvent = mock(MouseEvent.class);
+    when(mockEvent.getSource()).thenReturn(image);
+    when(mockEvent.getSceneX()).thenReturn(45.0); // Somewhere in the middle of the image
+    when(mockEvent.getSceneY()).thenReturn(45.0);
+
+    interact(() -> canvasView.handleEntityMousePressed(mockEvent));
 
     assertTrue(canvasView.getSelectionHighlightVisible(), "Selection highlight should be visible after click");
     assertEquals(40.0, canvasView.getSelectionHighlightX(), 0.1);
     assertEquals(40.0, canvasView.getSelectionHighlightY(), 0.1);
+
+    assertTrue(canvasView.hasSelectedEntity(), "Entity should be selected after click");
   }
 
   @Test
