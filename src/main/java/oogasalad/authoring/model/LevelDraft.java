@@ -8,13 +8,13 @@ import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 
 /**
- * Represents a draft of a single level in the authoring environment.
- * Stores metadata such as name, file name, grid dimensions, edge policy,
- * and all entity placements for the level.
+ * Represents a draft of a single level in the authoring environment. Stores metadata such as name,
+ * file name, grid dimensions, edge policy, and all entity placements for the level.
  *
  * @author Will He
  */
 public class LevelDraft {
+
   private String name;
   private String outputFileName;
   private int width;
@@ -26,7 +26,7 @@ public class LevelDraft {
   /**
    * Constructs a new LevelDraft with the given name and output file name.
    *
-   * @param name the display name of the level
+   * @param name           the display name of the level
    * @param outputFileName the file name this level will be saved to
    */
   public LevelDraft(String name, String outputFileName) {
@@ -61,16 +61,18 @@ public class LevelDraft {
   }
 
   /**
-   * Creates a new entity placement using the specified entity type and coordinates,
-   * and adds it to the level using the default mode.
+   * Creates a new entity placement using the specified entity type and coordinates, and adds it to
+   * the level using the default mode.
    *
    * @param type the entity type to place
-   * @param x the X-coordinate (in pixels)
-   * @param y the Y-coordinate (in pixels)
+   * @param x    the X-coordinate (in pixels)
+   * @param y    the Y-coordinate (in pixels)
    * @return the created EntityPlacement, or null if the type is null
    */
   public EntityPlacement createAndAddEntityPlacement(EntityType type, double x, double y) {
-    if (type == null) return null;
+    if (type == null) {
+      return null;
+    }
     EntityPlacement placement = new EntityPlacement(type, x, y, "Default");
     entityPlacements.add(placement);
     return placement;
@@ -79,8 +81,8 @@ public class LevelDraft {
   /**
    * Finds the first entity placement within a threshold distance of the given coordinates.
    *
-   * @param x the X-coordinate to check
-   * @param y the Y-coordinate to check
+   * @param x         the X-coordinate to check
+   * @param y         the Y-coordinate to check
    * @param threshold the maximum distance from the point to consider
    * @return an Optional containing the matching placement if found; empty otherwise
    */

@@ -1,7 +1,5 @@
 package oogasalad.engine.records.newconfig.model;
 
-import oogasalad.engine.model.MapInfo;
-
 /**
  * Represents a game level with its associated settings and map.
  *
