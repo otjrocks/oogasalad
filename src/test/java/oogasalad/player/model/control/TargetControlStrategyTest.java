@@ -100,9 +100,9 @@ public class TargetControlStrategyTest {
       strategy.update(entity);
 
       if (canMove) {
-        verify(entity).setEntityDirection(expectedDirection);
+        verify(entity).setEntitySnapDirection(expectedDirection);
       } else {
-        verify(entity, never()).setEntityDirection(any(Direction.class));
+        verify(entity, never()).setEntitySnapDirection(any(Direction.class));
       }
     }
   }
