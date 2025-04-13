@@ -24,6 +24,7 @@ import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameSettings;
 import oogasalad.engine.model.MapInfo;
 import oogasalad.engine.model.MetaData;
+import oogasalad.engine.model.ModeChangeEvent;
 import oogasalad.engine.model.Tiles;
 import oogasalad.engine.records.newconfig.CollisionConfig;
 import oogasalad.engine.records.newconfig.EntityConfig;
@@ -144,8 +145,9 @@ public class JsonConfigParser implements ConfigParser {
           idToEntityName);
 
       List<SpawnEvent> spawnEvents = parseSpawnEvents(root, idToEntityType);
+      List<ModeChangeEvent> modeChangeEvents = parseModeChangeEvents(root, idToEntityType);
 
-      return new ParsedLevel(placements, mapInfo, spawnEvents);
+      return new ParsedLevel(placements, mapInfo, spawnEvents, modeChangeEvents);
 
     } catch (IOException e) {
       throw new ConfigException("Error in loading level config", e);
@@ -177,6 +179,30 @@ public class JsonConfigParser implements ConfigParser {
 
     return spawnEvents;
   }
+
+  private List<ModeChangeEvent> parseModeChangeEvents(JsonNode rootNode,
+      Map<Integer, EntityType> idToEntityType) throws ConfigException {
+
+    List<ModeChangeEvent> modeChangeEvents = new ArrayList<>();
+    JsonNode eventsNode = rootNode.get("modeChangeEvents");
+
+    for (JsonNode eventNode : eventsNode) {
+      int id = Integer.parseInt(eventNode.get("entityType").asText());
+      EntityType type = idToEntityType.get(id);
+      if (type == null) {
+        throw new ConfigException("Unknown entity ID in modeChangeEvents: " + id);
+      }
+
+      String currentMode = eventNode.get("currentMode").asText();
+      String nextMode = eventNode.get("nextMode").asText();
+      Condition changeCondition = parseCondition(eventNode.get("changeCondition"));
+
+      modeChangeEvents.add(new ModeChangeEvent(type, currentMode, nextMode, changeCondition));
+    }
+
+    return modeChangeEvents;
+  }
+
 
   private Condition parseCondition(JsonNode conditionNode) {
     String type = conditionNode.get("type").asText();
