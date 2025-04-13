@@ -52,7 +52,8 @@ public class GamePlayerView extends StackPane {
 
     try {
       if (myConfigModel != null) {
-        gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel);
+        gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel,
+            0);
       }
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn("Failed to create or populate GameMap: ", e);
