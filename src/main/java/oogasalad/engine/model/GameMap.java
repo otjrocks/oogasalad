@@ -52,6 +52,7 @@ public interface GameMap extends Iterable<Entity> {
    *
    * @return an iterator to iterate over all entities in the GameMap.
    */
+  @Override
   Iterator<Entity> iterator();
 
   /**
