@@ -1,5 +1,6 @@
 package oogasalad.engine.records.newconfig.model;
 
+import oogasalad.engine.model.Condition;
 import oogasalad.engine.model.EntityType;
 
 /**
@@ -15,10 +16,10 @@ import oogasalad.engine.model.EntityType;
  * @author Owen Jennings
  */
 public record SpawnEvent(EntityType entityType,
-                         String spawnCondition,
+                         Condition spawnCondition,
                          double x,
                          double y,
                          String mode,
-                         String despawnCondition) {
+                         Condition despawnCondition) {
 
 }

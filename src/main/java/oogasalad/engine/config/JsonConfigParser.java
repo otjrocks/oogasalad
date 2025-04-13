@@ -7,8 +7,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import oogasalad.engine.ConstantsManager;
@@ -16,6 +18,7 @@ import oogasalad.engine.ConstantsManagerException;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.api.ConfigParser;
 import oogasalad.engine.model.CollisionRule;
+import oogasalad.engine.model.Condition;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameSettings;
@@ -166,14 +169,40 @@ public class JsonConfigParser implements ConfigParser {
       double x = eventNode.get("x").asDouble();
       double y = eventNode.get("y").asDouble();
       String mode = eventNode.get("mode").asText();
-      String spawnCondition = eventNode.get("spawnCondition").asText();
-      String despawnCondition = eventNode.get("despawnCondition").asText();
+      Condition spawnCondition = parseCondition(eventNode.get("spawnCondition"));
+      Condition despawnCondition = parseCondition(eventNode.get("despawnCondition"));
 
       spawnEvents.add(new SpawnEvent(type, spawnCondition, x, y, mode, despawnCondition));
     }
 
     return spawnEvents;
   }
+
+  private Condition parseCondition(JsonNode conditionNode) {
+    String type = conditionNode.get("type").asText();
+    Map<String, Object> parameters = new HashMap<>();
+
+    for (Iterator<Entry<String, JsonNode>> it = conditionNode.get("parameters").fields(); it.hasNext();) {
+      Map.Entry<String, JsonNode> entry = it.next();
+      JsonNode val = entry.getValue();
+
+      Object value;
+      if (val.isInt()) {
+        value = val.asInt();
+      } else if (val.isDouble()) {
+        value = val.asDouble();
+      } else if (val.isBoolean()) {
+        value = val.asBoolean();
+      } else {
+        value = val.asText();
+      }
+
+      parameters.put(entry.getKey(), value);
+    }
+
+    return new Condition(type, parameters);
+  }
+
 
 
   private Map<Integer, EntityType> buildEntityMappings(JsonNode mappings) throws ConfigException {
