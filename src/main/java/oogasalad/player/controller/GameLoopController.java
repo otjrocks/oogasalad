@@ -95,26 +95,16 @@ public class GameLoopController {
   private void checkAndHandleSpawn(SpawnEvent spawnEvent) {
     SpawnEventStrategy spawnEventStrategy = SpawnEventStrategyFactory.createSpawnEventStrategy(
         spawnEvent.spawnCondition().type());
-    if (spawnEventStrategy != null) {
-      if (spawnEventStrategy.shouldSpawn(spawnEvent, myGameContext, myTotalElapsedTime)) {
-        spawnEntity(spawnEvent);
-      }
-    } else {
-      LoggingManager.LOGGER.warn("No spawn condition found for {}",
-          spawnEvent.spawnCondition().type());
+    if (spawnEventStrategy.shouldSpawn(spawnEvent, myGameContext, myTotalElapsedTime)) {
+      spawnEntity(spawnEvent);
     }
   }
 
   private void checkAndHandleDespawn(SpawnEvent spawnEvent) {
     SpawnEventStrategy despawnEventStrategy = SpawnEventStrategyFactory.createSpawnEventStrategy(
         spawnEvent.despawnCondition().type());
-    if (despawnEventStrategy != null) {
-      if (despawnEventStrategy.shouldDespawn(spawnEvent, myGameContext, myTotalElapsedTime)) {
-        despawnEntity(spawnEvent);
-      }
-    } else {
-      LoggingManager.LOGGER.warn("No despawn condition found for {}",
-          spawnEvent.despawnCondition().type());
+    if (despawnEventStrategy.shouldDespawn(spawnEvent, myGameContext, myTotalElapsedTime)) {
+      despawnEntity(spawnEvent);
     }
   }
 
