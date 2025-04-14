@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.model.EntityPlacement;
@@ -23,16 +24,17 @@ import java.util.Map;
  */
 public class CanvasView {
 
-  private static final int TILE_SIZE = 40;
-  private static final int ROWS = 15;
-  private static final int COLS = 20;
+  private int rows = 15;
+  private int cols = 20;
+  private double tileSize = 40;
+
   private static final double DRAG_THRESHOLD = 5.0;
 
   private final Pane root;
   private final AuthoringController controller;
-  private final Rectangle hoverHighlight = new Rectangle(TILE_SIZE, TILE_SIZE);
-  private final Rectangle selectionHighlight = new Rectangle(TILE_SIZE, TILE_SIZE);
-  private final EntityPlacement[][] gridEntities = new EntityPlacement[ROWS][COLS];
+  private final Rectangle hoverHighlight = new Rectangle(tileSize, tileSize);
+  private final Rectangle selectionHighlight = new Rectangle(tileSize, tileSize);
+  private EntityPlacement[][] gridEntities = new EntityPlacement[rows][cols];
   private final Map<ImageView, EntityPlacement> entityViews = new HashMap<>();
 
   private boolean isDragging = false;
@@ -58,7 +60,7 @@ public class CanvasView {
     initializeSelectionHighlight();
     setupDragAndDropHandlers();
   }
-  
+
   /**
    * Returns the root JavaFX node for this view.
    *
@@ -72,6 +74,8 @@ public class CanvasView {
     hoverHighlight.setFill(Color.TRANSPARENT);
     hoverHighlight.setStroke(Color.GRAY);
     hoverHighlight.setVisible(false);
+    hoverHighlight.setWidth(tileSize);
+    hoverHighlight.setHeight(tileSize);
     root.getChildren().add(hoverHighlight);
   }
 
@@ -80,6 +84,8 @@ public class CanvasView {
     selectionHighlight.setStroke(Color.BLUE);
     selectionHighlight.setStrokeWidth(2);
     selectionHighlight.setVisible(false);
+    selectionHighlight.setWidth(tileSize);
+    selectionHighlight.setHeight(tileSize);
     root.getChildren().add(selectionHighlight);
   }
 
@@ -96,12 +102,12 @@ public class CanvasView {
     e.acceptTransferModes(TransferMode.COPY);
 
     if (isDragging) {
-      int col = (int)(e.getX() / TILE_SIZE);
-      int row = (int)(e.getY() / TILE_SIZE);
+      int col = (int)(e.getX() / tileSize);
+      int row = (int)(e.getY() / tileSize);
 
       if (isValidCell(row, col)) {
-        hoverHighlight.setX(col * TILE_SIZE);
-        hoverHighlight.setY(row * TILE_SIZE);
+        hoverHighlight.setX(col * tileSize);
+        hoverHighlight.setY(row * tileSize);
         hoverHighlight.setVisible(true);
       } else {
         hoverHighlight.setVisible(false);
@@ -114,13 +120,13 @@ public class CanvasView {
     Dragboard db = e.getDragboard();
     if (!db.hasString()) return;
 
-    int col = (int)(e.getX() / TILE_SIZE);
-    int row = (int)(e.getY() / TILE_SIZE);
+    int col = (int)(e.getX() / tileSize);
+    int row = (int)(e.getY() / tileSize);
 
     if (isValidCell(row, col)) {
       if (gridEntities[row][col] == null) {
-        double snappedX = col * TILE_SIZE;
-        double snappedY = row * TILE_SIZE;
+        double snappedX = col * tileSize;
+        double snappedY = row * tileSize;
         controller.placeEntity(db.getString(), snappedX, snappedY);
         e.setDropCompleted(true);
       } else {
@@ -145,7 +151,7 @@ public class CanvasView {
   }
 
   boolean isValidCell(int row, int col) {
-    return row >= 0 && row < ROWS && col >= 0 && col < COLS;
+    return row >= 0 && row < rows && col >= 0 && col < rows;
   }
 
   private void setupEntityMouseHandlers(ImageView imageView) {
@@ -168,8 +174,8 @@ public class CanvasView {
     selectedImageView = clickedImageView;
 
     // Store original grid position
-    origRow = (int)(clickedEntity.getY() / TILE_SIZE);
-    origCol = (int)(clickedEntity.getX() / TILE_SIZE);
+    origRow = (int)(clickedEntity.getY() / tileSize);
+    origCol = (int)(clickedEntity.getX() / tileSize);
 
     // Store the initial mouse position in scene coordinates
     startDragX = e.getSceneX();
@@ -265,12 +271,12 @@ public class CanvasView {
     double newY = startImageY + deltaY;
 
     // Get grid cell
-    int col = (int)Math.floor(newX / TILE_SIZE);
-    int row = (int)Math.floor(newY / TILE_SIZE);
+    int col = (int)Math.floor(newX / tileSize);
+    int row = (int)Math.floor(newY / tileSize);
 
     // Ensure we stay within grid bounds
-    col = Math.max(0, Math.min(COLS - 1, col));
-    row = Math.max(0, Math.min(ROWS - 1, row));
+    col = Math.max(0, Math.min(cols - 1, col));
+    row = Math.max(0, Math.min(cols - 1, row));
 
     return new int[]{row, col};
   }
@@ -293,8 +299,8 @@ public class CanvasView {
    * @param col The grid column
    */
   private void updateEntityVisualPosition(int row, int col) {
-    double snappedX = col * TILE_SIZE;
-    double snappedY = row * TILE_SIZE;
+    double snappedX = col * tileSize;
+    double snappedY = row * tileSize;
 
     selectedImageView.setX(snappedX);
     selectedImageView.setY(snappedY);
@@ -334,8 +340,8 @@ public class CanvasView {
   }
 
   void finalizeEntityPosition() {
-    int newCol = (int)(selectedImageView.getX() / TILE_SIZE);
-    int newRow = (int)(selectedImageView.getY() / TILE_SIZE);
+    int newCol = (int)(selectedImageView.getX() / tileSize);
+    int newRow = (int)(selectedImageView.getY() / tileSize);
 
     boolean validNewPosition = isValidCell(newRow, newCol) &&
             (gridEntities[newRow][newCol] == null || gridEntities[newRow][newCol] == selectedEntity);
@@ -354,8 +360,8 @@ public class CanvasView {
     gridEntities[newRow][newCol] = selectedEntity;
 
     // Calculate pixel coordinates
-    double newX = newCol * TILE_SIZE;
-    double newY = newRow * TILE_SIZE;
+    double newX = newCol * tileSize;
+    double newY = newRow * tileSize;
 
     // Update the model
     controller.moveEntity(selectedEntity, newX, newY);
@@ -363,10 +369,10 @@ public class CanvasView {
 
   private void revertToOriginalPosition() {
     // If invalid position, revert to original
-    selectedImageView.setX(origCol * TILE_SIZE);
-    selectedImageView.setY(origRow * TILE_SIZE);
-    selectionHighlight.setX(origCol * TILE_SIZE);
-    selectionHighlight.setY(origRow * TILE_SIZE);
+    selectedImageView.setX(origCol * tileSize);
+    selectedImageView.setY(origRow * tileSize);
+    selectionHighlight.setX(origCol * tileSize);
+    selectionHighlight.setY(origRow * tileSize);
   }
 
   /**
@@ -375,23 +381,29 @@ public class CanvasView {
   public void reloadFromPlacements(List<EntityPlacement> placements) {
     root.getChildren().clear();
 
-    for (int i = 0; i < ROWS; i++) {
-      for (int j = 0; j < COLS; j++) {
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
         gridEntities[i][j] = null;
       }
     }
     entityViews.clear();
 
-    // Add visuals back
     for (EntityPlacement placement : placements) {
+      int row = (int)(placement.getY() / tileSize);
+      int col = (int)(placement.getX() / tileSize);
+
+      if (row < 0 || row >= rows || col < 0 || col >= cols) {
+        continue;
+      }
+
       addEntityVisual(placement);
     }
 
-    // Restore hover highlight after clearing
     root.getChildren().add(hoverHighlight);
     root.getChildren().add(selectionHighlight);
     selectionHighlight.setVisible(false);
   }
+
 
   /**
    * Gets the image path for this entity.
@@ -412,8 +424,8 @@ public class CanvasView {
     ImageView imageView = createImageViewForEntity(imagePath, placement);
     root.getChildren().add(imageView);
 
-    int row = (int)(placement.getY() / TILE_SIZE);
-    int col = (int)(placement.getX() / TILE_SIZE);
+    int row = (int)(placement.getY() / tileSize);
+    int col = (int)(placement.getX() / tileSize);
     gridEntities[row][col] = placement;
 
     entityViews.put(imageView, placement);
@@ -431,8 +443,8 @@ public class CanvasView {
     ImageView imageView = new ImageView(new Image(imagePath));
     imageView.setX(placement.getX());
     imageView.setY(placement.getY());
-    imageView.setFitWidth(32);
-    imageView.setFitHeight(32);
+    imageView.setFitWidth(tileSize);
+    imageView.setFitHeight(tileSize);
     return imageView;
   }
 
@@ -475,5 +487,51 @@ public class CanvasView {
   public boolean hasSelectedEntity() {
     return selectedEntity != null;
   }
+
+  public void resizeGrid(int newCols, int newRows) {
+    this.cols = newCols;
+    this.rows = newRows;
+
+    computeTileSize(); // 👈 key step
+
+    gridEntities = new EntityPlacement[rows][cols];
+    root.getChildren().clear();
+
+    initializeHoverHighlight();
+    initializeSelectionHighlight();
+    setupDragAndDropHandlers();
+
+    // Add back all visuals with updated tile size
+    reloadFromPlacements(controller.getModel().getCurrentLevel().getEntityPlacements());
+    drawGridLines();
+
+  }
+
+
+  private void computeTileSize() {
+    tileSize = Math.min(root.getPrefWidth() / cols, root.getPrefHeight() / rows);
+  }
+
+  private void drawGridLines() {
+    // Remove old grid lines (identified by CSS class)
+    root.getChildren().removeIf(node -> node.getStyleClass().contains("grid-line"));
+
+    for (int row = 0; row <= rows; row++) {
+      double y = row * tileSize;
+      Line hLine = new Line(0, y, cols * tileSize, y);
+      hLine.setStroke(Color.LIGHTGRAY);
+      hLine.getStyleClass().add("grid-line");
+      root.getChildren().add(hLine);
+    }
+
+    for (int col = 0; col <= cols; col++) {
+      double x = col * tileSize;
+      Line vLine = new Line(x, 0, x, rows * tileSize);
+      vLine.setStroke(Color.LIGHTGRAY);
+      vLine.getStyleClass().add("grid-line");
+      root.getChildren().add(vLine);
+    }
+  }
+
 
 }
