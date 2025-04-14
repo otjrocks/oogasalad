@@ -8,7 +8,7 @@
         "targetCalculationStrategy": "TargetEntityWithTrap",
         "targetType": "Pacman",
         "tilesAhead": 2,
-        "teamEntityType": "RedGhost"
+        "teamEntityType": "PinkGhost"
       }
     },
     "movementSpeed": 90
