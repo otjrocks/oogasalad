@@ -45,7 +45,6 @@ public class GameView extends StackPane {
     endLabel.getStyleClass().add("end-label");
     this.getChildren().add(endLabel); // overlay it on top
     StackPane.setAlignment(endLabel, Pos.CENTER);
-    myGameMapView.setGameLoopController(myGameLoopController);
     myGameMapView.setEndGameCallback(this::showEndMessage);
   }
 
