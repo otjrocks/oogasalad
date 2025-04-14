@@ -29,8 +29,8 @@ public class GameOutcomeFactory {
       return new ScoreBasedOutcomeStrategy(amount);
     }
 
-    if (winCondition instanceof EntityBasedCondition(String entityType, int amount)) {
-      return new EntityBasedOutcomeStrategy(entityType, amount);
+    if (winCondition instanceof EntityBasedCondition(String entityType)) {
+      return new EntityBasedOutcomeStrategy(entityType);
     }
 
     throw new IllegalArgumentException("Unknown win condition type: " + winCondition.getClass());

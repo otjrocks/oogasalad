@@ -17,8 +17,6 @@ import oogasalad.engine.records.GameContextRecord;
 public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
 
   private final String entityType;
-  private final int requiredAmount;
-
   /**
    * Constructs an {@code EntityBasedOutcomeStrategy} that determines the end of the game based on
    * the remaining count of a specific entity type in the game map.
@@ -26,9 +24,8 @@ public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
    * @param entityType the type of entity to track for game completion must match the type used
    *                   within the entity placement
    */
-  public EntityBasedOutcomeStrategy(String entityType, int requiredAmount) {
+  public EntityBasedOutcomeStrategy(String entityType) {
     this.entityType = entityType;
-    this.requiredAmount = requiredAmount;
   }
 
   /**
@@ -40,7 +37,7 @@ public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
    */
   @Override
   public boolean hasGameEnded(GameContextRecord context) {
-    return context.gameMap().getEntityCount(entityType) <= requiredAmount;
+    return context.gameMap().getEntityCount(entityType) <= 0;
   }
 
   /**

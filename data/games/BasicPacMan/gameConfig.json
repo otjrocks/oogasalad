@@ -11,8 +11,7 @@
     "scoreStrategy": "Cumulative",
     "winCondition": {
       "type": "EntityBased",
-      "entityType": "dot",
-      "amount": 0
+      "entityType": "dot"
     }
   },
   "levels": [
