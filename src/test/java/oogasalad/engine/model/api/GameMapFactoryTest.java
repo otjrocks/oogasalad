@@ -17,6 +17,7 @@ import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameSettings;
+import oogasalad.engine.model.MapInfo;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.records.newconfig.model.ParsedLevel;
@@ -47,8 +48,6 @@ public class GameMapFactoryTest {
 
   @Test
   void createGameMap_validConfig_createsMapSuccessfully() throws InvalidPositionException {
-    when(settings.width()).thenReturn(10);
-    when(settings.height()).thenReturn(10);
     when(configModel.settings()).thenReturn(settings);
 
     when(entity1.getEntityPlacement()).thenReturn(entityPlacement1);
@@ -61,7 +60,9 @@ public class GameMapFactoryTest {
 
     // Mock level and placements
     List<ParsedLevel> levels = new ArrayList<>();
-    levels.add(new ParsedLevel(List.of(entityPlacement1, entityPlacement2), null, null));
+    levels.add(
+        new ParsedLevel(List.of(entityPlacement1, entityPlacement2), new MapInfo("wrap", 10, 10),
+            null));
     when(configModel.levels()).thenReturn(levels);
 
     // ChatGPT on how to mock entity factory correctly
@@ -85,8 +86,6 @@ public class GameMapFactoryTest {
 
   @Test
   void createGameMap_invalidConfig_throwsException() {
-    when(settings.width()).thenReturn(10);
-    when(settings.height()).thenReturn(10);
     when(configModel.settings()).thenReturn(settings);
 
     when(entity1.getEntityPlacement()).thenReturn(entityPlacement1);
@@ -99,7 +98,9 @@ public class GameMapFactoryTest {
 
     // Mock level and placements
     List<ParsedLevel> levels = new ArrayList<>();
-    levels.add(new ParsedLevel(List.of(entityPlacement1, entityPlacement2), null, null));
+    levels.add(
+        new ParsedLevel(List.of(entityPlacement1, entityPlacement2), new MapInfo("wrap", 10, 10),
+            null));
     when(configModel.levels()).thenReturn(levels);
 
     // ChatGPT on how to mock entity factory correctly
@@ -118,12 +119,12 @@ public class GameMapFactoryTest {
 
   @Test
   void createGameMap_emptyEntityList_createsEmptyMap() throws InvalidPositionException {
-    when(settings.width()).thenReturn(5);
-    when(settings.height()).thenReturn(5);
     when(configModel.settings()).thenReturn(settings);
     // Mock level and placements
     List<ParsedLevel> levels = new ArrayList<>();
-    levels.add(mock(ParsedLevel.class));
+    levels.add(
+        new ParsedLevel(List.of(), new MapInfo("wrap", 10, 10),
+            null));
     when(configModel.levels()).thenReturn(levels);
 
     GameMap gameMap = GameMapFactory.createGameMap(inputManager, configModel, 0);

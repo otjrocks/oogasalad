@@ -1,0 +1,70 @@
+package oogasalad.player.controller;
+
+import oogasalad.engine.LoggingManager;
+import oogasalad.engine.config.ConfigModel;
+import oogasalad.engine.controller.MainController;
+import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.api.GameMapFactory;
+import oogasalad.engine.model.exceptions.InvalidPositionException;
+
+/**
+ * A controller that is used to progress through levels of the game.
+ *
+ * @author Owen Jennings
+ */
+public class LevelController {
+
+  private int myLevelIndex;
+  private final ConfigModel myConfigModel;
+  private final MainController myMainController;
+
+  /**
+   * Create a level controller with the current config model.
+   *
+   * @param mainController The main controller for this program.
+   * @param configModel    The config model for this level controller.
+   */
+  public LevelController(MainController mainController, ConfigModel configModel) {
+    myMainController = mainController;
+    myConfigModel = configModel;
+    myLevelIndex = 0;
+  }
+
+  /**
+   * Get the current level map. Returns null if the level does not exist
+   *
+   * @return The current level map or null if the level does not exist
+   */
+  public GameMap getCurrentLevelMap() {
+    if (myLevelIndex > myConfigModel.levels().size() - 1) { // you have completed last level.
+      LoggingManager.LOGGER.info(
+          "You have requested to get the level map for a nonexistent level.");
+      return null;
+    }
+    GameMap gameMap = null;
+    try {
+      gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(),
+          myConfigModel,
+          myLevelIndex);
+    } catch (InvalidPositionException e) {
+      LoggingManager.LOGGER.warn("Failed to create or populate GameMap: ", e);
+    }
+    return gameMap;
+  }
+
+  /**
+   * Increment the current level.
+   */
+  public void incrementLevel() {
+    myLevelIndex++;
+  }
+
+  /**
+   * Get the current level index.
+   *
+   * @return The int representing the current level 0-indexed.
+   */
+  public int getCurrentLevelIndex() {
+    return myLevelIndex;
+  }
+}
