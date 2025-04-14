@@ -7,14 +7,12 @@ package oogasalad.engine.model;
  * @param startingLives The number of starting lives for a game.
  * @param initialScore  The initial score of a player.
  * @param edgePolicy    The edge policy to use for the game.
- * @param width         The width of game window in "cells."
- * @param height        The height of the game in "cells."
+ *
+ * @author Owen Jennings, Will He
  */
 public record GameSettings(double gameSpeed,
                            int startingLives,
                            int initialScore,
-                           String edgePolicy,
-                           int width,
-                           int height) {
+                           String edgePolicy) {
 
 }

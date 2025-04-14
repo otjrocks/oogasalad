@@ -3,14 +3,13 @@ package oogasalad.authoring.view;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
-import oogasalad.engine.model.GameSettings;
+import oogasalad.engine.LanguageManager;
 import oogasalad.engine.records.newconfig.model.Settings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +24,7 @@ public class GameSettingsViewTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) {
+    LanguageManager.setLanguage("English");
     mockController = mock(AuthoringController.class);
     mockModel = mock(AuthoringModel.class);
 
@@ -64,7 +64,7 @@ public class GameSettingsViewTest extends DukeApplicationTest {
 
   @Test
   public void saveSettings_Click_ModelUpdated() {
-    Button saveButton = lookup("Save Settings").queryButton();
+    Button saveButton = lookup(LanguageManager.getMessage("SAVE_SETTINGS")).queryButton();
     runAsJFXAction(() -> clickOn(saveButton));
     verify(mockModel, times(1)).setDefaultSettings(any());
   }

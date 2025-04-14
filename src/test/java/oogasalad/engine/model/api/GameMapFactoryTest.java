@@ -10,14 +10,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameSettings;
+import oogasalad.engine.model.MapInfo;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
+import oogasalad.engine.records.newconfig.model.ParsedLevel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -45,8 +48,6 @@ public class GameMapFactoryTest {
 
   @Test
   void createGameMap_validConfig_createsMapSuccessfully() throws InvalidPositionException {
-    when(settings.width()).thenReturn(10);
-    when(settings.height()).thenReturn(10);
     when(configModel.settings()).thenReturn(settings);
 
     when(entity1.getEntityPlacement()).thenReturn(entityPlacement1);
@@ -57,8 +58,12 @@ public class GameMapFactoryTest {
     when(entityPlacement2.getX()).thenReturn(2.0);
     when(entityPlacement2.getY()).thenReturn(2.0);
 
-    // Mock entity placements
-    when(configModel.entityPlacements()).thenReturn(List.of(entityPlacement1, entityPlacement2));
+    // Mock level and placements
+    List<ParsedLevel> levels = new ArrayList<>();
+    levels.add(
+        new ParsedLevel(List.of(entityPlacement1, entityPlacement2), new MapInfo("wrap", 10, 10),
+            null));
+    when(configModel.levels()).thenReturn(levels);
 
     // ChatGPT on how to mock entity factory correctly
     try (MockedStatic<EntityFactory> mockedFactory = mockStatic(EntityFactory.class)) {
@@ -69,7 +74,7 @@ public class GameMapFactoryTest {
               any(GameMap.class)))
           .thenReturn(entity2);
 
-      GameMap gameMap = GameMapFactory.createGameMap(inputManager, configModel);
+      GameMap gameMap = GameMapFactory.createGameMap(inputManager, configModel, 0);
 
       assertNotNull(gameMap);
       assertTrue(gameMap.getEntityAt(1, 1).isPresent());
@@ -81,8 +86,6 @@ public class GameMapFactoryTest {
 
   @Test
   void createGameMap_invalidConfig_throwsException() {
-    when(settings.width()).thenReturn(10);
-    when(settings.height()).thenReturn(10);
     when(configModel.settings()).thenReturn(settings);
 
     when(entity1.getEntityPlacement()).thenReturn(entityPlacement1);
@@ -93,8 +96,12 @@ public class GameMapFactoryTest {
     when(entityPlacement2.getX()).thenReturn(2.0);
     when(entityPlacement2.getY()).thenReturn(2.0);
 
-    // Mock entity placements
-    when(configModel.entityPlacements()).thenReturn(List.of(entityPlacement1, entityPlacement2));
+    // Mock level and placements
+    List<ParsedLevel> levels = new ArrayList<>();
+    levels.add(
+        new ParsedLevel(List.of(entityPlacement1, entityPlacement2), new MapInfo("wrap", 10, 10),
+            null));
+    when(configModel.levels()).thenReturn(levels);
 
     // ChatGPT on how to mock entity factory correctly
     try (MockedStatic<EntityFactory> mockedFactory = mockStatic(EntityFactory.class)) {
@@ -106,18 +113,21 @@ public class GameMapFactoryTest {
           .thenReturn(entity2);
 
       assertThrows(InvalidPositionException.class,
-          () -> GameMapFactory.createGameMap(inputManager, configModel));
+          () -> GameMapFactory.createGameMap(inputManager, configModel, 0));
     }
   }
 
   @Test
   void createGameMap_emptyEntityList_createsEmptyMap() throws InvalidPositionException {
-    when(settings.width()).thenReturn(5);
-    when(settings.height()).thenReturn(5);
     when(configModel.settings()).thenReturn(settings);
-    when(configModel.entityPlacements()).thenReturn(List.of());
+    // Mock level and placements
+    List<ParsedLevel> levels = new ArrayList<>();
+    levels.add(
+        new ParsedLevel(List.of(), new MapInfo("wrap", 10, 10),
+            null));
+    when(configModel.levels()).thenReturn(levels);
 
-    GameMap gameMap = GameMapFactory.createGameMap(inputManager, configModel);
+    GameMap gameMap = GameMapFactory.createGameMap(inputManager, configModel, 0);
 
     assertNotNull(gameMap);
     for (int x = 0; x < 5; x++) {

@@ -32,6 +32,7 @@ import oogasalad.engine.records.newconfig.model.Level;
 import oogasalad.engine.records.newconfig.model.Metadata;
 import oogasalad.engine.records.newconfig.model.ParsedLevel;
 import oogasalad.engine.records.newconfig.model.Settings;
+import oogasalad.engine.records.newconfig.model.SpawnEvent;
 import oogasalad.engine.utility.FileUtility;
 
 /**
@@ -96,7 +97,7 @@ public class JsonConfigParser implements ConfigParser {
     createEntityTypes(entityTypes);
 
     // Step 5: Parse level entity placements + map info
-    List<List<EntityPlacement>> levels = new ArrayList<>();
+    List<ParsedLevel> levels = new ArrayList<>();
     List<MapInfo> mapInfos = new ArrayList<>();
     String levelFolderPath;
 
@@ -109,12 +110,12 @@ public class JsonConfigParser implements ConfigParser {
 
     for (Level level : gameConfig.levels()) {
       ParsedLevel parsed = loadLevelConfig(levelFolderPath + level.levelMap() + JSON_IDENTIFIER);
-      levels.add(parsed.placements());
+      levels.add(parsed);
       mapInfos.add(parsed.mapInfo());
     }
 
     // Step 6: Create game settings with merged defaults and level-specific map info
-    GameSettings settings = createGameSettings(gameConfig, mapInfos);
+    GameSettings settings = createGameSettings(gameConfig);
 
     // Step 7: Parse collision rules and win condition
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
@@ -124,7 +125,7 @@ public class JsonConfigParser implements ConfigParser {
     List<Tiles> tiles = new ArrayList<>();
 
     // Step 9: Return the full config model using the first level only for now
-    return new ConfigModel(metaData, settings, entityTypes, levels.getFirst(), collisionRules,
+    return new ConfigModel(metaData, settings, entityTypes, levels, collisionRules,
         winCondition, tiles);
   }
 
@@ -138,12 +139,42 @@ public class JsonConfigParser implements ConfigParser {
 
       List<EntityPlacement> placements = parseLayout(root.get("layout"), idToEntityType,
           idToEntityName);
-      return new ParsedLevel(placements, mapInfo);
+
+      List<SpawnEvent> spawnEvents = parseSpawnEvents(root, idToEntityType);
+
+      return new ParsedLevel(placements, mapInfo, spawnEvents);
 
     } catch (IOException e) {
       throw new ConfigException("Error in loading level config", e);
     }
   }
+
+  private List<SpawnEvent> parseSpawnEvents(JsonNode rootNode,
+      Map<Integer, EntityType> idToEntityType)
+      throws ConfigException {
+    // ChatGPT generated the code for this method.
+    List<SpawnEvent> spawnEvents = new ArrayList<>();
+    JsonNode eventsNode = rootNode.get("spawnEvents");
+
+    for (JsonNode eventNode : eventsNode) {
+      int id = Integer.parseInt(eventNode.get("entityType").asText()); // old: "8"
+      EntityType type = idToEntityType.get(id);
+      if (type == null) {
+        throw new ConfigException("Unknown entity ID in spawnEvents: " + id);
+      }
+
+      double x = eventNode.get("x").asDouble();
+      double y = eventNode.get("y").asDouble();
+      String mode = eventNode.get("mode").asText();
+      String spawnCondition = eventNode.get("spawnCondition").asText();
+      String despawnCondition = eventNode.get("despawnCondition").asText();
+
+      spawnEvents.add(new SpawnEvent(type, spawnCondition, x, y, mode, despawnCondition));
+    }
+
+    return spawnEvents;
+  }
+
 
   private Map<Integer, EntityType> buildEntityMappings(JsonNode mappings) throws ConfigException {
     Map<Integer, EntityType> idToType = new HashMap<>();
@@ -214,16 +245,14 @@ public class JsonConfigParser implements ConfigParser {
         gameConfig.metadata().gameDescription());
   }
 
-  private GameSettings createGameSettings(GameConfig gameConfig, List<MapInfo> mapInfos) {
+  private GameSettings createGameSettings(GameConfig gameConfig) {
     Settings baseSettings = gameConfig.settings();
 
     return new GameSettings(
         baseSettings.gameSpeed(),
         baseSettings.startingLives(),
         baseSettings.initialScore(),
-        "wrap",
-        28,
-        32
+        "wrap"
     );
   }
 

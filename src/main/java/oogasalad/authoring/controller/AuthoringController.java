@@ -14,7 +14,6 @@ import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.records.newconfig.model.ControlType;
 import oogasalad.engine.records.newconfig.model.ControlTypeConfig;
 import oogasalad.engine.records.newconfig.model.EntityProperties;
-import oogasalad.engine.records.newconfig.model.Settings;
 
 /**
  * Coordinates updates between the {@link AuthoringModel} and {@link AuthoringView}.

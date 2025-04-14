@@ -1,7 +1,7 @@
 package oogasalad.engine.model.strategies.gameoutcome;
 
 import oogasalad.engine.model.GameMap;
-import oogasalad.engine.records.GameContext;
+import oogasalad.engine.records.GameContextRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,12 +11,12 @@ import static org.mockito.Mockito.*;
 class EntityBasedOutcomeStrategyTest {
 
   private GameMap gameMap;
-  private GameContext context;
+  private GameContextRecord context;
 
   @BeforeEach
   void setUp() {
     gameMap = mock(GameMap.class);
-    context = mock(GameContext.class);
+    context = mock(GameContextRecord.class);
     when(context.gameMap()).thenReturn(gameMap);
   }
 

@@ -4,5 +4,8 @@ import java.util.List;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.MapInfo;
 
-public record ParsedLevel(List<EntityPlacement> placements, MapInfo mapInfo) {}
+public record ParsedLevel(List<EntityPlacement> placements, MapInfo mapInfo,
+                          List<SpawnEvent> spawnEvents) {
+
+}
 

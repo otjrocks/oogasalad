@@ -1,6 +1,5 @@
 package oogasalad.authoring.view;
 
-import java.util.Arrays;
 import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,29 +23,29 @@ import java.util.Map;
  */
 public class CanvasView {
 
-  private int ROWS = 15;
-  private int COLS = 20;
+  private static final int TILE_SIZE = 40;
+  private static final int ROWS = 15;
+  private static final int COLS = 20;
+  private static final double DRAG_THRESHOLD = 5.0;
 
   private final Pane root;
   private final AuthoringController controller;
   private final Rectangle hoverHighlight = new Rectangle(TILE_SIZE, TILE_SIZE);
   private final Rectangle selectionHighlight = new Rectangle(TILE_SIZE, TILE_SIZE);
-  private EntityPlacement[][] gridEntities = new EntityPlacement[ROWS][COLS];
+  private final EntityPlacement[][] gridEntities = new EntityPlacement[ROWS][COLS];
   private final Map<ImageView, EntityPlacement> entityViews = new HashMap<>();
 
   private boolean isDragging = false;
   private EntityPlacement selectedEntity = null;
   private ImageView selectedImageView = null;
   private int origRow, origCol;
-  private double mouseOffsetX, mouseOffsetY;
-  private double lastMouseSceneX, lastMouseSceneY;
+  private double startDragX, startDragY;
+  private double startImageX, startImageY;
   private boolean hasMoved = false;
-  private int tileSize = 40;
 
 
   /**
    * Creates a canvasView object
-   *
    * @param controller wires up with model
    */
   public CanvasView(AuthoringController controller) {
@@ -55,15 +54,11 @@ public class CanvasView {
     root.setPrefSize(800, 600);
     root.getStyleClass().add("canvas-view");
 
-    root.widthProperty().addListener((obs, oldVal, newVal) -> resizeGrid(ROWS, COLS));
-    root.heightProperty().addListener((obs, oldVal, newVal) -> resizeGrid(ROWS, COLS));
-
     initializeHoverHighlight();
     initializeSelectionHighlight();
     setupDragAndDropHandlers();
-
   }
-
+  
   /**
    * Returns the root JavaFX node for this view.
    *
@@ -96,15 +91,13 @@ public class CanvasView {
   }
 
   private void handleDragOver(DragEvent e) {
-    if (!e.getDragboard().hasString()) {
-      return;
-    }
+    if (!e.getDragboard().hasString()) return;
 
     e.acceptTransferModes(TransferMode.COPY);
 
     if (isDragging) {
-      int col = (int) (e.getX() / TILE_SIZE);
-      int row = (int) (e.getY() / TILE_SIZE);
+      int col = (int)(e.getX() / TILE_SIZE);
+      int row = (int)(e.getY() / TILE_SIZE);
 
       if (isValidCell(row, col)) {
         hoverHighlight.setX(col * TILE_SIZE);
@@ -119,12 +112,10 @@ public class CanvasView {
 
   void handleDragDropped(DragEvent e) {
     Dragboard db = e.getDragboard();
-    if (!db.hasString()) {
-      return;
-    }
+    if (!db.hasString()) return;
 
-    int col = (int) (e.getX() / TILE_SIZE);
-    int row = (int) (e.getY() / TILE_SIZE);
+    int col = (int)(e.getX() / TILE_SIZE);
+    int row = (int)(e.getY() / TILE_SIZE);
 
     if (isValidCell(row, col)) {
       if (gridEntities[row][col] == null) {
@@ -166,7 +157,7 @@ public class CanvasView {
     imageView.setMouseTransparent(false);
   }
 
-  private void handleEntityMousePressed(MouseEvent e) {
+  void handleEntityMousePressed(MouseEvent e) {
     if (e == null || !(e.getSource() instanceof ImageView clickedImageView)) {
       return;
     }
@@ -177,12 +168,14 @@ public class CanvasView {
     selectedImageView = clickedImageView;
 
     // Store original grid position
-    origRow = (int) (clickedEntity.getY() / TILE_SIZE);
-    origCol = (int) (clickedEntity.getX() / TILE_SIZE);
+    origRow = (int)(clickedEntity.getY() / TILE_SIZE);
+    origCol = (int)(clickedEntity.getX() / TILE_SIZE);
 
     // Store the initial mouse position in scene coordinates
-    lastMouseSceneX = e.getSceneX();
-    lastMouseSceneY = e.getSceneY();
+    startDragX = e.getSceneX();
+    startDragY = e.getSceneY();
+    startImageX = clickedImageView.getX();
+    startImageY = clickedImageView.getY();
 
     // Reset the movement flag
     hasMoved = false;
@@ -193,68 +186,125 @@ public class CanvasView {
     selectionHighlight.setVisible(true);
 
     // Bring the selected entity and highlight to front
+    selectedImageView.toFront();
     selectionHighlight.toFront();
-    selectedImageView.toFront(); // Make sure entity is also above others
 
     controller.selectEntityPlacement(clickedEntity);
     e.consume();
 
   }
 
+  /**
+   * Handles the mouse drag event for entities.
+   *
+   * @param e The mouse drag event
+   */
   void handleEntityMouseDragged(MouseEvent e) {
-    if (selectedEntity == null || selectedImageView == null) {
+    if (!isEntitySelected()) {
       return;
     }
 
-    // Calculate delta movement from last mouse position
-    double deltaX = e.getSceneX() - lastMouseSceneX;
-    double deltaY = e.getSceneY() - lastMouseSceneY;
-
-    // Update the last known mouse position
-    lastMouseSceneX = e.getSceneX();
-    lastMouseSceneY = e.getSceneY();
-
-    // Only move if there's significant delta to avoid unintended movement
-    if (Math.abs(deltaX) < 1 && Math.abs(deltaY) < 1 && !hasMoved) {
-      return;
+    if (!checkAndUpdateDragStatus(e)) {
+      return; // Not yet considered a drag
     }
 
-    hasMoved = true;
+    // Get the target grid position
+    int[] gridPos = calculateTargetGridCell(e);
+    int row = gridPos[0];
+    int col = gridPos[1];
 
-    // Get current position
-    double currentX = selectedImageView.getX();
-    double currentY = selectedImageView.getY();
-
-    // Calculate new position by adding delta
-    double newX = currentX + deltaX;
-    double newY = currentY + deltaY;
-
-    // Snap to grid
-    int col = Math.max(0, Math.min(COLS - 1, (int) Math.round(newX / TILE_SIZE)));
-    int row = Math.max(0, Math.min(ROWS - 1, (int) Math.round(newY / TILE_SIZE)));
-
-    double snappedX = col * TILE_SIZE;
-    double snappedY = row * TILE_SIZE;
-
-    // Check if the target cell is available or it's the original cell
-    boolean isCellAvailable = !isValidCell(row, col) ||
-        gridEntities[row][col] == null ||
-        gridEntities[row][col] == selectedEntity;
-
-    if (isCellAvailable) {
-      // Update visual position
-      selectedImageView.setX(snappedX);
-      selectedImageView.setY(snappedY);
-      selectionHighlight.setX(snappedX);
-      selectionHighlight.setY(snappedY);
+    // Update visual position if the target cell is available
+    if (isCellAvailable(row, col)) {
+      updateEntityVisualPosition(row, col);
     }
 
     e.consume();
   }
 
   /**
-   * Handles the mouse release event for dragged entities. Simply processes event and delegates to
-   * appropriate helper methods.
+   * Checks if any entity is currently selected.
+   *
+   * @return true if an entity is selected
+   */
+  private boolean isEntitySelected() {
+    return selectedEntity != null && selectedImageView != null;
+  }
+
+  /**
+   * Checks if the drag threshold has been exceeded and updates the drag status.
+   *
+   * @param e The mouse event
+   * @return true if we're in a drag state
+   */
+  private boolean checkAndUpdateDragStatus(MouseEvent e) {
+    // Calculate absolute delta from the starting position
+    double deltaX = e.getSceneX() - startDragX;
+    double deltaY = e.getSceneY() - startDragY;
+
+    // Only initiate a drag if the movement exceeds our threshold
+    if (!hasMoved && (Math.abs(deltaX) > DRAG_THRESHOLD || Math.abs(deltaY) > DRAG_THRESHOLD)) {
+      hasMoved = true;
+    }
+
+    return hasMoved;
+  }
+
+  /**
+   * Calculates the target grid cell based on mouse position.
+   *
+   * @param e The mouse event
+   * @return int array containing [row, col]
+   */
+  private int[] calculateTargetGridCell(MouseEvent e) {
+    // Calculate absolute delta from the starting position
+    double deltaX = e.getSceneX() - startDragX;
+    double deltaY = e.getSceneY() - startDragY;
+
+    // Calculate new position directly from the start position plus delta
+    double newX = startImageX + deltaX;
+    double newY = startImageY + deltaY;
+
+    // Get grid cell
+    int col = (int)Math.floor(newX / TILE_SIZE);
+    int row = (int)Math.floor(newY / TILE_SIZE);
+
+    // Ensure we stay within grid bounds
+    col = Math.max(0, Math.min(COLS - 1, col));
+    row = Math.max(0, Math.min(ROWS - 1, row));
+
+    return new int[]{row, col};
+  }
+
+  /**
+   * Checks if the specified cell is available for placement.
+   *
+   * @param row The grid row
+   * @param col The grid column
+   * @return true if the cell is available
+   */
+  private boolean isCellAvailable(int row, int col) {
+    return gridEntities[row][col] == null || gridEntities[row][col] == selectedEntity;
+  }
+
+  /**
+   * Updates the visual position of the entity to the specified grid cell.
+   *
+   * @param row The grid row
+   * @param col The grid column
+   */
+  private void updateEntityVisualPosition(int row, int col) {
+    double snappedX = col * TILE_SIZE;
+    double snappedY = row * TILE_SIZE;
+
+    selectedImageView.setX(snappedX);
+    selectedImageView.setY(snappedY);
+    selectionHighlight.setX(snappedX);
+    selectionHighlight.setY(snappedY);
+  }
+
+  /**
+   * Handles the mouse release event for dragged entities.
+   * Simply processes event and delegates to appropriate helper methods.
    */
   void handleEntityMouseReleased(MouseEvent e) {
     // Return early if no entity is selected
@@ -280,14 +330,15 @@ public class CanvasView {
     selectedEntity = null;
     selectedImageView = null;
     hasMoved = false;
+    selectionHighlight.setVisible(false);
   }
 
   void finalizeEntityPosition() {
-    int newCol = (int) (selectedImageView.getX() / TILE_SIZE);
-    int newRow = (int) (selectedImageView.getY() / TILE_SIZE);
+    int newCol = (int)(selectedImageView.getX() / TILE_SIZE);
+    int newRow = (int)(selectedImageView.getY() / TILE_SIZE);
 
     boolean validNewPosition = isValidCell(newRow, newCol) &&
-        (gridEntities[newRow][newCol] == null || gridEntities[newRow][newCol] == selectedEntity);
+            (gridEntities[newRow][newCol] == null || gridEntities[newRow][newCol] == selectedEntity);
     boolean positionChanged = (newRow != origRow || newCol != origCol);
 
     if (validNewPosition && positionChanged) {
@@ -324,18 +375,27 @@ public class CanvasView {
   public void reloadFromPlacements(List<EntityPlacement> placements) {
     root.getChildren().clear();
 
+    for (int i = 0; i < ROWS; i++) {
+      for (int j = 0; j < COLS; j++) {
+        gridEntities[i][j] = null;
+      }
+    }
+    entityViews.clear();
+
     // Add visuals back
     for (EntityPlacement placement : placements) {
       addEntityVisual(placement);
     }
 
     // Restore hover highlight after clearing
-    root.getChildren().addAll(hoverHighlight, selectionHighlight);
+    root.getChildren().add(hoverHighlight);
+    root.getChildren().add(selectionHighlight);
+    selectionHighlight.setVisible(false);
   }
 
   /**
-   * Gets the image path for this entity. This is a temporary method until the Mode class is fully
-   * implemented.
+   * Gets the image path for this entity.
+   * This is a temporary method until the Mode class is fully implemented.
    *
    * @return the path to the entity's image
    */
@@ -352,8 +412,8 @@ public class CanvasView {
     ImageView imageView = createImageViewForEntity(imagePath, placement);
     root.getChildren().add(imageView);
 
-    int row = (int) (placement.getY() / TILE_SIZE);
-    int col = (int) (placement.getX() / TILE_SIZE);
+    int row = (int)(placement.getY() / TILE_SIZE);
+    int col = (int)(placement.getX() / TILE_SIZE);
     gridEntities[row][col] = placement;
 
     entityViews.put(imageView, placement);
@@ -377,7 +437,8 @@ public class CanvasView {
   }
 
   /**
-   * Gets whether the selection highlight is currently visible. For testing purposes only.
+   * Gets whether the selection highlight is currently visible.
+   * For testing purposes only.
    *
    * @return true if the selection highlight is visible
    */
@@ -386,7 +447,8 @@ public class CanvasView {
   }
 
   /**
-   * Gets the X position of the selection highlight. For testing purposes only.
+   * Gets the X position of the selection highlight.
+   * For testing purposes only.
    *
    * @return the X position of the selection highlight
    */
@@ -395,7 +457,8 @@ public class CanvasView {
   }
 
   /**
-   * Gets the Y position of the selection highlight. For testing purposes only.
+   * Gets the Y position of the selection highlight.
+   * For testing purposes only.
    *
    * @return the Y position of the selection highlight
    */
@@ -404,66 +467,13 @@ public class CanvasView {
   }
 
   /**
-   * Gets whether any entity is currently selected. For testing purposes only.
+   * Gets whether any entity is currently selected.
+   * For testing purposes only.
    *
    * @return true if an entity is selected
    */
   public boolean hasSelectedEntity() {
     return selectedEntity != null;
   }
-
-  /**
-   * Resizes the internal grid to the specified number of rows and columns. Clears any existing
-   * visuals and re-adds remaining entity placements if they still fit.
-   *
-   * @param newRows the new number of rows
-   * @param newCols the new number of columns
-   */
-  public void resizeGrid(int newRows, int newCols) {
-    // Step 1: Backup the current grid
-    EntityPlacement[][] oldGrid = gridEntities;
-
-    // Step 2: Create a new grid with new dimensions
-    EntityPlacement[][] newGrid = new EntityPlacement[newRows][newCols];
-    for (int r = 0; r < Math.min(oldGrid.length, newRows); r++) {
-      for (int c = 0; c < Math.min(oldGrid[0].length, newCols); c++) {
-        newGrid[r][c] = oldGrid[r][c];
-      }
-    }
-
-    // Step 3: Update internal references
-    this.ROWS = newRows;
-    this.COLS = newCols;
-    this.gridEntities = newGrid;
-
-    // Step 4: Clear visuals
-    root.getChildren().clear();
-    entityViews.clear();
-//
-//    // Step 5: Re-add entities that still fit in the new grid
-//    for (int r = 0; r < newRows; r++) {
-//      for (int c = 0; c < newCols; c++) {
-//        EntityPlacement placement = newGrid[r][c];
-//        if (placement != null) {
-//          addEntityVisual(placement);
-//        }
-//      }
-//    }
-
-    // Step 6: Re-add hover and selection highlights
-    root.getChildren().addAll(hoverHighlight, selectionHighlight);
-  }
-
-  private void calculateTileSize() {
-    double availableWidth = root.getWidth();
-    double availableHeight = root.getHeight();
-
-    if (COLS > 0 && ROWS > 0) {
-      int sizeByWidth = (int) (availableWidth / COLS);
-      int sizeByHeight = (int) (availableHeight / ROWS);
-      tileSize = Math.min(sizeByWidth, sizeByHeight);
-    }
-  }
-
 
 }

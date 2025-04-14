@@ -1,17 +1,17 @@
 package oogasalad.player.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
 import oogasalad.engine.config.ConfigModel;
+import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
-import oogasalad.engine.model.entity.BasicEntity;
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.engine.records.GameContext;
+import oogasalad.engine.records.GameContextRecord;
 import oogasalad.player.view.GameMapView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ public class GameMapControllerTest {
   private GameMap mockGameMap;
   private GameState mockGameState;
   private GameMapView mockGameView;
-  private GameContext gameContext;
+  private GameContextRecord gameContext;
   private GameMapController controller;
 
   @BeforeEach
@@ -30,7 +30,7 @@ public class GameMapControllerTest {
     mockGameMap = mock(GameMap.class);
     mockGameState = mock(GameState.class);
     mockGameView = mock(GameMapView.class);
-    gameContext = new GameContext(mockGameMap, mockGameState);
+    gameContext = new GameContextRecord(mockGameMap, mockGameState);
     ConfigModel mockConfigModel = mock(ConfigModel.class);
     controller = new GameMapController(gameContext, mockConfigModel);
     controller = new GameMapController(gameContext, Mockito.mock(ConfigModel.class));
@@ -40,7 +40,8 @@ public class GameMapControllerTest {
   public void updateEntityModels_setVelocityForEntity_entityPositionUpdates() throws Exception {
     EntityType type = new EntityType("SomeEntity", "wall", null, null, null, null);
     EntityPlacement placement = new EntityPlacement(type, 5, 5, "Default");
-    BasicEntity entity = new BasicEntity(placement);
+    GameInputManager mockInputManager = mock(GameInputManager.class);
+    Entity entity = new Entity(mockInputManager, placement, mockGameMap);
     entity.setDx(1);
     entity.setDy(-1);
 

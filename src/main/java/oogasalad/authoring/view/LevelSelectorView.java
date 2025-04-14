@@ -1,14 +1,13 @@
 package oogasalad.authoring.view;
 
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.LevelDraft;
 
 import java.util.List;
+import oogasalad.engine.LanguageManager;
 
 /**
  * A view component that displays a dropdown for selecting levels, and includes a "+ Add Level"
@@ -24,8 +23,6 @@ public class LevelSelectorView {
 
   private final HBox root;
   private final ComboBox<String> levelDropdown = new ComboBox<>();
-  private final Button addLevelButton = new Button("+ Add Level");
-  private LevelController controller;
 
   /**
    * Constructs the LevelSelectorView and wires up interactions.
@@ -33,12 +30,12 @@ public class LevelSelectorView {
    * @param controller the controller responsible for managing level logic
    */
   public LevelSelectorView(LevelController controller) {
-    this.controller = controller;
 
     root = new HBox();
-    levelDropdown.setPromptText("Select Level");
+    levelDropdown.setPromptText(LanguageManager.getMessage("SELECT_LEVEL"));
 
     levelDropdown.setPrefWidth(130);
+    Button addLevelButton = new Button(LanguageManager.getMessage("ADD_LEVEL_LABEL"));
     addLevelButton.setPrefWidth(130);
     root.setPrefWidth(280);
 
@@ -57,7 +54,7 @@ public class LevelSelectorView {
 
   /**
    * Returns the root JavaFX node of this view
-   * 
+   *
    * @return the root node
    */
   public HBox getRoot() {

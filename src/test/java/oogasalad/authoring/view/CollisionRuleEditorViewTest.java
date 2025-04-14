@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.function.Predicate;
-import javafx.collections.FXCollections;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,10 +12,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
+import oogasalad.engine.LanguageManager;
 import oogasalad.engine.model.CollisionRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
 import util.DukeApplicationTest;
 
 import java.util.List;
@@ -30,6 +29,7 @@ public class CollisionRuleEditorViewTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) {
+    LanguageManager.setLanguage("English");
     mockController = mock(AuthoringController.class);
     mockModel = mock(AuthoringModel.class);
 

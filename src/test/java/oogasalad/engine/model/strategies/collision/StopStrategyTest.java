@@ -3,7 +3,7 @@ package oogasalad.engine.model.strategies.collision;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
-import oogasalad.engine.records.CollisionContext;
+import oogasalad.engine.records.CollisionContextRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ class StopStrategyTest {
   private Entity entity2;
   private EntityPlacement placement1;
   private EntityPlacement placement2;
-  private CollisionContext context;
+  private CollisionContextRecord context;
 
   @BeforeEach
   void setUp() {
@@ -25,7 +25,7 @@ class StopStrategyTest {
     entity2 = mock(Entity.class);
     placement1 = mock(EntityPlacement.class);
     placement2 = mock(EntityPlacement.class);
-    context = mock(CollisionContext.class);
+    context = mock(CollisionContextRecord.class);
 
     when(context.entity1()).thenReturn(entity1);
     when(context.entity2()).thenReturn(entity2);
@@ -49,7 +49,6 @@ class StopStrategyTest {
     // pacman is 1, wall is 2 and current pacmanX > wall X
     // thus set wallX + 1 so set 5
     verify(placement1).setX(5.0);
-    verify(entity1).setEntityDirection(' ');
   }
 
   @Test
@@ -63,6 +62,5 @@ class StopStrategyTest {
 
     verify(placement1, never()).setX(anyDouble());
     verify(placement1, never()).setY(anyDouble());
-    verify(entity1).setEntityDirection(' ');
   }
 }

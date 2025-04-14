@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.engine.LanguageManager;
 import oogasalad.engine.config.ConfigException;
 
 /**
@@ -126,33 +127,33 @@ public class AuthoringView {
     controller.getLevelController().updateLevelDropdown();
     controller.getLevelController().switchToLevel(0);
 
-    MenuBar menuBar = createMenuBar();
-    BorderPane mainContent = createMainContent();
+        MenuBar menuBar = createMenuBar();
+        BorderPane mainContent = createMainContent();
 
-    // Create a VBox for the main layout
-    VBox fullLayout = new VBox(10);
-    fullLayout.getChildren().addAll(menuBar, mainContent, gameSettingsView.getNode());
-    VBox.setVgrow(mainContent, Priority.ALWAYS);
+        // Create a VBox for the main layout
+        VBox fullLayout = new VBox(10);
+        fullLayout.getChildren().addAll(menuBar, mainContent, gameSettingsView.getNode());
+        VBox.setVgrow(mainContent, Priority.ALWAYS);
 
-    // Set the main layout as the center of this BorderPane
-    root.setCenter(fullLayout);
+        // Set the main layout as the center of this BorderPane
+        root.setCenter(fullLayout);
 
-    applyStyles();
-    setupWindowMaximization();
-  }
+        applyStyles();
+        setupWindowMaximization();
+    }
 
-  /**
-   * Initializes all view components.
-   */
-  private void initializeViews() {
-    canvasView = new CanvasView(controller);
-    selectorView = new EntitySelectorView(controller);
+    /**
+     * Initializes all view components.
+     */
+    private void initializeViews() {
+        canvasView = new CanvasView(controller);
+        selectorView = new EntitySelectorView(controller);
 
-    entityTypeEditorView = new EntityTypeEditorView(controller);
-    entityTypeEditorView.getRoot().setVisible(false);
+        entityTypeEditorView = new EntityTypeEditorView(controller);
+        entityTypeEditorView.getRoot().setVisible(false);
 
-    entityPlacementView = new EntityPlacementView(controller);
-    entityPlacementView.setVisible(false);
+        entityPlacementView = new EntityPlacementView(controller);
+        entityPlacementView.setVisible(false);
 
     levelSelectorView = new LevelSelectorView(controller.getLevelController());
     levelSettingsView = new LevelSettingsView(controller.getLevelController());
@@ -166,107 +167,107 @@ public class AuthoringView {
    */
   private MenuBar createMenuBar() {
     MenuBar menuBar = new MenuBar();
-    Menu fileMenu = new Menu("File");
-    MenuItem saveItem = new MenuItem("Save Game");
+    Menu fileMenu = new Menu(LanguageManager.getMessage("FILE"));
+    MenuItem saveItem = new MenuItem(LanguageManager.getMessage("SAVE_GAME"));
     saveItem.setOnAction(e -> openSaveDialog());
     fileMenu.getItems().add(saveItem);
     menuBar.getMenus().add(fileMenu);
     return menuBar;
   }
 
-  /**
-   * Creates the main content area with all panels.
-   *
-   * @return The configured BorderPane
-   */
-  private BorderPane createMainContent() {
-    BorderPane mainContent = new BorderPane();
+    /**
+     * Creates the main content area with all panels.
+     *
+     * @return The configured BorderPane
+     */
+    private BorderPane createMainContent() {
+        BorderPane mainContent = new BorderPane();
 
     VBox left = new VBox(10);
     left.getChildren().addAll(levelSelectorView.getRoot(), levelSettingsView.getNode());
     mainContent.setLeft(left);
     mainContent.setCenter(canvasView.getNode());
 
-    AnchorPane editorContainer = createEditorContainer();
+        AnchorPane editorContainer = createEditorContainer();
 
-    VBox rightPanel = new VBox(10);
-    rightPanel.getChildren().addAll(selectorView.getRoot(), editorContainer);
-    mainContent.setRight(rightPanel);
+        VBox rightPanel = new VBox(10);
+        rightPanel.getChildren().addAll(selectorView.getRoot(), editorContainer);
+        mainContent.setRight(rightPanel);
 
-    return mainContent;
-  }
+        return mainContent;
+    }
 
-  /**
-   * Creates the container for entity editors.
-   *
-   * @return The configured AnchorPane
-   */
-  private AnchorPane createEditorContainer() {
-    AnchorPane editorContainer = new AnchorPane();
-    editorContainer.setPrefHeight(400);
-    editorContainer.setBorder(new Border(
-        new BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, null, new BorderWidths(1))));
+    /**
+     * Creates the container for entity editors.
+     *
+     * @return The configured AnchorPane
+     */
+    private AnchorPane createEditorContainer() {
+        AnchorPane editorContainer = new AnchorPane();
+        editorContainer.setPrefHeight(400);
+        editorContainer.setBorder(new Border(
+                new BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, null, new BorderWidths(1))));
 
-    addEntityTypeEditor(editorContainer);
-    addEntityPlacementView(editorContainer);
+        addEntityTypeEditor(editorContainer);
+        addEntityPlacementView(editorContainer);
 
-    return editorContainer;
-  }
+        return editorContainer;
+    }
 
-  /**
-   * Adds the entity type editor to the container.
-   *
-   * @param container The container to add the editor to
-   */
-  private void addEntityTypeEditor(AnchorPane container) {
-    container.getChildren().add(entityTypeEditorView.getRoot());
-    AnchorPane.setTopAnchor(entityTypeEditorView.getRoot(), 0.0);
-    AnchorPane.setLeftAnchor(entityTypeEditorView.getRoot(), 0.0);
-    AnchorPane.setRightAnchor(entityTypeEditorView.getRoot(), 0.0);
-    AnchorPane.setBottomAnchor(entityTypeEditorView.getRoot(), 0.0);
-  }
+    /**
+     * Adds the entity type editor to the container.
+     *
+     * @param container The container to add the editor to
+     */
+    private void addEntityTypeEditor(AnchorPane container) {
+        container.getChildren().add(entityTypeEditorView.getRoot());
+        AnchorPane.setTopAnchor(entityTypeEditorView.getRoot(), 0.0);
+        AnchorPane.setLeftAnchor(entityTypeEditorView.getRoot(), 0.0);
+        AnchorPane.setRightAnchor(entityTypeEditorView.getRoot(), 0.0);
+        AnchorPane.setBottomAnchor(entityTypeEditorView.getRoot(), 0.0);
+    }
 
-  /**
-   * Adds the entity placement view to the container.
-   *
-   * @param container The container to add the view to
-   */
-  private void addEntityPlacementView(AnchorPane container) {
-    Node placementNode = entityPlacementView.getNode();
-    container.getChildren().add(placementNode);
-    AnchorPane.setTopAnchor(placementNode, 0.0);
-    AnchorPane.setLeftAnchor(placementNode, 0.0);
-    AnchorPane.setRightAnchor(placementNode, 0.0);
-    AnchorPane.setBottomAnchor(placementNode, 0.0);
-  }
+    /**
+     * Adds the entity placement view to the container.
+     *
+     * @param container The container to add the view to
+     */
+    private void addEntityPlacementView(AnchorPane container) {
+        Node placementNode = entityPlacementView.getNode();
+        container.getChildren().add(placementNode);
+        AnchorPane.setTopAnchor(placementNode, 0.0);
+        AnchorPane.setLeftAnchor(placementNode, 0.0);
+        AnchorPane.setRightAnchor(placementNode, 0.0);
+        AnchorPane.setBottomAnchor(placementNode, 0.0);
+    }
 
-  /**
-   * Applies styling to various components.
-   */
-  private void applyStyles() {
-    VBox fullLayout = (VBox) root.getCenter();
-    BorderPane mainContent = (BorderPane) fullLayout.getChildren().get(1);
-    VBox rightPanel = (VBox) mainContent.getRight();
+    /**
+     * Applies styling to various components.
+     */
+    private void applyStyles() {
+        VBox fullLayout = (VBox) root.getCenter();
+        BorderPane mainContent = (BorderPane) fullLayout.getChildren().get(1);
+        VBox rightPanel = (VBox) mainContent.getRight();
 
-    rightPanel.setPrefWidth(300);
-    levelSelectorView.getRoot().setPrefWidth(200);
+        rightPanel.setPrefWidth(300);
+        levelSelectorView.getRoot().setPrefWidth(200);
 
-    AnchorPane editorContainer = (AnchorPane) rightPanel.getChildren().get(1);
-    VBox.setVgrow(editorContainer, Priority.ALWAYS);
+        AnchorPane editorContainer = (AnchorPane) rightPanel.getChildren().get(1);
+        VBox.setVgrow(editorContainer, Priority.ALWAYS);
 
-    gameSettingsView.getNode().setStyle(
-        "-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0; -fx-padding: 10px;");
-  }
+        gameSettingsView.getNode().setStyle(
+                "-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0; -fx-padding: 10px;");
+    }
 
-  /**
-   * Sets up window maximization on startup.
-   */
-  private void setupWindowMaximization() {
-    Platform.runLater(() -> {
-      Stage stage = (Stage) root.getScene().getWindow();
-      stage.setMaximized(true);
-    });
-  }
+    /**
+     * Sets up window maximization on startup.
+     */
+    private void setupWindowMaximization() {
+        Platform.runLater(() -> {
+            Stage stage = (Stage) root.getScene().getWindow();
+            stage.setMaximized(true);
+        });
+    }
 
   /**
    * Get level selector view
@@ -299,10 +300,11 @@ public class AuthoringView {
       Path savePath = selectedDirectory.toPath().resolve("output");
       try {
         controller.getModel().saveGame(savePath);
-        showAlert("Save Successful", "Successfully saved json to output folder",
-            AlertType.CONFIRMATION);
+        showAlert(LanguageManager.getMessage("SAVED"),
+            LanguageManager.getMessage("SUCCESS_SAVE_JSON"), AlertType.CONFIRMATION);
       } catch (ConfigException e) {
-        showAlert("Error saving", e.getMessage(), Alert.AlertType.ERROR);
+        showAlert(LanguageManager.getMessage("ERROR_SAVING"), e.getMessage(),
+            Alert.AlertType.ERROR);
       }
     }
   }
