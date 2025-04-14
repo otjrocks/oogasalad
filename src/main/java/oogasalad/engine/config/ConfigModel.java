@@ -7,6 +7,7 @@ import oogasalad.engine.model.MetaData;
 import oogasalad.engine.model.Tiles;
 import java.util.List;
 import oogasalad.engine.records.newconfig.model.ParsedLevel;
+import oogasalad.engine.records.newconfig.model.wincondition.WinCondition;
 
 /**
  * The ConfigModel record serves as a container for the configuration data of a game. It
@@ -20,7 +21,7 @@ import oogasalad.engine.records.newconfig.model.ParsedLevel;
  *   <li>GameSettings: Settings that define the game's behavior and rules.</li>
  *   <li>EntityType: A list of configurations for game entities.</li>
  *   <li>CollisionRule: A list of rules governing entity interactions.</li>
- *   <li>WinCondition: A string defining the condition for winning the game.</li>
+ *   <li>WinCondition: A WinCondition record defining the condition for winning the game.</li>
  * </ul>
  *
  * @author Will He, Owen Jennings
@@ -30,7 +31,7 @@ public record ConfigModel(MetaData metadata,
                           List<EntityType> entityTypes,
                           List<ParsedLevel> levels,
                           List<CollisionRule> collisionRules,
-                          String winCondition,
+                          WinCondition winCondition,
                           List<Tiles> tiles) {
 
 }

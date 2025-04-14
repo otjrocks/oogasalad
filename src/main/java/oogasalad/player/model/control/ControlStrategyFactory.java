@@ -61,7 +61,8 @@ public class ControlStrategyFactory {
       GameInputManager input, EntityPlacement entityPlacement,
       GameMap gameMap)
       throws ControlStrategyException {
-    String controlType = entityPlacement.getType().controlType();
+//    String controlType = entityPlacement.getType().controlType();
+    String controlType = "Keyboard";
     String className = STRATEGY_PACKAGE + truncate(controlType) + "ControlStrategy";
 
     try {

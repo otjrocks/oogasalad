@@ -11,9 +11,7 @@
     "scoreStrategy": "Cumulative",
     "winCondition": {
       "type": "SurviveForTime",
-      "parameters": {
-        "amount": 60
-      }
+      "amount": 5
     }
   },
   "levels": [
@@ -30,7 +28,7 @@
       "entityB": "wall",
       "eventsA": [
         {
-          "type":"Stop"
+          "type": "Stop"
         }
       ],
       "eventsB": []

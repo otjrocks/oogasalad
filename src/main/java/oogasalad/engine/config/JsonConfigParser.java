@@ -37,6 +37,7 @@ import oogasalad.engine.records.newconfig.model.Metadata;
 import oogasalad.engine.records.newconfig.model.ParsedLevel;
 import oogasalad.engine.records.newconfig.model.Settings;
 import oogasalad.engine.records.newconfig.model.SpawnEvent;
+import oogasalad.engine.records.newconfig.model.wincondition.WinCondition;
 import oogasalad.engine.utility.FileUtility;
 
 /**
@@ -123,7 +124,7 @@ public class JsonConfigParser implements ConfigParser {
 
     // Step 7: Parse collision rules and win condition
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
-    String winCondition = gameConfig.settings().winCondition();
+    WinCondition winCondition = gameConfig.settings().winCondition();
 
     // Step 8: Tiles currently unused — placeholder
     List<Tiles> tiles = new ArrayList<>();
