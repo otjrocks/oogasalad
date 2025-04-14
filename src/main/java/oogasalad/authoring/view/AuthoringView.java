@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.config.ConfigException;
 

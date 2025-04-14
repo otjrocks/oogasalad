@@ -1,4 +1,4 @@
-package oogasalad.authoring.view;
+package oogasalad.authoring.view.canvas;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
