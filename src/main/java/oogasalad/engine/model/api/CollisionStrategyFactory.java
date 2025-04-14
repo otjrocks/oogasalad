@@ -9,11 +9,11 @@ import java.lang.reflect.RecordComponent;
 import java.util.Arrays;
 
 /**
- * A factory design pattern to create strategies based on a provided event.
+ * A factory design pattern to create collision strategies based on a provided event.
  *
  * @author Owen Jennings
  */
-public class StrategyFactory {
+public class CollisionStrategyFactory {
 
   private static final String STRATEGY_PACKAGE = "oogasalad.engine.model.strategies.collision";
 

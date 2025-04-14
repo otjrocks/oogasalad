@@ -12,7 +12,7 @@ import oogasalad.engine.model.GameEndHandler;
 import oogasalad.engine.model.GameEndStatus;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
-import oogasalad.engine.model.api.StrategyFactory;
+import oogasalad.engine.model.api.CollisionStrategyFactory;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
@@ -111,7 +111,7 @@ public class GameMapController {
 
   private void createAndApplyCollisionStrategy(Entity e1, Entity e2,
       CollisionEvent collisionEvent) {
-    CollisionStrategy collisionStrategy = StrategyFactory.createCollisionStrategy(collisionEvent);
+    CollisionStrategy collisionStrategy = CollisionStrategyFactory.createCollisionStrategy(collisionEvent);
     try {
       collisionStrategy.handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
     } catch (EntityNotFoundException e) {
