@@ -24,6 +24,7 @@ public class GameSettingsViewTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) {
+    LanguageManager.setLanguage("English");
     mockController = mock(AuthoringController.class);
     mockModel = mock(AuthoringModel.class);
 
@@ -63,7 +64,7 @@ public class GameSettingsViewTest extends DukeApplicationTest {
 
   @Test
   public void saveSettings_Click_ModelUpdated() {
-    Button saveButton = lookup(LanguageManager.getMessage("SAVE")).queryButton();
+    Button saveButton = lookup(LanguageManager.getMessage("SAVE_SETTINGS")).queryButton();
     runAsJFXAction(() -> clickOn(saveButton));
     verify(mockModel, times(1)).setDefaultSettings(any());
   }

@@ -96,7 +96,7 @@ public class GameSettingsView {
   }
 
   private HBox getHBox() {
-    Button saveButton = new Button(LanguageManager.getMessage("SAVE"));
+    Button saveButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
     saveButton.setOnAction(e -> saveSettings());
 
     Button collisionRulesButton = new Button(LanguageManager.getMessage("COLLISION_RULES"));
