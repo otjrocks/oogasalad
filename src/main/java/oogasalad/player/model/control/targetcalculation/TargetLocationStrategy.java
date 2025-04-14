@@ -32,25 +32,31 @@ public class TargetLocationStrategy implements TargetStrategy {
   }
 
   private int validateAndGetTargetLocation(Map<String, Object> strategyConfig, String key) {
-    if (!strategyConfig.containsKey(key) || strategyConfig.get(key) == null) {
+    Object value = getRequiredValue(strategyConfig, key);
+    return convertToInt(value, key);
+  }
+
+  private Object getRequiredValue(Map<String, Object> config, String key) {
+    Object value = config.get(key);
+    if (value == null) {
       throw new TargetStrategyException("Target location is required for " + key);
     }
+    return value;
+  }
 
-    Object value = strategyConfig.get(key);
-
-    if (value instanceof Number) {
-      return ((Number) value).intValue();
-    } else if (value instanceof String) {
+  private int convertToInt(Object value, String key) {
+    if (value instanceof Number num) {
+      return num.intValue();
+    } else if (value instanceof String str) {
       try {
-        return Integer.parseInt((String) value);
+        return Integer.parseInt(str);
       } catch (NumberFormatException e) {
         throw new TargetStrategyException(
             "Target location must be a valid number for " + key + ", currently: " + value, e);
       }
-    } else {
-      throw new TargetStrategyException(
-          "Target location must be a number for " + key + ", currently: " + value + " ("
-              + value.getClass().getSimpleName() + ")");
     }
+    throw new TargetStrategyException(
+        "Target location must be a number for " + key + ", currently: " + value +
+            " (" + value.getClass().getSimpleName() + ")");
   }
 }
