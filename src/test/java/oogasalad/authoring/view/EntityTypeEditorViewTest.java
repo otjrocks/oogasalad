@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
+import oogasalad.engine.LanguageManager;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.records.newconfig.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
@@ -35,6 +36,7 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
 
   @BeforeEach
   public void setUp() {
+    LanguageManager.setLanguage("English");
     mockController = mock(AuthoringController.class);
     view = new EntityTypeEditorView(mockController);
 
@@ -104,6 +106,6 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
     Button addModeButton = (Button) root.getChildren().get(root.getChildren().size() - 1);
 
     assertNotNull(addModeButton);
-    assertEquals("+ Add Mode", addModeButton.getText());
+    assertEquals(LanguageManager.getMessage("ADD_MODE"), addModeButton.getText());
   }
 }

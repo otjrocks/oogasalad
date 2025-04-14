@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
+import oogasalad.engine.LanguageManager;
 import oogasalad.engine.records.newconfig.model.Settings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,7 +63,7 @@ public class GameSettingsViewTest extends DukeApplicationTest {
 
   @Test
   public void saveSettings_Click_ModelUpdated() {
-    Button saveButton = lookup("Save Settings").queryButton();
+    Button saveButton = lookup(LanguageManager.getMessage("SAVE")).queryButton();
     runAsJFXAction(() -> clickOn(saveButton));
     verify(mockModel, times(1)).setDefaultSettings(any());
   }
