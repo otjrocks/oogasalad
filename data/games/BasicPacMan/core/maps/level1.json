@@ -79,18 +79,18 @@
     {
       "entityType": "8",
       "spawnCondition": {
-        "type": "TimeElapsed",
+        "type": "ScoreBased",
         "parameters": {
-          "amount": 5
+          "amount": 700
         }
       },
       "x": 13,
       "y": 17,
       "mode": "test",
       "despawnCondition": {
-        "type": "TimeElapsed",
+        "type": "ScoreBased",
         "parameters": {
-          "amount": 10
+          "amount": 900
         }
       }
     },
@@ -108,7 +108,7 @@
       "despawnCondition": {
         "type": "TimeElapsed",
         "parameters": {
-          "amount": 30
+          "amount": 20
         }
       }
     }
