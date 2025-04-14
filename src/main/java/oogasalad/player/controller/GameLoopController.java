@@ -11,6 +11,8 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.newconfig.model.ParsedLevel;
 import oogasalad.engine.records.newconfig.model.SpawnEvent;
+import oogasalad.player.model.spawnevent.SpawnEventStrategy;
+import oogasalad.player.model.spawnevent.SpawnEventStrategyFactory;
 import oogasalad.player.view.GameMapView;
 
 /**
@@ -34,7 +36,8 @@ public class GameLoopController {
    * @param gameMapView The game map view used with this animation loop.
    * @param level       The parsed level information for this game loop.
    */
-  public GameLoopController(GameContextRecord gameContext, GameMapView gameMapView, ParsedLevel level) {
+  public GameLoopController(GameContextRecord gameContext, GameMapView gameMapView,
+      ParsedLevel level) {
     myGameContext = gameContext;
     myGameMapView = gameMapView;
     myLevel = level;
@@ -80,25 +83,45 @@ public class GameLoopController {
 
   private void handleSpawnEvents() {
     for (SpawnEvent spawnEvent : myLevel.spawnEvents()) {
-      double spawnTime = parseTimeCondition(spawnEvent.spawnCondition().type());
-      double despawnTime = parseTimeCondition(spawnEvent.despawnCondition().type());
-      handleIndividualSpawnEvent(spawnEvent, spawnTime, despawnTime);
+      handleSpawnEvent(spawnEvent);
     }
   }
 
-  private void handleIndividualSpawnEvent(SpawnEvent spawnEvent, double spawnTime,
-      double despawnTime) {
-    boolean shouldBeSpawned = myTotalElapsedTime >= spawnTime;
-    boolean shouldBeDespawned = myTotalElapsedTime >= spawnTime + despawnTime;
-
-    // Spawn if time has passed
-    spawnEntityIfNecessary(spawnEvent, shouldBeSpawned);
-    // Despawn if time has passed
-    handleDespawnIfNecessary(spawnEvent, shouldBeDespawned);
+  private void handleSpawnEvent(SpawnEvent spawnEvent) {
+    checkAndHandleSpawn(spawnEvent);
+    checkAndHandleDespawn(spawnEvent);
   }
 
-  private void spawnEntityIfNecessary(SpawnEvent spawnEvent, boolean shouldBeSpawned) {
-    if (shouldBeSpawned && !activeSpawnedEntities.containsKey(spawnEvent)) {
+  private void checkAndHandleSpawn(SpawnEvent spawnEvent) {
+    SpawnEventStrategy spawnEventStrategy = SpawnEventStrategyFactory.createSpawnEventStrategy(
+        spawnEvent.spawnCondition().type());
+    if (spawnEventStrategy != null) {
+      if (spawnEventStrategy.shouldSpawn(spawnEvent, myGameContext, myTotalElapsedTime)) {
+        spawnEntity(spawnEvent);
+      }
+    } else {
+      LoggingManager.LOGGER.warn("No spawn condition found for {}",
+          spawnEvent.spawnCondition().type());
+    }
+  }
+
+  private void checkAndHandleDespawn(SpawnEvent spawnEvent) {
+    SpawnEventStrategy despawnEventStrategy = SpawnEventStrategyFactory.createSpawnEventStrategy(
+        spawnEvent.despawnCondition().type());
+    if (despawnEventStrategy != null) {
+      if (despawnEventStrategy.shouldDespawn(spawnEvent, myGameContext, myTotalElapsedTime)) {
+        despawnEntity(spawnEvent);
+      }
+    } else {
+      LoggingManager.LOGGER.warn("No despawn condition found for {}",
+          spawnEvent.despawnCondition().type());
+    }
+  }
+
+
+  private void spawnEntity(SpawnEvent spawnEvent) {
+    // only spawn if it has not already been spawned
+    if (!activeSpawnedEntities.containsKey(spawnEvent)) {
       // Create and spawn entity
       Entity newEntity = new Entity(null,
           new EntityPlacement(spawnEvent.entityType(), spawnEvent.x(), spawnEvent.y(),
@@ -114,27 +137,17 @@ public class GameLoopController {
     }
   }
 
-  private void handleDespawnIfNecessary(SpawnEvent spawnEvent, boolean shouldBeDespawned) {
-    if (shouldBeDespawned && activeSpawnedEntities.containsKey(spawnEvent)) {
-      Entity entityToRemove = activeSpawnedEntities.get(spawnEvent);
-      try {
-        myGameContext.gameMap().removeEntity(entityToRemove);
-      } catch (EntityNotFoundException e) {
-        LoggingManager.LOGGER.info(
-            "Entity not despawned following configuration rules, since it no longer exists on the game map {}",
-            spawnEvent);
-      }
-      activeSpawnedEntities.remove(spawnEvent);
+  private void despawnEntity(SpawnEvent spawnEvent) {
+    Entity entityToRemove = activeSpawnedEntities.get(spawnEvent);
+    try {
+      myGameContext.gameMap().removeEntity(entityToRemove);
+    } catch (EntityNotFoundException e) {
+      LoggingManager.LOGGER.info(
+          "Entity not despawned following configuration rules, since it no longer exists on the game map {}",
+          spawnEvent);
     }
-  }
+    activeSpawnedEntities.remove(spawnEvent);
 
-
-  private double parseTimeCondition(String condition) {
-    if (condition != null && condition.startsWith("TimeElapsed(") && condition.endsWith(")")) {
-      String timeStr = condition.substring("TimeElapsed(".length(), condition.length() - 1);
-      return Double.parseDouble(timeStr);
-    }
-    return Double.MAX_VALUE; // Never triggers if invalid
   }
 
 
