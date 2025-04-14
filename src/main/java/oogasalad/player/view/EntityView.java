@@ -43,7 +43,6 @@ public class EntityView {
     String imageName = (entity.getEntityPlacement().getTypeString() +
             "_" + entity.getEntityPlacement().getMode() +
             suffix).toUpperCase();
-    System.out.println("Attempting to load image: " + imageName);
     this.sprite = new Image(
             Objects.requireNonNull(
                     EntityView.class.getClassLoader()
