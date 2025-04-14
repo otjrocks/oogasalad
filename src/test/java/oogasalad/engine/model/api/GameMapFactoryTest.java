@@ -61,7 +61,7 @@ public class GameMapFactoryTest {
 
     // Mock level and placements
     List<ParsedLevel> levels = new ArrayList<>();
-    levels.add(new ParsedLevel(List.of(entityPlacement1, entityPlacement2), null, null));
+    levels.add(new ParsedLevel(List.of(entityPlacement1, entityPlacement2), null, null, null));
     when(configModel.levels()).thenReturn(levels);
 
     // ChatGPT on how to mock entity factory correctly
@@ -99,7 +99,7 @@ public class GameMapFactoryTest {
 
     // Mock level and placements
     List<ParsedLevel> levels = new ArrayList<>();
-    levels.add(new ParsedLevel(List.of(entityPlacement1, entityPlacement2), null, null));
+    levels.add(new ParsedLevel(List.of(entityPlacement1, entityPlacement2), null, null, null));
     when(configModel.levels()).thenReturn(levels);
 
     // ChatGPT on how to mock entity factory correctly

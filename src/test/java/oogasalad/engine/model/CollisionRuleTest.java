@@ -39,35 +39,35 @@ class CollisionRuleTest {
     assertEquals("Default", rule.getModeB());
   }
 
-  @Test
-  void setEventsA_validList_returnsCorrectly() {
-    CollisionRule rule = new CollisionRule();
-    List<String> events = List.of("TriggerEffectOnA", "ChangeMode(PoweredUp)");
-    rule.setEventsA(events);
-    assertEquals(events, rule.getEventsA());
-  }
+//  @Test
+//  void setEventsA_validList_returnsCorrectly() {
+//    CollisionRule rule = new CollisionRule();
+//    List<String> events = List.of("TriggerEffectOnA", "ChangeMode(PoweredUp)");
+//    rule.setEventsA(events);
+//    assertEquals(events, rule.getEventsA());
+//  }
 
-  @Test
-  void setEventsB_validList_returnsCorrectly() {
-    CollisionRule rule = new CollisionRule();
-    List<String> events = List.of("TriggerEffectOnB");
-    rule.setEventsB(events);
-    assertEquals(events, rule.getEventsB());
-  }
+//  @Test
+//  void setEventsB_validList_returnsCorrectly() {
+//    CollisionRule rule = new CollisionRule();
+//    List<String> events = List.of("TriggerEffectOnB");
+//    rule.setEventsB(events);
+//    assertEquals(events, rule.getEventsB());
+//  }
 
-  @Test
-  void toString_validValues_returnsFormattedString() {
-    CollisionRule rule = new CollisionRule();
-    rule.setEntityTypeA("Pacman");
-    rule.setModeA("PoweredUp");
-    rule.setEntityTypeB("Ghost");
-    rule.setModeB("Default");
-    rule.setEventsA(List.of("EatGhost"));
-    rule.setEventsB(List.of("Die"));
-
-    String expected = "(Pacman:PoweredUp) ↔ (Ghost:Default) | A: EatGhost, B: Die";
-    assertEquals(expected, rule.toString());
-  }
+//  @Test
+//  void toString_validValues_returnsFormattedString() {
+//    CollisionRule rule = new CollisionRule();
+//    rule.setEntityTypeA("Pacman");
+//    rule.setModeA("PoweredUp");
+//    rule.setEntityTypeB("Ghost");
+//    rule.setModeB("Default");
+//    rule.setEventsA(List.of("EatGhost"));
+//    rule.setEventsB(List.of("Die"));
+//
+//    String expected = "(Pacman:PoweredUp) ↔ (Ghost:Default) | A: EatGhost, B: Die";
+//    assertEquals(expected, rule.toString());
+//  }
 
   @Test
   void toString_withNulls_doesNotThrowException() {

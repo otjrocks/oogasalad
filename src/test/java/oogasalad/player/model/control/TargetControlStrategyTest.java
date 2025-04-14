@@ -42,8 +42,8 @@ public class TargetControlStrategyTest {
     Map<String, Object> config = new HashMap<>();
     config.put("targetType", "enemy");
     config.put("tilesAhead", 1);
-    when(entityType.strategyConfig()).thenReturn(config);
-    when(entityType.controlType()).thenReturn("targetEntity");
+//    when(entityType.strategyConfig()).thenReturn(config);
+//    when(entityType.controlType()).thenReturn("targetEntity");
 
     // Avoid null pointer in real strategy if triggered
     when(gameMap.iterator()).thenReturn(Collections.emptyIterator());

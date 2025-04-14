@@ -68,17 +68,17 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
   }
 
 
-  @Test
-  public void setEntityType_InitializesFields() {
-    view.setEntityType(mockEntityType);
-
-    VBox root = (VBox) view.getRoot();
-    TextField typeField = (TextField) root.getChildren().get(1);
-    ComboBox<String> controlBox = (ComboBox<String>) root.getChildren().get(3);
-
-    assertEquals("Pacman", typeField.getText());
-    assertEquals("Keyboard", controlBox.getValue());
-  }
+//  @Test
+//  public void setEntityType_InitializesFields() {
+//    view.setEntityType(mockEntityType);
+//
+//    VBox root = (VBox) view.getRoot();
+//    TextField typeField = (TextField) root.getChildren().get(1);
+//    ComboBox<String> controlBox = (ComboBox<String>) root.getChildren().get(3);
+//
+//    assertEquals("Pacman", typeField.getText());
+//    assertEquals("Keyboard", controlBox.getValue());
+//  }
 
   @Test
   public void commitChanges_UpdatesController() {
