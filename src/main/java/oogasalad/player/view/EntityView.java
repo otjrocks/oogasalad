@@ -37,12 +37,7 @@ public class EntityView {
   public EntityView(Entity entity, int totalFrames) {
     this.entity = entity;
     this.totalFrames = totalFrames;
-    // Dimension of each frame in the sprite sheet
-    this.dimension = Integer.parseInt(
-        SPRITE_DATA.getString(
-            (entity.getEntityPlacement().getTypeString() + "_DIM").toUpperCase()
-        )
-    );
+    this.dimension = 64;
     Direction dir = entity.getEntityDirection() != null ? entity.getEntityDirection() : Direction.NONE;
     String suffix = dir == Direction.NONE ? "_R" : "_" + dir.name();
     String imageName = (entity.getEntityPlacement().getTypeString() +
@@ -65,20 +60,11 @@ public class EntityView {
    * @param tileHeight height of one map tile in pixels
    */
   public void draw(GraphicsContext gc, double tileWidth, double tileHeight) {
-    int frameIndex, offsetX, offsetY;
+    int frameIndex;
     if (entity.getEntityPlacement().isInDeathAnimation()) {
       frameIndex = entity.getEntityPlacement().getDeathFrame();
-      offsetX = Integer.parseInt(SPRITE_DATA.getString("PACMAN_DEATH_X_OFFSET"));
-      offsetY = Integer.parseInt(SPRITE_DATA.getString("PACMAN_DEATH_Y_OFFSET"));
     } else {
       frameIndex = entity.getEntityPlacement().getCurrentFrame() % totalFrames;
-      Direction dir = entity.getEntityDirection() != null ? entity.getEntityDirection() : Direction.NONE;
-      String suffix = dir == Direction.NONE ? "_R" : "_" + dir.name();
-      String prefix = (entity.getEntityPlacement().getTypeString() + suffix).toUpperCase();
-
-
-      offsetX = Integer.parseInt(SPRITE_DATA.getString(prefix + "_X_OFFSET"));
-      offsetY = Integer.parseInt(SPRITE_DATA.getString(prefix + "_Y_OFFSET"));
     }
 
     double destX = entity.getEntityPlacement().getX() * tileWidth;

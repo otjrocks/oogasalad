@@ -99,17 +99,6 @@
           "imagePath": "assets/images/dot.png"
         }
       }
-    },
-    {
-      "type": "Tunnel",
-      "controlType": "wall",
-      "effect": null,
-      "modes": {
-        "Default": {
-          "movementSpeed": 0,
-          "imagePath": "assets/images/tunnel.png"
-        }
-      }
     }
   ],
   "entityPlacements": [
