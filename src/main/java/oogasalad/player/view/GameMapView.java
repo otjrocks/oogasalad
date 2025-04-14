@@ -12,7 +12,7 @@ import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.model.GameEndStatus;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
-import oogasalad.engine.records.GameContext;
+import oogasalad.engine.records.GameContextRecord;
 import oogasalad.player.controller.GameLoopController;
 import oogasalad.player.controller.GameMapController;
 
@@ -25,7 +25,7 @@ import oogasalad.player.controller.GameMapController;
  */
 public class GameMapView extends Canvas {
 
-  private final GameContext myGameContext;
+  private final GameContextRecord myGameContext;
   private final GameMapController myGameMapController;
   private final List<EntityView> entityViews = new ArrayList<>();
   private final ResourceBundle SPRITE_DATA =
@@ -39,7 +39,7 @@ public class GameMapView extends Canvas {
    * @param gameContext The game context object for this view.
    * @param configModel The config model for this view.
    */
-  public GameMapView(GameContext gameContext, ConfigModel configModel) {
+  public GameMapView(GameContextRecord gameContext, ConfigModel configModel) {
     super(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
     myGameContext = gameContext;
     myGameMapController = new GameMapController(myGameContext, configModel);
@@ -54,7 +54,8 @@ public class GameMapView extends Canvas {
 
   private void initializeEntityViews() {
     entityViews.clear();
-    for (Iterator<Entity> it = myGameContext.gameMap().iterator(); it.hasNext(); ) {
+    for (Iterator<Entity> it = myGameContext.gameMap().iterator();
+        it.hasNext(); ) {
       Entity entity = it.next();
       int frames = Integer.parseInt(
           SPRITE_DATA.getString(
@@ -83,7 +84,8 @@ public class GameMapView extends Canvas {
     gc.clearRect(0, 0, getWidth(), getHeight());
 
     double tileWidth = getWidth() / myGameContext.gameMap().getWidth();
-    double tileHeight = getHeight() / myGameContext.gameMap().getHeight();
+    double tileHeight =
+        getHeight() / myGameContext.gameMap().getHeight();
 
     for (EntityView ev : entityViews) {
       ev.draw(gc, tileWidth, tileHeight);

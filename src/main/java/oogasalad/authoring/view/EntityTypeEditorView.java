@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.engine.LanguageManager;
 import oogasalad.engine.model.EntityType;
 
 import java.util.Map;
@@ -24,7 +25,6 @@ public class EntityTypeEditorView {
   private final VBox modeList;
   private final AuthoringController controller;
   private EntityType current;
-  private Button addModeButton;
 
   /**
    * Edit parameters for an entityType
@@ -45,13 +45,13 @@ public class EntityTypeEditorView {
     controlTypeBox.getItems().addAll("Keyboard", "FollowMouse", "TargetEntity", "BFS");
     modeList = new VBox(5);
 
-    addModeButton = new Button("+ Add Mode");
+    Button addModeButton = new Button(LanguageManager.getMessage("ADD_MODE"));
     addModeButton.setOnAction(e -> openAddModeDialog());
 
     root.getChildren().addAll(
-        new Label("Entity Type:"), typeField,
-        new Label("Control Strategy:"), controlTypeBox,
-        new Label("Modes:"), modeList,
+        new Label(LanguageManager.getMessage("ENTITY_TYPE")), typeField,
+        new Label(LanguageManager.getMessage("CONTROL_STRATEGY")), controlTypeBox,
+        new Label(LanguageManager.getMessage("MODES")), modeList,
         addModeButton
     );
   }
@@ -84,7 +84,7 @@ public class EntityTypeEditorView {
       String modeName = entry.getKey();
       ModeConfig config = entry.getValue();
       Label label = new Label(modeName);
-      Button editButton = new Button("Edit");
+      Button editButton = new Button(LanguageManager.getMessage("EDIT"));
       editButton.setOnAction(e -> openEditModeDialog(modeName, config));
       modeList.getChildren().addAll(label, editButton);
     }
@@ -131,7 +131,7 @@ public class EntityTypeEditorView {
         current.modes().put(modeName, config);
         setEntityType(current);
       } else {
-        showError("Invalid or duplicate mode name.");
+        showError(LanguageManager.getMessage("INVALID_OR_DUPLICATE_MODE"));
       }
     });
   }

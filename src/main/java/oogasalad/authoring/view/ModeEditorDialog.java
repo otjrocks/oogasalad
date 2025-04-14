@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
+import oogasalad.engine.LanguageManager;
 import oogasalad.engine.records.newconfig.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.records.newconfig.model.EntityProperties;
@@ -40,7 +41,7 @@ public class ModeEditorDialog {
   public ModeEditorDialog() {
     // Create dialog instance
     dialog = new Dialog<>();
-    dialog.setTitle("Mode Editor");
+    dialog.setTitle(LanguageManager.getMessage("MODE_EDITOR_TITLE"));
 
     GridPane grid = new GridPane();
     grid.setHgap(10);
@@ -53,15 +54,15 @@ public class ModeEditorDialog {
 
     speedField = new TextField();
 
-    Button uploadButton = new Button("Choose Image");
+    Button uploadButton = new Button(LanguageManager.getMessage("CHOOSE_IMAGE"));
     uploadButton.setOnAction(e -> handleImageUpload());
 
-    grid.add(new Label("Mode Name:"), 0, 0);
+    grid.add(new Label(LanguageManager.getMessage("MODE_NAME")), 0, 0);
     grid.add(nameField, 1, 0);
-    grid.add(new Label("Image Path:"), 0, 1);
+    grid.add(new Label(LanguageManager.getMessage("IMAGE_PATH")), 0, 1);
     grid.add(imagePathField, 1, 1);
     grid.add(uploadButton, 2, 1);
-    grid.add(new Label("Movement Speed:"), 0, 2);
+    grid.add(new Label(LanguageManager.getMessage("MOVEMENT_SPEED")), 0, 2);
     grid.add(speedField, 1, 2);
 
 
@@ -119,9 +120,9 @@ public class ModeEditorDialog {
 
   private void handleImageUpload() {
     FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle("Choose Mode Image");
+    fileChooser.setTitle(LanguageManager.getMessage("CHOOSE_IMAGE"));
     fileChooser.getExtensionFilters().add(
-        new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        new FileChooser.ExtensionFilter(LanguageManager.getMessage("IMAGE_FILES"), "*.png", "*.jpg", "*.jpeg", "*.gif")
     );
 
     File file = fileChooser.showOpenDialog(getOwnerWindow());
@@ -143,13 +144,13 @@ public class ModeEditorDialog {
 
   private boolean validateAndPrepareResult() {
     if (selectedImageFile == null) {
-      showError("You must choose an image.");
+      showError(LanguageManager.getMessage("MUST_SELECT_IMAGE"));
       return false;
     }
 
     String name = nameField.getText().trim();
     if (name.isEmpty()) {
-      showError("Mode name cannot be empty.");
+      showError(LanguageManager.getMessage("MUST_ENTER_MODE"));
       return false;
     }
 
@@ -157,7 +158,7 @@ public class ModeEditorDialog {
     try {
       speed = Integer.parseInt(speedField.getText());
     } catch (NumberFormatException ex) {
-      showError("Invalid speed. Please enter a number.");
+      showError(LanguageManager.getMessage("INVALID_SPEED"));
       return false;
     }
 

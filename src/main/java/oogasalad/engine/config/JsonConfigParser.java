@@ -121,7 +121,7 @@ public class JsonConfigParser implements ConfigParser {
     }
 
     // Step 6: Create game settings with merged defaults and level-specific map info
-    GameSettings settings = createGameSettings(gameConfig, mapInfos);
+    GameSettings settings = createGameSettings(gameConfig);
 
     // Step 7: Parse collision rules and win condition
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
@@ -302,16 +302,14 @@ public class JsonConfigParser implements ConfigParser {
         gameConfig.metadata().gameDescription());
   }
 
-  private GameSettings createGameSettings(GameConfig gameConfig, List<MapInfo> mapInfos) {
+  private GameSettings createGameSettings(GameConfig gameConfig) {
     Settings baseSettings = gameConfig.settings();
 
     return new GameSettings(
         baseSettings.gameSpeed(),
         baseSettings.startingLives(),
         baseSettings.initialScore(),
-        "wrap",
-        28,
-        32
+        "wrap"
     );
   }
 
