@@ -11,11 +11,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import oogasalad.engine.model.controlConfig.ControlConfig;
+import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.records.newconfig.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.newconfig.model.ControlType;
-import oogasalad.engine.records.newconfig.model.ControlTypeConfig;
 import oogasalad.engine.records.newconfig.model.EntityProperties;
 
 /**
@@ -173,15 +173,16 @@ public class ModeEditorDialog {
     );
 
     // === Build EntityProperties ===
-    ControlTypeConfig controlConfig = new ControlTypeConfig("None", 0);
-    ControlType controlType = new ControlType("Keyboard", controlConfig);
+    // TODO: change to NoneControlConfig()
+    ControlConfig controlConfig = new KeyboardControlConfig(); // new polymorphic structure
 
     EntityProperties entityProps = new EntityProperties(
         name,
-        controlType,
+        controlConfig,
         (double) speed,
-        List.of()
+        List.of() // empty list of blocks
     );
+
 
     // === Build ModeConfig ===
     preparedResult = new ModeConfig(name, entityProps, imageConfig);

@@ -1,5 +1,6 @@
 package oogasalad.engine.config;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.*;
 import oogasalad.authoring.model.AuthoringModel;
@@ -8,6 +9,7 @@ import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 
 import java.util.*;
+import oogasalad.engine.model.controlConfig.ControlConfig;
 
 /**
  * Utility class for converting the internal AuthoringModel data structures
@@ -135,47 +137,52 @@ public class JsonConfigBuilder {
    */
   public ObjectNode buildEntityTypeConfig(EntityType type, ObjectMapper mapper) {
     ObjectNode root = mapper.createObjectNode();
-
     ObjectNode entityTypeNode = root.putObject("entityType");
+
+    addEntityBasics(type, entityTypeNode);
+    addControlConfig(type.controlConfig(), entityTypeNode, mapper);
+    addMovementSpeed(type, entityTypeNode);
+    addModesArray(type, root);
+
+    return root;
+  }
+
+  private void addEntityBasics(EntityType type, ObjectNode entityTypeNode) {
     entityTypeNode.put("name", type.type());
+  }
 
-    // Control Type and its config
-    ObjectNode controlTypeNode = entityTypeNode.putObject("controlType");
-    controlTypeNode.put("controlType", type.controlType());
+  private void addControlConfig(ControlConfig config, ObjectNode entityTypeNode, ObjectMapper mapper) {
+    JsonNode serialized = mapper.valueToTree(config);
+    entityTypeNode.set("controlConfig", serialized);
+  }
 
-    if (type.strategyConfig() != null && !type.strategyConfig().isEmpty()) {
-      ObjectNode controlConfig = mapper.valueToTree(type.strategyConfig());
-      controlTypeNode.set("controlTypeConfig", controlConfig);
-    }
-
-    // Movement speed: extracted from "Default" mode if it exists
+  private void addMovementSpeed(EntityType type, ObjectNode entityTypeNode) {
     ModeConfig defaultMode = type.modes().get("Default");
     if (defaultMode != null) {
       entityTypeNode.put("movementSpeed", defaultMode.entityProperties().movementSpeed());
     }
+  }
 
-    // === Modes array ===
+  private void addModesArray(EntityType type, ObjectNode root) {
     ArrayNode modesArray = root.putArray("modes");
+
     for (ModeConfig mode : type.modes().values()) {
-      ObjectNode modeNode = mapper.createObjectNode();
+      ObjectNode modeNode = modesArray.addObject();
       modeNode.put("name", mode.name());
 
       ObjectNode imageNode = modeNode.putObject("image");
       imageNode.put("imagePath", getRelativeImagePath(mode.image().imagePath()));
 
-      // TODO: Temporary hardcoded size and animation data; replace if dynamic
+      // Replace with actual values if ModeConfig/Image provides them
       imageNode.put("tileWidth", 14);
       imageNode.put("tileHeight", 14);
-
-      ArrayNode tilesToCycleArray = imageNode.putArray("tilesToCycle");
-      tilesToCycleArray.add(1); // Replace with mode.getTilesToCycle() if available
+      imageNode.putArray("tilesToCycle").add(1);
       imageNode.put("animationSpeed", 2);
-
-      modesArray.add(modeNode);
     }
-
-    return root;
   }
+
+
+
 
   /**
    * Assigns integer IDs to each entity type in the game.

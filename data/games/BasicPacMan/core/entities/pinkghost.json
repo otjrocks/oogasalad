@@ -1,0 +1,37 @@
+{
+  "entityType": {
+    "name": "PinkGhost",
+    "controlConfig": {
+      "controlStrategy": "Target",
+      "pathFindingStrategy": "Euclidean",
+      "targetCalculationConfig": {
+        "targetCalculationStrategy": "TargetAheadOfEntity",
+        "targetType": "Pacman",
+        "tilesAhead": 2
+
+      }
+    },
+    "movementSpeed": 90
+  },
+  "modes": [
+    {
+      "name": "Default",
+      "image": {
+        "imagePath": "pinkghost",
+        "tileWidth": 14,
+        "tileHeight": 14,
+        "tilesToCycle": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "animationSpeed": 1.0
+      }
+    }
+  ]
+}
