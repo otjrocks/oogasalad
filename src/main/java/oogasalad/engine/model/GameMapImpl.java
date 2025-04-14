@@ -63,9 +63,7 @@ public class GameMapImpl implements GameMap {
     } else {
       myEntityList.remove(entity);
 
-      // Decrement frequency map
-      String type = entity.getEntityPlacement().getType().type().toLowerCase();
-      decrementEntityCount(type);
+      decrementEntityCount(entity.getEntityPlacement().getType().type().toLowerCase());
     }
   }
 
