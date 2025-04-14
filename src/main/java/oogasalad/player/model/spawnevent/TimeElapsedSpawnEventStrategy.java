@@ -4,6 +4,11 @@ import oogasalad.engine.LoggingManager;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.newconfig.model.SpawnEvent;
 
+/**
+ * A spawn event strategy that handles TimeElapsed conditions.
+ *
+ * @author Owen Jennings
+ */
 public class TimeElapsedSpawnEventStrategy implements SpawnEventStrategy {
   // I used ChatGPT to refactor parts of this code.
 

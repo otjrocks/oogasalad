@@ -4,6 +4,11 @@ import oogasalad.engine.LoggingManager;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.newconfig.model.SpawnEvent;
 
+/**
+ * A spawn event strategy that handles score based spawning and despawn.
+ *
+ * @author Owen Jennings
+ */
 public class ScoreBasedSpawnEventStrategy implements SpawnEventStrategy {
 
   @Override
