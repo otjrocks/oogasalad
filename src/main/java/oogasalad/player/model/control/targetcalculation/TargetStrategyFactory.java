@@ -1,13 +1,19 @@
 package oogasalad.player.model.control.targetcalculation;
 
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.RecordComponent;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
+import oogasalad.engine.LoggingManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.controlConfig.ConditionalControlConfig;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.controlConfig.TargetControlConfig;
+import oogasalad.engine.model.controlConfig.targetStrategy.TargetCalculationConfig;
 import oogasalad.player.model.exceptions.TargetStrategyException;
 
 /**
@@ -34,72 +40,102 @@ public class TargetStrategyFactory {
       throws TargetStrategyException {
 
     ControlConfig config = placement.getType().controlConfig();
+    TargetCalculationConfig targetCalculationConfig;
+
+    if (config instanceof TargetControlConfig targetConfig) {
+      targetCalculationConfig = targetConfig.targetCalculationConfig();
+    } else if (config instanceof ConditionalControlConfig conditionalConfig) {
+      targetCalculationConfig = conditionalConfig.targetCalculationConfig();
+    } else {
+      throw new TargetStrategyException(
+          "No TargetStrategy available for control config: " + config.getClass());
+    }
+
+    String className =
+        STRATEGY_PACKAGE + targetCalculationConfig.getClass().getSimpleName()
+            .replace("Config", "Strategy");
+
+
+    Map<String, Object> argsMap = recordToMap(targetCalculationConfig);
 
     try {
-      if (config instanceof TargetControlConfig targetConfig) {
-        // TODO: Return Target strategy
-      } else if (config instanceof ConditionalControlConfig conditionalConfig) {
-        // TODO: Return Conditional Control Config
-      } else {
-        throw new TargetStrategyException(
-            "No TargetStrategy available for control config: " + config.getClass());
-      }
+      Class<?> strategyClass = Class.forName(className);
+      return instantiateStrategy(strategyClass, argsMap, placement, gameMap);
     } catch (Exception e) {
       throw new TargetStrategyException(
           "Failed to instantiate strategy for config: " + config.getClass(), e);
     }
-    return null;
+
   }
 
-//  private static TargetStrategy instantiateStrategy(Class<?> strategyClass,
-//      EntityPlacement placement,
-//      GameMap gameMap)
-//      throws TargetStrategyException {
-//    try {
-//      for (Constructor<?> constructor : strategyClass.getConstructors()) {
-//        if (isPublicConstructor(constructor)) {
-//          TargetStrategy strategy = tryInstantiateStrategy(constructor, gameMap, placement);
-//          if (strategy != null) {
-//            return strategy;
-//          }
-//        }
-//      }
-//    } catch (Exception e) {
-//      throw new TargetStrategyException("Failed to instantiate strategy", e);
-//    }
-//
-//    throw new TargetStrategyException("No valid constructor found for: " + strategyClass.getName());
-//  }
-//
-//  private static boolean isPublicConstructor(Constructor<?> constructor) {
-//    return Modifier.isPublic(constructor.getModifiers());
-//  }
+  private static TargetStrategy instantiateStrategy(Class<?> strategyClass,
+      Map<String, Object> targetCalculationConfig,
+      EntityPlacement placement,
+      GameMap gameMap)
+      throws TargetStrategyException {
+    try {
+      for (Constructor<?> constructor : strategyClass.getConstructors()) {
+        if (isPublicConstructor(constructor)) {
+          TargetStrategy strategy = tryInstantiateStrategy(constructor, gameMap,
+              targetCalculationConfig, placement);
+          if (strategy != null) {
+            return strategy;
+          }
+        }
+      }
+    } catch (Exception e) {
+      throw new TargetStrategyException("Failed to instantiate strategy", e);
+    }
 
-//  private static TargetStrategy tryInstantiateStrategy(Constructor<?> constructor,
-//      GameMap gameMap,
-//      EntityPlacement placement)
-//      throws TargetStrategyException {
-//    try {
-//      if (matchesTwoArgConstructor(constructor)) {
-//        return (TargetStrategy) constructor.newInstance(
-//            gameMap,
-//            placement.getType().strategyConfig()
-//        );
-//      }
-//
-//      if (matchesThreeArgConstructor(constructor)) {
-//        return (TargetStrategy) constructor.newInstance(
-//            gameMap,
-//            placement.getType().strategyConfig(),
-//            placement.getTypeString()
-//        );
-//      }
-//
-//      return null;
-//    } catch (Exception e) {
-//      throw new TargetStrategyException("Failed to instantiate strategy", e);
-//    }
-//  }
+    throw new TargetStrategyException("No valid constructor found for: " + strategyClass.getName());
+  }
+
+  private static Map<String, Object> recordToMap(TargetCalculationConfig record) {
+    return Arrays.stream(record.getClass().getRecordComponents())
+        .collect(Collectors.toMap(
+            RecordComponent::getName,
+            component -> extractFieldValue(component, record)
+        ));
+  }
+
+  private static Object extractFieldValue(RecordComponent component, TargetCalculationConfig event) {
+    try {
+      return component.getAccessor().invoke(event);
+    } catch (Exception e) {
+      LoggingManager.LOGGER.warn("Failed to extract field: {}", component.getName(), e);
+      return null;
+    }
+  }
+
+  private static boolean isPublicConstructor(Constructor<?> constructor) {
+    return Modifier.isPublic(constructor.getModifiers());
+  }
+
+  private static TargetStrategy tryInstantiateStrategy(Constructor<?> constructor,
+      GameMap gameMap, Map<String, Object> targetCalculationConfig,
+      EntityPlacement placement)
+      throws TargetStrategyException {
+    try {
+      if (matchesTwoArgConstructor(constructor)) {
+        return (TargetStrategy) constructor.newInstance(
+            gameMap,
+            targetCalculationConfig
+        );
+      }
+
+      if (matchesThreeArgConstructor(constructor)) {
+        return (TargetStrategy) constructor.newInstance(
+            gameMap,
+            targetCalculationConfig,
+            placement.getTypeString()
+        );
+      }
+
+      return null;
+    } catch (Exception e) {
+      throw new TargetStrategyException("Failed to instantiate strategy", e);
+    }
+  }
 
   private static boolean matchesTwoArgConstructor(Constructor<?> constructor) {
     Class<?>[] paramTypes = constructor.getParameterTypes();
@@ -116,16 +152,4 @@ public class TargetStrategyFactory {
         paramTypes[2].equals(String.class);
   }
 
-  // made by chatGPT
-  private static String capitalize(String input) {
-    String[] parts = input.split("(?=[A-Z])|_|\\s+"); // split camelCase, snake_case, or spaces
-    StringBuilder sb = new StringBuilder();
-    for (String part : parts) {
-      if (!part.isEmpty()) {
-        sb.append(part.substring(0, 1).toUpperCase());
-        sb.append(part.substring(1).toLowerCase());
-      }
-    }
-    return sb.toString();
-  }
 }

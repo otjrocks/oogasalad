@@ -20,20 +20,18 @@ import oogasalad.player.model.exceptions.ControlStrategyException;
  * implementations.</p>
  *
  * <p>Usage of this class involves providing a {@link GameInputManager}, an
- * {@link EntityPlacement},
- * and a {@link GameMap} to the
+ * {@link EntityPlacement}, and a {@link GameMap} to the
  * {@link #createControlStrategy(GameInputManager, EntityPlacement, GameMap)} method, which returns
  * an instance of the appropriate {@link ControlStrategy}.</p>
  *
  * <p>Note: This class assumes that the control strategy classes follow a specific naming
- * convention
- * and are located within the {@code oogasalad.player.model.control} package. If the required
- * control strategy class cannot be found or instantiated, a {@link ControlStrategyException} is
- * thrown.</p>
+ * convention and are located within the {@code oogasalad.player.model.control} package. If the
+ * required control strategy class cannot be found or instantiated, a
+ * {@link ControlStrategyException} is thrown.</p>
  *
  * <p>Example control strategy naming convention: If the control type is "Keyboard", the
- * corresponding
- * class should be named {@code KeyboardControlStrategy} and located in the specified package.</p>
+ * corresponding class should be named {@code KeyboardControlStrategy} and located in the specified
+ * package.</p>
  *
  * <p>Potential exceptions include:</p>
  * <ul>
@@ -61,9 +59,8 @@ public class ControlStrategyFactory {
       GameInputManager input, EntityPlacement entityPlacement,
       GameMap gameMap)
       throws ControlStrategyException {
-//    String controlType = entityPlacement.getType().controlType();
-    String controlType = "Keyboard";
-    String className = STRATEGY_PACKAGE + truncate(controlType) + "ControlStrategy";
+    String controlType = entityPlacement.getType().controlConfig().getClass().getSimpleName();
+    String className = STRATEGY_PACKAGE + controlType.replace("Config", "Strategy");
 
     try {
       Class<?> strategyClass = Class.forName(className);
@@ -73,6 +70,7 @@ public class ControlStrategyFactory {
           "Failed to create strategy for control type: " + controlType + " " + className, e);
     }
   }
+
 
   private static ControlStrategy instantiateStrategy(Class<?> strategyClass, GameInputManager input,
       EntityPlacement placement,
@@ -152,18 +150,5 @@ public class ControlStrategyFactory {
   private static boolean isPublicConstructor(Constructor<?> constructor) {
     return Modifier.isPublic(constructor.getModifiers());
   }
-
-  private static String truncate(String input) {
-    // split by camelCase, snake_case, or spaces
-    String[] parts = input.split("(?=[A-Z])|_|\\s+");
-    for (String part : parts) {
-      if (!part.isEmpty()) {
-        // get only the first part and capitalize it correctly
-        return part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase();
-      }
-    }
-    return ""; // return empty string if no valid parts found
-  }
-
 
 }

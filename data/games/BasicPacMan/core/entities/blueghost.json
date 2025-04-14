@@ -5,10 +5,10 @@
       "controlStrategy": "Target",
       "pathFindingStrategy": "Euclidean",
       "targetCalculationConfig": {
-        "targetCalculationStrategy": "TargetEntityWithTrap",
+        "targetCalculationStrategy": "TargetAheadOfEntity",
         "targetType": "Pacman",
-        "tilesAhead": 2,
-        "teamEntityType": "PinkGhost"
+        "tilesAhead": 2
+
       }
     },
     "movementSpeed": 90
