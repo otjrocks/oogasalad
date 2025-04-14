@@ -9,6 +9,7 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.engine.records.newconfig.model.Settings;
+import oogasalad.engine.records.newconfig.model.wincondition.SurviveForTimeCondition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -27,7 +28,7 @@ public class AuthoringViewTest extends DukeApplicationTest {
 
     when(mockController.getLevelController()).thenReturn(mockLevelController);
     when(mockController.getModel()).thenReturn(mockModel);
-    when(mockModel.getDefaultSettings()).thenReturn(new Settings(2.0, 2, 2, "", ""));
+    when(mockModel.getDefaultSettings()).thenReturn(new Settings(2.0, 2, 2, "", new SurviveForTimeCondition(5)));
 
     authoringView = new AuthoringView();
     authoringView.setController(mockController);
@@ -46,7 +47,7 @@ public class AuthoringViewTest extends DukeApplicationTest {
   @Test
   public void setController_ValidController_SubViewsInitialized() {
     AuthoringModel mockModel = mock(AuthoringModel.class);
-    when(mockModel.getDefaultSettings()).thenReturn(new Settings(2.0, 2, 2, "", ""));
+    when(mockModel.getDefaultSettings()).thenReturn(new Settings(2.0, 2, 2, "", new SurviveForTimeCondition(5)));
 
     when(mockController.getModel()).thenReturn(mockModel);
     when(mockController.getLevelController()).thenReturn(mockLevelController);

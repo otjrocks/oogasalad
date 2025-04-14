@@ -10,6 +10,7 @@ import oogasalad.engine.model.EntityType;
 
 import java.util.Map;
 import oogasalad.engine.config.ModeConfig;
+import oogasalad.engine.model.controlConfig.ControlConfig;
 
 /**
  * View for editing a selected EntityType.
@@ -74,7 +75,8 @@ public class EntityTypeEditorView {
       }
     });
 
-    controlTypeBox.setValue(type.controlType());
+    // TODO: New config
+//    controlTypeBox.setValue();
     controlTypeBox.setOnAction(e -> commitChanges());
 
     modeList.getChildren().clear();
@@ -98,16 +100,28 @@ public class EntityTypeEditorView {
   }
 
   private void commitChanges() {
-    if (current != null) {
-      EntityType newEntity = new EntityType(typeField.getText(), controlTypeBox.getValue(),
-          current.effect(),
-          current.modes(), current.blocks(), current.strategyConfig());
-      controller.getModel().updateEntityType(current.type(), newEntity);
+    if (current == null) return;
 
-      controller.updateEntitySelector(); // refresh tile labels if needed
-      current = newEntity;
-    }
+    ControlConfig controlConfig = buildControlConfigFromUI(); // dynamically builds appropriate config
+
+    EntityType newEntity = new EntityType(
+        typeField.getText(),
+        controlConfig,
+        current.modes(),
+        current.blocks()
+    );
+
+    controller.getModel().updateEntityType(current.type(), newEntity);
+    controller.updateEntitySelector(); // update visuals if needed
+    current = newEntity;
   }
+
+  private ControlConfig buildControlConfigFromUI() {
+    // TODO: Implement
+
+    return null;
+  }
+
 
   private void openAddModeDialog() {
     ModeEditorDialog dialog = new ModeEditorDialog();

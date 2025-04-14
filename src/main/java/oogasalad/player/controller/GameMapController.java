@@ -12,13 +12,14 @@ import oogasalad.engine.model.GameEndHandler;
 import oogasalad.engine.model.GameEndStatus;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
-import oogasalad.engine.model.api.StrategyFactory;
+import oogasalad.engine.model.api.CollisionStrategyFactory;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.model.strategies.collision.CollisionStrategy;
 import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.model.strategies.gameoutcome.LivesBasedOutcome;
+import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
 import oogasalad.engine.records.CollisionContextRecord;
 import oogasalad.engine.records.GameContextRecord;
 
@@ -100,7 +101,7 @@ public class GameMapController {
 
   private void applyEntityBCollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
     if (checkEntityTypesMatch(e1, e2, collisionRule)) {
-      for (String eventB : collisionRule.getEventsB()) {
+      for (CollisionEvent eventB : collisionRule.getEventsB()) {
         createAndApplyCollisionStrategy(e1, e2, eventB);
       }
     }
@@ -108,18 +109,19 @@ public class GameMapController {
 
   private void applyEntityACollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
     if (checkEntityTypesMatch(e1, e2, collisionRule)) {
-      for (String eventA : collisionRule.getEventsA()) {
+      for (CollisionEvent eventA : collisionRule.getEventsA()) {
         createAndApplyCollisionStrategy(e1, e2, eventA);
       }
     }
   }
 
-  private void createAndApplyCollisionStrategy(Entity e1, Entity e2, String eventName) {
-    CollisionStrategy collisionStrategy = StrategyFactory.createCollisionStrategy(eventName);
+  private void createAndApplyCollisionStrategy(Entity e1, Entity e2,
+      CollisionEvent collisionEvent) {
+    CollisionStrategy collisionStrategy = CollisionStrategyFactory.createCollisionStrategy(collisionEvent);
     try {
       collisionStrategy.handleCollision(new CollisionContextRecord(e1, e2, gameMap, gameState));
     } catch (EntityNotFoundException e) {
-      LoggingManager.LOGGER.warn("Unable to handle collision event: {}", eventName, e);
+      LoggingManager.LOGGER.warn("Unable to handle collision event: {}", collisionEvent, e);
       throw new RuntimeException(e);
     }
   }

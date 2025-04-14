@@ -1,11 +1,14 @@
 {
   "entityType": {
     "name": "BlueGhost",
-    "controlType": {
-      "controlType": "TargetAheadOfEntity",
-      "controlTypeConfig": {
+    "controlConfig": {
+      "controlStrategy": "Target",
+      "pathFindingStrategy": "Euclidean",
+      "targetCalculationConfig": {
+        "targetCalculationStrategy": "TargetAheadOfEntity",
         "targetType": "Pacman",
-        "tilesAhead": 4
+        "tilesAhead": 2
+
       }
     },
     "movementSpeed": 90
