@@ -22,15 +22,11 @@ public class EntityView {
 
   private static final ResourceBundle SPRITE_DATA =
       ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
-  private static final Image SPRITE_SHEET = new Image(
-      Objects.requireNonNull(
-          EntityView.class.getClassLoader()
-              .getResourceAsStream("sprites/Pacman.png"))
-  );
 
   private final Entity entity;
   private final int totalFrames;
   private final int dimension;
+  private final Image sprite;
 
   /**
    * Initialize an Entity view.
@@ -47,6 +43,18 @@ public class EntityView {
             (entity.getEntityPlacement().getTypeString() + "_DIM").toUpperCase()
         )
     );
+    Direction dir = entity.getEntityDirection() != null ? entity.getEntityDirection() : Direction.NONE;
+    String suffix = dir == Direction.NONE ? "_R" : "_" + dir.name();
+    String imageName = (entity.getEntityPlacement().getTypeString() +
+            "_" + entity.getEntityPlacement().getMode() +
+            suffix).toUpperCase();
+    System.out.println("Attempting to load image: " + imageName);
+    this.sprite = new Image(
+            Objects.requireNonNull(
+                    EntityView.class.getClassLoader()
+                            .getResourceAsStream(
+                                    "sprites/" + imageName + ".png"
+                            )));
   }
 
   /**
@@ -77,9 +85,9 @@ public class EntityView {
     double destY = entity.getEntityPlacement().getY() * tileHeight;
 
     gc.drawImage(
-        SPRITE_SHEET,
-        frameIndex * dimension + offsetX,
-        offsetY,
+        sprite,
+        0,
+        frameIndex * dimension,
         dimension,
         dimension,
         destX,
