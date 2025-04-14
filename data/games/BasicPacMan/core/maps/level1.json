@@ -74,19 +74,74 @@
   "spawnEvents": [
     {
       "entityType": "8",
-      "spawnCondition": "TimeElapsed(5)",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 5
+        }
+      },
       "x": 13,
       "y": 17,
       "mode": "test",
-      "despawnCondition": "TimeElapsed(10)"
+      "despawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 10
+        }
+      }
     },
     {
       "entityType": "9",
-      "spawnCondition": "TimeElapsed(10)",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 10
+        }
+      },
       "x": 15,
       "y": 17,
       "mode": "test",
-      "despawnCondition": "TimeElapsed(30)"
+      "despawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 30
+        }
+      }
+    }
+  ],
+  "modeChangeEvents": [
+    {
+      "entityType": "9",
+      "currentMode": "chase",
+      "nextMode": "scatter",
+      "changeCondition": {
+        "type": "time",
+        "parameters": {
+          "amount": 10
+        }
+      }
+    },
+    {
+      "entityType": "9",
+      "currentMode": "scatter",
+      "nextMode": "chase",
+      "changeCondition": {
+        "type": "time",
+        "parameters": {
+          "amount": 20
+        }
+      }
+    },
+    {
+      "entityType": "9",
+      "currentMode": "frightened",
+      "nextMode": "chase",
+      "changeCondition": {
+        "type": "time",
+        "parameters": {
+          "amount": 20
+        }
+      }
     }
   ]
 }

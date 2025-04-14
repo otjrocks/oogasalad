@@ -1,16 +1,17 @@
 {
   "entityType": {
-    "name": "BlueGhost",
+    "name": "OrangeGhost",
     "controlConfig": {
-      "controlStrategy": "Target",
-      "targetControlConfig": {
-        "pathFindingStrategy": "Euclidean",
+      "controlStrategy": "Conditional",
+      "conditionalControlConfig": {
+        "radius": 8,
+        "pathFindingStrategyInRadius": "Euclidean",
+        "pathFindingStrategyOutRadius": "Random",
         "targetCalculationConfig": {
-          "targetCalculationStrategy": "TargetEntityWithTrap",
+          "targetCalculationStrategy": "TargetLocation",
           "parameters": {
-            "targetType": "Pacman",
-            "tilesAhead": 2,
-            "teamEntityType": "PinkGhost"
+            "targetX": 0,
+            "targetY": 0
           }
         }
       }
@@ -21,7 +22,7 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "blueghost",
+        "imagePath": "orangeghost",
         "tileWidth": 14,
         "tileHeight": 14,
         "tilesToCycle": [

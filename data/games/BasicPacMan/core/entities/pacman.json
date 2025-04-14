@@ -1,8 +1,8 @@
 {
   "entityType": {
     "name": "Pacman",
-    "controlType": {
-      "controlType": "Keyboard"
+    "controlStrategy": {
+      "controlStrategy": "Keyboard"
     },
     "movementSpeed": 100
   },

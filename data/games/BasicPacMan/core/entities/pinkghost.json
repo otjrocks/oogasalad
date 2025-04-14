@@ -1,16 +1,15 @@
 {
   "entityType": {
-    "name": "BlueGhost",
+    "name": "PinkGhost",
     "controlConfig": {
       "controlStrategy": "Target",
       "targetControlConfig": {
         "pathFindingStrategy": "Euclidean",
         "targetCalculationConfig": {
-          "targetCalculationStrategy": "TargetEntityWithTrap",
+          "targetCalculationStrategy": "TargetAheadOfEntity",
           "parameters": {
             "targetType": "Pacman",
-            "tilesAhead": 2,
-            "teamEntityType": "PinkGhost"
+            "tilesAhead": 2
           }
         }
       }
@@ -21,7 +20,7 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "blueghost",
+        "imagePath": "pinkghost",
         "tileWidth": 14,
         "tileHeight": 14,
         "tilesToCycle": [

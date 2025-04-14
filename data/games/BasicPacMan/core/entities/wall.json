@@ -1,8 +1,8 @@
 {
   "entityType": {
     "name": "Wall",
-    "controlType": {
-      "controlType": "None"
+    "controlStrategy": {
+      "controlStrategy": "None"
     },
     "movementSpeed": 0,
     "blocks": [
