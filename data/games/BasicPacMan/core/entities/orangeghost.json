@@ -3,17 +3,13 @@
     "name": "OrangeGhost",
     "controlConfig": {
       "controlStrategy": "Conditional",
-      "conditionalControlConfig": {
-        "radius": 8,
-        "pathFindingStrategyInRadius": "Euclidean",
-        "pathFindingStrategyOutRadius": "Random",
-        "targetCalculationConfig": {
-          "targetCalculationStrategy": "TargetLocation",
-          "parameters": {
-            "targetX": 0,
-            "targetY": 0
-          }
-        }
+      "radius": 8,
+      "pathFindingStrategyInRadius": "Euclidean",
+      "pathFindingStrategyOutRadius": "Random",
+      "targetCalculationConfig": {
+        "targetCalculationStrategy": "TargetLocation",
+        "targetX": 0,
+        "targetY": 0
       }
     },
     "movementSpeed": 90

@@ -3,14 +3,10 @@
     "name": "RedGhost",
     "controlConfig": {
       "controlStrategy": "Target",
-      "targetControlConfig": {
-        "pathFindingStrategy": "Euclidean",
-        "targetCalculationConfig": {
-          "targetCalculationStrategy": "TargetEntity",
-          "parameters": {
-            "targetType": "Pacman"
-          }
-        }
+      "pathFindingStrategy": "Euclidean",
+      "targetCalculationConfig": {
+        "targetCalculationStrategy": "TargetEntity",
+        "targetType": "Pacman"
       }
     },
     "movementSpeed": 90

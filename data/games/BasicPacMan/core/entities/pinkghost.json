@@ -3,15 +3,12 @@
     "name": "PinkGhost",
     "controlConfig": {
       "controlStrategy": "Target",
-      "targetControlConfig": {
-        "pathFindingStrategy": "Euclidean",
-        "targetCalculationConfig": {
-          "targetCalculationStrategy": "TargetAheadOfEntity",
-          "parameters": {
-            "targetType": "Pacman",
-            "tilesAhead": 2
-          }
-        }
+      "pathFindingStrategy": "Euclidean",
+      "targetCalculationConfig": {
+        "targetCalculationStrategy": "TargetAheadOfEntity",
+        "targetType": "Pacman",
+        "tilesAhead": 2
+
       }
     },
     "movementSpeed": 90

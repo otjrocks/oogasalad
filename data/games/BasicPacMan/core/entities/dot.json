@@ -1,7 +1,7 @@
 {
   "entityType": {
     "name": "Dot",
-    "controlStrategy": {
+    "controlConfig": {
       "controlStrategy": "None"
     },
     "movementSpeed": 0

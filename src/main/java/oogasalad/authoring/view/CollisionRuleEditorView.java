@@ -8,6 +8,7 @@ import javafx.scene.layout.*;
 import java.util.*;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.model.CollisionRule;
+import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
 
 /**
  * A dialog view that allows the user to define and edit collision rules between pairs of entity
@@ -223,8 +224,9 @@ public class CollisionRuleEditorView {
     CollisionRule rule = new CollisionRule();
     rule.setEntityTypeA(a);
     rule.setEntityTypeB(b);
-    rule.setEventsA(aActions);
-    rule.setEventsB(bActions);
+    // TODO: refactor to use new CollisionEvent Record
+//    rule.setEventsA(aActions);
+//    rule.setEventsB(bActions);
     rule.setModeA(aMode);
     rule.setModeB(bMode);
     workingRules.add(rule);

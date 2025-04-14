@@ -2,48 +2,58 @@ package oogasalad.engine.model.api;
 
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.model.strategies.collision.CollisionStrategy;
-import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
-import oogasalad.engine.model.strategies.collision.ReturnToSpawnLocationStrategy;
-import oogasalad.engine.model.strategies.collision.StopStrategy;
-import oogasalad.engine.model.strategies.collision.UpdateLivesStrategy;
-import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
+import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.RecordComponent;
+import java.util.Arrays;
 
 /**
- * A factory design pattern to create strategies based a provided name and arguments.
- *
- * @author Owen Jennings.
+ * A factory design pattern to create strategies based on a provided event.
  */
 public class StrategyFactory {
 
-  /**
-   * Create a collision strategy from the provided name. If the provided collision strategy name
-   * does not exist, returns a consume strategy by default.
-   *
-   * @param strategyString The name of the strategy you are requesting.
-   * @return The collision strategy requested.
-   */
-  public static CollisionStrategy createCollisionStrategy(String strategyString) {
-    int parameter = 0;
-    if (strategyString.contains("(")) {
-      try {
-        parameter = Integer.parseInt(
-            strategyString.substring(strategyString.indexOf("(") + 1, strategyString.indexOf(")")));
-      } catch (NumberFormatException ex) {
-        LoggingManager.LOGGER.warn("Could not parse parameter for: {}", strategyString, ex);
-        throw ex;
-      }
-      strategyString = strategyString.substring(0, strategyString.indexOf("("));
+  private static final String STRATEGY_PACKAGE = "oogasalad.engine.model.strategies.collision";
+
+  public static CollisionStrategy createCollisionStrategy(CollisionEvent collisionEvent) {
+    try {
+      String eventClassName = collisionEvent.getClass().getSimpleName(); // e.g., UpdateScoreEvent
+      String strategyClassName = eventClassName.replace("Event", "Strategy"); // UpdateScoreStrategy
+      Class<?> strategyClass = Class.forName(STRATEGY_PACKAGE + "." + strategyClassName);
+
+      // Get parameters from event record (supports multiple parameters if needed)
+      Object[] args = Arrays.stream(collisionEvent.getClass().getRecordComponents())
+          .map(component -> extractFieldValue(component, collisionEvent))
+          .toArray();
+
+      Constructor<?> constructor = Arrays.stream(strategyClass.getConstructors())
+          .filter(c -> c.getParameterCount() == args.length)
+          .findFirst()
+          .orElseThrow();
+
+      return (CollisionStrategy) constructor.newInstance(args);
+    } catch (Exception e) {
+      LoggingManager.LOGGER.warn("Failed to create strategy for: {}",
+          collisionEvent.getClass().getSimpleName(), e);
+      return defaultStrategy();
     }
-    return getCollisionStrategy(strategyString, parameter);
   }
 
-  private static CollisionStrategy getCollisionStrategy(String strategyString, int parameter) {
-    return switch (strategyString) {
-      case "Stop" -> new StopStrategy();
-      case "UpdateLives" -> new UpdateLivesStrategy(parameter);
-      case "UpdateScore" -> new UpdateScoreStrategy(parameter);
-      case "ReturnToSpawnLocation" -> new ReturnToSpawnLocationStrategy();
-      default -> new ConsumeStrategy();
-    };
+  private static Object extractFieldValue(RecordComponent component, CollisionEvent event) {
+    try {
+      return component.getAccessor().invoke(event);
+    } catch (Exception e) {
+      LoggingManager.LOGGER.warn("Failed to extract field: {}", component.getName(), e);
+      return null;
+    }
+  }
+
+  private static CollisionStrategy defaultStrategy() {
+    try {
+      Class<?> defaultClass = Class.forName(STRATEGY_PACKAGE + ".ConsumeStrategy");
+      return (CollisionStrategy) defaultClass.getDeclaredConstructor().newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to create default strategy", e);
+    }
   }
 }

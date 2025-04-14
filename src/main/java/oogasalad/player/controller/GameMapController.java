@@ -20,6 +20,7 @@ import oogasalad.engine.model.strategies.collision.CollisionStrategy;
 import oogasalad.engine.model.strategies.gameoutcome.LivesBasedOutcome;
 import oogasalad.engine.records.CollisionContext;
 import oogasalad.engine.records.GameContext;
+import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
 
 /**
  * A controller that handles all the updates of the game map models whenever the game map view is
@@ -94,7 +95,7 @@ public class GameMapController {
 
   private void applyEntityBCollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
     if (checkEntityTypesMatch(e1, e2, collisionRule)) {
-      for (String eventB : collisionRule.getEventsB()) {
+      for (CollisionEvent eventB : collisionRule.getEventsB()) {
         createAndApplyCollisionStrategy(e1, e2, eventB);
       }
     }
@@ -102,18 +103,19 @@ public class GameMapController {
 
   private void applyEntityACollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
     if (checkEntityTypesMatch(e1, e2, collisionRule)) {
-      for (String eventA : collisionRule.getEventsA()) {
+      for (CollisionEvent eventA : collisionRule.getEventsA()) {
         createAndApplyCollisionStrategy(e1, e2, eventA);
       }
     }
   }
 
-  private void createAndApplyCollisionStrategy(Entity e1, Entity e2, String eventName) {
-    CollisionStrategy collisionStrategy = StrategyFactory.createCollisionStrategy(eventName);
+  private void createAndApplyCollisionStrategy(Entity e1, Entity e2,
+      CollisionEvent collisionEvent) {
+    CollisionStrategy collisionStrategy = StrategyFactory.createCollisionStrategy(collisionEvent);
     try {
       collisionStrategy.handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
     } catch (EntityNotFoundException e) {
-      LoggingManager.LOGGER.warn("Unable to handle collision event: {}", eventName, e);
+      LoggingManager.LOGGER.warn("Unable to handle collision event: {}", collisionEvent, e);
       throw new RuntimeException(e);
     }
   }
