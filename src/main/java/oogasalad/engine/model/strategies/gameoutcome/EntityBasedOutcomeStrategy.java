@@ -40,7 +40,6 @@ public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
    */
   @Override
   public boolean hasGameEnded(GameContextRecord context) {
-    System.out.println("Entity count for " + entityType + ": " + context.gameMap().getEntityCount(entityType));
     return context.gameMap().getEntityCount(entityType) <= requiredAmount;
   }
 

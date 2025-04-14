@@ -62,8 +62,15 @@ public class GameMapImpl implements GameMap {
           "Cannot remove requested entity, because it does not exist in the game map!");
     } else {
       myEntityList.remove(entity);
+
+      // Decrement frequency map
+      String type = entity.getEntityPlacement().getType().type().toLowerCase();
+      if (entityFrequencyMap.containsKey(type)) {
+        entityFrequencyMap.put(type, entityFrequencyMap.get(type) - 1);
+      }
     }
   }
+
 
   @Override
   public Optional<Entity> getEntityAt(int x, int y) {
@@ -113,7 +120,7 @@ public class GameMapImpl implements GameMap {
     }
     int count = 0;
     for (Entity entity1 : myEntityList) {
-      if (entity1.getEntityPlacement().getType().type().equals(entityType)) {
+      if (entity1.getEntityPlacement().getType().type().toLowerCase().equals(entityType)) {
         count++;
       }
     }

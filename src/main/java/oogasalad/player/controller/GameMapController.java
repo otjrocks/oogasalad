@@ -55,6 +55,7 @@ public class GameMapController {
     this.gameContext = gameContext;
     myConfigModel = configModel;
     gameOutcomeStrategy = GameOutcomeFactory.create(configModel.winCondition());
+    System.out.println(configModel.winCondition());
   }
 
   /**
