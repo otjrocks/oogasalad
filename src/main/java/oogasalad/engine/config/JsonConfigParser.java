@@ -61,6 +61,7 @@ import oogasalad.engine.utility.FileUtility;
  */
 public class JsonConfigParser implements ConfigParser {
 
+  public static final String ENTITY_TYPE = "entityType";
   private final ObjectMapper mapper;
   private GameConfig gameConfig;
   private Map<String, EntityConfig> entityMap;
@@ -163,7 +164,7 @@ public class JsonConfigParser implements ConfigParser {
     JsonNode eventsNode = rootNode.get("spawnEvents");
 
     for (JsonNode eventNode : eventsNode) {
-      int id = Integer.parseInt(eventNode.get("entityType").asText()); // old: "8"
+      int id = Integer.parseInt(eventNode.get(ENTITY_TYPE).asText()); // old: "8"
       EntityType type = idToEntityType.get(id);
       if (type == null) {
         throw new ConfigException("Unknown entity ID in spawnEvents: " + id);
@@ -188,7 +189,7 @@ public class JsonConfigParser implements ConfigParser {
     JsonNode eventsNode = rootNode.get("modeChangeEvents");
 
     for (JsonNode eventNode : eventsNode) {
-      int id = Integer.parseInt(eventNode.get("entityType").asText());
+      int id = Integer.parseInt(eventNode.get(ENTITY_TYPE).asText());
       EntityType type = idToEntityType.get(id);
       if (type == null) {
         throw new ConfigException("Unknown entity ID in modeChangeEvents: " + id);
@@ -475,11 +476,11 @@ public class JsonConfigParser implements ConfigParser {
     return entitiesMap;
   }
 
-  public EntityConfig loadEntityConfig(String filepath) throws ConfigException {
+  EntityConfig loadEntityConfig(String filepath) throws ConfigException {
     try {
       JsonNode root = mapper.readTree(new File(filepath));
 
-      JsonNode entityTypeNode = root.get("entityType");
+      JsonNode entityTypeNode = root.get(ENTITY_TYPE);
       EntityProperties defaultProps = parseEntityProperties(entityTypeNode, filepath);
       List<ModeConfig> modes = parseModes(root.get("modes"), defaultProps, filepath);
 

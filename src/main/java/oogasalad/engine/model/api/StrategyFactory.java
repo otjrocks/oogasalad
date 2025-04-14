@@ -10,15 +10,26 @@ import java.util.Arrays;
 
 /**
  * A factory design pattern to create strategies based on a provided event.
+ *
+ * @author Owen Jennings
  */
 public class StrategyFactory {
 
   private static final String STRATEGY_PACKAGE = "oogasalad.engine.model.strategies.collision";
 
+  /**
+   * Create a collision strategy based on the collision event record derived from the configuration
+   * files.
+   *
+   * @param collisionEvent A collision event data storage object.
+   * @return The collision strategy created from the collision event object.
+   */
+  // I used ChatGPT to assist in generating this method.
   public static CollisionStrategy createCollisionStrategy(CollisionEvent collisionEvent) {
     try {
-      String eventClassName = collisionEvent.getClass().getSimpleName(); // e.g., UpdateScoreEvent
-      String strategyClassName = eventClassName.replace("Event", "Strategy"); // UpdateScoreStrategy
+      String eventClassName = collisionEvent.getClass().getSimpleName();
+      String strategyClassName = eventClassName.replace("CollisionEvent",
+          "Strategy");
       Class<?> strategyClass = Class.forName(STRATEGY_PACKAGE + "." + strategyClassName);
 
       // Get parameters from event record (supports multiple parameters if needed)
