@@ -31,7 +31,6 @@ import oogasalad.engine.records.newconfig.CollisionConfig;
 import oogasalad.engine.records.newconfig.EntityConfig;
 import oogasalad.engine.records.newconfig.GameConfig;
 import oogasalad.engine.records.newconfig.ImageConfig;
-import oogasalad.engine.records.newconfig.model.ControlType;
 import oogasalad.engine.records.newconfig.model.EntityProperties;
 import oogasalad.engine.records.newconfig.model.Level;
 import oogasalad.engine.records.newconfig.model.Metadata;

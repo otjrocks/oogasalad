@@ -15,8 +15,6 @@ import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
 import oogasalad.engine.records.newconfig.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.newconfig.model.ControlType;
-import oogasalad.engine.records.newconfig.model.ControlTypeConfig;
 import oogasalad.engine.records.newconfig.model.EntityProperties;
 
 /**
