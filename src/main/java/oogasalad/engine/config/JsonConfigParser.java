@@ -210,7 +210,8 @@ public class JsonConfigParser implements ConfigParser {
     String type = conditionNode.get("type").asText();
     Map<String, Object> parameters = new HashMap<>();
 
-    for (Iterator<Entry<String, JsonNode>> it = conditionNode.get("parameters").fields(); it.hasNext();) {
+    for (Iterator<Entry<String, JsonNode>> it = conditionNode.get("parameters").fields();
+        it.hasNext(); ) {
       Map.Entry<String, JsonNode> entry = it.next();
       JsonNode val = entry.getValue();
 
@@ -230,7 +231,6 @@ public class JsonConfigParser implements ConfigParser {
 
     return new Condition(type, parameters);
   }
-
 
 
   private Map<Integer, EntityType> buildEntityMappings(JsonNode mappings) throws ConfigException {
@@ -507,6 +507,9 @@ public class JsonConfigParser implements ConfigParser {
       throws ConfigException {
     try {
       List<ModeConfig> modes = new ArrayList<>();
+      if (modesNode == null) {
+        throw new ConfigException("Failed to get modes from json: " + filepath);
+      }
       for (JsonNode modeNode : modesNode) {
         String name = modeNode.get("name").asText();
         EntityProperties overrideProps = mergeProperties(name, defaultProps, modeNode);

@@ -76,7 +76,7 @@ public class EntityTypeEditorView {
     });
 
     // TODO: New config
-//    controlTypeBox.setValue(type.controlType());
+//    controlTypeBox.setValue();
     controlTypeBox.setOnAction(e -> commitChanges());
 
     modeList.getChildren().clear();
