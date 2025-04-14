@@ -37,7 +37,7 @@ public class EntityView {
   public EntityView(Entity entity, int totalFrames) {
     this.entity = entity;
     this.totalFrames = totalFrames;
-    this.dimension = 64;
+    this.dimension = 28;
     Direction dir = entity.getEntityDirection() != null ? entity.getEntityDirection() : Direction.NONE;
     String suffix = dir == Direction.NONE ? "_R" : "_" + dir.name();
     String imageName = (entity.getEntityPlacement().getTypeString() +
@@ -71,8 +71,8 @@ public class EntityView {
 
     gc.drawImage(
         sprite,
+            frameIndex * dimension,
         0,
-        frameIndex * dimension,
         dimension,
         dimension,
         destX,
