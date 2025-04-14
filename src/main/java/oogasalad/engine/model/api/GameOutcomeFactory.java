@@ -1,14 +1,17 @@
 package oogasalad.engine.model.api;
 
-import oogasalad.engine.LoggingManager;
 import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategy;
-import oogasalad.engine.model.strategies.gameoutcome.LivesBasedOutcome;
 import oogasalad.engine.model.strategies.gameoutcome.ScoreBasedOutcomeStrategy;
 import oogasalad.engine.records.newconfig.model.wincondition.EntityBasedCondition;
 import oogasalad.engine.records.newconfig.model.wincondition.SurviveForTimeCondition;
 import oogasalad.engine.records.newconfig.model.wincondition.WinCondition;
 
+/**
+ * A factory design pattern to create the appropriate GameOutcome strategy
+ *
+ * @author Luke Fu
+ */
 public class GameOutcomeFactory {
 
   /**

@@ -12,21 +12,24 @@ import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
 
 /**
  * A reusable HUD component that displays score/lives on one row and controls on the next.
+ * @author Luke Fu
  */
 public class HudView extends VBox {
 
   private final Label scoreLabel;
   private final Label livesLabel;
-
+  private final String style = "hud-container";
+  /**
+   * Constructs HUDView according to state, game view, and runnable
+   */
   public HudView(GameState gameState, GameView gameView, Runnable onReturnToMenu) {
     super(ELEMENT_SPACING);
-    this.getStyleClass().add("hud-container");
 
     // Row 1: Score + Lives
     scoreLabel = new Label();
     livesLabel = new Label();
     HBox statsRow = new HBox(ELEMENT_SPACING, scoreLabel, livesLabel);
-    statsRow.getStyleClass().add("hud-container");
+    statsRow.getStyleClass().add(style);
 
     // Row 2: Buttons
     Button playButton = new Button("▶");
@@ -50,12 +53,15 @@ public class HudView extends VBox {
     returnButton.setOnAction(e -> onReturnToMenu.run());
 
     HBox controlRow = new HBox(ELEMENT_SPACING, playButton, pauseButton, returnButton);
-    controlRow.getStyleClass().add("hud-container");
+    controlRow.getStyleClass().add(style);
 
     this.getChildren().addAll(statsRow, controlRow);
     update(gameState);
   }
 
+  /**
+   * Updates the HUD score label and lives label
+   */
   public void update(GameState gameState) {
     scoreLabel.setText(String.format(LanguageManager.getMessage("SCORE_LABEL"), gameState.getScore()));
     livesLabel.setText(String.format(LanguageManager.getMessage("LIVES_LABEL"), gameState.getLives()));
