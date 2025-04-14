@@ -1,5 +1,7 @@
 package oogasalad.engine.records.newconfig.model;
 
+import oogasalad.engine.records.newconfig.model.wincondition.WinCondition;
+
 /**
  * Represents the configuration settings for a game. This record encapsulates various parameters
  * that define the initial state and behavior of the game.
@@ -8,9 +10,11 @@ package oogasalad.engine.records.newconfig.model;
  * @param startingLives The number of lives the player starts with, represented as an Integer.
  * @param initialScore  The initial score of the player, represented as an Integer.
  * @param scoreStrategy The strategy used to calculate the score, represented as a String.
- * @param winCondition  The condition required to win the game, represented as a String.
+ * @param winCondition  A WinCondition object that storing information determining when a win has
+ *                      occurred.
+ * @author Owen Jennings, Jessica Chen
  */
 public record Settings(Double gameSpeed, Integer startingLives, Integer initialScore,
-                       String scoreStrategy, String winCondition) {
+                       String scoreStrategy, WinCondition winCondition) {
 
 }

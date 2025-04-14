@@ -11,6 +11,7 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.records.newconfig.model.Settings;
+import oogasalad.engine.records.newconfig.model.wincondition.SurviveForTimeCondition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -28,7 +29,7 @@ public class GameSettingsViewTest extends DukeApplicationTest {
     mockController = mock(AuthoringController.class);
     mockModel = mock(AuthoringModel.class);
 
-    defaultSettings = new Settings(1.0, 3, 100, "", "");
+    defaultSettings = new Settings(1.0, 3, 100, "", new SurviveForTimeCondition(5));
     when(mockController.getModel()).thenReturn(mockModel);
     when(mockModel.getDefaultSettings()).thenReturn(defaultSettings);
 

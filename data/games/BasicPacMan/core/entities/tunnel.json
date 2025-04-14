@@ -1,8 +1,8 @@
 {
   "entityType": {
     "name": "Tunnel",
-    "controlType": {
-      "controlType": "None"
+    "controlConfig": {
+      "controlStrategy": "None"
     },
     "movementSpeed": 0
   },
