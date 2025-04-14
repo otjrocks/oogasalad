@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
+import oogasalad.engine.LanguageManager;
 import oogasalad.engine.model.CollisionRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,7 @@ public class CollisionRuleEditorViewTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) {
+    LanguageManager.setLanguage("English");
     mockController = mock(AuthoringController.class);
     mockModel = mock(AuthoringModel.class);
 
