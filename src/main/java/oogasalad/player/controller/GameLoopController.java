@@ -80,8 +80,8 @@ public class GameLoopController {
 
   private void handleSpawnEvents() {
     for (SpawnEvent spawnEvent : myLevel.spawnEvents()) {
-      double spawnTime = parseTimeCondition(spawnEvent.spawnCondition());
-      double despawnTime = parseTimeCondition(spawnEvent.despawnCondition());
+      double spawnTime = parseTimeCondition(spawnEvent.spawnCondition().type());
+      double despawnTime = parseTimeCondition(spawnEvent.despawnCondition().type());
       handleIndividualSpawnEvent(spawnEvent, spawnTime, despawnTime);
     }
   }

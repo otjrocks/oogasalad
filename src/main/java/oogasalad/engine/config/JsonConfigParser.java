@@ -26,6 +26,7 @@ import oogasalad.engine.model.MapInfo;
 import oogasalad.engine.model.MetaData;
 import oogasalad.engine.model.ModeChangeEvent;
 import oogasalad.engine.model.Tiles;
+import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.records.newconfig.CollisionConfig;
 import oogasalad.engine.records.newconfig.EntityConfig;
 import oogasalad.engine.records.newconfig.GameConfig;
@@ -73,6 +74,7 @@ public class JsonConfigParser implements ConfigParser {
    */
   public JsonConfigParser() {
     this.mapper = new ObjectMapper();
+    mapper.findAndRegisterModules();
   }
 
   /**
@@ -97,8 +99,7 @@ public class JsonConfigParser implements ConfigParser {
     MetaData metaData = extractMetaData(gameConfig);
 
     // Step 4: Build all entity types
-    List<EntityType> entityTypes = new ArrayList<>();
-    createEntityTypes(entityTypes);
+    List<EntityType> entityTypes = createEntityTypes();
 
     // Step 5: Parse level entity placements + map info
     List<ParsedLevel> levels = new ArrayList<>();
@@ -346,7 +347,8 @@ public class JsonConfigParser implements ConfigParser {
   }
 
 
-  private List<EntityType> createEntityTypes(List<EntityType> entityTypes) {
+  private List<EntityType> createEntityTypes() {
+    List<EntityType> entityTypes = new ArrayList<>();
     entityTypeMap.clear(); // Clear existing mappings if needed
 
     for (Map.Entry<String, EntityConfig> entry : entityMap.entrySet()) {
@@ -370,19 +372,15 @@ public class JsonConfigParser implements ConfigParser {
 
 
   private static EntityType getEntityType(EntityConfig entity, Map<String, ModeConfig> modes) {
-    Map<String, Object> strategyConfig = new HashMap<>();
-    if (entity.entityProperties().controlType().controlTypeConfig() != null) {
-      strategyConfig.put("targetType",
-          entity.entityProperties().controlType().controlTypeConfig().targetType());
-      strategyConfig.put("tilesAhead",
-          entity.entityProperties().controlType().controlTypeConfig().tilesAhead());
-    }
+    ControlConfig control = entity.entityProperties().controlConfig();
 
-    // TODO: remove effects
-    EntityType entityType = new EntityType(entity.name(),
-        entity.entityProperties().controlType().controlType(), "",
-        modes, entity.entityProperties().blocks(), strategyConfig);
-    return entityType;
+    return new EntityType(
+        entity.name(),
+        control,
+        modes,
+        entity.entityProperties().blocks()
+    );
+
   }
 
   // ---- Methods for loading Game Config ----
@@ -477,20 +475,19 @@ public class JsonConfigParser implements ConfigParser {
     return entitiesMap;
   }
 
-  EntityConfig loadEntityConfig(String filepath) throws ConfigException {
+  public EntityConfig loadEntityConfig(String filepath) throws ConfigException {
     try {
       JsonNode root = mapper.readTree(new File(filepath));
 
       JsonNode entityTypeNode = root.get("entityType");
       EntityProperties defaultProps = parseEntityProperties(entityTypeNode, filepath);
-      List<ModeConfig> modes = parseModes(root.get("modes"),
-          defaultProps, filepath);
+      List<ModeConfig> modes = parseModes(root.get("modes"), defaultProps, filepath);
 
       return new EntityConfig(
           defaultProps.name(),
           defaultProps,
-          modes);
-
+          modes
+      );
     } catch (IOException e) {
       throw new ConfigException("Failed to parse config file: " + filepath, e);
     }
@@ -500,7 +497,7 @@ public class JsonConfigParser implements ConfigParser {
       throws ConfigException {
     try {
       return mapper.treeToValue(entityTypeNode, EntityProperties.class);
-    } catch (JsonProcessingException e) {
+    } catch (Exception e) {
       throw new ConfigException("Failed to process entityType in json: " + filepath, e);
     }
   }
@@ -524,17 +521,16 @@ public class JsonConfigParser implements ConfigParser {
   }
 
   private EntityProperties mergeProperties(String modeName, EntityProperties defaultProps,
-      JsonNode modeNode)
-      throws JsonProcessingException {
-    final String CONTROL_TYPE = "controlType";
+      JsonNode modeNode) throws JsonProcessingException {
+    final String CONTROL_CONFIG = "controlConfig";
     final String MOVEMENT_SPEED = "movementSpeed";
     final String BLOCKS = "blocks";
 
-    ControlType controlType = modeNode.has(CONTROL_TYPE)
-        ? mapper.treeToValue(modeNode.get(CONTROL_TYPE), ControlType.class)
-        : defaultProps.controlType();
+    ControlConfig controlConfig = modeNode.has(CONTROL_CONFIG)
+        ? mapper.treeToValue(modeNode.get(CONTROL_CONFIG), ControlConfig.class)
+        : defaultProps.controlConfig();
 
-    Double movementSpeed = modeNode.has(MOVEMENT_SPEED)
+    double movementSpeed = modeNode.has(MOVEMENT_SPEED)
         ? modeNode.get(MOVEMENT_SPEED).asDouble()
         : defaultProps.movementSpeed();
 
@@ -545,10 +541,12 @@ public class JsonConfigParser implements ConfigParser {
 
     return new EntityProperties(
         modeName,
-        controlType,
+        controlConfig,
         movementSpeed,
-        blocks);
+        blocks
+    );
   }
+
 
   private static List<String> getAvailableEntities(String folderPath) {
     return FileUtility.getFileNamesInDirectory(folderPath, JSON_IDENTIFIER);
