@@ -52,10 +52,18 @@ public class LevelController {
     return gameMap;
   }
 
+  /**
+   * Increment the current level.
+   */
   public void incrementLevel() {
     myLevelIndex++;
   }
 
+  /**
+   * Get the current level index.
+   *
+   * @return The int representing the current level 0-indexed.
+   */
   public int getCurrentLevelIndex() {
     return myLevelIndex;
   }

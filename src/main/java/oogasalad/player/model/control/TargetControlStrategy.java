@@ -73,6 +73,7 @@ public class TargetControlStrategy implements ControlStrategy {
   @Override
   public void update(Entity entity) {
     int[] target = validateAndGetTargetPosition();
+//    int[] target = new int[]{0, 0};
 
     int[] dir = myPathFindingStrategy.getPath(myGameMap,
         (int) Math.round(myEntityPlacement.getX()),
@@ -97,7 +98,7 @@ public class TargetControlStrategy implements ControlStrategy {
         break;
       }
       if (isValidDirection(dx, dy, direction, entity)) {
-        entity.setEntityDirection(direction);
+        entity.setEntitySnapDirection(direction);
         return;
       }
     }

@@ -2,7 +2,7 @@ package oogasalad.engine.model.strategies.collision;
 
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
-import oogasalad.engine.records.CollisionContext;
+import oogasalad.engine.records.CollisionContextRecord;
 
 /**
  * An implementation of the collision strategy that stops the first entity's movement when it
@@ -13,7 +13,7 @@ import oogasalad.engine.records.CollisionContext;
 public class StopStrategy implements CollisionStrategy {
 
   @Override
-  public void handleCollision(CollisionContext collisionContext)
+  public void handleCollision(CollisionContextRecord collisionContext)
       throws EntityNotFoundException {
     double pacmanX = collisionContext.entity1().getEntityPlacement().getX();
     double pacmanY = collisionContext.entity1().getEntityPlacement().getY();

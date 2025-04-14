@@ -1,6 +1,6 @@
 package oogasalad.engine.model.strategies.collision;
 
-import oogasalad.engine.records.CollisionContext;
+import oogasalad.engine.records.CollisionContextRecord;
 
 /**
  * The {@code UpdateLivesStrategy} class implements the {@link CollisionStrategy} interface to
@@ -43,7 +43,7 @@ public class UpdateLivesStrategy implements CollisionStrategy {
    *                         and the current game state
    */
   @Override
-  public void handleCollision(CollisionContext collisionContext) {
+  public void handleCollision(CollisionContextRecord collisionContext) {
     collisionContext.gameState().updateLives(livesIncrement);
   }
 }

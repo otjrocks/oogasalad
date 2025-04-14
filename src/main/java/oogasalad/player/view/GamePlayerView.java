@@ -12,7 +12,7 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.api.GameMapFactory;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
-import oogasalad.engine.records.GameContext;
+import oogasalad.engine.records.GameContextRecord;
 import oogasalad.player.controller.LevelController;
 
 /**
@@ -52,7 +52,7 @@ public class GamePlayerView extends StackPane {
 
     LevelController levelController = new LevelController(myMainController, myConfigModel);
     if (levelController.getCurrentLevelMap() != null) {
-      myGameView = new GameView(new GameContext(levelController.getCurrentLevelMap(), myGameState),
+      myGameView = new GameView(new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
           myConfigModel, levelController.getCurrentLevelIndex());
       this.getChildren().add(myGameView);
     }

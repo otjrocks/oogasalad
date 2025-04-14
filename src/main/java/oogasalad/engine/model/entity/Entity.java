@@ -69,6 +69,44 @@ public class Entity {
   }
 
   /**
+   * Set the movement direction of this entity and if changing directions snap it to the nearest
+   * int if it is close enough.
+   *
+   * @param direction The new movement direction.
+   */
+  public void setEntitySnapDirection(Direction direction) {
+    boolean isChangingFromHorizontalToVertical =
+        isHorizontal(currentDirection) && isVertical(direction);
+    boolean isChangingFromVerticalToHorizontal =
+        isVertical(currentDirection) && isHorizontal(direction);
+
+    if (isChangingFromHorizontalToVertical) {
+      snapToNearestWhole(myEntityPlacement.getX(), myEntityPlacement::setX);
+    } else if (isChangingFromVerticalToHorizontal) {
+      snapToNearestWhole(myEntityPlacement.getY(), myEntityPlacement::setY);
+    }
+
+    currentDirection = direction;
+    updateEntityVelocity();
+  }
+
+  private boolean isHorizontal(Direction dir) {
+    return dir == Direction.L || dir == Direction.R;
+  }
+
+  private boolean isVertical(Direction dir) {
+    return dir == Direction.U || dir == Direction.D;
+  }
+
+  private void snapToNearestWhole(double value, java.util.function.DoubleConsumer setter) {
+    double nearest = Math.round(value);
+    if (Math.abs(value - nearest) <= 0.2) {
+      setter.accept(nearest);
+    }
+  }
+
+
+  /**
    * Get the entity direction
    *
    * @return The direction character for this entity.

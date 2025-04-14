@@ -4,7 +4,7 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
-import oogasalad.engine.records.CollisionContext;
+import oogasalad.engine.records.CollisionContextRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ class ConsumeStrategyTest {
   private GameMap gameMap;
   private Entity entity1;
   private Entity entity2;
-  private CollisionContext context;
+  private CollisionContextRecord context;
   private ConsumeStrategy strategy;
 
   @BeforeEach
@@ -25,7 +25,7 @@ class ConsumeStrategyTest {
     GameState gameState = mock(GameState.class);
     entity1 = mock(Entity.class);
     entity2 = mock(Entity.class);
-    context = mock(CollisionContext.class);
+    context = mock(CollisionContextRecord.class);
     strategy = new ConsumeStrategy();
 
     when(context.entity1()).thenReturn(entity1);

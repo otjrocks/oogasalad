@@ -1,7 +1,7 @@
 package oogasalad.engine.model.strategies.collision;
 
 import oogasalad.engine.model.GameState;
-import oogasalad.engine.records.CollisionContext;
+import oogasalad.engine.records.CollisionContextRecord;
 
 /**
  * The {@code UpdateScore} class implements the {@link CollisionStrategy} interface to update the
@@ -33,7 +33,7 @@ public class UpdateScoreStrategy implements CollisionStrategy {
    *                         and the current game state
    */
   @Override
-  public void handleCollision(CollisionContext collisionContext) {
+  public void handleCollision(CollisionContextRecord collisionContext) {
     collisionContext.gameState().updateScore(scoreIncrement);
   }
 }

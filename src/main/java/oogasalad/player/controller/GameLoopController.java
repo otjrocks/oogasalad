@@ -9,7 +9,7 @@ import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
-import oogasalad.engine.records.GameContext;
+import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.newconfig.model.ParsedLevel;
 import oogasalad.engine.records.newconfig.model.SpawnEvent;
 import oogasalad.player.view.GameMapView;
@@ -20,7 +20,7 @@ import oogasalad.player.view.GameMapView;
 public class GameLoopController {
 
   private AnimationTimer myGameLoop;
-  private final GameContext myGameContext;
+  private final GameContextRecord myGameContext;
   private final GameMapView myGameMapView;
   private final ParsedLevel myLevel;
   private double myTotalElapsedTime = 0;
@@ -35,7 +35,7 @@ public class GameLoopController {
    * @param gameMapView The game map view used with this animation loop.
    * @param level       The parsed level information for this game loop.
    */
-  public GameLoopController(GameContext gameContext, GameMapView gameMapView, ParsedLevel level) {
+  public GameLoopController(GameContextRecord gameContext, GameMapView gameMapView, ParsedLevel level) {
     myGameContext = gameContext;
     myGameMapView = gameMapView;
     myLevel = level;
@@ -84,9 +84,6 @@ public class GameLoopController {
       double spawnTime = parseTimeCondition(spawnEvent.spawnCondition());
       double despawnTime = parseTimeCondition(spawnEvent.despawnCondition());
       handleIndividualSpawnEvent(spawnEvent, spawnTime, despawnTime);
-    }
-    if (new EntityBasedOutcomeStrategy("dot").hasGameEnded(myGameContext)) {
-      System.out.println("Game Ended");
     }
   }
 
