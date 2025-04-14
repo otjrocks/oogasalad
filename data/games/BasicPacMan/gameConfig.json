@@ -10,8 +10,9 @@
     "initialScore": 0,
     "scoreStrategy": "Cumulative",
     "winCondition": {
-      "type": "SurviveForTime",
-      "amount": 5
+      "type": "EntityBased",
+      "entityType": "dot",
+      "amount": 0
     }
   },
   "levels": [
