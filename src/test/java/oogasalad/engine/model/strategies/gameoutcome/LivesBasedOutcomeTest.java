@@ -1,7 +1,7 @@
 package oogasalad.engine.model.strategies.gameoutcome;
 
 import oogasalad.engine.model.GameState;
-import oogasalad.engine.records.GameContext;
+import oogasalad.engine.records.GameContextRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,13 +11,13 @@ import static org.mockito.Mockito.*;
 class LivesBasedOutcomeTest {
 
   private GameState gameState;
-  private GameContext context;
+  private GameContextRecord context;
   private LivesBasedOutcome strategy;
 
   @BeforeEach
   void setUp() {
     gameState = mock(GameState.class);
-    context = mock(GameContext.class);
+    context = mock(GameContextRecord.class);
     when(context.gameState()).thenReturn(gameState);
     strategy = new LivesBasedOutcome();
   }

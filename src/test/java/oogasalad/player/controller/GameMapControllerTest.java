@@ -11,7 +11,7 @@ import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.engine.records.GameContext;
+import oogasalad.engine.records.GameContextRecord;
 import oogasalad.player.view.GameMapView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ public class GameMapControllerTest {
   private GameMap mockGameMap;
   private GameState mockGameState;
   private GameMapView mockGameView;
-  private GameContext gameContext;
+  private GameContextRecord gameContext;
   private GameMapController controller;
 
   @BeforeEach
@@ -30,7 +30,7 @@ public class GameMapControllerTest {
     mockGameMap = mock(GameMap.class);
     mockGameState = mock(GameState.class);
     mockGameView = mock(GameMapView.class);
-    gameContext = new GameContext(mockGameMap, mockGameState);
+    gameContext = new GameContextRecord(mockGameMap, mockGameState);
     ConfigModel mockConfigModel = mock(ConfigModel.class);
     controller = new GameMapController(gameContext, mockConfigModel);
     controller = new GameMapController(gameContext, Mockito.mock(ConfigModel.class));

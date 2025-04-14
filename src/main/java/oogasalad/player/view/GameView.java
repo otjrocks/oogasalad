@@ -6,7 +6,7 @@ import javafx.scene.layout.StackPane;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.GameConfig;
-import oogasalad.engine.records.GameContext;
+import oogasalad.engine.records.GameContextRecord;
 import oogasalad.player.controller.GameLoopController;
 
 /**
@@ -29,7 +29,7 @@ public class GameView extends StackPane {
    * @param configModel The config model for this view.
    * @param levelIndex  The index of the level that is displayed on this view.
    */
-  public GameView(GameContext gameContext, ConfigModel configModel, int levelIndex) {
+  public GameView(GameContextRecord gameContext, ConfigModel configModel, int levelIndex) {
     super();
     GameMapView myGameMapView = new GameMapView(gameContext, configModel);
     this.setPrefSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);

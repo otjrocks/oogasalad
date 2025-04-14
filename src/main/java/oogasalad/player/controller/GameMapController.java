@@ -19,8 +19,8 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.model.strategies.collision.CollisionStrategy;
 import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.model.strategies.gameoutcome.LivesBasedOutcome;
-import oogasalad.engine.records.CollisionContext;
-import oogasalad.engine.records.GameContext;
+import oogasalad.engine.records.CollisionContextRecord;
+import oogasalad.engine.records.GameContextRecord;
 
 /**
  * A controller that handles all the updates of the game map models whenever the game map view is
@@ -34,7 +34,7 @@ public class GameMapController {
   private static final int SPRITE_ANIMATION_SPEED = 6;
   private final GameMap gameMap;
   private final GameState gameState;
-  private final GameContext gameContext;
+  private final GameContextRecord gameContext;
   private int frameCount = 0;
   private GameEndHandler gameEndHandler;
   private final LivesBasedOutcome livesBasedOutcome = new LivesBasedOutcome();
@@ -46,7 +46,7 @@ public class GameMapController {
    * @param gameContext The game context object for this controller.
    * @param configModel The game config model for this controller.
    */
-  public GameMapController(GameContext gameContext, ConfigModel configModel) {
+  public GameMapController(GameContextRecord gameContext, ConfigModel configModel) {
     gameMap = gameContext.gameMap();
     gameState = gameContext.gameState();
     this.gameContext = gameContext;
@@ -117,7 +117,7 @@ public class GameMapController {
   private void createAndApplyCollisionStrategy(Entity e1, Entity e2, String eventName) {
     CollisionStrategy collisionStrategy = StrategyFactory.createCollisionStrategy(eventName);
     try {
-      collisionStrategy.handleCollision(new CollisionContext(e1, e2, gameMap, gameState));
+      collisionStrategy.handleCollision(new CollisionContextRecord(e1, e2, gameMap, gameState));
     } catch (EntityNotFoundException e) {
       LoggingManager.LOGGER.warn("Unable to handle collision event: {}", eventName, e);
       throw new RuntimeException(e);
