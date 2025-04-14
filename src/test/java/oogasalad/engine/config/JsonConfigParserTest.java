@@ -314,4 +314,24 @@ class JsonConfigParserTest {
 
   }
 
+  @Test
+  void loadGameConfig_invalidFile_throwConfigException() throws IOException {
+    // Note, the json file is missing a lot of required fields (has only metadata) so this should throw an error.
+    String json = """
+        {
+               "metadata": {
+                 "gameTitle": "Test Game",
+                 "author": "Alice",
+                 "gameDescription": "A sample test game"
+               }
+        }
+        """;
+    File entityFile = new File(tempDir, "invalid.json");
+    Files.writeString(entityFile.toPath(), json);
+
+    JsonConfigParser parser = new JsonConfigParser();
+    assertThrows(ConfigException.class,
+        () -> parser.loadEntityConfig(entityFile.getAbsolutePath()));
+  }
+
 }
