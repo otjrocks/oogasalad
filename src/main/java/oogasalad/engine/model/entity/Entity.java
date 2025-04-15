@@ -5,7 +5,7 @@ import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
-import oogasalad.player.model.control.ControlStrategy;
+import oogasalad.player.model.control.ControlStrategyInterface;
 import oogasalad.player.model.control.ControlStrategyFactory;
 
 /**
@@ -52,7 +52,7 @@ public class Entity {
    * Handle the update of an Entity.
    */
   public void update() {
-    ControlStrategy strategy = ControlStrategyFactory.createControlStrategy(inputManager,
+    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(inputManager,
         myEntityPlacement, gameMap);
 
     strategy.update(this);

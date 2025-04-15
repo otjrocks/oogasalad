@@ -11,6 +11,7 @@ import oogasalad.engine.model.EntityType;
 import java.util.Map;
 import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.model.controlConfig.ControlConfig;
+import oogasalad.player.model.api.ControlManager;
 
 /**
  * View for editing a selected EntityType.
@@ -42,7 +43,7 @@ public class EntityTypeEditorView {
     typeField = new TextField();
     controlTypeBox = new ComboBox<>();
     // TODO: Remove hardcoded values
-    controlTypeBox.getItems().addAll("Keyboard", "FollowMouse", "TargetEntity", "BFS");
+    controlTypeBox.getItems().addAll(ControlManager.getControlStrategies());
     modeList = new VBox(5);
 
     Button addModeButton = new Button(LanguageManager.getMessage("ADD_MODE"));

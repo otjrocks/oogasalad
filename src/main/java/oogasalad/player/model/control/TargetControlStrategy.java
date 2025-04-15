@@ -5,9 +5,9 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.controlConfig.TargetControlConfig;
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.player.model.control.pathfinding.PathFindingStrategy;
+import oogasalad.player.model.control.pathfinding.PathFindingStrategyInterface;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategyFactory;
-import oogasalad.player.model.control.targetcalculation.TargetStrategy;
+import oogasalad.player.model.control.targetcalculation.TargetStrategyInterface;
 import oogasalad.player.model.control.targetcalculation.TargetStrategyFactory;
 import oogasalad.player.model.exceptions.ControlStrategyException;
 
@@ -28,18 +28,18 @@ import oogasalad.player.model.exceptions.ControlStrategyException;
  * <ul>
  *   <li>{@link GameMap} - Represents the game map the entity is part of.</li>
  *   <li>{@link EntityPlacement} - Contains data related to the entity's placement.</li>
- *   <li>{@link PathFindingStrategy} - Strategy for finding the path to the target.</li>
- *   <li>{@link TargetStrategy} - Strategy for determining the target position.</li>
+ *   <li>{@link PathFindingStrategyInterface} - Strategy for finding the path to the target.</li>
+ *   <li>{@link TargetStrategyInterface} - Strategy for determining the target position.</li>
  * </ul>
  *
  * @author Jessica Chen
  */
-public class TargetControlStrategy implements ControlStrategy {
+public class TargetControlStrategy implements ControlStrategyInterface {
 
   private final GameMap myGameMap;
   private final EntityPlacement myEntityPlacement;
-  private final PathFindingStrategy myPathFindingStrategy;
-  private final TargetStrategy myTargetStrategy;
+  private final PathFindingStrategyInterface myPathFindingStrategy;
+  private final TargetStrategyInterface myTargetStrategy;
 
   /**
    * Create a BFS strategy.
@@ -55,7 +55,7 @@ public class TargetControlStrategy implements ControlStrategy {
     myTargetStrategy = TargetStrategyFactory.createTargetStrategy(entityPlacement, myGameMap);
   }
 
-  private PathFindingStrategy getPathFindingStrategy(ControlConfig config) {
+  private PathFindingStrategyInterface getPathFindingStrategy(ControlConfig config) {
     if (config instanceof TargetControlConfig targetConfig) {
       return PathFindingStrategyFactory.createPathFindingStrategy(
           targetConfig.pathFindingStrategy());
