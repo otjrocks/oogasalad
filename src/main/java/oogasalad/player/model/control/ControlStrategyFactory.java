@@ -74,7 +74,6 @@ public class ControlStrategyFactory {
     }
   }
 
-
   private static ControlStrategy instantiateStrategy(Class<?> strategyClass, GameInputManager input,
       EntityPlacement placement,
       GameMap gameMap, ControlConfig controlConfig)

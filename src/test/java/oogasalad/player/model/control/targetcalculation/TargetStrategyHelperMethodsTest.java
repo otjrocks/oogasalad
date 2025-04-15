@@ -83,39 +83,39 @@ public class TargetStrategyHelperMethodsTest {
     Map<String, Object> config = new HashMap<>();
     config.put("targetType", "Enemy");
 
-    String result = TargetStrategyHelperMethods.validateAndGetTargetType(config, "targetType");
+    String result = TargetStrategyHelperMethods.validateAndGetKeyString(config, "targetType");
     assertEquals("Enemy", result);
   }
 
   @Test
-  void validateAndGetTargetType_missingKey_throwsException() {
+  void validateAndGetTargetType_String_missingKey_throwsException() {
     Map<String, Object> config = new HashMap<>();
 
     Exception exception = assertThrows(TargetStrategyException.class, () ->
-        TargetStrategyHelperMethods.validateAndGetTargetType(config, "targetType")
+        TargetStrategyHelperMethods.validateAndGetKeyString(config, "targetType")
     );
 
     assertEquals("Type targetType is required", exception.getMessage());
   }
 
   @Test
-  void validateAndGetTargetType_nullValue_returnsStringNull() {
+  void validateAndGetTargetType_String_nullValue_returnsStringNull() {
     Map<String, Object> config = new HashMap<>();
     config.put("targetType", null);
 
     Exception exception = assertThrows(TargetStrategyException.class, () ->
-        TargetStrategyHelperMethods.validateAndGetTargetType(config, "targetType")
+        TargetStrategyHelperMethods.validateAndGetKeyString(config, "targetType")
     );
 
     assertEquals("Type targetType is required", exception.getMessage());
   }
 
   @Test
-  void validateAndGetTargetType_nonStringValue_returnsConvertedString() {
+  void validateAndGetTargetType_String_nonStringValue_returnsConvertedString() {
     Map<String, Object> config = new HashMap<>();
     config.put("targetType", 123);  // Integer
 
-    String result = TargetStrategyHelperMethods.validateAndGetTargetType(config, "targetType");
+    String result = TargetStrategyHelperMethods.validateAndGetKeyString(config, "targetType");
     assertEquals("123", result);
   }
 

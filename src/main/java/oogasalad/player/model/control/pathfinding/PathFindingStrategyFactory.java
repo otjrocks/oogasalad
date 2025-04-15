@@ -6,10 +6,9 @@ import java.lang.reflect.Modifier;
 import oogasalad.player.model.exceptions.PathFindingStrategyException;
 
 /**
- * Factory class for creating instances of {@link PathFindingStrategy}.
- * This class dynamically loads and instantiates pathfinding strategy classes
- * based on their names. The strategy classes must be located in the package
- * {@code oogasalad.player.model.control.pathfinding} and follow the naming
+ * Factory class for creating instances of {@link PathFindingStrategy}. This class dynamically loads
+ * and instantiates pathfinding strategy classes based on their names. The strategy classes must be
+ * located in the package {@code oogasalad.player.model.control.pathfinding} and follow the naming
  * convention of appending "PathFindingStrategy" to the strategy name.
  */
 public class PathFindingStrategyFactory {
@@ -52,7 +51,8 @@ public class PathFindingStrategyFactory {
       throw new PathFindingStrategyException("Failed to instantiate strategy", e);
     }
 
-    throw new PathFindingStrategyException("No valid constructor found for: " + strategyClass.getName());
+    throw new PathFindingStrategyException(
+        "No valid constructor found for: " + strategyClass.getName());
   }
 
   private static boolean isPublicConstructor(Constructor<?> constructor) {
