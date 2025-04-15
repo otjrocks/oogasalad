@@ -4,12 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import oogasalad.engine.config.api.ConfigSaver;
 
 /**
- * Implementation of {@link ConfigSaver} that writes configuration data as JSON files
- * using the Jackson library.
+ * Implementation of {@link ConfigSaver} that writes configuration data as JSON files using the
+ * Jackson library.
  * <p>
  * This class supports saving:
  * <ul>
@@ -23,7 +24,7 @@ import oogasalad.engine.config.api.ConfigSaver;
  * Files are saved in a specified directory, and formatted with indentation
  * for readability.
  * </p>
- *
+ * <p>
  * Example usage:
  * <pre>{@code
  * JsonConfigSaver saver = new JsonConfigSaver();
@@ -37,10 +38,12 @@ import oogasalad.engine.config.api.ConfigSaver;
 public class JsonConfigSaver implements ConfigSaver {
 
   private final ObjectMapper mapper;
+  private static final String CORE_FOLDER = "core";
+
 
   /**
-   * Constructs a new JsonConfigSaver using Jackson's {@link ObjectMapper}.
-   * Pretty-printing is enabled by default.
+   * Constructs a new JsonConfigSaver using Jackson's {@link ObjectMapper}. Pretty-printing is
+   * enabled by default.
    */
   public JsonConfigSaver() {
     mapper = new ObjectMapper();
@@ -59,8 +62,8 @@ public class JsonConfigSaver implements ConfigSaver {
   }
 
   /**
-   * Saves a level configuration as a separate file in the given folder.
-   * The filename is based on the level's name.
+   * Saves a level configuration as a separate file in the given folder. The filename is based on
+   * the level's name.
    *
    * @param name   the base filename (without .json)
    * @param config the level's JSON representation
@@ -68,12 +71,12 @@ public class JsonConfigSaver implements ConfigSaver {
    */
   @Override
   public void saveLevel(String name, ObjectNode config, Path folder) throws ConfigException {
-    writeJson(config, folder.resolve(name + ".json"));
+    writeJson(config, folder.resolve(CORE_FOLDER + "/maps/" + name + ".json"));
   }
 
   /**
-   * Saves an entity type configuration JSON in the given folder.
-   * The filename will be the entity's name in lowercase.
+   * Saves an entity type configuration JSON in the given folder. The filename will be the entity's
+   * name in lowercase.
    *
    * @param name   the entity type name
    * @param config the entity config as JSON
@@ -81,7 +84,7 @@ public class JsonConfigSaver implements ConfigSaver {
    */
   @Override
   public void saveEntityType(String name, ObjectNode config, Path folder) throws ConfigException {
-    writeJson(config, folder.resolve(name.toLowerCase() + ".json"));
+    writeJson(config, folder.resolve(CORE_FOLDER + "/entities/" + name + ".json"));
   }
 
   public void saveUpdatedLevelIndex(ConfigModel config, int newLevelIndex, Path folder) throws ConfigException {
@@ -110,6 +113,10 @@ public class JsonConfigSaver implements ConfigSaver {
    */
   private void writeJson(ObjectNode config, Path path) throws ConfigException {
     try {
+      // Ensure parent directories exist
+      if (path.getParent() != null) {
+        Files.createDirectories(path.getParent());
+      }
       mapper.writeValue(path.toFile(), config);
     } catch (IOException e) {
       throw new ConfigException("Failed to write: " + path, e);

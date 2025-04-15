@@ -50,17 +50,33 @@ public class GamePlayerView extends StackPane {
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
     }
+    loadConfig();
+    this.getChildren().add(myGameView);
+  }
 
+  private void loadConfig() {
     LevelController levelController = new LevelController(myMainController, myConfigModel);
     if (levelController.getCurrentLevelMap() != null) {
       myGameView = new GameView(new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
           myConfigModel, levelController.getCurrentLevelIndex());
-      this.getChildren().add(myGameView);
+      myGameView.setRestartAction(this::restartLevel);
     }
   }
 
   /**
-   * Returns privately stored GameView
+   * Restarts the current level by clearing the view and reloading the game configuration.
+   *
+   * <p>This method replaces the current {@code GameView} with a fresh instance,
+   * effectively resetting the level state.</p>
+   */
+  public void restartLevel() {
+    this.getChildren().clear();
+    loadConfig();
+    this.getChildren().add(myGameView);
+  }
+
+  /**
+   * Returns privately stored GameView.
    */
   public GameView getGameView() {
     return myGameView;

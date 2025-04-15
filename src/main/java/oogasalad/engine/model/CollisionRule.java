@@ -1,7 +1,7 @@
 package oogasalad.engine.model;
 
 import java.util.List;
-import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
+import oogasalad.engine.records.config.model.CollisionEvent;
 
 /**
  * Represents a rule for handling a collision between two entity types, each potentially in a
@@ -16,9 +16,9 @@ import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
  */
 public class CollisionRule {
 
-  private String entityTypeA;
+  private String entityA;
   private String modeA;
-  private String entityTypeB;
+  private String entityB;
   private String modeB;
   private List<CollisionEvent> eventsA;
   private List<CollisionEvent> eventsB;
@@ -28,18 +28,18 @@ public class CollisionRule {
    * rule specifies the types and modes of the two entities involved in the collision, as well as
    * the events triggered for each entity upon collision.
    *
-   * @param entityTypeA the type of the first entity involved in the collision
-   * @param modeA       the mode of the first entity during the collision
-   * @param entityTypeB the type of the second entity involved in the collision
-   * @param modeB       the mode of the second entity during the collision
-   * @param eventsA     a list of collision events triggered for the first entity upon collision
-   * @param eventsB     a list of collision events triggered for the second entity upon collision
+   * @param entityA the type of the first entity involved in the collision
+   * @param modeA   the mode of the first entity during the collision
+   * @param entityB the type of the second entity involved in the collision
+   * @param modeB   the mode of the second entity during the collision
+   * @param eventsA a list of collision events triggered for the first entity upon collision
+   * @param eventsB a list of collision events triggered for the second entity upon collision
    */
-  public CollisionRule(String entityTypeA, String modeA, String entityTypeB, String modeB,
+  public CollisionRule(String entityA, String modeA, String entityB, String modeB,
       List<CollisionEvent> eventsA, List<CollisionEvent> eventsB) {
-    this.entityTypeA = entityTypeA;
+    this.entityA = entityA;
     this.modeA = modeA;
-    this.entityTypeB = entityTypeB;
+    this.entityB = entityB;
     this.modeB = modeB;
     this.eventsA = eventsA;
     this.eventsB = eventsB;
@@ -57,17 +57,17 @@ public class CollisionRule {
    *
    * @return the string identifier for entity A
    */
-  public String getEntityTypeA() {
-    return entityTypeA;
+  public String getEntityA() {
+    return entityA;
   }
 
   /**
    * Sets the type of the first entity involved in the collision.
    *
-   * @param entityTypeA the string identifier for entity A
+   * @param entityA the string identifier for entity A
    */
-  public void setEntityTypeA(String entityTypeA) {
-    this.entityTypeA = entityTypeA;
+  public void setEntityA(String entityA) {
+    this.entityA = entityA;
   }
 
   /**
@@ -93,17 +93,17 @@ public class CollisionRule {
    *
    * @return the string identifier for entity B
    */
-  public String getEntityTypeB() {
-    return entityTypeB;
+  public String getEntityB() {
+    return entityB;
   }
 
   /**
    * Sets the type of the second entity involved in the collision.
    *
-   * @param entityTypeB the string identifier for entity B
+   * @param entityB the string identifier for entity B
    */
-  public void setEntityTypeB(String entityTypeB) {
-    this.entityTypeB = entityTypeB;
+  public void setEntityB(String entityB) {
+    this.entityB = entityB;
   }
 
   /**
@@ -162,8 +162,8 @@ public class CollisionRule {
 
   @Override
   public String toString() {
-    return String.format("(%s:%s) ↔ (%s:%s) | A: %s, B: %s",
-        entityTypeA, modeA, entityTypeB, modeB,
+    return String.format("(Type %s: Mode %s) ↔ (Type %s: Mode %s)\nEvents A: %s\nEvents B: %s",
+        entityA, modeA, entityB, modeB,
         String.join(",", eventsA.toString()),
         String.join(",", eventsB.toString()));
   }

@@ -162,3 +162,17 @@ Label, Text {
   -fx-padding: 20px;
 }
 
+.end-button {
+  -fx-font-size: 15px;
+  -fx-padding: 10px 20px;
+  -fx-min-width: 200px;
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 3px;
+  -fx-background-radius: 5px;
+  -fx-border-radius: 5px;
+  -fx-font-family: "Press Start 2P";
+  -fx-translate-y: 80px;
+}
+

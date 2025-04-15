@@ -73,9 +73,26 @@ public class LevelController {
   public void initDefaultLevelIfEmpty() {
     if (model.getLevels().isEmpty()) {
       LevelDraft defaultLevel = new LevelDraft("Level 1", "level1_map.json");
+      defaultLevel.setWidth(15);
+      defaultLevel.setHeight(20);
       model.addLevel(defaultLevel);
-      updateLevelDropdown(); // call this so the dropdown populates
-      switchToLevel(0);      // show the default level
     }
+  }
+
+  /**
+   * Get current level
+   * @return current LevelDraft
+   */
+  public LevelDraft getCurrentLevel() {
+    return model.getCurrentLevel();
+  }
+
+  /**
+   * Update size of canvas for this level
+   * @param width Width of this level
+   * @param height Height of this level
+   */
+  public void updateCanvasSize(int width, int height) {
+    mainController.getCanvasView().resizeGrid(width, height);
   }
 }

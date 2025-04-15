@@ -20,8 +20,8 @@ import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.newconfig.model.Settings;
-import oogasalad.engine.records.newconfig.model.wincondition.SurviveForTimeCondition;
+import oogasalad.engine.records.config.model.Settings;
+import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
 
 /**
  * The central model for the Authoring Environment. Stores global game settings, entity templates,
@@ -355,5 +355,32 @@ public class AuthoringModel {
     }
   }
 
+  /**
+   * Deletes an entity type and all its placements across all levels.
+   *
+   * @param typeName the name of the entity type to delete
+   * @return true if the entity was found and deleted, false otherwise
+   */
+  public boolean deleteEntityType(String typeName) {
+    if (!entityTypeMap.containsKey(typeName)) {
+      return false;
+    }
+
+    // Remove the entity type from the map
+    entityTypeMap.remove(typeName);
+
+    // Remove all placements of this entity type from all levels
+    for (LevelDraft level : levels) {
+      List<EntityPlacement> placementsToRemove = level.getEntityPlacements().stream()
+              .filter(p -> typeName.equals(p.getTypeString()))
+              .toList();
+
+      for (EntityPlacement placement : placementsToRemove) {
+        level.removeEntityPlacement(placement);
+      }
+    }
+
+    return true;
+  }
 
 }

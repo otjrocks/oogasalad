@@ -4,15 +4,16 @@ import java.io.File;
 
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
+import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.authoring.view.EntityPlacementView;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import java.util.*;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
-import oogasalad.engine.records.newconfig.ImageConfig;
+import oogasalad.engine.records.config.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.newconfig.model.EntityProperties;
+import oogasalad.engine.records.config.model.EntityProperties;
 
 /**
  * Coordinates updates between the {@link AuthoringModel} and {@link AuthoringView}. This controller
@@ -105,11 +106,12 @@ public class AuthoringController {
    * @param y        the Y-coordinate of the placement (in pixels)
    */
   public void placeEntity(String typeName, double x, double y) {
-    model.findEntityType(typeName)
-        .map(template -> model.getCurrentLevel().createAndAddEntityPlacement(template, x, y))
-        .ifPresent(placement -> view.getCanvasView().addEntityVisual(placement));
-
+    model.findEntityType(typeName).ifPresent(template -> {
+      EntityPlacement placement = model.getCurrentLevel().createAndAddEntityPlacement(template, x, y);
+      view.getCanvasView().placeEntity(placement);
+    });
   }
+
 
   /**
    * Moves an existing entity placement to a new position on the canvas. Updates both the model and
@@ -234,6 +236,72 @@ public class AuthoringController {
 
     } else {
       placementView.setVisible(false);
+    }
+  }
+
+  /**
+   * Get canvas view
+   * @return canvas view object
+   */
+  public CanvasView getCanvasView() {
+    return view.getCanvasView();
+  }
+
+  /**
+   * Deletes an entity type and all its placements from the model and updates the UI.
+   *
+   * @param typeName the name of the entity type to delete
+   */
+  public void deleteEntityType(String typeName) {
+    List<EntityPlacement> placementsToRemove = getPlacementsOfType(typeName);
+
+    // Remove visual representations
+    removeVisualPlacements(placementsToRemove);
+
+    // Delete from model
+    if (model.deleteEntityType(typeName)) {
+      // Update selected entity references
+      clearSelectionIfDeleted(typeName);
+
+      // Update UI
+      updateEntitySelector();
+    }
+  }
+
+  /**
+   * Gets all entity placements of a specific type in the current level.
+   */
+  private List<EntityPlacement> getPlacementsOfType(String typeName) {
+    return model.getCurrentLevel().getEntityPlacements().stream()
+            .filter(p -> typeName.equals(p.getTypeString()))
+            .toList();
+  }
+
+  /**
+   * Removes visual representations of the given placements from the canvas.
+   */
+  private void removeVisualPlacements(List<EntityPlacement> placements) {
+    CanvasView canvasView = view.getCanvasView();
+    for (EntityPlacement placement : placements) {
+      canvasView.removeEntityVisual(placement);
+    }
+  }
+
+  /**
+   * Clears selection references if they match the deleted entity type.
+   */
+  private void clearSelectionIfDeleted(String typeName) {
+    // Clear entity type editor if needed
+    if (selectedType != null && selectedType.type().equals(typeName)) {
+      selectedType = null;
+      view.getEntityEditorView().setEntityType(null);
+      view.getEntityEditorView().getRoot().setVisible(false);
+    }
+
+    // Clear entity placement view if needed
+    if (selectedPlacement != null && selectedPlacement.getTypeString().equals(typeName)) {
+      selectedPlacement = null;
+      view.getEntityPlacementView().setVisible(false);
     }
   }
 

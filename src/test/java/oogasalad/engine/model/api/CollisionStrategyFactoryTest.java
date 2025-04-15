@@ -7,10 +7,10 @@ import oogasalad.engine.model.strategies.collision.ConsumeStrategy;
 import oogasalad.engine.model.strategies.collision.StopStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateLivesStrategy;
 import oogasalad.engine.model.strategies.collision.UpdateScoreStrategy;
-import oogasalad.engine.records.newconfig.model.collisionevent.ConsumeCollisionEvent;
-import oogasalad.engine.records.newconfig.model.collisionevent.StopCollisionEvent;
-import oogasalad.engine.records.newconfig.model.collisionevent.UpdateLivesCollisionEvent;
-import oogasalad.engine.records.newconfig.model.collisionevent.UpdateScoreCollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.StopCollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.UpdateScoreCollisionEvent;
 import org.junit.jupiter.api.Test;
 
 class CollisionStrategyFactoryTest {

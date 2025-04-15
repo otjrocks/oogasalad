@@ -2,7 +2,7 @@ package oogasalad.player.model.spawnevent;
 
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.records.GameContextRecord;
-import oogasalad.engine.records.newconfig.model.SpawnEvent;
+import oogasalad.engine.records.config.model.SpawnEvent;
 
 /**
  * A spawn event strategy that handles TimeElapsed conditions.

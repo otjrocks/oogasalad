@@ -20,8 +20,7 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.model.strategies.collision.CollisionStrategy;
 
 import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategy;
-import oogasalad.engine.model.strategies.gameoutcome.LivesBasedOutcome;
-import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
+import oogasalad.engine.records.config.model.CollisionEvent;
 import oogasalad.engine.records.CollisionContextRecord;
 import oogasalad.engine.records.GameContextRecord;
 
@@ -129,11 +128,11 @@ public class GameMapController {
   }
 
   private static boolean checkCollisionRuleEntityBMatches(Entity e2, CollisionRule collisionRule) {
-    return collisionRule.getEntityTypeB().equals(e2.getEntityPlacement().getType().type());
+    return collisionRule.getEntityB().equals(e2.getEntityPlacement().getType().type());
   }
 
   private static boolean checkCollisionRuleEntityAMatches(Entity e1, CollisionRule collisionRule) {
-    return collisionRule.getEntityTypeA().equals(e1.getEntityPlacement().getType().type());
+    return collisionRule.getEntityA().equals(e1.getEntityPlacement().getType().type());
   }
 
   private List<List<Entity>> getAllCollisions() {

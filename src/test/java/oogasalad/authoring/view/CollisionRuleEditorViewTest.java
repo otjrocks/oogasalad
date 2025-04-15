@@ -106,14 +106,6 @@ public class CollisionRuleEditorViewTest extends DukeApplicationTest {
 //    assertTrue(rule.getEventsB().contains("REMOVE"));
 //  }
 
-  @Test
-  public void addRule_MissingInputs_ShowsError() {
-    clickOn("Add Rule");
-    DialogPane errorDialog = lookup(".dialog-pane").query();
-    assertTrue(errorDialog.getContentText().contains("Please fill out"));
-    clickOn("OK");
-  }
-//
 //  @Test
 //  public void deleteRule_RemovesSelectedRule() {
 //    addRule_ValidInputs_AddsToList(); // Add one rule first

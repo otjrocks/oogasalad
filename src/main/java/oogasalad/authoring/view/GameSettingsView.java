@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.engine.LanguageManager;
-import oogasalad.engine.records.newconfig.model.Settings;
+import oogasalad.engine.records.config.model.Settings;
 
 
 /**
