@@ -14,7 +14,7 @@ public class NoneControlStrategyTest {
   @BeforeEach
   void setup() {
     entity = mock(Entity.class);
-    strategy = new NoneControlStrategy();
+    strategy = new oogasalad.player.model.control.testdoubles.NoneControlStrategy();
   }
 
   @Test

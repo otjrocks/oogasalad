@@ -164,6 +164,34 @@
       ],
       "eventsB": [
       ]
+    },
+    {
+      "entityA": "pinkghost",
+      "modeA": [
+        1
+      ],
+      "entityB": "wall",
+      "eventsA": [
+        {
+          "type": "Stop"
+        }
+      ],
+      "eventsB": [
+      ]
+    },
+    {
+      "entityA": "orangeghost",
+      "modeA": [
+        1
+      ],
+      "entityB": "wall",
+      "eventsA": [
+        {
+          "type": "Stop"
+        }
+      ],
+      "eventsB": [
+      ]
     }
   ]
 }

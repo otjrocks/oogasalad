@@ -1,8 +1,5 @@
 package oogasalad.player.model.control;
 
-import static org.mockito.Mockito.*;
-
-import java.util.Optional;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
@@ -12,7 +9,11 @@ import oogasalad.engine.model.EntityType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class KeyboardControlStrategyTest {
+import java.util.Optional;
+
+import static org.mockito.Mockito.*;
+
+class KeyboardControlStrategyTest {
 
   private GameInputManager input;
   private GameMap gameMap;
@@ -45,19 +46,19 @@ public class KeyboardControlStrategyTest {
   }
 
   @Test
-  void update_movingDownWthWall_doesNotSetDirectionDown() {
+  void update_movingDownWithWall_doesNotSetDirectionDown() {
     when(input.isMovingDown()).thenReturn(true);
     when(entity.canMove(Direction.D)).thenReturn(true);
 
-    Entity wallEntity = mock(Entity.class);
+    Entity wall = mock(Entity.class);
     EntityPlacement wallPlacement = mock(EntityPlacement.class);
     EntityType wallType = mock(EntityType.class);
 
-    when(wallEntity.getEntityPlacement()).thenReturn(wallPlacement);
+    when(wall.getEntityPlacement()).thenReturn(wallPlacement);
     when(wallPlacement.getType()).thenReturn(wallType);
     when(wallType.type()).thenReturn("Wall");
 
-    when(gameMap.getEntityAt(5, 6)).thenReturn(Optional.of(wallEntity));
+    when(gameMap.getEntityAt(5, 6)).thenReturn(Optional.of(wall));
 
     strategy.update(entity);
 
@@ -76,7 +77,7 @@ public class KeyboardControlStrategyTest {
   }
 
   @Test
-  void update_movingRightCannotMove_doesNotSetDirection() {
+  void update_movingRighCannotMove_doesNotSetDirectionRight() {
     when(input.isMovingRight()).thenReturn(true);
     when(entity.canMove(Direction.R)).thenReturn(false);
 
@@ -86,7 +87,7 @@ public class KeyboardControlStrategyTest {
   }
 
   @Test
-  void update_noInputDoesNotSetAnyDirection() {
+  void update_noInput_doesNotSetAnyDirection() {
     when(input.isMovingUp()).thenReturn(false);
     when(input.isMovingDown()).thenReturn(false);
     when(input.isMovingLeft()).thenReturn(false);
@@ -94,6 +95,6 @@ public class KeyboardControlStrategyTest {
 
     strategy.update(entity);
 
-    verify(entity, never()).setEntityDirection(any(Direction.class));
+    verify(entity, never()).setEntityDirection(any());
   }
 }

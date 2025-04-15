@@ -40,10 +40,11 @@ import oogasalad.engine.model.entity.Entity;
  * @author Jessica Chen
  * @author Chatgpt for javadoc
  */
-public class TargetAheadOfEntityStrategy implements TargetStrategy {
+public class TargetEntityWithTrapStrategy implements TargetStrategy {
 
   private final GameMap myGameMap;
   private final String myTargetType;
+  private final String myTeamEntityType;
   private final int myTilesAhead;
   private final String myType;
 
@@ -58,24 +59,58 @@ public class TargetAheadOfEntityStrategy implements TargetStrategy {
    * @throws IllegalArgumentException if the strategyConfig is invalid or missing required
    *                                  parameters
    */
-  public TargetAheadOfEntityStrategy(GameMap gameMap, Map<String, Object> strategyConfig,
+  public TargetEntityWithTrapStrategy(GameMap gameMap, Map<String, Object> strategyConfig,
       String typeOfCaller) {
     myGameMap = gameMap;
     myTargetType = TargetStrategyHelperMethods.validateAndGetKeyString(strategyConfig,
         "targetType");
     myTilesAhead = TargetStrategyHelperMethods.validateAndGetKeyInt(strategyConfig, "tilesAhead");
+    myTeamEntityType = TargetStrategyHelperMethods.validateAndGetKeyString(strategyConfig,
+        "teamEntityType");
+
     myType = typeOfCaller;
   }
 
   @Override
   public int[] getTargetPosition() {
-    Optional<Entity> entity = TargetStrategyHelperMethods.findFirstEntityOfType(myGameMap,
-        myTargetType);
+    Optional<Entity> entity = findTargetEntity();
+    int[] potentialTarget = calculatePotentialTarget(entity);
 
-    return entity.map(
-        value -> TargetStrategyHelperMethods.calcTargetPosition(myGameMap, value, myType,
-            myTilesAhead)).orElseGet(() -> new int[]{0, 0});
+    Optional<Entity> teammateEntity = findTeammateEntity();
+    return teammateEntity.map(value -> calculateRotatedPosition(potentialTarget, value))
+        .orElse(potentialTarget);
 
   }
+
+  private Optional<Entity> findTargetEntity() {
+    return TargetStrategyHelperMethods.findFirstEntityOfType(myGameMap, myTargetType);
+  }
+
+  private int[] calculatePotentialTarget(Optional<Entity> entity) {
+    return entity.map(value ->
+            TargetStrategyHelperMethods.calcTargetPosition(myGameMap, value, myType, myTilesAhead))
+        .orElseGet(() -> new int[]{0, 0});
+  }
+
+  private Optional<Entity> findTeammateEntity() {
+    return TargetStrategyHelperMethods.findFirstEntityOfType(myGameMap, myTeamEntityType);
+  }
+
+  private int[] calculateRotatedPosition(int[] potentialTarget, Entity teammate) {
+    int[] teammatePos = getEntityPosition(teammate);
+
+    int rotatedX = 2 * potentialTarget[0] - teammatePos[0];
+    int rotatedY = 2 * potentialTarget[1] - teammatePos[1];
+
+    return new int[]{rotatedX, rotatedY};
+  }
+
+  private int[] getEntityPosition(Entity entity) {
+    return new int[]{
+        (int) entity.getEntityPlacement().getX(),
+        (int) entity.getEntityPlacement().getY()
+    };
+  }
+
 
 }
