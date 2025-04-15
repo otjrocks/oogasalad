@@ -15,7 +15,7 @@ import oogasalad.engine.model.controlConfig.ControlConfig;
 /**
  * View for editing a selected EntityType.
  *
- * @author Will He, Ishan Madan
+ * @author Will He, Ishan Madan, Angela Predolac
  */
 public class EntityTypeEditorView {
 
@@ -25,6 +25,7 @@ public class EntityTypeEditorView {
   private final VBox modeList;
   private final AuthoringController controller;
   private EntityType current;
+  private Button deleteButton;
 
   /**
    * Edit parameters for an entityType
@@ -48,11 +49,17 @@ public class EntityTypeEditorView {
     Button addModeButton = new Button(LanguageManager.getMessage("ADD_MODE"));
     addModeButton.setOnAction(e -> openAddModeDialog());
 
+    deleteButton = new Button("Delete Entity Type");
+    deleteButton.getStyleClass().add("delete-button");
+    deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+    deleteButton.setOnAction(e -> deleteEntityType());
+
     root.getChildren().addAll(
         new Label(LanguageManager.getMessage("ENTITY_TYPE")), typeField,
         new Label(LanguageManager.getMessage("CONTROL_STRATEGY")), controlTypeBox,
         new Label(LanguageManager.getMessage("MODES")), modeList,
-        addModeButton
+        addModeButton,
+            new Separator(), deleteButton
     );
   }
 
@@ -155,5 +162,17 @@ public class EntityTypeEditorView {
     alert.showAndWait();
   }
 
+  private void deleteEntityType() {
+    if (current == null) return;
+
+    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+    confirm.setTitle(LanguageManager.getMessage("CONFIRM_DELETE"));
+    confirm.setHeaderText(LanguageManager.getMessage("DELETE_ENTITY_TYPE"));
+    confirm.setContentText(LanguageManager.getMessage("CONFIRM_DELETE_ENTITY_TYPE_MESSAGE"));
+
+    if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+      controller.deleteEntityType(current.type());
+    }
+  }
 
 }

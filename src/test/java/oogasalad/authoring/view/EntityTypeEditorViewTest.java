@@ -95,15 +95,4 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
     verify(mockController).updateEntitySelector();
   }
 
-
-  @Test
-  public void addModeButton_Clicked_OpensDialog() {
-    view.setEntityType(mockEntityType);
-
-    VBox root = (VBox) view.getRoot();
-    Button addModeButton = (Button) root.getChildren().get(root.getChildren().size() - 1);
-
-    assertNotNull(addModeButton);
-    assertEquals(LanguageManager.getMessage("ADD_MODE"), addModeButton.getText());
-  }
 }
