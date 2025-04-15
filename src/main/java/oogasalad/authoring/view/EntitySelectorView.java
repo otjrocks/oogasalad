@@ -13,6 +13,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.engine.LanguageManager;
 import oogasalad.engine.model.EntityType;
 
 import java.util.HashMap;
@@ -49,7 +50,7 @@ public class EntitySelectorView {
     root.setPadding(new Insets(10));
 
     // Button to add new entity types
-    Button addButton = new Button("+ Add Entity Type");
+    Button addButton = new Button(LanguageManager.getMessage("ADD_ENTITY"));
     addButton.setOnAction(e -> controller.createNewEntityType());
 
     // Grid that holds entity tiles

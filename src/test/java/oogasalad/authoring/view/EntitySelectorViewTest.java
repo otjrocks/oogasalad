@@ -6,11 +6,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.model.EntityType;
-import oogasalad.engine.records.newconfig.ImageConfig;
+import oogasalad.engine.model.controlConfig.ControlConfig;
+import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
+import oogasalad.engine.model.controlConfig.NoneControlConfig;
+import oogasalad.engine.records.config.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.newconfig.model.ControlType;
-import oogasalad.engine.records.newconfig.model.ControlTypeConfig;
-import oogasalad.engine.records.newconfig.model.EntityProperties;
+import oogasalad.engine.records.config.model.EntityProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -44,12 +45,11 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
     );
 
     // --- Create EntityProperties ---
-    ControlTypeConfig controlConfig = new ControlTypeConfig("None", 0);
-    ControlType controlType = new ControlType("Keyboard", controlConfig);
+    ControlConfig controlConfig = new KeyboardControlConfig();
 
     EntityProperties props = new EntityProperties(
         "Mode 1",
-        controlType,
+        controlConfig,
         100.0,
         List.of()
     );
@@ -78,11 +78,9 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
     // --- Create EntityType ---
     EntityType entity = new EntityType(
         "Ghost",
-        "Keyboard",
-        "",
+        new KeyboardControlConfig(),
         Map.of("Default", mode),
-        List.of(),
-        Map.of()
+        List.of()
     );
 
     // --- Run and verify ---
@@ -97,10 +95,14 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
 
   @Test
   public void selectEntityType_ClickTile_CallsSelectEntityType() {
-    EntityType entity = new EntityType("Pacman", "Keyboard", "", Map.of("Default", mode), List.of(), Map.of());
-    runAsJFXAction(() -> view.updateEntities(List.of(entity)));
+    EntityType entity = new EntityType(
+        "Pacman",
+        new NoneControlConfig(),
+        Map.of("Default", mode),
+        List.of()
+    );    runAsJFXAction(() -> view.updateEntities(List.of(entity)));
 
-    VBox tile = (VBox) ((FlowPane) lookup(".flow-pane").query()).getChildren().get(0);
+    VBox tile = (VBox) ((FlowPane) lookup(".flow-pane").query()).getChildren().getFirst();
     runAsJFXAction(() -> clickOn(tile));
 
     verify(mockController).selectEntityType("Pacman");
@@ -108,11 +110,16 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
 
   @Test
   public void highlightEntityTile_HighlightsCorrectTile() {
-    EntityType entity = new EntityType("Wall", "None", "", Map.of("Default", mode), List.of(), Map.of());
+    EntityType entity = new EntityType(
+        "Wall",
+        new NoneControlConfig(),
+        Map.of("Default", mode),
+        List.of()
+    );
     runAsJFXAction(() -> view.updateEntities(List.of(entity)));
     runAsJFXAction(() -> view.highlightEntityTile("Wall"));
 
-    VBox tile = (VBox) ((FlowPane) lookup(".flow-pane").query()).getChildren().get(0);
+    VBox tile = (VBox) ((FlowPane) lookup(".flow-pane").query()).getChildren().getFirst();
     assertTrue(tile.getStyleClass().contains("selected-tile"));
   }
 }

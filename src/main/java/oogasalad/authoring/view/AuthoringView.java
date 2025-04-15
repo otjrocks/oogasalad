@@ -16,6 +16,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.authoring.view.canvas.CanvasView;
+import oogasalad.engine.LanguageManager;
 import oogasalad.engine.config.ConfigException;
 
 /**
@@ -35,6 +37,7 @@ public class AuthoringView {
   private EntityTypeEditorView entityTypeEditorView;
   private AuthoringController controller;
   private LevelSelectorView levelSelectorView;
+  private LevelSettingsView levelSettingsView;
   private GameSettingsView gameSettingsView;
   private CollisionRuleEditorView collisionEditorView;
   private EntityPlacementView entityPlacementView;
@@ -115,13 +118,15 @@ public class AuthoringView {
     setupSubViews(); // Inject controller into subviews
   }
 
-    /**
-     * Initializes the main subviews and arranges them according to the specified layout.
-     * Called internally after setting the controller.
-     */
-    private void setupSubViews() {
-        initializeViews();
-        controller.getLevelController().initDefaultLevelIfEmpty();
+  /**
+   * Initializes the main subviews and arranges them according to the specified layout. Called
+   * internally after setting the controller.
+   */
+  private void setupSubViews() {
+    controller.getLevelController().initDefaultLevelIfEmpty();
+    initializeViews();
+    controller.getLevelController().updateLevelDropdown();
+    controller.getLevelController().switchToLevel(0);
 
         MenuBar menuBar = createMenuBar();
         BorderPane mainContent = createMainContent();
@@ -151,24 +156,25 @@ public class AuthoringView {
         entityPlacementView = new EntityPlacementView(controller);
         entityPlacementView.setVisible(false);
 
-        levelSelectorView = new LevelSelectorView(controller.getLevelController());
-        gameSettingsView = new GameSettingsView(controller);
-    }
+    levelSelectorView = new LevelSelectorView(controller.getLevelController());
+    levelSettingsView = new LevelSettingsView(controller.getLevelController());
+    gameSettingsView = new GameSettingsView(controller);
+  }
 
-    /**
-     * Creates the menu bar with file menu.
-     *
-     * @return The configured MenuBar
-     */
-    private MenuBar createMenuBar() {
-        MenuBar menuBar = new MenuBar();
-        Menu fileMenu = new Menu("File");
-        MenuItem saveItem = new MenuItem("Save Game");
-        saveItem.setOnAction(e -> openSaveDialog());
-        fileMenu.getItems().add(saveItem);
-        menuBar.getMenus().add(fileMenu);
-        return menuBar;
-    }
+  /**
+   * Creates the menu bar with file menu.
+   *
+   * @return The configured MenuBar
+   */
+  private MenuBar createMenuBar() {
+    MenuBar menuBar = new MenuBar();
+    Menu fileMenu = new Menu(LanguageManager.getMessage("FILE"));
+    MenuItem saveItem = new MenuItem(LanguageManager.getMessage("SAVE_GAME"));
+    saveItem.setOnAction(e -> openSaveDialog());
+    fileMenu.getItems().add(saveItem);
+    menuBar.getMenus().add(fileMenu);
+    return menuBar;
+  }
 
     /**
      * Creates the main content area with all panels.
@@ -178,8 +184,10 @@ public class AuthoringView {
     private BorderPane createMainContent() {
         BorderPane mainContent = new BorderPane();
 
-        mainContent.setLeft(levelSelectorView.getRoot());
-        mainContent.setCenter(canvasView.getNode());
+    VBox left = new VBox(10);
+    left.getChildren().addAll(levelSelectorView.getRoot(), levelSettingsView.getNode());
+    mainContent.setLeft(left);
+    mainContent.setCenter(canvasView.getNode());
 
         AnchorPane editorContainer = createEditorContainer();
 
@@ -293,9 +301,11 @@ public class AuthoringView {
       Path savePath = selectedDirectory.toPath().resolve("output");
       try {
         controller.getModel().saveGame(savePath);
-        showAlert("Save Successful", "Successfully saved json to output folder", AlertType.CONFIRMATION);
+        showAlert(LanguageManager.getMessage("SAVED"),
+            LanguageManager.getMessage("SUCCESS_SAVE_JSON"), AlertType.CONFIRMATION);
       } catch (ConfigException e) {
-        showAlert("Error saving", e.getMessage(), Alert.AlertType.ERROR);
+        showAlert(LanguageManager.getMessage("ERROR_SAVING"), e.getMessage(),
+            Alert.AlertType.ERROR);
       }
     }
   }

@@ -5,7 +5,8 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameMapImpl;
 import oogasalad.engine.model.GameStateImpl;
 import oogasalad.engine.records.GameContextRecord;
-import oogasalad.engine.records.newconfig.model.ParsedLevel;
+import oogasalad.engine.records.config.model.ParsedLevel;
+import oogasalad.engine.records.config.model.wincondition.EntityBasedCondition;
 import oogasalad.player.view.GameMapView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,8 +29,13 @@ class GameLoopControllerTest extends DukeApplicationTest {
   @BeforeEach
   void setUp() {
     gameMap = Mockito.spy(new GameMapImpl(10, 10));
-    GameContextRecord gameContext = new GameContextRecord(gameMap, new GameStateImpl(5));
-    gameMapView = Mockito.spy(new GameMapView(gameContext, Mockito.mock(ConfigModel.class)));
+    GameStateImpl gameState = new GameStateImpl(5);
+    GameContextRecord gameContext = new GameContextRecord(gameMap, gameState);
+
+    ConfigModel mockConfigModel = mock(ConfigModel.class);
+    when(mockConfigModel.winCondition()).thenReturn(new EntityBasedCondition("dot"));
+
+    gameMapView = Mockito.spy(new GameMapView(gameContext, mockConfigModel));
     gameLoopController = Mockito.spy(new GameLoopController(gameContext, gameMapView, mock(ParsedLevel.class)));
   }
 

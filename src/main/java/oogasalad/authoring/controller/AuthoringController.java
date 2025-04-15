@@ -4,21 +4,21 @@ import java.io.File;
 
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
+import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.authoring.view.EntityPlacementView;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import java.util.*;
-import oogasalad.engine.records.newconfig.ImageConfig;
+import oogasalad.engine.model.controlConfig.ControlConfig;
+import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
+import oogasalad.engine.records.config.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.newconfig.model.ControlType;
-import oogasalad.engine.records.newconfig.model.ControlTypeConfig;
-import oogasalad.engine.records.newconfig.model.EntityProperties;
+import oogasalad.engine.records.config.model.EntityProperties;
 
 /**
- * Coordinates updates between the {@link AuthoringModel} and {@link AuthoringView}.
- * This controller responds to user actions in the authoring interface,
- * managing entity templates and placements on the canvas.
- * Responsibilities include:
+ * Coordinates updates between the {@link AuthoringModel} and {@link AuthoringView}. This controller
+ * responds to user actions in the authoring interface, managing entity templates and placements on
+ * the canvas. Responsibilities include:
  * <ul>
  *   <li>Creating and registering new entity types</li>
  *   <li>Responding to entity selection and placement actions</li>
@@ -61,7 +61,10 @@ public class AuthoringController {
   public void createNewEntityType() {
 
     String newTypeName = "NewEntity" + UUID.randomUUID().toString().substring(0, 4);
-    EntityType newType = new EntityType(newTypeName, "", "", defaultModeMap(), null, null);
+
+    // TODO: Update to be NoneControlConfig
+    EntityType newType = new EntityType(newTypeName, new KeyboardControlConfig(), defaultModeMap(),
+        null);
     // TODO: update this to include all required fields such as control type and effect type instead of providing null.
     model.addEntityType(newType);
     updateEntitySelector();
@@ -103,11 +106,12 @@ public class AuthoringController {
    * @param y        the Y-coordinate of the placement (in pixels)
    */
   public void placeEntity(String typeName, double x, double y) {
-    model.findEntityType(typeName)
-        .map(template -> model.getCurrentLevel().createAndAddEntityPlacement(template, x, y))
-        .ifPresent(placement -> view.getCanvasView().addEntityVisual(placement));
-
+    model.findEntityType(typeName).ifPresent(template -> {
+      EntityPlacement placement = model.getCurrentLevel().createAndAddEntityPlacement(template, x, y);
+      view.getCanvasView().placeEntity(placement);
+    });
   }
+
 
   /**
    * Moves an existing entity placement to a new position on the canvas. Updates both the model and
@@ -156,7 +160,7 @@ public class AuthoringController {
 
 
   private Map<String, ModeConfig> defaultModeMap() {
-    // Default image config (you can change dimensions and animation settings)
+    // Default image file
     File imageFile = new File("src/main/resources/assets/images/pacman.png");
     String imagePath = imageFile.toURI().toString();
 
@@ -168,29 +172,21 @@ public class AuthoringController {
         1.0
     );
 
-    // Default control configuration
-    return getStringModeConfigMap(
-        imageConfig);
+    return Map.of(DEFAULT_MODE, createDefaultMode(imageConfig));
   }
 
-  private static Map<String, ModeConfig> getStringModeConfigMap(ImageConfig imageConfig) {
-    ControlTypeConfig controlTypeConfig = new ControlTypeConfig("None", 0);
-    ControlType controlType = new ControlType("Keyboard", controlTypeConfig);
+  private static ModeConfig createDefaultMode(ImageConfig imageConfig) {
+    // TODO: Switch to NoneControlConfig
+    ControlConfig defaultControlConfig = new KeyboardControlConfig();
 
-    // Default entity properties
     EntityProperties entityProperties = new EntityProperties(
         DEFAULT_MODE,
-        controlType,
+        defaultControlConfig,
         100.0,
-        List.of()  // No blocked entities
+        List.of() // No blocks
     );
 
-    // Final default mode config
-    ModeConfig defaultMode = new ModeConfig(DEFAULT_MODE, entityProperties, imageConfig);
-
-    Map<String, ModeConfig> map = new HashMap<>();
-    map.put(DEFAULT_MODE, defaultMode);
-    return map;
+    return new ModeConfig(DEFAULT_MODE, entityProperties, imageConfig);
   }
 
 
@@ -243,4 +239,11 @@ public class AuthoringController {
     }
   }
 
+  /**
+   * Get canvas view
+   * @return canvas view object
+   */
+  public CanvasView getCanvasView() {
+    return view.getCanvasView();
+  }
 }

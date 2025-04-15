@@ -1,5 +1,9 @@
 package oogasalad.engine.model;
 
+import oogasalad.engine.records.config.model.CollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.UpdateScoreCollisionEvent;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -14,8 +18,8 @@ class CollisionRuleTest {
   @Test
   void setEntityTypeA_validValue_returnsCorrectly() {
     CollisionRule rule = new CollisionRule();
-    rule.setEntityTypeA("Pacman");
-    assertEquals("Pacman", rule.getEntityTypeA());
+    rule.setEntityA("Pacman");
+    assertEquals("Pacman", rule.getEntityA());
   }
 
   @Test
@@ -28,8 +32,8 @@ class CollisionRuleTest {
   @Test
   void setEntityTypeB_validValue_returnsCorrectly() {
     CollisionRule rule = new CollisionRule();
-    rule.setEntityTypeB("Ghost");
-    assertEquals("Ghost", rule.getEntityTypeB());
+    rule.setEntityB("Ghost");
+    assertEquals("Ghost", rule.getEntityB());
   }
 
   @Test
@@ -42,7 +46,8 @@ class CollisionRuleTest {
   @Test
   void setEventsA_validList_returnsCorrectly() {
     CollisionRule rule = new CollisionRule();
-    List<String> events = List.of("TriggerEffectOnA", "ChangeMode(PoweredUp)");
+    List<CollisionEvent> events = List.of(new ConsumeCollisionEvent(),
+        new UpdateLivesCollisionEvent(5));
     rule.setEventsA(events);
     assertEquals(events, rule.getEventsA());
   }
@@ -50,7 +55,7 @@ class CollisionRuleTest {
   @Test
   void setEventsB_validList_returnsCorrectly() {
     CollisionRule rule = new CollisionRule();
-    List<String> events = List.of("TriggerEffectOnB");
+    List<CollisionEvent> events = List.of(new UpdateLivesCollisionEvent(1));
     rule.setEventsB(events);
     assertEquals(events, rule.getEventsB());
   }
@@ -58,14 +63,17 @@ class CollisionRuleTest {
   @Test
   void toString_validValues_returnsFormattedString() {
     CollisionRule rule = new CollisionRule();
-    rule.setEntityTypeA("Pacman");
+    rule.setEntityA("Pacman");
     rule.setModeA("PoweredUp");
-    rule.setEntityTypeB("Ghost");
+    rule.setEntityB("Ghost");
     rule.setModeB("Default");
-    rule.setEventsA(List.of("EatGhost"));
-    rule.setEventsB(List.of("Die"));
+    rule.setEventsA(List.of(new UpdateScoreCollisionEvent(5)));
+    rule.setEventsB(List.of(new ConsumeCollisionEvent()));
 
-    String expected = "(Pacman:PoweredUp) ↔ (Ghost:Default) | A: EatGhost, B: Die";
+    String expected = """
+        (Type Pacman: Mode PoweredUp) ↔ (Type Ghost: Mode Default)
+        Events A: [UpdateScoreCollisionEvent[amount=5]]
+        Events B: [ConsumeCollisionEvent[]]""";
     assertEquals(expected, rule.toString());
   }
 

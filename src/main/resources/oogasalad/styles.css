@@ -84,7 +84,7 @@ Label, Text {
 }
 
 .hud-container {
-  -fx-padding: 10px 0 40px 0;
+  -fx-padding: 10px 0 20px 0;
   -fx-background-color: -fx-primary;
   -fx-alignment: center;
   -fx-spacing: 20px;

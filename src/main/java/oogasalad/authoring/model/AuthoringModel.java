@@ -20,7 +20,8 @@ import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.newconfig.model.Settings;
+import oogasalad.engine.records.config.model.Settings;
+import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
 
 /**
  * The central model for the Authoring Environment. Stores global game settings, entity templates,
@@ -51,7 +52,7 @@ public class AuthoringModel {
     this.levels = new ArrayList<>();
     this.collisionRules = new ArrayList<>();
     // TODO: add score strategy and win condition
-    this.defaultSettings = new Settings(1.0, 3, 0, "", "");
+    this.defaultSettings = new Settings(1.0, 3, 0, "", new SurviveForTimeCondition(5));
   }
 
   /**

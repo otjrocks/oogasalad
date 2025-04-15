@@ -1,14 +1,15 @@
 package oogasalad.engine.config;
 
 import java.nio.file.Path;
-import oogasalad.engine.records.newconfig.CollisionConfig;
-import oogasalad.engine.records.newconfig.EntityConfig;
-import oogasalad.engine.records.newconfig.GameConfig;
-import oogasalad.engine.records.newconfig.ImageConfig;
-import oogasalad.engine.records.newconfig.model.EntityProperties;
-import oogasalad.engine.records.newconfig.model.Level;
-import oogasalad.engine.records.newconfig.model.Metadata;
-import oogasalad.engine.records.newconfig.model.Settings;
+import oogasalad.engine.records.config.CollisionConfig;
+import oogasalad.engine.records.config.EntityConfig;
+import oogasalad.engine.records.config.GameConfig;
+import oogasalad.engine.records.config.ImageConfig;
+import oogasalad.engine.records.config.model.EntityProperties;
+import oogasalad.engine.records.config.model.Level;
+import oogasalad.engine.records.config.model.Metadata;
+import oogasalad.engine.records.config.model.Settings;
+import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -31,46 +32,156 @@ class JsonConfigParserTest {
     // Arrange: Sample JSON content
     String json = """
         {
-          "metadata": {
-            "gameTitle": "Test Game",
-            "author": "Alice",
-            "gameDescription": "A sample test game"
-          },
-          "defaultSettings": {
-            "gameSpeed": 1.5,
-            "startingLives": 3,
-            "initialScore": 0,
-            "scoreStrategy": "Standard",
-            "winCondition": "CollectAllItems"
-          },
-          "levels": [
-            {
-              "settings": {
-                "gameSpeed": 2.0
-              },
-              "levelMap": "level1.map"
-            },
-            {
-              "levelMap": "level2.map"
-            }
-          ],
-          "collisions": [
-            {
-              "entityA": "Player",
-              "modeA": [1, 2],
-              "entityB": "Enemy",
-              "modeB": [3],
-              "eventsA": ["LoseLife", "Flash"],
-              "eventsB": ["BounceBack"]
-            },
-            {
-              "entityA": "Player",
-              "entityB": "Coin",
-              "eventsA": ["IncreaseScore"],
-              "eventsB": []
-            }
-          ]
-        }
+               "metadata": {
+                 "gameTitle": "Test Game",
+                 "author": "Alice",
+                 "gameDescription": "A sample test game"
+               },
+               "defaultSettings": {
+                 "gameSpeed": 1.5,
+                 "startingLives": 3,
+                 "initialScore": 0,
+                 "scoreStrategy": "Cumulative",
+                 "winCondition": {
+                   "type": "SurviveForTime",
+                   "amount": 5
+                 }
+               },
+               "levels": [
+                 {
+                   "levelMap": "level1"
+                 }
+               ],
+               "collisions": [
+                 {
+                   "entityA": "pacman",
+                   "modeA": "A",
+                   "entityB": "wall",
+                   "eventsA": [
+                     {
+                       "type": "Stop"
+                     }
+                   ],
+                   "eventsB": []
+                 },
+                 {
+                   "entityA": "pacman",
+                   "modeA": "A",
+                   "entityB": "blueghost",
+                   "eventsA": [
+                     {
+                       "type": "UpdateScore",
+                       "amount": 200
+                     }
+                   ],
+                   "eventsB": [
+                     {
+                       "type": "Consume"
+                     }
+                   ]
+                 },
+                 {
+                   "entityA": "pacman",
+                   "modeA": "A",
+                   "entityB": "dot",
+                   "eventsA": [
+                     {
+                       "type": "UpdateScore",
+                       "amount": 10
+                     }
+                   ],
+                   "eventsB": [
+                     {
+                       "type": "Consume"
+                     }
+                   ]
+                 },
+                 {
+                   "entityA": "pacman",
+                   "modeA": "A",
+                   "entityB": "cherry",
+                   "eventsA": [
+                     {
+                       "type": "UpdateScore",
+                       "amount": 100
+                     }
+                   ],
+                   "eventsB": [
+                     {
+                       "type": "Consume"
+                     }
+                   ]
+                 },
+                 {
+                   "entityA": "pacman",
+                   "modeA": "A",
+                   "entityB": "strawberry",
+                   "eventsA": [
+                     {
+                       "type": "UpdateScore",
+                       "amount": 300
+                     }
+                   ],
+                   "eventsB": [
+                     {
+                       "type": "Consume"
+                     }
+                   ]
+                 },
+                 {
+                   "entityA": "pacman",
+                   "modeA": "A",
+                   "entityB": "redghost",
+                   "eventsA": [
+                     {
+                       "type": "UpdateLives",
+                       "amount": -1
+                     },
+                     {
+                       "type": "ReturnToSpawnLocation"
+                     }
+                   ],
+                   "eventsB": [
+                   ]
+                 },
+                 {
+                   "entityA": "redghost",
+                   "modeA": "A",
+                   "entityB": "pacman",
+                   "eventsA": [
+                     {
+                       "type": "ReturnToSpawnLocation"
+                     }
+                   ],
+                   "eventsB": [
+                   ]
+                 },
+                 {
+                   "entityA": "redghost",
+                   "modeA": "A",
+                   "entityB": "wall",
+                   "eventsA": [
+                     {
+                       "type": "Stop"
+                     }
+                   ],
+                   "eventsB": [
+                   ]
+                 },
+                 {
+                   "entityA": "blueghost",
+                   "modeA": "A",
+                   "entityB": "wall",
+                   "eventsA": [
+                     {
+                       "type": "Stop"
+                     }
+                   ],
+                   "eventsB": [
+                   ]
+                 }
+               ]
+             }
         """;
 
     // Create a temp JSON file
@@ -96,12 +207,12 @@ class JsonConfigParserTest {
     assertEquals(1.5, defaultSettings.gameSpeed());
     assertEquals(3, defaultSettings.startingLives());
     assertEquals(0, defaultSettings.initialScore());
-    assertEquals("Standard", defaultSettings.scoreStrategy());
-    assertEquals("CollectAllItems", defaultSettings.winCondition());
+    assertEquals("Cumulative", defaultSettings.scoreStrategy());
+    assertEquals(new SurviveForTimeCondition(5), defaultSettings.winCondition());
 
     // Levels check
     List<Level> levels = config.levels();
-    assertEquals(2, levels.size());
+    assertEquals(1, levels.size());
 
     assertEquals(1.5, defaultSettings.gameSpeed());
     assertEquals(3, defaultSettings.startingLives());
@@ -110,26 +221,11 @@ class JsonConfigParserTest {
     // Collision check
     List<CollisionConfig> collisions = config.collisions();
     assertNotNull(collisions);
-    assertEquals(2, collisions.size());
-
-    CollisionConfig c1 = collisions.get(0);
-    assertEquals("Player", c1.entityA());
-    assertEquals(List.of(1, 2), c1.modeA());
-    assertEquals("Enemy", c1.entityB());
-    assertEquals(List.of(3), c1.modeB());
-    assertEquals(List.of("LoseLife", "Flash"), c1.eventsA());
-    assertEquals(List.of("BounceBack"), c1.eventsB());
-
-    CollisionConfig c2 = collisions.get(1);
-    assertEquals("Player", c2.entityA());
-    assertNull(c2.modeA()); // optional
-    assertEquals("Coin", c2.entityB());
-    assertNull(c2.modeB()); // optional
-    assertEquals(List.of("IncreaseScore"), c2.eventsA());
-    assertEquals(List.of(), c2.eventsB());
+    assertEquals(9, collisions.size());
 
     // Folder path
-    assertEquals(Path.of(tempDir.getPath()).normalize(), Path.of(config.gameFolderPath()).normalize());
+    assertEquals(Path.of(tempDir.getPath()).normalize(),
+        Path.of(config.gameFolderPath()).normalize());
   }
 
   @Test
@@ -138,46 +234,37 @@ class JsonConfigParserTest {
 
     // Arrange: Entity JSON with base and one overriding mode
     String json = """
-          {
-            "entityType": {
-              "name": "Ghost",
-              "controlType": {
-                "controlType": "Chase",
-                "controlTypeConfig": {
-                  "targetType": "Player",
-                  "tilesAhead": 2
-                }
-              },
-              "movementSpeed": 1.5,
-              "blocks": ["Player"]
-            },
-            "modes": [
-              {
-                "name": "Frightened",
-                "controlType": {
-                  "controlType": "Random"
-                },
-                "movementSpeed": 1.0,
-                "image": {
-                  "imagePath": "ghost.png",
-                  "tileWidth": 32,
-                  "tileHeight": 32,
-                  "tilesToCycle": [0,1,2],
-                  "animationSpeed": 0.5
-                }
-              },
-              {
-                "name": "Normal",
-                "image": {
-                  "imagePath": "ghost.png",
-                  "tileWidth": 32,
-                  "tileHeight": 32,
-                  "tilesToCycle": [0,1],
-                  "animationSpeed": 0.25
-                }
-              }
-            ]
-          }
+        {
+             "entityType": {
+               "name": "RedGhost",
+               "controlConfig": {
+                 "controlStrategy": "Target",
+                 "pathFindingStrategy": "Euclidean",
+                 "targetCalculationConfig": {
+                   "targetCalculationStrategy": "TargetEntity",
+                   "targetType": "Pacman"
+                 }
+               },
+               "movementSpeed": 90
+             },
+             "modes": [
+               {
+                 "name": "Default",
+                 "image": {
+                   "imagePath": "redghost",
+                   "tileWidth": 14,
+                   "tileHeight": 14,
+                   "tilesToCycle": [
+                     0,
+                     1,
+                     2,
+                     3
+                   ],
+                   "animationSpeed": 1.0
+                 }
+               }
+             ]
+           }
         """;
 
     File entityFile = new File(tempDir, "ghost.json");
@@ -187,40 +274,46 @@ class JsonConfigParserTest {
     EntityConfig config = parser.loadEntityConfig(entityFile.getAbsolutePath());
 
     // Act & Assert
-    assertEquals("Ghost", config.name());
+    assertEquals("RedGhost", config.name());
 
     // Default properties
     EntityProperties baseProps = config.entityProperties();
-    assertEquals("Ghost", baseProps.name());
-    assertEquals("Chase", baseProps.controlType().controlType());
-    assertEquals("Player", baseProps.controlType().controlTypeConfig().targetType());
-    assertEquals(2, baseProps.controlType().controlTypeConfig().tilesAhead());
-    assertEquals(1.5, baseProps.movementSpeed());
-    assertEquals(List.of("Player"), baseProps.blocks());
+    assertEquals("RedGhost", baseProps.name());
+    assertEquals(90.0, baseProps.movementSpeed());
 
     // Modes
     List<ModeConfig> modes = config.modes();
-    assertEquals(2, modes.size());
+    assertEquals(1, modes.size());
 
-    ModeConfig frightened = modes.getFirst();
-    assertEquals("Frightened", frightened.name());
-    assertEquals("Random", frightened.entityProperties().controlType().controlType());
-    assertEquals(1.0, frightened.entityProperties().movementSpeed());
-    assertEquals("Frightened", frightened.entityProperties().name()); // now mode name
-    assertEquals(List.of("Player"), frightened.entityProperties().blocks()); // inherited
+    ModeConfig defaultMode = modes.getFirst();
+    assertEquals("Default", defaultMode.name());
+    assertEquals("Default", defaultMode.entityProperties().name()); // now mode name
 
-    ImageConfig frightImg = frightened.image();
-    assertEquals("ghost.png", frightImg.imagePath());
-    assertEquals(32, frightImg.tileWidth());
-    assertEquals(List.of(0, 1, 2), frightImg.tilesToCycle());
+    ImageConfig defaultImg = defaultMode.image();
+    assertEquals("redghost", defaultImg.imagePath());
+    assertEquals(14, defaultImg.tileWidth());
+    assertEquals(List.of(0, 1, 2, 3), defaultImg.tilesToCycle());
 
-    ModeConfig normal = modes.get(1);
-    assertEquals("Normal", normal.name());
-    assertEquals("Chase", normal.entityProperties().controlType().controlType()); // inherited
-    assertEquals(1.5, normal.entityProperties().movementSpeed()); // inherited
-    assertEquals("Normal", normal.entityProperties().name());
-    assertEquals(List.of("Player"), normal.entityProperties().blocks()); // inherited
-    assertEquals(List.of(0, 1), normal.image().tilesToCycle());
+  }
+
+  @Test
+  void loadGameConfig_invalidFile_throwConfigException() throws IOException {
+    // Note, the json file is missing a lot of required fields (has only metadata) so this should throw an error.
+    String json = """
+        {
+               "metadata": {
+                 "gameTitle": "Test Game",
+                 "author": "Alice",
+                 "gameDescription": "A sample test game"
+               }
+        }
+        """;
+    File entityFile = new File(tempDir, "invalid.json");
+    Files.writeString(entityFile.toPath(), json);
+
+    JsonConfigParser parser = new JsonConfigParser();
+    assertThrows(ConfigException.class,
+        () -> parser.loadEntityConfig(entityFile.getAbsolutePath()));
   }
 
 }

@@ -1,23 +1,26 @@
 package oogasalad.engine.config;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.*;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
+import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 
 import java.util.*;
+import oogasalad.engine.model.controlConfig.ControlConfig;
+import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
+import oogasalad.engine.records.config.model.CollisionEvent;
 
 /**
- * Utility class for converting the internal AuthoringModel data structures
- * into serializable JSON configuration files using Jackson's ObjectMapper.
- *
- * This builder supports generating:
- * - The top-level game configuration file (gameConfig.json)
- * - Per-level layout files (levelX.json)
- * - Per-entity configuration files (e.g., blueghost.json)
- *
+ * Utility class for converting the internal AuthoringModel data structures into serializable JSON
+ * configuration files using Jackson's ObjectMapper.
+ * <p>
+ * This builder supports generating: - The top-level game configuration file (gameConfig.json) -
+ * Per-level layout files (levelX.json) - Per-entity configuration files (e.g., blueghost.json)
+ * <p>
  * All methods assume that the structure of the AuthoringModel is valid and complete.
  *
  * @author Will He
@@ -25,8 +28,8 @@ import java.util.*;
 public class JsonConfigBuilder {
 
   /**
-   * Builds the top-level game configuration (gameConfig.json) from the model.
-   * Includes metadata, global settings, and references to level config files.
+   * Builds the top-level game configuration (gameConfig.json) from the model. Includes metadata,
+   * global settings, and references to level config files.
    *
    * @param model  the authoring model representing the game's data
    * @param mapper the Jackson ObjectMapper instance
@@ -47,8 +50,14 @@ public class JsonConfigBuilder {
     defaultSettings.put("startingLives", model.getDefaultSettings().startingLives());
     defaultSettings.put("initialScore", model.getDefaultSettings().initialScore());
     // TODO: add these to settings
-    // defaultSettings.put("scoreStrategy", model.getDefaultSettings().getScoresStrategy());
-    // defaultSettings.put("winCondition", model.getDefaultSettings().getWinCondition());
+    defaultSettings.put("scoreStrategy", "Cumulative"); // TODO: remove hardcoded value
+
+    // === win conditions ===
+    // TODO: remove hard coded win condition and replace with settings from authoring environment
+    ObjectNode winCondition = mapper.createObjectNode();
+    winCondition.put("type", "EntityBased");
+    winCondition.put("entityType", "dot");
+    defaultSettings.set("winCondition", winCondition);
 
     // === levels ===
     ArrayNode levels = root.putArray("levels");
@@ -58,19 +67,25 @@ public class JsonConfigBuilder {
       levels.add(levelRef);
     }
 
+    // === collisions ===
+    ArrayNode collisionRules = root.putArray("collisions");
+    for (CollisionRule collisionRule : model.getCollisionRules()) {
+      collisionRules.add(mapper.valueToTree(collisionRule));
+    }
     return root;
   }
 
   /**
-   * Builds a JSON representation for a level configuration.
-   * Includes entity ID mappings, level settings, and tile layout strings.
+   * Builds a JSON representation for a level configuration. Includes entity ID mappings, level
+   * settings, and tile layout strings.
    *
    * @param draft         the level draft object containing entity placements and size
    * @param entityToIdMap mapping of entity names to integer IDs
    * @param mapper        the Jackson ObjectMapper instance
    * @return a JSON ObjectNode representing the level configuration
    */
-  public ObjectNode buildLevelConfig(LevelDraft draft, Map<String, Integer> entityToIdMap, ObjectMapper mapper) {
+  public ObjectNode buildLevelConfig(LevelDraft draft, Map<String, Integer> entityToIdMap,
+      ObjectMapper mapper) {
     ObjectNode root = mapper.createObjectNode();
 
     ArrayNode mappings = root.putArray("entityMappings");
@@ -81,7 +96,7 @@ public class JsonConfigBuilder {
       mappings.add(entry);
     });
 
-    ObjectNode settings = root.putObject("settings");
+    ObjectNode settings = root.putObject("mapInfo");
     settings.put("width", draft.getWidth());
     settings.put("height", draft.getHeight());
     settings.put("edgePolicy", draft.getEdgePolicy());
@@ -109,6 +124,14 @@ public class JsonConfigBuilder {
       layout.add(String.join(" ", rowTiles));
     }
 
+    // === spawn events ===
+    ArrayNode spawnEvents = root.putArray("spawnEvents");
+    // TODO: Implement spawn events
+
+    // === mode change events ===
+    ArrayNode modeChangeEvents = root.putArray("modeChangeEvents");
+    // TODO: Implement mode change events
+
     return root;
   }
 
@@ -126,8 +149,8 @@ public class JsonConfigBuilder {
   }
 
   /**
-   * Builds the full configuration JSON object for an entity type.
-   * Includes the control strategy, movement speed, and all defined modes.
+   * Builds the full configuration JSON object for an entity type. Includes the control strategy,
+   * movement speed, and all defined modes.
    *
    * @param type   the entity type to serialize
    * @param mapper the Jackson ObjectMapper instance
@@ -135,51 +158,55 @@ public class JsonConfigBuilder {
    */
   public ObjectNode buildEntityTypeConfig(EntityType type, ObjectMapper mapper) {
     ObjectNode root = mapper.createObjectNode();
-
     ObjectNode entityTypeNode = root.putObject("entityType");
+
+    addEntityBasics(type, entityTypeNode);
+    addControlConfig(type.controlConfig(), entityTypeNode, mapper);
+    addMovementSpeed(type, entityTypeNode);
+    addModesArray(type, root);
+
+    return root;
+  }
+
+  private void addEntityBasics(EntityType type, ObjectNode entityTypeNode) {
     entityTypeNode.put("name", type.type());
+  }
 
-    // Control Type and its config
-    ObjectNode controlTypeNode = entityTypeNode.putObject("controlType");
-    controlTypeNode.put("controlType", type.controlType());
+  private void addControlConfig(ControlConfig config, ObjectNode entityTypeNode,
+      ObjectMapper mapper) {
+    JsonNode serialized = mapper.valueToTree(config);
+    entityTypeNode.set("controlConfig", serialized);
+  }
 
-    if (type.strategyConfig() != null && !type.strategyConfig().isEmpty()) {
-      ObjectNode controlConfig = mapper.valueToTree(type.strategyConfig());
-      controlTypeNode.set("controlTypeConfig", controlConfig);
-    }
-
-    // Movement speed: extracted from "Default" mode if it exists
+  private void addMovementSpeed(EntityType type, ObjectNode entityTypeNode) {
     ModeConfig defaultMode = type.modes().get("Default");
     if (defaultMode != null) {
       entityTypeNode.put("movementSpeed", defaultMode.entityProperties().movementSpeed());
     }
+  }
 
-    // === Modes array ===
+  private void addModesArray(EntityType type, ObjectNode root) {
     ArrayNode modesArray = root.putArray("modes");
+
     for (ModeConfig mode : type.modes().values()) {
-      ObjectNode modeNode = mapper.createObjectNode();
+      ObjectNode modeNode = modesArray.addObject();
       modeNode.put("name", mode.name());
 
       ObjectNode imageNode = modeNode.putObject("image");
       imageNode.put("imagePath", getRelativeImagePath(mode.image().imagePath()));
 
-      // TODO: Temporary hardcoded size and animation data; replace if dynamic
+      // Replace with actual values if ModeConfig/Image provides them
       imageNode.put("tileWidth", 14);
       imageNode.put("tileHeight", 14);
-
-      ArrayNode tilesToCycleArray = imageNode.putArray("tilesToCycle");
-      tilesToCycleArray.add(1); // Replace with mode.getTilesToCycle() if available
+      imageNode.putArray("tilesToCycle").add(1);
       imageNode.put("animationSpeed", 2);
-
-      modesArray.add(modeNode);
     }
-
-    return root;
   }
 
+
   /**
-   * Assigns integer IDs to each entity type in the game.
-   * IDs start at 1 and increase in insertion order.
+   * Assigns integer IDs to each entity type in the game. IDs start at 1 and increase in insertion
+   * order.
    *
    * @param entityTypeMap the map of entity names to types
    * @return a map of entity names to unique integer IDs
