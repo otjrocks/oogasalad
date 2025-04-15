@@ -1,4 +1,4 @@
-package oogasalad.player.model.api;
+package oogasalad.player.model.control;
 
 import java.util.List;
 import java.util.Map;

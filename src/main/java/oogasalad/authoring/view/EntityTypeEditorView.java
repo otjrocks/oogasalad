@@ -1,5 +1,8 @@
 package oogasalad.authoring.view;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -10,8 +13,17 @@ import oogasalad.engine.model.EntityType;
 
 import java.util.Map;
 import oogasalad.engine.config.ModeConfig;
+import oogasalad.engine.model.controlConfig.ConditionalControlConfig;
 import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.player.model.api.ControlManager;
+import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
+import oogasalad.engine.model.controlConfig.NoneControlConfig;
+import oogasalad.engine.model.controlConfig.TargetControlConfig;
+import oogasalad.engine.model.controlConfig.targetStrategy.TargetAheadOfEntityConfig;
+import oogasalad.engine.model.controlConfig.targetStrategy.TargetCalculationConfig;
+import oogasalad.engine.model.controlConfig.targetStrategy.TargetEntityConfig;
+import oogasalad.engine.model.controlConfig.targetStrategy.TargetEntityWithTrapConfig;
+import oogasalad.engine.model.controlConfig.targetStrategy.TargetLocationConfig;
+import oogasalad.player.model.control.ControlManager;
 
 /**
  * View for editing a selected EntityType.
@@ -26,6 +38,14 @@ public class EntityTypeEditorView {
   private final VBox modeList;
   private final AuthoringController controller;
   private EntityType current;
+
+  private final Button saveCollisionButton;
+  private final VBox controlTypeParameters;
+  private final List<TextField> controlTypeParameterFields;
+  private final List<TextField> targetStrategyParameterFields;
+  private final Map<String, ComboBox<String>> controlTypeComboBoxes = new HashMap<>();
+
+
 
   /**
    * Edit parameters for an entityType
@@ -42,8 +62,17 @@ public class EntityTypeEditorView {
 
     typeField = new TextField();
     controlTypeBox = new ComboBox<>();
-    // TODO: Remove hardcoded values
     controlTypeBox.getItems().addAll(ControlManager.getControlStrategies());
+    controlTypeBox.setOnAction(e -> updateControlParameterFields());
+
+    controlTypeParameters = new VBox(5);
+    controlTypeParameterFields = new ArrayList<>();
+    targetStrategyParameterFields = new ArrayList<>();
+
+
+    saveCollisionButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
+    saveCollisionButton.setOnAction(e -> commitChanges());
+
     modeList = new VBox(5);
 
     Button addModeButton = new Button(LanguageManager.getMessage("ADD_MODE"));
@@ -52,6 +81,7 @@ public class EntityTypeEditorView {
     root.getChildren().addAll(
         new Label(LanguageManager.getMessage("ENTITY_TYPE")), typeField,
         new Label(LanguageManager.getMessage("CONTROL_STRATEGY")), controlTypeBox,
+        controlTypeParameters, saveCollisionButton,
         new Label(LanguageManager.getMessage("MODES")), modeList,
         addModeButton
     );
@@ -78,7 +108,7 @@ public class EntityTypeEditorView {
 
     // TODO: New config
 //    controlTypeBox.setValue();
-    controlTypeBox.setOnAction(e -> commitChanges());
+//    controlTypeBox.setOnAction(e -> commitChanges());
 
     modeList.getChildren().clear();
     for (Map.Entry<String, ModeConfig> entry : type.modes().entrySet()) {
@@ -101,7 +131,9 @@ public class EntityTypeEditorView {
   }
 
   private void commitChanges() {
-    if (current == null) return;
+    if (current == null) {
+      return;
+    }
 
     ControlConfig controlConfig = buildControlConfigFromUI(); // dynamically builds appropriate config
 
@@ -118,10 +150,88 @@ public class EntityTypeEditorView {
   }
 
   private ControlConfig buildControlConfigFromUI() {
-    // TODO: Implement
+    String controlType = controlTypeBox.getValue();
+
+    Map<String, Class<?>> requiredFields = ControlManager.getControlRequiredFields(controlType);
+
+    try {
+      if (controlType.equals("None")) {
+        return new NoneControlConfig();
+      } else if (controlType.equals("Keyboard")) {
+        return new KeyboardControlConfig();
+      } else if (controlType.equals("Target")) {
+        // Get pathFindingStrategy from first field
+        String pathFindingStrategy = controlTypeComboBoxes.get("pathFindingStrategy").getValue();
+
+        // Get target strategy
+        ComboBox<String> targetStrategyDropdown = controlTypeComboBoxes.get("targetCalculationConfig");
+        String targetStrategy = targetStrategyDropdown.getValue();
+        Map<String, Class<?>> targetParams = ControlManager.getTargetRequiredFields(targetStrategy);
+
+        List<Object> paramValues = new ArrayList<>();
+        for (int i = 0; i < targetParams.size(); i++) {
+          Class<?> type = new ArrayList<>(targetParams.values()).get(i);
+          String value = targetStrategyParameterFields.get(i).getText();
+          paramValues.add(castToRequiredType(value, type));
+        }
+
+        TargetCalculationConfig targetConfig = switch (targetStrategy) {
+          case "TargetEntity" -> new TargetEntityConfig((String) paramValues.get(0));
+          case "TargetAheadOfEntity" -> new TargetAheadOfEntityConfig((String) paramValues.get(0), (Integer) paramValues.get(1));
+          case "TargetEntityWithTrap" -> new TargetEntityWithTrapConfig((String) paramValues.get(0), (Integer) paramValues.get(1), (String) paramValues.get(2));
+          case "TargetLocation" -> new TargetLocationConfig((Double) paramValues.get(0), (Double) paramValues.get(1));
+          default -> throw new IllegalArgumentException("Unknown target strategy: " + targetStrategy);
+        };
+
+        return new TargetControlConfig(pathFindingStrategy, targetConfig);
+
+      } else if (controlType.equals("Conditional")) {
+        int radius = Integer.parseInt(controlTypeParameterFields.get(0).getText());
+        String pathFindingStrategyInRadius = controlTypeComboBoxes.get("pathFindingStrategyInRadius").getValue();
+        String pathFindingStrategyOutRadius = controlTypeComboBoxes.get("pathFindingStrategyOutRadius").getValue();
+
+        // Same target config logic as above
+        ComboBox<String> targetStrategyDropdown = controlTypeComboBoxes.get("targetCalculationConfig");
+        String targetStrategy = targetStrategyDropdown.getValue();
+        Map<String, Class<?>> targetParams = ControlManager.getTargetRequiredFields(targetStrategy);
+
+        List<Object> paramValues = new ArrayList<>();
+        for (int i = 0; i < targetParams.size(); i++) {
+          Class<?> type = new ArrayList<>(targetParams.values()).get(i);
+          String value = targetStrategyParameterFields.get(i).getText();
+          paramValues.add(castToRequiredType(value, type));
+        }
+
+        TargetCalculationConfig targetConfig = switch (targetStrategy) {
+          case "TargetEntity" -> new TargetEntityConfig((String) paramValues.get(0));
+          case "TargetAheadOfEntity" -> new TargetAheadOfEntityConfig((String) paramValues.get(0), (Integer) paramValues.get(1));
+          case "TargetEntityWithTrap" -> new TargetEntityWithTrapConfig((String) paramValues.get(0), (Integer) paramValues.get(1), (String) paramValues.get(2));
+          case "TargetLocation" -> new TargetLocationConfig((Double) paramValues.get(0), (Double) paramValues.get(1));
+          default -> throw new IllegalArgumentException("Unknown target strategy: " + targetStrategy);
+        };
+
+        return new ConditionalControlConfig(radius, pathFindingStrategyInRadius, pathFindingStrategyOutRadius, targetConfig);
+      }
+    } catch (Exception e) {
+      showError("Failed to parse control configuration: " + e.getMessage());
+      e.printStackTrace();
+    }
 
     return null;
   }
+
+  private Object castToRequiredType(String value, Class<?> type) {
+    if (type == int.class || type == Integer.class) {
+      return Integer.parseInt(value);
+    } else if (type == double.class || type == Double.class) {
+      return Double.parseDouble(value);
+    } else if (type == String.class) {
+      return value;
+    }
+    throw new IllegalArgumentException("Unsupported parameter type: " + type);
+  }
+
+
 
 
   private void openAddModeDialog() {
@@ -155,6 +265,59 @@ public class EntityTypeEditorView {
     Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
     alert.showAndWait();
   }
+
+  private void updateControlParameterFields() {
+    controlTypeParameters.getChildren().clear();
+    controlTypeParameterFields.clear();
+    VBox parameterBox = new VBox(5);
+
+    Map<String, Class<?>> requiredFields =
+        ControlManager.getControlRequiredFields(controlTypeBox.getValue());
+
+    for (String parameter : requiredFields.keySet()) {
+      Label parameterLabel = new Label(parameter + ": ");
+
+      if (parameter.startsWith("pathFindingStrategy")) {
+        ComboBox<String> pathStrategyBox = new ComboBox<>();
+        pathStrategyBox.getItems().addAll(ControlManager.getPathFindingStrategies());
+        controlTypeComboBoxes.put(parameter, pathStrategyBox);
+        parameterBox.getChildren().addAll(parameterLabel, pathStrategyBox);
+
+      } else if (parameter.startsWith("targetCalculationConfig")) {
+        ComboBox<String> targetStrategyDropdown = new ComboBox<>();
+        controlTypeComboBoxes.put(parameter, targetStrategyDropdown);
+        targetStrategyDropdown.getItems().addAll(ControlManager.getTargetCalculationStrategies());
+
+        VBox targetParameterBox = new VBox(5);
+
+        // When target strategy changes, update parameter fields only if parameters are required
+        targetStrategyDropdown.setOnAction(e -> {
+          targetParameterBox.getChildren().clear();
+          String selectedStrategy = targetStrategyDropdown.getValue();
+          Map<String, Class<?>> targetParams = ControlManager.getTargetRequiredFields(selectedStrategy);
+
+          if (!targetParams.isEmpty()) {
+            for (String targetParam : targetParams.keySet()) {
+              Label targetParamLabel = new Label(targetParam + ": ");
+              TextField targetParamField = new TextField();
+              targetStrategyParameterFields.add(targetParamField);
+              targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
+            }
+          }
+        });
+
+        parameterBox.getChildren().addAll(parameterLabel, targetStrategyDropdown, targetParameterBox);
+
+      } else {
+        TextField parameterField = new TextField();
+        controlTypeParameterFields.add(parameterField);
+        parameterBox.getChildren().addAll(parameterLabel, parameterField);
+      }
+    }
+
+    controlTypeParameters.getChildren().add(parameterBox);
+  }
+
 
 
 }
