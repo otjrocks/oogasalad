@@ -1,7 +1,10 @@
 package oogasalad.player.controller;
 
+import java.nio.file.Paths;
 import oogasalad.engine.LoggingManager;
+import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.ConfigModel;
+import oogasalad.engine.config.JsonConfigSaver;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.api.GameMapFactory;
@@ -57,6 +60,13 @@ public class LevelController {
    */
   public void incrementAndUpdateConfig() {
     myLevelIndex++;
+    try {
+      JsonConfigSaver saver = new JsonConfigSaver();
+      saver.saveUpdatedLevelIndex(myConfigModel, myLevelIndex, Paths.get("data/games/BasicPacMan"));
+      LoggingManager.LOGGER.info("Level index updated and saved to gameConfig.json");
+    } catch (ConfigException e) {
+      LoggingManager.LOGGER.warn("Failed to save updated level index", e);
+    }
   }
 
   /**
@@ -65,6 +75,7 @@ public class LevelController {
    * @return The int representing the current level 0-indexed.
    */
   public int getCurrentLevelIndex() {
+    System.out.println(myLevelIndex);
     return myLevelIndex;
   }
 }

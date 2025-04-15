@@ -84,6 +84,23 @@ public class JsonConfigSaver implements ConfigSaver {
     writeJson(config, folder.resolve(name.toLowerCase() + ".json"));
   }
 
+  public void saveUpdatedLevelIndex(ConfigModel config, int newLevelIndex, Path folder) throws ConfigException {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectNode updatedNode = mapper.valueToTree(
+        new ConfigModel(
+            config.metadata(),
+            config.settings(),
+            config.entityTypes(),
+            config.levels(),
+            config.collisionRules(),
+            config.winCondition(),
+            newLevelIndex
+        )
+    );
+    saveGameConfig(updatedNode, folder);
+  }
+
+
   /**
    * Writes the given JSON object to the specified file path.
    *
@@ -98,4 +115,5 @@ public class JsonConfigSaver implements ConfigSaver {
       throw new ConfigException("Failed to write: " + path, e);
     }
   }
+
 }

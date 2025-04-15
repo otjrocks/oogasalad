@@ -46,6 +46,7 @@ public class GamePlayerView extends StackPane {
     JsonConfigParser configParser = new JsonConfigParser();
     try {
       myConfigModel = configParser.loadFromFile("data/games/BasicPacMan/gameConfig.json");
+      System.out.println("Current Config Level: " + myConfigModel.currentLevelIndex());
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
     }
