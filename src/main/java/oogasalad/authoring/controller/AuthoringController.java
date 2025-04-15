@@ -148,15 +148,21 @@ public class AuthoringController {
     List<EntityPlacement> placements = model.getCurrentLevel().getEntityPlacements();
     view.getCanvasView().reloadFromPlacements(placements);
 
-    // Re-select the currently selected placement after canvas update
-    if (selectedPlacement != null && placements.contains(selectedPlacement)) {
-      selectEntityPlacement(selectedPlacement);
-    } else {
-      // If the selected placement was removed, clear the selection
-      selectedPlacement = null;
-      view.getEntityPlacementView().setVisible(false);
+    // Re-select the placement by object identity (not equals)
+    if (selectedPlacement != null) {
+      for (EntityPlacement p : placements) {
+        if (p == selectedPlacement) {
+          selectEntityPlacement(p);
+          return;
+        }
+      }
     }
+
+    // Otherwise, clear selection
+    selectedPlacement = null;
+    view.getEntityPlacementView().setVisible(false);
   }
+
 
 
   private Map<String, ModeConfig> defaultModeMap() {
