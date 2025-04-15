@@ -1,16 +1,22 @@
 package oogasalad.authoring.view.canvas;
 
 import java.util.function.Consumer;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import oogasalad.engine.model.EntityPlacement;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+/**
+ * Manages visual representation and placement of entities on the canvas grid.
+ * Responsible for adding, updating, and removing ImageViews tied to entity data.
+ * Also connects drag interaction events to controller logic.
+ *
+ * @author Will He
+ */
 public class EntityManager {
 
   private final Pane root;
@@ -23,11 +29,15 @@ public class EntityManager {
   private final Consumer<MouseEvent> onReleased;
 
   /**
-   * @param root Pane to attach visuals to
-   * @param grid grid metadata (rows, cols, tile size)
-   * @param placementHandler callback to notify model on visual move
+   * Constructs an EntityManager for a canvas grid.
+   *
+   * @param root the JavaFX Pane to attach visuals to
+   * @param grid the CanvasGrid providing layout information
+   * @param placementHandler callback to notify controller when an entity is moved
+   * @param onPressed mouse press handler for entity interaction
+   * @param onDragged mouse drag handler for entity interaction
+   * @param onReleased mouse release handler for entity interaction
    */
-
   public EntityManager(Pane root, CanvasGrid grid, PlacementHandler placementHandler,
       Consumer<MouseEvent> onPressed,
       Consumer<MouseEvent> onDragged,
@@ -40,12 +50,19 @@ public class EntityManager {
     this.onReleased = onReleased;
   }
 
-
+  /**
+   * Clears all visual entities and resets the backing grid.
+   */
   public void clear() {
     entityViews.clear();
     gridEntities = new EntityPlacement[grid.getRows()][grid.getCols()];
   }
 
+  /**
+   * Reloads all entities from a list of placements. Clears and repopulates visuals.
+   *
+   * @param placements the list of entity placements to render
+   */
   public void reloadEntities(List<EntityPlacement> placements) {
     clear();
 
@@ -59,6 +76,11 @@ public class EntityManager {
     }
   }
 
+  /**
+   * Adds a new entity visual to the canvas and tracks it in the entity grid.
+   *
+   * @param placement the entity to visualize and track
+   */
   public void addEntityVisual(EntityPlacement placement) {
     int row = grid.getRowFromY(placement.getY());
     int col = grid.getColFromX(placement.getX());
@@ -76,12 +98,18 @@ public class EntityManager {
     imageView.setOnMouseDragged(onDragged::accept);
     imageView.setOnMouseReleased(onReleased::accept);
 
-
     root.getChildren().add(imageView);
     entityViews.put(imageView, placement);
     gridEntities[row][col] = placement;
   }
 
+  /**
+   * Updates an entity's position in the grid and notifies the controller.
+   *
+   * @param placement the entity to move
+   * @param newRow new row position
+   * @param newCol new column position
+   */
   public void updateEntityPosition(EntityPlacement placement, int newRow, int newCol) {
     int oldRow = grid.getRowFromY(placement.getY());
     int oldCol = grid.getColFromX(placement.getX());
@@ -91,22 +119,45 @@ public class EntityManager {
 
     double newX = grid.getXFromCol(newCol);
     double newY = grid.getYFromRow(newRow);
-    placementHandler.moveEntity(placement, newX, newY); // callback to controller
+    placementHandler.moveEntity(placement, newX, newY);
   }
 
+  /**
+   * Checks if a cell is valid and unoccupied, optionally ignoring a specific placement.
+   *
+   * @param row the row to check
+   * @param col the column to check
+   * @param ignore an entity placement to ignore (for dragging/moving)
+   * @return true if the cell is available, false otherwise
+   */
   public boolean isCellAvailable(int row, int col, EntityPlacement ignore) {
     return grid.isValidCell(row, col) &&
         (gridEntities[row][col] == null || gridEntities[row][col] == ignore);
   }
 
+  /**
+   * Returns a mapping from ImageView to their corresponding entity placements.
+   *
+   * @return a map of visual nodes and their linked data
+   */
   public Map<ImageView, EntityPlacement> getEntityViews() {
     return entityViews;
   }
 
+  /**
+   * Returns the 2D grid of tracked entity placements.
+   *
+   * @return a 2D array of EntityPlacement objects
+   */
   public EntityPlacement[][] getGridEntities() {
     return gridEntities;
   }
 
+  /**
+   * Removes a visual entity from the canvas and the grid.
+   *
+   * @param placement the entity to remove
+   */
   public void removeEntity(EntityPlacement placement) {
     ImageView toRemove = entityViews.entrySet().stream()
         .filter(e -> e.getValue() == placement)
@@ -126,9 +177,18 @@ public class EntityManager {
     }
   }
 
-
+  /**
+   * Callback interface for updating entity positions.
+   */
   @FunctionalInterface
   public interface PlacementHandler {
+    /**
+     * Called when an entity is moved to a new position.
+     *
+     * @param placement the moved entity
+     * @param newX new x-coordinate
+     * @param newY new y-coordinate
+     */
     void moveEntity(EntityPlacement placement, double newX, double newY);
   }
 }
