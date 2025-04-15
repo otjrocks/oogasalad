@@ -7,6 +7,12 @@ import javafx.scene.layout.*;
 import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.LevelDraft;
 
+/**
+ * View component that allows users to edit level settings such as width and height.
+ * Provides a simple interface with spinners and a button to apply changes.
+ *
+ * @author Will He
+ */
 public class LevelSettingsView {
 
   private final VBox root;
@@ -15,7 +21,8 @@ public class LevelSettingsView {
   private final LevelController controller;
 
   /**
-   * Creates a view for editing level settings like width and height.
+   * Constructs a LevelSettingsView for the given level controller.
+   *
    * @param controller Controller for accessing and updating level state
    */
   public LevelSettingsView(LevelController controller) {
@@ -43,16 +50,23 @@ public class LevelSettingsView {
     root.getChildren().addAll(titleLabel, grid, saveButton);
   }
 
+  /**
+   * Applies the current spinner values to the level and updates the canvas size.
+   */
   private void applyChanges() {
     LevelDraft level = controller.getCurrentLevel();
     int newWidth = widthSpinner.getValue();
     int newHeight = heightSpinner.getValue();
     level.setWidth(newWidth);
     level.setHeight(newHeight);
-
-    controller.updateCanvasSize(newWidth, newHeight); // You’ll implement this
+    controller.updateCanvasSize(newWidth, newHeight);
   }
 
+  /**
+   * Returns the JavaFX node representing this view.
+   *
+   * @return the root VBox node
+   */
   public Node getNode() {
     return root;
   }

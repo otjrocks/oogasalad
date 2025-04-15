@@ -79,10 +79,19 @@ public class LevelController {
     }
   }
 
+  /**
+   * Get current level
+   * @return current LevelDraft
+   */
   public LevelDraft getCurrentLevel() {
     return model.getCurrentLevel();
   }
 
+  /**
+   * Update size of canvas for this level
+   * @param width Width of this level
+   * @param height Height of this level
+   */
   public void updateCanvasSize(int width, int height) {
     mainController.getCanvasView().resizeGrid(width, height);
   }

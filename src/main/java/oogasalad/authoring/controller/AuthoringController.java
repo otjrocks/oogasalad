@@ -239,6 +239,10 @@ public class AuthoringController {
     }
   }
 
+  /**
+   * Get canvas view
+   * @return canvas view object
+   */
   public CanvasView getCanvasView() {
     return view.getCanvasView();
   }
