@@ -62,6 +62,12 @@ public class GamePlayerView extends StackPane {
     }
   }
 
+  /**
+   * Restarts the current level by clearing the view and reloading the game configuration.
+   *
+   * <p>This method replaces the current {@code GameView} with a fresh instance,
+   * effectively resetting the level state.</p>
+   */
   public void restartLevel() {
     this.getChildren().clear();
     loadConfig();
@@ -69,7 +75,7 @@ public class GamePlayerView extends StackPane {
   }
 
   /**
-   * Returns privately stored GameView
+   * Returns privately stored GameView.
    */
   public GameView getGameView() {
     return myGameView;

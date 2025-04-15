@@ -71,6 +71,15 @@ public class GameView extends StackPane {
     restartButton.setVisible(!gameWon);
   }
 
+  /**
+   * Sets the action to be executed when the restart button is clicked.
+   *
+   * <p>This allows external components (such as {@link GamePlayerView}) to define what
+   * should happen when the player chooses to restart the current level. The provided
+   * {@link Runnable} will be invoked when the restart button is activated.</p>
+   *
+   * @param action a {@code Runnable} representing the restart behavior
+   */
   public void setRestartAction(Runnable action) {
     restartButton.setOnAction(e -> action.run());
   }
