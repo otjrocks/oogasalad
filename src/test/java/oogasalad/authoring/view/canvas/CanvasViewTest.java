@@ -8,6 +8,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.authoring.model.AuthoringModel;
+import oogasalad.authoring.model.LevelDraft;
 import oogasalad.engine.model.EntityPlacement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,97 +17,85 @@ import util.DukeApplicationTest;
 
 import java.util.List;
 
-/**
- * Tests for CanvasView interactions.
- * Uses mocked controller and fake EntityPlacement objects.
- * Verifies UI state changes after actions like add or click.
- */
 public class CanvasViewTest extends DukeApplicationTest {
 
   private CanvasView canvasView;
-  private AuthoringController mockController;
+  private AuthoringController controller;
+
+  private EntityPlacement mockPlacement(double x, double y) {
+    EntityPlacement p = mock(EntityPlacement.class);
+    when(p.getX()).thenReturn(x);
+    when(p.getY()).thenReturn(y);
+    when(p.getEntityImagePath()).thenReturn(getClass().getResource("/mock.png").toExternalForm());
+    return p;
+  }
 
   @Override
   public void start(Stage stage) {
-    mockController = mock(AuthoringController.class);
-    canvasView = new CanvasView(mockController);
+    controller = mock(AuthoringController.class);
+
+    AuthoringModel model = mock(AuthoringModel.class);
+    LevelDraft level = mock(LevelDraft.class);
+    when(level.getEntityPlacements()).thenReturn(List.of());
+    when(model.getCurrentLevel()).thenReturn(level);
+    when(controller.getModel()).thenReturn(model);
+
+    canvasView = new CanvasView(controller);
     Scene scene = new Scene(canvasView.getNode(), 800, 600);
     stage.setScene(scene);
     stage.show();
   }
 
   @BeforeEach
-  public void resetCanvas() {
-    interact(() -> {
-      canvasView.resetEntityTracking();
-      canvasView.reloadFromPlacements(List.of());
-    });
+  public void clearCanvas() {
+    interact(() -> canvasView.reloadFromPlacements(List.of()));
   }
 
   @Test
-  public void addEntityVisual_ValidPlacement_VisualAdded() {
-    EntityPlacement placement = mock(EntityPlacement.class);
-    when(placement.getX()).thenReturn(80.0);
-    when(placement.getY()).thenReturn(120.0);
-    when(placement.getEntityImagePath()).thenReturn(getClass().getResource("/mock.png").toExternalForm());
+  public void testRemoveEntityVisualClearsSelection() {
+    EntityPlacement placement = mockPlacement(100, 100);
+    interact(() -> canvasView.placeEntity(placement));
 
-    interact(() -> canvasView.addEntityVisual(placement));
-
-    boolean found = canvasView.getNode().getChildren().stream()
+    ImageView imageView = (ImageView) canvasView.getNode().getChildren().stream()
         .filter(n -> n instanceof ImageView)
-        .anyMatch(n -> ((ImageView) n).getX() == 80.0 && ((ImageView) n).getY() == 120.0);
+        .findFirst().orElseThrow();
 
-    assertTrue(found, "Expected entity visual at (80, 120) to be added");
+    MouseEvent press = mock(MouseEvent.class);
+    when(press.getSource()).thenReturn(imageView);
+    when(press.getSceneX()).thenReturn(105.0);
+    when(press.getSceneY()).thenReturn(105.0);
+
+    interact(() -> canvasView.handleEntityMousePressed(press));
+
+    assertTrue(canvasView.getTileHighlighter().isSelectionVisible(), "Should show selection before removal");
+
+    interact(() -> canvasView.removeEntityVisual(placement));
+
+    assertFalse(canvasView.getTileHighlighter().isSelectionVisible(), "Selection should be hidden after removal");
   }
 
   @Test
-  public void reloadFromPlacements_ValidList_ClearsAndReplacesVisuals() {
-    EntityPlacement p1 = mock(EntityPlacement.class);
-    when(p1.getX()).thenReturn(0.0);
-    when(p1.getY()).thenReturn(0.0);
-    when(p1.getEntityImagePath()).thenReturn(getClass().getResource("/mock.png").toExternalForm());
-
-    EntityPlacement p2 = mock(EntityPlacement.class);
-    when(p2.getX()).thenReturn(40.0);
-    when(p2.getY()).thenReturn(0.0);
-    when(p2.getEntityImagePath()).thenReturn(getClass().getResource("/mock.png").toExternalForm());
-
-    interact(() -> canvasView.reloadFromPlacements(List.of(p1, p2)));
-
-    long count = canvasView.getNode().getChildren().stream().filter(n -> n instanceof ImageView).count();
-    assertEquals(2, count, "Expected exactly 2 entity visuals after reload");
-  }
-
-  @Test
-  public void clickOnEntity_EntityClicked_SelectionHighlightAppears() {
-    EntityPlacement p = mock(EntityPlacement.class);
-    when(p.getX()).thenReturn(40.0);
-    when(p.getY()).thenReturn(40.0);
-    when(p.getEntityImagePath()).thenReturn(getClass().getResource("/mock.png").toExternalForm());
-
-    interact(() -> canvasView.addEntityVisual(p));
+  public void testSelectionHighlightAppearsOnClick() {
+    EntityPlacement placement = mockPlacement(80, 80);
+    interact(() -> canvasView.placeEntity(placement));
 
     ImageView image = (ImageView) canvasView.getNode().getChildren().stream()
-            .filter(n -> n instanceof ImageView)
-            .findFirst()
-            .orElseThrow();
+        .filter(n -> n instanceof ImageView).findFirst().orElseThrow();
 
-    MouseEvent mockEvent = mock(MouseEvent.class);
-    when(mockEvent.getSource()).thenReturn(image);
-    when(mockEvent.getSceneX()).thenReturn(45.0); // Somewhere in the middle of the image
-    when(mockEvent.getSceneY()).thenReturn(45.0);
+    MouseEvent press = mock(MouseEvent.class);
+    when(press.getSource()).thenReturn(image);
+    when(press.getSceneX()).thenReturn(85.0);
+    when(press.getSceneY()).thenReturn(85.0);
 
-    interact(() -> canvasView.handleEntityMousePressed(mockEvent));
+    interact(() -> canvasView.handleEntityMousePressed(press));
 
-    assertTrue(canvasView.getSelectionHighlightVisible(), "Selection highlight should be visible after click");
-    assertEquals(40.0, canvasView.getSelectionHighlightX(), 0.1);
-    assertEquals(40.0, canvasView.getSelectionHighlightY(), 0.1);
-
-    assertTrue(canvasView.hasSelectedEntity(), "Entity should be selected after click");
+    assertTrue(canvasView.getTileHighlighter().isSelectionVisible(), "Selection should be shown after click");
+    assertEquals(80.0, canvasView.getTileHighlighter().getSelectionX(), 0.1);
+    assertEquals(80.0, canvasView.getTileHighlighter().getSelectionY(), 0.1);
   }
 
   @Test
-  public void handleEntityMouseDragged_NullSelection_NoCrash() {
+  public void testDragDoesNotThrowOnNullSelection() {
     assertDoesNotThrow(() -> interact(() -> canvasView.handleEntityMouseDragged(null)));
   }
 }

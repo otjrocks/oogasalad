@@ -67,4 +67,15 @@ public class TileHighlighter {
     return selection;
   }
 
+  public boolean isSelectionVisible() {
+    return selection.isVisible();
+  }
+
+  public double getSelectionX() {
+    return selection.getX();
+  }
+
+  public double getSelectionY() {
+    return selection.getY();
+  }
 }

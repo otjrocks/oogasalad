@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javax.swing.text.Caret;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.model.EntityPlacement;
 
@@ -262,4 +263,7 @@ public class CanvasView {
   }
 
 
+  public TileHighlighter getTileHighlighter() {
+    return tileHighlighter;
+  }
 }
