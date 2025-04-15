@@ -49,13 +49,23 @@ public class GamePlayerView extends StackPane {
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
     }
+    loadConfig();
+    this.getChildren().add(myGameView);
+  }
 
+  private void loadConfig() {
     LevelController levelController = new LevelController(myMainController, myConfigModel);
     if (levelController.getCurrentLevelMap() != null) {
       myGameView = new GameView(new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
           myConfigModel, levelController.getCurrentLevelIndex());
-      this.getChildren().add(myGameView);
+      myGameView.setRestartAction(this::restartLevel);
     }
+  }
+
+  public void restartLevel() {
+    this.getChildren().clear();
+    loadConfig();
+    this.getChildren().add(myGameView);
   }
 
   /**
