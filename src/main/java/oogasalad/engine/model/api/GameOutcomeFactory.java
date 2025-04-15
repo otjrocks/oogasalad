@@ -25,6 +25,10 @@ public class GameOutcomeFactory {
    * @return corresponding GameOutcomeStrategy
    */
   public static GameOutcomeStrategy create(WinCondition winCondition) {
+    if (winCondition == null) {
+      throw new IllegalArgumentException("Win condition cannot be null");
+    }
+
     if (winCondition instanceof SurviveForTimeCondition(int amount)) {
       return new ScoreBasedOutcomeStrategy(amount);
     }

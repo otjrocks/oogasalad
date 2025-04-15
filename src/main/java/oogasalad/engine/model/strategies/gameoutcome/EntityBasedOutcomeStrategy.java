@@ -48,6 +48,11 @@ public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
    */
   @Override
   public String getGameOutcome(GameContextRecord gameContext) {
-    return hasGameEnded(gameContext) ? "Level Passed" : "Game ongoing";
+    if (gameContext.gameMap().getEntityCount(entityType) <= 0) {
+      return "Level Passed";
+    } else {
+      return "Game ongoing";
+    }
   }
+
 }
