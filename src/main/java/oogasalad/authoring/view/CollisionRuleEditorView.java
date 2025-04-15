@@ -36,8 +36,8 @@ public class CollisionRuleEditorView {
   private final List<CollisionRule> workingRules = new ArrayList<>();
   private final VBox root;
   private final AuthoringController controller;
-  private CollisionRuleView myRuleViewA;
-  private CollisionRuleView myRuleViewB;
+  private CollisionEventView myRuleViewA;
+  private CollisionEventView myRuleViewB;
 
 
   /**
@@ -116,9 +116,9 @@ public class CollisionRuleEditorView {
 
   private HBox createCollisionRuleHBox() {
     HBox addRule = new HBox(15);
-    myRuleViewA = new CollisionRuleView(
+    myRuleViewA = new CollisionEventView(
         String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "A"));
-    myRuleViewB = new CollisionRuleView(
+    myRuleViewB = new CollisionEventView(
         String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "B"));
     addRule.getChildren().addAll(myRuleViewA.getRoot(), myRuleViewB.getRoot());
     return addRule;
@@ -206,14 +206,20 @@ public class CollisionRuleEditorView {
     String b = entityBSelector.getValue();
     String bMode = modeBSelector.getValue();
 
-//    if (a == null || aMode == null || b == null || bMode == null || aActions.isEmpty()
-//        || bActions.isEmpty()) {
-//      showError(
-//          LanguageManager.getMessage("RULE_ERROR"));
-//      return;
-//    }
+    if (validateInput(a, aMode, b, bMode)) {
+      return;
+    }
 
     updateRules(a, b, aMode, bMode, true);
+  }
+
+  private boolean validateInput(String a, String aMode, String b, String bMode) {
+    if (a == null || aMode == null || b == null || bMode == null) {
+      showError(
+          LanguageManager.getMessage("RULE_ERROR"));
+      return true;
+    }
+    return false;
   }
 
   private void handleAddRuleB() {
@@ -222,6 +228,7 @@ public class CollisionRuleEditorView {
     String b = entityBSelector.getValue();
     String bMode = modeBSelector.getValue();
 
+    validateInput(a, aMode, b, bMode);
     updateRules(a, b, aMode, bMode, false);
   }
 

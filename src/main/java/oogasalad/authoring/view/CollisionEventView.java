@@ -17,16 +17,24 @@ import oogasalad.engine.records.config.model.CollisionEvent;
 import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.view.components.Selector;
 
-public class CollisionRuleView {
+/**
+ * A view to create and edit a collision event
+ */
+public class CollisionEventView {
 
   private static final String COLLISION_EVENTS_PATH = "src/main/java/oogasalad/engine/records/config/model/collisionevent/";
   private static final String COLLISION_EVENTS_PACKAGE_PATH = "oogasalad.engine.records.config.model.collisionevent.";
   private final VBox myRoot;
   private final Selector mySelector;
   private final VBox myParameters;
-  private List<TextField> myParameterFields;
+  private final List<TextField> myParameterFields;
 
-  public CollisionRuleView(String labelText) {
+  /**
+   * Create a collision event view with the provided label text.
+   *
+   * @param labelText The label text for this view.
+   */
+  public CollisionEventView(String labelText) {
     myRoot = new VBox();
     myParameters = new VBox();
     myRoot.setSpacing(ELEMENT_SPACING);
@@ -40,10 +48,22 @@ public class CollisionRuleView {
     myRoot.getChildren().add(myParameters);
   }
 
+  /**
+   * Get the root element of this view.
+   *
+   * @return A VBox that contains all of this view's elements.
+   */
   public VBox getRoot() {
     return myRoot;
   }
 
+  /**
+   * Get the collision event corresponding to the currently selected values.
+   *
+   * @return A collision event created by the current selected values.
+   * @throws IllegalArgumentException If the collision event cannot be created with the provided
+   *                                  parameters.
+   */
   public CollisionEvent getCollisionEvent() throws IllegalArgumentException {
     try {
       String collisionName = mySelector.getValue();
@@ -103,7 +123,7 @@ public class CollisionRuleView {
     HBox parameterBox = new HBox();
     parameterBox.setSpacing(ELEMENT_SPACING);
     for (String parameter : getCollisionRequiredFields(mySelector.getValue()).keySet()) {
-      Label parameterLabel = new Label(parameter);
+      Label parameterLabel = new Label(parameter + ": ");
       TextField parameterField = new TextField();
       parameterBox.getChildren().addAll(parameterLabel, parameterField);
       myParameterFields.add(parameterField);
