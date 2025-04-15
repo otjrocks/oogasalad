@@ -1,4 +1,4 @@
-package oogasalad.engine.records.newconfig.model.wincondition;
+package oogasalad.engine.records.config.model.wincondition;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

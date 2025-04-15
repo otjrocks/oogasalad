@@ -1,7 +1,7 @@
 package oogasalad.engine.model;
 
 import java.util.List;
-import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
+import oogasalad.engine.records.config.model.CollisionEvent;
 
 /**
  * Represents a rule for handling a collision between two entity types, each potentially in a
@@ -162,7 +162,7 @@ public class CollisionRule {
 
   @Override
   public String toString() {
-    return String.format("(%s:%s) ↔ (%s:%s) | A: %s, B: %s",
+    return String.format("(Type %s: Mode %s) ↔ (Type %s: Mode %s)\nEvents A: %s\nEvents B: %s",
         entityTypeA, modeA, entityTypeB, modeB,
         String.join(",", eventsA.toString()),
         String.join(",", eventsB.toString()));

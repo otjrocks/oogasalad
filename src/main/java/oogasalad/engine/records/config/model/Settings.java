@@ -1,6 +1,6 @@
-package oogasalad.engine.records.newconfig.model;
+package oogasalad.engine.records.config.model;
 
-import oogasalad.engine.records.newconfig.model.wincondition.WinCondition;
+import oogasalad.engine.records.config.model.wincondition.WinCondition;
 
 /**
  * Represents the configuration settings for a game. This record encapsulates various parameters

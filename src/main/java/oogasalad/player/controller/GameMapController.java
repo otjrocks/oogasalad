@@ -21,7 +21,7 @@ import oogasalad.engine.model.strategies.collision.CollisionStrategy;
 
 import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategy;
 import oogasalad.engine.model.strategies.gameoutcome.LivesBasedOutcome;
-import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
+import oogasalad.engine.records.config.model.CollisionEvent;
 import oogasalad.engine.records.CollisionContextRecord;
 import oogasalad.engine.records.GameContextRecord;
 

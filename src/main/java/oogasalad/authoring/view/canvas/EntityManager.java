@@ -144,14 +144,6 @@ public class EntityManager {
     return entityViews;
   }
 
-  /**
-   * Returns the 2D grid of tracked entity placements.
-   *
-   * @return a 2D array of EntityPlacement objects
-   */
-  public EntityPlacement[][] getGridEntities() {
-    return gridEntities;
-  }
 
   /**
    * Removes a visual entity from the canvas and the grid.

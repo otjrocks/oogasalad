@@ -20,8 +20,8 @@ import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.newconfig.model.Settings;
-import oogasalad.engine.records.newconfig.model.wincondition.SurviveForTimeCondition;
+import oogasalad.engine.records.config.model.Settings;
+import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
 
 /**
  * The central model for the Authoring Environment. Stores global game settings, entity templates,

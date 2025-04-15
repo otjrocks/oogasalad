@@ -10,8 +10,8 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
-import oogasalad.engine.records.newconfig.model.Settings;
-import oogasalad.engine.records.newconfig.model.wincondition.SurviveForTimeCondition;
+import oogasalad.engine.records.config.model.Settings;
+import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -45,7 +45,6 @@ public class AuthoringViewTest extends DukeApplicationTest {
     stage.setScene(scene);
     stage.show();
   }
-
 
 
   @BeforeEach
