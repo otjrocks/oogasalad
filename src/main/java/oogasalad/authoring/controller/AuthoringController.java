@@ -4,6 +4,7 @@ import java.io.File;
 
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
+import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.authoring.view.EntityPlacementView;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
@@ -105,11 +106,12 @@ public class AuthoringController {
    * @param y        the Y-coordinate of the placement (in pixels)
    */
   public void placeEntity(String typeName, double x, double y) {
-    model.findEntityType(typeName)
-        .map(template -> model.getCurrentLevel().createAndAddEntityPlacement(template, x, y))
-        .ifPresent(placement -> view.getCanvasView().addEntityVisual(placement));
-
+    model.findEntityType(typeName).ifPresent(template -> {
+      EntityPlacement placement = model.getCurrentLevel().createAndAddEntityPlacement(template, x, y);
+      view.getCanvasView().placeEntity(placement);
+    });
   }
+
 
   /**
    * Moves an existing entity placement to a new position on the canvas. Updates both the model and
@@ -237,4 +239,11 @@ public class AuthoringController {
     }
   }
 
+  /**
+   * Get canvas view
+   * @return canvas view object
+   */
+  public CanvasView getCanvasView() {
+    return view.getCanvasView();
+  }
 }

@@ -212,7 +212,8 @@ public class EntityPlacementView {
       controller.getModel().getCurrentLevel().removeEntityPlacement(currentPlacement);
 
       // Update canvas view
-      controller.updateCanvas();
+      controller.getCanvasView().removeEntityVisual(currentPlacement);
+
 
       // Clear the view
       setEntityPlacement(null);
