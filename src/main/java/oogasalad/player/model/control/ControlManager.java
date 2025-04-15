@@ -34,4 +34,14 @@ public class ControlManager {
     return FileUtility.getRequiredFieldsForRecord(
         TARGET_CONFIG_PACKAGE_PATH + targetStrategyName + "Config");
   }
+
+  public static List<String> getControlRequiredFieldsOrder(String controlStrategyName) {
+    return FileUtility.getRequiredFieldsForRecordOrder(
+        CONTROL_CONFIG_PACKAGE_PATH + controlStrategyName + "ControlConfig");
+  }
+
+  public static List<String> getTargetRequiredFieldsOrder(String targetStrategyName) {
+    return FileUtility.getRequiredFieldsForRecordOrder(
+        TARGET_CONFIG_PACKAGE_PATH + targetStrategyName + "Config");
+  }
 }
