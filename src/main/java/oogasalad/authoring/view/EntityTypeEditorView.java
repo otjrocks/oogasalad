@@ -79,13 +79,21 @@ public class EntityTypeEditorView {
     Button addModeButton = new Button(LanguageManager.getMessage("ADD_MODE"));
     addModeButton.setOnAction(e -> openAddModeDialog());
 
+    ScrollPane controlTypeScrollPane = new ScrollPane(controlTypeParameters);
+    controlTypeScrollPane.setFitToWidth(true);
+
+    controlTypeScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    controlTypeScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+
     root.getChildren().addAll(
         new Label(LanguageManager.getMessage("ENTITY_TYPE")), typeField,
         new Label(LanguageManager.getMessage("CONTROL_STRATEGY")), controlTypeBox,
-        controlTypeParameters, saveCollisionButton,
+        controlTypeScrollPane, saveCollisionButton,
         new Label(LanguageManager.getMessage("MODES")), modeList,
         addModeButton
     );
+
   }
 
   /**
