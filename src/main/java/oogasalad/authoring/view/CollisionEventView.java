@@ -64,7 +64,7 @@ public class CollisionEventView {
    * @throws IllegalArgumentException If the collision event cannot be created with the provided
    *                                  parameters.
    */
-  public CollisionEvent getCollisionEvent() throws IllegalArgumentException {
+  public CollisionEvent getCollisionEvent() {
     try {
       String collisionName = mySelector.getValue();
       String fullClassName = COLLISION_EVENTS_PACKAGE_PATH + collisionName + "CollisionEvent";
