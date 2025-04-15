@@ -1,6 +1,7 @@
 package oogasalad.player.view;
 
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import oogasalad.engine.LanguageManager;
@@ -21,6 +22,8 @@ public class GameView extends StackPane {
 
   private final GameLoopController myGameLoopController;
   private final Label endLabel = new Label();
+  private final Button restartButton = new Button();
+  private final Button nextLevelButton = new Button();
 
   /**
    * Create the game view.
@@ -41,11 +44,31 @@ public class GameView extends StackPane {
     myGameLoopController = new GameLoopController(gameContext, myGameMapView,
         configModel.levels().get(levelIndex));
     myGameMapView.setGameLoopController(myGameLoopController);
+    setUpEndMessage();
+    myGameMapView.setEndGameCallback(this::showEndMessage);
+  }
+
+  private void setUpEndMessage() {
     endLabel.setVisible(false);
     endLabel.getStyleClass().add("end-label");
-    this.getChildren().add(endLabel); // overlay it on top
+    this.getChildren().add(endLabel);
     StackPane.setAlignment(endLabel, Pos.CENTER);
-    myGameMapView.setEndGameCallback(this::showEndMessage);
+    restartButton.setVisible(false);
+    restartButton.getStyleClass().add("end-button");
+    restartButton.setText(LanguageManager.getMessage("RESTART_LEVEL"));
+    this.getChildren().add(restartButton);
+    nextLevelButton.setVisible(false);
+    nextLevelButton.getStyleClass().add("end-button");
+    nextLevelButton.setText(LanguageManager.getMessage("NEXT_LEVEL"));
+    this.getChildren().add(nextLevelButton);
+  }
+
+  private void showEndMessage(boolean gameWon) {
+    endLabel.setText(gameWon ? LanguageManager.getMessage("LEVEL_PASSED")
+        : LanguageManager.getMessage("GAME_OVER"));
+    endLabel.setVisible(true);
+    nextLevelButton.setVisible(gameWon);
+    restartButton.setVisible(!gameWon);
   }
 
   /**
@@ -60,11 +83,5 @@ public class GameView extends StackPane {
    */
   public void resumeGame() {
     myGameLoopController.resumeGame();
-  }
-
-  private void showEndMessage(boolean gameWon) {
-    endLabel.setText(gameWon ? LanguageManager.getMessage("LEVEL_PASSED")
-        : LanguageManager.getMessage("GAME_OVER"));
-    endLabel.setVisible(true);
   }
 }
