@@ -127,12 +127,11 @@ public class JsonConfigParser implements ConfigParser {
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
     WinCondition winCondition = gameConfig.settings().winCondition();
 
-    // Step 8: Tiles currently unused — placeholder
-    List<Tiles> tiles = new ArrayList<>();
-
+    // Step 8: Get current level from gameConfig
+    int currentLevel = gameConfig.currentLevel();
     // Step 9: Return the full config model using the first level only for now
     return new ConfigModel(metaData, settings, entityTypes, levels, collisionRules,
-        winCondition, tiles);
+        winCondition, currentLevel);
   }
 
   private ParsedLevel loadLevelConfig(String filepath) throws ConfigException {
@@ -392,8 +391,10 @@ public class JsonConfigParser implements ConfigParser {
       Settings defaultSettings = parseDefaultSettings(root);
       List<Level> levels = parseLevels(root, defaultSettings);
       List<CollisionConfig> collisions = parseCollisions(root);
+      JsonNode currentLevelNode = root.get("currentLevelIndex");
+      int currentLevelIndex = currentLevelNode != null ? currentLevelNode.asInt() : 0;
 
-      return new GameConfig(metadata, defaultSettings, levels, collisions, getFolderPath(filepath));
+      return new GameConfig(metadata, defaultSettings, levels, collisions, getFolderPath(filepath), currentLevelIndex);
 
     } catch (IOException e) {
       throw new ConfigException("Failed to parse config file: " + filepath, e);

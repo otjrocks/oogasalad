@@ -18,6 +18,7 @@ import oogasalad.engine.records.newconfig.model.Settings;
  */
 public record GameConfig(Metadata metadata, Settings settings, List<Level> levels,
                          List<CollisionConfig> collisions,
-                         String gameFolderPath) {
+                         String gameFolderPath,
+                         int currentLevel) {
 
 }

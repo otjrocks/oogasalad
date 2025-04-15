@@ -27,7 +27,7 @@ public class LevelController {
   public LevelController(MainController mainController, ConfigModel configModel) {
     myMainController = mainController;
     myConfigModel = configModel;
-    myLevelIndex = 0;
+    myLevelIndex = configModel.currentLevelIndex();
   }
 
   /**
@@ -55,7 +55,7 @@ public class LevelController {
   /**
    * Increment the current level.
    */
-  public void incrementLevel() {
+  public void incrementAndUpdateConfig() {
     myLevelIndex++;
   }
 

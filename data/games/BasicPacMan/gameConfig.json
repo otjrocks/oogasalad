@@ -14,9 +14,11 @@
       "entityType": "dot"
     }
   },
+  "currentLevelIndex": 0,
   "levels": [
     {
-      "levelMap": "level1"
+      "levelMap": "level1",
+      "levelMap": "level2"
     }
   ],
   "collisions": [
