@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.player.model.exceptions.ControlStrategyException;
 
 /**
@@ -59,27 +60,30 @@ public class ControlStrategyFactory {
       GameInputManager input, EntityPlacement entityPlacement,
       GameMap gameMap)
       throws ControlStrategyException {
-    String controlType = entityPlacement.getType().controlConfig().getClass().getSimpleName();
-    String className = STRATEGY_PACKAGE + controlType.replace("Config", "Strategy");
+    ControlConfig controlConfig = entityPlacement.getType().controlConfig();
+    String className =
+        STRATEGY_PACKAGE + controlConfig.getClass().getSimpleName().replace("Config", "Strategy");
 
     try {
       Class<?> strategyClass = Class.forName(className);
-      return instantiateStrategy(strategyClass, input, entityPlacement, gameMap);
+      return instantiateStrategy(strategyClass, input, entityPlacement, gameMap, controlConfig);
     } catch (Exception e) {
       throw new ControlStrategyException(
-          "Failed to create strategy for control type: " + controlType + " " + className, e);
+          "Failed to create strategy for control type: " + controlConfig.getClass() + " "
+              + className, e);
     }
   }
 
 
   private static ControlStrategy instantiateStrategy(Class<?> strategyClass, GameInputManager input,
       EntityPlacement placement,
-      GameMap gameMap)
+      GameMap gameMap, ControlConfig controlConfig)
       throws ControlStrategyException {
     try {
       for (Constructor<?> constructor : strategyClass.getConstructors()) {
         if (isPublicConstructor(constructor)) {
-          ControlStrategy strategy = tryInstantiateStrategy(constructor, input, gameMap, placement);
+          ControlStrategy strategy = tryInstantiateStrategy(constructor, input, gameMap, placement,
+              controlConfig);
           if (strategy != null) {
             return strategy;
           }
@@ -96,23 +100,24 @@ public class ControlStrategyFactory {
   private static ControlStrategy tryInstantiateStrategy(Constructor<?> constructor,
       GameInputManager input,
       GameMap gameMap,
-      EntityPlacement placement)
+      EntityPlacement placement, ControlConfig controlConfig)
       throws ControlStrategyException {
     try {
-      // bfs uses 2, keyboard uses 3, basic uses 0
+      // target and bfs, keyboard uses 3, basic uses 0
       if (matchesZeroArgConstructor(constructor)) {
         return (ControlStrategy) constructor.newInstance(
         );
       }
 
-      if (matchesTwoArgConstructor(constructor)) {
+      if (matchesThreeArgConstructorConfig(constructor)) {
         return (ControlStrategy) constructor.newInstance(
             gameMap,
-            placement
+            placement,
+            controlConfig
         );
       }
 
-      if (matchesThreeArgConstructor(constructor)) {
+      if (matchesThreeArgConstructorInput(constructor)) {
         return (ControlStrategy) constructor.newInstance(
             input,
             gameMap,
@@ -132,14 +137,15 @@ public class ControlStrategyFactory {
     return paramTypes.length == 0;
   }
 
-  private static boolean matchesTwoArgConstructor(Constructor<?> constructor) {
+  private static boolean matchesThreeArgConstructorConfig(Constructor<?> constructor) {
     Class<?>[] paramTypes = constructor.getParameterTypes();
-    return paramTypes.length == 2 &&
+    return paramTypes.length == 3 &&
         paramTypes[0].equals(GameMap.class) &&
-        paramTypes[1].equals(EntityPlacement.class);
+        paramTypes[1].equals(EntityPlacement.class) &&
+        paramTypes[2].equals(ControlConfig.class);
   }
 
-  private static boolean matchesThreeArgConstructor(Constructor<?> constructor) {
+  private static boolean matchesThreeArgConstructorInput(Constructor<?> constructor) {
     Class<?>[] paramTypes = constructor.getParameterTypes();
     return paramTypes.length == 3 &&
         paramTypes[0].equals(GameInputManager.class) &&

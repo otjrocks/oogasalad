@@ -2,7 +2,14 @@
   "entityType": {
     "name": "OrangeGhost",
     "controlConfig": {
-      "controlStrategy": "None"
+      "controlStrategy": "Conditional",
+      "radius": 8,
+      "pathFindingStrategyInRadius": "Euclidean",
+      "pathFindingStrategyOutRadius": "Random",
+      "targetCalculationConfig": {
+        "targetCalculationStrategy": "TargetEntity",
+        "targetType": "Pacman"
+      }
     },
     "movementSpeed": 90
   },

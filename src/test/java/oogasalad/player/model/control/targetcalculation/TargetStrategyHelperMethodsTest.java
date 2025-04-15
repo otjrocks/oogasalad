@@ -83,7 +83,7 @@ public class TargetStrategyHelperMethodsTest {
     Map<String, Object> config = new HashMap<>();
     config.put("targetType", "Enemy");
 
-    String result = TargetStrategyHelperMethods.validateAndGetTargetType(config);
+    String result = TargetStrategyHelperMethods.validateAndGetTargetType(config, "targetType");
     assertEquals("Enemy", result);
   }
 
@@ -92,10 +92,10 @@ public class TargetStrategyHelperMethodsTest {
     Map<String, Object> config = new HashMap<>();
 
     Exception exception = assertThrows(TargetStrategyException.class, () ->
-        TargetStrategyHelperMethods.validateAndGetTargetType(config)
+        TargetStrategyHelperMethods.validateAndGetTargetType(config, "targetType")
     );
 
-    assertEquals("Target type is required", exception.getMessage());
+    assertEquals("Type targetType is required", exception.getMessage());
   }
 
   @Test
@@ -104,10 +104,10 @@ public class TargetStrategyHelperMethodsTest {
     config.put("targetType", null);
 
     Exception exception = assertThrows(TargetStrategyException.class, () ->
-        TargetStrategyHelperMethods.validateAndGetTargetType(config)
+        TargetStrategyHelperMethods.validateAndGetTargetType(config, "targetType")
     );
 
-    assertEquals("Target type is required", exception.getMessage());
+    assertEquals("Type targetType is required", exception.getMessage());
   }
 
   @Test
@@ -115,7 +115,7 @@ public class TargetStrategyHelperMethodsTest {
     Map<String, Object> config = new HashMap<>();
     config.put("targetType", 123);  // Integer
 
-    String result = TargetStrategyHelperMethods.validateAndGetTargetType(config);
+    String result = TargetStrategyHelperMethods.validateAndGetTargetType(config, "targetType");
     assertEquals("123", result);
   }
 
