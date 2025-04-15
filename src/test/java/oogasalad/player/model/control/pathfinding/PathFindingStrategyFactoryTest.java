@@ -11,28 +11,28 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PathFindingStrategyFactoryTest {
 
   @Test
-  void create_bfsStrategy_success() {
+  void createPathFindingStrategy_bfsStrategy_createsInstanceOfBfsPathFindingStrategy() {
     PathFindingStrategy strategy = PathFindingStrategyFactory.createPathFindingStrategy("Bfs");
     assertNotNull(strategy);
     assertInstanceOf(BfsPathFindingStrategy.class, strategy);
   }
 
   @Test
-  void create_euclideanStrategy_success() {
+  void createPathFindingStrategy_euclideanStrategy_createsInstanceOfEuclideanPathFindingStrategy() {
     PathFindingStrategy strategy = PathFindingStrategyFactory.createPathFindingStrategy("Euclidean");
     assertNotNull(strategy);
     assertInstanceOf(EuclideanPathFindingStrategy.class, strategy);
   }
 
   @Test
-  void create_randomStrategy_success() {
+  void createPathFindingStrategy_randomStrategy_createsInstanceOfRandomPathFindingStrategy() {
     PathFindingStrategy strategy = PathFindingStrategyFactory.createPathFindingStrategy("Random");
     assertNotNull(strategy);
     assertInstanceOf(RandomPathFindingStrategy.class, strategy);
   }
 
   @Test
-  void create_invalidStrategyName_throwsException() {
+  void createPathFindingStrategy_invalidStrategyName_throwsException() {
     PathFindingStrategyException exception = assertThrows(
         PathFindingStrategyException.class,
         () -> PathFindingStrategyFactory.createPathFindingStrategy("NonExistent")
@@ -52,7 +52,7 @@ public class PathFindingStrategyFactoryTest {
   }
 
   @Test
-  void create_noPublicConstructorStrategy_throwsException() {
+  void createPathFindingStrategy_noPublicConstructorStrategy_throwsException() {
     PathFindingStrategyException exception = assertThrows(
         PathFindingStrategyException.class,
         () -> PathFindingStrategyFactory.createPathFindingStrategy("Hidden")

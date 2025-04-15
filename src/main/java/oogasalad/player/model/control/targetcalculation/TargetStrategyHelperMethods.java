@@ -72,17 +72,18 @@ class TargetStrategyHelperMethods {
   }
 
   static int validateAndGetKeyInt(Map<String, Object> strategyConfig, String key) {
-    if (strategyConfig.containsKey(key)
-        && strategyConfig.get(key) != null) {
-      try {
-        return Integer.parseInt(strategyConfig.get(key).toString());
-      } catch (NumberFormatException e) {
-        throw new TargetStrategyException(key + " must be an integer", e);
+    if (strategyConfig.containsKey(key) && strategyConfig.get(key) != null) {
+      Object value = strategyConfig.get(key);
+      if (value instanceof Number num) {
+        return num.intValue();
+      } else {
+        throw new TargetStrategyException(key + " must be a number convertible to int");
       }
     }
 
     throw new TargetStrategyException("Type " + key + " is required");
   }
+
 
   static int[] calcTargetPosition(GameMap map, Entity entity, String type, int tilesAhead) {
     int[] potentialTarget = potentialTargetPosition(
