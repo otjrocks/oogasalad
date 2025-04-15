@@ -246,4 +246,31 @@ public class AuthoringController {
   public CanvasView getCanvasView() {
     return view.getCanvasView();
   }
+
+  /**
+   * Deletes an entity type and all its placements from the model and updates the UI.
+   *
+   * @param typeName the name of the entity type to delete
+   */
+  public void deleteEntityType(String typeName) {
+    if (model.deleteEntityType(typeName)) {
+      // Clear the entity type editor if the deleted type was selected
+      if (selectedType != null && selectedType.type().equals(typeName)) {
+        selectedType = null;
+        view.getEntityEditorView().setEntityType(null);
+        view.getEntityEditorView().getRoot().setVisible(false);
+      }
+
+      // Clear the entity placement view if a placement of the deleted type was selected
+      if (selectedPlacement != null && selectedPlacement.getTypeString().equals(typeName)) {
+        selectedPlacement = null;
+        view.getEntityPlacementView().setVisible(false);
+      }
+
+      // Update the UI components
+      updateEntitySelector();
+      updateCanvas();
+    }
+  }
+
 }
