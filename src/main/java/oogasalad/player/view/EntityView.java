@@ -1,5 +1,9 @@
 package oogasalad.player.view;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,9 +24,7 @@ import oogasalad.engine.model.entity.Entity;
  */
 public class EntityView {
 
-  private static final ResourceBundle SPRITE_DATA =
-      ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
-
+  private static final Map<String, Image> SPRITE_CACHE = new HashMap<>();
   private final Entity entity;
   private final int totalFrames;
   private final int dimension;
@@ -38,18 +40,23 @@ public class EntityView {
     this.entity = entity;
     this.totalFrames = totalFrames;
     this.dimension = 28;
+
     Direction dir = entity.getEntityDirection() != null ? entity.getEntityDirection() : Direction.NONE;
     String suffix = dir == Direction.NONE ? "_R" : "_" + dir.name();
     String imageName = (entity.getEntityPlacement().getTypeString() +
             "_" + entity.getEntityPlacement().getMode() +
             suffix).toUpperCase();
-    this.sprite = new Image(
-            Objects.requireNonNull(
-                    EntityView.class.getClassLoader()
-                            .getResourceAsStream(
-                                    "sprites/" + imageName + ".png"
-                            )));
+
+    this.sprite = SPRITE_CACHE.computeIfAbsent(imageName, name -> {
+      try (InputStream stream = EntityView.class.getClassLoader().getResourceAsStream("sprites/" + name + ".png")) {
+        if (stream == null) throw new IllegalArgumentException("Image not found: " + name);
+        return new Image(stream);
+      } catch (IOException e) {
+        throw new RuntimeException("Failed to load image: " + name, e);
+      }
+    });
   }
+
 
   /**
    * Draws this entity onto the provided GraphicsContext.
