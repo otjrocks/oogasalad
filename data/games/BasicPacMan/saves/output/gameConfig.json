@@ -1,0 +1,21 @@
+{
+  "metadata" : {
+    "gameTitle" : null,
+    "author" : null,
+    "gameDescription" : null
+  },
+  "defaultSettings" : {
+    "gameSpeed" : 1.0,
+    "startingLives" : 3,
+    "initialScore" : 0,
+    "scoreStrategy" : "",
+    "winCondition" : {
+      "type" : "SurviveForTime",
+      "seconds" : 5
+    }
+  },
+  "levels" : [ {
+    "levelMap" : "level1"
+  } ],
+  "collisions" : [ ]
+}

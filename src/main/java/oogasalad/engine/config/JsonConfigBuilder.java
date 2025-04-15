@@ -9,10 +9,12 @@ import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 
+import java.lang.reflect.Method;
 import java.util.*;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.records.config.model.CollisionEvent;
+import oogasalad.engine.records.config.model.Settings;
 
 /**
  * Utility class for converting the internal AuthoringModel data structures into serializable JSON
@@ -46,17 +48,61 @@ public class JsonConfigBuilder {
 
     // === defaultSettings ===
     ObjectNode defaultSettings = root.putObject("defaultSettings");
-    defaultSettings.put("gameSpeed", model.getDefaultSettings().gameSpeed());
-    defaultSettings.put("startingLives", model.getDefaultSettings().startingLives());
-    defaultSettings.put("initialScore", model.getDefaultSettings().initialScore());
-    // TODO: add these to settings
-    defaultSettings.put("scoreStrategy", "Cumulative"); // TODO: remove hardcoded value
+    Settings settings = model.getDefaultSettings();
+    defaultSettings.put("gameSpeed", settings.gameSpeed());
+    defaultSettings.put("startingLives", settings.startingLives());
+    defaultSettings.put("initialScore", settings.initialScore());
 
-    // === win conditions ===
-    // TODO: remove hard coded win condition and replace with settings from authoring environment
+// Add scoreStrategy from settings or use default
+    String scoreStrategy = settings.scoreStrategy();
+    defaultSettings.put("scoreStrategy", scoreStrategy != null ? scoreStrategy : "Cumulative");
+
+// === win conditions ===
     ObjectNode winCondition = mapper.createObjectNode();
-    winCondition.put("type", "EntityBased");
-    winCondition.put("entityType", "dot");
+
+// Process win condition from settings or use default
+    Object winConditionObj = settings.winCondition();
+    if (winConditionObj != null) {
+      // Try to extract type and parameters using reflection
+      String className = winConditionObj.getClass().getSimpleName();
+      if (className.contains("EntityBased")) {
+        winCondition.put("type", "EntityBased");
+        try {
+          Method getter = winConditionObj.getClass().getMethod("entityType");
+          String entityType = (String) getter.invoke(winConditionObj);
+          winCondition.put("entityType", entityType);
+        } catch (Exception e) {
+          winCondition.put("entityType", "dot");  // Default if extraction fails
+        }
+      } else if (className.contains("ScoreBased")) {
+        winCondition.put("type", "ScoreBased");
+        try {
+          Method getter = winConditionObj.getClass().getMethod("targetScore");
+          int targetScore = (int) getter.invoke(winConditionObj);
+          winCondition.put("targetScore", targetScore);
+        } catch (Exception e) {
+          winCondition.put("targetScore", 1000);  // Default if extraction fails
+        }
+      } else if (className.contains("SurviveForTime")) {
+        winCondition.put("type", "SurviveForTime");
+        try {
+          Method getter = winConditionObj.getClass().getMethod("seconds");
+          int seconds = (int) getter.invoke(winConditionObj);
+          winCondition.put("seconds", seconds);
+        } catch (Exception e) {
+          winCondition.put("seconds", 5);  // Default if extraction fails
+        }
+      } else {
+        // Default win condition if type can't be determined
+        winCondition.put("type", "EntityBased");
+        winCondition.put("entityType", "dot");
+      }
+    } else {
+      // Default win condition if none exists
+      winCondition.put("type", "EntityBased");
+      winCondition.put("entityType", "dot");
+    }
+
     defaultSettings.set("winCondition", winCondition);
 
     // === levels ===

@@ -306,12 +306,16 @@ public class JsonConfigParser implements ConfigParser {
     Settings baseSettings = gameConfig.settings();
 
     return new GameSettings(
-        baseSettings.gameSpeed(),
-        baseSettings.startingLives(),
-        baseSettings.initialScore(),
-        "wrap"
+            baseSettings.gameSpeed(),
+            baseSettings.startingLives(),
+            baseSettings.initialScore(),
+            "wrap",
+            baseSettings.scoreStrategy(),
+            baseSettings.winCondition()
     );
   }
+
+
 
 
   private List<CollisionRule> convertToCollisionRules(GameConfig gameConfig) {
@@ -443,11 +447,11 @@ public class JsonConfigParser implements ConfigParser {
     }
 
     return new Settings(
-        override.gameSpeed() != null ? override.gameSpeed() : defaults.gameSpeed(),
-        override.startingLives() != null ? override.startingLives() : defaults.startingLives(),
-        override.initialScore() != null ? override.initialScore() : defaults.initialScore(),
-        override.scoreStrategy() != null ? override.scoreStrategy() : defaults.scoreStrategy(),
-        override.winCondition() != null ? override.winCondition() : defaults.winCondition());
+            override.gameSpeed() != 0 ? override.gameSpeed() : defaults.gameSpeed(),
+            override.startingLives() != 0 ? override.startingLives() : defaults.startingLives(),
+            override.initialScore() != 0 ? override.initialScore() : defaults.initialScore(),
+            override.scoreStrategy() != null ? override.scoreStrategy() : defaults.scoreStrategy(),
+            override.winCondition() != null ? override.winCondition() : defaults.winCondition());
   }
 
   private String getFolderPath(String filepath) throws ConfigException {

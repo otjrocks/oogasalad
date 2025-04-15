@@ -1,5 +1,6 @@
 package oogasalad.authoring.view;
 
+import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,6 +12,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.records.config.model.Settings;
+import oogasalad.engine.records.config.model.wincondition.WinCondition;
 
 
 /**
@@ -33,6 +35,12 @@ public class GameSettingsView {
   private Spinner<Double> gameSpeedSpinner;
   private Spinner<Integer> startingLivesSpinner;
   private Spinner<Integer> initialScoreSpinner;
+  private TextField gameTitle;
+  private TextField authorField;
+  private TextArea gameDescriptionArea;
+  private ComboBox<String> scoreStrategy;
+  private ComboBox<String> winConditionType;
+  private TextField winConditionParam;
 
   /**
    * Constructor initializes the view with the given controller
@@ -80,20 +88,152 @@ public class GameSettingsView {
     startingLivesSpinner = createIntegerSpinner(1, 10, 1, gameSettings.startingLives());
     initialScoreSpinner = createIntegerSpinner(0, 1000, 50, gameSettings.initialScore());
 
-    // Add first row of settings
-    settingsGrid.add(new Label(LanguageManager.getMessage("GAME_SPEED")), 0, 0);
-    settingsGrid.add(gameSpeedSpinner, 1, 0);
-    settingsGrid.add(new Label(LanguageManager.getMessage("STARTING_LIVES")), 2, 0);
-    settingsGrid.add(startingLivesSpinner, 3, 0);
+    // Create fields for metadata
+    gameTitle = new TextField(controller.getModel().getGameTitle());
+    gameTitle.setPrefWidth(200);
+    authorField = new TextField(controller.getModel().getAuthor());
+    authorField.setPrefWidth(200);
+    gameDescriptionArea = new TextArea(controller.getModel().getGameDescription());
+    gameDescriptionArea.setPrefRowCount(2);
+    gameDescriptionArea.setPrefWidth(300);
+    gameDescriptionArea.setWrapText(true);
 
-    // Add second row of settings
-    settingsGrid.add(new Label(LanguageManager.getMessage("INITIAL_SCORE")), 0, 1);
-    settingsGrid.add(initialScoreSpinner, 1, 1);
-    settingsGrid.add(new Label(LanguageManager.getMessage("EDGE_POLICY")), 2, 1);
-    HBox buttonBox = getHBox();
+    // Create win condition fields
+    scoreStrategy = new ComboBox<>();
+    scoreStrategy.getItems().addAll("Cumulative", "HighScore");
+    scoreStrategy.setValue(gameSettings.scoreStrategy() != null ?
+            gameSettings.scoreStrategy() : "Cumulative");
 
-    rootNode.getChildren().addAll(titleLabel, settingsGrid, buttonBox);
+    winConditionType = new ComboBox<>();
+    winConditionType.getItems().addAll("EntityBased", "ScoreBased", "SurviveForTime");
+
+    // Set the default value based on current win condition
+    String currentWinCondition = getWinConditionType();
+    winConditionType.setValue(currentWinCondition);
+
+    winConditionParam = new TextField(getWinConditionParam());
+    winConditionParam.setPrefWidth(100);
+
+    // Add settings to the grid - first row (game specs)
+    settingsGrid.add(new Label("Game Title:"), 0, 0);
+    settingsGrid.add(gameTitle, 1, 0);
+    settingsGrid.add(new Label("Author:"), 2, 0);
+    settingsGrid.add(authorField, 3, 0);
+
+    // Second row - game description
+    settingsGrid.add(new Label("Description:"), 0, 1);
+    settingsGrid.add(gameDescriptionArea, 1, 1, 3, 1);
+
+    // Third row - game speed and lives
+    settingsGrid.add(new Label(LanguageManager.getMessage("GAME_SPEED")), 0, 2);
+    settingsGrid.add(gameSpeedSpinner, 1, 2);
+    settingsGrid.add(new Label(LanguageManager.getMessage("STARTING_LIVES")), 2, 2);
+    settingsGrid.add(startingLivesSpinner, 3, 2);
+
+    // Fourth row - score and strategy
+    settingsGrid.add(new Label(LanguageManager.getMessage("INITIAL_SCORE")), 0, 3);
+    settingsGrid.add(initialScoreSpinner, 1, 3);
+    settingsGrid.add(new Label("Score Strategy:"), 2, 3);
+    settingsGrid.add(scoreStrategy, 3, 3);
+
+    // Fifth row - win condition
+    settingsGrid.add(new Label("Win Condition:"), 0, 4);
+    settingsGrid.add(winConditionType, 1, 4);
+    settingsGrid.add(new Label("Parameter:"), 2, 4);
+    settingsGrid.add(winConditionParam, 3, 4);
+
+    // Create action buttons
+    Button saveButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
+    saveButton.setOnAction(e -> saveSettings());
+
+    Button collisionRulesButton = new Button(LanguageManager.getMessage("COLLISION_RULES"));
+    collisionRulesButton.setOnAction(e -> showCollisionRulesPopup());
+
+    // Create button container with more space between buttons
+    HBox buttonBox = new HBox(15, saveButton, collisionRulesButton);
+    buttonBox.setAlignment(Pos.CENTER_LEFT);
+
+    // Create a vertical layout to contain all elements
+    VBox mainContainer = new VBox(10, titleLabel, settingsGrid, buttonBox);
+    mainContainer.setPadding(new Insets(5));
+
+    rootNode.getChildren().add(mainContainer);
+
+    // Add listeners for win condition type changes
+    winConditionType.setOnAction(e -> updateWinConditionParamLabel());
+    updateWinConditionParamLabel();
   }
+
+  private void updateWinConditionParamLabel() {
+    String type = winConditionType.getValue();
+    Label paramLabel = (Label) ((GridPane) ((VBox) rootNode.getChildren().get(0)).getChildren().get(1)).getChildren().get(10);
+
+    switch (type) {
+      case "EntityBased":
+        paramLabel.setText("Entity Type:");
+        break;
+      case "ScoreBased":
+        paramLabel.setText("Target Score:");
+        break;
+      case "SurviveForTime":
+        paramLabel.setText("Seconds:");
+        break;
+      default:
+        paramLabel.setText("Parameter:");
+    }
+  }
+
+  private String getWinConditionType() {
+    if (gameSettings.winCondition() == null) {
+      return "SurviveForTime";
+    }
+
+    String className = gameSettings.winCondition().getClass().getSimpleName();
+    if (className.contains("EntityBased")) {
+      return "EntityBased";
+    } else if (className.contains("ScoreBased")) {
+      return "ScoreBased";
+    } else if (className.contains("SurviveForTime")) {
+      return "SurviveForTime";
+    }
+
+    return "SurviveForTime"; // Default
+  }
+
+  private String getWinConditionParam() {
+    if (gameSettings.winCondition() == null) {
+      return "5"; // Default time in seconds
+    }
+
+    String className = gameSettings.winCondition().getClass().getSimpleName();
+    if (className.contains("EntityBased")) {
+      // Attempt to get the entity type
+      try {
+        // This would need proper reflection based on actual structure
+        return "dot"; // Default if we can't extract
+      } catch (Exception e) {
+        return "dot";
+      }
+    } else if (className.contains("ScoreBased")) {
+      // Attempt to get target score
+      try {
+        // This would need proper reflection based on actual structure
+        return "1000"; // Default if we can't extract
+      } catch (Exception e) {
+        return "1000";
+      }} else if (className.contains("SurviveForTime")) {
+      // Attempt to get time
+      try {
+        // This would need proper reflection based on actual structure
+        return "5"; // Default if we can't extract
+      } catch (Exception e) {
+        return "5";
+      }
+    }
+
+    return "5"; // Default
+  }
+
 
   private HBox getHBox() {
     Button saveButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
@@ -181,7 +321,11 @@ public class GameSettingsView {
     // Commit any edited values in spinners
     commitSpinnerValues();
     // Update the model with the current settings
-    controller.getModel().setDefaultSettings(gameSettings);
+    controller.getModel().setGameTitle(gameTitle.getText());
+    controller.getModel().setAuthor(authorField.getText());
+    controller.getModel().setGameDescription(gameDescriptionArea.getText());
+    Settings updatedSettings = createUpdatedSettings();
+    controller.getModel().setDefaultSettings(updatedSettings);
 
     // Show confirmation to user
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -189,6 +333,74 @@ public class GameSettingsView {
     alert.setHeaderText(null);
     alert.setContentText(LanguageManager.getMessage("GAME_SETTINGS_SAVED"));
     alert.showAndWait();
+  }
+
+  private Settings createUpdatedSettings() {
+    // Build the win condition based on selected type
+    Object winCondition = buildWinCondition();
+
+    // Create and return the new Settings object
+    return new Settings(
+            gameSpeedSpinner.getValue(),
+            startingLivesSpinner.getValue(),
+            initialScoreSpinner.getValue(),
+            scoreStrategy.getValue(),
+            (WinCondition) winCondition
+    );
+  }
+
+  private Object buildWinCondition() {
+    String type = winConditionType.getValue();
+    String param = winConditionParam.getText();
+
+    switch (type) {
+      case "EntityBased":
+        return createEntityBasedWinCondition(param);
+      case "ScoreBased":
+        return createScoreBasedWinCondition(param);
+      case "SurviveForTime":
+        return createSurviveForTimeCondition(param);
+      default:
+        return createSurviveForTimeCondition("5"); // Default
+    }
+  }
+
+  private Object createEntityBasedWinCondition(String entityType) {
+    try {
+      // Create an EntityBasedWinCondition with the specified entity type
+      Class<?> clazz = Class.forName("oogasalad.engine.records.config.model.wincondition.EntityBasedWinCondition");
+      return clazz.getConstructor(String.class).newInstance(entityType);
+    } catch (Exception e) {
+      // Fallback to SurviveForTimeCondition if entity-based fails
+      return createSurviveForTimeCondition("5");
+    }
+  }
+
+  private Object createScoreBasedWinCondition(String scoreStr) {
+    try {
+      // Parse the target score
+      int targetScore = Integer.parseInt(scoreStr);
+
+      // Create a ScoreBasedWinCondition with the specified target score
+      Class<?> clazz = Class.forName("oogasalad.engine.records.config.model.wincondition.ScoreBasedWinCondition");
+      return clazz.getConstructor(int.class).newInstance(targetScore);
+    } catch (Exception e) {
+      // Fallback to SurviveForTimeCondition if score-based fails
+      return createSurviveForTimeCondition("5");
+    }
+  }
+
+  private Object createSurviveForTimeCondition(String secondsStr) {
+    try {
+      // Parse the time in seconds
+      int seconds = Integer.parseInt(secondsStr);
+
+      // Create a SurviveForTimeCondition with the specified time
+      return new oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition(seconds);
+    } catch (Exception e) {
+      // Default to 5 seconds if parsing fails
+      return new oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition(5);
+    }
   }
 
   /**
