@@ -62,7 +62,7 @@ class TargetStrategyHelperMethods {
    * @throws TargetStrategyException if the "targetType" key is not present in the strategyConfig
    *                                 map.
    */
-  static String validateAndGetTargetType(Map<String, Object> strategyConfig, String key) {
+  static String validateAndGetKeyString(Map<String, Object> strategyConfig, String key) {
     if (!strategyConfig.containsKey(key)
         || strategyConfig.get(key) == null) {
       throw new TargetStrategyException("Type " + key + " is required");
@@ -71,20 +71,19 @@ class TargetStrategyHelperMethods {
     return strategyConfig.get(key).toString();
   }
 
-  static int validateAndGetTilesAhead(Map<String, Object> strategyConfig) {
-    final String TILES_AHEAD_KEY = "tilesAhead";
-
-    if (strategyConfig.containsKey(TILES_AHEAD_KEY)
-        && strategyConfig.get(TILES_AHEAD_KEY) != null) {
-      try {
-        return Integer.parseInt(strategyConfig.get(TILES_AHEAD_KEY).toString());
-      } catch (NumberFormatException e) {
-        throw new TargetStrategyException("tilesAhead must be an integer", e);
+  static int validateAndGetKeyInt(Map<String, Object> strategyConfig, String key) {
+    if (strategyConfig.containsKey(key) && strategyConfig.get(key) != null) {
+      Object value = strategyConfig.get(key);
+      if (value instanceof Number num) {
+        return num.intValue();
+      } else {
+        throw new TargetStrategyException(key + " must be a number convertible to int");
       }
     }
 
-    return 0;
+    throw new TargetStrategyException("Type " + key + " is required");
   }
+
 
   static int[] calcTargetPosition(GameMap map, Entity entity, String type, int tilesAhead) {
     int[] potentialTarget = potentialTargetPosition(

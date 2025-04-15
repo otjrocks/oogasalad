@@ -1,64 +1,49 @@
 package oogasalad.player.model.control.targetcalculation;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.entity.Entity;
+import oogasalad.engine.model.EntityPlacement;
+import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.entity.Entity;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-public class TargetEntityStrategyTest {
-
-  private GameMap mockMap;
-  private Entity mockEntity;
-  private EntityPlacement mockPlacement;
-
-  @BeforeEach
-  void setUp() {
-    mockMap = mock(GameMap.class);
-    mockEntity = mock(Entity.class);
-    mockPlacement = mock(EntityPlacement.class);
-  }
+class TargetEntityStrategyTest {
 
   @Test
-  void getTargetPosition_validEntity_returnsEntityLocation() {
+  void getTargetPosition_validEntity_returnsEntityCoordinates() {
+    GameMap mockMap = mock(GameMap.class);
+    Entity mockEntity = mock(Entity.class);
+    EntityPlacement mockPlacement = mock(EntityPlacement.class);
+
+    when(mockPlacement.getX()).thenReturn(2.0);
+    when(mockPlacement.getY()).thenReturn(4.0);
+    when(mockPlacement.getTypeString()).thenReturn("Enemy");
     when(mockEntity.getEntityPlacement()).thenReturn(mockPlacement);
-    when(mockPlacement.getTypeString()).thenReturn("enemy");
-    when(mockPlacement.getX()).thenReturn(5.0);
-    when(mockPlacement.getY()).thenReturn(5.0);
+    when(mockMap.iterator()).thenReturn(
+        java.util.List.of(mockEntity).iterator()
+    );
 
-    Iterator<Entity> iterator = Collections.singletonList(mockEntity).iterator();
-    when(mockMap.iterator()).thenReturn(iterator);
-
-    Map<String, Object> config = new HashMap<>();
-    config.put("targetType", "enemy");
-
+    Map<String, Object> config = Map.of("targetType", "Enemy");
     TargetStrategy strategy = new TargetEntityStrategy(mockMap, config);
-    int[] result = strategy.getTargetPosition();
 
-    assertArrayEquals(new int[]{5, 5}, result);
+    int[] result = strategy.getTargetPosition();
+    assertArrayEquals(new int[]{2, 4}, result);
   }
 
-  @DisplayName("Returns default location when no valid entity is found")
   @Test
-  void getTargetPosition_noValidEntity_returnsDefaultLocation() {
-    Iterator<Entity> iterator = Collections.emptyIterator();
-    when(mockMap.iterator()).thenReturn(iterator);
+  void getTargetPosition_noEntity_returnsDefaultZero() {
+    GameMap mockMap = mock(GameMap.class);
+    Iterator<Entity> emptyIterator = java.util.Collections.<Entity>emptyList().iterator();
+    when(mockMap.iterator()).thenReturn(emptyIterator);
 
-    Map<String, Object> config = new HashMap<>();
-    config.put("targetType", "enemy");
-
+    Map<String, Object> config = Map.of("targetType", "Enemy");
     TargetStrategy strategy = new TargetEntityStrategy(mockMap, config);
-    int[] result = strategy.getTargetPosition();
 
+    int[] result = strategy.getTargetPosition();
     assertArrayEquals(new int[]{0, 0}, result);
   }
 }

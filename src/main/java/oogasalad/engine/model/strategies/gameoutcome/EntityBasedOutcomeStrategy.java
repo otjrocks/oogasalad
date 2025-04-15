@@ -17,7 +17,6 @@ import oogasalad.engine.records.GameContextRecord;
 public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
 
   private final String entityType;
-
   /**
    * Constructs an {@code EntityBasedOutcomeStrategy} that determines the end of the game based on
    * the remaining count of a specific entity type in the game map.
@@ -33,16 +32,12 @@ public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
    * Determines if the game has ended based on the current {@link GameState}. Check conditions such
    * as whether all pellets have been consumed.
    *
-   * @param gameContext contains gameScore and gameMap
+   * @param context contains gameScore and gameMap
    * @return {@code true} if the game has ended, {@code false} otherwise
    */
   @Override
-  public boolean hasGameEnded(GameContextRecord gameContext) {
-    if (gameContext.gameMap().getEntityCount(entityType) <= 0) {
-      return true;
-    }
-    gameContext.gameMap().decrementEntityCount(entityType);
-    return false;
+  public boolean hasGameEnded(GameContextRecord context) {
+    return context.gameMap().getEntityCount(entityType) <= 0;
   }
 
   /**
@@ -53,6 +48,11 @@ public class EntityBasedOutcomeStrategy implements GameOutcomeStrategy {
    */
   @Override
   public String getGameOutcome(GameContextRecord gameContext) {
-    return hasGameEnded(gameContext) ? "Level Passed" : "Game ongoing";
+    if (gameContext.gameMap().getEntityCount(entityType) <= 0) {
+      return "Level Passed";
+    } else {
+      return "Game ongoing";
+    }
   }
+
 }

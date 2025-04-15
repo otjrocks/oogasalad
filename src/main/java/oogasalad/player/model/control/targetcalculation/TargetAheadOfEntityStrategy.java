@@ -2,10 +2,8 @@ package oogasalad.player.model.control.targetcalculation;
 
 import java.util.Map;
 import java.util.Optional;
-import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.player.model.exceptions.TargetStrategyException;
 
 /**
  * The TargetAheadOfEntityStrategy class implements the TargetStrategy interface and provides a
@@ -63,9 +61,9 @@ public class TargetAheadOfEntityStrategy implements TargetStrategy {
   public TargetAheadOfEntityStrategy(GameMap gameMap, Map<String, Object> strategyConfig,
       String typeOfCaller) {
     myGameMap = gameMap;
-    myTargetType = TargetStrategyHelperMethods.validateAndGetTargetType(strategyConfig,
+    myTargetType = TargetStrategyHelperMethods.validateAndGetKeyString(strategyConfig,
         "targetType");
-    myTilesAhead = TargetStrategyHelperMethods.validateAndGetTilesAhead(strategyConfig);
+    myTilesAhead = TargetStrategyHelperMethods.validateAndGetKeyInt(strategyConfig, "tilesAhead");
     myType = typeOfCaller;
   }
 

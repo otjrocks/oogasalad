@@ -11,5 +11,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = SurviveForTimeCondition.class, name = "SurviveForTime"),
+    @JsonSubTypes.Type(value = EntityBasedCondition.class, name = "EntityBased")
 })
 public interface WinCondition { }

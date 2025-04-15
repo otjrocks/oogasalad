@@ -8,6 +8,7 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
+import oogasalad.engine.model.controlConfig.NoneControlConfig;
 import oogasalad.engine.records.config.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.records.config.model.EntityProperties;
@@ -92,33 +93,33 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
   }
 
 
-//  @Test
-//  public void selectEntityType_ClickTile_CallsSelectEntityType() {
-//    EntityType entity = new EntityType(
-//        "Ghost",
-//        new KeyboardControlConfig(),
-//        Map.of("Default", mode),
-//        List.of()
-//    );    runAsJFXAction(() -> view.updateEntities(List.of(entity)));
-//
-//    VBox tile = (VBox) ((FlowPane) lookup(".flow-pane").query()).getChildren().get(0);
-//    runAsJFXAction(() -> clickOn(tile));
-//
-//    verify(mockController).selectEntityType("Pacman");
-//  }
+  @Test
+  public void selectEntityType_ClickTile_CallsSelectEntityType() {
+    EntityType entity = new EntityType(
+        "Pacman",
+        new NoneControlConfig(),
+        Map.of("Default", mode),
+        List.of()
+    );    runAsJFXAction(() -> view.updateEntities(List.of(entity)));
 
-//  @Test
-//  public void highlightEntityTile_HighlightsCorrectTile() {
-//    EntityType entity = new EntityType(
-//        "Ghost",
-//        new KeyboardControlConfig(),
-//        Map.of("Default", mode),
-//        List.of()
-//    );
-//    runAsJFXAction(() -> view.updateEntities(List.of(entity)));
-//    runAsJFXAction(() -> view.highlightEntityTile("Wall"));
-//
-//    VBox tile = (VBox) ((FlowPane) lookup(".flow-pane").query()).getChildren().get(0);
-//    assertTrue(tile.getStyleClass().contains("selected-tile"));
-//  }
+    VBox tile = (VBox) ((FlowPane) lookup(".flow-pane").query()).getChildren().getFirst();
+    runAsJFXAction(() -> clickOn(tile));
+
+    verify(mockController).selectEntityType("Pacman");
+  }
+
+  @Test
+  public void highlightEntityTile_HighlightsCorrectTile() {
+    EntityType entity = new EntityType(
+        "Wall",
+        new NoneControlConfig(),
+        Map.of("Default", mode),
+        List.of()
+    );
+    runAsJFXAction(() -> view.updateEntities(List.of(entity)));
+    runAsJFXAction(() -> view.highlightEntityTile("Wall"));
+
+    VBox tile = (VBox) ((FlowPane) lookup(".flow-pane").query()).getChildren().getFirst();
+    assertTrue(tile.getStyleClass().contains("selected-tile"));
+  }
 }

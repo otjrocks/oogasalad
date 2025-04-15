@@ -43,7 +43,7 @@ import oogasalad.player.model.exceptions.ControlStrategyException;
  */
 public class ControlStrategyFactory {
 
-  private static final String STRATEGY_PACKAGE
+  private static String STRATEGY_PACKAGE
       = "oogasalad.player.model.control.";
 
   /**
@@ -73,7 +73,6 @@ public class ControlStrategyFactory {
               + className, e);
     }
   }
-
 
   private static ControlStrategy instantiateStrategy(Class<?> strategyClass, GameInputManager input,
       EntityPlacement placement,
