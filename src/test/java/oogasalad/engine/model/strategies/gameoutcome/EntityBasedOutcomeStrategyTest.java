@@ -27,7 +27,7 @@ class EntityBasedOutcomeStrategyTest {
     EntityBasedOutcomeStrategy strategy = new EntityBasedOutcomeStrategy("Pellet");
 
     assertTrue(strategy.hasGameEnded(context));
-    verify(gameMap, never()).decrementEntityCount("Pellet");
+    verify(gameMap).getEntityCount("Pellet");
   }
 
   @Test
@@ -37,17 +37,17 @@ class EntityBasedOutcomeStrategyTest {
     EntityBasedOutcomeStrategy strategy = new EntityBasedOutcomeStrategy("Pellet");
 
     assertTrue(strategy.hasGameEnded(context));
-    verify(gameMap, never()).decrementEntityCount("Pellet");
+    verify(gameMap).getEntityCount("Pellet");
   }
 
   @Test
-  void hasGameEnded_entityCountPositive_returnsFalseAndDecrements() {
+  void hasGameEnded_entityCountPositive_returnsFalse() {
     when(gameMap.getEntityCount("Pellet")).thenReturn(5);
 
     EntityBasedOutcomeStrategy strategy = new EntityBasedOutcomeStrategy("Pellet");
 
     assertFalse(strategy.hasGameEnded(context));
-    verify(gameMap).decrementEntityCount("Pellet");
+    verify(gameMap).getEntityCount("Pellet");
   }
 
   @Test
@@ -59,6 +59,7 @@ class EntityBasedOutcomeStrategyTest {
     String outcome = strategy.getGameOutcome(context);
 
     assertEquals("Level Passed", outcome);
+    verify(gameMap).getEntityCount("Pellet");
   }
 
   @Test
@@ -70,6 +71,6 @@ class EntityBasedOutcomeStrategyTest {
     String outcome = strategy.getGameOutcome(context);
 
     assertEquals("Game ongoing", outcome);
-    verify(gameMap).decrementEntityCount("Pellet");
+    verify(gameMap).getEntityCount("Pellet");
   }
 }
