@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javax.swing.text.View;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.model.EntityType;
@@ -189,28 +190,35 @@ public class EntityTypeEditorView {
 
     } catch (Exception e) {
       showError("Error building control config: " + e.getMessage());
-      throw new RuntimeException(e);
+      throw new ViewException("Error building control config: ", e);
     }
   }
 
 
-  private TargetCalculationConfig buildTargetStrategyFromUI() throws Exception {
-    String selectedStrategy = controlTypeComboBoxes.get(TARGET_CALCULATION_CONFIG).getValue();
-    Map<String, Class<?>> requiredTypes = ControlManager.getTargetRequiredFields(selectedStrategy);
-    List<String> fieldOrder = ControlManager.getTargetRequiredFieldsOrder(selectedStrategy);
+  private TargetCalculationConfig buildTargetStrategyFromUI() throws ViewException {
+    try {
+      String selectedStrategy = controlTypeComboBoxes.get(TARGET_CALCULATION_CONFIG).getValue();
+      Map<String, Class<?>> requiredTypes = ControlManager.getTargetRequiredFields(
+          selectedStrategy);
+      List<String> fieldOrder = ControlManager.getTargetRequiredFieldsOrder(selectedStrategy);
 
-    List<Object> paramValues = new ArrayList<>();
-    int index = 0;
-    for (String param : fieldOrder) {
-      String input = targetStrategyParameterFields.get(index++).getText();
-      paramValues.add(castToRequiredType(input, requiredTypes.get(param)));
+      List<Object> paramValues = new ArrayList<>();
+      int index = 0;
+      for (String param : fieldOrder) {
+        String input = targetStrategyParameterFields.get(index++).getText();
+        paramValues.add(castToRequiredType(input, requiredTypes.get(param)));
+      }
+
+      String fullClassName =
+          "oogasalad.engine.model.controlConfig.targetStrategy." + selectedStrategy + "Config";
+      Class<?> strategyClass = Class.forName(fullClassName);
+      Constructor<?> constructor = strategyClass.getDeclaredConstructors()[0];
+
+      return (TargetCalculationConfig) constructor.newInstance(paramValues.toArray());
+    } catch (Exception e) {
+      showError("Error building target strategy: " + e.getMessage());
+      throw new ViewException("Error building target strategy: ", e);
     }
-
-    String fullClassName = "oogasalad.engine.model.controlConfig.targetStrategy." + selectedStrategy + "Config";
-    Class<?> strategyClass = Class.forName(fullClassName);
-    Constructor<?> constructor = strategyClass.getDeclaredConstructors()[0];
-
-    return (TargetCalculationConfig) constructor.newInstance(paramValues.toArray());
   }
 
 
@@ -223,7 +231,8 @@ public class EntityTypeEditorView {
     } else if (type == String.class) {
       return value;
     }
-    throw new IllegalArgumentException("Unsupported parameter type: " + type);
+
+    throw new ViewException("Unsupported parameter type: " + type);
   }
 
 

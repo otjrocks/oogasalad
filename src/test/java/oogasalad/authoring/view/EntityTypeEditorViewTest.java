@@ -87,9 +87,11 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
 
     VBox root = (VBox) view.getRoot();
     ComboBox<String> controlBox = (ComboBox<String>) root.getChildren().get(3);
-
-    controlBox.setValue("FollowMouse");
+    controlBox.setValue("None");
     controlBox.getOnAction().handle(new ActionEvent());
+
+    Button saveButton = (Button) root.getChildren().get(5);
+    saveButton.fire();
 
     verify(mockController.getModel()).updateEntityType(any(), any(EntityType.class));
     verify(mockController).updateEntitySelector();
