@@ -11,6 +11,7 @@ import oogasalad.engine.model.EntityType;
 
 import java.util.*;
 import oogasalad.engine.model.controlConfig.ControlConfig;
+import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.records.config.model.CollisionEvent;
 
 /**
@@ -49,8 +50,14 @@ public class JsonConfigBuilder {
     defaultSettings.put("startingLives", model.getDefaultSettings().startingLives());
     defaultSettings.put("initialScore", model.getDefaultSettings().initialScore());
     // TODO: add these to settings
-    // defaultSettings.put("scoreStrategy", model.getDefaultSettings().getScoresStrategy());
-    // defaultSettings.put("winCondition", model.getDefaultSettings().getWinCondition());
+    defaultSettings.put("scoreStrategy", "Cumulative"); // TODO: remove hardcoded value
+
+    // === win conditions ===
+    // TODO: remove hard coded win condition and replace with settings from authoring environment
+    ObjectNode winCondition = mapper.createObjectNode();
+    winCondition.put("type", "EntityBased");
+    winCondition.put("entityType", "dot");
+    defaultSettings.set("winCondition", winCondition);
 
     // === levels ===
     ArrayNode levels = root.putArray("levels");
@@ -65,7 +72,6 @@ public class JsonConfigBuilder {
     for (CollisionRule collisionRule : model.getCollisionRules()) {
       collisionRules.add(mapper.valueToTree(collisionRule));
     }
-
     return root;
   }
 
@@ -90,7 +96,7 @@ public class JsonConfigBuilder {
       mappings.add(entry);
     });
 
-    ObjectNode settings = root.putObject("settings");
+    ObjectNode settings = root.putObject("mapInfo");
     settings.put("width", draft.getWidth());
     settings.put("height", draft.getHeight());
     settings.put("edgePolicy", draft.getEdgePolicy());
@@ -117,6 +123,14 @@ public class JsonConfigBuilder {
       }
       layout.add(String.join(" ", rowTiles));
     }
+
+    // === spawn events ===
+    ArrayNode spawnEvents = root.putArray("spawnEvents");
+    // TODO: Implement spawn events
+
+    // === mode change events ===
+    ArrayNode modeChangeEvents = root.putArray("modeChangeEvents");
+    // TODO: Implement mode change events
 
     return root;
   }
