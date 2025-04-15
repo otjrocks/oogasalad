@@ -27,8 +27,7 @@ import oogasalad.engine.model.entity.Entity;
  * </pre>
  *
  * <p>Note: This class assumes that the specified target type exists on the map. If no entity of
- * the
- * specified type is found, the behavior of the class is undefined (currently 0, 0)..
+ * the specified type is found, the behavior of the class is undefined (currently 0, 0)..
  *
  * @author Jessica Chen
  * @author Chatgpt for javadoc
@@ -47,7 +46,7 @@ public class TargetEntityStrategy implements TargetStrategy {
    */
   public TargetEntityStrategy(GameMap gameMap, Map<String, Object> strategyConfig) {
     myGameMap = gameMap;
-    myTargetType = TargetStrategyHelperMethods.validateAndGetTargetType(strategyConfig,
+    myTargetType = TargetStrategyHelperMethods.validateAndGetKeyString(strategyConfig,
         "targetType");
   }
 
