@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -32,6 +33,8 @@ import oogasalad.player.model.control.ControlManager;
  * @author Will He, Ishan Madan
  */
 public class EntityTypeEditorView {
+
+  private final String TARGET_CALCULATION_CONFIG = "targetCalculationConfig";
 
   private final VBox root;
   private final TextField typeField;
@@ -169,7 +172,7 @@ public class EntityTypeEditorView {
         if (param.startsWith("pathFindingStrategy")) {
           constructorArgs.add(controlTypeComboBoxes.get(param).getValue());
 
-        } else if (param.startsWith("targetCalculationConfig")) {
+        } else if (param.startsWith(TARGET_CALCULATION_CONFIG)) {
           constructorArgs.add(buildTargetStrategyFromUI());
 
         } else {
@@ -192,7 +195,7 @@ public class EntityTypeEditorView {
 
 
   private TargetCalculationConfig buildTargetStrategyFromUI() throws Exception {
-    String selectedStrategy = controlTypeComboBoxes.get("targetCalculationConfig").getValue();
+    String selectedStrategy = controlTypeComboBoxes.get(TARGET_CALCULATION_CONFIG).getValue();
     Map<String, Class<?>> requiredTypes = ControlManager.getTargetRequiredFields(selectedStrategy);
     List<String> fieldOrder = ControlManager.getTargetRequiredFieldsOrder(selectedStrategy);
 
@@ -262,53 +265,80 @@ public class EntityTypeEditorView {
   private void updateControlParameterFields() {
     controlTypeParameters.getChildren().clear();
     controlTypeParameterFields.clear();
-    VBox parameterBox = new VBox(5);
 
+    VBox parameterBox = new VBox(5);
     List<String> requiredFields =
         ControlManager.getControlRequiredFieldsOrder(controlTypeBox.getValue());
 
     for (String parameter : requiredFields) {
-      Label parameterLabel = new Label(parameter + ": ");
-
-      if (parameter.startsWith("pathFindingStrategy")) {
-        ComboBox<String> pathStrategyBox = new ComboBox<>();
-        pathStrategyBox.getItems().addAll(ControlManager.getPathFindingStrategies());
-        controlTypeComboBoxes.put(parameter, pathStrategyBox);
-        parameterBox.getChildren().addAll(parameterLabel, pathStrategyBox);
-
-      } else if (parameter.startsWith("targetCalculationConfig")) {
-        ComboBox<String> targetStrategyDropdown = new ComboBox<>();
-        controlTypeComboBoxes.put(parameter, targetStrategyDropdown);
-        targetStrategyDropdown.getItems().addAll(ControlManager.getTargetCalculationStrategies());
-
-        VBox targetParameterBox = new VBox(5);
-
-        targetStrategyDropdown.setOnAction(e -> {
-          targetParameterBox.getChildren().clear();
-          String selectedStrategy = targetStrategyDropdown.getValue();
-          List<String> targetParams = ControlManager.getTargetRequiredFieldsOrder(selectedStrategy);
-
-          if (!targetParams.isEmpty()) {
-            for (String targetParam : targetParams) {
-              Label targetParamLabel = new Label(targetParam + ": ");
-              TextField targetParamField = new TextField();
-              targetStrategyParameterFields.add(targetParamField);
-              targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
-            }
-          }
-        });
-
-        parameterBox.getChildren().addAll(parameterLabel, targetStrategyDropdown, targetParameterBox);
-
-      } else {
-        TextField parameterField = new TextField();
-        controlTypeParameterFields.add(parameterField);
-        parameterBox.getChildren().addAll(parameterLabel, parameterField);
-      }
+      Node parameterNode = createParameterNode(parameter);
+      parameterBox.getChildren().add(parameterNode);
     }
 
     controlTypeParameters.getChildren().add(parameterBox);
   }
+
+  private Node createParameterNode(String parameter) {
+    Label parameterLabel = new Label(parameter + ": ");
+
+    if (parameter.startsWith("pathFindingStrategy")) {
+      return createPathFindingStrategyNode(parameterLabel, parameter);
+
+    } else if (parameter.startsWith(TARGET_CALCULATION_CONFIG)) {
+      return createTargetCalculationConfigNode(parameterLabel, parameter);
+
+    } else {
+      return createGenericParameterNode(parameterLabel);
+    }
+  }
+
+  private Node createPathFindingStrategyNode(Label parameterLabel, String parameter) {
+    ComboBox<String> pathStrategyBox = new ComboBox<>();
+    pathStrategyBox.getItems().addAll(ControlManager.getPathFindingStrategies());
+    controlTypeComboBoxes.put(parameter, pathStrategyBox);
+
+    VBox container = new VBox(5);
+    container.getChildren().addAll(parameterLabel, pathStrategyBox);
+    return container;
+  }
+
+  private Node createTargetCalculationConfigNode(Label parameterLabel, String parameter) {
+    ComboBox<String> targetStrategyDropdown = new ComboBox<>();
+    targetStrategyDropdown.getItems().addAll(ControlManager.getTargetCalculationStrategies());
+    controlTypeComboBoxes.put(parameter, targetStrategyDropdown);
+
+    VBox targetParameterBox = new VBox(5);
+    targetStrategyDropdown.setOnAction(e -> updateTargetParameterFields(targetStrategyDropdown, targetParameterBox));
+
+    VBox container = new VBox(5);
+    container.getChildren().addAll(parameterLabel, targetStrategyDropdown, targetParameterBox);
+    return container;
+  }
+
+  private void updateTargetParameterFields(ComboBox<String> dropdown, VBox targetParameterBox) {
+    targetParameterBox.getChildren().clear();
+    String selectedStrategy = dropdown.getValue();
+    List<String> targetParams = ControlManager.getTargetRequiredFieldsOrder(selectedStrategy);
+
+    if (!targetParams.isEmpty()) {
+      for (String targetParam : targetParams) {
+        Label targetParamLabel = new Label(targetParam + ": ");
+        TextField targetParamField = new TextField();
+        targetStrategyParameterFields.add(targetParamField);
+        targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
+      }
+    }
+  }
+
+  private Node createGenericParameterNode(Label parameterLabel) {
+    TextField parameterField = new TextField();
+    controlTypeParameterFields.add(parameterField);
+
+    VBox container = new VBox(5);
+    container.getChildren().addAll(parameterLabel, parameterField);
+    return container;
+  }
+
 
 
 
