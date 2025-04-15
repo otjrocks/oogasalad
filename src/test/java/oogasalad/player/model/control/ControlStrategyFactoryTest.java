@@ -3,54 +3,15 @@ package oogasalad.player.model.control;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.lang.reflect.Field;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.controlConfig.*;
-import oogasalad.engine.model.entity.Entity;
 import oogasalad.player.model.exceptions.ControlStrategyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-// Dummy strategy classes for testing
-class NoneControlStrategy implements ControlStrategy {
-  public NoneControlStrategy() {
-    // empty constructor
-  }
-
-  @Override
-  public void update(Entity entity) {
-    // dummy class
-  }
-}
-
-class KeyboardControlStrategy implements ControlStrategy {
-  public KeyboardControlStrategy(GameInputManager input, GameMap map, EntityPlacement placement) {}
-
-  @Override
-  public void update(Entity entity) {
-    // dummy class
-  }
-}
-
-class TargetControlStrategy implements ControlStrategy {
-  public TargetControlStrategy(GameMap map, EntityPlacement placement, ControlConfig config) {}
-
-  @Override
-  public void update(Entity entity) {
-    // dummy class
-  }
-}
-
-class ConditionalControlStrategy implements ControlStrategy {
-  public ConditionalControlStrategy(GameMap map, EntityPlacement placement, ControlConfig config) {}
-
-  @Override
-  public void update(Entity entity) {
-    // dummy class
-  }
-}
 
 
 public class ControlStrategyFactoryTest {
@@ -60,11 +21,21 @@ public class ControlStrategyFactoryTest {
   private EntityPlacement mockPlacement;
 
   @BeforeEach
-  void setup() {
+  void setup() throws Exception {
     mockInput = mock(GameInputManager.class);
     mockMap = mock(GameMap.class);
     mockPlacement = mock(EntityPlacement.class);
+
+    // Set up mock control type
+    EntityType mockType = mock(EntityType.class);
+    when(mockPlacement.getType()).thenReturn(mockType);
+
+    // Override the strategy package for testing
+    Field strategyPackageField = ControlStrategyFactory.class.getDeclaredField("STRATEGY_PACKAGE");
+    strategyPackageField.setAccessible(true);
+    strategyPackageField.set(null, "oogasalad.player.model.control.testdoubles.");
   }
+
 
   private void mockControlConfig(ControlConfig config) {
     EntityType mockType = mock(EntityType.class);
@@ -78,7 +49,7 @@ public class ControlStrategyFactoryTest {
     mockControlConfig(config);
 
     ControlStrategy strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
-    assertInstanceOf(NoneControlStrategy.class, strategy);
+    assertInstanceOf(oogasalad.player.model.control.testdoubles.NoneControlStrategy.class, strategy);
   }
 
   @Test
@@ -87,7 +58,7 @@ public class ControlStrategyFactoryTest {
     mockControlConfig(config);
 
     ControlStrategy strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
-    assertInstanceOf(KeyboardControlStrategy.class, strategy);
+    assertInstanceOf(oogasalad.player.model.control.testdoubles.KeyboardControlStrategy.class, strategy);
   }
 
   @Test
@@ -96,7 +67,7 @@ public class ControlStrategyFactoryTest {
     mockControlConfig(config);
 
     ControlStrategy strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
-    assertInstanceOf(TargetControlStrategy.class, strategy);
+    assertInstanceOf(oogasalad.player.model.control.testdoubles.TargetControlStrategy.class, strategy);
   }
 
   @Test
@@ -105,7 +76,7 @@ public class ControlStrategyFactoryTest {
     mockControlConfig(config);
 
     ControlStrategy strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
-    assertInstanceOf(ConditionalControlStrategy.class, strategy);
+    assertInstanceOf(oogasalad.player.model.control.testdoubles.ConditionalControlStrategy.class, strategy);
   }
 
   @Test

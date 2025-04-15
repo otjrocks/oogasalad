@@ -2,7 +2,6 @@ package oogasalad.player.model.control.targetcalculation;
 
 import java.util.Map;
 import oogasalad.engine.model.GameMap;
-import oogasalad.player.model.exceptions.TargetStrategyException;
 
 /**
  * A strategy for determining the target location based on the configuration. This class is

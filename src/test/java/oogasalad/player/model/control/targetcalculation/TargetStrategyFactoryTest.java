@@ -3,8 +3,7 @@ package oogasalad.player.model.control.targetcalculation;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.util.Map;
-
+import java.lang.reflect.Field;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
@@ -16,43 +15,6 @@ import oogasalad.player.model.exceptions.TargetStrategyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-// Dummy strategy classes for testing
-class TargetLocationStrategy implements TargetStrategy {
-  public TargetLocationStrategy(GameMap map, Map<String, Object> config) {}
-
-  @Override
-  public int[] getTargetPosition() {
-    return new int[0];
-  }
-}
-
-class TargetEntityStrategy implements TargetStrategy {
-  public TargetEntityStrategy(GameMap map, Map<String, Object> config) {}
-
-  @Override
-  public int[] getTargetPosition() {
-    return new int[0];
-  }
-}
-
-class TargetAheadOfEntityStrategy implements TargetStrategy {
-  public TargetAheadOfEntityStrategy(GameMap map, Map<String, Object> config) {}
-
-  @Override
-  public int[] getTargetPosition() {
-    return new int[0];
-  }
-}
-
-class TargetEntityWithTrapStrategy implements TargetStrategy {
-  public TargetEntityWithTrapStrategy(GameMap map, Map<String, Object> config, String typeString) {}
-
-  @Override
-  public int[] getTargetPosition() {
-    return new int[0];
-  }
-}
-
 public class TargetStrategyFactoryTest {
 
   private GameMap mockMap;
@@ -60,12 +22,17 @@ public class TargetStrategyFactoryTest {
   private EntityType mockType;
 
   @BeforeEach
-  void setup() {
+  void setup() throws Exception {
     mockMap = mock(GameMap.class);
     mockPlacement = mock(EntityPlacement.class);
     mockType = mock(EntityType.class);
     when(mockPlacement.getType()).thenReturn(mockType);
     when(mockPlacement.getTypeString()).thenReturn("SomeType");
+
+    // Override the package used by the factory for class lookup
+    Field pkgField = TargetStrategyFactory.class.getDeclaredField("STRATEGY_PACKAGE");
+    pkgField.setAccessible(true);
+    pkgField.set(null, "oogasalad.player.model.control.targetcalculation.testdoubles.");
   }
 
   private void mockTargetControlConfig(TargetCalculationConfig config) {
@@ -82,28 +49,32 @@ public class TargetStrategyFactoryTest {
   void createTargetStrategy_targetLocationStrategy_createdSuccessfully() {
     mockTargetControlConfig(new TargetLocationConfig(10.0, 20.0));
     TargetStrategy strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
-    assertInstanceOf(TargetLocationStrategy.class, strategy);
+    assertInstanceOf(
+        oogasalad.player.model.control.targetcalculation.testdoubles.TargetLocationStrategy.class, strategy);
   }
 
   @Test
   void createTargetStrategy_targetEntityStrategy_createdSuccessfully() {
     mockTargetControlConfig(new TargetEntityConfig("Enemy"));
     TargetStrategy strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
-    assertInstanceOf(TargetEntityStrategy.class, strategy);
+    assertInstanceOf(
+        oogasalad.player.model.control.targetcalculation.testdoubles.TargetEntityStrategy.class, strategy);
   }
 
   @Test
   void createTargetStrategy_targetAheadOfEntityStrategy_createdSuccessfully() {
     mockTargetControlConfig(new TargetAheadOfEntityConfig("Ally", 2));
     TargetStrategy strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
-    assertInstanceOf(TargetAheadOfEntityStrategy.class, strategy);
+    assertInstanceOf(
+        oogasalad.player.model.control.targetcalculation.testdoubles.TargetAheadOfEntityStrategy.class, strategy);
   }
 
   @Test
   void createTargetStrategy_targetEntityWithTrapStrategy_createdSuccessfully() {
     mockConditionalControlConfig(new TargetEntityWithTrapConfig("Enemy", 1, "Trap"));
     TargetStrategy strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
-    assertInstanceOf(TargetEntityWithTrapStrategy.class, strategy);
+    assertInstanceOf(
+        oogasalad.player.model.control.targetcalculation.testdoubles.TargetEntityWithTrapStrategy.class, strategy);
   }
 
   // NEGATIVE TESTS

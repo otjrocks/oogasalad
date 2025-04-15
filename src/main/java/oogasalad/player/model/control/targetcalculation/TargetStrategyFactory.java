@@ -23,7 +23,7 @@ import oogasalad.player.model.exceptions.TargetStrategyException;
  */
 public class TargetStrategyFactory {
 
-  private static final String STRATEGY_PACKAGE
+  private static String STRATEGY_PACKAGE
       = "oogasalad.player.model.control.targetcalculation.";
 
   /**
