@@ -1,9 +1,9 @@
 package oogasalad.engine.model;
 
-import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
-import oogasalad.engine.records.newconfig.model.collisionevent.ConsumeCollisionEvent;
-import oogasalad.engine.records.newconfig.model.collisionevent.UpdateLivesCollisionEvent;
-import oogasalad.engine.records.newconfig.model.collisionevent.UpdateScoreCollisionEvent;
+import oogasalad.engine.records.config.model.CollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.UpdateScoreCollisionEvent;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -70,7 +70,10 @@ class CollisionRuleTest {
     rule.setEventsA(List.of(new UpdateScoreCollisionEvent(5)));
     rule.setEventsB(List.of(new ConsumeCollisionEvent()));
 
-    String expected = "(Pacman:PoweredUp) ↔ (Ghost:Default) | A: [UpdateScoreCollisionEvent[amount=5]], B: [ConsumeCollisionEvent[]]";
+    String expected = """
+        (Type Pacman: Mode PoweredUp) ↔ (Type Ghost: Mode Default)
+        Events A: [UpdateScoreCollisionEvent[amount=5]]
+        Events B: [ConsumeCollisionEvent[]]""";
     assertEquals(expected, rule.toString());
   }
 

@@ -1,4 +1,4 @@
-package oogasalad.engine.records.newconfig.model;
+package oogasalad.engine.records.config.model;
 
 import oogasalad.engine.model.Condition;
 import oogasalad.engine.model.EntityType;

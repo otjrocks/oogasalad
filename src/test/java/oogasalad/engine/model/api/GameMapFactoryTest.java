@@ -20,7 +20,7 @@ import oogasalad.engine.model.GameSettings;
 import oogasalad.engine.model.MapInfo;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
-import oogasalad.engine.records.newconfig.model.ParsedLevel;
+import oogasalad.engine.records.config.model.ParsedLevel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;

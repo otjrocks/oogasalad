@@ -1,4 +1,4 @@
-package oogasalad.engine.records.newconfig.model.wincondition;
+package oogasalad.engine.records.config.model.wincondition;
 
 /**
  * A record that encapsulates information about the survive for time win condition.

@@ -1,4 +1,6 @@
-package oogasalad.engine.records.newconfig.model.collisionevent;
+package oogasalad.engine.records.config.model.collisionevent;
+
+import oogasalad.engine.records.config.model.CollisionEvent;
 
 /**
  * A record encapsulating information about a return to spawn location collision event.

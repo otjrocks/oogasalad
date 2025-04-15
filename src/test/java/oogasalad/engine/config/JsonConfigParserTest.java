@@ -1,15 +1,15 @@
 package oogasalad.engine.config;
 
 import java.nio.file.Path;
-import oogasalad.engine.records.newconfig.CollisionConfig;
-import oogasalad.engine.records.newconfig.EntityConfig;
-import oogasalad.engine.records.newconfig.GameConfig;
-import oogasalad.engine.records.newconfig.ImageConfig;
-import oogasalad.engine.records.newconfig.model.EntityProperties;
-import oogasalad.engine.records.newconfig.model.Level;
-import oogasalad.engine.records.newconfig.model.Metadata;
-import oogasalad.engine.records.newconfig.model.Settings;
-import oogasalad.engine.records.newconfig.model.wincondition.SurviveForTimeCondition;
+import oogasalad.engine.records.config.CollisionConfig;
+import oogasalad.engine.records.config.EntityConfig;
+import oogasalad.engine.records.config.GameConfig;
+import oogasalad.engine.records.config.ImageConfig;
+import oogasalad.engine.records.config.model.EntityProperties;
+import oogasalad.engine.records.config.model.Level;
+import oogasalad.engine.records.config.model.Metadata;
+import oogasalad.engine.records.config.model.Settings;
+import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 

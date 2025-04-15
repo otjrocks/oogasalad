@@ -5,8 +5,10 @@ import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
@@ -14,7 +16,7 @@ import javafx.scene.text.Text;
  *
  * @author Owen Jennings
  */
-public class Selector extends HBox {
+public class Selector extends VBox {
 
   private final ComboBox<String> myComboBox;
 

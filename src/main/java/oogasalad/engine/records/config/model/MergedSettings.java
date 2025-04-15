@@ -1,4 +1,4 @@
-package oogasalad.engine.records.newconfig.model;
+package oogasalad.engine.records.config.model;
 
 public record MergedSettings(Double gameSpeed, Integer startingLives, Integer initialScore,
                        String scoreStrategy, String winCondition,

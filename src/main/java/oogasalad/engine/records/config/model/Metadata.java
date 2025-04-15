@@ -1,4 +1,4 @@
-package oogasalad.engine.records.newconfig.model;
+package oogasalad.engine.records.config.model;
 
 /**
  * Represents metadata information for a game. This includes the game's title, author, and a

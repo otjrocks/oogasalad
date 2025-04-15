@@ -21,9 +21,9 @@ import oogasalad.engine.LanguageManager;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
-import oogasalad.engine.records.newconfig.ImageConfig;
+import oogasalad.engine.records.config.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.newconfig.model.EntityProperties;
+import oogasalad.engine.records.config.model.EntityProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -63,7 +63,7 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
     Map<String, ModeConfig> modeMap = new HashMap<>();
     modeMap.put("Default", mockMode);
 
-    mockEntityType = new EntityType("Pacman", new KeyboardControlConfig(),  modeMap, List.of());
+    mockEntityType = new EntityType("Pacman", new KeyboardControlConfig(), modeMap, List.of());
 
     AuthoringModel mockModel = mock(AuthoringModel.class);
     when(mockController.getModel()).thenReturn(mockModel);

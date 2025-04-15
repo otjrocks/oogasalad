@@ -10,9 +10,9 @@ import oogasalad.engine.model.EntityType;
 import java.util.*;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
-import oogasalad.engine.records.newconfig.ImageConfig;
+import oogasalad.engine.records.config.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.newconfig.model.EntityProperties;
+import oogasalad.engine.records.config.model.EntityProperties;
 
 /**
  * Coordinates updates between the {@link AuthoringModel} and {@link AuthoringView}. This controller

@@ -2,7 +2,7 @@ package oogasalad.engine.model.api;
 
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.model.strategies.collision.CollisionStrategy;
-import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
+import oogasalad.engine.records.config.model.CollisionEvent;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.RecordComponent;

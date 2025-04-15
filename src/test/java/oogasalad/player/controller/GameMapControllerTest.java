@@ -12,11 +12,10 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.records.GameContextRecord;
-import oogasalad.engine.records.newconfig.model.wincondition.EntityBasedCondition;
+import oogasalad.engine.records.config.model.wincondition.EntityBasedCondition;
 import oogasalad.player.view.GameMapView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 public class GameMapControllerTest {
 
