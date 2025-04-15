@@ -78,7 +78,7 @@ public class ConditionalControlStrategy implements ControlStrategy {
 
   @Override
   public void update(Entity entity) {
-    int[] target = ControlStrategyHelperMethods.validateAndGetTargetPosition();
+    int[] target = ControlStrategyHelperMethods.validateAndGetTargetPosition(myTargetStrategy);
 
     double currentX = myEntityPlacement.getX();
     double currentY = myEntityPlacement.getY();

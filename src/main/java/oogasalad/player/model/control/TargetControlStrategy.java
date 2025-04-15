@@ -85,7 +85,7 @@ public class TargetControlStrategy implements ControlStrategy {
 
   @Override
   public void update(Entity entity) {
-    int[] target = ControlStrategyHelperMethods.validateAndGetTargetPosition();
+    int[] target = ControlStrategyHelperMethods.validateAndGetTargetPosition(myTargetStrategy);
 //    int[] target = new int[]{0, 0};
 
     int[] dir = myPathFindingStrategy.getPath(myGameMap,
