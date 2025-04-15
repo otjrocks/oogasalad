@@ -321,8 +321,17 @@ public class JsonConfigParser implements ConfigParser {
       EntityConfig entityA = entityMap.get(collision.entityA());
       EntityConfig entityB = entityMap.get(collision.entityB());
 
-      String modeA = resolveMode(entityA, collision.modeA());
-      String modeB = resolveMode(entityB, collision.modeB());
+      if (entityA == null) {
+        LoggingManager.LOGGER.warn(
+            "Unable to find entityA in the configuration file for the collision strategy.");
+      }
+      if (entityB == null) {
+        LoggingManager.LOGGER.warn(
+            "Unable to find entityB in the configuration file for the collision strategy.");
+      }
+
+      String modeA = collision.modeA();
+      String modeB = collision.modeB();
 
       collisionRules.add(new CollisionRule(
           entityA.name(), modeA, entityB.name(), modeB,
