@@ -62,8 +62,11 @@ public class GameMapImpl implements GameMap {
           "Cannot remove requested entity, because it does not exist in the game map!");
     } else {
       myEntityList.remove(entity);
+
+      decrementEntityCount(entity.getEntityPlacement().getType().type().toLowerCase());
     }
   }
+
 
   @Override
   public Optional<Entity> getEntityAt(int x, int y) {
@@ -113,7 +116,7 @@ public class GameMapImpl implements GameMap {
     }
     int count = 0;
     for (Entity entity1 : myEntityList) {
-      if (entity1.getEntityPlacement().getType().type().equals(entityType)) {
+      if (entity1.getEntityPlacement().getType().type().toLowerCase().equals(entityType)) {
         count++;
       }
     }

@@ -9,7 +9,10 @@
     "startingLives": 3,
     "initialScore": 0,
     "scoreStrategy": "Cumulative",
-    "winCondition": "SurviveForTime(60)"
+    "winCondition": {
+      "type": "EntityBased",
+      "entityType": "dot"
+    }
   },
   "levels": [
     {
@@ -24,7 +27,9 @@
       ],
       "entityB": "wall",
       "eventsA": [
-        "Stop"
+        {
+          "type": "Stop"
+        }
       ],
       "eventsB": []
     },
@@ -35,10 +40,15 @@
       ],
       "entityB": "blueghost",
       "eventsA": [
-        "UpdateScore(200)"
+        {
+          "type": "UpdateScore",
+          "amount": 200
+        }
       ],
       "eventsB": [
-        "Consume"
+        {
+          "type": "Consume"
+        }
       ]
     },
     {
@@ -48,10 +58,15 @@
       ],
       "entityB": "dot",
       "eventsA": [
-        "UpdateScore(10)"
+        {
+          "type": "UpdateScore",
+          "amount": 10
+        }
       ],
       "eventsB": [
-        "Consume"
+        {
+          "type": "Consume"
+        }
       ]
     },
     {
@@ -61,10 +76,15 @@
       ],
       "entityB": "cherry",
       "eventsA": [
-        "UpdateScore(100)"
+        {
+          "type": "UpdateScore",
+          "amount": 100
+        }
       ],
       "eventsB": [
-        "Consume"
+        {
+          "type": "Consume"
+        }
       ]
     },
     {
@@ -74,10 +94,15 @@
       ],
       "entityB": "strawberry",
       "eventsA": [
-        "UpdateScore(300)"
+        {
+          "type": "UpdateScore",
+          "amount": 300
+        }
       ],
       "eventsB": [
-        "Consume"
+        {
+          "type": "Consume"
+        }
       ]
     },
     {
@@ -87,8 +112,13 @@
       ],
       "entityB": "redghost",
       "eventsA": [
-        "UpdateLives(-1)",
-        "ReturnToSpawnLocation"
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        },
+        {
+          "type": "ReturnToSpawnLocation"
+        }
       ],
       "eventsB": [
       ]
@@ -100,7 +130,9 @@
       ],
       "entityB": "pacman",
       "eventsA": [
-        "ReturnToSpawnLocation"
+        {
+          "type": "ReturnToSpawnLocation"
+        }
       ],
       "eventsB": [
       ]
@@ -112,7 +144,9 @@
       ],
       "entityB": "wall",
       "eventsA": [
-        "Stop"
+        {
+          "type": "Stop"
+        }
       ],
       "eventsB": [
       ]
@@ -124,7 +158,37 @@
       ],
       "entityB": "wall",
       "eventsA": [
-        "Stop"
+        {
+          "type": "Stop"
+        }
+      ],
+      "eventsB": [
+      ]
+    },
+    {
+      "entityA": "pinkghost",
+      "modeA": [
+        1
+      ],
+      "entityB": "wall",
+      "eventsA": [
+        {
+          "type": "Stop"
+        }
+      ],
+      "eventsB": [
+      ]
+    },
+    {
+      "entityA": "orangeghost",
+      "modeA": [
+        1
+      ],
+      "entityB": "wall",
+      "eventsA": [
+        {
+          "type": "Stop"
+        }
       ],
       "eventsB": [
       ]

@@ -1,9 +1,11 @@
 {
   "entityType": {
     "name": "RedGhost",
-    "controlType": {
-      "controlType": "TargetEntity",
-      "controlTypeConfig": {
+    "controlConfig": {
+      "controlStrategy": "Target",
+      "pathFindingStrategy": "Euclidean",
+      "targetCalculationConfig": {
+        "targetCalculationStrategy": "TargetEntity",
         "targetType": "Pacman"
       }
     },

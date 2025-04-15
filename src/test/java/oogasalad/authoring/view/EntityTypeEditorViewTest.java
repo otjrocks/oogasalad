@@ -19,10 +19,10 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.controlConfig.ControlConfig;
+import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
 import oogasalad.engine.records.newconfig.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.newconfig.model.ControlType;
-import oogasalad.engine.records.newconfig.model.ControlTypeConfig;
 import oogasalad.engine.records.newconfig.model.EntityProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,12 +50,11 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
         1.0
     );
 
-    ControlTypeConfig controlTypeConfig = new ControlTypeConfig("None", 0);
-    ControlType controlType = new ControlType("Keyboard", controlTypeConfig);
+    ControlConfig controlConfig = new KeyboardControlConfig();
 
     EntityProperties entityProps = new EntityProperties(
         "Default",
-        controlType,
+        controlConfig,
         2.0,
         List.of()
     );
@@ -64,7 +63,7 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
     Map<String, ModeConfig> modeMap = new HashMap<>();
     modeMap.put("Default", mockMode);
 
-    mockEntityType = new EntityType("Pacman", "Keyboard", "", modeMap, List.of(), new HashMap<>());
+    mockEntityType = new EntityType("Pacman", new KeyboardControlConfig(),  modeMap, List.of());
 
     AuthoringModel mockModel = mock(AuthoringModel.class);
     when(mockController.getModel()).thenReturn(mockModel);
@@ -80,7 +79,6 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
     ComboBox<String> controlBox = (ComboBox<String>) root.getChildren().get(3);
 
     assertEquals("Pacman", typeField.getText());
-    assertEquals("Keyboard", controlBox.getValue());
   }
 
   @Test

@@ -1,0 +1,37 @@
+{
+  "entityType": {
+    "name": "OrangeGhost",
+    "controlConfig": {
+      "controlStrategy": "Conditional",
+      "radius": 8,
+      "pathFindingStrategyInRadius": "Euclidean",
+      "pathFindingStrategyOutRadius": "Random",
+      "targetCalculationConfig": {
+        "targetCalculationStrategy": "TargetEntity",
+        "targetType": "Pacman"
+      }
+    },
+    "movementSpeed": 90
+  },
+  "modes": [
+    {
+      "name": "Default",
+      "image": {
+        "imagePath": "orangeghost",
+        "tileWidth": 14,
+        "tileHeight": 14,
+        "tilesToCycle": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "animationSpeed": 1.0
+      }
+    }
+  ]
+}

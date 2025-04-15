@@ -1,6 +1,7 @@
 package oogasalad.engine.model;
 
 import java.util.List;
+import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
 
 /**
  * Represents a rule for handling a collision between two entity types, each potentially in a
@@ -19,8 +20,8 @@ public class CollisionRule {
   private String modeA;
   private String entityTypeB;
   private String modeB;
-  private List<String> eventsA;
-  private List<String> eventsB;
+  private List<CollisionEvent> eventsA;
+  private List<CollisionEvent> eventsB;
 
   /**
    * Represents a rule that defines the behavior of a collision between two entities in a game. Each
@@ -31,11 +32,11 @@ public class CollisionRule {
    * @param modeA       the mode of the first entity during the collision
    * @param entityTypeB the type of the second entity involved in the collision
    * @param modeB       the mode of the second entity during the collision
-   * @param eventsA     a list of events triggered for the first entity upon collision
-   * @param eventsB     a list of events triggered for the second entity upon collision
+   * @param eventsA     a list of collision events triggered for the first entity upon collision
+   * @param eventsB     a list of collision events triggered for the second entity upon collision
    */
   public CollisionRule(String entityTypeA, String modeA, String entityTypeB, String modeB,
-      List<String> eventsA, List<String> eventsB) {
+      List<CollisionEvent> eventsA, List<CollisionEvent> eventsB) {
     this.entityTypeA = entityTypeA;
     this.modeA = modeA;
     this.entityTypeB = entityTypeB;
@@ -128,7 +129,7 @@ public class CollisionRule {
    *
    * @return a list of event names for entity A
    */
-  public List<String> getEventsA() {
+  public List<CollisionEvent> getEventsA() {
     return eventsA;
   }
 
@@ -137,7 +138,7 @@ public class CollisionRule {
    *
    * @param eventsA a list of event names for entity A
    */
-  public void setEventsA(List<String> eventsA) {
+  public void setEventsA(List<CollisionEvent> eventsA) {
     this.eventsA = eventsA;
   }
 
@@ -146,7 +147,7 @@ public class CollisionRule {
    *
    * @return a list of event names for entity B
    */
-  public List<String> getEventsB() {
+  public List<CollisionEvent> getEventsB() {
     return eventsB;
   }
 
@@ -155,7 +156,7 @@ public class CollisionRule {
    *
    * @param eventsB a list of event names for entity B
    */
-  public void setEventsB(List<String> eventsB) {
+  public void setEventsB(List<CollisionEvent> eventsB) {
     this.eventsB = eventsB;
   }
 
@@ -163,8 +164,8 @@ public class CollisionRule {
   public String toString() {
     return String.format("(%s:%s) ↔ (%s:%s) | A: %s, B: %s",
         entityTypeA, modeA, entityTypeB, modeB,
-        String.join(",", eventsA),
-        String.join(",", eventsB));
+        String.join(",", eventsA.toString()),
+        String.join(",", eventsB.toString()));
   }
 
 }

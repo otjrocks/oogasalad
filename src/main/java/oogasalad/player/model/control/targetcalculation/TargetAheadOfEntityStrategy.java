@@ -2,10 +2,8 @@ package oogasalad.player.model.control.targetcalculation;
 
 import java.util.Map;
 import java.util.Optional;
-import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.player.model.exceptions.TargetStrategyException;
 
 /**
  * The TargetAheadOfEntityStrategy class implements the TargetStrategy interface and provides a
@@ -63,8 +61,9 @@ public class TargetAheadOfEntityStrategy implements TargetStrategy {
   public TargetAheadOfEntityStrategy(GameMap gameMap, Map<String, Object> strategyConfig,
       String typeOfCaller) {
     myGameMap = gameMap;
-    myTargetType = TargetStrategyHelperMethods.validateAndGetTargetType(strategyConfig);
-    myTilesAhead = validateAndGetTilesAhead(strategyConfig);
+    myTargetType = TargetStrategyHelperMethods.validateAndGetKeyString(strategyConfig,
+        "targetType");
+    myTilesAhead = TargetStrategyHelperMethods.validateAndGetKeyInt(strategyConfig, "tilesAhead");
     myType = typeOfCaller;
   }
 
@@ -73,48 +72,10 @@ public class TargetAheadOfEntityStrategy implements TargetStrategy {
     Optional<Entity> entity = TargetStrategyHelperMethods.findFirstEntityOfType(myGameMap,
         myTargetType);
 
-    // if no entity, no target so stay where you are
-    // or random movement (design choice for later)
-    Optional<int[]> potentialTarget = entity.map(
-        value -> calcTargetPosition(value.getEntityDirection(),
-            (int) value.getEntityPlacement().getX(),
-            (int) value.getEntityPlacement().getY()));
-
-    if (potentialTarget.isPresent() && myGameMap.isValidPosition(potentialTarget.get()[0],
-        potentialTarget.get()[1]) && myGameMap.isNotBlocked(myType, potentialTarget.get()[0],
-        potentialTarget.get()[1])) {
-      return potentialTarget.get();
-    }
-    else {
-      return entity.map(value -> new int[]{(int) value.getEntityPlacement().getX(),
-          (int) value.getEntityPlacement().getY()}).orElseGet(() -> new int[]{0, 0});
-    }
+    return entity.map(
+        value -> TargetStrategyHelperMethods.calcTargetPosition(myGameMap, value, myType,
+            myTilesAhead)).orElseGet(() -> new int[]{0, 0});
 
   }
 
-  private int[] calcTargetPosition(Direction dir, int x, int y) {
-    if (dir == null) {
-      return new int[]{x, y};
-    }
-    int targetX = x + dir.getDx() * myTilesAhead;
-    int targetY = y + dir.getDy() * myTilesAhead;
-    return new int[]{targetX, targetY};
-  }
-
-
-  private static int validateAndGetTilesAhead(Map<String, Object> strategyConfig) {
-    final String TILES_AHEAD_KEY = "tilesAhead";
-
-    if (strategyConfig.containsKey(TILES_AHEAD_KEY)
-        && strategyConfig.get(TILES_AHEAD_KEY) != null) {
-      try {
-        return Integer.parseInt(strategyConfig.get(TILES_AHEAD_KEY).toString());
-      } catch (NumberFormatException e) {
-        throw new TargetStrategyException("tilesAhead must be an integer", e);
-      }
-    }
-
-    // can log a warning, but may be annoying
-    return 0;
-  }
 }
