@@ -253,6 +253,15 @@ public class AuthoringController {
    * @param typeName the name of the entity type to delete
    */
   public void deleteEntityType(String typeName) {
+    List<EntityPlacement> placementsToRemove = model.getCurrentLevel().getEntityPlacements().stream()
+            .filter(p -> typeName.equals(p.getTypeString()))
+            .toList();
+
+    CanvasView canvasView = view.getCanvasView();
+    for (EntityPlacement placement : placementsToRemove) {
+      canvasView.removeEntityVisual(placement);
+    }
+
     if (model.deleteEntityType(typeName)) {
       // Clear the entity type editor if the deleted type was selected
       if (selectedType != null && selectedType.type().equals(typeName)) {
@@ -269,7 +278,6 @@ public class AuthoringController {
 
       // Update the UI components
       updateEntitySelector();
-      updateCanvas();
     }
   }
 
