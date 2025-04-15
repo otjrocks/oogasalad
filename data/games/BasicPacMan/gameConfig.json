@@ -22,9 +22,7 @@
   "collisions": [
     {
       "entityA": "pacman",
-      "modeA": [
-        0
-      ],
+      "modeA": "A",
       "entityB": "wall",
       "eventsA": [
         {
@@ -35,9 +33,7 @@
     },
     {
       "entityA": "pacman",
-      "modeA": [
-        1
-      ],
+      "modeA": "A",
       "entityB": "blueghost",
       "eventsA": [
         {
@@ -53,9 +49,7 @@
     },
     {
       "entityA": "pacman",
-      "modeA": [
-        1
-      ],
+      "modeA": "A",
       "entityB": "dot",
       "eventsA": [
         {
@@ -71,9 +65,7 @@
     },
     {
       "entityA": "pacman",
-      "modeA": [
-        1
-      ],
+      "modeA": "A",
       "entityB": "cherry",
       "eventsA": [
         {
@@ -89,9 +81,7 @@
     },
     {
       "entityA": "pacman",
-      "modeA": [
-        1
-      ],
+      "modeA": "A",
       "entityB": "strawberry",
       "eventsA": [
         {
@@ -107,9 +97,7 @@
     },
     {
       "entityA": "pacman",
-      "modeA": [
-        1
-      ],
+      "modeA": "A",
       "entityB": "redghost",
       "eventsA": [
         {
@@ -125,9 +113,7 @@
     },
     {
       "entityA": "redghost",
-      "modeA": [
-        1
-      ],
+      "modeA": "A",
       "entityB": "pacman",
       "eventsA": [
         {
@@ -139,9 +125,7 @@
     },
     {
       "entityA": "redghost",
-      "modeA": [
-        1
-      ],
+      "modeA": "A",
       "entityB": "wall",
       "eventsA": [
         {
@@ -153,9 +137,7 @@
     },
     {
       "entityA": "blueghost",
-      "modeA": [
-        1
-      ],
+      "modeA": "A",
       "entityB": "wall",
       "eventsA": [
         {
@@ -167,9 +149,7 @@
     },
     {
       "entityA": "pinkghost",
-      "modeA": [
-        1
-      ],
+      "modeA": "A",
       "entityB": "wall",
       "eventsA": [
         {
@@ -181,9 +161,7 @@
     },
     {
       "entityA": "orangeghost",
-      "modeA": [
-        1
-      ],
+      "modeA": "A",
       "entityB": "wall",
       "eventsA": [
         {

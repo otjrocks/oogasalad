@@ -5,21 +5,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.*;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
+import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 
 import java.util.*;
 import oogasalad.engine.model.controlConfig.ControlConfig;
+import oogasalad.engine.records.config.model.CollisionEvent;
 
 /**
- * Utility class for converting the internal AuthoringModel data structures
- * into serializable JSON configuration files using Jackson's ObjectMapper.
- *
- * This builder supports generating:
- * - The top-level game configuration file (gameConfig.json)
- * - Per-level layout files (levelX.json)
- * - Per-entity configuration files (e.g., blueghost.json)
- *
+ * Utility class for converting the internal AuthoringModel data structures into serializable JSON
+ * configuration files using Jackson's ObjectMapper.
+ * <p>
+ * This builder supports generating: - The top-level game configuration file (gameConfig.json) -
+ * Per-level layout files (levelX.json) - Per-entity configuration files (e.g., blueghost.json)
+ * <p>
  * All methods assume that the structure of the AuthoringModel is valid and complete.
  *
  * @author Will He
@@ -27,8 +27,8 @@ import oogasalad.engine.model.controlConfig.ControlConfig;
 public class JsonConfigBuilder {
 
   /**
-   * Builds the top-level game configuration (gameConfig.json) from the model.
-   * Includes metadata, global settings, and references to level config files.
+   * Builds the top-level game configuration (gameConfig.json) from the model. Includes metadata,
+   * global settings, and references to level config files.
    *
    * @param model  the authoring model representing the game's data
    * @param mapper the Jackson ObjectMapper instance
@@ -60,19 +60,26 @@ public class JsonConfigBuilder {
       levels.add(levelRef);
     }
 
+    // === collisions ===
+    ArrayNode collisionRules = root.putArray("collisions");
+    for (CollisionRule collisionRule : model.getCollisionRules()) {
+      collisionRules.add(mapper.valueToTree(collisionRule));
+    }
+
     return root;
   }
 
   /**
-   * Builds a JSON representation for a level configuration.
-   * Includes entity ID mappings, level settings, and tile layout strings.
+   * Builds a JSON representation for a level configuration. Includes entity ID mappings, level
+   * settings, and tile layout strings.
    *
    * @param draft         the level draft object containing entity placements and size
    * @param entityToIdMap mapping of entity names to integer IDs
    * @param mapper        the Jackson ObjectMapper instance
    * @return a JSON ObjectNode representing the level configuration
    */
-  public ObjectNode buildLevelConfig(LevelDraft draft, Map<String, Integer> entityToIdMap, ObjectMapper mapper) {
+  public ObjectNode buildLevelConfig(LevelDraft draft, Map<String, Integer> entityToIdMap,
+      ObjectMapper mapper) {
     ObjectNode root = mapper.createObjectNode();
 
     ArrayNode mappings = root.putArray("entityMappings");
@@ -128,8 +135,8 @@ public class JsonConfigBuilder {
   }
 
   /**
-   * Builds the full configuration JSON object for an entity type.
-   * Includes the control strategy, movement speed, and all defined modes.
+   * Builds the full configuration JSON object for an entity type. Includes the control strategy,
+   * movement speed, and all defined modes.
    *
    * @param type   the entity type to serialize
    * @param mapper the Jackson ObjectMapper instance
@@ -151,7 +158,8 @@ public class JsonConfigBuilder {
     entityTypeNode.put("name", type.type());
   }
 
-  private void addControlConfig(ControlConfig config, ObjectNode entityTypeNode, ObjectMapper mapper) {
+  private void addControlConfig(ControlConfig config, ObjectNode entityTypeNode,
+      ObjectMapper mapper) {
     JsonNode serialized = mapper.valueToTree(config);
     entityTypeNode.set("controlConfig", serialized);
   }
@@ -182,11 +190,9 @@ public class JsonConfigBuilder {
   }
 
 
-
-
   /**
-   * Assigns integer IDs to each entity type in the game.
-   * IDs start at 1 and increase in insertion order.
+   * Assigns integer IDs to each entity type in the game. IDs start at 1 and increase in insertion
+   * order.
    *
    * @param entityTypeMap the map of entity names to types
    * @return a map of entity names to unique integer IDs
