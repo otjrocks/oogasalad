@@ -81,7 +81,7 @@ public class JsonConfigSaver implements ConfigSaver {
    */
   @Override
   public void saveEntityType(String name, ObjectNode config, Path folder) throws ConfigException {
-    writeJson(config, folder.resolve(name.toLowerCase() + ".json"));
+    writeJson(config, folder.resolve(name + ".json"));
   }
 
   /**

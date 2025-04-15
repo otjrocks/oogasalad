@@ -1,0 +1,32 @@
+{
+  "metadata" : {
+    "gameTitle" : null,
+    "author" : null,
+    "gameDescription" : null
+  },
+  "defaultSettings" : {
+    "gameSpeed" : 1.0,
+    "startingLives" : 3,
+    "initialScore" : 0,
+    "winCondition": {
+      "type": "EntityBased",
+      "entityType": "dot"
+    }
+  },
+  "levels" : [ {
+    "levelMap" : "level1"
+  } ],
+  "collisions" : [ {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Apple",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 10
+    } ],
+    "eventsB" : [ {
+      "type" : "Consume"
+    } ]
+  } ]
+}
