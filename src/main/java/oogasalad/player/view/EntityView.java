@@ -34,20 +34,12 @@ public class EntityView {
    * Initialize an Entity view.
    *
    * @param entity      The Entity model used to represent this view.
-   * @param totalFrames The total number of frames in the sprite file for this entity view.
    */
-  public EntityView(Entity entity, int totalFrames) {
+  public EntityView(Entity entity) {
     this.entity = entity;
-    this.totalFrames = totalFrames;
+    this.totalFrames = entity.getEntityPlacement().getEntityFrameNumber();
     this.dimension = 28;
-
-    Direction dir = entity.getEntityDirection() != null ? entity.getEntityDirection() : Direction.NONE;
-    String suffix = dir == Direction.NONE ? "_R" : "_" + dir.name();
-    String imageName = (entity.getEntityPlacement().getTypeString() +
-            "_" + entity.getEntityPlacement().getMode() +
-            suffix).toUpperCase();
-
-    this.sprite = SPRITE_CACHE.computeIfAbsent(imageName, name -> {
+    this.sprite = SPRITE_CACHE.computeIfAbsent(entity.getEntityPlacement().getEntityImagePath(), name -> {
       try (InputStream stream = EntityView.class.getClassLoader().getResourceAsStream("sprites/" + name + ".png")) {
         if (stream == null) throw new IllegalArgumentException("Image not found: " + name);
         return new Image(stream);
@@ -66,11 +58,17 @@ public class EntityView {
    * @param tileHeight height of one map tile in pixels
    */
   public void draw(GraphicsContext gc, double tileWidth, double tileHeight) {
-    int frameIndex;
-    if (entity.getEntityPlacement().isInDeathAnimation()) {
-      frameIndex = entity.getEntityPlacement().getDeathFrame();
-    } else {
-      frameIndex = entity.getEntityPlacement().getCurrentFrame() % totalFrames;
+    int frameIndex = entity.getEntityPlacement().getCurrentFrame() % totalFrames;
+    int dirOffset = 0;
+
+    if (entity.getEntityDirection() == Direction.L){
+      dirOffset = 28;
+    }
+    if (entity.getEntityDirection() == Direction.U){
+      dirOffset = 56;
+    }
+    if(entity.getEntityDirection() == Direction.D){
+      dirOffset = 84;
     }
 
     double destX = entity.getEntityPlacement().getX() * tileWidth;
@@ -79,7 +77,7 @@ public class EntityView {
     gc.drawImage(
         sprite,
             frameIndex * dimension,
-        0,
+        dirOffset,
         dimension,
         dimension,
         destX,

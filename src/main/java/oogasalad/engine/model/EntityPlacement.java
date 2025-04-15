@@ -243,7 +243,18 @@ public class EntityPlacement {
   public String getEntityImagePath() {
     return this.getType()
         .modes()
-        .get(this.getMode())
+        .get("Default")
         .image().imagePath();
+  }
+
+  /**
+   * Gets the number of frames for the current entity mode sprite.
+   */
+  public int getEntityFrameNumber() {
+    System.out.println("Attempting to find frame number for " + this.getType() + " " + this.getMode());
+    return this.getType()
+            .modes()
+            .get("Default")
+            .image().tilesToCycle().size();
   }
 }

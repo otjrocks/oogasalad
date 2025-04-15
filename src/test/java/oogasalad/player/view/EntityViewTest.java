@@ -63,7 +63,7 @@ class EntityViewTest extends DukeApplicationTest {
     double offsetX = Integer.parseInt(spriteData.getString(prefix + "_X_OFFSET"));
     double offsetY = Integer.parseInt(spriteData.getString(prefix + "_Y_OFFSET"));
 
-    EntityView view = new EntityView(mockEntity, 3);
+    EntityView view = new EntityView(mockEntity);
     view.draw(mockGC, 20, 20);
 
     verify(mockGC).drawImage(

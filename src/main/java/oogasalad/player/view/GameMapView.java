@@ -57,12 +57,7 @@ public class GameMapView extends Canvas {
     for (Iterator<Entity> it = myGameContext.gameMap().iterator();
         it.hasNext(); ) {
       Entity entity = it.next();
-      int frames = Integer.parseInt(
-          SPRITE_DATA.getString(
-              (entity.getEntityPlacement().getTypeString() + "_FRAMES").toUpperCase()
-          )
-      );
-      entityViews.add(new EntityView(entity, frames));
+      entityViews.add(new EntityView(entity));
     }
   }
 
