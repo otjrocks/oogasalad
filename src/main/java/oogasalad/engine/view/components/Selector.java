@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
@@ -14,7 +15,7 @@ import javafx.scene.text.Text;
  *
  * @author Owen Jennings
  */
-public class Selector extends HBox {
+public class Selector extends VBox {
 
   private final ComboBox<String> myComboBox;
 

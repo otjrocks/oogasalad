@@ -1,5 +1,7 @@
 package oogasalad.engine.records.config.model.collisionevent;
 
+import oogasalad.engine.records.config.model.CollisionEvent;
+
 /**
  * A record containing information about an update score collision event.
  *

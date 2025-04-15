@@ -1,6 +1,6 @@
 package oogasalad.engine.model;
 
-import oogasalad.engine.records.config.model.collisionevent.CollisionEvent;
+import oogasalad.engine.records.config.model.CollisionEvent;
 import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEvent;
 import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEvent;
 import oogasalad.engine.records.config.model.collisionevent.UpdateScoreCollisionEvent;

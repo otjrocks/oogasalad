@@ -9,7 +9,7 @@ import java.util.*;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.model.CollisionRule;
-import oogasalad.engine.utility.FileUtility;
+import oogasalad.engine.records.config.model.CollisionEvent;
 
 /**
  * A dialog view that allows the user to define and edit collision rules between pairs of entity
@@ -29,8 +29,6 @@ public class CollisionRuleEditorView {
   private final ComboBox<String> modeASelector = new ComboBox<>();
   private final ComboBox<String> entityBSelector = new ComboBox<>();
   private final ComboBox<String> modeBSelector = new ComboBox<>();
-  private final ListView<String> actionASelector = new ListView<>();
-  private final ListView<String> actionBSelector = new ListView<>();
   private final ListView<CollisionRule> ruleListView = new ListView<>();
   private final Dialog<List<CollisionRule>> dialog;
 
@@ -38,6 +36,8 @@ public class CollisionRuleEditorView {
   private final List<CollisionRule> workingRules = new ArrayList<>();
   private final VBox root;
   private final AuthoringController controller;
+  private CollisionRuleView myRuleViewA;
+  private CollisionRuleView myRuleViewB;
 
 
   /**
@@ -63,7 +63,6 @@ public class CollisionRuleEditorView {
     root.setPadding(new Insets(20));
 
     setupEntityAndModeSelectors();
-    setupActionSelectors();
 
     GridPane selectionGrid = new GridPane();
     selectionGrid.setHgap(10);
@@ -79,12 +78,7 @@ public class CollisionRuleEditorView {
     selectionGrid.add(new Label(LanguageManager.getMessage("MODE_B")), 2, 1);
     selectionGrid.add(modeBSelector, 3, 1);
 
-    HBox actionBox = new HBox(30,
-        new VBox(new Label(String.format(LanguageManager.getMessage("ACTION_FOR"),
-            LanguageManager.getMessage("ENTITY_A"))), actionASelector),
-        new VBox(new Label(String.format(LanguageManager.getMessage("ACTION_FOR"),
-            LanguageManager.getMessage("ENTITY_B"))), actionBSelector)
-    );
+    HBox addRule = createCollisionRuleHBox();
 
     HBox buttonBox = getHBox();
 
@@ -96,7 +90,7 @@ public class CollisionRuleEditorView {
 
     root.getChildren().addAll(
         selectionGrid,
-        actionBox,
+        addRule,
         buttonBox,
         new Label(LanguageManager.getMessage("DEFINED_RULES")),
         ruleScrollPane
@@ -120,6 +114,16 @@ public class CollisionRuleEditorView {
     });
   }
 
+  private HBox createCollisionRuleHBox() {
+    HBox addRule = new HBox(15);
+    myRuleViewA = new CollisionRuleView(
+        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "A"));
+    myRuleViewB = new CollisionRuleView(
+        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "B"));
+    addRule.getChildren().addAll(myRuleViewA.getRoot(), myRuleViewB.getRoot());
+    return addRule;
+  }
+
   /**
    * Shows the dialog and waits for user input.
    *
@@ -140,8 +144,11 @@ public class CollisionRuleEditorView {
   }
 
   private HBox getHBox() {
-    Button addRuleButton = new Button(LanguageManager.getMessage("ADD_RULE"));
-    addRuleButton.setOnAction(e -> handleAddRule());
+    Button addRuleButtonA = new Button(LanguageManager.getMessage("ADD_ACTION") + " A");
+    addRuleButtonA.setOnAction(e -> handleAddRuleA());
+
+    Button addRuleButtonB = new Button(LanguageManager.getMessage("ADD_ACTION") + " B");
+    addRuleButtonB.setOnAction(e -> handleAddRuleB());
 
     Button deleteRuleButton = new Button(LanguageManager.getMessage("DELETE_RULE"));
     deleteRuleButton.setOnAction(e -> {
@@ -152,7 +159,7 @@ public class CollisionRuleEditorView {
       }
     });
 
-    return new HBox(10, addRuleButton, deleteRuleButton);
+    return new HBox(10, addRuleButtonA, addRuleButtonB, deleteRuleButton);
   }
 
   /**
@@ -193,48 +200,89 @@ public class CollisionRuleEditorView {
     modeBox.getSelectionModel().select("Default");
   }
 
-  /**
-   * Initializes the ListViews for selecting multiple actions for Entity A and B.
-   */
-  private void setupActionSelectors() {
-
-    List<String> actions = getCollisionEventClassNames("src/main/java/oogasalad/engine/model/strategies/collision/");
-    System.out.println(actions.size());
-    actionASelector.setItems(FXCollections.observableArrayList(actions));
-    actionBSelector.setItems(FXCollections.observableArrayList(actions));
-    actionASelector.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    actionBSelector.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-  }
-
-  /**
-   * Handles adding a new collision rule to the rule list. Validates all fields before adding.
-   */
-  private void handleAddRule() {
+  private void handleAddRuleA() {
     String a = entityASelector.getValue();
     String aMode = modeASelector.getValue();
     String b = entityBSelector.getValue();
     String bMode = modeBSelector.getValue();
 
-    List<String> aActions = new ArrayList<>(actionASelector.getSelectionModel().getSelectedItems());
-    List<String> bActions = new ArrayList<>(actionBSelector.getSelectionModel().getSelectedItems());
+//    if (a == null || aMode == null || b == null || bMode == null || aActions.isEmpty()
+//        || bActions.isEmpty()) {
+//      showError(
+//          LanguageManager.getMessage("RULE_ERROR"));
+//      return;
+//    }
 
-    if (a == null || aMode == null || b == null || bMode == null || aActions.isEmpty()
-        || bActions.isEmpty()) {
-      showError(
-          LanguageManager.getMessage("RULE_ERROR"));
-      return;
+    updateRules(a, b, aMode, bMode, true);
+  }
+
+  private void handleAddRuleB() {
+    String a = entityASelector.getValue();
+    String aMode = modeASelector.getValue();
+    String b = entityBSelector.getValue();
+    String bMode = modeBSelector.getValue();
+
+    updateRules(a, b, aMode, bMode, false);
+  }
+
+  private void updateRules(String a, String b, String aMode, String bMode, boolean isA) {
+    boolean ruleAlreadyExists = checkForExistingRuleAndUpdate(a, b, aMode, bMode, isA);
+    if (!ruleAlreadyExists) {
+      CollisionRule rule = new CollisionRule();
+      updateCollisionRule(a, b, aMode, bMode, rule, isA);
+      workingRules.add(rule);
+      ruleListView.getItems().add(rule);
     }
+  }
 
-    CollisionRule rule = new CollisionRule();
+  private boolean checkForExistingRuleAndUpdate(String a, String b, String aMode, String bMode,
+      boolean isA) {
+    boolean ruleAlreadyExists = false;
+    for (CollisionRule rule : workingRules) {
+      if (rule.getEntityTypeA().equals(a) && rule.getEntityTypeB().equals(b)
+          && rule.getModeA().equals(aMode) && rule.getModeB().equals(bMode)) {
+        updateCollisionRule(a, b, aMode, bMode, rule, isA);
+        ruleAlreadyExists = true;
+        // move update rule to bottom of list
+        ruleListView.getItems().remove(rule);
+        ruleListView.getItems().add(rule);
+      }
+    }
+    return ruleAlreadyExists;
+  }
+
+  private void updateCollisionRule(String a, String b, String aMode, String bMode,
+      CollisionRule rule, boolean isA) {
     rule.setEntityTypeA(a);
     rule.setEntityTypeB(b);
-    // TODO: refactor to use new CollisionEvent Record
-//    rule.setEventsA(aActions);
-//    rule.setEventsB(bActions);
+    CollisionEvent eventA;
+    CollisionEvent eventB;
+    try {
+      eventA = myRuleViewA.getCollisionEvent();
+      eventB = myRuleViewB.getCollisionEvent();
+    } catch (IllegalArgumentException e) {
+      showError(e.getMessage());
+      throw e;
+    }
+    List<CollisionEvent> eventsA = rule.getEventsA();
+    if (eventsA == null) {
+      eventsA = new ArrayList<>();
+      rule.setEventsA(eventsA);
+    }
+    List<CollisionEvent> eventsB = rule.getEventsB();
+    if (eventsB == null) {
+      eventsB = new ArrayList<>();
+      rule.setEventsB(eventsB);
+    }
+    if (isA) {
+      eventsA.add(eventA);
+      rule.setEventsA(eventsA);
+    } else {
+      eventsB.add(eventB);
+      rule.setEventsB(eventsB);
+    }
     rule.setModeA(aMode);
     rule.setModeB(bMode);
-    workingRules.add(rule);
-    ruleListView.getItems().add(rule);
   }
 
   /**
@@ -255,10 +303,6 @@ public class CollisionRuleEditorView {
    */
   public Node getNode() {
     return root;
-  }
-
-  public static List<String> getCollisionEventClassNames(String directoryPath) {
-    return FileUtility.getFileNamesInDirectory(directoryPath, "Strategy.java");
   }
 
 }
