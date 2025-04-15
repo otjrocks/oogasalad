@@ -5,7 +5,7 @@ import oogasalad.engine.model.GameMapImpl;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.GameStateImpl;
 import oogasalad.engine.records.GameContextRecord;
-import oogasalad.engine.records.newconfig.model.SpawnEvent;
+import oogasalad.engine.records.config.model.SpawnEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

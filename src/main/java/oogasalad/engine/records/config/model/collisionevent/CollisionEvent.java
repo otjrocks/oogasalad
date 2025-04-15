@@ -1,4 +1,4 @@
-package oogasalad.engine.records.newconfig.model.collisionevent;
+package oogasalad.engine.records.config.model.collisionevent;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

@@ -1,7 +1,7 @@
 package oogasalad.engine.model;
 
 import java.util.List;
-import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.CollisionEvent;
 
 /**
  * Represents a rule for handling a collision between two entity types, each potentially in a

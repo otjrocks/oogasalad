@@ -14,9 +14,9 @@ import java.io.File;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
 import oogasalad.engine.LanguageManager;
-import oogasalad.engine.records.newconfig.ImageConfig;
+import oogasalad.engine.records.config.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.newconfig.model.EntityProperties;
+import oogasalad.engine.records.config.model.EntityProperties;
 
 /**
  * Dialog for creating a new ModeConfig with a user-uploaded image.

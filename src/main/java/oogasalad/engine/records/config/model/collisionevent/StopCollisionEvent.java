@@ -1,4 +1,4 @@
-package oogasalad.engine.records.newconfig.model.collisionevent;
+package oogasalad.engine.records.config.model.collisionevent;
 
 /**
  * A record encapsulating information about a stop collision event.

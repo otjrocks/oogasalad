@@ -1,7 +1,7 @@
 package oogasalad.player.model.spawnevent;
 
 import oogasalad.engine.records.GameContextRecord;
-import oogasalad.engine.records.newconfig.model.SpawnEvent;
+import oogasalad.engine.records.config.model.SpawnEvent;
 
 /**
  * An interface that defines how whether a spawn event should be spawned or despawned in current

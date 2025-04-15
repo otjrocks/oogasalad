@@ -1,4 +1,4 @@
-package oogasalad.engine.records.newconfig.model.collisionevent;
+package oogasalad.engine.records.config.model.collisionevent;
 
 /**
  * A record storing information about an update lives collision event from the configuration file.

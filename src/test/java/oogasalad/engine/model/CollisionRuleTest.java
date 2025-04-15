@@ -1,9 +1,9 @@
 package oogasalad.engine.model;
 
-import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
-import oogasalad.engine.records.newconfig.model.collisionevent.ConsumeCollisionEvent;
-import oogasalad.engine.records.newconfig.model.collisionevent.UpdateLivesCollisionEvent;
-import oogasalad.engine.records.newconfig.model.collisionevent.UpdateScoreCollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.CollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEvent;
+import oogasalad.engine.records.config.model.collisionevent.UpdateScoreCollisionEvent;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;

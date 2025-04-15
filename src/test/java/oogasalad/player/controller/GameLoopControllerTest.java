@@ -5,7 +5,7 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameMapImpl;
 import oogasalad.engine.model.GameStateImpl;
 import oogasalad.engine.records.GameContextRecord;
-import oogasalad.engine.records.newconfig.model.ParsedLevel;
+import oogasalad.engine.records.config.model.ParsedLevel;
 import oogasalad.player.view.GameMapView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

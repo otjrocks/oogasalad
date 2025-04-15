@@ -9,7 +9,7 @@ import java.util.*;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.model.CollisionRule;
-import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
+import oogasalad.engine.utility.FileUtility;
 
 /**
  * A dialog view that allows the user to define and edit collision rules between pairs of entity
@@ -197,12 +197,12 @@ public class CollisionRuleEditorView {
    * Initializes the ListViews for selecting multiple actions for Entity A and B.
    */
   private void setupActionSelectors() {
-    List<String> actions = List.of("REMOVE", "DIE", "STOP", "WIN", "SCORE", "RESPAWN", "IGNORE");
 
+    List<String> actions = getCollisionEventClassNames("src/main/java/oogasalad/engine/model/strategies/collision/");
+    System.out.println(actions.size());
     actionASelector.setItems(FXCollections.observableArrayList(actions));
-    actionASelector.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
     actionBSelector.setItems(FXCollections.observableArrayList(actions));
+    actionASelector.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     actionBSelector.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
   }
 
@@ -256,4 +256,9 @@ public class CollisionRuleEditorView {
   public Node getNode() {
     return root;
   }
+
+  public static List<String> getCollisionEventClassNames(String directoryPath) {
+    return FileUtility.getFileNamesInDirectory(directoryPath, "Strategy.java");
+  }
+
 }
