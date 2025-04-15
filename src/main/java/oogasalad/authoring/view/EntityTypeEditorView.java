@@ -31,7 +31,7 @@ import oogasalad.player.model.control.ControlManager;
 /**
  * View for editing a selected EntityType.
  *
- * @author Will He, Ishan Madan
+ * @author Will He, Ishan Madan, Angela Predolac
  */
 public class EntityTypeEditorView {
 
@@ -43,6 +43,7 @@ public class EntityTypeEditorView {
   private final VBox modeList;
   private final AuthoringController controller;
   private EntityType current;
+  private Button deleteButton;
 
   private final Button saveCollisionButton;
   private final VBox controlTypeParameters;
@@ -83,19 +84,18 @@ public class EntityTypeEditorView {
     Button addModeButton = new Button(LanguageManager.getMessage("ADD_MODE"));
     addModeButton.setOnAction(e -> openAddModeDialog());
 
-    ScrollPane controlTypeScrollPane = new ScrollPane(controlTypeParameters);
-    controlTypeScrollPane.setFitToWidth(true);
-
-    controlTypeScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-    controlTypeScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-
+    deleteButton = new Button("Delete Entity Type");
+    deleteButton.getStyleClass().add("delete-button");
+    deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+    deleteButton.setOnAction(e -> deleteEntityType());
 
     root.getChildren().addAll(
         new Label(LanguageManager.getMessage("ENTITY_TYPE")), typeField,
         new Label(LanguageManager.getMessage("CONTROL_STRATEGY")), controlTypeBox,
         controlTypeScrollPane, saveCollisionButton,
         new Label(LanguageManager.getMessage("MODES")), modeList,
-        addModeButton
+        addModeButton,
+            new Separator(), deleteButton
     );
 
   }
@@ -271,84 +271,17 @@ public class EntityTypeEditorView {
     alert.showAndWait();
   }
 
-  private void updateControlParameterFields() {
-    controlTypeParameters.getChildren().clear();
-    controlTypeParameterFields.clear();
+  private void deleteEntityType() {
+    if (current == null) return;
 
-    VBox parameterBox = new VBox(5);
-    List<String> requiredFields =
-        ControlManager.getControlRequiredFieldsOrder(controlTypeBox.getValue());
+    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+    confirm.setTitle(LanguageManager.getMessage("CONFIRM_DELETE"));
+    confirm.setHeaderText(LanguageManager.getMessage("DELETE_ENTITY_TYPE"));
+    confirm.setContentText(LanguageManager.getMessage("CONFIRM_DELETE_ENTITY_TYPE_MESSAGE"));
 
-    for (String parameter : requiredFields) {
-      Node parameterNode = createParameterNode(parameter);
-      parameterBox.getChildren().add(parameterNode);
-    }
-
-    controlTypeParameters.getChildren().add(parameterBox);
-  }
-
-  private Node createParameterNode(String parameter) {
-    Label parameterLabel = new Label(parameter + ": ");
-
-    if (parameter.startsWith("pathFindingStrategy")) {
-      return createPathFindingStrategyNode(parameterLabel, parameter);
-
-    } else if (parameter.startsWith(TARGET_CALCULATION_CONFIG)) {
-      return createTargetCalculationConfigNode(parameterLabel, parameter);
-
-    } else {
-      return createGenericParameterNode(parameterLabel);
+    if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+      controller.deleteEntityType(current.type());
     }
   }
-
-  private Node createPathFindingStrategyNode(Label parameterLabel, String parameter) {
-    ComboBox<String> pathStrategyBox = new ComboBox<>();
-    pathStrategyBox.getItems().addAll(ControlManager.getPathFindingStrategies());
-    controlTypeComboBoxes.put(parameter, pathStrategyBox);
-
-    VBox container = new VBox(5);
-    container.getChildren().addAll(parameterLabel, pathStrategyBox);
-    return container;
-  }
-
-  private Node createTargetCalculationConfigNode(Label parameterLabel, String parameter) {
-    ComboBox<String> targetStrategyDropdown = new ComboBox<>();
-    targetStrategyDropdown.getItems().addAll(ControlManager.getTargetCalculationStrategies());
-    controlTypeComboBoxes.put(parameter, targetStrategyDropdown);
-
-    VBox targetParameterBox = new VBox(5);
-    targetStrategyDropdown.setOnAction(e -> updateTargetParameterFields(targetStrategyDropdown, targetParameterBox));
-
-    VBox container = new VBox(5);
-    container.getChildren().addAll(parameterLabel, targetStrategyDropdown, targetParameterBox);
-    return container;
-  }
-
-  private void updateTargetParameterFields(ComboBox<String> dropdown, VBox targetParameterBox) {
-    targetParameterBox.getChildren().clear();
-    String selectedStrategy = dropdown.getValue();
-    List<String> targetParams = ControlManager.getTargetRequiredFieldsOrder(selectedStrategy);
-
-    if (!targetParams.isEmpty()) {
-      for (String targetParam : targetParams) {
-        Label targetParamLabel = new Label(targetParam + ": ");
-        TextField targetParamField = new TextField();
-        targetStrategyParameterFields.add(targetParamField);
-        targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
-      }
-    }
-  }
-
-  private Node createGenericParameterNode(Label parameterLabel) {
-    TextField parameterField = new TextField();
-    controlTypeParameterFields.add(parameterField);
-
-    VBox container = new VBox(5);
-    container.getChildren().addAll(parameterLabel, parameterField);
-    return container;
-  }
-
-
-
 
 }
