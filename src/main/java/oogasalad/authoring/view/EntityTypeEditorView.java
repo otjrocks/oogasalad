@@ -59,7 +59,7 @@ public class EntityTypeEditorView {
         new Label(LanguageManager.getMessage("CONTROL_STRATEGY")), controlTypeBox,
         new Label(LanguageManager.getMessage("MODES")), modeList,
         addModeButton,
-            new Separator(), deleteButton
+        new Separator(), deleteButton
     );
   }
 
@@ -107,7 +107,9 @@ public class EntityTypeEditorView {
   }
 
   private void commitChanges() {
-    if (current == null) return;
+    if (current == null) {
+      return;
+    }
 
     ControlConfig controlConfig = buildControlConfigFromUI(); // dynamically builds appropriate config
 
@@ -163,7 +165,9 @@ public class EntityTypeEditorView {
   }
 
   private void deleteEntityType() {
-    if (current == null) return;
+    if (current == null) {
+      return;
+    }
 
     Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
     confirm.setTitle(LanguageManager.getMessage("CONFIRM_DELETE"));
@@ -176,3 +180,4 @@ public class EntityTypeEditorView {
   }
 
 }
+

@@ -5,8 +5,8 @@ import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.BfsEntityException;
-import oogasalad.player.model.control.pathfinding.PathFindingStrategy;
-import oogasalad.player.model.control.targetcalculation.TargetStrategy;
+import oogasalad.player.model.control.pathfinding.PathFindingStrategyInterface;
+import oogasalad.player.model.control.targetcalculation.TargetStrategyInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,16 +18,16 @@ class ControlStrategyHelperMethodsTest {
   private GameMap mockMap;
   private Entity mockEntity;
   private EntityPlacement mockPlacement;
-  private TargetStrategy mockTargetStrategy;
-  private PathFindingStrategy mockPathStrategy;
+  private TargetStrategyInterface mockTargetStrategy;
+  private PathFindingStrategyInterface mockPathStrategy;
 
   @BeforeEach
   void setUp() {
     mockMap = mock(GameMap.class);
     mockEntity = mock(Entity.class);
     mockPlacement = mock(EntityPlacement.class);
-    mockTargetStrategy = mock(TargetStrategy.class);
-    mockPathStrategy = mock(PathFindingStrategy.class);
+    mockTargetStrategy = mock(TargetStrategyInterface.class);
+    mockPathStrategy = mock(PathFindingStrategyInterface.class);
 
     when(mockEntity.getEntityDirection()).thenReturn(Direction.D);
   }

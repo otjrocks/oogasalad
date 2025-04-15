@@ -6,9 +6,9 @@ import oogasalad.engine.model.controlConfig.TargetControlConfig;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.player.model.control.pathfinding.PathFindingStrategy;
+import oogasalad.player.model.control.pathfinding.PathFindingStrategyInterface;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategyFactory;
-import oogasalad.player.model.control.targetcalculation.TargetStrategy;
+import oogasalad.player.model.control.targetcalculation.TargetStrategyInterface;
 import oogasalad.player.model.control.targetcalculation.TargetStrategyFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,8 +66,8 @@ class TargetControlStrategyTest {
 
   private void runUpdateTest(int[] targetPosition, int[] pathVector,
       Direction expectedDirection, boolean canMove) {
-    TargetStrategy mockTargetStrategy = mock(TargetStrategy.class);
-    PathFindingStrategy mockPathStrategy = mock(PathFindingStrategy.class);
+    TargetStrategyInterface mockTargetStrategy = mock(TargetStrategyInterface.class);
+    PathFindingStrategyInterface mockPathStrategy = mock(PathFindingStrategyInterface.class);
 
     when(mockTargetStrategy.getTargetPosition()).thenReturn(targetPosition);
     when(mockPathStrategy.getPath(eq(gameMap), eq(5), eq(5),
