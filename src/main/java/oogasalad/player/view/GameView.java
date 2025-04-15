@@ -1,8 +1,10 @@
 package oogasalad.player.view;
 
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.layout.StackPane;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.config.ConfigModel;
@@ -49,18 +51,22 @@ public class GameView extends StackPane {
   }
 
   private void setUpEndMessage() {
-    endLabel.setVisible(false);
-    endLabel.getStyleClass().add("end-label");
-    this.getChildren().add(endLabel);
+    configureEndNode(endLabel, "end-label", null);
     StackPane.setAlignment(endLabel, Pos.CENTER);
-    restartButton.setVisible(false);
-    restartButton.getStyleClass().add("end-button");
-    restartButton.setText(LanguageManager.getMessage("RESTART_LEVEL"));
-    this.getChildren().add(restartButton);
-    nextLevelButton.setVisible(false);
-    nextLevelButton.getStyleClass().add("end-button");
-    nextLevelButton.setText(LanguageManager.getMessage("NEXT_LEVEL"));
-    this.getChildren().add(nextLevelButton);
+
+    configureEndNode(restartButton, "end-button",
+        LanguageManager.getMessage("RESTART_LEVEL"));
+    configureEndNode(nextLevelButton, "end-button",
+        LanguageManager.getMessage("NEXT_LEVEL"));
+  }
+
+  private void configureEndNode(Node node, String styleClass, String text) {
+    node.setVisible(false);
+    node.getStyleClass().add(styleClass);
+    if (node instanceof Labeled && text != null) {
+      ((Labeled) node).setText(text);
+    }
+    this.getChildren().add(node);
   }
 
   private void showEndMessage(boolean gameWon) {
