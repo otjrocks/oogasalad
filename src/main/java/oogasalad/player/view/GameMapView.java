@@ -28,8 +28,6 @@ public class GameMapView extends Canvas {
   private final GameContextRecord myGameContext;
   private final GameMapController myGameMapController;
   private final List<EntityView> entityViews = new ArrayList<>();
-  private final ResourceBundle SPRITE_DATA =
-      ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
   private GameLoopController myGameLoopController;
   private Consumer<Boolean> endGameCallback;
 
