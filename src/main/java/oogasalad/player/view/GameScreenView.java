@@ -14,6 +14,7 @@ import javafx.util.Duration;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.GameState;
+import oogasalad.player.view.components.HudView;
 
 /**
  * A view that displays the Heads-up display (HUD) and the game player view.
@@ -24,9 +25,7 @@ public class GameScreenView extends VBox {
 
   private final MainController mainController;
   private final GameState gameState;
-  private final Label scoreLabel;
-  private final Label livesLabel;
-
+  private final HudView hudView;
   private int lastScore;
   private int lastLives;
 
@@ -41,17 +40,19 @@ public class GameScreenView extends VBox {
     this.gameState = gameState;
     this.mainController = controller;
 
-    scoreLabel = new Label(
-        String.format(LanguageManager.getMessage("SCORE_LABEL"), gameState.getScore()));
-    livesLabel = new Label(
-        String.format(LanguageManager.getMessage("LIVES_LABEL"), gameState.getLives()));
-    HBox hudContainer = new HBox(scoreLabel, livesLabel);
-    hudContainer.getStyleClass().add("hud-container");
-
     GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState);
-    HBox controlBox = getHBox(gamePlayerView);
+    GameView gameView = gamePlayerView.getGameView();
 
-    this.getChildren().addAll(hudContainer, controlBox, gamePlayerView);
+    hudView = new HudView(
+        gameState,
+        gameView,
+        () -> {
+          mainController.getInputManager().getRoot().getChildren().remove(this);
+          mainController.showSplashScreen();
+        }
+    );
+
+    this.getChildren().addAll(hudView, gamePlayerView);
     this.getStyleClass().add("game-screen-view");
     this.setPrefSize(WIDTH, HEIGHT);
 
@@ -106,19 +107,11 @@ public class GameScreenView extends VBox {
    */
   private void checkAndUpdateHud() {
     if (gameState.getScore() != lastScore || gameState.getLives() != lastLives) {
-      updateHud();
+      hudView.update(gameState);
       lastScore = gameState.getScore();
       lastLives = gameState.getLives();
     }
   }
 
-  /**
-   * Updates the HUD display based on game state changes.
-   */
-  public void updateHud() {
-    scoreLabel.setText(
-        String.format(LanguageManager.getMessage("SCORE_LABEL"), gameState.getScore()));
-    livesLabel.setText(
-        String.format(LanguageManager.getMessage("LIVES_LABEL"), gameState.getLives()));
-  }
+
 }

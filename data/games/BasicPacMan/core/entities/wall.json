@@ -8,7 +8,9 @@
     "blocks": [
       "Pacman",
       "RedGhost",
-      "BlueGhost"
+      "BlueGhost",
+      "PinkGhost",
+      "OrangeGhost"
     ]
   },
   "modes": [

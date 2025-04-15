@@ -13,6 +13,7 @@ import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.api.GameMapFactory;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContextRecord;
+import oogasalad.player.controller.LevelController;
 
 /**
  * The view that displays only the game grid.
@@ -48,26 +49,33 @@ public class GamePlayerView extends StackPane {
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
     }
+    loadConfig();
+    this.getChildren().add(myGameView);
+  }
 
-    GameMap gameMap = null;
-
-    try {
-      if (myConfigModel != null) {
-        gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel,
-            myLevelIndex);
-      }
-    } catch (InvalidPositionException e) {
-      LoggingManager.LOGGER.warn("Failed to create or populate GameMap: ", e);
-    }
-
-    if (gameMap != null) {
-      myGameView = new GameView(new GameContextRecord(gameMap, myGameState), myConfigModel, myLevelIndex);
-      this.getChildren().add(myGameView);
+  private void loadConfig() {
+    LevelController levelController = new LevelController(myMainController, myConfigModel);
+    if (levelController.getCurrentLevelMap() != null) {
+      myGameView = new GameView(new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
+          myConfigModel, levelController.getCurrentLevelIndex());
+      myGameView.setRestartAction(this::restartLevel);
     }
   }
 
   /**
-   * Returns privately stored GameView
+   * Restarts the current level by clearing the view and reloading the game configuration.
+   *
+   * <p>This method replaces the current {@code GameView} with a fresh instance,
+   * effectively resetting the level state.</p>
+   */
+  public void restartLevel() {
+    this.getChildren().clear();
+    loadConfig();
+    this.getChildren().add(myGameView);
+  }
+
+  /**
+   * Returns privately stored GameView.
    */
   public GameView getGameView() {
     return myGameView;

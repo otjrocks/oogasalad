@@ -7,8 +7,7 @@
       "targetCalculationConfig": {
         "targetCalculationStrategy": "TargetAheadOfEntity",
         "targetType": "Pacman",
-        "tilesAhead": 2
-
+        "tilesAhead": 4
       }
     },
     "movementSpeed": 90

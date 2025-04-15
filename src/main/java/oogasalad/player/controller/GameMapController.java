@@ -13,13 +13,14 @@ import oogasalad.engine.model.GameEndStatus;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.api.CollisionStrategyFactory;
+import oogasalad.engine.model.api.GameOutcomeFactory;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.model.strategies.collision.CollisionStrategy;
-import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
-import oogasalad.engine.model.strategies.gameoutcome.LivesBasedOutcome;
-import oogasalad.engine.records.newconfig.model.collisionevent.CollisionEvent;
+
+import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategy;
+import oogasalad.engine.records.config.model.CollisionEvent;
 import oogasalad.engine.records.CollisionContextRecord;
 import oogasalad.engine.records.GameContextRecord;
 
@@ -38,7 +39,7 @@ public class GameMapController {
   private final GameContextRecord gameContext;
   private int frameCount = 0;
   private GameEndHandler gameEndHandler;
-  private final LivesBasedOutcome livesBasedOutcome = new LivesBasedOutcome();
+  private final GameOutcomeStrategy gameOutcomeStrategy;
   private final ConfigModel myConfigModel;
 
   /**
@@ -52,6 +53,7 @@ public class GameMapController {
     gameState = gameContext.gameState();
     this.gameContext = gameContext;
     myConfigModel = configModel;
+    gameOutcomeStrategy = GameOutcomeFactory.create(configModel.winCondition());
   }
 
   /**
@@ -59,30 +61,24 @@ public class GameMapController {
    */
   public void updateEntityModels() throws InvalidPositionException {
     frameCount++;
-    // Move entities and advance animation frame
-    for (Iterator<Entity> it = gameMap.iterator(); it.hasNext(); ) {
-      Entity entity = it.next();
-      entity.getEntityPlacement().setX(
-          entity.getEntityPlacement().getX() + entity.getDx());
-      entity.getEntityPlacement().setY(
-          entity.getEntityPlacement().getY() + entity.getDy());
+
+    for (Entity entity : gameMap) {
+      entity.getEntityPlacement().setX(entity.getEntityPlacement().getX() + entity.getDx());
+      entity.getEntityPlacement().setY(entity.getEntityPlacement().getY() + entity.getDy());
       if (frameCount % SPRITE_ANIMATION_SPEED == 0) {
         entity.getEntityPlacement().increaseCurrentFrame();
       }
     }
-    // Handle collisions
-    for (List<Entity> collision : getAllCollisions()) {
-      Entity e1 = collision.get(0);
-      Entity e2 = collision.get(1);
-      handleCollision(e1, e2);
-    }
-    // Handle game over conditions:
-    if (livesBasedOutcome.hasGameEnded(gameContext)) {
-      gameState.setGameOver(true);
-      stopGameLoop(GameEndStatus.LOSS);
-    }
-    if (new EntityBasedOutcomeStrategy("dot").hasGameEnded(gameContext)) {
 
+    for (List<Entity> collision : getAllCollisions()) {
+      handleCollision(collision.get(0), collision.get(1));
+    }
+
+    if (gameOutcomeStrategy.hasGameEnded(gameContext)) {
+      gameState.setGameOver(true);
+      String result = gameOutcomeStrategy.getGameOutcome(gameContext);
+      GameEndStatus status = result.equals("Level Passed") ? GameEndStatus.WIN : GameEndStatus.LOSS;
+      stopGameLoop(status);
     }
   }
 
@@ -132,11 +128,11 @@ public class GameMapController {
   }
 
   private static boolean checkCollisionRuleEntityBMatches(Entity e2, CollisionRule collisionRule) {
-    return collisionRule.getEntityTypeB().equals(e2.getEntityPlacement().getType().type());
+    return collisionRule.getEntityB().equals(e2.getEntityPlacement().getType().type());
   }
 
   private static boolean checkCollisionRuleEntityAMatches(Entity e1, CollisionRule collisionRule) {
-    return collisionRule.getEntityTypeA().equals(e1.getEntityPlacement().getType().type());
+    return collisionRule.getEntityA().equals(e1.getEntityPlacement().getType().type());
   }
 
   private List<List<Entity>> getAllCollisions() {

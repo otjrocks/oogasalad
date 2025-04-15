@@ -6,8 +6,8 @@ import oogasalad.engine.model.GameSettings;
 import oogasalad.engine.model.MetaData;
 import oogasalad.engine.model.Tiles;
 import java.util.List;
-import oogasalad.engine.records.newconfig.model.ParsedLevel;
-import oogasalad.engine.records.newconfig.model.wincondition.WinCondition;
+import oogasalad.engine.records.config.model.ParsedLevel;
+import oogasalad.engine.records.config.model.wincondition.WinCondition;
 
 /**
  * The ConfigModel record serves as a container for the configuration data of a game. It

@@ -12,10 +12,10 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.records.config.model.wincondition.EntityBasedCondition;
 import oogasalad.player.view.GameMapView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 public class GameMapControllerTest {
 
@@ -31,9 +31,11 @@ public class GameMapControllerTest {
     mockGameState = mock(GameState.class);
     mockGameView = mock(GameMapView.class);
     gameContext = new GameContextRecord(mockGameMap, mockGameState);
+
     ConfigModel mockConfigModel = mock(ConfigModel.class);
+    when(mockConfigModel.winCondition()).thenReturn(new EntityBasedCondition("dot")); // or any WinCondition
+
     controller = new GameMapController(gameContext, mockConfigModel);
-    controller = new GameMapController(gameContext, Mockito.mock(ConfigModel.class));
   }
 
   @Test

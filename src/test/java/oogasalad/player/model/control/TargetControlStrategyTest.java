@@ -1,27 +1,24 @@
 package oogasalad.player.model.control;
 
-import static org.mockito.Mockito.*;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import oogasalad.engine.enums.Directions.Direction;
+import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.controlConfig.TargetControlConfig;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
-import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.player.model.control.pathfinding.BfsPathFindingStrategy;
+import oogasalad.player.model.control.pathfinding.PathFindingStrategy;
+import oogasalad.player.model.control.pathfinding.PathFindingStrategyFactory;
 import oogasalad.player.model.control.targetcalculation.TargetStrategy;
 import oogasalad.player.model.control.targetcalculation.TargetStrategyFactory;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 
-// written by chatGPT
-public class TargetControlStrategyTest {
+import java.util.Collections;
+
+import static org.mockito.Mockito.*;
+
+class TargetControlStrategyTest {
 
   private GameMap gameMap;
   private EntityPlacement placement;
@@ -37,15 +34,8 @@ public class TargetControlStrategyTest {
 
     when(placement.getX()).thenReturn(5.0);
     when(placement.getY()).thenReturn(5.0);
-
     when(placement.getType()).thenReturn(entityType);
-    Map<String, Object> config = new HashMap<>();
-    config.put("targetType", "enemy");
-    config.put("tilesAhead", 1);
-//    when(entityType.strategyConfig()).thenReturn(config);
-//    when(entityType.controlType()).thenReturn("targetEntity");
-
-    // Avoid null pointer in real strategy if triggered
+    when(entity.getEntityDirection()).thenReturn(Direction.R);
     when(gameMap.iterator()).thenReturn(Collections.emptyIterator());
   }
 
@@ -74,28 +64,31 @@ public class TargetControlStrategyTest {
     runUpdateTest(new int[]{6, 5}, new int[]{1, 0}, Direction.R, false);
   }
 
-  private void runUpdateTest(int[] targetPosition, int[] directionVector,
+  private void runUpdateTest(int[] targetPosition, int[] pathVector,
       Direction expectedDirection, boolean canMove) {
     TargetStrategy mockTargetStrategy = mock(TargetStrategy.class);
-    when(mockTargetStrategy.getTargetPosition()).thenReturn(targetPosition);
+    PathFindingStrategy mockPathStrategy = mock(PathFindingStrategy.class);
 
+    when(mockTargetStrategy.getTargetPosition()).thenReturn(targetPosition);
+    when(mockPathStrategy.getPath(eq(gameMap), eq(5), eq(5),
+        eq(targetPosition[0]), eq(targetPosition[1]), eq(placement), eq(Direction.R)))
+        .thenReturn(pathVector);
     when(entity.canMove(expectedDirection)).thenReturn(canMove);
 
     try (
-        MockedStatic<TargetStrategyFactory> mockedFactory = mockStatic(TargetStrategyFactory.class);
-        MockedConstruction<BfsPathFindingStrategy> mockedConstruction =
-            mockConstruction(BfsPathFindingStrategy.class,
-                (mock, context) -> {
-                  when(mock.getPath(any(), anyInt(), anyInt(), anyInt(), anyInt(), any(), any()))
-                      .thenReturn(directionVector);
-                })
+        MockedStatic<TargetStrategyFactory> mockTargetFactory = mockStatic(TargetStrategyFactory.class);
+        MockedStatic<PathFindingStrategyFactory> mockPathFactory = mockStatic(PathFindingStrategyFactory.class)
     ) {
-      mockedFactory.when(
-              () -> TargetStrategyFactory.createTargetStrategy(placement, gameMap))
+      mockTargetFactory.when(() -> TargetStrategyFactory.createTargetStrategy(placement, gameMap))
           .thenReturn(mockTargetStrategy);
+      mockPathFactory.when(() -> PathFindingStrategyFactory.createPathFindingStrategy("Dijkstra"))
+          .thenReturn(mockPathStrategy);
 
-      TargetControlStrategy strategy = new TargetControlStrategy(gameMap, placement,
-          new BfsPathFindingStrategy());
+      TargetControlStrategy strategy = new TargetControlStrategy(
+          gameMap,
+          placement,
+          new TargetControlConfig("Dijkstra", null)
+      );
 
       strategy.update(entity);
 
@@ -106,5 +99,4 @@ public class TargetControlStrategyTest {
       }
     }
   }
-
 }
