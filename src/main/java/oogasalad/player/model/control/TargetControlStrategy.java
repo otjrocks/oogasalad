@@ -85,7 +85,7 @@ public class TargetControlStrategy implements ControlStrategy {
 
   @Override
   public void update(Entity entity) {
-    int[] target = validateAndGetTargetPosition();
+    int[] target = ControlStrategyHelperMethods.validateAndGetTargetPosition();
 //    int[] target = new int[]{0, 0};
 
     int[] dir = myPathFindingStrategy.getPath(myGameMap,
@@ -94,34 +94,7 @@ public class TargetControlStrategy implements ControlStrategy {
         target[0], target[1],
         myEntityPlacement, entity.getEntityDirection());
 
-    setEntityDirection(dir[0], dir[1], entity);
-  }
-
-  private int[] validateAndGetTargetPosition() {
-    int[] targetPosition = myTargetStrategy.getTargetPosition();
-    if (targetPosition.length != 2) {
-      throw new BfsEntityException("Target position must be of length 2");
-    }
-    return targetPosition;
-  }
-
-  private void setEntityDirection(int dx, int dy, Entity entity) {
-    for (Direction direction : Direction.values()) {
-      if (direction == Direction.NONE) {
-        break;
-      }
-      if (isValidDirection(dx, dy, direction, entity)) {
-        entity.setEntitySnapDirection(direction);
-        return;
-      }
-    }
-  }
-
-
-  private boolean isValidDirection(int dx, int dy, Direction direction, Entity entity) {
-    int normDx = Integer.compare(dx, 0);
-    int normDy = Integer.compare(dy, 0);
-    return normDx == direction.getDx() && normDy == direction.getDy() && entity.canMove(direction);
+    ControlStrategyHelperMethods.setEntityDirection(dir[0], dir[1], entity);
   }
 
 }

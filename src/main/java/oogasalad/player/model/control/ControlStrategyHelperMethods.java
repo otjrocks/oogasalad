@@ -1,6 +1,10 @@
 package oogasalad.player.model.control;
 
 import java.util.Map;
+import oogasalad.engine.enums.Directions.Direction;
+import oogasalad.engine.model.entity.Entity;
+import oogasalad.engine.model.exceptions.BfsEntityException;
+import oogasalad.player.model.control.targetcalculation.TargetStrategy;
 import oogasalad.player.model.exceptions.TargetStrategyException;
 
 /**
@@ -30,6 +34,33 @@ public class ControlStrategyHelperMethods {
     }
 
     return strategyConfig.get(key).toString();
+  }
+
+
+  static int[] validateAndGetTargetPosition(TargetStrategy targetStrategy) {
+    int[] targetPosition = targetStrategy.getTargetPosition();
+    if (targetPosition.length != 2) {
+      throw new BfsEntityException("Target position must be of length 2");
+    }
+    return targetPosition;
+  }
+
+  static void setEntityDirection(int dx, int dy, Entity entity) {
+    for (Direction direction : Direction.values()) {
+      if (direction == Direction.NONE) {
+        break;
+      }
+      if (isValidDirection(dx, dy, direction, entity)) {
+        entity.setEntitySnapDirection(direction);
+        return;
+      }
+    }
+  }
+
+  private static boolean isValidDirection(int dx, int dy, Direction direction, Entity entity) {
+    int normDx = Integer.compare(dx, 0);
+    int normDy = Integer.compare(dy, 0);
+    return normDx == direction.getDx() && normDy == direction.getDy() && entity.canMove(direction);
   }
 
 }
