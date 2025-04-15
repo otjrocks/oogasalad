@@ -5,7 +5,6 @@ import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.controlConfig.ConditionalControlConfig;
 import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.engine.model.controlConfig.TargetControlConfig;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.BfsEntityException;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategy;
@@ -15,6 +14,11 @@ import oogasalad.player.model.control.targetcalculation.TargetStrategyFactory;
 import oogasalad.player.model.exceptions.ControlStrategyException;
 
 
+/**
+ * The ConditionalControlStrategy class implements the ControlStrategy interface and provides
+ * a mechanism to control entities in a game based on specific conditions. It uses different
+ * pathfinding strategies depending on whether the target is within a specified radius or outside it.
+ */
 public class ConditionalControlStrategy implements ControlStrategy {
 
   private final GameMap myGameMap;
@@ -24,11 +28,16 @@ public class ConditionalControlStrategy implements ControlStrategy {
   private final TargetStrategy myTargetStrategy;
   private int myRadius;
 
+  private final String NOT_CONDITIONALCONFIG_EXCEPTION =
+      "Config is not a ConditionalControlConfig";
+
   /**
-   * Create a BFS strategy.
+   * Constructs a ConditionalControlStrategy object that determines control behavior
+   * based on specific conditions and strategies.
    *
-   * @param gameMap         The game map this entity is a part of.
-   * @param entityPlacement The data to include with this entity.
+   * @param gameMap the GameMap object representing the current state of the game map
+   * @param entityPlacement the EntityPlacement object used to manage entity placement
+   * @param config the ControlConfig object containing configuration details for the strategy
    */
   public ConditionalControlStrategy(GameMap gameMap, EntityPlacement entityPlacement,
       ControlConfig config) {
@@ -45,7 +54,7 @@ public class ConditionalControlStrategy implements ControlStrategy {
       return PathFindingStrategyFactory.createPathFindingStrategy(
           conditionalConfig.pathFindingStrategyInRadius());
     } else {
-      throw new ControlStrategyException("Config is not a ConditionalControlConfig");
+      throw new ControlStrategyException(NOT_CONDITIONALCONFIG_EXCEPTION);
     }
   }
 
@@ -54,7 +63,7 @@ public class ConditionalControlStrategy implements ControlStrategy {
       return PathFindingStrategyFactory.createPathFindingStrategy(
           conditionalConfig.pathFindingStrategyOutRadius());
     } else {
-      throw new ControlStrategyException("Config is not a ConditionalControlConfig");
+      throw new ControlStrategyException(NOT_CONDITIONALCONFIG_EXCEPTION);
     }
   }
 
@@ -62,7 +71,7 @@ public class ConditionalControlStrategy implements ControlStrategy {
     if (config instanceof ConditionalControlConfig conditionalConfig) {
       return conditionalConfig.radius();
     } else {
-      throw new ControlStrategyException("Config is not a ConditionalControlConfig");
+      throw new ControlStrategyException(NOT_CONDITIONALCONFIG_EXCEPTION);
     }
   }
 

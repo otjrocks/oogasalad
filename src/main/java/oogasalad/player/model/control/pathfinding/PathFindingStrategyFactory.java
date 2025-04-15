@@ -5,11 +5,25 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import oogasalad.player.model.exceptions.PathFindingStrategyException;
 
+/**
+ * Factory class for creating instances of {@link PathFindingStrategy}.
+ * This class dynamically loads and instantiates pathfinding strategy classes
+ * based on their names. The strategy classes must be located in the package
+ * {@code oogasalad.player.model.control.pathfinding} and follow the naming
+ * convention of appending "PathFindingStrategy" to the strategy name.
+ */
 public class PathFindingStrategyFactory {
 
   private static final String STRATEGY_PACKAGE
       = "oogasalad.player.model.control.pathfinding.";
 
+  /**
+   * Creates an instance of a PathFindingStrategy based on the provided strategy name.
+   *
+   * @param pathFindingStrategy the name of the pathfinding strategy to create
+   * @return an instance of the specified PathFindingStrategy
+   * @throws PathFindingStrategyException if the strategy class cannot be found or instantiated
+   */
   public static PathFindingStrategy createPathFindingStrategy(String pathFindingStrategy)
       throws PathFindingStrategyException {
 
