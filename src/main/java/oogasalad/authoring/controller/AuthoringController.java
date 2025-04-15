@@ -253,31 +253,55 @@ public class AuthoringController {
    * @param typeName the name of the entity type to delete
    */
   public void deleteEntityType(String typeName) {
-    List<EntityPlacement> placementsToRemove = model.getCurrentLevel().getEntityPlacements().stream()
+    List<EntityPlacement> placementsToRemove = getPlacementsOfType(typeName);
+
+    // Remove visual representations
+    removeVisualPlacements(placementsToRemove);
+
+    // Delete from model
+    if (model.deleteEntityType(typeName)) {
+      // Update selected entity references
+      clearSelectionIfDeleted(typeName);
+
+      // Update UI
+      updateEntitySelector();
+    }
+  }
+
+  /**
+   * Gets all entity placements of a specific type in the current level.
+   */
+  private List<EntityPlacement> getPlacementsOfType(String typeName) {
+    return model.getCurrentLevel().getEntityPlacements().stream()
             .filter(p -> typeName.equals(p.getTypeString()))
             .toList();
+  }
 
+  /**
+   * Removes visual representations of the given placements from the canvas.
+   */
+  private void removeVisualPlacements(List<EntityPlacement> placements) {
     CanvasView canvasView = view.getCanvasView();
-    for (EntityPlacement placement : placementsToRemove) {
+    for (EntityPlacement placement : placements) {
       canvasView.removeEntityVisual(placement);
     }
+  }
 
-    if (model.deleteEntityType(typeName)) {
-      // Clear the entity type editor if the deleted type was selected
-      if (selectedType != null && selectedType.type().equals(typeName)) {
-        selectedType = null;
-        view.getEntityEditorView().setEntityType(null);
-        view.getEntityEditorView().getRoot().setVisible(false);
-      }
+  /**
+   * Clears selection references if they match the deleted entity type.
+   */
+  private void clearSelectionIfDeleted(String typeName) {
+    // Clear entity type editor if needed
+    if (selectedType != null && selectedType.type().equals(typeName)) {
+      selectedType = null;
+      view.getEntityEditorView().setEntityType(null);
+      view.getEntityEditorView().getRoot().setVisible(false);
+    }
 
-      // Clear the entity placement view if a placement of the deleted type was selected
-      if (selectedPlacement != null && selectedPlacement.getTypeString().equals(typeName)) {
-        selectedPlacement = null;
-        view.getEntityPlacementView().setVisible(false);
-      }
-
-      // Update the UI components
-      updateEntitySelector();
+    // Clear entity placement view if needed
+    if (selectedPlacement != null && selectedPlacement.getTypeString().equals(typeName)) {
+      selectedPlacement = null;
+      view.getEntityPlacementView().setVisible(false);
     }
   }
 
