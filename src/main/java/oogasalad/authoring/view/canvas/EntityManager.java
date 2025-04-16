@@ -171,11 +171,20 @@ public class EntityManager {
     }
   }
 
+  /**
+   * Retrieves a list of {@link EntityPlacement}s that belong to the specified entity type.
+   * This is used to identify all placements of a particular EntityType currently
+   * visible on the canvas.
+   *
+   * @param entityTypeName the name of the entity type to filter by
+   * @return a list of matching {@link EntityPlacement} instances
+   */
   public List<EntityPlacement> getPlacementsForEntityType(String entityTypeName) {
     return entityViews.values().stream()
         .filter(p -> p.getType().type().equals(entityTypeName))
         .toList();
   }
+
 
 
   /**
