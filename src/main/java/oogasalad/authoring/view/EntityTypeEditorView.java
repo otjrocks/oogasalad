@@ -277,12 +277,14 @@ public class EntityTypeEditorView {
     dialog.showAndWait().ifPresent(newConfig -> {
       Map<String, ModeConfig> newModes = new HashMap<>(current.modes());
 
-      if (!oldName.equals(newConfig.name())) {
+      boolean renamed = !oldName.equals(newConfig.name());
+      if (renamed) {
         newModes.remove(oldName);
       }
       newModes.put(newConfig.name(), newConfig);
 
-      current = new EntityType(
+      // 1. Create updated EntityType
+      EntityType updated = new EntityType(
           current.type(),
           current.controlConfig(),
           newModes,
@@ -290,12 +292,27 @@ public class EntityTypeEditorView {
           current.speed()
       );
 
-      setEntityType(current); // updates UI and "commits" change
+      // 2. Replace in model
+      controller.getModel().addEntityType(updated);
+      controller.getModel().getCurrentLevel().refreshEntityTypes(controller.getModel().getEntityTypeMap());
+
+
+      // 3. Update placements to reflect renamed mode
+      if (renamed) {
+        controller.getModel()
+            .getCurrentLevel()
+            .updateModeName(updated.type(), oldName, newConfig.name());
+      }
+
+      // 4. Update UI
+      current = updated; // update local cache
+      setEntityType(updated);
       controller.updateEntitySelector();
       controller.updateCanvas();
       commitChanges();
     });
   }
+
 
   private void showError(String msg) {
     Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
