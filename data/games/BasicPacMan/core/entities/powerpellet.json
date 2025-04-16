@@ -10,7 +10,7 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "powerpellet",
+        "imagePath": "powerpellet.png",
         "tileWidth": 2,
         "tileHeight": 2,
         "tilesToCycle": 1,

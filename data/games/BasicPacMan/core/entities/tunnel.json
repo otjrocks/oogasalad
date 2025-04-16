@@ -10,7 +10,7 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "tunnel",
+        "imagePath": "tunnel.png",
         "tileWidth": 100,
         "tileHeight": 100,
         "tilesToCycle": 1,
