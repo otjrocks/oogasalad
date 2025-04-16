@@ -43,11 +43,13 @@ public class GameView extends StackPane {
     this.getChildren().add(myGameMapView);
     this.getStyleClass().add("game-view");
     this.setFocusTraversable(true);
+    boolean isFinalLevel = levelIndex >= configModel.levels().size() - 1;
+
     myGameLoopController = new GameLoopController(gameContext, myGameMapView,
         configModel.levels().get(levelIndex));
     myGameMapView.setGameLoopController(myGameLoopController);
     setUpEndMessage();
-    myGameMapView.setEndGameCallback(this::showEndMessage);
+    myGameMapView.setEndGameCallback(won -> showEndMessage(won, isFinalLevel));
   }
 
   private void setUpEndMessage() {
@@ -69,13 +71,23 @@ public class GameView extends StackPane {
     this.getChildren().add(node);
   }
 
-  private void showEndMessage(boolean gameWon) {
-    endLabel.setText(gameWon ? LanguageManager.getMessage("LEVEL_PASSED")
-        : LanguageManager.getMessage("GAME_OVER"));
+  private void showEndMessage(boolean gameWon, boolean isFinalLevel) {
+    if (gameWon) {
+      if (isFinalLevel) {
+        endLabel.setText("🎉 Congrats! 🎉");
+      } else {
+        endLabel.setText(LanguageManager.getMessage("LEVEL_PASSED"));
+      }
+    } else {
+      endLabel.setText(LanguageManager.getMessage("GAME_OVER"));
+    }
+
     endLabel.setVisible(true);
-    nextLevelButton.setVisible(gameWon);
-    restartButton.setVisible(!gameWon);
+    nextLevelButton.setVisible(gameWon && !isFinalLevel);
+    restartButton.setVisible(!gameWon || isFinalLevel);
   }
+
+
 
   /**
    * Sets the action to be executed when the restart button is clicked.

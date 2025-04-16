@@ -70,10 +70,14 @@ public class GamePlayerView extends StackPane {
 
       myGameView.setRestartAction(this::restartLevel);
       myGameView.setNextLevelAction(() -> {
-        levelController.incrementAndUpdateConfig();
-        this.getChildren().clear();
-        loadConfig(); // 🔁 Re-parses the config so we get the new level
-        this.getChildren().add(myGameView);
+        if (levelController.hasNextLevel()) {
+          levelController.incrementAndUpdateConfig();
+          this.getChildren().clear();
+          loadConfig();
+          this.getChildren().add(myGameView);
+        } else {
+          LoggingManager.LOGGER.info("No more levels to load.");
+        }
       });
     }
   }

@@ -60,19 +60,16 @@ public class LevelController {
    * Increment the current level.
    */
   public void incrementAndUpdateConfig() {
-    if (myLevelIndex + 1 < myConfigModel.levels().size()) {
-      myLevelIndex++;
-      try {
-        JsonConfigSaver saver = new JsonConfigSaver();
-        saver.saveUpdatedLevelIndex(myConfigModel, myLevelIndex, Paths.get("data/games/BasicPacMan"));
-        LoggingManager.LOGGER.info("Level index updated and saved to gameConfig.json");
-      } catch (ConfigException e) {
-        LoggingManager.LOGGER.warn("Failed to save updated level index", e);
-      }
-    } else {
-      LoggingManager.LOGGER.info("No more levels to increment to.");
+    myLevelIndex++;
+    try {
+      JsonConfigSaver saver = new JsonConfigSaver();
+      saver.saveUpdatedLevelIndex(myConfigModel, myLevelIndex, Paths.get("data/games/BasicPacMan"));
+      LoggingManager.LOGGER.info("Level index updated and saved to gameConfig.json");
+    } catch (ConfigException e) {
+      LoggingManager.LOGGER.warn("Failed to save updated level index", e);
     }
   }
+
 
 
 
@@ -85,4 +82,13 @@ public class LevelController {
     System.out.println(myLevelIndex);
     return myLevelIndex;
   }
+
+  /**
+   * Gets if there are any levels remaining
+   * @return Whether a next level exists
+   */
+  public boolean hasNextLevel() {
+    return myLevelIndex + 1 < myConfigModel.levels().size();
+  }
+
 }
