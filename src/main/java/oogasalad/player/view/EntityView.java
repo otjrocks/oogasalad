@@ -39,7 +39,7 @@ public class EntityView {
     this.entity = entity;
     this.totalFrames = entity.getEntityPlacement().getEntityFrameNumber();
     this.dimension = 28;
-    this.sprite = SPRITE_CACHE.computeIfAbsent(entity.getEntityPlacement().getEntityImagePath(), name -> {
+    this.sprite = SPRITE_CACHE.computeIfAbsent(entity.getEntityPlacement().getDefaultImagePath(), name -> {
       try (InputStream stream = EntityView.class.getClassLoader().getResourceAsStream("sprites/" + name)) {
         if (stream == null) throw new IllegalArgumentException("Image not found: " + name);
         return new Image(stream);

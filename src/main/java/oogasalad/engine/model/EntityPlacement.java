@@ -243,12 +243,17 @@ public class EntityPlacement {
    * @return the string path to the entity's image
    */
   public String getEntityImagePath() {
-
-    String path = this.getType()
+    return this.getType()
         .modes()
         .get(this.getMode())
         .image().imagePath();
-    return path;
+  }
+
+  public String getDefaultImagePath() {
+    return this.getType()
+        .modes()
+        .get("Default")
+        .image().imagePath();
   }
 
   /**
