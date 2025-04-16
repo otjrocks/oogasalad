@@ -63,7 +63,7 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
     Map<String, ModeConfig> modeMap = new HashMap<>();
     modeMap.put("Default", mockMode);
 
-    mockEntityType = new EntityType("Pacman", new KeyboardControlConfig(), modeMap, List.of());
+    mockEntityType = new EntityType("Pacman", new KeyboardControlConfig(), modeMap, List.of(), 1.0);
 
     AuthoringModel mockModel = mock(AuthoringModel.class);
     when(mockController.getModel()).thenReturn(mockModel);

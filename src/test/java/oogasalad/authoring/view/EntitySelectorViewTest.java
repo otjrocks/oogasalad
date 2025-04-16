@@ -80,7 +80,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
         "Ghost",
         new KeyboardControlConfig(),
         Map.of("Default", mode),
-        List.of()
+        List.of(), 1.0
     );
 
     // --- Run and verify ---
@@ -99,7 +99,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
         "Pacman",
         new NoneControlConfig(),
         Map.of("Default", mode),
-        List.of()
+        List.of(), 1.0
     );    runAsJFXAction(() -> view.updateEntities(List.of(entity)));
 
     VBox tile = (VBox) ((FlowPane) lookup(".flow-pane").query()).getChildren().getFirst();
@@ -114,7 +114,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
         "Wall",
         new NoneControlConfig(),
         Map.of("Default", mode),
-        List.of()
+        List.of(), 1.0
     );
     runAsJFXAction(() -> view.updateEntities(List.of(entity)));
     runAsJFXAction(() -> view.highlightEntityTile("Wall"));

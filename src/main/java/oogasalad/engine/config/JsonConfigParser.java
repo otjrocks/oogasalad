@@ -381,7 +381,8 @@ public class JsonConfigParser implements ConfigParser {
         entity.name(),
         control,
         modes,
-        entity.entityProperties().blocks()
+        entity.entityProperties().blocks(),
+        entity.entityProperties().movementSpeed()
     );
 
   }
