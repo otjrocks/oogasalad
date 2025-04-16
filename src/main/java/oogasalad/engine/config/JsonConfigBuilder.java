@@ -11,8 +11,6 @@ import oogasalad.engine.model.EntityType;
 
 import java.util.*;
 import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
-import oogasalad.engine.records.config.model.CollisionEvent;
 
 /**
  * Utility class for converting the internal AuthoringModel data structures into serializable JSON
@@ -193,7 +191,7 @@ public class JsonConfigBuilder {
       modeNode.put("name", mode.name());
 
       ObjectNode imageNode = modeNode.putObject("image");
-      imageNode.put("imagePath", getRelativeImagePath(mode.image().imagePath()));
+      imageNode.put("imagePath", getImagePath(mode.image().imagePath()));
 
       // Replace with actual values if ModeConfig/Image provides them
       imageNode.put("tileWidth", 14);
@@ -222,11 +220,10 @@ public class JsonConfigBuilder {
     return result;
   }
 
-  private String getRelativeImagePath(String fullPath) {
-    // Assume your assets root is in `src/main/resources/assets/`
-    String marker = "assets/";
-    int index = fullPath.indexOf(marker);
-    return index >= 0 ? fullPath.substring(index) : fullPath;
+  private String getImagePath(String fullPath) {
+    // Extract just the file name from the full path
+    String fileName = fullPath.substring(fullPath.lastIndexOf('/') + 1);
+    return "assets/" + fileName;
   }
 
 }
