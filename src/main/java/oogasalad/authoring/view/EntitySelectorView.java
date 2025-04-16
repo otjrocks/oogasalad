@@ -32,6 +32,8 @@ import oogasalad.engine.records.config.ImageConfig;
  */
 public class EntitySelectorView {
 
+  private final String DEFAULT_MODE = "Default";
+
   private final VBox root;
   private final FlowPane tileGrid;
   private final AuthoringController controller;
@@ -137,8 +139,8 @@ public class EntitySelectorView {
     imageView.setFitHeight(48);
 
     // Get preview from the sprite sheet
-    if (type.modes().containsKey("Default")) {
-      imageView.setImage(SpriteSheetUtil.getPreviewTile(type.modes().get("Default")));
+    if (type.modes().containsKey(DEFAULT_MODE)) {
+      imageView.setImage(SpriteSheetUtil.getPreviewTile(type.modes().get(DEFAULT_MODE)));
     }
 
     tile.getChildren().add(imageView);
@@ -149,21 +151,15 @@ public class EntitySelectorView {
     // Drag-and-drop support
     tile.setOnDragDetected(e -> {
       Dragboard db = tile.startDragAndDrop(TransferMode.COPY);
+      @SuppressWarnings("PMD.LooseCoupling")
       ClipboardContent content = new ClipboardContent();
+      content.putString(type.type());
+      db.setContent(content);
       content.putString(type.type());
       db.setContent(content);
       e.consume();
     });
 
     return tile;
-  }
-
-
-  private String getDefaultModeImage(EntityType type) {
-    Map<String, ModeConfig> modes = type.modes();
-    if (modes == null || !modes.containsKey("Default")) {
-      return null;
-    }
-    return modes.get("Default").image().imagePath();
   }
 }
