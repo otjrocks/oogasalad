@@ -30,7 +30,6 @@ import oogasalad.engine.model.entity.Entity;
 public class EntityView {
 
   private static final Map<String, Image> SPRITE_CACHE = new HashMap<>();
-  public static final String ASSETS_PATH = "assets/";
   private final Entity entity;
   private final int totalFrames;
   private final int dimension;
@@ -45,7 +44,7 @@ public class EntityView {
     this.entity = entity;
     this.totalFrames = entity.getEntityPlacement().getEntityFrameNumber();
     this.dimension = 28;
-    String imagePath = CURRENT_GAME_CONFIG_PATH + ASSETS_PATH + entity.getEntityPlacement().getDefaultImagePath();
+    String imagePath = CURRENT_GAME_CONFIG_PATH + entity.getEntityPlacement().getDefaultImagePath();
     this.sprite = SPRITE_CACHE.computeIfAbsent(imagePath, path -> {
       try {
         return new Image(new FileInputStream(imagePath)); // Load from file path

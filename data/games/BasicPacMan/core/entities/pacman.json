@@ -10,7 +10,7 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "pacman.png",
+        "imagePath": "assets/pacman.png",
         "tileWidth": 13,
         "tileHeight": 13,
         "tilesToCycle": 6,
@@ -21,7 +21,7 @@
       "name": "PoweredUp",
       "movementSpeed": 150,
       "image": {
-        "imagePath": "pacman.png",
+        "imagePath": "assets/pacman.png",
         "tileWidth": 13,
         "tileHeight": 13,
         "tilesToCycle": 6,

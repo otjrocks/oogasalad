@@ -10,7 +10,7 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "cherry.png",
+        "imagePath": "assets/cherry.png",
         "tileWidth": 2,
         "tileHeight": 2,
         "tilesToCycle": 1,
