@@ -15,6 +15,9 @@ import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.records.config.model.CollisionEvent;
 import oogasalad.engine.records.config.model.Settings;
+import oogasalad.engine.records.config.model.wincondition.EntityBasedCondition;
+import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
+import oogasalad.engine.records.config.model.wincondition.WinCondition;
 
 /**
  * Utility class for converting the internal AuthoringModel data structures into serializable JSON
@@ -60,37 +63,29 @@ public class JsonConfigBuilder {
 // === win conditions ===
     ObjectNode winCondition = mapper.createObjectNode();
 
-// Process win condition from settings or use default
-    Object winConditionObj = settings.winCondition();
+// Process win condition from settings
+    WinCondition winConditionObj = settings.winCondition();
     if (winConditionObj != null) {
-      // Try to extract type and parameters using reflection
+      // Extract type and parameters based on class
       String className = winConditionObj.getClass().getSimpleName();
+
       if (className.contains("EntityBased")) {
         winCondition.put("type", "EntityBased");
         try {
-          Method getter = winConditionObj.getClass().getMethod("entityType");
-          String entityType = (String) getter.invoke(winConditionObj);
-          winCondition.put("entityType", entityType);
+          // Access entityType field from EntityBasedCondition
+          EntityBasedCondition entityBased = (EntityBasedCondition) winConditionObj;
+          winCondition.put("entityType", entityBased.entityType());
         } catch (Exception e) {
-          winCondition.put("entityType", "dot");  // Default if extraction fails
-        }
-      } else if (className.contains("ScoreBased")) {
-        winCondition.put("type", "ScoreBased");
-        try {
-          Method getter = winConditionObj.getClass().getMethod("targetScore");
-          int targetScore = (int) getter.invoke(winConditionObj);
-          winCondition.put("targetScore", targetScore);
-        } catch (Exception e) {
-          winCondition.put("targetScore", 1000);  // Default if extraction fails
+          winCondition.put("entityType", "dot");  // Default
         }
       } else if (className.contains("SurviveForTime")) {
         winCondition.put("type", "SurviveForTime");
         try {
-          Method getter = winConditionObj.getClass().getMethod("seconds");
-          int seconds = (int) getter.invoke(winConditionObj);
-          winCondition.put("seconds", seconds);
+          // Access amount field from SurviveForTimeCondition
+          SurviveForTimeCondition surviveTime = (SurviveForTimeCondition) winConditionObj;
+          winCondition.put("amount", surviveTime.amount());
         } catch (Exception e) {
-          winCondition.put("seconds", 5);  // Default if extraction fails
+          winCondition.put("amount", 5);  // Default
         }
       } else {
         // Default win condition if type can't be determined
