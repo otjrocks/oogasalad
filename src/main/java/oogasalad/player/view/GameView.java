@@ -90,6 +90,10 @@ public class GameView extends StackPane {
     restartButton.setOnAction(e -> action.run());
   }
 
+  public void setNextLevelAction(Runnable action) {
+    nextLevelButton.setOnAction(e -> action.run());
+  }
+
   /**
    * Pause the game loop from the game loop controller associated with this game view.
    */

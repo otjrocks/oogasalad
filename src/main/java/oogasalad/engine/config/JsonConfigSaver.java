@@ -87,20 +87,25 @@ public class JsonConfigSaver implements ConfigSaver {
     writeJson(config, folder.resolve(CORE_FOLDER + "/entities/" + name + ".json"));
   }
 
-  public void saveUpdatedLevelIndex(ConfigModel config, int newLevelIndex, Path folder) throws ConfigException {
+  public void saveUpdatedLevelIndex(ConfigModel configModel, int newLevelIndex, Path folder) throws ConfigException {
     ObjectMapper mapper = new ObjectMapper();
-    ObjectNode updatedNode = mapper.valueToTree(
-        new ConfigModel(
-            config.metadata(),
-            config.settings(),
-            config.entityTypes(),
-            config.levels(),
-            config.collisionRules(),
-            config.winCondition(),
-            newLevelIndex
-        )
-    );
-    saveGameConfig(updatedNode, folder);
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+    Path configPath = folder.resolve("gameConfig.json");
+
+    try {
+      // ✅ Load the existing gameConfig.json as a tree
+      ObjectNode root = (ObjectNode) mapper.readTree(configPath.toFile());
+
+      // ✅ Set/replace the field
+      root.put("currentLevelIndex", newLevelIndex);
+
+      // ✅ Write the updated config back
+      mapper.writeValue(configPath.toFile(), root);
+
+    } catch (IOException e) {
+      throw new ConfigException("Failed to update currentLevelIndex in gameConfig.json", e);
+    }
   }
 
 

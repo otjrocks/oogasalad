@@ -417,7 +417,6 @@ public class JsonConfigParser implements ConfigParser {
       List<CollisionConfig> collisions = parseCollisions(root);
       JsonNode currentLevelNode = root.get("currentLevelIndex");
       int currentLevelIndex = currentLevelNode != null ? currentLevelNode.asInt() : 0;
-      System.out.println("Current level index: " + currentLevelIndex);
       return new GameConfig(metadata, defaultSettings, levels, collisions, getFolderPath(filepath), currentLevelIndex);
 
     } catch (IOException e) {

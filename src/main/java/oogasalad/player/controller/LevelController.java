@@ -4,6 +4,7 @@ import java.nio.file.Paths;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.ConfigModel;
+import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.config.JsonConfigSaver;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.GameMap;
@@ -18,7 +19,7 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
 public class LevelController {
 
   private int myLevelIndex;
-  private final ConfigModel myConfigModel;
+  private ConfigModel myConfigModel;
   private final MainController myMainController;
 
   /**
@@ -59,15 +60,21 @@ public class LevelController {
    * Increment the current level.
    */
   public void incrementAndUpdateConfig() {
-    myLevelIndex++;
-    try {
-      JsonConfigSaver saver = new JsonConfigSaver();
-      saver.saveUpdatedLevelIndex(myConfigModel, myLevelIndex, Paths.get("data/games/BasicPacMan"));
-      LoggingManager.LOGGER.info("Level index updated and saved to gameConfig.json");
-    } catch (ConfigException e) {
-      LoggingManager.LOGGER.warn("Failed to save updated level index", e);
+    if (myLevelIndex + 1 < myConfigModel.levels().size()) {
+      myLevelIndex++;
+      try {
+        JsonConfigSaver saver = new JsonConfigSaver();
+        saver.saveUpdatedLevelIndex(myConfigModel, myLevelIndex, Paths.get("data/games/BasicPacMan"));
+        LoggingManager.LOGGER.info("Level index updated and saved to gameConfig.json");
+      } catch (ConfigException e) {
+        LoggingManager.LOGGER.warn("Failed to save updated level index", e);
+      }
+    } else {
+      LoggingManager.LOGGER.info("No more levels to increment to.");
     }
   }
+
+
 
   /**
    * Get the current level index.
