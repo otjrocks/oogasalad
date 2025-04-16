@@ -1,0 +1,65 @@
+{
+  "metadata" : {
+    "gameTitle" : null,
+    "author" : null,
+    "gameDescription" : null
+  },
+  "defaultSettings" : {
+    "gameSpeed" : 1.0,
+    "startingLives" : 3,
+    "initialScore" : 0,
+    "scoreStrategy" : "Cumulative",
+    "winCondition" : {
+      "type" : "EntityBased",
+      "entityType" : "dot"
+    }
+  },
+  "levels" : [ {
+    "levelMap" : "level1"
+  } ],
+  "collisions" : [ {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Wall",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Ghost",
+    "modeA" : "Default",
+    "entityB" : "Wall",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Dot",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 10
+    } ],
+    "eventsB" : [ {
+      "type" : "Consume"
+    } ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Ghost",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "ReturnToSpawnLocation"
+    }, {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ {
+      "type" : "ReturnToSpawnLocation"
+    } ]
+  } ]
+}

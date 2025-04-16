@@ -1,0 +1,24 @@
+{
+  "entityType" : {
+    "name" : "Ghost",
+    "controlConfig" : {
+      "controlStrategy" : "Target",
+      "pathFindingStrategy" : "Bfs",
+      "targetCalculationConfig" : {
+        "targetCalculationStrategy" : "TargetEntity",
+        "targetType" : "Pacman"
+      }
+    },
+    "movementSpeed" : 1.0
+  },
+  "modes" : [ {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "redghost.png",
+      "tileWidth" : 14,
+      "tileHeight" : 14,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 2
+    }
+  } ]
+}
