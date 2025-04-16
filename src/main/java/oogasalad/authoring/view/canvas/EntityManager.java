@@ -152,7 +152,7 @@ public class EntityManager {
    */
   public void removeEntity(EntityPlacement placement) {
     ImageView toRemove = entityViews.entrySet().stream()
-        .filter(e -> e.getValue() == placement)
+        .filter(e -> e.getValue().equals(placement))
         .map(Map.Entry::getKey)
         .findFirst()
         .orElse(null);
@@ -168,6 +168,13 @@ public class EntityManager {
       }
     }
   }
+
+  public List<EntityPlacement> getPlacementsForEntityType(String entityTypeName) {
+    return entityViews.values().stream()
+        .filter(p -> p.getType().type().equals(entityTypeName))
+        .toList();
+  }
+
 
   /**
    * Callback interface for updating entity positions.

@@ -1,5 +1,7 @@
 package oogasalad.engine.model;
 
+import java.util.Objects;
+
 /**
  * Represents a specific instance of an {@link EntityType} placed at a location on the map. Each
  * placement includes an (x, y) coordinate and a mode (e.g., "Default", "PoweredUp"). Used to
@@ -243,7 +245,7 @@ public class EntityPlacement {
   public String getEntityImagePath() {
     return this.getType()
         .modes()
-        .get("Default")
+        .get(this.getMode())
         .image().imagePath();
   }
 
@@ -255,5 +257,20 @@ public class EntityPlacement {
             .modes()
             .get("Default")
             .image().tilesToCycle().size();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    EntityPlacement that = (EntityPlacement) o;
+    return Double.compare(x, that.x) == 0 &&
+        Double.compare(y, that.y) == 0 &&
+        Objects.equals(resolvedEntityType.type(), that.resolvedEntityType.type());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(resolvedEntityType.type(), x, y);
   }
 }

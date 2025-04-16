@@ -259,20 +259,16 @@ public class AuthoringController {
    * @param typeName the name of the entity type to delete
    */
   public void deleteEntityType(String typeName) {
-    List<EntityPlacement> placementsToRemove = getPlacementsOfType(typeName);
-
-    // Remove visual representations
-    removeVisualPlacements(placementsToRemove);
+    // Remove visual representations using the actual EntityPlacements tied to ImageViews
+    view.getCanvasView().removeAllPlacementsOfType(typeName);
 
     // Delete from model
     if (model.deleteEntityType(typeName)) {
-      // Update selected entity references
       clearSelectionIfDeleted(typeName);
-
-      // Update UI
       updateEntitySelector();
     }
   }
+
 
   /**
    * Gets all entity placements of a specific type in the current level.
@@ -283,15 +279,6 @@ public class AuthoringController {
             .toList();
   }
 
-  /**
-   * Removes visual representations of the given placements from the canvas.
-   */
-  private void removeVisualPlacements(List<EntityPlacement> placements) {
-    CanvasView canvasView = view.getCanvasView();
-    for (EntityPlacement placement : placements) {
-      canvasView.removeEntityVisual(placement);
-    }
-  }
 
   /**
    * Clears selection references if they match the deleted entity type.
