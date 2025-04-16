@@ -3,6 +3,7 @@ package oogasalad.authoring.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
@@ -201,4 +202,23 @@ public class LevelDraft {
   public void setEdgePolicy(String edgePolicy) {
     this.edgePolicy = edgePolicy;
   }
+
+  public void updateModeName(String entityTypeName, String oldMode, String newMode) {
+    for (EntityPlacement placement : entityPlacements) {
+      if (placement.getTypeString().equals(entityTypeName) &&
+          placement.getMode().equals(oldMode)) {
+        placement.setMode(newMode);
+      }
+    }
+  }
+
+  public void refreshEntityTypes(Map<String, EntityType> typeMap) {
+    for (EntityPlacement p : entityPlacements) {
+      if (typeMap.containsKey(p.getTypeString())) {
+        p.setResolvedEntityType(typeMap.get(p.getTypeString()));
+      }
+    }
+  }
+
+
 }
