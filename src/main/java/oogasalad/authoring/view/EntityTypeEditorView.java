@@ -68,6 +68,7 @@ public class EntityTypeEditorView {
     typeField = new TextField();
     controlTypeBox = new ComboBox<>();
     controlTypeBox.getItems().addAll(ControlManager.getControlStrategies());
+    controlTypeBox.setValue("None");
     controlTypeBox.setOnAction(e -> updateControlParameterFields());
 
     controlTypeParameters = new VBox(5);
@@ -153,7 +154,8 @@ public class EntityTypeEditorView {
         typeField.getText(),
         controlConfig,
         current.modes(),
-        current.blocks()
+        current.blocks(),
+        current.speed()
     );
 
     controller.getModel().updateEntityType(current.type(), newEntity);
@@ -243,26 +245,55 @@ public class EntityTypeEditorView {
     ModeEditorDialog dialog = new ModeEditorDialog();
     dialog.showAndWait().ifPresent(config -> {
       String modeName = config.name();
-      if (!modeName.isEmpty() && !current.modes().containsKey(modeName)) {
-        current.modes().put(modeName, config);
-        setEntityType(current);
-      } else {
+
+      if (modeName.isEmpty() || current.modes().containsKey(modeName)) {
         showError(LanguageManager.getMessage("INVALID_OR_DUPLICATE_MODE"));
+        return;
       }
+
+      // Create a new map with the added mode
+      Map<String, ModeConfig> newModes = new HashMap<>(current.modes());
+      newModes.put(modeName, config);
+
+      // Replace current with new EntityType (workaround for record immutability)
+      current = new EntityType(
+          current.type(),
+          current.controlConfig(),
+          newModes,
+          current.blocks(),
+          current.speed()
+      );
+
+      setEntityType(current); // this pushes it wherever it needs to go
+      controller.updateEntitySelector();
+      controller.updateCanvas();
+      commitChanges();
     });
   }
 
-  private void openEditModeDialog(String modeName, ModeConfig oldConfig) {
+
+  private void openEditModeDialog(String oldName, ModeConfig oldConfig) {
     ModeEditorDialog dialog = new ModeEditorDialog(oldConfig);
     dialog.showAndWait().ifPresent(newConfig -> {
-      if (!modeName.equals(newConfig.name())) {
-        // Mode name changed → remove old key and insert new one
-        current.modes().remove(modeName);
+      Map<String, ModeConfig> newModes = new HashMap<>(current.modes());
+
+      if (!oldName.equals(newConfig.name())) {
+        newModes.remove(oldName);
       }
-      current.modes().put(newConfig.name(), newConfig);
-      setEntityType(current);
+      newModes.put(newConfig.name(), newConfig);
+
+      current = new EntityType(
+          current.type(),
+          current.controlConfig(),
+          newModes,
+          current.blocks(),
+          current.speed()
+      );
+
+      setEntityType(current); // updates UI and "commits" change
       controller.updateEntitySelector();
       controller.updateCanvas();
+      commitChanges();
     });
   }
 

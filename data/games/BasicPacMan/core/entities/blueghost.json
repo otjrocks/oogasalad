@@ -11,7 +11,7 @@
         "teamEntityType": "PinkGhost"
       }
     },
-    "movementSpeed": 90
+    "movementSpeed": 0.5
   },
   "modes": [
     {
