@@ -1,7 +1,10 @@
 package oogasalad.player.view;
 
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.layout.StackPane;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.config.ConfigModel;
@@ -21,6 +24,8 @@ public class GameView extends StackPane {
 
   private final GameLoopController myGameLoopController;
   private final Label endLabel = new Label();
+  private final Button restartButton = new Button();
+  private final Button nextLevelButton = new Button();
 
   /**
    * Create the game view.
@@ -41,12 +46,48 @@ public class GameView extends StackPane {
     myGameLoopController = new GameLoopController(gameContext, myGameMapView,
         configModel.levels().get(levelIndex));
     myGameMapView.setGameLoopController(myGameLoopController);
-    endLabel.setVisible(false);
-    endLabel.getStyleClass().add("end-label");
-    this.getChildren().add(endLabel); // overlay it on top
-    StackPane.setAlignment(endLabel, Pos.CENTER);
-    myGameMapView.setGameLoopController(myGameLoopController);
+    setUpEndMessage();
     myGameMapView.setEndGameCallback(this::showEndMessage);
+  }
+
+  private void setUpEndMessage() {
+    configureEndNode(endLabel, "end-label", null);
+    StackPane.setAlignment(endLabel, Pos.CENTER);
+
+    configureEndNode(restartButton, "end-button",
+        LanguageManager.getMessage("RESTART_LEVEL"));
+    configureEndNode(nextLevelButton, "end-button",
+        LanguageManager.getMessage("NEXT_LEVEL"));
+  }
+
+  private void configureEndNode(Node node, String styleClass, String text) {
+    node.setVisible(false);
+    node.getStyleClass().add(styleClass);
+    if (node instanceof Labeled && text != null) {
+      ((Labeled) node).setText(text);
+    }
+    this.getChildren().add(node);
+  }
+
+  private void showEndMessage(boolean gameWon) {
+    endLabel.setText(gameWon ? LanguageManager.getMessage("LEVEL_PASSED")
+        : LanguageManager.getMessage("GAME_OVER"));
+    endLabel.setVisible(true);
+    nextLevelButton.setVisible(gameWon);
+    restartButton.setVisible(!gameWon);
+  }
+
+  /**
+   * Sets the action to be executed when the restart button is clicked.
+   *
+   * <p>This allows external components (such as {@link GamePlayerView}) to define what
+   * should happen when the player chooses to restart the current level. The provided
+   * {@link Runnable} will be invoked when the restart button is activated.</p>
+   *
+   * @param action a {@code Runnable} representing the restart behavior
+   */
+  public void setRestartAction(Runnable action) {
+    restartButton.setOnAction(e -> action.run());
   }
 
   /**
@@ -61,11 +102,5 @@ public class GameView extends StackPane {
    */
   public void resumeGame() {
     myGameLoopController.resumeGame();
-  }
-
-  private void showEndMessage(boolean gameWon) {
-    endLabel.setText(gameWon ? LanguageManager.getMessage("LEVEL_PASSED")
-        : LanguageManager.getMessage("GAME_OVER"));
-    endLabel.setVisible(true);
   }
 }

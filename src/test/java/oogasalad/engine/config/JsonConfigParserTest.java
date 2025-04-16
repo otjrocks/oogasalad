@@ -55,9 +55,7 @@ class JsonConfigParserTest {
                "collisions": [
                  {
                    "entityA": "pacman",
-                   "modeA": [
-                     0
-                   ],
+                   "modeA": "A",
                    "entityB": "wall",
                    "eventsA": [
                      {
@@ -68,9 +66,7 @@ class JsonConfigParserTest {
                  },
                  {
                    "entityA": "pacman",
-                   "modeA": [
-                     1
-                   ],
+                   "modeA": "A",
                    "entityB": "blueghost",
                    "eventsA": [
                      {
@@ -86,9 +82,7 @@ class JsonConfigParserTest {
                  },
                  {
                    "entityA": "pacman",
-                   "modeA": [
-                     1
-                   ],
+                   "modeA": "A",
                    "entityB": "dot",
                    "eventsA": [
                      {
@@ -104,9 +98,7 @@ class JsonConfigParserTest {
                  },
                  {
                    "entityA": "pacman",
-                   "modeA": [
-                     1
-                   ],
+                   "modeA": "A",
                    "entityB": "cherry",
                    "eventsA": [
                      {
@@ -122,9 +114,7 @@ class JsonConfigParserTest {
                  },
                  {
                    "entityA": "pacman",
-                   "modeA": [
-                     1
-                   ],
+                   "modeA": "A",
                    "entityB": "strawberry",
                    "eventsA": [
                      {
@@ -140,9 +130,7 @@ class JsonConfigParserTest {
                  },
                  {
                    "entityA": "pacman",
-                   "modeA": [
-                     1
-                   ],
+                   "modeA": "A",
                    "entityB": "redghost",
                    "eventsA": [
                      {
@@ -158,9 +146,7 @@ class JsonConfigParserTest {
                  },
                  {
                    "entityA": "redghost",
-                   "modeA": [
-                     1
-                   ],
+                   "modeA": "A",
                    "entityB": "pacman",
                    "eventsA": [
                      {
@@ -172,9 +158,7 @@ class JsonConfigParserTest {
                  },
                  {
                    "entityA": "redghost",
-                   "modeA": [
-                     1
-                   ],
+                   "modeA": "A",
                    "entityB": "wall",
                    "eventsA": [
                      {
@@ -186,9 +170,7 @@ class JsonConfigParserTest {
                  },
                  {
                    "entityA": "blueghost",
-                   "modeA": [
-                     1
-                   ],
+                   "modeA": "A",
                    "entityB": "wall",
                    "eventsA": [
                      {

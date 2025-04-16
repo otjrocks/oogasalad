@@ -1,5 +1,9 @@
 package oogasalad.player.view;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,34 +24,31 @@ import oogasalad.engine.model.entity.Entity;
  */
 public class EntityView {
 
-  private static final ResourceBundle SPRITE_DATA =
-      ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
-  private static final Image SPRITE_SHEET = new Image(
-      Objects.requireNonNull(
-          EntityView.class.getClassLoader()
-              .getResourceAsStream("sprites/Pacman.png"))
-  );
-
+  private static final Map<String, Image> SPRITE_CACHE = new HashMap<>();
   private final Entity entity;
   private final int totalFrames;
   private final int dimension;
+  private final Image sprite;
 
   /**
    * Initialize an Entity view.
    *
    * @param entity      The Entity model used to represent this view.
-   * @param totalFrames The total number of frames in the sprite file for this entity view.
    */
-  public EntityView(Entity entity, int totalFrames) {
+  public EntityView(Entity entity) {
     this.entity = entity;
-    this.totalFrames = totalFrames;
-    // Dimension of each frame in the sprite sheet
-    this.dimension = Integer.parseInt(
-        SPRITE_DATA.getString(
-            (entity.getEntityPlacement().getTypeString() + "_DIM").toUpperCase()
-        )
-    );
+    this.totalFrames = entity.getEntityPlacement().getEntityFrameNumber();
+    this.dimension = 28;
+    this.sprite = SPRITE_CACHE.computeIfAbsent(entity.getEntityPlacement().getEntityImagePath(), name -> {
+      try (InputStream stream = EntityView.class.getClassLoader().getResourceAsStream("sprites/" + name + ".png")) {
+        if (stream == null) throw new IllegalArgumentException("Image not found: " + name);
+        return new Image(stream);
+      } catch (IOException e) {
+        throw new RuntimeException("Failed to load image: " + name, e);
+      }
+    });
   }
+
 
   /**
    * Draws this entity onto the provided GraphicsContext.
@@ -57,29 +58,26 @@ public class EntityView {
    * @param tileHeight height of one map tile in pixels
    */
   public void draw(GraphicsContext gc, double tileWidth, double tileHeight) {
-    int frameIndex, offsetX, offsetY;
-    if (entity.getEntityPlacement().isInDeathAnimation()) {
-      frameIndex = entity.getEntityPlacement().getDeathFrame();
-      offsetX = Integer.parseInt(SPRITE_DATA.getString("PACMAN_DEATH_X_OFFSET"));
-      offsetY = Integer.parseInt(SPRITE_DATA.getString("PACMAN_DEATH_Y_OFFSET"));
-    } else {
-      frameIndex = entity.getEntityPlacement().getCurrentFrame() % totalFrames;
-      Direction dir = entity.getEntityDirection() != null ? entity.getEntityDirection() : Direction.NONE;
-      String suffix = dir == Direction.NONE ? "_R" : "_" + dir.name();
-      String prefix = (entity.getEntityPlacement().getTypeString() + suffix).toUpperCase();
+    int frameIndex = entity.getEntityPlacement().getCurrentFrame() % totalFrames;
+    int dirOffset = 0;
 
-
-      offsetX = Integer.parseInt(SPRITE_DATA.getString(prefix + "_X_OFFSET"));
-      offsetY = Integer.parseInt(SPRITE_DATA.getString(prefix + "_Y_OFFSET"));
+    if (entity.getEntityDirection() == Direction.L){
+      dirOffset = 28;
+    }
+    if (entity.getEntityDirection() == Direction.U){
+      dirOffset = 56;
+    }
+    if(entity.getEntityDirection() == Direction.D){
+      dirOffset = 84;
     }
 
     double destX = entity.getEntityPlacement().getX() * tileWidth;
     double destY = entity.getEntityPlacement().getY() * tileHeight;
 
     gc.drawImage(
-        SPRITE_SHEET,
-        frameIndex * dimension + offsetX,
-        offsetY,
+        sprite,
+            frameIndex * dimension,
+        dirOffset,
         dimension,
         dimension,
         destX,

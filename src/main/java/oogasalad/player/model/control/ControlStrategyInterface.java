@@ -8,7 +8,7 @@ import oogasalad.engine.model.entity.Entity;
  * 
  * @author Jessica Chen
  */
-public interface ControlStrategy {
+public interface ControlStrategyInterface {
 
   /**
    * Updates the state of the given entity based on the specific control strategy.

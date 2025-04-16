@@ -24,6 +24,8 @@ class EntityViewTest extends DukeApplicationTest {
     mockGC = mock(GraphicsContext.class);
 
     when(mockEntity.getEntityPlacement()).thenReturn(mockPlacement);
+    when(mockPlacement.getEntityImagePath()).thenReturn("pacman");
+    when(mockPlacement.getEntityFrameNumber()).thenReturn(6);
     when(mockPlacement.getTypeString()).thenReturn("pacman");
     when(mockPlacement.getCurrentFrame()).thenReturn(1);
     when(mockPlacement.getX()).thenReturn(3.0);
@@ -57,19 +59,28 @@ class EntityViewTest extends DukeApplicationTest {
   private void testDrawDirection(Direction direction) {
     when(mockEntity.getEntityDirection()).thenReturn(direction);
 
-    ResourceBundle spriteData = ResourceBundle.getBundle("oogasalad.sprite_data.sprites");
-    String prefix = ("PACMAN_" + direction).toUpperCase();
-    double dim = Integer.parseInt(spriteData.getString("PACMAN_DIM"));
-    double offsetX = Integer.parseInt(spriteData.getString(prefix + "_X_OFFSET"));
-    double offsetY = Integer.parseInt(spriteData.getString(prefix + "_Y_OFFSET"));
 
-    EntityView view = new EntityView(mockEntity, 3);
+    double dim = 28;
+    double offsetX = mockEntity.getEntityPlacement().getCurrentFrame() * dim;
+    double dirOffset = 0;
+
+    if (direction == Direction.L){
+      dirOffset = 28;
+    }
+    if (direction == Direction.U){
+      dirOffset = 56;
+    }
+    if(direction == Direction.D){
+      dirOffset = 84;
+    }
+
+    EntityView view = new EntityView(mockEntity);
     view.draw(mockGC, 20, 20);
 
     verify(mockGC).drawImage(
         any(),                             // image
-        eq(dim + offsetX),                 // sourceX
-        eq(offsetY),                       // sourceY
+        eq(offsetX),                 // sourceX
+        eq(dirOffset),                       // sourceY
         eq(dim),                           // sourceWidth
         eq(dim),                           // sourceHeight
         eq(3.0 * 20),                      // destX

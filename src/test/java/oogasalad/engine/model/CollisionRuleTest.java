@@ -18,8 +18,8 @@ class CollisionRuleTest {
   @Test
   void setEntityTypeA_validValue_returnsCorrectly() {
     CollisionRule rule = new CollisionRule();
-    rule.setEntityTypeA("Pacman");
-    assertEquals("Pacman", rule.getEntityTypeA());
+    rule.setEntityA("Pacman");
+    assertEquals("Pacman", rule.getEntityA());
   }
 
   @Test
@@ -32,8 +32,8 @@ class CollisionRuleTest {
   @Test
   void setEntityTypeB_validValue_returnsCorrectly() {
     CollisionRule rule = new CollisionRule();
-    rule.setEntityTypeB("Ghost");
-    assertEquals("Ghost", rule.getEntityTypeB());
+    rule.setEntityB("Ghost");
+    assertEquals("Ghost", rule.getEntityB());
   }
 
   @Test
@@ -63,9 +63,9 @@ class CollisionRuleTest {
   @Test
   void toString_validValues_returnsFormattedString() {
     CollisionRule rule = new CollisionRule();
-    rule.setEntityTypeA("Pacman");
+    rule.setEntityA("Pacman");
     rule.setModeA("PoweredUp");
-    rule.setEntityTypeB("Ghost");
+    rule.setEntityB("Ghost");
     rule.setModeB("Default");
     rule.setEventsA(List.of(new UpdateScoreCollisionEvent(5)));
     rule.setEventsB(List.of(new ConsumeCollisionEvent()));

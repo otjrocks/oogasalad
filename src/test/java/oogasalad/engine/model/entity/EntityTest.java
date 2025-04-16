@@ -4,7 +4,7 @@ import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
-import oogasalad.player.model.control.ControlStrategy;
+import oogasalad.player.model.control.ControlStrategyInterface;
 import oogasalad.player.model.control.ControlStrategyFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -104,7 +104,7 @@ class EntityTest {
   @Test
   void update_setValidControlStrategy_updatesControlStrategy() {
     try (MockedStatic<ControlStrategyFactory> factory = mockStatic(ControlStrategyFactory.class)) {
-      ControlStrategy mockStrategy = mock(ControlStrategy.class);
+      ControlStrategyInterface mockStrategy = mock(ControlStrategyInterface.class);
       factory.when(() -> ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap))
           .thenReturn(mockStrategy);
 

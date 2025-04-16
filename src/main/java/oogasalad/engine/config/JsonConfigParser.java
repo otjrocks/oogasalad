@@ -25,7 +25,6 @@ import oogasalad.engine.model.GameSettings;
 import oogasalad.engine.model.MapInfo;
 import oogasalad.engine.model.MetaData;
 import oogasalad.engine.model.ModeChangeEvent;
-import oogasalad.engine.model.Tiles;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.records.config.CollisionConfig;
 import oogasalad.engine.records.config.EntityConfig;
@@ -127,12 +126,8 @@ public class JsonConfigParser implements ConfigParser {
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
     WinCondition winCondition = gameConfig.settings().winCondition();
 
-    // Step 8: Tiles currently unused — placeholder
-    List<Tiles> tiles = new ArrayList<>();
-
-    // Step 9: Return the full config model using the first level only for now
-    return new ConfigModel(metaData, settings, entityTypes, levels, collisionRules,
-        winCondition, tiles);
+    // Step 8: Return the full config model using the first level only for now
+    return new ConfigModel(metaData, settings, entityTypes, levels, collisionRules, winCondition);
   }
 
   private ParsedLevel loadLevelConfig(String filepath) throws ConfigException {
@@ -321,8 +316,17 @@ public class JsonConfigParser implements ConfigParser {
       EntityConfig entityA = entityMap.get(collision.entityA());
       EntityConfig entityB = entityMap.get(collision.entityB());
 
-      String modeA = resolveMode(entityA, collision.modeA());
-      String modeB = resolveMode(entityB, collision.modeB());
+      if (entityA == null) {
+        LoggingManager.LOGGER.warn(
+            "Unable to find entityA in the configuration file for the collision strategy.");
+      }
+      if (entityB == null) {
+        LoggingManager.LOGGER.warn(
+            "Unable to find entityB in the configuration file for the collision strategy.");
+      }
+
+      String modeA = collision.modeA();
+      String modeB = collision.modeB();
 
       collisionRules.add(new CollisionRule(
           entityA.name(), modeA, entityB.name(), modeB,

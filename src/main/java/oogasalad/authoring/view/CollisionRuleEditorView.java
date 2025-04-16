@@ -246,7 +246,7 @@ public class CollisionRuleEditorView {
       boolean isA) {
     boolean ruleAlreadyExists = false;
     for (CollisionRule rule : workingRules) {
-      if (rule.getEntityTypeA().equals(a) && rule.getEntityTypeB().equals(b)
+      if (rule.getEntityA().equals(a) && rule.getEntityB().equals(b)
           && rule.getModeA().equals(aMode) && rule.getModeB().equals(bMode)) {
         updateCollisionRule(a, b, aMode, bMode, rule, isA);
         ruleAlreadyExists = true;
@@ -260,8 +260,8 @@ public class CollisionRuleEditorView {
 
   private void updateCollisionRule(String a, String b, String aMode, String bMode,
       CollisionRule rule, boolean isA) {
-    rule.setEntityTypeA(a);
-    rule.setEntityTypeB(b);
+    rule.setEntityA(a);
+    rule.setEntityB(b);
     CollisionEvent eventA;
     CollisionEvent eventB;
     try {
