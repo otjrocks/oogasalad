@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -112,9 +113,7 @@ public class EntityTypeEditorView {
    */
   public void setEntityType(EntityType type) {
     this.current = type;
-    if (type == null) {
-      return;
-    }
+    if (type == null) return;
 
     typeField.setText(type.type());
     typeField.setOnAction(e -> commitChanges());
@@ -123,6 +122,10 @@ public class EntityTypeEditorView {
         commitChanges(); // when field loses focus
       }
     });
+
+    populateControlConfigUI(type.controlConfig());
+
+    // Refresh mode list UI
     modeList.getChildren().clear();
     for (Map.Entry<String, ModeConfig> entry : type.modes().entrySet()) {
       String modeName = entry.getKey();
@@ -133,6 +136,75 @@ public class EntityTypeEditorView {
       modeList.getChildren().addAll(label, editButton);
     }
   }
+
+  private void populateControlConfigUI(ControlConfig config) {
+    String type = config.getClass().getSimpleName().replace("ControlConfig", "");
+    controlTypeBox.setValue(type);
+
+    controlTypeParameters.getChildren().clear();
+    controlTypeParameterFields.clear();
+    targetStrategyParameterFields.clear();
+    controlTypeComboBoxes.clear();
+
+    Map<String, Class<?>> fieldTypes = ControlManager.getControlRequiredFields(type);
+    List<String> fieldOrder = ControlManager.getControlRequiredFieldsOrder(type);
+
+    for (String field : fieldOrder) {
+      Label label = new Label(field + ":");
+
+      if (field.startsWith("pathFindingStrategy")) {
+        ComboBox<String> combo = new ComboBox<>();
+        combo.setItems(FXCollections.observableArrayList(ControlManager.getPathFindingStrategies()));
+        combo.setValue(getStrategyValueFromConfig(config, field));
+        controlTypeComboBoxes.put(field, combo);
+        controlTypeParameters.getChildren().add(new VBox(label, combo));
+
+      } else if (field.startsWith(TARGET_CALCULATION_CONFIG)) {
+        ComboBox<String> targetCombo = new ComboBox<>();
+        targetCombo.setItems(FXCollections.observableArrayList(ControlManager.getTargetCalculationStrategies()));
+        String selected = getStrategyValueFromConfig(config, field);
+        targetCombo.setValue(selected);
+        controlTypeComboBoxes.put(field, targetCombo);
+
+        VBox targetParamsBox = new VBox(5);
+        updateTargetParameterFields(targetCombo, targetParamsBox);
+        targetCombo.setOnAction(e -> updateTargetParameterFields(targetCombo, targetParamsBox));
+
+        controlTypeParameters.getChildren().add(new VBox(label, targetCombo, targetParamsBox));
+
+      } else {
+        String value = getFieldValueFromConfig(config, field);
+        TextField tf = new TextField(value);
+        controlTypeParameterFields.add(tf);
+        controlTypeParameters.getChildren().add(new VBox(label, tf));
+      }
+    }
+  }
+
+  private String getFieldValueFromConfig(ControlConfig config, String fieldName) {
+    try {
+      var field = config.getClass().getDeclaredField(fieldName);
+      field.setAccessible(true);
+      Object value = field.get(config);
+      return value != null ? value.toString() : "";
+    } catch (Exception e) {
+      return "";
+    }
+  }
+
+  private String getStrategyValueFromConfig(ControlConfig config, String fieldName) {
+    try {
+      var field = config.getClass().getDeclaredField(fieldName);
+      field.setAccessible(true);
+      Object strategy = field.get(config);
+      return strategy != null ? strategy.getClass().getSimpleName().replace("Config", "") : "";
+    } catch (Exception e) {
+      return "";
+    }
+  }
+
+
+
 
   /**
    * Returns the root JavaFX node of this view
