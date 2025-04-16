@@ -102,6 +102,11 @@ public class GameView extends StackPane {
     restartButton.setOnAction(e -> action.run());
   }
 
+  /**
+   * Sets the action to be executed when the next level button is clicked.
+   *
+   * @param action a {@code Runnable} representing the restart behavior
+   */
   public void setNextLevelAction(Runnable action) {
     nextLevelButton.setOnAction(e -> action.run());
   }

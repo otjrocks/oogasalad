@@ -79,7 +79,6 @@ public class LevelController {
    * @return The int representing the current level 0-indexed.
    */
   public int getCurrentLevelIndex() {
-    System.out.println(myLevelIndex);
     return myLevelIndex;
   }
 

@@ -186,12 +186,6 @@ public class JsonConfigParser implements ConfigParser {
     List<ModeChangeEvent> modeChangeEvents = new ArrayList<>();
     JsonNode eventsNode = rootNode.get("modeChangeEvents");
 
-    //TODO: REMOVE THIS AND INCORPORATE APPROPRIATE MODECHANGEEVENT HANDLING
-    if (eventsNode == null || eventsNode.isNull() || !eventsNode.isArray()) {
-      LoggingManager.LOGGER.info("No modeChangeEvents found in level config. Skipping.");
-      return modeChangeEvents;
-    }
-
     for (JsonNode eventNode : eventsNode) {
       int id = Integer.parseInt(eventNode.get(ENTITY_TYPE).asText());
       EntityType type = idToEntityType.get(id);
@@ -211,37 +205,52 @@ public class JsonConfigParser implements ConfigParser {
 
 
   private Condition parseCondition(JsonNode conditionNode) {
-    if (conditionNode == null || conditionNode.isNull()) {
-      return new Condition("Always", Map.of());  // Default condition
+    if (isNullOrMissing(conditionNode)) {
+      return defaultCondition();
     }
 
-    JsonNode typeNode = conditionNode.get("type");
-    if (typeNode == null || typeNode.isNull()) {
-      LoggingManager.LOGGER.warn("Condition is missing a 'type' field. Using default 'Always'.");
-      return new Condition("Always", Map.of());
-    }
-
-    String type = typeNode.asText();
-    Map<String, Object> parameters = new HashMap<>();
-
-    JsonNode paramNode = conditionNode.get("parameters");
-    if (paramNode != null && paramNode.isObject()) {
-      for (Iterator<Entry<String, JsonNode>> it = paramNode.fields(); it.hasNext(); ) {
-        Map.Entry<String, JsonNode> entry = it.next();
-        JsonNode val = entry.getValue();
-        Object value;
-
-        if (val.isInt()) value = val.asInt();
-        else if (val.isDouble()) value = val.asDouble();
-        else if (val.isBoolean()) value = val.asBoolean();
-        else value = val.asText();
-
-        parameters.put(entry.getKey(), value);
-      }
-    }
+    String type = getConditionType(conditionNode);
+    Map<String, Object> parameters = extractParameters(conditionNode.get("parameters"));
 
     return new Condition(type, parameters);
   }
+
+  private boolean isNullOrMissing(JsonNode node) {
+    return node == null || node.isNull();
+  }
+
+  private Condition defaultCondition() {
+    LoggingManager.LOGGER.warn("Condition is missing or incomplete. Using default 'Always'.");
+    return new Condition("Always", Map.of());
+  }
+
+  private String getConditionType(JsonNode conditionNode) {
+    JsonNode typeNode = conditionNode.get("type");
+    if (isNullOrMissing(typeNode)) {
+      LoggingManager.LOGGER.warn("Condition is missing a 'type' field. Using default 'Always'.");
+      return "Always";
+    }
+    return typeNode.asText();
+  }
+
+  private Map<String, Object> extractParameters(JsonNode paramNode) {
+    Map<String, Object> parameters = new HashMap<>();
+    if (paramNode != null && paramNode.isObject()) {
+      for (Iterator<Entry<String, JsonNode>> it = paramNode.fields(); it.hasNext(); ) {
+        Map.Entry<String, JsonNode> entry = it.next();
+        parameters.put(entry.getKey(), parseValue(entry.getValue()));
+      }
+    }
+    return parameters;
+  }
+
+  private Object parseValue(JsonNode valueNode) {
+    if (valueNode.isInt()) return valueNode.asInt();
+    if (valueNode.isDouble()) return valueNode.asDouble();
+    if (valueNode.isBoolean()) return valueNode.asBoolean();
+    return valueNode.asText();
+  }
+
 
 
   private Map<Integer, EntityType> buildEntityMappings(JsonNode mappings) throws ConfigException {
