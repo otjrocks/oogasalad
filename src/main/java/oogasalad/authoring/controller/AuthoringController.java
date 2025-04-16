@@ -166,13 +166,13 @@ public class AuthoringController {
 
   private Map<String, ModeConfig> defaultModeMap() {
     // Default image file
-    File imageFile = new File("src/main/resources/assets/images/pacman.png");
+    File imageFile = new File("data/games/BasicPacMan/core/assets/pacman.png");
     String imagePath = imageFile.toURI().toString();
 
     ImageConfig imageConfig = new ImageConfig(
         imagePath,
-        14,
-        14,
+        28,
+        28,
         6, // Default animation frames
         1.0
     );
