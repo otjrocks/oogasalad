@@ -31,7 +31,7 @@ import oogasalad.player.model.control.ControlManager;
 /**
  * View for editing a selected EntityType.
  *
- * @author Will He, Ishan Madan
+ * @author Will He, Ishan Madan, Angela Predolac
  */
 public class EntityTypeEditorView {
 
@@ -43,13 +43,13 @@ public class EntityTypeEditorView {
   private final VBox modeList;
   private final AuthoringController controller;
   private EntityType current;
+  private Button deleteButton;
 
   private final Button saveCollisionButton;
   private final VBox controlTypeParameters;
   private final List<TextField> controlTypeParameterFields;
   private final List<TextField> targetStrategyParameterFields;
   private final Map<String, ComboBox<String>> controlTypeComboBoxes = new HashMap<>();
-
 
 
   /**
@@ -74,7 +74,6 @@ public class EntityTypeEditorView {
     controlTypeParameterFields = new ArrayList<>();
     targetStrategyParameterFields = new ArrayList<>();
 
-
     saveCollisionButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
     saveCollisionButton.setOnAction(e -> commitChanges());
 
@@ -83,21 +82,26 @@ public class EntityTypeEditorView {
     Button addModeButton = new Button(LanguageManager.getMessage("ADD_MODE"));
     addModeButton.setOnAction(e -> openAddModeDialog());
 
+    deleteButton = new Button("Delete Entity Type");
+    deleteButton.getStyleClass().add("delete-button");
+    deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+    deleteButton.setOnAction(e -> deleteEntityType());
+
     ScrollPane controlTypeScrollPane = new ScrollPane(controlTypeParameters);
     controlTypeScrollPane.setFitToWidth(true);
 
     controlTypeScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     controlTypeScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-
     root.getChildren().addAll(
         new Label(LanguageManager.getMessage("ENTITY_TYPE")), typeField,
         new Label(LanguageManager.getMessage("CONTROL_STRATEGY")), controlTypeBox,
         controlTypeScrollPane, saveCollisionButton,
         new Label(LanguageManager.getMessage("MODES")), modeList,
-        addModeButton
-    );
+        addModeButton,
+        new Separator(), deleteButton
 
+    );
   }
 
   /**
@@ -118,7 +122,6 @@ public class EntityTypeEditorView {
         commitChanges(); // when field loses focus
       }
     });
-
     modeList.getChildren().clear();
     for (Map.Entry<String, ModeConfig> entry : type.modes().entrySet()) {
       String modeName = entry.getKey();
@@ -182,7 +185,8 @@ public class EntityTypeEditorView {
         }
       }
 
-      String fullClassName = "oogasalad.engine.model.controlConfig." + controlType + "ControlConfig";
+      String fullClassName =
+          "oogasalad.engine.model.controlConfig." + controlType + "ControlConfig";
       Class<?> configClass = Class.forName(fullClassName);
       Constructor<?> constructor = configClass.getDeclaredConstructors()[0];
 
@@ -222,7 +226,6 @@ public class EntityTypeEditorView {
   }
 
 
-
   private Object castToRequiredType(String value, Class<?> type) {
     if (type == int.class || type == Integer.class) {
       return Integer.parseInt(value);
@@ -234,9 +237,6 @@ public class EntityTypeEditorView {
 
     throw new ViewException("Unsupported parameter type: " + type);
   }
-
-
-
 
 
   private void openAddModeDialog() {
@@ -271,6 +271,21 @@ public class EntityTypeEditorView {
     alert.showAndWait();
   }
 
+  private void deleteEntityType() {
+    if (current == null) {
+      return;
+    }
+
+    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+    confirm.setTitle(LanguageManager.getMessage("CONFIRM_DELETE"));
+    confirm.setHeaderText(LanguageManager.getMessage("DELETE_ENTITY_TYPE"));
+    confirm.setContentText(LanguageManager.getMessage("CONFIRM_DELETE_ENTITY_TYPE_MESSAGE"));
+
+    if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+      controller.deleteEntityType(current.type());
+    }
+  }
+
   private void updateControlParameterFields() {
     controlTypeParameters.getChildren().clear();
     controlTypeParameterFields.clear();
@@ -278,12 +293,10 @@ public class EntityTypeEditorView {
     VBox parameterBox = new VBox(5);
     List<String> requiredFields =
         ControlManager.getControlRequiredFieldsOrder(controlTypeBox.getValue());
-
     for (String parameter : requiredFields) {
       Node parameterNode = createParameterNode(parameter);
       parameterBox.getChildren().add(parameterNode);
     }
-
     controlTypeParameters.getChildren().add(parameterBox);
   }
 
@@ -317,7 +330,8 @@ public class EntityTypeEditorView {
     controlTypeComboBoxes.put(parameter, targetStrategyDropdown);
 
     VBox targetParameterBox = new VBox(5);
-    targetStrategyDropdown.setOnAction(e -> updateTargetParameterFields(targetStrategyDropdown, targetParameterBox));
+    targetStrategyDropdown.setOnAction(
+        e -> updateTargetParameterFields(targetStrategyDropdown, targetParameterBox));
 
     VBox container = new VBox(5);
     container.getChildren().addAll(parameterLabel, targetStrategyDropdown, targetParameterBox);
@@ -347,8 +361,6 @@ public class EntityTypeEditorView {
     container.getChildren().addAll(parameterLabel, parameterField);
     return container;
   }
-
-
 
 
 }
