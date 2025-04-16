@@ -63,10 +63,8 @@ public class AuthoringController {
 
     String newTypeName = "NewEntity" + UUID.randomUUID().toString().substring(0, 4);
 
-    // TODO: Update to be NoneControlConfig
-    EntityType newType = new EntityType(newTypeName, new KeyboardControlConfig(), defaultModeMap(),
+    EntityType newType = new EntityType(newTypeName, new NoneControlConfig(), defaultModeMap(),
         null, 1.0); // Update this to use no hardcoded speed value.
-    // TODO: update this to include all required fields such as control type and effect type instead of providing null.
     model.addEntityType(newType);
     updateEntitySelector();
     selectEntityType(newTypeName);

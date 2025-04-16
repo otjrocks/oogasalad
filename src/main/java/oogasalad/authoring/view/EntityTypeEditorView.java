@@ -4,28 +4,26 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javax.swing.text.View;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.LanguageManager;
-import oogasalad.engine.model.EntityType;
-
-import java.util.Map;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.model.controlConfig.ConditionalControlConfig;
+import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
-import oogasalad.engine.model.controlConfig.NoneControlConfig;
-import oogasalad.engine.model.controlConfig.TargetControlConfig;
-import oogasalad.engine.model.controlConfig.targetStrategy.TargetAheadOfEntityConfig;
 import oogasalad.engine.model.controlConfig.targetStrategy.TargetCalculationConfig;
-import oogasalad.engine.model.controlConfig.targetStrategy.TargetEntityConfig;
-import oogasalad.engine.model.controlConfig.targetStrategy.TargetEntityWithTrapConfig;
-import oogasalad.engine.model.controlConfig.targetStrategy.TargetLocationConfig;
 import oogasalad.player.model.control.ControlManager;
 
 /**
@@ -36,6 +34,7 @@ import oogasalad.player.model.control.ControlManager;
 public class EntityTypeEditorView {
 
   private final String TARGET_CALCULATION_CONFIG = "targetCalculationConfig";
+  private final String PATH_FINDING_STRATEGY = "pathFindingStrategy";
 
   private final VBox root;
   private final TextField typeField;
@@ -112,9 +111,7 @@ public class EntityTypeEditorView {
    */
   public void setEntityType(EntityType type) {
     this.current = type;
-    if (type == null) {
-      return;
-    }
+    if (type == null) return;
 
     typeField.setText(type.type());
     typeField.setOnAction(e -> commitChanges());
@@ -123,6 +120,10 @@ public class EntityTypeEditorView {
         commitChanges(); // when field loses focus
       }
     });
+
+    populateControlConfigUI(type.controlConfig());
+
+    // Refresh mode list UI
     modeList.getChildren().clear();
     for (Map.Entry<String, ModeConfig> entry : type.modes().entrySet()) {
       String modeName = entry.getKey();
@@ -133,6 +134,75 @@ public class EntityTypeEditorView {
       modeList.getChildren().addAll(label, editButton);
     }
   }
+
+  private void populateControlConfigUI(ControlConfig config) {
+    String type = config.getClass().getSimpleName().replace("ControlConfig", "");
+    controlTypeBox.setValue(type);
+
+    controlTypeParameters.getChildren().clear();
+    controlTypeParameterFields.clear();
+    targetStrategyParameterFields.clear();
+    controlTypeComboBoxes.clear();
+
+    Map<String, Class<?>> fieldTypes = ControlManager.getControlRequiredFields(type);
+    List<String> fieldOrder = ControlManager.getControlRequiredFieldsOrder(type);
+
+    for (String field : fieldOrder) {
+      Label label = new Label(field + ":");
+
+      if (field.startsWith(PATH_FINDING_STRATEGY)) {
+        ComboBox<String> combo = new ComboBox<>();
+        combo.setItems(FXCollections.observableArrayList(ControlManager.getPathFindingStrategies()));
+        combo.setValue(getStrategyValueFromConfig(config, field));
+        controlTypeComboBoxes.put(field, combo);
+        controlTypeParameters.getChildren().add(new VBox(label, combo));
+
+      } else if (field.startsWith(TARGET_CALCULATION_CONFIG)) {
+        ComboBox<String> targetCombo = new ComboBox<>();
+        targetCombo.setItems(FXCollections.observableArrayList(ControlManager.getTargetCalculationStrategies()));
+        String selected = getStrategyValueFromConfig(config, field);
+        targetCombo.setValue(selected);
+        controlTypeComboBoxes.put(field, targetCombo);
+
+        VBox targetParamsBox = new VBox(5);
+        updateTargetParameterFields(targetCombo, targetParamsBox);
+        targetCombo.setOnAction(e -> updateTargetParameterFields(targetCombo, targetParamsBox));
+
+        controlTypeParameters.getChildren().add(new VBox(label, targetCombo, targetParamsBox));
+
+      } else {
+        String value = getFieldValueFromConfig(config, field);
+        TextField tf = new TextField(value);
+        controlTypeParameterFields.add(tf);
+        controlTypeParameters.getChildren().add(new VBox(label, tf));
+      }
+    }
+  }
+
+  private String getFieldValueFromConfig(ControlConfig config, String fieldName) {
+    try {
+      var field = config.getClass().getDeclaredField(fieldName);
+      field.setAccessible(true);
+      Object value = field.get(config);
+      return value != null ? value.toString() : "";
+    } catch (Exception e) {
+      return "";
+    }
+  }
+
+  private String getStrategyValueFromConfig(ControlConfig config, String fieldName) {
+    try {
+      var field = config.getClass().getDeclaredField(fieldName);
+      field.setAccessible(true);
+      Object strategy = field.get(config);
+      return strategy != null ? strategy.getClass().getSimpleName().replace("Config", "") : "";
+    } catch (Exception e) {
+      return "";
+    }
+  }
+
+
+
 
   /**
    * Returns the root JavaFX node of this view
@@ -175,7 +245,7 @@ public class EntityTypeEditorView {
       for (String param : requiredFieldOrder) {
         Class<?> type = requiredFieldTypes.get(param);
 
-        if (param.startsWith("pathFindingStrategy")) {
+        if (param.startsWith(PATH_FINDING_STRATEGY)) {
           constructorArgs.add(controlTypeComboBoxes.get(param).getValue());
 
         } else if (param.startsWith(TARGET_CALCULATION_CONFIG)) {
@@ -351,7 +421,7 @@ public class EntityTypeEditorView {
   private Node createParameterNode(String parameter) {
     Label parameterLabel = new Label(parameter + ": ");
 
-    if (parameter.startsWith("pathFindingStrategy")) {
+    if (parameter.startsWith(PATH_FINDING_STRATEGY)) {
       return createPathFindingStrategyNode(parameterLabel, parameter);
 
     } else if (parameter.startsWith(TARGET_CALCULATION_CONFIG)) {
