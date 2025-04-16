@@ -35,10 +35,9 @@ public class LevelDraft {
     this.outputFileName = outputFileName;
     this.entityPlacements = new ArrayList<>();
 
-    // TODO: change constructor to have this not hard coded
+    // Default init values
     this.width = 20;
     this.height = 15;
-    this.edgePolicy = "";
   }
 
   /**

@@ -70,4 +70,13 @@ public class LevelSettingsView {
   public Node getNode() {
     return root;
   }
+
+  public void refresh() {
+    LevelDraft level = controller.getCurrentLevel();
+    widthSpinner.getValueFactory().setValue(level.getWidth());
+    heightSpinner.getValueFactory().setValue(level.getHeight());
+    controller.updateCanvasSize(widthSpinner.getValue(), heightSpinner.getValue());
+
+  }
+
 }
