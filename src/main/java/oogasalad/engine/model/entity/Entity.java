@@ -23,6 +23,8 @@ public class Entity {
   private final double speed;
   private Direction currentDirection;
   public static final double ENTITY_SPEED_MULTIPLIER = 0.12;
+  public static final double MIN_SPEED = 0;
+  public static final double MAX_SPEED = 0.5;
 
   /**
    * Initialize the entity with the provided entity data.
@@ -50,9 +52,16 @@ public class Entity {
 
   private static double getTransformedSpeed(EntityPlacement entityPlacement) {
     // Enforce speed is in range [0, 0.5] and multiply by a constant to transform to a reasonable amount
-    return Math.max(0, Math.min(ENTITY_SPEED_MULTIPLIER * entityPlacement.getType().speed(), 0.5));
+    return Math.max(MIN_SPEED,
+        Math.min(ENTITY_SPEED_MULTIPLIER * entityPlacement.getType().speed(), MAX_SPEED));
   }
 
+  /**
+   * Get the speed associated with this entity.
+   *
+   * @return A double representing the transformed and validated speed of this entity. The speed
+   * will be in the range [MIN_SPEED, MAX_SPEED]
+   */
   double getSpeed() {
     return speed;
   }
