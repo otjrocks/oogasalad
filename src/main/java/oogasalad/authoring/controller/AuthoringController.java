@@ -11,6 +11,7 @@ import oogasalad.engine.model.EntityType;
 import java.util.*;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
+import oogasalad.engine.model.controlConfig.NoneControlConfig;
 import oogasalad.engine.records.config.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.records.config.model.EntityProperties;
@@ -148,15 +149,21 @@ public class AuthoringController {
     List<EntityPlacement> placements = model.getCurrentLevel().getEntityPlacements();
     view.getCanvasView().reloadFromPlacements(placements);
 
-    // Re-select the currently selected placement after canvas update
-    if (selectedPlacement != null && placements.contains(selectedPlacement)) {
-      selectEntityPlacement(selectedPlacement);
-    } else {
-      // If the selected placement was removed, clear the selection
-      selectedPlacement = null;
-      view.getEntityPlacementView().setVisible(false);
+    // Re-select the placement by object identity (not equals)
+    if (selectedPlacement != null) {
+      for (EntityPlacement p : placements) {
+        if (p == selectedPlacement) {
+          selectEntityPlacement(p);
+          return;
+        }
+      }
     }
+
+    // Otherwise, clear selection
+    selectedPlacement = null;
+    view.getEntityPlacementView().setVisible(false);
   }
+
 
 
   private Map<String, ModeConfig> defaultModeMap() {
@@ -176,8 +183,7 @@ public class AuthoringController {
   }
 
   private static ModeConfig createDefaultMode(ImageConfig imageConfig) {
-    // TODO: Switch to NoneControlConfig
-    ControlConfig defaultControlConfig = new KeyboardControlConfig();
+    ControlConfig defaultControlConfig = new NoneControlConfig();
 
     EntityProperties entityProperties = new EntityProperties(
         DEFAULT_MODE,

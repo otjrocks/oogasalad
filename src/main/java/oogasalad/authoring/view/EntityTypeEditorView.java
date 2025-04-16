@@ -51,7 +51,6 @@ public class EntityTypeEditorView {
   private final Map<String, ComboBox<String>> controlTypeComboBoxes = new HashMap<>();
 
 
-
   /**
    * Edit parameters for an entityType
    *
@@ -68,12 +67,12 @@ public class EntityTypeEditorView {
     typeField = new TextField();
     controlTypeBox = new ComboBox<>();
     controlTypeBox.getItems().addAll(ControlManager.getControlStrategies());
+    controlTypeBox.setValue("None");
     controlTypeBox.setOnAction(e -> updateControlParameterFields());
 
     controlTypeParameters = new VBox(5);
     controlTypeParameterFields = new ArrayList<>();
     targetStrategyParameterFields = new ArrayList<>();
-
 
     saveCollisionButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
     saveCollisionButton.setOnAction(e -> commitChanges());
@@ -88,7 +87,6 @@ public class EntityTypeEditorView {
 
     controlTypeScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     controlTypeScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-
 
     root.getChildren().addAll(
         new Label(LanguageManager.getMessage("ENTITY_TYPE")), typeField,
@@ -183,7 +181,8 @@ public class EntityTypeEditorView {
         }
       }
 
-      String fullClassName = "oogasalad.engine.model.controlConfig." + controlType + "ControlConfig";
+      String fullClassName =
+          "oogasalad.engine.model.controlConfig." + controlType + "ControlConfig";
       Class<?> configClass = Class.forName(fullClassName);
       Constructor<?> constructor = configClass.getDeclaredConstructors()[0];
 
@@ -223,7 +222,6 @@ public class EntityTypeEditorView {
   }
 
 
-
   private Object castToRequiredType(String value, Class<?> type) {
     if (type == int.class || type == Integer.class) {
       return Integer.parseInt(value);
@@ -237,33 +235,57 @@ public class EntityTypeEditorView {
   }
 
 
-
-
-
   private void openAddModeDialog() {
     ModeEditorDialog dialog = new ModeEditorDialog();
     dialog.showAndWait().ifPresent(config -> {
       String modeName = config.name();
-      if (!modeName.isEmpty() && !current.modes().containsKey(modeName)) {
-        current.modes().put(modeName, config);
-        setEntityType(current);
-      } else {
+
+      if (modeName.isEmpty() || current.modes().containsKey(modeName)) {
         showError(LanguageManager.getMessage("INVALID_OR_DUPLICATE_MODE"));
+        return;
       }
+
+      // Create a new map with the added mode
+      Map<String, ModeConfig> newModes = new HashMap<>(current.modes());
+      newModes.put(modeName, config);
+
+      // Replace current with new EntityType (workaround for record immutability)
+      current = new EntityType(
+          current.type(),
+          current.controlConfig(),
+          newModes,
+          current.blocks()
+      );
+
+      setEntityType(current); // this pushes it wherever it needs to go
+      controller.updateEntitySelector();
+      controller.updateCanvas();
+      commitChanges();
     });
   }
 
-  private void openEditModeDialog(String modeName, ModeConfig oldConfig) {
+
+  private void openEditModeDialog(String oldName, ModeConfig oldConfig) {
     ModeEditorDialog dialog = new ModeEditorDialog(oldConfig);
     dialog.showAndWait().ifPresent(newConfig -> {
-      if (!modeName.equals(newConfig.name())) {
-        // Mode name changed → remove old key and insert new one
-        current.modes().remove(modeName);
+      Map<String, ModeConfig> newModes = new HashMap<>(current.modes());
+
+      if (!oldName.equals(newConfig.name())) {
+        newModes.remove(oldName);
       }
-      current.modes().put(newConfig.name(), newConfig);
-      setEntityType(current);
+      newModes.put(newConfig.name(), newConfig);
+
+      current = new EntityType(
+          current.type(),
+          current.controlConfig(),
+          newModes,
+          current.blocks()
+      );
+
+      setEntityType(current); // updates UI and "commits" change
       controller.updateEntitySelector();
       controller.updateCanvas();
+      commitChanges();
     });
   }
 
@@ -318,7 +340,8 @@ public class EntityTypeEditorView {
     controlTypeComboBoxes.put(parameter, targetStrategyDropdown);
 
     VBox targetParameterBox = new VBox(5);
-    targetStrategyDropdown.setOnAction(e -> updateTargetParameterFields(targetStrategyDropdown, targetParameterBox));
+    targetStrategyDropdown.setOnAction(
+        e -> updateTargetParameterFields(targetStrategyDropdown, targetParameterBox));
 
     VBox container = new VBox(5);
     container.getChildren().addAll(parameterLabel, targetStrategyDropdown, targetParameterBox);
@@ -348,8 +371,6 @@ public class EntityTypeEditorView {
     container.getChildren().addAll(parameterLabel, parameterField);
     return container;
   }
-
-
 
 
 }
