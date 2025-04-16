@@ -258,19 +258,4 @@ public class EntityPlacement {
             .get("Default")
             .image().tilesToCycle().size();
   }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    EntityPlacement that = (EntityPlacement) o;
-    return Double.compare(x, that.x) == 0 &&
-        Double.compare(y, that.y) == 0 &&
-        Objects.equals(resolvedEntityType.type(), that.resolvedEntityType.type());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(resolvedEntityType.type(), x, y);
-  }
 }

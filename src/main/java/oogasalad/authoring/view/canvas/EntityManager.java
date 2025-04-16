@@ -154,7 +154,7 @@ public class EntityManager {
    */
   public void removeEntity(EntityPlacement placement) {
     ImageView toRemove = entityViews.entrySet().stream()
-        .filter(e -> e.getValue().equals(placement))
+        .filter(e -> e.getValue() == placement)
         .map(Map.Entry::getKey)
         .findFirst()
         .orElse(null);
