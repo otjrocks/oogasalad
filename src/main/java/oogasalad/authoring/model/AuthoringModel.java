@@ -350,8 +350,16 @@ public class AuthoringModel {
 
     // EntityTypes
     for (EntityType e : entityTypeMap.values()) {
+      copyImagesToAssetFolder(outputFolder, e, saver);
       ObjectNode entityJson = builder.buildEntityTypeConfig(e, mapper);
       saver.saveEntityType(e.type(), entityJson, outputFolder);
+    }
+  }
+
+  private static void copyImagesToAssetFolder(Path outputFolder, EntityType e, JsonConfigSaver saver)
+      throws ConfigException {
+    for (ModeConfig modeConfig : e.modes().values()) {
+      saver.writeAsset(modeConfig.image().imagePath(), outputFolder);
     }
   }
 
@@ -372,8 +380,8 @@ public class AuthoringModel {
     // Remove all placements of this entity type from all levels
     for (LevelDraft level : levels) {
       List<EntityPlacement> placementsToRemove = level.getEntityPlacements().stream()
-              .filter(p -> typeName.equals(p.getTypeString()))
-              .toList();
+          .filter(p -> typeName.equals(p.getTypeString()))
+          .toList();
 
       for (EntityPlacement placement : placementsToRemove) {
         level.removeEntityPlacement(placement);

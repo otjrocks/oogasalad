@@ -8,11 +8,7 @@ import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
-import oogasalad.engine.model.GameStateImpl;
-import oogasalad.engine.model.api.GameMapFactory;
-import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.player.controller.LevelController;
 
@@ -23,8 +19,10 @@ import oogasalad.player.controller.LevelController;
  */
 public class GamePlayerView extends StackPane {
 
+  public static final String CURRENT_GAME_CONFIG_PATH = "data/games/BasicPacMan/";
+  public static final String GAME_CONFIG_JSON = "gameConfig.json";
   private final MainController myMainController;
-  private GameState myGameState;
+  private final GameState myGameState;
   private GameView myGameView;
   private ConfigModel myConfigModel = null;
 
@@ -45,7 +43,7 @@ public class GamePlayerView extends StackPane {
   private void createExampleMap() {
     JsonConfigParser configParser = new JsonConfigParser();
     try {
-      myConfigModel = configParser.loadFromFile("data/games/BasicPacMan/gameConfig.json");
+      myConfigModel = configParser.loadFromFile(CURRENT_GAME_CONFIG_PATH + GAME_CONFIG_JSON);
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
     }
@@ -63,7 +61,7 @@ public class GamePlayerView extends StackPane {
   private void loadConfig() {
     JsonConfigParser configParser = new JsonConfigParser();
     try {
-      myConfigModel = configParser.loadFromFile("data/games/BasicPacMan/gameConfig.json");
+      myConfigModel = configParser.loadFromFile(CURRENT_GAME_CONFIG_PATH + GAME_CONFIG_JSON);
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to reload updated config", e);
       return;
