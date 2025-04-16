@@ -320,6 +320,10 @@ public class AuthoringView {
   }
 
 
+  /**
+   * Get view for level settings
+   * @return LevelSettingsView
+   */
   public LevelSettingsView getLevelSettingsView() {
     return levelSettingsView;
   }

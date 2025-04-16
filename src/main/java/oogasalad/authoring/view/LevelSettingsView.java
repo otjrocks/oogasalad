@@ -71,6 +71,10 @@ public class LevelSettingsView {
     return root;
   }
 
+
+  /**
+   * Refresh level settings view with values of spinners as well as canvas view
+   */
   public void refresh() {
     LevelDraft level = controller.getCurrentLevel();
     widthSpinner.getValueFactory().setValue(level.getWidth());
