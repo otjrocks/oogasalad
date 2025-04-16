@@ -62,16 +62,6 @@ public class ModeEditorDialog {
     tilesToCycleField = new TextField("4");
     animationSpeedField = new TextField("1.0");
 
-    grid.add(new Label("Tile Width:"), 0, 3);
-    grid.add(tileWidthField, 1, 3);
-    grid.add(new Label("Tile Height:"), 0, 4);
-    grid.add(tileHeightField, 1, 4);
-    grid.add(new Label("Tiles to Cycle:"), 0, 5);
-    grid.add(tilesToCycleField, 1, 5);
-    grid.add(new Label("Animation Speed:"), 0, 6);
-    grid.add(animationSpeedField, 1, 6);
-
-
     speedField = new TextField();
 
     Button uploadButton = new Button(LanguageManager.getMessage("CHOOSE_IMAGE"));
@@ -84,6 +74,15 @@ public class ModeEditorDialog {
     grid.add(uploadButton, 2, 1);
     grid.add(new Label(LanguageManager.getMessage("MOVEMENT_SPEED")), 0, 2);
     grid.add(speedField, 1, 2);
+    grid.add(new Label("Tile Width:"), 0, 3);
+    grid.add(tileWidthField, 1, 3);
+    grid.add(new Label("Tile Height:"), 0, 4);
+    grid.add(tileHeightField, 1, 4);
+    grid.add(new Label("Tiles to Cycle:"), 0, 5);
+    grid.add(tilesToCycleField, 1, 5);
+    grid.add(new Label("Animation Speed:"), 0, 6);
+    grid.add(animationSpeedField, 1, 6);
+
 
     ButtonType okButtonType = ButtonType.OK;
 
