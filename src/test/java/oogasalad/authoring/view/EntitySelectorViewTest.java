@@ -40,7 +40,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
         "mock.png", // Should be a relative path or valid URI
         14,
         14,
-        List.of(0, 1, 2),
+        3,
         1.0
     );
 
