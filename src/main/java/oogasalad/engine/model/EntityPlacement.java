@@ -249,6 +249,11 @@ public class EntityPlacement {
         .image().imagePath();
   }
 
+  /**
+   * Gets the image path for default entity.
+   *
+   * @return the string path to default image
+   */
   public String getDefaultImagePath() {
     return this.getType()
         .modes()
