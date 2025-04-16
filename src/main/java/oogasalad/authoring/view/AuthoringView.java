@@ -2,6 +2,7 @@ package oogasalad.authoring.view;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.time.zone.ZoneRulesProvider;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -16,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.config.ConfigException;
@@ -318,4 +320,11 @@ public class AuthoringView {
   }
 
 
+  /**
+   * Get view for level settings
+   * @return LevelSettingsView
+   */
+  public LevelSettingsView getLevelSettingsView() {
+    return levelSettingsView;
+  }
 }
