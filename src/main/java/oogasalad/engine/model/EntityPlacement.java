@@ -258,6 +258,6 @@ public class EntityPlacement {
     return this.getType()
             .modes()
             .get("Default")
-            .image().tilesToCycle().size();
+            .image().tilesToCycle();
   }
 }

@@ -141,7 +141,6 @@ public class GameLoopController {
 
   }
 
-
   /**
    * Stops the loop when called
    */
