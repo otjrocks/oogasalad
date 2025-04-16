@@ -1,10 +1,10 @@
 package oogasalad.player.model.control.testdoubles;
 
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.player.model.control.ControlStrategy;
+import oogasalad.player.model.control.ControlStrategyInterface;
 
 // Dummy strategy classes for testing
-public class NoneControlStrategy implements ControlStrategy {
+public class NoneControlStrategy implements ControlStrategyInterface {
 
   public NoneControlStrategy() {
     // empty constructor

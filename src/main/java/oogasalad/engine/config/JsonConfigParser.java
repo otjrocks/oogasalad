@@ -25,7 +25,6 @@ import oogasalad.engine.model.GameSettings;
 import oogasalad.engine.model.MapInfo;
 import oogasalad.engine.model.MetaData;
 import oogasalad.engine.model.ModeChangeEvent;
-import oogasalad.engine.model.Tiles;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.records.config.CollisionConfig;
 import oogasalad.engine.records.config.EntityConfig;
@@ -211,7 +210,6 @@ public class JsonConfigParser implements ConfigParser {
   }
 
 
-
   private Condition parseCondition(JsonNode conditionNode) {
     if (conditionNode == null || conditionNode.isNull()) {
       return new Condition("Always", Map.of());  // Default condition
@@ -244,7 +242,6 @@ public class JsonConfigParser implements ConfigParser {
 
     return new Condition(type, parameters);
   }
-
 
 
   private Map<Integer, EntityType> buildEntityMappings(JsonNode mappings) throws ConfigException {
@@ -400,7 +397,8 @@ public class JsonConfigParser implements ConfigParser {
         entity.name(),
         control,
         modes,
-        entity.entityProperties().blocks()
+        entity.entityProperties().blocks(),
+        entity.entityProperties().movementSpeed()
     );
 
   }

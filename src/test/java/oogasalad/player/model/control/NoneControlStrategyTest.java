@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class NoneControlStrategyTest {
 
   private Entity entity;
-  private ControlStrategy strategy;
+  private ControlStrategyInterface strategy;
 
   @BeforeEach
   void setup() {
