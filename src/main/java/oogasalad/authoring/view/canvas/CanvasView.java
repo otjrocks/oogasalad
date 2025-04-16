@@ -97,10 +97,6 @@ public class CanvasView {
     entityManager.reloadEntities(placements);
     tileHighlighter.hideSelection();
     tileHighlighter.hideHover();
-
-    System.out.println("Reloading placements:");
-    placements.forEach(p -> System.out.println(p.getType().type() + " at " + p.getX() + "," + p.getY()));
-
   }
 
   /**

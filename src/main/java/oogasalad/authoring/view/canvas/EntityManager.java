@@ -103,9 +103,6 @@ public class EntityManager {
     root.getChildren().add(imageView);
     entityViews.put(imageView, placement);
     gridEntities[row][col] = placement;
-
-    System.out.println("ADDING VISUAL for: " + placement.getType().type() + " @ " + placement.getX() + "," + placement.getY());
-
   }
 
   /**
@@ -172,11 +169,6 @@ public class EntityManager {
         gridEntities[row][col] = null;
       }
     }
-    System.out.println("Removed ImageView for: " + placement);
-    System.out.println("Children after removal:");
-    root.getChildren().stream()
-        .filter(n -> n instanceof ImageView)
-        .forEach(n -> System.out.println(((ImageView) n).getX() + "," + ((ImageView) n).getY()));
   }
 
   public List<EntityPlacement> getPlacementsForEntityType(String entityTypeName) {
