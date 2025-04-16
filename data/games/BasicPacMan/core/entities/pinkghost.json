@@ -16,7 +16,7 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "pinkghost.png",
+        "imagePath": "assets/pinkghost.png",
         "tileWidth": 14,
         "tileHeight": 14,
         "tilesToCycle": 4,
