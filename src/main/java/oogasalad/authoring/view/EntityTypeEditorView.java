@@ -1,23 +1,41 @@
 package oogasalad.authoring.view;
 
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javax.swing.text.View;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.model.EntityType;
 
 import java.util.Map;
 import oogasalad.engine.config.ModeConfig;
+import oogasalad.engine.model.controlConfig.ConditionalControlConfig;
 import oogasalad.engine.model.controlConfig.ControlConfig;
+import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
+import oogasalad.engine.model.controlConfig.NoneControlConfig;
+import oogasalad.engine.model.controlConfig.TargetControlConfig;
+import oogasalad.engine.model.controlConfig.targetStrategy.TargetAheadOfEntityConfig;
+import oogasalad.engine.model.controlConfig.targetStrategy.TargetCalculationConfig;
+import oogasalad.engine.model.controlConfig.targetStrategy.TargetEntityConfig;
+import oogasalad.engine.model.controlConfig.targetStrategy.TargetEntityWithTrapConfig;
+import oogasalad.engine.model.controlConfig.targetStrategy.TargetLocationConfig;
+import oogasalad.player.model.control.ControlManager;
 
 /**
  * View for editing a selected EntityType.
  *
- * @author Will He, Ishan Madan, Angela Predolac
+ * @author Will He, Ishan Madan
  */
 public class EntityTypeEditorView {
+
+  private final String TARGET_CALCULATION_CONFIG = "targetCalculationConfig";
 
   private final VBox root;
   private final TextField typeField;
@@ -25,7 +43,14 @@ public class EntityTypeEditorView {
   private final VBox modeList;
   private final AuthoringController controller;
   private EntityType current;
-  private Button deleteButton;
+
+  private final Button saveCollisionButton;
+  private final VBox controlTypeParameters;
+  private final List<TextField> controlTypeParameterFields;
+  private final List<TextField> targetStrategyParameterFields;
+  private final Map<String, ComboBox<String>> controlTypeComboBoxes = new HashMap<>();
+
+
 
   /**
    * Edit parameters for an entityType
@@ -42,25 +67,37 @@ public class EntityTypeEditorView {
 
     typeField = new TextField();
     controlTypeBox = new ComboBox<>();
-    // TODO: Remove hardcoded values
-    controlTypeBox.getItems().addAll("Keyboard", "FollowMouse", "TargetEntity", "BFS");
+    controlTypeBox.getItems().addAll(ControlManager.getControlStrategies());
+    controlTypeBox.setOnAction(e -> updateControlParameterFields());
+
+    controlTypeParameters = new VBox(5);
+    controlTypeParameterFields = new ArrayList<>();
+    targetStrategyParameterFields = new ArrayList<>();
+
+
+    saveCollisionButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
+    saveCollisionButton.setOnAction(e -> commitChanges());
+
     modeList = new VBox(5);
 
     Button addModeButton = new Button(LanguageManager.getMessage("ADD_MODE"));
     addModeButton.setOnAction(e -> openAddModeDialog());
 
-    deleteButton = new Button("Delete Entity Type");
-    deleteButton.getStyleClass().add("delete-button");
-    deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
-    deleteButton.setOnAction(e -> deleteEntityType());
+    ScrollPane controlTypeScrollPane = new ScrollPane(controlTypeParameters);
+    controlTypeScrollPane.setFitToWidth(true);
+
+    controlTypeScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    controlTypeScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
 
     root.getChildren().addAll(
         new Label(LanguageManager.getMessage("ENTITY_TYPE")), typeField,
         new Label(LanguageManager.getMessage("CONTROL_STRATEGY")), controlTypeBox,
+        controlTypeScrollPane, saveCollisionButton,
         new Label(LanguageManager.getMessage("MODES")), modeList,
-        addModeButton,
-        new Separator(), deleteButton
+        addModeButton
     );
+
   }
 
   /**
@@ -81,10 +118,6 @@ public class EntityTypeEditorView {
         commitChanges(); // when field loses focus
       }
     });
-
-    // TODO: New config
-//    controlTypeBox.setValue();
-    controlTypeBox.setOnAction(e -> commitChanges());
 
     modeList.getChildren().clear();
     for (Map.Entry<String, ModeConfig> entry : type.modes().entrySet()) {
@@ -126,10 +159,84 @@ public class EntityTypeEditorView {
   }
 
   private ControlConfig buildControlConfigFromUI() {
-    // TODO: Implement
+    String controlType = controlTypeBox.getValue();
+    Map<String, Class<?>> requiredFieldTypes = ControlManager.getControlRequiredFields(controlType);
+    List<String> requiredFieldOrder = ControlManager.getControlRequiredFieldsOrder(controlType);
 
-    return null;
+    try {
+      List<Object> constructorArgs = new ArrayList<>();
+      int textFieldIndex = 0;
+
+      for (String param : requiredFieldOrder) {
+        Class<?> type = requiredFieldTypes.get(param);
+
+        if (param.startsWith("pathFindingStrategy")) {
+          constructorArgs.add(controlTypeComboBoxes.get(param).getValue());
+
+        } else if (param.startsWith(TARGET_CALCULATION_CONFIG)) {
+          constructorArgs.add(buildTargetStrategyFromUI());
+
+        } else {
+          String input = controlTypeParameterFields.get(textFieldIndex++).getText();
+          constructorArgs.add(castToRequiredType(input, type));
+        }
+      }
+
+      String fullClassName = "oogasalad.engine.model.controlConfig." + controlType + "ControlConfig";
+      Class<?> configClass = Class.forName(fullClassName);
+      Constructor<?> constructor = configClass.getDeclaredConstructors()[0];
+
+      return (ControlConfig) constructor.newInstance(constructorArgs.toArray());
+
+    } catch (Exception e) {
+      showError("Error building control config: " + e.getMessage());
+      throw new ViewException("Error building control config: ", e);
+    }
   }
+
+
+  private TargetCalculationConfig buildTargetStrategyFromUI() throws ViewException {
+    try {
+      String selectedStrategy = controlTypeComboBoxes.get(TARGET_CALCULATION_CONFIG).getValue();
+      Map<String, Class<?>> requiredTypes = ControlManager.getTargetRequiredFields(
+          selectedStrategy);
+      List<String> fieldOrder = ControlManager.getTargetRequiredFieldsOrder(selectedStrategy);
+
+      List<Object> paramValues = new ArrayList<>();
+      int index = 0;
+      for (String param : fieldOrder) {
+        String input = targetStrategyParameterFields.get(index++).getText();
+        paramValues.add(castToRequiredType(input, requiredTypes.get(param)));
+      }
+
+      String fullClassName =
+          "oogasalad.engine.model.controlConfig.targetStrategy." + selectedStrategy + "Config";
+      Class<?> strategyClass = Class.forName(fullClassName);
+      Constructor<?> constructor = strategyClass.getDeclaredConstructors()[0];
+
+      return (TargetCalculationConfig) constructor.newInstance(paramValues.toArray());
+    } catch (Exception e) {
+      showError("Error building target strategy: " + e.getMessage());
+      throw new ViewException("Error building target strategy: ", e);
+    }
+  }
+
+
+
+  private Object castToRequiredType(String value, Class<?> type) {
+    if (type == int.class || type == Integer.class) {
+      return Integer.parseInt(value);
+    } else if (type == double.class || type == Double.class) {
+      return Double.parseDouble(value);
+    } else if (type == String.class) {
+      return value;
+    }
+
+    throw new ViewException("Unsupported parameter type: " + type);
+  }
+
+
+
 
 
   private void openAddModeDialog() {
@@ -164,20 +271,84 @@ public class EntityTypeEditorView {
     alert.showAndWait();
   }
 
-  private void deleteEntityType() {
-    if (current == null) {
-      return;
+  private void updateControlParameterFields() {
+    controlTypeParameters.getChildren().clear();
+    controlTypeParameterFields.clear();
+
+    VBox parameterBox = new VBox(5);
+    List<String> requiredFields =
+        ControlManager.getControlRequiredFieldsOrder(controlTypeBox.getValue());
+
+    for (String parameter : requiredFields) {
+      Node parameterNode = createParameterNode(parameter);
+      parameterBox.getChildren().add(parameterNode);
     }
 
-    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-    confirm.setTitle(LanguageManager.getMessage("CONFIRM_DELETE"));
-    confirm.setHeaderText(LanguageManager.getMessage("DELETE_ENTITY_TYPE"));
-    confirm.setContentText(LanguageManager.getMessage("CONFIRM_DELETE_ENTITY_TYPE_MESSAGE"));
+    controlTypeParameters.getChildren().add(parameterBox);
+  }
 
-    if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
-      controller.deleteEntityType(current.type());
+  private Node createParameterNode(String parameter) {
+    Label parameterLabel = new Label(parameter + ": ");
+
+    if (parameter.startsWith("pathFindingStrategy")) {
+      return createPathFindingStrategyNode(parameterLabel, parameter);
+
+    } else if (parameter.startsWith(TARGET_CALCULATION_CONFIG)) {
+      return createTargetCalculationConfigNode(parameterLabel, parameter);
+
+    } else {
+      return createGenericParameterNode(parameterLabel);
     }
   }
 
-}
+  private Node createPathFindingStrategyNode(Label parameterLabel, String parameter) {
+    ComboBox<String> pathStrategyBox = new ComboBox<>();
+    pathStrategyBox.getItems().addAll(ControlManager.getPathFindingStrategies());
+    controlTypeComboBoxes.put(parameter, pathStrategyBox);
 
+    VBox container = new VBox(5);
+    container.getChildren().addAll(parameterLabel, pathStrategyBox);
+    return container;
+  }
+
+  private Node createTargetCalculationConfigNode(Label parameterLabel, String parameter) {
+    ComboBox<String> targetStrategyDropdown = new ComboBox<>();
+    targetStrategyDropdown.getItems().addAll(ControlManager.getTargetCalculationStrategies());
+    controlTypeComboBoxes.put(parameter, targetStrategyDropdown);
+
+    VBox targetParameterBox = new VBox(5);
+    targetStrategyDropdown.setOnAction(e -> updateTargetParameterFields(targetStrategyDropdown, targetParameterBox));
+
+    VBox container = new VBox(5);
+    container.getChildren().addAll(parameterLabel, targetStrategyDropdown, targetParameterBox);
+    return container;
+  }
+
+  private void updateTargetParameterFields(ComboBox<String> dropdown, VBox targetParameterBox) {
+    targetParameterBox.getChildren().clear();
+    String selectedStrategy = dropdown.getValue();
+    List<String> targetParams = ControlManager.getTargetRequiredFieldsOrder(selectedStrategy);
+
+    if (!targetParams.isEmpty()) {
+      for (String targetParam : targetParams) {
+        Label targetParamLabel = new Label(targetParam + ": ");
+        TextField targetParamField = new TextField();
+        targetStrategyParameterFields.add(targetParamField);
+        targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
+      }
+    }
+  }
+
+  private Node createGenericParameterNode(Label parameterLabel) {
+    TextField parameterField = new TextField();
+    controlTypeParameterFields.add(parameterField);
+
+    VBox container = new VBox(5);
+    container.getChildren().addAll(parameterLabel, parameterField);
+    return container;
+  }
+
+
+
+
+}
