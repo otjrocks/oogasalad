@@ -37,8 +37,8 @@ class EntityTest {
   void setEntityDirection_validDirection_updatesDirection() {
     entity.setEntityDirection(Direction.R);
     assertEquals(Direction.R, entity.getEntityDirection());
-    assertEquals(Direction.R.getDx() * Entity.ENTITY_SPEED, entity.getDx());
-    assertEquals(Direction.R.getDy() * Entity.ENTITY_SPEED, entity.getDy());
+    assertEquals(Direction.R.getDx() * Entity.ENTITY_SPEED_MULTIPLIER, entity.getDx());
+    assertEquals(Direction.R.getDy() * Entity.ENTITY_SPEED_MULTIPLIER, entity.getDy());
   }
 
   @Test

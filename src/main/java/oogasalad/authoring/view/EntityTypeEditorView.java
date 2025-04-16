@@ -150,7 +150,8 @@ public class EntityTypeEditorView {
         typeField.getText(),
         controlConfig,
         current.modes(),
-        current.blocks()
+        current.blocks(),
+        current.speed()
     );
 
     controller.getModel().updateEntityType(current.type(), newEntity);

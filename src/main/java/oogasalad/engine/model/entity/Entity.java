@@ -20,8 +20,9 @@ public class Entity {
   private final GameMap gameMap;
   private double dx;
   private double dy;
+  private final double speed;
   private Direction currentDirection;
-  public static final double ENTITY_SPEED = 0.12;
+  public static final double ENTITY_SPEED_MULTIPLIER = 0.12;
 
   /**
    * Initialize the entity with the provided entity data.
@@ -34,6 +35,12 @@ public class Entity {
     myEntityPlacement = entityPlacement;
     this.inputManager = input;
     this.gameMap = gameMap;
+    speed = getTransformedSpeed(entityPlacement);
+  }
+
+  private static double getTransformedSpeed(EntityPlacement entityPlacement) {
+    // Enforce speed is in range [0, 0.5] and multiply by a constant to transform to a reasonable amount
+    return Math.max(0, Math.min(ENTITY_SPEED_MULTIPLIER * entityPlacement.getType().speed(), 0.5));
   }
 
   /**
@@ -69,8 +76,8 @@ public class Entity {
   }
 
   /**
-   * Set the movement direction of this entity and if changing directions snap it to the nearest
-   * int if it is close enough.
+   * Set the movement direction of this entity and if changing directions snap it to the nearest int
+   * if it is close enough.
    *
    * @param direction The new movement direction.
    */
@@ -116,8 +123,8 @@ public class Entity {
   }
 
   private void updateEntityVelocity() {
-    setDx(currentDirection.getDx() * ENTITY_SPEED);
-    setDy(currentDirection.getDy() * ENTITY_SPEED);
+    setDx(currentDirection.getDx() * speed);
+    setDy(currentDirection.getDy() * speed);
   }
 
   /**
@@ -157,8 +164,8 @@ public class Entity {
   }
 
   /**
-   * Determines if the entity can move in the specified direction based on its current position
-   * and the defined movement speed.
+   * Determines if the entity can move in the specified direction based on its current position and
+   * the defined movement speed.
    *
    * @param direction the direction to check for movement ('R' for right, 'L' for left, or other
    *                  characters for vertical movement)
@@ -167,10 +174,10 @@ public class Entity {
   public boolean canMove(Direction direction) {
     if (direction == Direction.R || direction == Direction.L) {
       return this.getEntityPlacement().getY() - (int) this.getEntityPlacement().getY()
-          < ENTITY_SPEED;
+          < speed;
     } else {
       return this.getEntityPlacement().getX() - (int) this.getEntityPlacement().getX()
-          < ENTITY_SPEED;
+          < speed;
     }
   }
 
