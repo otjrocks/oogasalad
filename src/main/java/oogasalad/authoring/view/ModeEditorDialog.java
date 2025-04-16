@@ -29,6 +29,11 @@ public class ModeEditorDialog {
   private TextField nameField;
   private TextField speedField;
   private TextField imagePathField;
+  private TextField tileWidthField;
+  private TextField tileHeightField;
+  private TextField tilesToCycleField;
+  private TextField animationSpeedField;
+
   private File selectedImageFile;
   private ModeConfig preparedResult;
 
@@ -51,6 +56,21 @@ public class ModeEditorDialog {
     nameField = new TextField();
     imagePathField = new TextField();
     imagePathField.setEditable(false);
+
+    tileWidthField = new TextField("28");
+    tileHeightField = new TextField("28");
+    tilesToCycleField = new TextField("4");
+    animationSpeedField = new TextField("1.0");
+
+    grid.add(new Label("Tile Width:"), 0, 3);
+    grid.add(tileWidthField, 1, 3);
+    grid.add(new Label("Tile Height:"), 0, 4);
+    grid.add(tileHeightField, 1, 4);
+    grid.add(new Label("Tiles to Cycle:"), 0, 5);
+    grid.add(tilesToCycleField, 1, 5);
+    grid.add(new Label("Animation Speed:"), 0, 6);
+    grid.add(animationSpeedField, 1, 6);
+
 
     speedField = new TextField();
 
@@ -110,14 +130,23 @@ public class ModeEditorDialog {
    * @param existingConfig already existing mode config
    */
   public ModeEditorDialog(ModeConfig existingConfig) {
-    this(); // call default constructor
+    this(); // call default constructor first
+
     if (existingConfig != null) {
       nameField.setText(existingConfig.name());
       speedField.setText(String.valueOf(existingConfig.entityProperties().movementSpeed()));
+
       selectedImageFile = new File(URI.create(existingConfig.image().imagePath()));
       imagePathField.setText(selectedImageFile.getName());
+
+      // Pre-fill new image config fields
+      tileWidthField.setText(String.valueOf(existingConfig.image().tileWidth()));
+      tileHeightField.setText(String.valueOf(existingConfig.image().tileHeight()));
+      tilesToCycleField.setText(String.valueOf(existingConfig.image().tilesToCycle()));
+      animationSpeedField.setText(String.valueOf(existingConfig.image().animationSpeed()));
     }
   }
+
 
   private void handleImageUpload() {
     FileChooser fileChooser = new FileChooser();
@@ -156,39 +185,43 @@ public class ModeEditorDialog {
       return false;
     }
 
-    int speed;
     try {
-      speed = Integer.parseInt(speedField.getText());
+      double speed = Double.parseDouble(speedField.getText());
+      ImageConfig imageConfig = getImageConfig();
+
+      ControlConfig controlConfig = new KeyboardControlConfig(); // temp fallback
+
+      EntityProperties entityProps = new EntityProperties(
+          name,
+          controlConfig,
+          speed,
+          List.of()
+      );
+
+      preparedResult = new ModeConfig(name, entityProps, imageConfig);
+      return true;
+
     } catch (NumberFormatException ex) {
-      showError(LanguageManager.getMessage("INVALID_SPEED"));
+      showError("All numeric fields must be valid numbers.");
       return false;
     }
-
-    // === Build ImageConfig ===
-    // TODO: Support image sizes different that 28 x 28
-    String imagePath = selectedImageFile.toURI().toString();
-    ImageConfig imageConfig = new ImageConfig(
-        imagePath,
-        28,
-        28,
-        6, // Default animation cycle
-        1.0
-    );
-
-    // === Build EntityProperties ===
-    // TODO: change to NoneControlConfig()
-    ControlConfig controlConfig = new KeyboardControlConfig(); // new polymorphic structure
-
-    EntityProperties entityProps = new EntityProperties(
-        name,
-        controlConfig,
-        (double) speed,
-        List.of() // empty list of blocks
-    );
-
-    // === Build ModeConfig ===
-    preparedResult = new ModeConfig(name, entityProps, imageConfig);
-    return true;
   }
+
+  private ImageConfig getImageConfig() {
+    int tileWidth = Integer.parseInt(tileWidthField.getText());
+    int tileHeight = Integer.parseInt(tileHeightField.getText());
+    int tilesToCycle = Integer.parseInt(tilesToCycleField.getText());
+    double animationSpeed = Double.parseDouble(animationSpeedField.getText());
+
+    String imagePath = selectedImageFile.toURI().toString();
+    return new ImageConfig(
+        imagePath,
+        tileWidth,
+        tileHeight,
+        tilesToCycle,
+        animationSpeed
+    );
+  }
+
 
 }
