@@ -31,7 +31,7 @@ import oogasalad.player.model.control.ControlManager;
 /**
  * View for editing a selected EntityType.
  *
- * @author Will He, Ishan Madan
+ * @author Will He, Ishan Madan, Angela Predolac
  */
 public class EntityTypeEditorView {
 
@@ -43,6 +43,7 @@ public class EntityTypeEditorView {
   private final VBox modeList;
   private final AuthoringController controller;
   private EntityType current;
+  private Button deleteButton;
 
   private final Button saveCollisionButton;
   private final VBox controlTypeParameters;
@@ -82,6 +83,11 @@ public class EntityTypeEditorView {
     Button addModeButton = new Button(LanguageManager.getMessage("ADD_MODE"));
     addModeButton.setOnAction(e -> openAddModeDialog());
 
+    deleteButton = new Button("Delete Entity Type");
+    deleteButton.getStyleClass().add("delete-button");
+    deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+    deleteButton.setOnAction(e -> deleteEntityType());
+
     ScrollPane controlTypeScrollPane = new ScrollPane(controlTypeParameters);
     controlTypeScrollPane.setFitToWidth(true);
 
@@ -93,9 +99,10 @@ public class EntityTypeEditorView {
         new Label(LanguageManager.getMessage("CONTROL_STRATEGY")), controlTypeBox,
         controlTypeScrollPane, saveCollisionButton,
         new Label(LanguageManager.getMessage("MODES")), modeList,
-        addModeButton
-    );
+        addModeButton,
+        new Separator(), deleteButton
 
+    );
   }
 
   /**
@@ -116,7 +123,6 @@ public class EntityTypeEditorView {
         commitChanges(); // when field loses focus
       }
     });
-
     modeList.getChildren().clear();
     for (Map.Entry<String, ModeConfig> entry : type.modes().entrySet()) {
       String modeName = entry.getKey();
@@ -296,6 +302,21 @@ public class EntityTypeEditorView {
     alert.showAndWait();
   }
 
+  private void deleteEntityType() {
+    if (current == null) {
+      return;
+    }
+
+    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+    confirm.setTitle(LanguageManager.getMessage("CONFIRM_DELETE"));
+    confirm.setHeaderText(LanguageManager.getMessage("DELETE_ENTITY_TYPE"));
+    confirm.setContentText(LanguageManager.getMessage("CONFIRM_DELETE_ENTITY_TYPE_MESSAGE"));
+
+    if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+      controller.deleteEntityType(current.type());
+    }
+  }
+
   private void updateControlParameterFields() {
     controlTypeParameters.getChildren().clear();
     controlTypeParameterFields.clear();
@@ -303,12 +324,10 @@ public class EntityTypeEditorView {
     VBox parameterBox = new VBox(5);
     List<String> requiredFields =
         ControlManager.getControlRequiredFieldsOrder(controlTypeBox.getValue());
-
     for (String parameter : requiredFields) {
       Node parameterNode = createParameterNode(parameter);
       parameterBox.getChildren().add(parameterNode);
     }
-
     controlTypeParameters.getChildren().add(parameterBox);
   }
 
