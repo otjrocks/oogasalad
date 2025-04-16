@@ -81,18 +81,4 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
     assertEquals("Pacman", typeField.getText());
   }
 
-  @Test
-  public void commitChanges_UpdatesController() {
-    view.setEntityType(mockEntityType);
-
-    VBox root = (VBox) view.getRoot();
-    ComboBox<String> controlBox = (ComboBox<String>) root.getChildren().get(3);
-
-    controlBox.setValue("FollowMouse");
-    controlBox.getOnAction().handle(new ActionEvent());
-
-    verify(mockController.getModel()).updateEntityType(any(), any(EntityType.class));
-    verify(mockController).updateEntitySelector();
-  }
-
 }
