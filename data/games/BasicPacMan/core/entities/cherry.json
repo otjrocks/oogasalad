@@ -13,7 +13,7 @@
         "imagePath": "cherry",
         "tileWidth": 2,
         "tileHeight": 2,
-        "tilesToCycle": [0],
+        "tilesToCycle": 1,
         "animationSpeed": 1.0
       }
     }

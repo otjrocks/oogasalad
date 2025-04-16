@@ -13,7 +13,7 @@
         "imagePath": "tunnel",
         "tileWidth": 100,
         "tileHeight": 100,
-        "tilesToCycle": [0],
+        "tilesToCycle": 1,
         "animationSpeed": 1.0
       }
     }

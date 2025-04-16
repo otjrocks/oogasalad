@@ -20,7 +20,7 @@
         "imagePath": "wall",
         "tileWidth": 8,
         "tileHeight": 8,
-        "tilesToCycle": [0],
+        "tilesToCycle": 1,
         "animationSpeed": 1.0
       }
     }
