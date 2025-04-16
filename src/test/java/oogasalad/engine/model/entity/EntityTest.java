@@ -3,6 +3,7 @@ package oogasalad.engine.model.entity;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
 import oogasalad.player.model.control.ControlStrategyInterface;
 import oogasalad.player.model.control.ControlStrategyFactory;
@@ -25,6 +26,7 @@ class EntityTest {
     mockPlacement = mock(EntityPlacement.class);
     mockInput = mock(GameInputManager.class);
     mockMap = mock(GameMap.class);
+    when(mockPlacement.getType()).thenReturn(new EntityType("test", null, null, null, 1));
     entity = new Entity(mockInput, mockPlacement, mockMap);
   }
 
@@ -37,8 +39,8 @@ class EntityTest {
   void setEntityDirection_validDirection_updatesDirection() {
     entity.setEntityDirection(Direction.R);
     assertEquals(Direction.R, entity.getEntityDirection());
-    assertEquals(Direction.R.getDx() * Entity.ENTITY_SPEED_MULTIPLIER, entity.getDx());
-    assertEquals(Direction.R.getDy() * Entity.ENTITY_SPEED_MULTIPLIER, entity.getDy());
+    assertEquals(Direction.R.getDx() * entity.getSpeed(), entity.getDx());
+    assertEquals(Direction.R.getDy() * entity.getSpeed(), entity.getDy());
   }
 
   @Test
@@ -87,7 +89,8 @@ class EntityTest {
 
   @Test
   void testCanMove_validAndInvalidMoveHorizontal_returnsTrueThenFalse() {
-    when(mockPlacement.getY()).thenReturn(4.05);
+    when(mockPlacement.getType()).thenReturn(new EntityType("test", null, null, null, 1));
+    when(mockPlacement.getY()).thenReturn(4.00005);
     assertTrue(entity.canMove(Direction.R));
     when(mockPlacement.getY()).thenReturn(4.5);
     assertFalse(entity.canMove(Direction.R));
@@ -105,7 +108,8 @@ class EntityTest {
   void update_setValidControlStrategy_updatesControlStrategy() {
     try (MockedStatic<ControlStrategyFactory> factory = mockStatic(ControlStrategyFactory.class)) {
       ControlStrategyInterface mockStrategy = mock(ControlStrategyInterface.class);
-      factory.when(() -> ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap))
+      factory.when(
+              () -> ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap))
           .thenReturn(mockStrategy);
 
       entity.update();

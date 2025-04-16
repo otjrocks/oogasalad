@@ -35,12 +35,26 @@ public class Entity {
     myEntityPlacement = entityPlacement;
     this.inputManager = input;
     this.gameMap = gameMap;
-    speed = getTransformedSpeed(entityPlacement);
+    speed = setSpeedFromConfig(entityPlacement);
+  }
+
+  private double setSpeedFromConfig(EntityPlacement entityPlacement) {
+    final double speed;
+    if (myEntityPlacement != null && myEntityPlacement.getType() != null) {
+      speed = getTransformedSpeed(entityPlacement);
+    } else {
+      speed = 0;
+    }
+    return speed;
   }
 
   private static double getTransformedSpeed(EntityPlacement entityPlacement) {
     // Enforce speed is in range [0, 0.5] and multiply by a constant to transform to a reasonable amount
     return Math.max(0, Math.min(ENTITY_SPEED_MULTIPLIER * entityPlacement.getType().speed(), 0.5));
+  }
+
+  double getSpeed() {
+    return speed;
   }
 
   /**

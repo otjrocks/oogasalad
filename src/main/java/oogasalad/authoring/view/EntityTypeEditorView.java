@@ -254,7 +254,8 @@ public class EntityTypeEditorView {
           current.type(),
           current.controlConfig(),
           newModes,
-          current.blocks()
+          current.blocks(),
+          current.speed()
       );
 
       setEntityType(current); // this pushes it wherever it needs to go
@@ -279,7 +280,8 @@ public class EntityTypeEditorView {
           current.type(),
           current.controlConfig(),
           newModes,
-          current.blocks()
+          current.blocks(),
+          current.speed()
       );
 
       setEntityType(current); // updates UI and "commits" change
