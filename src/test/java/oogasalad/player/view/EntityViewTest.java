@@ -24,7 +24,7 @@ class EntityViewTest extends DukeApplicationTest {
     mockGC = mock(GraphicsContext.class);
 
     when(mockEntity.getEntityPlacement()).thenReturn(mockPlacement);
-    when(mockPlacement.getEntityImagePath()).thenReturn("pacman.png");
+    when(mockPlacement.getDefaultImagePath()).thenReturn("pacman.png");
     when(mockPlacement.getEntityFrameNumber()).thenReturn(6);
     when(mockPlacement.getTypeString()).thenReturn("pacman.png");
     when(mockPlacement.getCurrentFrame()).thenReturn(1);
