@@ -30,6 +30,7 @@ public record ConfigModel(MetaData metadata,
                           List<EntityType> entityTypes,
                           List<ParsedLevel> levels,
                           List<CollisionRule> collisionRules,
-                          WinCondition winCondition) {
+                          WinCondition winCondition,
+                          int currentLevelIndex) {
 
 }

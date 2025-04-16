@@ -61,14 +61,34 @@ public class GamePlayerView extends StackPane {
   }
 
   private void loadConfig() {
+    JsonConfigParser configParser = new JsonConfigParser();
+    try {
+      myConfigModel = configParser.loadFromFile("data/games/BasicPacMan/gameConfig.json");
+    } catch (ConfigException e) {
+      LoggingManager.LOGGER.warn("Failed to reload updated config", e);
+      return;
+    }
+
     LevelController levelController = new LevelController(myMainController, myConfigModel);
     if (levelController.getCurrentLevelMap() != null) {
       myGameView = new GameView(
           new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
           myConfigModel, levelController.getCurrentLevelIndex());
+
       myGameView.setRestartAction(this::restartLevel);
+      myGameView.setNextLevelAction(() -> {
+        if (levelController.hasNextLevel()) {
+          levelController.incrementAndUpdateConfig();
+          this.getChildren().clear();
+          loadConfig();
+          this.getChildren().add(myGameView);
+        } else {
+          LoggingManager.LOGGER.info("No more levels to load.");
+        }
+      });
     }
   }
+
 
   /**
    * Restarts the current level by clearing the view and reloading the game configuration.
