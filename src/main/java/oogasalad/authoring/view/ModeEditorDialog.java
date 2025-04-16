@@ -19,8 +19,8 @@ import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.records.config.model.EntityProperties;
 
 /**
- * Dialog for creating a new ModeConfig with a user-uploaded image.
- * Returns a ModeConfig object via showAndWait().ifPresent(...)
+ * Dialog for creating a new ModeConfig with a user-uploaded image. Returns a ModeConfig object via
+ * showAndWait().ifPresent(...)
  *
  * @author Will He, Ishan Madan
  */
@@ -65,7 +65,6 @@ public class ModeEditorDialog {
     grid.add(new Label(LanguageManager.getMessage("MOVEMENT_SPEED")), 0, 2);
     grid.add(speedField, 1, 2);
 
-
     ButtonType okButtonType = ButtonType.OK;
 
     dialog.getDialogPane().setContent(grid);
@@ -98,7 +97,8 @@ public class ModeEditorDialog {
   /**
    * Shows the dialog and waits for user input.
    *
-   * @return Optional containing the list of collision rules if OK was pressed, empty Optional otherwise
+   * @return Optional containing the list of collision rules if OK was pressed, empty Optional
+   * otherwise
    */
   public Optional<ModeConfig> showAndWait() {
     return dialog.showAndWait();
@@ -106,6 +106,7 @@ public class ModeEditorDialog {
 
   /**
    * Constructor for editing an existing mode
+   *
    * @param existingConfig already existing mode config
    */
   public ModeEditorDialog(ModeConfig existingConfig) {
@@ -122,7 +123,8 @@ public class ModeEditorDialog {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle(LanguageManager.getMessage("CHOOSE_IMAGE"));
     fileChooser.getExtensionFilters().add(
-        new FileChooser.ExtensionFilter(LanguageManager.getMessage("IMAGE_FILES"), "*.png", "*.jpg", "*.jpeg", "*.gif")
+        new FileChooser.ExtensionFilter(LanguageManager.getMessage("IMAGE_FILES"), "*.png", "*.jpg",
+            "*.jpeg", "*.gif")
     );
 
     File file = fileChooser.showOpenDialog(getOwnerWindow());
@@ -163,12 +165,13 @@ public class ModeEditorDialog {
     }
 
     // === Build ImageConfig ===
+    // TODO: Support image sizes different that 28 x 28
     String imagePath = selectedImageFile.toURI().toString();
     ImageConfig imageConfig = new ImageConfig(
         imagePath,
-        14,
-        14,
-        List.of(0, 1, 2, 3), // Default animation cycle
+        28,
+        28,
+        6, // Default animation cycle
         1.0
     );
 
@@ -182,7 +185,6 @@ public class ModeEditorDialog {
         (double) speed,
         List.of() // empty list of blocks
     );
-
 
     // === Build ModeConfig ===
     preparedResult = new ModeConfig(name, entityProps, imageConfig);

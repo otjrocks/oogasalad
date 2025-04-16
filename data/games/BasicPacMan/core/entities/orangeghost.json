@@ -17,15 +17,10 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "orangeghost",
+        "imagePath": "orangeghost.png",
         "tileWidth": 14,
         "tileHeight": 14,
-        "tilesToCycle": [
-          0,
-          1,
-          2,
-          3
-        ],
+        "tilesToCycle": 4,
         "animationSpeed": 1.0
       }
     }

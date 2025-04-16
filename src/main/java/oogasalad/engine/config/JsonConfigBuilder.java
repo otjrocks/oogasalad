@@ -198,7 +198,7 @@ public class JsonConfigBuilder {
       // Replace with actual values if ModeConfig/Image provides them
       imageNode.put("tileWidth", 14);
       imageNode.put("tileHeight", 14);
-      imageNode.putArray("tilesToCycle").add(1);
+      imageNode.put("tilesToCycle", 1);
       imageNode.put("animationSpeed", 2);
     }
   }

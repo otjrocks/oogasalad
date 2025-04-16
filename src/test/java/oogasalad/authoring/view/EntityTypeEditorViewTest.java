@@ -46,7 +46,7 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
         imagePath,
         14,
         14,
-        List.of(0, 1),
+        2,
         1.0
     );
 

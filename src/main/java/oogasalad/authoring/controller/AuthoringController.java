@@ -175,7 +175,7 @@ public class AuthoringController {
         imagePath,
         14,
         14,
-        List.of(0, 1, 2, 3), // Default animation frames
+        6, // Default animation frames
         1.0
     );
 

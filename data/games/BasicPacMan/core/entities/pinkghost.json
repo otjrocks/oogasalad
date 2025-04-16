@@ -16,15 +16,10 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "pinkghost",
+        "imagePath": "pinkghost.png",
         "tileWidth": 14,
         "tileHeight": 14,
-        "tilesToCycle": [
-          0,
-          1,
-          2,
-          3
-        ],
+        "tilesToCycle": 4,
         "animationSpeed": 1.0
       }
     }
