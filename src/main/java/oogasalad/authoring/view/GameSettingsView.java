@@ -251,38 +251,23 @@ public class GameSettingsView {
 
   private String getWinConditionParam() {
     if (gameSettings.winCondition() == null) {
-      return "5"; // Default time in seconds
+      return "5"; // Default if no win condition
     }
 
     String className = gameSettings.winCondition().getClass().getSimpleName();
+
     if (className.contains("EntityBased")) {
-      // Attempt to get the entity type
-      try {
-        // This would need proper reflection based on actual structure
-        return "dot"; // Default if we can't extract
-      } catch (Exception e) {
-        return "dot";
-      }
-    } else if (className.contains("ScoreBased")) {
-      // Attempt to get target score
-      try {
-        // This would need proper reflection based on actual structure
-        return "1000"; // Default if we can't extract
-      } catch (Exception e) {
-        return "1000";
-      }} else if (className.contains("SurviveForTime")) {
-      // Attempt to get time
-      try {
-        // This would need proper reflection based on actual structure
-        return "5"; // Default if we can't extract
-      } catch (Exception e) {
-        return "5";
-      }
+      return "dot";
+    }
+    if (className.contains("ScoreBased")) {
+      return "1000";
+    }
+    if (className.contains("SurviveForTime")) {
+      return "5";
     }
 
-    return "5"; // Default
+    return "5"; // Fallback default
   }
-
 
   private HBox getHBox() {
     Button saveButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
