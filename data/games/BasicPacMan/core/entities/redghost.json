@@ -21,6 +21,15 @@
         "tilesToCycle": 4,
         "animationSpeed": 1.0
       }
+    }, {
+      "name": "Frightened",
+      "image": {
+        "imagePath": "assets/frightened.png",
+        "tileWidth": 28,
+        "tileHeight": 28,
+        "tilesToCycle": 4,
+        "animationSpeed": 1.0
+      }
     }
   ]
 }
