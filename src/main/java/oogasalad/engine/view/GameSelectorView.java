@@ -88,6 +88,9 @@ public class GameSelectorView extends VBox {
     card.getChildren().addAll(image, name);
     card.setOnMouseClicked(e -> {
       // TODO: Load game based on gameName
+      // to be refactored to accommodate different games
+      myMainController.hideGameSelectorView();
+      myMainController.showGamePlayerView();
     });
 
     return card;
