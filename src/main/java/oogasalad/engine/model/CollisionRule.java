@@ -1,7 +1,7 @@
 package oogasalad.engine.model;
 
 import java.util.List;
-import oogasalad.engine.records.config.model.CollisionEvent;
+import oogasalad.engine.records.config.model.CollisionEventInterface;
 
 /**
  * Represents a rule for handling a collision between two entity types, each potentially in a
@@ -20,8 +20,8 @@ public class CollisionRule {
   private String modeA;
   private String entityB;
   private String modeB;
-  private List<CollisionEvent> eventsA;
-  private List<CollisionEvent> eventsB;
+  private List<CollisionEventInterface> eventsA;
+  private List<CollisionEventInterface> eventsB;
 
   /**
    * Represents a rule that defines the behavior of a collision between two entities in a game. Each
@@ -36,7 +36,7 @@ public class CollisionRule {
    * @param eventsB a list of collision events triggered for the second entity upon collision
    */
   public CollisionRule(String entityA, String modeA, String entityB, String modeB,
-      List<CollisionEvent> eventsA, List<CollisionEvent> eventsB) {
+      List<CollisionEventInterface> eventsA, List<CollisionEventInterface> eventsB) {
     this.entityA = entityA;
     this.modeA = modeA;
     this.entityB = entityB;
@@ -129,7 +129,7 @@ public class CollisionRule {
    *
    * @return a list of event names for entity A
    */
-  public List<CollisionEvent> getEventsA() {
+  public List<CollisionEventInterface> getEventsA() {
     return eventsA;
   }
 
@@ -138,7 +138,7 @@ public class CollisionRule {
    *
    * @param eventsA a list of event names for entity A
    */
-  public void setEventsA(List<CollisionEvent> eventsA) {
+  public void setEventsA(List<CollisionEventInterface> eventsA) {
     this.eventsA = eventsA;
   }
 
@@ -147,7 +147,7 @@ public class CollisionRule {
    *
    * @return a list of event names for entity B
    */
-  public List<CollisionEvent> getEventsB() {
+  public List<CollisionEventInterface> getEventsB() {
     return eventsB;
   }
 
@@ -156,7 +156,7 @@ public class CollisionRule {
    *
    * @param eventsB a list of event names for entity B
    */
-  public void setEventsB(List<CollisionEvent> eventsB) {
+  public void setEventsB(List<CollisionEventInterface> eventsB) {
     this.eventsB = eventsB;
   }
 

@@ -12,10 +12,10 @@ import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
-import oogasalad.engine.config.ModeConfig;
+import oogasalad.engine.config.ModeConfigRecord;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
-import oogasalad.engine.records.config.ImageConfig;
+import oogasalad.engine.model.EntityTypeRecord;
+import oogasalad.engine.records.config.ImageConfigRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -98,16 +98,16 @@ public class CanvasViewTest extends DukeApplicationTest {
   }
 
   private EntityPlacement mockPlacement(double x, double y) {
-    ImageConfig imageConfig = new ImageConfig(
+    ImageConfigRecord imageConfig = new ImageConfigRecord(
         getClass().getResource("/mock.png").toExternalForm(), 28, 28, 4, 1.0
     );
 
-    ModeConfig modeConfig = new ModeConfig("Default", null, imageConfig);
+    ModeConfigRecord modeConfig = new ModeConfigRecord("Default", null, imageConfig);
 
-    Map<String, ModeConfig> modes = new HashMap<>();
+    Map<String, ModeConfigRecord> modes = new HashMap<>();
     modes.put("Default", modeConfig);
 
-    EntityType mockType = mock(EntityType.class);
+    EntityTypeRecord mockType = mock(EntityTypeRecord.class);
     when(mockType.type()).thenReturn("MockType");
     when(mockType.modes()).thenReturn(modes);
 

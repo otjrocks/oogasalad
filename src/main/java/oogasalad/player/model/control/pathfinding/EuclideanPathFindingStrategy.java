@@ -3,7 +3,7 @@ package oogasalad.player.model.control.pathfinding;
 import java.util.List;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 
 /**
  * A strategy for pathfinding that calculates the direction to move in order to minimize the
@@ -12,7 +12,7 @@ import oogasalad.engine.model.GameMap;
 public class EuclideanPathFindingStrategy implements PathFindingStrategyInterface {
 
   @Override
-  public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY,
+  public int[] getPath(GameMapInterface map, int startX, int startY, int targetX, int targetY,
       EntityPlacement thisEntity, Direction thisDirection) {
     List<int[]> possibleDirections = PathFindingStrategyHelperMethods.getValidDirections(map,
         startX, startY, thisEntity, thisDirection);

@@ -10,7 +10,7 @@ import oogasalad.engine.records.CollisionContextRecord;
  *
  * @author Owen Jennings
  */
-public class ReturnToSpawnLocationStrategy implements CollisionStrategy {
+public class ReturnToSpawnLocationStrategy implements CollisionStrategyInterface {
 
   @Override
   public void handleCollision(CollisionContextRecord collisionContext) throws EntityNotFoundException {

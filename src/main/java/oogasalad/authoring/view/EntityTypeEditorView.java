@@ -20,10 +20,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.LanguageManager;
-import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.model.EntityType;
-import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.engine.model.controlConfig.targetStrategy.TargetCalculationConfig;
+import oogasalad.engine.config.ModeConfigRecord;
+import oogasalad.engine.model.EntityTypeRecord;
+import oogasalad.engine.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
 import oogasalad.player.model.control.ControlManager;
 
 /**
@@ -41,7 +41,7 @@ public class EntityTypeEditorView {
   private final ComboBox<String> controlTypeBox;
   private final VBox modeList;
   private final AuthoringController controller;
-  private EntityType current;
+  private EntityTypeRecord current;
 
   private final VBox controlTypeParameters;
   private final List<TextField> controlTypeParameterFields;
@@ -107,7 +107,7 @@ public class EntityTypeEditorView {
    *
    * @param type of type EntityType
    */
-  public void setEntityType(EntityType type) {
+  public void setEntityType(EntityTypeRecord type) {
     this.current = type;
     if (type == null) return;
 
@@ -123,9 +123,9 @@ public class EntityTypeEditorView {
 
     // Refresh mode list UI
     modeList.getChildren().clear();
-    for (Map.Entry<String, ModeConfig> entry : type.modes().entrySet()) {
+    for (Map.Entry<String, ModeConfigRecord> entry : type.modes().entrySet()) {
       String modeName = entry.getKey();
-      ModeConfig config = entry.getValue();
+      ModeConfigRecord config = entry.getValue();
       Label label = new Label(modeName);
       Button editButton = new Button(LanguageManager.getMessage("EDIT"));
       editButton.setOnAction(e -> openEditModeDialog(modeName, config));
@@ -133,7 +133,7 @@ public class EntityTypeEditorView {
     }
   }
 
-  private void populateControlConfigUI(ControlConfig config) {
+  private void populateControlConfigUI(ControlConfigInterface config) {
     String type = config.getClass().getSimpleName().replace("ControlConfig", "");
     controlTypeBox.setValue(type);
 
@@ -177,7 +177,7 @@ public class EntityTypeEditorView {
     }
   }
 
-  private String getFieldValueFromConfig(ControlConfig config, String fieldName) {
+  private String getFieldValueFromConfig(ControlConfigInterface config, String fieldName) {
     try {
       var field = config.getClass().getDeclaredField(fieldName);
       field.setAccessible(true);
@@ -188,7 +188,7 @@ public class EntityTypeEditorView {
     }
   }
 
-  private String getStrategyValueFromConfig(ControlConfig config, String fieldName) {
+  private String getStrategyValueFromConfig(ControlConfigInterface config, String fieldName) {
     try {
       var field = config.getClass().getDeclaredField(fieldName);
       field.setAccessible(true);
@@ -216,9 +216,9 @@ public class EntityTypeEditorView {
       return;
     }
 
-    ControlConfig controlConfig = buildControlConfigFromUI(); // dynamically builds appropriate config
+    ControlConfigInterface controlConfig = buildControlConfigFromUI(); // dynamically builds appropriate config
 
-    EntityType newEntity = new EntityType(
+    EntityTypeRecord newEntity = new EntityTypeRecord(
         typeField.getText(),
         controlConfig,
         current.modes(),
@@ -231,7 +231,7 @@ public class EntityTypeEditorView {
     current = newEntity;
   }
 
-  private ControlConfig buildControlConfigFromUI() {
+  private ControlConfigInterface buildControlConfigFromUI() {
     String controlType = controlTypeBox.getValue();
     Map<String, Class<?>> requiredFieldTypes = ControlManager.getControlRequiredFields(controlType);
     List<String> requiredFieldOrder = ControlManager.getControlRequiredFieldsOrder(controlType);
@@ -260,7 +260,7 @@ public class EntityTypeEditorView {
       Class<?> configClass = Class.forName(fullClassName);
       Constructor<?> constructor = configClass.getDeclaredConstructors()[0];
 
-      return (ControlConfig) constructor.newInstance(constructorArgs.toArray());
+      return (ControlConfigInterface) constructor.newInstance(constructorArgs.toArray());
 
     } catch (Exception e) {
       showError("Error building control config: " + e.getMessage());
@@ -269,7 +269,7 @@ public class EntityTypeEditorView {
   }
 
 
-  private TargetCalculationConfig buildTargetStrategyFromUI() throws ViewException {
+  private TargetCalculationConfigInterface buildTargetStrategyFromUI() throws ViewException {
     try {
       String selectedStrategy = controlTypeComboBoxes.get(TARGET_CALCULATION_CONFIG).getValue();
       Map<String, Class<?>> requiredTypes = ControlManager.getTargetRequiredFields(
@@ -288,7 +288,7 @@ public class EntityTypeEditorView {
       Class<?> strategyClass = Class.forName(fullClassName);
       Constructor<?> constructor = strategyClass.getDeclaredConstructors()[0];
 
-      return (TargetCalculationConfig) constructor.newInstance(paramValues.toArray());
+      return (TargetCalculationConfigInterface) constructor.newInstance(paramValues.toArray());
     } catch (Exception e) {
       showError("Error building target strategy: " + e.getMessage());
       throw new ViewException("Error building target strategy: ", e);
@@ -320,11 +320,11 @@ public class EntityTypeEditorView {
       }
 
       // Create a new map with the added mode
-      Map<String, ModeConfig> newModes = new HashMap<>(current.modes());
+      Map<String, ModeConfigRecord> newModes = new HashMap<>(current.modes());
       newModes.put(modeName, config);
 
       // Replace current with new EntityType (workaround for record immutability)
-      current = new EntityType(
+      current = new EntityTypeRecord(
           current.type(),
           current.controlConfig(),
           newModes,
@@ -340,10 +340,10 @@ public class EntityTypeEditorView {
   }
 
 
-  private void openEditModeDialog(String oldName, ModeConfig oldConfig) {
+  private void openEditModeDialog(String oldName, ModeConfigRecord oldConfig) {
     ModeEditorDialog dialog = new ModeEditorDialog(oldConfig);
     dialog.showAndWait().ifPresent(newConfig -> {
-      Map<String, ModeConfig> newModes = new HashMap<>(current.modes());
+      Map<String, ModeConfigRecord> newModes = new HashMap<>(current.modes());
 
       boolean renamed = !oldName.equals(newConfig.name());
       if (renamed) {
@@ -352,7 +352,7 @@ public class EntityTypeEditorView {
       newModes.put(newConfig.name(), newConfig);
 
       // 1. Create updated EntityType
-      EntityType updated = new EntityType(
+      EntityTypeRecord updated = new EntityTypeRecord(
           current.type(),
           current.controlConfig(),
           newModes,

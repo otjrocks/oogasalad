@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test;
 
 public class EntityPlacementTest {
 
-  private EntityType testEntityType;
+  private EntityTypeRecord testEntityType;
   private EntityPlacement testPlacement;
 
   @BeforeEach
   public void setUp() {
-    testEntityType = new EntityType("Enemy", null, null, null, 1.0);
+    testEntityType = new EntityTypeRecord("Enemy", null, null, null, 1.0);
     testPlacement = new EntityPlacement(testEntityType, 30.0, 40.0, "Default");
   }
 
@@ -25,7 +25,7 @@ public class EntityPlacementTest {
 
   @Test
   public void testGetSetEntityData() {
-    EntityType newEntityType = new EntityType("Player", null, null, null, 1.0);
+    EntityTypeRecord newEntityType = new EntityTypeRecord("Player", null, null, null, 1.0);
     testPlacement.setResolvedEntityType(newEntityType);
     assertEquals(newEntityType, testPlacement.getType());
     assertEquals("Player", testPlacement.getType().type());

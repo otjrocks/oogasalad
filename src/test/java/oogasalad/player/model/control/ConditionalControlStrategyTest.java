@@ -1,8 +1,8 @@
 package oogasalad.player.model.control;
 
 import oogasalad.engine.enums.Directions.Direction;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.controlConfig.ConditionalControlConfig;
+import oogasalad.engine.model.GameMapInterface;
+import oogasalad.engine.model.controlConfig.ConditionalControlConfigRecord;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategyInterface;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 
 class ConditionalControlStrategyTest {
 
-  private GameMap mockMap;
+  private GameMapInterface mockMap;
   private EntityPlacement mockPlacement;
   private Entity mockEntity;
   private PathFindingStrategyInterface mockStrategyIn;
@@ -26,7 +26,7 @@ class ConditionalControlStrategyTest {
 
   @BeforeEach
   void setup() {
-    mockMap = mock(GameMap.class);
+    mockMap = mock(GameMapInterface.class);
     mockPlacement = mock(EntityPlacement.class);
     mockEntity = mock(Entity.class);
     mockStrategyIn = mock(PathFindingStrategyInterface.class);
@@ -58,7 +58,7 @@ class ConditionalControlStrategyTest {
       pathFactoryMock.when(() -> PathFindingStrategyFactory.createPathFindingStrategy("Dijkstra"))
           .thenReturn(mockStrategyOut);
 
-      var config = new ConditionalControlConfig(5, "AStar", "Dijkstra", null);
+      var config = new ConditionalControlConfigRecord(5, "AStar", "Dijkstra", null);
       ConditionalControlStrategy strategy = new ConditionalControlStrategy(mockMap, mockPlacement, config);
 
       strategy.update(mockEntity);
@@ -91,7 +91,7 @@ class ConditionalControlStrategyTest {
       pathFactoryMock.when(() -> PathFindingStrategyFactory.createPathFindingStrategy("Dijkstra"))
           .thenReturn(mockStrategyOut);
 
-      var config = new ConditionalControlConfig(3, "AStar", "Dijkstra", null);
+      var config = new ConditionalControlConfigRecord(3, "AStar", "Dijkstra", null);
       ConditionalControlStrategy strategy = new ConditionalControlStrategy(mockMap, mockPlacement, config);
 
       strategy.update(mockEntity);
@@ -123,7 +123,7 @@ class ConditionalControlStrategyTest {
       pathFactoryMock.when(() -> PathFindingStrategyFactory.createPathFindingStrategy("Dijkstra"))
           .thenReturn(mockStrategyOut);
 
-      var config = new ConditionalControlConfig(10, "AStar", "Dijkstra", null);
+      var config = new ConditionalControlConfigRecord(10, "AStar", "Dijkstra", null);
       ConditionalControlStrategy strategy = new ConditionalControlStrategy(mockMap, mockPlacement, config);
 
       strategy.update(mockEntity);

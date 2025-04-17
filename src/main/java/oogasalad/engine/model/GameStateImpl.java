@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Troy Ludwig
  */
-public class GameStateImpl implements GameState {
+public class GameStateImpl implements GameStateInterface {
 
   private int score;
   private int lives;

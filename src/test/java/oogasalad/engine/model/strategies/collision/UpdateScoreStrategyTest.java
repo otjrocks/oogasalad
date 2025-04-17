@@ -4,19 +4,19 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import oogasalad.engine.model.GameState;
+import oogasalad.engine.model.GameStateInterface;
 import oogasalad.engine.records.CollisionContextRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class UpdateScoreStrategyTest {
 
-  private GameState gameState;
+  private GameStateInterface gameState;
   private CollisionContextRecord context;
 
   @BeforeEach
   void setUp() {
-    gameState = mock(GameState.class);
+    gameState = mock(GameStateInterface.class);
     context = mock(CollisionContextRecord.class);
 
     when(context.gameState()).thenReturn(gameState);

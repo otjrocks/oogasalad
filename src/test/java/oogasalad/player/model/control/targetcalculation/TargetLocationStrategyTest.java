@@ -1,6 +1,6 @@
 package oogasalad.player.model.control.targetcalculation;
 
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.player.model.exceptions.TargetStrategyException;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ class TargetLocationStrategyTest {
 
   @Test
   void getTargetPosition_properConfig_returnsCorrectCoordinates() {
-    GameMap mockMap = mock(GameMap.class);
+    GameMapInterface mockMap = mock(GameMapInterface.class);
     Map<String, Object> config = Map.of("targetX", 7, "targetY", 3);
 
     TargetStrategyInterface strategy = new TargetLocationStrategy(mockMap, config);
@@ -23,7 +23,7 @@ class TargetLocationStrategyTest {
 
   @Test
   void getTargetPosition_missingConfig_throwsException() {
-    GameMap mockMap = mock(GameMap.class);
+    GameMapInterface mockMap = mock(GameMapInterface.class);
     Map<String, Object> config = Map.of("targetX", 7);
 
     assertThrows(TargetStrategyException.class, () -> new TargetLocationStrategy(mockMap, config));

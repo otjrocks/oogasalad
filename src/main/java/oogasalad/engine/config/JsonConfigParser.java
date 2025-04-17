@@ -16,37 +16,37 @@ import java.util.regex.Pattern;
 import oogasalad.engine.ConstantsManager;
 import oogasalad.engine.ConstantsManagerException;
 import oogasalad.engine.LoggingManager;
-import oogasalad.engine.config.api.ConfigParser;
+import oogasalad.engine.config.api.ConfigParserInterface;
 import oogasalad.engine.model.CollisionRule;
-import oogasalad.engine.model.Condition;
+import oogasalad.engine.model.ConditionRecord;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
-import oogasalad.engine.model.GameSettings;
-import oogasalad.engine.model.MapInfo;
-import oogasalad.engine.model.MetaData;
-import oogasalad.engine.model.ModeChangeEvent;
-import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.engine.records.config.CollisionConfig;
-import oogasalad.engine.records.config.EntityConfig;
-import oogasalad.engine.records.config.GameConfig;
-import oogasalad.engine.records.config.ImageConfig;
-import oogasalad.engine.records.config.model.EntityProperties;
-import oogasalad.engine.records.config.model.Level;
-import oogasalad.engine.records.config.model.Metadata;
-import oogasalad.engine.records.config.model.ParsedLevel;
-import oogasalad.engine.records.config.model.Settings;
-import oogasalad.engine.records.config.model.SpawnEvent;
-import oogasalad.engine.records.config.model.wincondition.WinCondition;
-import oogasalad.engine.records.config.model.losecondition.LoseCondition;
+import oogasalad.engine.model.EntityTypeRecord;
+import oogasalad.engine.model.GameSettingsRecord;
+import oogasalad.engine.model.MapInfoRecord;
+import oogasalad.engine.model.MetaDataRecord;
+import oogasalad.engine.model.ModeChangeEventRecord;
+import oogasalad.engine.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.CollisionConfigRecord;
+import oogasalad.engine.records.config.EntityConfigRecord;
+import oogasalad.engine.records.config.GameConfigRecord;
+import oogasalad.engine.records.config.ImageConfigRecord;
+import oogasalad.engine.records.config.model.EntityPropertiesRecord;
+import oogasalad.engine.records.config.model.LevelRecord;
+import oogasalad.engine.records.config.model.MetadataRecord;
+import oogasalad.engine.records.config.model.ParsedLevelRecord;
+import oogasalad.engine.records.config.model.SettingsRecord;
+import oogasalad.engine.records.config.model.SpawnEventRecord;
+import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
+import oogasalad.engine.records.config.model.losecondition.LoseConditionInterface;
 import oogasalad.engine.utility.FileUtility;
 
 /**
  * The {@code JsonConfigParser} class is responsible for parsing game configuration files in JSON
- * format and converting them into {@link GameConfig} objects. It uses the Jackson library to handle
+ * format and converting them into {@link GameConfigRecord} objects. It uses the Jackson library to handle
  * JSON parsing and mapping.
  *
  * <p>
- * This class implements the {@link ConfigParser} interface and provides methods to load
+ * This class implements the {@link ConfigParserInterface} interface and provides methods to load
  * configuration data from a file, merge settings, and extract folder paths.
  *
  * <p>
@@ -59,12 +59,12 @@ import oogasalad.engine.utility.FileUtility;
  *
  * @author Jessica Chen
  */
-public class JsonConfigParser implements ConfigParser {
+public class JsonConfigParser implements ConfigParserInterface {
 
   public static final String ENTITY_TYPE = "entityType";
   private final ObjectMapper mapper;
-  private Map<String, EntityConfig> entityMap;
-  private final Map<String, EntityType> entityTypeMap = new HashMap<>();
+  private Map<String, EntityConfigRecord> entityMap;
+  private final Map<String, EntityTypeRecord> entityTypeMap = new HashMap<>();
 
   private static final String JSON_IDENTIFIER = ".json";
 
@@ -78,32 +78,32 @@ public class JsonConfigParser implements ConfigParser {
   }
 
   /**
-   * Loads a {@link ConfigModel} from a JSON file at the specified file path.
+   * Loads a {@link ConfigModelRecord} from a JSON file at the specified file path.
    *
    * <p>
    * After deserializing the file, this method also resolves the entity types of each
-   * {@link EntityPlacement} by matching their type strings to defined {@link EntityType}s.
+   * {@link EntityPlacement} by matching their type strings to defined {@link EntityTypeRecord}s.
    *
    * @param filepath the path to the JSON configuration file to be loaded
-   * @return the fully populated {@link ConfigModel} object
+   * @return the fully populated {@link ConfigModelRecord} object
    * @throws ConfigException if the file is missing or cannot be parsed correctly
    */
-  public ConfigModel loadFromFile(String filepath) throws ConfigException {
+  public ConfigModelRecord loadFromFile(String filepath) throws ConfigException {
     // Step 1: Load primary game config JSON (e.g., gameConfig.json)
-    GameConfig gameConfig = loadGameConfig(filepath);
+    GameConfigRecord gameConfig = loadGameConfig(filepath);
 
     // Step 2: Load entities from the entity folder
     entityMap = constructEntities(gameConfig.gameFolderPath());
 
     // Step 3: Extract basic metadata
-    MetaData metaData = extractMetaData(gameConfig);
+    MetaDataRecord metaData = extractMetaData(gameConfig);
 
     // Step 4: Build all entity types
-    List<EntityType> entityTypes = createEntityTypes();
+    List<EntityTypeRecord> entityTypes = createEntityTypes();
 
     // Step 5: Parse level entity placements + map info
-    List<ParsedLevel> levels = new ArrayList<>();
-    List<MapInfo> mapInfos = new ArrayList<>();
+    List<ParsedLevelRecord> levels = new ArrayList<>();
+    List<MapInfoRecord> mapInfos = new ArrayList<>();
     String levelFolderPath;
 
     try {
@@ -113,58 +113,58 @@ public class JsonConfigParser implements ConfigParser {
       throw new ConfigException("Error in getting maps folder from constants:", e);
     }
 
-    for (Level level : gameConfig.levels()) {
-      ParsedLevel parsed = loadLevelConfig(levelFolderPath + level.levelMap() + JSON_IDENTIFIER);
+    for (LevelRecord level : gameConfig.levels()) {
+      ParsedLevelRecord parsed = loadLevelConfig(levelFolderPath + level.levelMap() + JSON_IDENTIFIER);
       levels.add(parsed);
       mapInfos.add(parsed.mapInfo());
     }
 
     // Step 6: Create game settings with merged defaults and level-specific map info
-    GameSettings settings = createGameSettings(gameConfig);
+    GameSettingsRecord settings = createGameSettings(gameConfig);
 
     // Step 7: Parse collision rules and win condition
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
-    WinCondition winCondition = gameConfig.settings().winCondition();
-    LoseCondition loseCondition = gameConfig.settings().loseCondition();
+    WinConditionInterface winCondition = gameConfig.settings().winCondition();
+    LoseConditionInterface loseCondition = gameConfig.settings().loseCondition();
 
     // Step 8: Get current level from gameConfig
     int currentLevel = gameConfig.currentLevelIndex();
     // Step 9: Return the full config model using the first level only for now
-    return new ConfigModel(metaData, settings, entityTypes, levels, collisionRules,
+    return new ConfigModelRecord(metaData, settings, entityTypes, levels, collisionRules,
         winCondition, loseCondition, currentLevel);
   }
 
-  private ParsedLevel loadLevelConfig(String filepath) throws ConfigException {
+  private ParsedLevelRecord loadLevelConfig(String filepath) throws ConfigException {
     try {
       JsonNode root = mapper.readTree(new File(filepath));
-      MapInfo mapInfo = mapper.treeToValue(root.get("mapInfo"), MapInfo.class);
+      MapInfoRecord mapInfo = mapper.treeToValue(root.get("mapInfo"), MapInfoRecord.class);
 
-      Map<Integer, EntityType> idToEntityType = buildEntityMappings(root.get("entityMappings"));
+      Map<Integer, EntityTypeRecord> idToEntityType = buildEntityMappings(root.get("entityMappings"));
       Map<Integer, String> idToEntityName = buildEntityNames(root.get("entityMappings"));
 
       List<EntityPlacement> placements = parseLayout(root.get("layout"), idToEntityType,
           idToEntityName);
 
-      List<SpawnEvent> spawnEvents = parseSpawnEvents(root, idToEntityType);
-      List<ModeChangeEvent> modeChangeEvents = parseModeChangeEvents(root, idToEntityType);
+      List<SpawnEventRecord> spawnEvents = parseSpawnEvents(root, idToEntityType);
+      List<ModeChangeEventRecord> modeChangeEvents = parseModeChangeEvents(root, idToEntityType);
 
-      return new ParsedLevel(placements, mapInfo, spawnEvents, modeChangeEvents);
+      return new ParsedLevelRecord(placements, mapInfo, spawnEvents, modeChangeEvents);
 
     } catch (IOException e) {
       throw new ConfigException("Error in loading level config", e);
     }
   }
 
-  private List<SpawnEvent> parseSpawnEvents(JsonNode rootNode,
-      Map<Integer, EntityType> idToEntityType)
+  private List<SpawnEventRecord> parseSpawnEvents(JsonNode rootNode,
+      Map<Integer, EntityTypeRecord> idToEntityType)
       throws ConfigException {
     // ChatGPT generated the code for this method.
-    List<SpawnEvent> spawnEvents = new ArrayList<>();
+    List<SpawnEventRecord> spawnEvents = new ArrayList<>();
     JsonNode eventsNode = rootNode.get("spawnEvents");
 
     for (JsonNode eventNode : eventsNode) {
       int id = Integer.parseInt(eventNode.get(ENTITY_TYPE).asText()); // old: "8"
-      EntityType type = idToEntityType.get(id);
+      EntityTypeRecord type = idToEntityType.get(id);
       if (type == null) {
         throw new ConfigException("Unknown entity ID in spawnEvents: " + id);
       }
@@ -172,40 +172,40 @@ public class JsonConfigParser implements ConfigParser {
       double x = eventNode.get("x").asDouble();
       double y = eventNode.get("y").asDouble();
       String mode = eventNode.get("mode").asText();
-      Condition spawnCondition = parseCondition(eventNode.get("spawnCondition"));
-      Condition despawnCondition = parseCondition(eventNode.get("despawnCondition"));
+      ConditionRecord spawnCondition = parseCondition(eventNode.get("spawnCondition"));
+      ConditionRecord despawnCondition = parseCondition(eventNode.get("despawnCondition"));
 
-      spawnEvents.add(new SpawnEvent(type, spawnCondition, x, y, mode, despawnCondition));
+      spawnEvents.add(new SpawnEventRecord(type, spawnCondition, x, y, mode, despawnCondition));
     }
 
     return spawnEvents;
   }
 
-  private List<ModeChangeEvent> parseModeChangeEvents(JsonNode rootNode,
-      Map<Integer, EntityType> idToEntityType) throws ConfigException {
+  private List<ModeChangeEventRecord> parseModeChangeEvents(JsonNode rootNode,
+      Map<Integer, EntityTypeRecord> idToEntityType) throws ConfigException {
 
-    List<ModeChangeEvent> modeChangeEvents = new ArrayList<>();
+    List<ModeChangeEventRecord> modeChangeEvents = new ArrayList<>();
     JsonNode eventsNode = rootNode.get("modeChangeEvents");
 
     for (JsonNode eventNode : eventsNode) {
       int id = Integer.parseInt(eventNode.get(ENTITY_TYPE).asText());
-      EntityType type = idToEntityType.get(id);
+      EntityTypeRecord type = idToEntityType.get(id);
       if (type == null) {
         throw new ConfigException("Unknown entity ID in modeChangeEvents: " + id);
       }
 
       String currentMode = eventNode.get("currentMode").asText();
       String nextMode = eventNode.get("nextMode").asText();
-      Condition changeCondition = parseCondition(eventNode.get("changeCondition"));
+      ConditionRecord changeCondition = parseCondition(eventNode.get("changeCondition"));
 
-      modeChangeEvents.add(new ModeChangeEvent(type, currentMode, nextMode, changeCondition));
+      modeChangeEvents.add(new ModeChangeEventRecord(type, currentMode, nextMode, changeCondition));
     }
 
     return modeChangeEvents;
   }
 
 
-  private Condition parseCondition(JsonNode conditionNode) {
+  private ConditionRecord parseCondition(JsonNode conditionNode) {
     if (isNullOrMissing(conditionNode)) {
       return defaultCondition();
     }
@@ -213,16 +213,16 @@ public class JsonConfigParser implements ConfigParser {
     String type = getConditionType(conditionNode);
     Map<String, Object> parameters = extractParameters(conditionNode.get("parameters"));
 
-    return new Condition(type, parameters);
+    return new ConditionRecord(type, parameters);
   }
 
   private boolean isNullOrMissing(JsonNode node) {
     return node == null || node.isNull();
   }
 
-  private Condition defaultCondition() {
+  private ConditionRecord defaultCondition() {
     LoggingManager.LOGGER.warn("Condition is missing or incomplete. Using default 'Always'.");
-    return new Condition("Always", Map.of());
+    return new ConditionRecord("Always", Map.of());
   }
 
   private String getConditionType(JsonNode conditionNode) {
@@ -254,12 +254,12 @@ public class JsonConfigParser implements ConfigParser {
 
 
 
-  private Map<Integer, EntityType> buildEntityMappings(JsonNode mappings) throws ConfigException {
-    Map<Integer, EntityType> idToType = new HashMap<>();
+  private Map<Integer, EntityTypeRecord> buildEntityMappings(JsonNode mappings) throws ConfigException {
+    Map<Integer, EntityTypeRecord> idToType = new HashMap<>();
     for (JsonNode node : mappings) {
       int id = node.get("id").asInt();
       String name = node.get("entity").asText();
-      EntityType type = entityTypeMap.get(name);
+      EntityTypeRecord type = entityTypeMap.get(name);
       if (type == null) {
         throw new ConfigException("EntityType for '" + name + "' not found.");
       }
@@ -278,7 +278,7 @@ public class JsonConfigParser implements ConfigParser {
 
   private List<EntityPlacement> parseLayout(
       JsonNode layout,
-      Map<Integer, EntityType> idToType,
+      Map<Integer, EntityTypeRecord> idToType,
       Map<Integer, String> idToName
   ) {
     List<EntityPlacement> placements = new ArrayList<>();
@@ -300,14 +300,14 @@ public class JsonConfigParser implements ConfigParser {
       String entry,
       int x,
       int y,
-      Map<Integer, EntityType> idToType,
+      Map<Integer, EntityTypeRecord> idToType,
       Map<Integer, String> idToName
   ) {
     String[] parts = entry.split("\\.");
     int entityId = Integer.parseInt(parts[0]);
     int modeIndex = (parts.length > 1) ? Integer.parseInt(parts[1]) : 0;
 
-    EntityType type = idToType.get(entityId);
+    EntityTypeRecord type = idToType.get(entityId);
     String entityName = idToName.get(entityId);
     String modeName = resolveMode(entityMap.get(entityName), List.of(modeIndex));
 
@@ -316,17 +316,17 @@ public class JsonConfigParser implements ConfigParser {
 
   // Methods to convert from multiple config files to a singular config model
 
-  private MetaData extractMetaData(GameConfig gameConfig) {
-    return new MetaData(
+  private MetaDataRecord extractMetaData(GameConfigRecord gameConfig) {
+    return new MetaDataRecord(
         gameConfig.metadata().gameTitle(),
         gameConfig.metadata().author(),
         gameConfig.metadata().gameDescription());
   }
 
-  private GameSettings createGameSettings(GameConfig gameConfig) {
-    Settings baseSettings = gameConfig.settings();
+  private GameSettingsRecord createGameSettings(GameConfigRecord gameConfig) {
+    SettingsRecord baseSettings = gameConfig.settings();
 
-    return new GameSettings(
+    return new GameSettingsRecord(
         baseSettings.gameSpeed(),
         baseSettings.startingLives(),
         baseSettings.initialScore(),
@@ -335,12 +335,12 @@ public class JsonConfigParser implements ConfigParser {
   }
 
 
-  private List<CollisionRule> convertToCollisionRules(GameConfig gameConfig) {
+  private List<CollisionRule> convertToCollisionRules(GameConfigRecord gameConfig) {
     List<CollisionRule> collisionRules = new ArrayList<>();
 
-    for (CollisionConfig collision : gameConfig.collisions()) {
-      EntityConfig entityA = entityMap.get(collision.entityA());
-      EntityConfig entityB = entityMap.get(collision.entityB());
+    for (CollisionConfigRecord collision : gameConfig.collisions()) {
+      EntityConfigRecord entityA = entityMap.get(collision.entityA());
+      EntityConfigRecord entityB = entityMap.get(collision.entityB());
 
       if (entityA == null) {
         LoggingManager.LOGGER.warn(
@@ -362,7 +362,7 @@ public class JsonConfigParser implements ConfigParser {
     return collisionRules;
   }
 
-  private String resolveMode(EntityConfig entity, List<Integer> modeList) {
+  private String resolveMode(EntityConfigRecord entity, List<Integer> modeList) {
     if (modeList == null || modeList.isEmpty()) {
       return "Any";   // default behave if no specified mode
     }
@@ -375,22 +375,22 @@ public class JsonConfigParser implements ConfigParser {
   }
 
 
-  private List<EntityType> createEntityTypes() {
-    List<EntityType> entityTypes = new ArrayList<>();
+  private List<EntityTypeRecord> createEntityTypes() {
+    List<EntityTypeRecord> entityTypes = new ArrayList<>();
     entityTypeMap.clear(); // Clear existing mappings if needed
 
-    for (Map.Entry<String, EntityConfig> entry : entityMap.entrySet()) {
+    for (Map.Entry<String, EntityConfigRecord> entry : entityMap.entrySet()) {
       String key = entry.getKey();
-      EntityConfig entity = entry.getValue();
-      Map<String, ModeConfig> modes = new HashMap<>();
+      EntityConfigRecord entity = entry.getValue();
+      Map<String, ModeConfigRecord> modes = new HashMap<>();
 
       // create modes
-      for (ModeConfig mode : entity.modes()) {
-        ModeConfig modeConfig = new ModeConfig(mode.name(), mode.entityProperties(), mode.image());
+      for (ModeConfigRecord mode : entity.modes()) {
+        ModeConfigRecord modeConfig = new ModeConfigRecord(mode.name(), mode.entityProperties(), mode.image());
         modes.put(mode.name(), modeConfig);
       }
 
-      EntityType entityType = getEntityType(entity, modes);
+      EntityTypeRecord entityType = getEntityType(entity, modes);
       entityTypes.add(entityType);
       entityTypeMap.put(key, entityType);
     }
@@ -399,10 +399,10 @@ public class JsonConfigParser implements ConfigParser {
   }
 
 
-  private static EntityType getEntityType(EntityConfig entity, Map<String, ModeConfig> modes) {
-    ControlConfig control = entity.entityProperties().controlConfig();
+  private static EntityTypeRecord getEntityType(EntityConfigRecord entity, Map<String, ModeConfigRecord> modes) {
+    ControlConfigInterface control = entity.entityProperties().controlConfig();
 
-    return new EntityType(
+    return new EntityTypeRecord(
         entity.name(),
         control,
         modes,
@@ -414,57 +414,57 @@ public class JsonConfigParser implements ConfigParser {
 
   // ---- Methods for loading Game Config ----
 
-  GameConfig loadGameConfig(String filepath) throws ConfigException {
+  GameConfigRecord loadGameConfig(String filepath) throws ConfigException {
     try {
       JsonNode root = mapper.readTree(new File(filepath));
 
-      Metadata metadata = parseMetadata(root);
-      Settings defaultSettings = parseDefaultSettings(root);
-      List<Level> levels = parseLevels(root, defaultSettings);
-      List<CollisionConfig> collisions = parseCollisions(root);
+      MetadataRecord metadata = parseMetadata(root);
+      SettingsRecord defaultSettings = parseDefaultSettings(root);
+      List<LevelRecord> levels = parseLevels(root, defaultSettings);
+      List<CollisionConfigRecord> collisions = parseCollisions(root);
       JsonNode currentLevelNode = root.get("currentLevelIndex");
       int currentLevelIndex = currentLevelNode != null ? currentLevelNode.asInt() : 0;
-      return new GameConfig(metadata, defaultSettings, levels, collisions, getFolderPath(filepath), currentLevelIndex);
+      return new GameConfigRecord(metadata, defaultSettings, levels, collisions, getFolderPath(filepath), currentLevelIndex);
 
     } catch (IOException e) {
       throw new ConfigException("Failed to parse config file: " + filepath, e);
     }
   }
 
-  private Metadata parseMetadata(JsonNode root) throws JsonProcessingException {
-    return mapper.treeToValue(root.get("metadata"), Metadata.class);
+  private MetadataRecord parseMetadata(JsonNode root) throws JsonProcessingException {
+    return mapper.treeToValue(root.get("metadata"), MetadataRecord.class);
   }
 
-  private Settings parseDefaultSettings(JsonNode root) throws JsonProcessingException {
-    return mapper.treeToValue(root.get("defaultSettings"), Settings.class);
+  private SettingsRecord parseDefaultSettings(JsonNode root) throws JsonProcessingException {
+    return mapper.treeToValue(root.get("defaultSettings"), SettingsRecord.class);
   }
 
-  private List<Level> parseLevels(JsonNode root, Settings defaultSettings) {
-    List<Level> levels = new ArrayList<>();
+  private List<LevelRecord> parseLevels(JsonNode root, SettingsRecord defaultSettings) {
+    List<LevelRecord> levels = new ArrayList<>();
     for (JsonNode levelNode : root.get("levels")) {
       String levelMap = levelNode.get("levelMap").asText();
-      levels.add(new Level(levelMap));
+      levels.add(new LevelRecord(levelMap));
     }
     return levels;
   }
 
-  private List<CollisionConfig> parseCollisions(JsonNode root) throws JsonProcessingException {
-    List<CollisionConfig> collisions = new ArrayList<>();
+  private List<CollisionConfigRecord> parseCollisions(JsonNode root) throws JsonProcessingException {
+    List<CollisionConfigRecord> collisions = new ArrayList<>();
     JsonNode collisionsNode = root.get("collisions");
     if (collisionsNode != null && collisionsNode.isArray()) {
       for (JsonNode collisionNode : collisionsNode) {
-        collisions.add(mapper.treeToValue(collisionNode, CollisionConfig.class));
+        collisions.add(mapper.treeToValue(collisionNode, CollisionConfigRecord.class));
       }
     }
     return collisions;
   }
 
-  private Settings mergeSettings(Settings defaults, Settings override) {
+  private SettingsRecord mergeSettings(SettingsRecord defaults, SettingsRecord override) {
     if (override == null) {
       return defaults;
     }
 
-    return new Settings(
+    return new SettingsRecord(
         pick(override.gameSpeed(), defaults.gameSpeed()),
         pick(override.startingLives(), defaults.startingLives()),
         pick(override.initialScore(), defaults.initialScore()),
@@ -491,7 +491,7 @@ public class JsonConfigParser implements ConfigParser {
 
   // ---- Methods for loading Entities ----
 
-  private Map<String, EntityConfig> constructEntities(String folderPath) throws ConfigException {
+  private Map<String, EntityConfigRecord> constructEntities(String folderPath) throws ConfigException {
     String entityFolderPath;
 
     try {
@@ -501,25 +501,25 @@ public class JsonConfigParser implements ConfigParser {
     }
 
     List<String> entities = getAvailableEntities(entityFolderPath);
-    Map<String, EntityConfig> entitiesMap = new HashMap<>();
+    Map<String, EntityConfigRecord> entitiesMap = new HashMap<>();
 
     for (String entity : entities) {
-      EntityConfig entityConfig = loadEntityConfig(entityFolderPath + entity + JSON_IDENTIFIER);
+      EntityConfigRecord entityConfig = loadEntityConfig(entityFolderPath + entity + JSON_IDENTIFIER);
       entitiesMap.put(entity, entityConfig); // map the entity file name to the entityConfig
     }
 
     return entitiesMap;
   }
 
-  EntityConfig loadEntityConfig(String filepath) throws ConfigException {
+  EntityConfigRecord loadEntityConfig(String filepath) throws ConfigException {
     try {
       JsonNode root = mapper.readTree(new File(filepath));
 
       JsonNode entityTypeNode = root.get(ENTITY_TYPE);
-      EntityProperties defaultProps = parseEntityProperties(entityTypeNode, filepath);
-      List<ModeConfig> modes = parseModes(root.get("modes"), defaultProps, filepath);
+      EntityPropertiesRecord defaultProps = parseEntityProperties(entityTypeNode, filepath);
+      List<ModeConfigRecord> modes = parseModes(root.get("modes"), defaultProps, filepath);
 
-      return new EntityConfig(
+      return new EntityConfigRecord(
           defaultProps.name(),
           defaultProps,
           modes
@@ -529,29 +529,29 @@ public class JsonConfigParser implements ConfigParser {
     }
   }
 
-  private EntityProperties parseEntityProperties(JsonNode entityTypeNode, String filepath)
+  private EntityPropertiesRecord parseEntityProperties(JsonNode entityTypeNode, String filepath)
       throws ConfigException {
     try {
-      return mapper.treeToValue(entityTypeNode, EntityProperties.class);
+      return mapper.treeToValue(entityTypeNode, EntityPropertiesRecord.class);
     } catch (Exception e) {
       throw new ConfigException("Failed to process entityType in json: " + filepath, e);
     }
   }
 
-  private List<ModeConfig> parseModes(JsonNode modesNode,
-      EntityProperties defaultProps,
+  private List<ModeConfigRecord> parseModes(JsonNode modesNode,
+      EntityPropertiesRecord defaultProps,
       String filepath)
       throws ConfigException {
     try {
-      List<ModeConfig> modes = new ArrayList<>();
+      List<ModeConfigRecord> modes = new ArrayList<>();
       if (modesNode == null) {
         throw new ConfigException("Failed to get modes from json: " + filepath);
       }
       for (JsonNode modeNode : modesNode) {
         String name = modeNode.get("name").asText();
-        EntityProperties overrideProps = mergeProperties(name, defaultProps, modeNode);
-        ImageConfig image = mapper.treeToValue(modeNode.get("image"), ImageConfig.class);
-        modes.add(new ModeConfig(name, overrideProps, image));
+        EntityPropertiesRecord overrideProps = mergeProperties(name, defaultProps, modeNode);
+        ImageConfigRecord image = mapper.treeToValue(modeNode.get("image"), ImageConfigRecord.class);
+        modes.add(new ModeConfigRecord(name, overrideProps, image));
       }
       return modes;
     } catch (JsonProcessingException e) {
@@ -559,14 +559,14 @@ public class JsonConfigParser implements ConfigParser {
     }
   }
 
-  private EntityProperties mergeProperties(String modeName, EntityProperties defaultProps,
+  private EntityPropertiesRecord mergeProperties(String modeName, EntityPropertiesRecord defaultProps,
       JsonNode modeNode) throws JsonProcessingException {
     final String CONTROL_CONFIG = "controlConfig";
     final String MOVEMENT_SPEED = "movementSpeed";
     final String BLOCKS = "blocks";
 
-    ControlConfig controlConfig = modeNode.has(CONTROL_CONFIG)
-        ? mapper.treeToValue(modeNode.get(CONTROL_CONFIG), ControlConfig.class)
+    ControlConfigInterface controlConfig = modeNode.has(CONTROL_CONFIG)
+        ? mapper.treeToValue(modeNode.get(CONTROL_CONFIG), ControlConfigInterface.class)
         : defaultProps.controlConfig();
 
     double movementSpeed = modeNode.has(MOVEMENT_SPEED)
@@ -578,7 +578,7 @@ public class JsonConfigParser implements ConfigParser {
         mapper.getTypeFactory().constructCollectionType(List.class, String.class))
         : defaultProps.blocks();
 
-    return new EntityProperties(
+    return new EntityPropertiesRecord(
         modeName,
         controlConfig,
         movementSpeed,

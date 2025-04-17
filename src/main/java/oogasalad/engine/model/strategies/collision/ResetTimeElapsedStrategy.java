@@ -9,7 +9,7 @@ import oogasalad.engine.records.CollisionContextRecord;
  *
  * @author Owen Jennings
  */
-public class ResetTimeElapsedStrategy implements CollisionStrategy {
+public class ResetTimeElapsedStrategy implements CollisionStrategyInterface {
 
   @Override
   public void handleCollision(CollisionContextRecord collisionContext)

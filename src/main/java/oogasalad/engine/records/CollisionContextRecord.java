@@ -1,7 +1,7 @@
 package oogasalad.engine.records;
 
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.GameState;
+import oogasalad.engine.model.GameMapInterface;
+import oogasalad.engine.model.GameStateInterface;
 import oogasalad.engine.model.entity.Entity;
 
 /**
@@ -17,7 +17,7 @@ import oogasalad.engine.model.entity.Entity;
  * @param gameMap     The current game map where the collision takes place.
  * @param gameState   The overall state of the game at the time of the collision.
  */
-public record CollisionContextRecord(Entity entity1, Entity entity2, GameMap gameMap, GameState gameState) {
+public record CollisionContextRecord(Entity entity1, Entity entity2, GameMapInterface gameMap, GameStateInterface gameState) {
   public CollisionContextRecord {
     if (entity1 == null || entity2 == null || gameMap == null || gameState == null) {
       throw new IllegalArgumentException("CollisionContext can't contain null values.");

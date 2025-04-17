@@ -1,7 +1,7 @@
 package oogasalad.engine.records;
 
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.GameState;
+import oogasalad.engine.model.GameMapInterface;
+import oogasalad.engine.model.GameStateInterface;
 
 /**
  * A record representing the context of the current game environment, including
@@ -10,7 +10,7 @@ import oogasalad.engine.model.GameState;
  * @param gameMap the map representing the current layout and all entities within the game
  * @param gameState the current state of the game, including score, status, and other global data
  */
-public record GameContextRecord(GameMap gameMap, GameState gameState) {
+public record GameContextRecord(GameMapInterface gameMap, GameStateInterface gameState) {
   public GameContextRecord {
     if (gameMap == null || gameState == null) {
       throw new IllegalArgumentException("GameContext can't contain null values.");

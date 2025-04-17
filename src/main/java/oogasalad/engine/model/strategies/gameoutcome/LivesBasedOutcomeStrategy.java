@@ -3,7 +3,7 @@ package oogasalad.engine.model.strategies.gameoutcome;
 import oogasalad.engine.records.GameContextRecord;
 
 /**
- * The {@code LivesBasedOutcome} class implements the {@link GameOutcomeStrategy}
+ * The {@code LivesBasedOutcome} class implements the {@link GameOutcomeStrategyInterface}
  * interface to determine whether the game has ended based on the player's remaining lives.
  * <p>
  * If the player's lives reach zero or below, the game is considered over.
@@ -11,7 +11,7 @@ import oogasalad.engine.records.GameContextRecord;
  *
  * @author Austin Huang
  */
-public class LivesBasedOutcomeStrategy implements GameOutcomeStrategy {
+public class LivesBasedOutcomeStrategy implements GameOutcomeStrategyInterface {
 
   /**
    * Determines if the game has ended based on the player's remaining lives.

@@ -9,11 +9,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.controlConfig.ConditionalControlConfig;
-import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.engine.model.controlConfig.TargetControlConfig;
-import oogasalad.engine.model.controlConfig.targetStrategy.TargetCalculationConfig;
+import oogasalad.engine.model.GameMapInterface;
+import oogasalad.engine.model.controlConfig.ConditionalControlConfigRecord;
+import oogasalad.engine.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.model.controlConfig.TargetControlConfigRecord;
+import oogasalad.engine.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
 import oogasalad.player.model.exceptions.TargetStrategyException;
 
 /**
@@ -36,15 +36,15 @@ public class TargetStrategyFactory {
    * @throws TargetStrategyException if the control type of the entity is unknown or unsupported
    */
   public static TargetStrategyInterface createTargetStrategy(EntityPlacement placement,
-      GameMap gameMap)
+      GameMapInterface gameMap)
       throws TargetStrategyException {
 
-    ControlConfig config = placement.getType().controlConfig();
-    TargetCalculationConfig targetCalculationConfig;
+    ControlConfigInterface config = placement.getType().controlConfig();
+    TargetCalculationConfigInterface targetCalculationConfig;
 
-    if (config instanceof TargetControlConfig targetConfig) {
+    if (config instanceof TargetControlConfigRecord targetConfig) {
       targetCalculationConfig = targetConfig.targetCalculationConfig();
-    } else if (config instanceof ConditionalControlConfig conditionalConfig) {
+    } else if (config instanceof ConditionalControlConfigRecord conditionalConfig) {
       targetCalculationConfig = conditionalConfig.targetCalculationConfig();
     } else {
       throw new TargetStrategyException(
@@ -70,7 +70,7 @@ public class TargetStrategyFactory {
   private static TargetStrategyInterface instantiateStrategy(Class<?> strategyClass,
       Map<String, Object> targetCalculationConfig,
       EntityPlacement placement,
-      GameMap gameMap)
+      GameMapInterface gameMap)
       throws TargetStrategyException {
     try {
       for (Constructor<?> constructor : strategyClass.getConstructors()) {
@@ -89,7 +89,7 @@ public class TargetStrategyFactory {
     throw new TargetStrategyException("No valid constructor found for: " + strategyClass.getName());
   }
 
-  private static Map<String, Object> recordToMap(TargetCalculationConfig record) {
+  private static Map<String, Object> recordToMap(TargetCalculationConfigInterface record) {
     return Arrays.stream(record.getClass().getRecordComponents())
         .collect(Collectors.toMap(
             RecordComponent::getName,
@@ -98,7 +98,7 @@ public class TargetStrategyFactory {
   }
 
   private static Object extractFieldValue(RecordComponent component,
-      TargetCalculationConfig event) {
+      TargetCalculationConfigInterface event) {
     try {
       return component.getAccessor().invoke(event);
     } catch (Exception e) {
@@ -112,7 +112,7 @@ public class TargetStrategyFactory {
   }
 
   private static TargetStrategyInterface tryInstantiateStrategy(Constructor<?> constructor,
-      GameMap gameMap, Map<String, Object> targetCalculationConfig,
+      GameMapInterface gameMap, Map<String, Object> targetCalculationConfig,
       EntityPlacement placement)
       throws TargetStrategyException {
     try {
@@ -140,14 +140,14 @@ public class TargetStrategyFactory {
   private static boolean matchesTwoArgConstructor(Constructor<?> constructor) {
     Class<?>[] paramTypes = constructor.getParameterTypes();
     return paramTypes.length == 2 &&
-        paramTypes[0].equals(GameMap.class) &&
+        paramTypes[0].equals(GameMapInterface.class) &&
         paramTypes[1].equals(Map.class);
   }
 
   private static boolean matchesThreeArgConstructor(Constructor<?> constructor) {
     Class<?>[] paramTypes = constructor.getParameterTypes();
     return paramTypes.length == 3 &&
-        paramTypes[0].equals(GameMap.class) &&
+        paramTypes[0].equals(GameMapInterface.class) &&
         paramTypes[1].equals(Map.class) &&
         paramTypes[2].equals(String.class);
   }

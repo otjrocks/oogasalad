@@ -7,10 +7,10 @@ import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
 import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.EntityTypeRecord;
 
 import java.util.*;
-import oogasalad.engine.model.controlConfig.ControlConfig;
+import oogasalad.engine.model.controlConfig.ControlConfigInterface;
 
 /**
  * Utility class for converting the internal AuthoringModel data structures into serializable JSON
@@ -140,7 +140,7 @@ public class JsonConfigBuilder {
    * @return the index of the mode in the EntityType's mode list
    */
   private int getModeIndex(EntityPlacement placement) {
-    EntityType type = placement.getType();
+    EntityTypeRecord type = placement.getType();
     String modeName = placement.getMode();
     List<String> modeList = new ArrayList<>(type.modes().keySet());
     return modeList.indexOf(modeName);
@@ -154,7 +154,7 @@ public class JsonConfigBuilder {
    * @param mapper the Jackson ObjectMapper instance
    * @return a JSON ObjectNode representing the entity type
    */
-  public ObjectNode buildEntityTypeConfig(EntityType type, ObjectMapper mapper) {
+  public ObjectNode buildEntityTypeConfig(EntityTypeRecord type, ObjectMapper mapper) {
     ObjectNode root = mapper.createObjectNode();
     ObjectNode entityTypeNode = root.putObject("entityType");
 
@@ -166,27 +166,27 @@ public class JsonConfigBuilder {
     return root;
   }
 
-  private void addEntityBasics(EntityType type, ObjectNode entityTypeNode) {
+  private void addEntityBasics(EntityTypeRecord type, ObjectNode entityTypeNode) {
     entityTypeNode.put("name", type.type());
   }
 
-  private void addControlConfig(ControlConfig config, ObjectNode entityTypeNode,
+  private void addControlConfig(ControlConfigInterface config, ObjectNode entityTypeNode,
       ObjectMapper mapper) {
     JsonNode serialized = mapper.valueToTree(config);
     entityTypeNode.set("controlConfig", serialized);
   }
 
-  private void addMovementSpeed(EntityType type, ObjectNode entityTypeNode) {
-    ModeConfig defaultMode = type.modes().get("Default");
+  private void addMovementSpeed(EntityTypeRecord type, ObjectNode entityTypeNode) {
+    ModeConfigRecord defaultMode = type.modes().get("Default");
     if (defaultMode != null) {
       entityTypeNode.put("movementSpeed", defaultMode.entityProperties().movementSpeed());
     }
   }
 
-  private void addModesArray(EntityType type, ObjectNode root) {
+  private void addModesArray(EntityTypeRecord type, ObjectNode root) {
     ArrayNode modesArray = root.putArray("modes");
 
-    for (ModeConfig mode : type.modes().values()) {
+    for (ModeConfigRecord mode : type.modes().values()) {
       ObjectNode modeNode = modesArray.addObject();
       modeNode.put("name", mode.name());
 
@@ -209,7 +209,7 @@ public class JsonConfigBuilder {
    * @param entityTypeMap the map of entity names to types
    * @return a map of entity names to unique integer IDs
    */
-  public Map<String, Integer> assignIds(Map<String, EntityType> entityTypeMap) {
+  public Map<String, Integer> assignIds(Map<String, EntityTypeRecord> entityTypeMap) {
     Map<String, Integer> result = new HashMap<>();
     int id = 1;
 

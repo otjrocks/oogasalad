@@ -2,7 +2,7 @@ package oogasalad.player.model.control.targetcalculation;
 
 import java.util.Map;
 import java.util.Optional;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.engine.model.entity.Entity;
 
 /**
@@ -42,7 +42,7 @@ import oogasalad.engine.model.entity.Entity;
  */
 public class TargetEntityWithTrapStrategy implements TargetStrategyInterface {
 
-  private final GameMap myGameMap;
+  private final GameMapInterface myGameMap;
   private final String myTargetType;
   private final String myTeamEntityType;
   private final int myTilesAhead;
@@ -59,7 +59,7 @@ public class TargetEntityWithTrapStrategy implements TargetStrategyInterface {
    * @throws IllegalArgumentException if the strategyConfig is invalid or missing required
    *                                  parameters
    */
-  public TargetEntityWithTrapStrategy(GameMap gameMap, Map<String, Object> strategyConfig,
+  public TargetEntityWithTrapStrategy(GameMapInterface gameMap, Map<String, Object> strategyConfig,
       String typeOfCaller) {
     myGameMap = gameMap;
     myTargetType = TargetStrategyHelperMethods.validateAndGetKeyString(strategyConfig,

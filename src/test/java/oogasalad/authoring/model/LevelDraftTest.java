@@ -1,7 +1,7 @@
 package oogasalad.authoring.model;
 
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.EntityTypeRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,13 +14,13 @@ import static org.mockito.Mockito.*;
 public class LevelDraftTest {
 
   private LevelDraft level;
-  private EntityType mockType;
+  private EntityTypeRecord mockType;
 
   @BeforeEach
   public void setUp() {
     level = new LevelDraft("Test Level", "test_map.json");
 
-    mockType = mock(EntityType.class);
+    mockType = mock(EntityTypeRecord.class);
     when(mockType.type()).thenReturn("TestEntity");
   }
 

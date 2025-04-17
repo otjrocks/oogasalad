@@ -4,7 +4,7 @@ import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.records.CollisionContextRecord;
 
 /**
- * A {@link CollisionStrategy} that changes the newMode of all entities of a specified type
+ * A {@link CollisionStrategyInterface} that changes the newMode of all entities of a specified type
  * on the game map when a collision occurs.
  *
  * <p>This strategy can be used to trigger global behavior changes, such as putting all
@@ -15,7 +15,7 @@ import oogasalad.engine.records.CollisionContextRecord;
  *
  * @author Austin Huang
  */
-public class ChangeModeForTypeStrategy implements CollisionStrategy {
+public class ChangeModeForTypeStrategy implements CollisionStrategyInterface {
   private final String entityType;
   private final String newMode;
 

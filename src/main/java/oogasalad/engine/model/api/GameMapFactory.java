@@ -1,9 +1,9 @@
 package oogasalad.engine.model.api;
 
-import oogasalad.engine.config.ConfigModel;
+import oogasalad.engine.config.ConfigModelRecord;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.engine.model.GameMapImpl;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
@@ -24,7 +24,7 @@ public class GameMapFactory {
    * @throws InvalidPositionException Whenever the map cannot be created because an entity with an
    *                                  invalid position was added.
    */
-  public static GameMap createGameMap(GameInputManager input, ConfigModel configModel,
+  public static GameMapInterface createGameMap(GameInputManager input, ConfigModelRecord configModel,
       int levelIndex)
       throws InvalidPositionException {
     int width = configModel.levels().get(levelIndex).mapInfo().width();

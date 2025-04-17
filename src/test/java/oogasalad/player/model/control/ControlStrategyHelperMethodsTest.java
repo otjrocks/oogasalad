@@ -2,7 +2,7 @@ package oogasalad.player.model.control;
 
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.BfsEntityException;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategyInterface;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 
 class ControlStrategyHelperMethodsTest {
 
-  private GameMap mockMap;
+  private GameMapInterface mockMap;
   private Entity mockEntity;
   private EntityPlacement mockPlacement;
   private TargetStrategyInterface mockTargetStrategy;
@@ -23,7 +23,7 @@ class ControlStrategyHelperMethodsTest {
 
   @BeforeEach
   void setUp() {
-    mockMap = mock(GameMap.class);
+    mockMap = mock(GameMapInterface.class);
     mockEntity = mock(Entity.class);
     mockPlacement = mock(EntityPlacement.class);
     mockTargetStrategy = mock(TargetStrategyInterface.class);

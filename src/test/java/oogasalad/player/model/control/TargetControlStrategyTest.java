@@ -1,10 +1,10 @@
 package oogasalad.player.model.control;
 
 import oogasalad.engine.enums.Directions.Direction;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.controlConfig.TargetControlConfig;
+import oogasalad.engine.model.GameMapInterface;
+import oogasalad.engine.model.controlConfig.TargetControlConfigRecord;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.EntityTypeRecord;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategyInterface;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategyFactory;
@@ -20,15 +20,15 @@ import static org.mockito.Mockito.*;
 
 class TargetControlStrategyTest {
 
-  private GameMap gameMap;
+  private GameMapInterface gameMap;
   private EntityPlacement placement;
   private Entity entity;
 
   @BeforeEach
   void setup() {
-    gameMap = mock(GameMap.class);
+    gameMap = mock(GameMapInterface.class);
     placement = mock(EntityPlacement.class);
-    EntityType entityType = mock(EntityType.class);
+    EntityTypeRecord entityType = mock(EntityTypeRecord.class);
     entity = mock(Entity.class);
 
     when(placement.getX()).thenReturn(5.0);
@@ -86,7 +86,7 @@ class TargetControlStrategyTest {
       TargetControlStrategy strategy = new TargetControlStrategy(
           gameMap,
           placement,
-          new TargetControlConfig("Dijkstra", null)
+          new TargetControlConfigRecord("Dijkstra", null)
       );
 
       strategy.update(entity);

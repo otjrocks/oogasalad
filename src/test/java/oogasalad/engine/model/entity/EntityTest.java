@@ -3,8 +3,8 @@ package oogasalad.engine.model.entity;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.EntityTypeRecord;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.player.model.control.ControlStrategyInterface;
 import oogasalad.player.model.control.ControlStrategyFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,15 +18,15 @@ class EntityTest {
 
   private EntityPlacement mockPlacement;
   private GameInputManager mockInput;
-  private GameMap mockMap;
+  private GameMapInterface mockMap;
   private Entity entity;
 
   @BeforeEach
   void setUp() {
     mockPlacement = mock(EntityPlacement.class);
     mockInput = mock(GameInputManager.class);
-    mockMap = mock(GameMap.class);
-    when(mockPlacement.getType()).thenReturn(new EntityType("test", null, null, null, 1));
+    mockMap = mock(GameMapInterface.class);
+    when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", null, null, null, 1));
     entity = new Entity(mockInput, mockPlacement, mockMap);
   }
 
@@ -89,7 +89,7 @@ class EntityTest {
 
   @Test
   void testCanMove_validAndInvalidMoveHorizontal_returnsTrueThenFalse() {
-    when(mockPlacement.getType()).thenReturn(new EntityType("test", null, null, null, 1));
+    when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", null, null, null, 1));
     when(mockPlacement.getY()).thenReturn(4.00005);
     assertTrue(entity.canMove(Direction.R));
     when(mockPlacement.getY()).thenReturn(4.5);

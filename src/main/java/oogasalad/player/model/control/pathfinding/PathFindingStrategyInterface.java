@@ -2,7 +2,7 @@ package oogasalad.player.model.control.pathfinding;
 
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 
 /**
  * An interface to describe path finding strategies for entities, given a game map.
@@ -22,6 +22,6 @@ public interface PathFindingStrategyInterface {
    * @param thisEntity The entityPlacement of the entity calling this strategy.
    * @return A int[] that represents the first direction on the path as (dx, dy).
    */
-  int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY,
+  int[] getPath(GameMapInterface map, int startX, int startY, int targetX, int targetY,
       EntityPlacement thisEntity, Direction thisDirection);
 }

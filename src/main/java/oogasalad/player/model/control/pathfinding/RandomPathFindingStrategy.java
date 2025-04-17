@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 
 /**
  * The RandomPathFindingStrategy class implements the PathFindingStrategy interface
@@ -31,7 +31,7 @@ public class RandomPathFindingStrategy implements PathFindingStrategyInterface {
   private final Random random = new Random();
 
   @Override
-  public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY,
+  public int[] getPath(GameMapInterface map, int startX, int startY, int targetX, int targetY,
       EntityPlacement thisEntity, Direction thisDirection) {
 
     List<int[]> possibleDirections = PathFindingStrategyHelperMethods.getValidDirections(map, startX, startY, thisEntity,

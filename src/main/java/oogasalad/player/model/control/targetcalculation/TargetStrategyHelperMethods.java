@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.enums.Directions.Direction;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.player.model.exceptions.TargetStrategyException;
 
@@ -40,7 +40,7 @@ class TargetStrategyHelperMethods {
    * @return an {@code Optional} containing the first entity of the specified type if found, or an
    * empty {@code Optional} if no such entity exists
    */
-  static Optional<Entity> findFirstEntityOfType(GameMap gameMap, String targetType) {
+  static Optional<Entity> findFirstEntityOfType(GameMapInterface gameMap, String targetType) {
     Iterator<Entity> iterator = gameMap.iterator();
     while (iterator.hasNext()) {
       Entity entity = iterator.next();
@@ -85,7 +85,7 @@ class TargetStrategyHelperMethods {
   }
 
 
-  static int[] calcTargetPosition(GameMap map, Entity entity, String type, int tilesAhead) {
+  static int[] calcTargetPosition(GameMapInterface map, Entity entity, String type, int tilesAhead) {
     int[] potentialTarget = potentialTargetPosition(
         entity.getEntityDirection(),
         (int) entity.getEntityPlacement().getX(),

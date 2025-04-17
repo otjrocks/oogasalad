@@ -1,9 +1,9 @@
 package oogasalad.player.model.control;
 
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.controlConfig.ConditionalControlConfig;
-import oogasalad.engine.model.controlConfig.ControlConfig;
+import oogasalad.engine.model.GameMapInterface;
+import oogasalad.engine.model.controlConfig.ConditionalControlConfigRecord;
+import oogasalad.engine.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategyInterface;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategyFactory;
@@ -20,7 +20,7 @@ import oogasalad.player.model.exceptions.ControlStrategyException;
  */
 public class ConditionalControlStrategy implements ControlStrategyInterface {
 
-  private final GameMap myGameMap;
+  private final GameMapInterface myGameMap;
   private final EntityPlacement myEntityPlacement;
   private final PathFindingStrategyInterface myPathFindingStrategyInRadius;
   private final PathFindingStrategyInterface myPathFindingStrategyOutRadius;
@@ -39,8 +39,8 @@ public class ConditionalControlStrategy implements ControlStrategyInterface {
    * @param config          the ControlConfig object containing configuration details for the
    *                        strategy
    */
-  public ConditionalControlStrategy(GameMap gameMap, EntityPlacement entityPlacement,
-      ControlConfig config) {
+  public ConditionalControlStrategy(GameMapInterface gameMap, EntityPlacement entityPlacement,
+      ControlConfigInterface config) {
     myEntityPlacement = entityPlacement;
     myGameMap = gameMap;
     myPathFindingStrategyInRadius = getPathFindingStrategy1(config);
@@ -49,8 +49,8 @@ public class ConditionalControlStrategy implements ControlStrategyInterface {
     myTargetStrategy = TargetStrategyFactory.createTargetStrategy(entityPlacement, myGameMap);
   }
 
-  private PathFindingStrategyInterface getPathFindingStrategy1(ControlConfig config) {
-    if (config instanceof ConditionalControlConfig conditionalConfig) {
+  private PathFindingStrategyInterface getPathFindingStrategy1(ControlConfigInterface config) {
+    if (config instanceof ConditionalControlConfigRecord conditionalConfig) {
       return PathFindingStrategyFactory.createPathFindingStrategy(
           conditionalConfig.pathFindingStrategyInRadius());
     } else {
@@ -58,8 +58,8 @@ public class ConditionalControlStrategy implements ControlStrategyInterface {
     }
   }
 
-  private PathFindingStrategyInterface getPathFindingStrategy2(ControlConfig config) {
-    if (config instanceof ConditionalControlConfig conditionalConfig) {
+  private PathFindingStrategyInterface getPathFindingStrategy2(ControlConfigInterface config) {
+    if (config instanceof ConditionalControlConfigRecord conditionalConfig) {
       return PathFindingStrategyFactory.createPathFindingStrategy(
           conditionalConfig.pathFindingStrategyOutRadius());
     } else {
@@ -67,8 +67,8 @@ public class ConditionalControlStrategy implements ControlStrategyInterface {
     }
   }
 
-  private int getRadius(ControlConfig config) {
-    if (config instanceof ConditionalControlConfig conditionalConfig) {
+  private int getRadius(ControlConfigInterface config) {
+    if (config instanceof ConditionalControlConfigRecord conditionalConfig) {
       return conditionalConfig.radius();
     } else {
       throw new ControlStrategyException(NOT_CONDITIONAL_CONFIG_EXCEPTION);

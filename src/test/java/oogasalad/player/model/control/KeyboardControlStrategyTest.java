@@ -3,9 +3,9 @@ package oogasalad.player.model.control;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.EntityTypeRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,14 +16,14 @@ import static org.mockito.Mockito.*;
 class KeyboardControlStrategyTest {
 
   private GameInputManager input;
-  private GameMap gameMap;
+  private GameMapInterface gameMap;
   private Entity entity;
   private KeyboardControlStrategy strategy;
 
   @BeforeEach
   void setup() {
     input = mock(GameInputManager.class);
-    gameMap = mock(GameMap.class);
+    gameMap = mock(GameMapInterface.class);
     EntityPlacement placement = mock(EntityPlacement.class);
     entity = mock(Entity.class);
 
@@ -51,7 +51,7 @@ class KeyboardControlStrategyTest {
 
     Entity wall = mock(Entity.class);
     EntityPlacement wallPlacement = mock(EntityPlacement.class);
-    EntityType wallType = mock(EntityType.class);
+    EntityTypeRecord wallType = mock(EntityTypeRecord.class);
 
     when(wall.getEntityPlacement()).thenReturn(wallPlacement);
     when(wallPlacement.getType()).thenReturn(wallType);

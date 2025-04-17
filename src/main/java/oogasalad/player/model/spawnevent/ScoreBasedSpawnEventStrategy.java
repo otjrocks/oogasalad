@@ -2,17 +2,17 @@ package oogasalad.player.model.spawnevent;
 
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.records.GameContextRecord;
-import oogasalad.engine.records.config.model.SpawnEvent;
+import oogasalad.engine.records.config.model.SpawnEventRecord;
 
 /**
  * A spawn event strategy that handles score based spawning and despawn.
  *
  * @author Owen Jennings
  */
-public class ScoreBasedSpawnEventStrategy implements SpawnEventStrategy {
+public class ScoreBasedSpawnEventStrategy implements SpawnEventStrategyInterface {
 
   @Override
-  public boolean shouldSpawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord) {
+  public boolean shouldSpawn(SpawnEventRecord spawnEvent, GameContextRecord gameContextRecord) {
     Object amountObj = spawnEvent.spawnCondition().parameters().get("amount");
     if (amountObj == null) {
       LoggingManager.LOGGER.warn(
@@ -31,7 +31,7 @@ public class ScoreBasedSpawnEventStrategy implements SpawnEventStrategy {
   }
 
   @Override
-  public boolean shouldDespawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord) {
+  public boolean shouldDespawn(SpawnEventRecord spawnEvent, GameContextRecord gameContextRecord) {
     Object amountObj = spawnEvent.despawnCondition().parameters().get("amount");
     if (amountObj == null) {
       LoggingManager.LOGGER.warn(

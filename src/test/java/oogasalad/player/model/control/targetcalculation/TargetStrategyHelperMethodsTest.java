@@ -7,7 +7,7 @@ import java.util.*;
 
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.player.model.exceptions.TargetStrategyException;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,13 +15,13 @@ import org.junit.jupiter.api.Test;
 
 public class TargetStrategyHelperMethodsTest {
 
-  private GameMap mockMap;
+  private GameMapInterface mockMap;
   private Entity mockEntity;
   private EntityPlacement mockPlacement;
 
   @BeforeEach
   void setUp() {
-    mockMap = mock(GameMap.class);
+    mockMap = mock(GameMapInterface.class);
     mockEntity = mock(Entity.class);
     mockPlacement = mock(EntityPlacement.class);
   }

@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.engine.LanguageManager;
-import oogasalad.engine.records.config.model.Settings;
+import oogasalad.engine.records.config.model.SettingsRecord;
 
 
 /**
@@ -24,7 +24,7 @@ public class GameSettingsView {
   private static final double DEFAULT_PADDING = 5;
 
   private final AuthoringController controller;
-  private Settings gameSettings;
+  private SettingsRecord gameSettings;
 
   // Root node containing the view
   private final HBox rootNode;

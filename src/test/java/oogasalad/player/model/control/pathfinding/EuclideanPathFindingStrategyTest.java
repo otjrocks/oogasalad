@@ -2,7 +2,7 @@ package oogasalad.player.model.control.pathfinding;
 
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -16,13 +16,13 @@ import static org.mockito.Mockito.*;
 class EuclideanPathFindingStrategyTest {
 
   private EuclideanPathFindingStrategy strategy;
-  private GameMap mockMap;
+  private GameMapInterface mockMap;
   private EntityPlacement mockEntity;
 
   @BeforeEach
   void setUp() {
     strategy = new EuclideanPathFindingStrategy();
-    mockMap = mock(GameMap.class);
+    mockMap = mock(GameMapInterface.class);
     mockEntity = mock(EntityPlacement.class);
     when(mockEntity.getTypeString()).thenReturn("Player");
   }

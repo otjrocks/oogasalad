@@ -13,7 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.LoggingManager;
-import oogasalad.engine.records.config.model.CollisionEvent;
+import oogasalad.engine.records.config.model.CollisionEventInterface;
 import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.view.components.Selector;
 
@@ -64,7 +64,7 @@ public class CollisionEventView {
    * @throws IllegalArgumentException If the collision event cannot be created with the provided
    *                                  parameters.
    */
-  public CollisionEvent getCollisionEvent() {
+  public CollisionEventInterface getCollisionEvent() {
     try {
       String collisionName = mySelector.getValue();
       String fullClassName = COLLISION_EVENTS_PACKAGE_PATH + collisionName + "CollisionEvent";
@@ -83,7 +83,7 @@ public class CollisionEventView {
       Constructor<?> constructor = collisionEventClass.getDeclaredConstructors()[0];
       Object eventInstance = constructor.newInstance(constructorArgs);
 
-      return (CollisionEvent) eventInstance;
+      return (CollisionEventInterface) eventInstance;
 
     } catch (IllegalArgumentException e) {
       throw e;

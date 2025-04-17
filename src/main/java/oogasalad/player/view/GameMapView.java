@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import oogasalad.engine.config.ConfigModel;
+import oogasalad.engine.config.ConfigModelRecord;
 import oogasalad.engine.model.GameEndStatus;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
@@ -36,7 +36,7 @@ public class GameMapView extends Canvas {
    * @param gameContext The game context object for this view.
    * @param configModel The config model for this view.
    */
-  public GameMapView(GameContextRecord gameContext, ConfigModel configModel) {
+  public GameMapView(GameContextRecord gameContext, ConfigModelRecord configModel) {
     super(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
     myGameContext = gameContext;
     myGameMapController = new GameMapController(myGameContext, configModel);

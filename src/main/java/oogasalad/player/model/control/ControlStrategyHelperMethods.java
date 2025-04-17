@@ -2,7 +2,7 @@ package oogasalad.player.model.control;
 
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.BfsEntityException;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategyInterface;
@@ -18,7 +18,7 @@ import oogasalad.player.model.control.targetcalculation.TargetStrategyInterface;
  */
 public class ControlStrategyHelperMethods {
 
-  static void getDirectionFromTargetAndPath(GameMap gameMap, Entity entity,
+  static void getDirectionFromTargetAndPath(GameMapInterface gameMap, Entity entity,
       EntityPlacement entityPlacement, TargetStrategyInterface targetStrategy,
       PathFindingStrategyInterface pathFindingStrategy) {
     int[] target = validateAndGetTargetPosition(targetStrategy);

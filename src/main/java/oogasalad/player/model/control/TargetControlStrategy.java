@@ -1,9 +1,9 @@
 package oogasalad.player.model.control;
 
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.engine.model.controlConfig.TargetControlConfig;
+import oogasalad.engine.model.GameMapInterface;
+import oogasalad.engine.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.model.controlConfig.TargetControlConfigRecord;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategyInterface;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategyFactory;
@@ -26,7 +26,7 @@ import oogasalad.player.model.exceptions.ControlStrategyException;
  *
  * <p>Dependencies:
  * <ul>
- *   <li>{@link GameMap} - Represents the game map the entity is part of.</li>
+ *   <li>{@link GameMapInterface} - Represents the game map the entity is part of.</li>
  *   <li>{@link EntityPlacement} - Contains data related to the entity's placement.</li>
  *   <li>{@link PathFindingStrategyInterface} - Strategy for finding the path to the target.</li>
  *   <li>{@link TargetStrategyInterface} - Strategy for determining the target position.</li>
@@ -36,7 +36,7 @@ import oogasalad.player.model.exceptions.ControlStrategyException;
  */
 public class TargetControlStrategy implements ControlStrategyInterface {
 
-  private final GameMap myGameMap;
+  private final GameMapInterface myGameMap;
   private final EntityPlacement myEntityPlacement;
   private final PathFindingStrategyInterface myPathFindingStrategy;
   private final TargetStrategyInterface myTargetStrategy;
@@ -47,16 +47,16 @@ public class TargetControlStrategy implements ControlStrategyInterface {
    * @param gameMap         The game map this entity is a part of.
    * @param entityPlacement The data to include with this entity.
    */
-  public TargetControlStrategy(GameMap gameMap, EntityPlacement entityPlacement,
-      ControlConfig config) {
+  public TargetControlStrategy(GameMapInterface gameMap, EntityPlacement entityPlacement,
+      ControlConfigInterface config) {
     myEntityPlacement = entityPlacement;
     myGameMap = gameMap;
     myPathFindingStrategy = getPathFindingStrategy(config);
     myTargetStrategy = TargetStrategyFactory.createTargetStrategy(entityPlacement, myGameMap);
   }
 
-  private PathFindingStrategyInterface getPathFindingStrategy(ControlConfig config) {
-    if (config instanceof TargetControlConfig targetConfig) {
+  private PathFindingStrategyInterface getPathFindingStrategy(ControlConfigInterface config) {
+    if (config instanceof TargetControlConfigRecord targetConfig) {
       return PathFindingStrategyFactory.createPathFindingStrategy(
           targetConfig.pathFindingStrategy());
     } else {

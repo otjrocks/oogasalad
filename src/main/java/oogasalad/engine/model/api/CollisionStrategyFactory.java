@@ -1,8 +1,8 @@
 package oogasalad.engine.model.api;
 
 import oogasalad.engine.LoggingManager;
-import oogasalad.engine.model.strategies.collision.CollisionStrategy;
-import oogasalad.engine.records.config.model.CollisionEvent;
+import oogasalad.engine.model.strategies.collision.CollisionStrategyInterface;
+import oogasalad.engine.records.config.model.CollisionEventInterface;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.RecordComponent;
@@ -25,7 +25,8 @@ public class CollisionStrategyFactory {
    * @return The collision strategy created from the collision event object.
    */
   // I used ChatGPT to assist in generating this method.
-  public static CollisionStrategy createCollisionStrategy(CollisionEvent collisionEvent) {
+  public static CollisionStrategyInterface createCollisionStrategy(
+      CollisionEventInterface collisionEvent) {
     try {
       String eventClassName = collisionEvent.getClass().getSimpleName();
       String strategyClassName = eventClassName.replace("CollisionEvent",
@@ -42,7 +43,7 @@ public class CollisionStrategyFactory {
           .findFirst()
           .orElseThrow();
 
-      return (CollisionStrategy) constructor.newInstance(args);
+      return (CollisionStrategyInterface) constructor.newInstance(args);
     } catch (Exception e) {
       LoggingManager.LOGGER.warn("Failed to create strategy for: {}",
           collisionEvent.getClass().getSimpleName(), e);
@@ -50,7 +51,7 @@ public class CollisionStrategyFactory {
     }
   }
 
-  private static Object extractFieldValue(RecordComponent component, CollisionEvent event) {
+  private static Object extractFieldValue(RecordComponent component, CollisionEventInterface event) {
     try {
       return component.getAccessor().invoke(event);
     } catch (Exception e) {
@@ -59,10 +60,10 @@ public class CollisionStrategyFactory {
     }
   }
 
-  private static CollisionStrategy defaultStrategy() {
+  private static CollisionStrategyInterface defaultStrategy() {
     try {
       Class<?> defaultClass = Class.forName(STRATEGY_PACKAGE + ".ConsumeStrategy");
-      return (CollisionStrategy) defaultClass.getDeclaredConstructor().newInstance();
+      return (CollisionStrategyInterface) defaultClass.getDeclaredConstructor().newInstance();
     } catch (Exception e) {
       throw new RuntimeException("Failed to create default strategy", e);
     }

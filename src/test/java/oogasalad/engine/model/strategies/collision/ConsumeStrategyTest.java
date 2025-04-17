@@ -1,7 +1,7 @@
 package oogasalad.engine.model.strategies.collision;
 
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.GameState;
+import oogasalad.engine.model.GameMapInterface;
+import oogasalad.engine.model.GameStateInterface;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContextRecord;
@@ -13,15 +13,15 @@ import static org.mockito.Mockito.*;
 
 class ConsumeStrategyTest {
 
-  private GameMap gameMap;
+  private GameMapInterface gameMap;
   private Entity entity2;
   private CollisionContextRecord context;
   private ConsumeStrategy strategy;
 
   @BeforeEach
   void setUp() {
-    gameMap = mock(GameMap.class);
-    GameState gameState = mock(GameState.class);
+    gameMap = mock(GameMapInterface.class);
+    GameStateInterface gameState = mock(GameStateInterface.class);
     Entity entity1 = mock(Entity.class);
     entity2 = mock(Entity.class);
     context = mock(CollisionContextRecord.class);

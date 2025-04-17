@@ -1,7 +1,7 @@
 package oogasalad.player.model.control.targetcalculation;
 
 import java.util.Map;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 
 /**
  * A strategy for determining the target location based on the configuration. This class is
@@ -19,7 +19,7 @@ public class TargetLocationStrategy implements TargetStrategyInterface {
    * @param gameMap        the game map on which the target calculation is performed
    * @param strategyConfig strategy configuration containing the target type
    */
-  public TargetLocationStrategy(GameMap gameMap, Map<String, Object> strategyConfig) {
+  public TargetLocationStrategy(GameMapInterface gameMap, Map<String, Object> strategyConfig) {
     myTargetX = TargetStrategyHelperMethods.validateAndGetKeyInt(strategyConfig, "targetX");
     myTargetY = TargetStrategyHelperMethods.validateAndGetKeyInt(strategyConfig, "targetY");
   }

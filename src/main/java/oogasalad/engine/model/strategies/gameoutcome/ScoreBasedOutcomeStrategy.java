@@ -3,7 +3,7 @@ package oogasalad.engine.model.strategies.gameoutcome;
 import oogasalad.engine.records.GameContextRecord;
 
 /**
- * The {@code ScoreBasedOutcomeStrategy} class implements the {@link GameOutcomeStrategy}
+ * The {@code ScoreBasedOutcomeStrategy} class implements the {@link GameOutcomeStrategyInterface}
  * interface to determine whether the game has ended based on the player's score.
  * <p>
  * If the player's score reaches or exceeds a specified winning score, the game is considered won.
@@ -11,7 +11,7 @@ import oogasalad.engine.records.GameContextRecord;
  *
  * @author Austin Huang
  */
-public class ScoreBasedOutcomeStrategy implements GameOutcomeStrategy{
+public class ScoreBasedOutcomeStrategy implements GameOutcomeStrategyInterface {
   private final int winningScore;
 
   /**

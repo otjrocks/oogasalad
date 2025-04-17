@@ -1,9 +1,9 @@
 package oogasalad.engine.model;
 
-import oogasalad.engine.records.config.model.CollisionEvent;
-import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEvent;
-import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEvent;
-import oogasalad.engine.records.config.model.collisionevent.UpdateScoreCollisionEvent;
+import oogasalad.engine.records.config.model.CollisionEventInterface;
+import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.UpdateScoreCollisionEventRecord;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -46,8 +46,8 @@ class CollisionRuleTest {
   @Test
   void setEventsA_validList_returnsCorrectly() {
     CollisionRule rule = new CollisionRule();
-    List<CollisionEvent> events = List.of(new ConsumeCollisionEvent(),
-        new UpdateLivesCollisionEvent(5));
+    List<CollisionEventInterface> events = List.of(new ConsumeCollisionEventRecord(),
+        new UpdateLivesCollisionEventRecord(5));
     rule.setEventsA(events);
     assertEquals(events, rule.getEventsA());
   }
@@ -55,7 +55,7 @@ class CollisionRuleTest {
   @Test
   void setEventsB_validList_returnsCorrectly() {
     CollisionRule rule = new CollisionRule();
-    List<CollisionEvent> events = List.of(new UpdateLivesCollisionEvent(1));
+    List<CollisionEventInterface> events = List.of(new UpdateLivesCollisionEventRecord(1));
     rule.setEventsB(events);
     assertEquals(events, rule.getEventsB());
   }
@@ -67,8 +67,8 @@ class CollisionRuleTest {
     rule.setModeA("PoweredUp");
     rule.setEntityB("Ghost");
     rule.setModeB("Default");
-    rule.setEventsA(List.of(new UpdateScoreCollisionEvent(5)));
-    rule.setEventsB(List.of(new ConsumeCollisionEvent()));
+    rule.setEventsA(List.of(new UpdateScoreCollisionEventRecord(5)));
+    rule.setEventsB(List.of(new ConsumeCollisionEventRecord()));
 
     String expected = """
         (Type Pacman: Mode PoweredUp) ↔ (Type Ghost: Mode Default)

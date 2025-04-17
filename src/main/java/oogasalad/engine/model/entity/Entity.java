@@ -3,8 +3,8 @@ package oogasalad.engine.model.entity;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.EntityTypeRecord;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.player.model.control.ControlStrategyInterface;
 import oogasalad.player.model.control.ControlStrategyFactory;
 
@@ -17,7 +17,7 @@ public class Entity {
 
   private final EntityPlacement myEntityPlacement;
   private final GameInputManager inputManager;
-  private final GameMap gameMap;
+  private final GameMapInterface gameMap;
   private double dx;
   private double dy;
   private final double speed;
@@ -33,7 +33,7 @@ public class Entity {
    * @
    */
   public Entity(GameInputManager input, EntityPlacement entityPlacement,
-      GameMap gameMap) {
+      GameMapInterface gameMap) {
     myEntityPlacement = entityPlacement;
     this.inputManager = input;
     this.gameMap = gameMap;
@@ -70,7 +70,7 @@ public class Entity {
    * Get the entity data object for this entity.
    *
    * @return An EntityType object
-   * @see EntityType
+   * @see EntityTypeRecord
    */
   public EntityPlacement getEntityPlacement() {
     return myEntityPlacement;

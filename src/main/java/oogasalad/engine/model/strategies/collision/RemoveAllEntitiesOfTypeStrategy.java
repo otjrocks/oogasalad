@@ -10,7 +10,7 @@ import oogasalad.engine.records.CollisionContextRecord;
  *
  * @author Owen Jennings
  */
-public class RemoveAllEntitiesOfTypeStrategy implements CollisionStrategy {
+public class RemoveAllEntitiesOfTypeStrategy implements CollisionStrategyInterface {
 
   private final String myTargetType;
 

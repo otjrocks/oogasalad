@@ -16,7 +16,7 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
  *
  * @author Owen Jennings
  */
-public class GameMapImpl implements GameMap {
+public class GameMapImpl implements GameMapInterface {
 
   private final List<Entity> myEntityList;
   private final int myWidth;

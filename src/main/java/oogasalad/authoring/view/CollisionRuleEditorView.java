@@ -9,7 +9,7 @@ import java.util.*;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.model.CollisionRule;
-import oogasalad.engine.records.config.model.CollisionEvent;
+import oogasalad.engine.records.config.model.CollisionEventInterface;
 
 /**
  * A dialog view that allows the user to define and edit collision rules between pairs of entity
@@ -262,8 +262,8 @@ public class CollisionRuleEditorView {
       CollisionRule rule, boolean isA) {
     rule.setEntityA(a);
     rule.setEntityB(b);
-    CollisionEvent eventA;
-    CollisionEvent eventB;
+    CollisionEventInterface eventA;
+    CollisionEventInterface eventB;
     try {
       eventA = myRuleViewA.getCollisionEvent();
       eventB = myRuleViewB.getCollisionEvent();
@@ -271,12 +271,12 @@ public class CollisionRuleEditorView {
       showError(e.getMessage());
       throw e;
     }
-    List<CollisionEvent> eventsA = rule.getEventsA();
+    List<CollisionEventInterface> eventsA = rule.getEventsA();
     if (eventsA == null) {
       eventsA = new ArrayList<>();
       rule.setEventsA(eventsA);
     }
-    List<CollisionEvent> eventsB = rule.getEventsB();
+    List<CollisionEventInterface> eventsB = rule.getEventsB();
     if (eventsB == null) {
       eventsB = new ArrayList<>();
       rule.setEventsB(eventsB);

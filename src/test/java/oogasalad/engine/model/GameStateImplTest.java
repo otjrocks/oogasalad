@@ -3,7 +3,7 @@ package oogasalad.engine.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
-import oogasalad.engine.model.GameState.HudComponent;
+import oogasalad.engine.model.GameStateInterface.HudComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

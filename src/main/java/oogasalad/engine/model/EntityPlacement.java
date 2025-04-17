@@ -1,19 +1,19 @@
 package oogasalad.engine.model;
 
 /**
- * Represents a specific instance of an {@link EntityType} placed at a location on the map. Each
+ * Represents a specific instance of an {@link EntityTypeRecord} placed at a location on the map. Each
  * placement includes an (x, y) coordinate and a mode (e.g., "Default", "PoweredUp"). Used to
  * instantiate and track the position and state of individual entities.
  * <p>
  * The `type` field is used during deserialization, while `resolvedEntityType` is populated later
- * when matching string types to actual {@link EntityType} objects.
+ * when matching string types to actual {@link EntityTypeRecord} objects.
  *
  * @author Will He, Angela Predolac
  */
 public class EntityPlacement {
 
   private String type;
-  private EntityType resolvedEntityType;
+  private EntityTypeRecord resolvedEntityType;
   private double x;
   private double y;
   private double initialX;
@@ -33,12 +33,12 @@ public class EntityPlacement {
   /**
    * Constructs a new EntityPlacement with a given type, position, and mode.
    *
-   * @param type the {@link EntityType} of the entity
+   * @param type the {@link EntityTypeRecord} of the entity
    * @param x    the X-coordinate of the entity on the map
    * @param y    the Y-coordinate of the entity on the map
    * @param mode the initial mode of the entity (e.g., "Default", "PoweredUp")
    */
-  public EntityPlacement(EntityType type, double x, double y, String mode) {
+  public EntityPlacement(EntityTypeRecord type, double x, double y, String mode) {
     this.resolvedEntityType = type;
     this.type = type.type();
     this.x = x;
@@ -50,11 +50,11 @@ public class EntityPlacement {
   }
 
   /**
-   * Returns the resolved {@link EntityType} of this placement.
+   * Returns the resolved {@link EntityTypeRecord} of this placement.
    *
-   * @return the actual {@link EntityType} instance associated with this placement
+   * @return the actual {@link EntityTypeRecord} instance associated with this placement
    */
-  public EntityType getType() {
+  public EntityTypeRecord getType() {
     return resolvedEntityType;
   }
 
@@ -77,11 +77,11 @@ public class EntityPlacement {
   }
 
   /**
-   * Sets the resolved {@link EntityType} after matching the type string.
+   * Sets the resolved {@link EntityTypeRecord} after matching the type string.
    *
-   * @param resolvedEntityType the actual {@link EntityType} object for this placement
+   * @param resolvedEntityType the actual {@link EntityTypeRecord} object for this placement
    */
-  public void setResolvedEntityType(EntityType resolvedEntityType) {
+  public void setResolvedEntityType(EntityTypeRecord resolvedEntityType) {
     this.resolvedEntityType = resolvedEntityType;
   }
 

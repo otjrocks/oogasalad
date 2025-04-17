@@ -5,11 +5,11 @@ import static org.mockito.Mockito.*;
 
 import java.lang.reflect.Field;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.engine.model.controlConfig.TargetControlConfig;
-import oogasalad.engine.model.controlConfig.ConditionalControlConfig;
+import oogasalad.engine.model.EntityTypeRecord;
+import oogasalad.engine.model.GameMapInterface;
+import oogasalad.engine.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.model.controlConfig.TargetControlConfigRecord;
+import oogasalad.engine.model.controlConfig.ConditionalControlConfigRecord;
 import oogasalad.engine.model.controlConfig.targetStrategy.*;
 import oogasalad.player.model.exceptions.TargetStrategyException;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,15 +17,15 @@ import org.junit.jupiter.api.Test;
 
 public class TargetStrategyFactoryTest {
 
-  private GameMap mockMap;
+  private GameMapInterface mockMap;
   private EntityPlacement mockPlacement;
-  private EntityType mockType;
+  private EntityTypeRecord mockType;
 
   @BeforeEach
   void setup() throws Exception {
-    mockMap = mock(GameMap.class);
+    mockMap = mock(GameMapInterface.class);
     mockPlacement = mock(EntityPlacement.class);
-    mockType = mock(EntityType.class);
+    mockType = mock(EntityTypeRecord.class);
     when(mockPlacement.getType()).thenReturn(mockType);
     when(mockPlacement.getTypeString()).thenReturn("SomeType");
 
@@ -35,19 +35,19 @@ public class TargetStrategyFactoryTest {
     pkgField.set(null, "oogasalad.player.model.control.targetcalculation.testdoubles.");
   }
 
-  private void mockTargetControlConfig(TargetCalculationConfig config) {
-    TargetControlConfig controlConfig = new TargetControlConfig("", config);
+  private void mockTargetControlConfig(TargetCalculationConfigInterface config) {
+    TargetControlConfigRecord controlConfig = new TargetControlConfigRecord("", config);
     when(mockType.controlConfig()).thenReturn(controlConfig);
   }
 
-  private void mockConditionalControlConfig(TargetCalculationConfig config) {
-    ConditionalControlConfig controlConfig = new ConditionalControlConfig(3, "", "", config);
+  private void mockConditionalControlConfig(TargetCalculationConfigInterface config) {
+    ConditionalControlConfigRecord controlConfig = new ConditionalControlConfigRecord(3, "", "", config);
     when(mockType.controlConfig()).thenReturn(controlConfig);
   }
 
   @Test
   void createTargetStrategy_targetLocationStrategy_createdSuccessfully() {
-    mockTargetControlConfig(new TargetLocationConfig(10.0, 20.0));
+    mockTargetControlConfig(new TargetLocationConfigRecord(10.0, 20.0));
     TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
     assertInstanceOf(
         oogasalad.player.model.control.targetcalculation.testdoubles.TargetLocationStrategy.class, strategy);
@@ -55,7 +55,7 @@ public class TargetStrategyFactoryTest {
 
   @Test
   void createTargetStrategy_targetEntityStrategy_createdSuccessfully() {
-    mockTargetControlConfig(new TargetEntityConfig("Enemy"));
+    mockTargetControlConfig(new TargetEntityConfigRecord("Enemy"));
     TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
     assertInstanceOf(
         oogasalad.player.model.control.targetcalculation.testdoubles.TargetEntityStrategy.class, strategy);
@@ -63,7 +63,7 @@ public class TargetStrategyFactoryTest {
 
   @Test
   void createTargetStrategy_targetAheadOfEntityStrategy_createdSuccessfully() {
-    mockTargetControlConfig(new TargetAheadOfEntityConfig("Ally", 2));
+    mockTargetControlConfig(new TargetAheadOfEntityConfigRecord("Ally", 2));
     TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
     assertInstanceOf(
         oogasalad.player.model.control.targetcalculation.testdoubles.TargetAheadOfEntityStrategy.class, strategy);
@@ -71,7 +71,7 @@ public class TargetStrategyFactoryTest {
 
   @Test
   void createTargetStrategy_targetEntityWithTrapStrategy_createdSuccessfully() {
-    mockConditionalControlConfig(new TargetEntityWithTrapConfig("Enemy", 1, "Trap"));
+    mockConditionalControlConfig(new TargetEntityWithTrapConfigRecord("Enemy", 1, "Trap"));
     TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
     assertInstanceOf(
         oogasalad.player.model.control.targetcalculation.testdoubles.TargetEntityWithTrapStrategy.class, strategy);
@@ -81,7 +81,7 @@ public class TargetStrategyFactoryTest {
 
   @Test
   void createTargetStrategy_unknownControlConfig_throwsException() {
-    ControlConfig unknownConfig = mock(ControlConfig.class); // Not TargetControlConfig or ConditionalControlConfig
+    ControlConfigInterface unknownConfig = mock(ControlConfigInterface.class); // Not TargetControlConfig or ConditionalControlConfig
     when(mockType.controlConfig()).thenReturn(unknownConfig);
     TargetStrategyException exception = assertThrows(
         TargetStrategyException.class,
@@ -100,7 +100,7 @@ public class TargetStrategyFactoryTest {
   }
 
   // Dummy config and class with no matching constructor
-  record TargetNoConstructorConfig(String key) implements TargetCalculationConfig {}
+  record TargetNoConstructorConfig(String key) implements TargetCalculationConfigInterface {}
 
   static class TargetNoConstructorStrategy implements TargetStrategyInterface {
     private TargetNoConstructorStrategy() {} // Private constructor

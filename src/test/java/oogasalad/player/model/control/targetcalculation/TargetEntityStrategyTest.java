@@ -1,7 +1,7 @@
 package oogasalad.player.model.control.targetcalculation;
 
 import java.util.Collections;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.EntityPlacement;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ class TargetEntityStrategyTest {
 
   @Test
   void getTargetPosition_validEntity_returnsEntityCoordinates() {
-    GameMap mockMap = mock(GameMap.class);
+    GameMapInterface mockMap = mock(GameMapInterface.class);
     Entity mockEntity = mock(Entity.class);
     EntityPlacement mockPlacement = mock(EntityPlacement.class);
 
@@ -37,7 +37,7 @@ class TargetEntityStrategyTest {
 
   @Test
   void getTargetPosition_noEntity_returnsDefaultZero() {
-    GameMap mockMap = mock(GameMap.class);
+    GameMapInterface mockMap = mock(GameMapInterface.class);
     Iterator<Entity> emptyIterator = Collections.emptyIterator();
     when(mockMap.iterator()).thenReturn(emptyIterator);
 

@@ -1,0 +1,18 @@
+package oogasalad.engine.model;
+
+/**
+ * A record to store information about a game.
+ *
+ * @param gameSpeed     A double representing the game speed.
+ * @param startingLives The number of starting lives for a game.
+ * @param initialScore  The initial score of a player.
+ * @param edgePolicy    The edge policy to use for the game.
+ *
+ * @author Owen Jennings, Will He
+ */
+public record GameSettingsRecord(double gameSpeed,
+                                 int startingLives,
+                                 int initialScore,
+                                 String edgePolicy) {
+
+}

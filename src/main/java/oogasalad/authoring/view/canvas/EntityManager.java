@@ -9,7 +9,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import oogasalad.authoring.view.util.SpriteSheetUtil;
-import oogasalad.engine.config.ModeConfig;
+import oogasalad.engine.config.ModeConfigRecord;
 import oogasalad.engine.model.EntityPlacement;
 
 /**
@@ -93,7 +93,7 @@ public class EntityManager {
     double y = grid.getYFromRow(row);
 
     // Get full spritesheet image and extract first tile
-    ModeConfig modeConfig = placement.getType().modes().get(placement.getMode());
+    ModeConfigRecord modeConfig = placement.getType().modes().get(placement.getMode());
     WritableImage previewTile = SpriteSheetUtil.getPreviewTile(modeConfig);
     ImageView imageView = new ImageView(previewTile);
 

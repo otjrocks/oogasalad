@@ -3,7 +3,7 @@ package oogasalad.player.model.control;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.engine.model.entity.Entity;
 
 /**
@@ -19,7 +19,7 @@ import oogasalad.engine.model.entity.Entity;
  */
 public class KeyboardControlStrategy implements ControlStrategyInterface {
 
-  private final GameMap myGameMap;
+  private final GameMapInterface myGameMap;
   private final EntityPlacement myEntityPlacement;
   private final GameInputManager myInputManager;
 
@@ -32,7 +32,7 @@ public class KeyboardControlStrategy implements ControlStrategyInterface {
    * @param entityPlacement the EntityPlacement representing the entity's position
    */
   public KeyboardControlStrategy(GameInputManager input,
-      GameMap gameMap, EntityPlacement entityPlacement) {
+      GameMapInterface gameMap, EntityPlacement entityPlacement) {
     myEntityPlacement = entityPlacement;
     myInputManager = input;
     myGameMap = gameMap;

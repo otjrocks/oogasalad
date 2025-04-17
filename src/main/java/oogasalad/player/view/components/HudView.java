@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import oogasalad.engine.LanguageManager;
-import oogasalad.engine.model.GameState;
+import oogasalad.engine.model.GameStateInterface;
 import oogasalad.player.view.GameView;
 
 import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
@@ -23,7 +23,7 @@ public class HudView extends VBox {
   /**
    * Constructs HUDView according to state, game view, and runnable
    */
-  public HudView(GameState gameState, GameView gameView, Runnable onReturnToMenu) {
+  public HudView(GameStateInterface gameState, GameView gameView, Runnable onReturnToMenu) {
     super(ELEMENT_SPACING);
 
     // Row 1: Score + Lives
@@ -64,7 +64,7 @@ public class HudView extends VBox {
   /**
    * Updates the HUD score label and lives label
    */
-  public void update(GameState gameState) {
+  public void update(GameStateInterface gameState) {
     scoreLabel.setText(
         String.format(LanguageManager.getMessage("SCORE_LABEL"), gameState.getScore()));
     livesLabel.setText(

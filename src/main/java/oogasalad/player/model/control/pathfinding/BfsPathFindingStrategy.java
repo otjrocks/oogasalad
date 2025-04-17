@@ -3,7 +3,7 @@ package oogasalad.player.model.control.pathfinding;
 import java.util.*;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 
 /**
  * BfsPathFindingStrategy implements the PathFindingStrategy interface using the Breadth-First
@@ -14,7 +14,7 @@ import oogasalad.engine.model.GameMap;
 public class BfsPathFindingStrategy implements PathFindingStrategyInterface {
 
   @Override
-  public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY,
+  public int[] getPath(GameMapInterface map, int startX, int startY, int targetX, int targetY,
       EntityPlacement thisEntity, Direction thisDirection) {
     if (!map.isValidPosition(startX, startY) || !map.isValidPosition(targetX, targetY)) {
       return new int[]{0, 0};
@@ -24,7 +24,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategyInterface {
     return buildDirection(startX, startY, targetNode);
   }
 
-  private Node bfs(GameMap map, int startX, int startY, int targetX, int targetY,
+  private Node bfs(GameMapInterface map, int startX, int startY, int targetX, int targetY,
       EntityPlacement thisEntity, Direction thisDirection) {
     Queue<Node> queue = new LinkedList<>();
     Set<String> visited = new HashSet<>();
@@ -45,7 +45,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategyInterface {
     return null;
   }
 
-  private void exploreNeighbors(GameMap map, Node current,
+  private void exploreNeighbors(GameMapInterface map, Node current,
       EntityPlacement thisEntity, Direction thisDirection,
       Queue<Node> queue, Set<String> visited) {
     for (int[] neighbor : getNeighbors(map, current, thisEntity, thisDirection)) {
@@ -70,7 +70,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategyInterface {
   }
 
 
-  private List<int[]> getNeighbors(GameMap map, Node current, EntityPlacement thisEntity,
+  private List<int[]> getNeighbors(GameMapInterface map, Node current, EntityPlacement thisEntity,
       Direction thisDirection) {
     if (current.depth == 0 && thisDirection != null && !thisDirection.isNone()
         && thisDirection.getAngle() != null) {

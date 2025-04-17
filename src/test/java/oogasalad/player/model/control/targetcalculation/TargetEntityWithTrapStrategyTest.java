@@ -1,7 +1,7 @@
 package oogasalad.player.model.control.targetcalculation;
 
 import oogasalad.engine.enums.Directions.Direction;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.entity.Entity;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ class TargetEntityWithTrapStrategyTest {
 
   @Test
   void getTargetPosition_withTeammate_returnsRotatedTarget() {
-    GameMap mockMap = mock(GameMap.class);
+    GameMapInterface mockMap = mock(GameMapInterface.class);
     Entity targetEntity = mock(Entity.class);
     Entity teammateEntity = mock(Entity.class);
     EntityPlacement targetPlacement = mock(EntityPlacement.class);
@@ -55,7 +55,7 @@ class TargetEntityWithTrapStrategyTest {
 
   @Test
   void getTargetPosition_noTeammate_returnsUnrotatedTargetAkaDefaultAheadOfTarget() {
-    GameMap mockMap = mock(GameMap.class);
+    GameMapInterface mockMap = mock(GameMapInterface.class);
     Entity targetEntity = mock(Entity.class);
     EntityPlacement targetPlacement = mock(EntityPlacement.class);
 
@@ -83,7 +83,7 @@ class TargetEntityWithTrapStrategyTest {
 
   @Test
   void getTargetPosition_noTargetEntity_returnsDefaultZero() {
-    GameMap mockMap = mock(GameMap.class);
+    GameMapInterface mockMap = mock(GameMapInterface.class);
     when(mockMap.iterator()).thenReturn(java.util.Collections.emptyIterator());
 
     Map<String, Object> config = Map.of(

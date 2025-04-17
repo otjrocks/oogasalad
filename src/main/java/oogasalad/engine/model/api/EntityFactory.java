@@ -2,7 +2,7 @@ package oogasalad.engine.model.api;
 
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.engine.model.entity.Entity;
 
 /**
@@ -19,7 +19,7 @@ public class EntityFactory {
    * @return An Entity object.
    * @see Entity
    */
-  public static Entity createEntity(GameInputManager input, EntityPlacement data, GameMap gameMap) {
+  public static Entity createEntity(GameInputManager input, EntityPlacement data, GameMapInterface gameMap) {
     return new Entity(input, data, gameMap);
   }
 }

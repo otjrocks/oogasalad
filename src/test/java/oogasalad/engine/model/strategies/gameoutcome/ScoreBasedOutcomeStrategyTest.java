@@ -1,6 +1,6 @@
 package oogasalad.engine.model.strategies.gameoutcome;
 
-import oogasalad.engine.model.GameState;
+import oogasalad.engine.model.GameStateInterface;
 import oogasalad.engine.records.GameContextRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,12 +11,12 @@ import static org.mockito.Mockito.*;
 // chatgpt this given the tests for entity based outcome strategy and its tests
 class ScoreBasedOutcomeStrategyTest {
 
-  private GameState gameState;
+  private GameStateInterface gameState;
   private GameContextRecord context;
 
   @BeforeEach
   void setUp() {
-    gameState = mock(GameState.class);
+    gameState = mock(GameStateInterface.class);
     context = mock(GameContextRecord.class);
     when(context.gameState()).thenReturn(gameState);
   }

@@ -2,7 +2,7 @@ package oogasalad.player.model.control.pathfinding;
 
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.player.model.exceptions.PathFindingStrategyException;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +45,7 @@ public class PathFindingStrategyFactoryTest {
     private HiddenPathFindingStrategy() {}
 
     @Override
-    public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY,
+    public int[] getPath(GameMapInterface map, int startX, int startY, int targetX, int targetY,
         EntityPlacement thisEntity, Direction thisDirection) {
       return new int[0];
     }

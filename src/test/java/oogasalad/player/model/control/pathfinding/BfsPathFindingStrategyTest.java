@@ -10,22 +10,22 @@ import java.util.List;
 import java.util.Optional;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.EntityTypeRecord;
 import oogasalad.engine.model.entity.Entity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 
 class BfsPathFindingStrategyTest {
 
-  private GameMap mockMap;
+  private GameMapInterface mockMap;
   private BfsPathFindingStrategy strategy;
   private EntityPlacement mockEntityPlacement;
 
   @BeforeEach
   public void setUp() {
-    mockMap = mock(GameMap.class);
+    mockMap = mock(GameMapInterface.class);
     mockEntityPlacement = mock(EntityPlacement.class);
     strategy = new BfsPathFindingStrategy();
   }
@@ -126,7 +126,7 @@ class BfsPathFindingStrategyTest {
     // Start and target valid
     Entity blockedEntity = mock(Entity.class);
     EntityPlacement blockedPlacement = mock(EntityPlacement.class);
-    EntityType blockedType = mock(EntityType.class);
+    EntityTypeRecord blockedType = mock(EntityTypeRecord.class);
     when(mockMap.getEntityAt(anyInt(), anyInt())).thenReturn(Optional.of(blockedEntity));
     when(blockedEntity.getEntityPlacement()).thenReturn(blockedPlacement);
     when(blockedPlacement.getType()).thenReturn(blockedType);

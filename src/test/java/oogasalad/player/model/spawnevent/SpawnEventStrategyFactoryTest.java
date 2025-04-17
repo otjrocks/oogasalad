@@ -8,14 +8,14 @@ class SpawnEventStrategyFactoryTest {
   // ChatGPT assisted in generating these tests.
   @Test
   void createSpawnEventStrategy_scoreBased_returnsScoreBasedSpawnEventStrategy() {
-    SpawnEventStrategy strategy = SpawnEventStrategyFactory.createSpawnEventStrategy("ScoreBased");
+    SpawnEventStrategyInterface strategy = SpawnEventStrategyFactory.createSpawnEventStrategy("ScoreBased");
     assertNotNull(strategy);
     assertTrue(strategy instanceof ScoreBasedSpawnEventStrategy);
   }
 
   @Test
   void createSpawnEventStrategy_timeElapsed_returnsTimeElapsedSpawnEventStrategy() {
-    SpawnEventStrategy strategy = SpawnEventStrategyFactory.createSpawnEventStrategy("TimeElapsed");
+    SpawnEventStrategyInterface strategy = SpawnEventStrategyFactory.createSpawnEventStrategy("TimeElapsed");
     assertNotNull(strategy);
     assertTrue(strategy instanceof TimeElapsedSpawnEventStrategy);
   }

@@ -3,7 +3,7 @@ package oogasalad.player.model.control.targetcalculation;
 import java.util.Map;
 import java.util.Optional;
 
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 import oogasalad.engine.model.entity.Entity;
 
 /**
@@ -34,7 +34,7 @@ import oogasalad.engine.model.entity.Entity;
  */
 public class TargetEntityStrategy implements TargetStrategyInterface {
 
-  private final GameMap myGameMap;
+  private final GameMapInterface myGameMap;
   private final String myTargetType;
 
   /**
@@ -44,7 +44,7 @@ public class TargetEntityStrategy implements TargetStrategyInterface {
    * @param gameMap        the game map on which the target calculation is performed
    * @param strategyConfig strategy configuration containing the target type
    */
-  public TargetEntityStrategy(GameMap gameMap, Map<String, Object> strategyConfig) {
+  public TargetEntityStrategy(GameMapInterface gameMap, Map<String, Object> strategyConfig) {
     myGameMap = gameMap;
     myTargetType = TargetStrategyHelperMethods.validateAndGetKeyString(strategyConfig,
         "targetType");

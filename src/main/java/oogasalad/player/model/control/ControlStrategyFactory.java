@@ -5,8 +5,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.controlConfig.ControlConfig;
+import oogasalad.engine.model.GameMapInterface;
+import oogasalad.engine.model.controlConfig.ControlConfigInterface;
 import oogasalad.player.model.exceptions.ControlStrategyException;
 
 /**
@@ -21,8 +21,8 @@ import oogasalad.player.model.exceptions.ControlStrategyException;
  * implementations.</p>
  *
  * <p>Usage of this class involves providing a {@link GameInputManager}, an
- * {@link EntityPlacement}, and a {@link GameMap} to the
- * {@link #createControlStrategy(GameInputManager, EntityPlacement, GameMap)} method, which returns
+ * {@link EntityPlacement}, and a {@link GameMapInterface} to the
+ * {@link #createControlStrategy(GameInputManager, EntityPlacement, GameMapInterface)} method, which returns
  * an instance of the appropriate {@link ControlStrategyInterface}.</p>
  *
  * <p>Note: This class assumes that the control strategy classes follow a specific naming
@@ -51,15 +51,15 @@ public class ControlStrategyFactory {
    *
    * @param input           the {@link GameInputManager} to be used by the control strategy
    * @param entityPlacement the {@link EntityPlacement} containing the control type
-   * @param gameMap         the {@link GameMap} to be used by the control strategy
+   * @param gameMap         the {@link GameMapInterface} to be used by the control strategy
    * @return an instance of {@link ControlStrategyInterface} corresponding to the control type
    * @throws ControlStrategyException if the control strategy cannot be created or instantiated
    */
   public static ControlStrategyInterface createControlStrategy(
       GameInputManager input, EntityPlacement entityPlacement,
-      GameMap gameMap)
+      GameMapInterface gameMap)
       throws ControlStrategyException {
-    ControlConfig controlConfig = entityPlacement.getType().controlConfig();
+    ControlConfigInterface controlConfig = entityPlacement.getType().controlConfig();
     String className =
         STRATEGY_PACKAGE + controlConfig.getClass().getSimpleName().replace("Config", "Strategy");
 
@@ -76,7 +76,7 @@ public class ControlStrategyFactory {
   private static ControlStrategyInterface instantiateStrategy(Class<?> strategyClass,
       GameInputManager input,
       EntityPlacement placement,
-      GameMap gameMap, ControlConfig controlConfig)
+      GameMapInterface gameMap, ControlConfigInterface controlConfig)
       throws ControlStrategyException {
     try {
       for (Constructor<?> constructor : strategyClass.getConstructors()) {
@@ -99,8 +99,8 @@ public class ControlStrategyFactory {
 
   private static ControlStrategyInterface tryInstantiateStrategy(Constructor<?> constructor,
       GameInputManager input,
-      GameMap gameMap,
-      EntityPlacement placement, ControlConfig controlConfig)
+      GameMapInterface gameMap,
+      EntityPlacement placement, ControlConfigInterface controlConfig)
       throws ControlStrategyException {
     try {
       // target and bfs, keyboard uses 3, basic uses 0
@@ -140,16 +140,16 @@ public class ControlStrategyFactory {
   private static boolean matchesThreeArgConstructorConfig(Constructor<?> constructor) {
     Class<?>[] paramTypes = constructor.getParameterTypes();
     return paramTypes.length == 3 &&
-        paramTypes[0].equals(GameMap.class) &&
+        paramTypes[0].equals(GameMapInterface.class) &&
         paramTypes[1].equals(EntityPlacement.class) &&
-        paramTypes[2].equals(ControlConfig.class);
+        paramTypes[2].equals(ControlConfigInterface.class);
   }
 
   private static boolean matchesThreeArgConstructorInput(Constructor<?> constructor) {
     Class<?>[] paramTypes = constructor.getParameterTypes();
     return paramTypes.length == 3 &&
         paramTypes[0].equals(GameInputManager.class) &&
-        paramTypes[1].equals(GameMap.class) &&
+        paramTypes[1].equals(GameMapInterface.class) &&
         paramTypes[2].equals(EntityPlacement.class);
   }
 

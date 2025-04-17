@@ -1,13 +1,8 @@
 package oogasalad.engine.model.api;
 
-import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
-import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategy;
-import oogasalad.engine.model.strategies.gameoutcome.ScoreBasedOutcomeStrategy;
-import oogasalad.engine.records.config.model.losecondition.LivesBasedCondition;
-import oogasalad.engine.records.config.model.losecondition.LoseCondition;
-import oogasalad.engine.records.config.model.wincondition.EntityBasedCondition;
-import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
-import oogasalad.engine.records.config.model.wincondition.WinCondition;
+import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
+import oogasalad.engine.records.config.model.losecondition.LoseConditionInterface;
+import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
 
 /**
  * A factory design pattern to create the appropriate GameOutcome strategy
@@ -26,7 +21,7 @@ public class GameOutcomeFactory {
    * @param winCondition the WinCondition object
    * @return corresponding GameOutcomeStrategy
    */
-  public static GameOutcomeStrategy createWinStrategy(WinCondition winCondition) {
+  public static GameOutcomeStrategyInterface createWinStrategy(WinConditionInterface winCondition) {
     if (winCondition == null) {
       throw new IllegalArgumentException("Win condition cannot be null");
     }
@@ -40,7 +35,7 @@ public class GameOutcomeFactory {
    * @param loseCondition the loseCondition object
    * @return corresponding GameOutcomeStrategy
    */
-  public static GameOutcomeStrategy createLoseStrategy(LoseCondition loseCondition) {
+  public static GameOutcomeStrategyInterface createLoseStrategy(LoseConditionInterface loseCondition) {
     if (loseCondition == null) {
       throw new IllegalArgumentException("Lose condition cannot be null");
     }

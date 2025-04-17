@@ -13,14 +13,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.EntityTypeRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AuthoringModelTest {
 
     private AuthoringModel model;
-    private EntityType mockTemplate1;
+    private EntityTypeRecord mockTemplate1;
   private LevelDraft level;
 
     @BeforeEach
@@ -29,10 +29,10 @@ class AuthoringModelTest {
         level = new LevelDraft("Level 1", "level1_map.json");
         model.addLevel(level);
 
-        mockTemplate1 = mock(EntityType.class);
+        mockTemplate1 = mock(EntityTypeRecord.class);
         when(mockTemplate1.type()).thenReturn("Player");
 
-      EntityType mockTemplate2 = mock(EntityType.class);
+      EntityTypeRecord mockTemplate2 = mock(EntityTypeRecord.class);
         when(mockTemplate2.type()).thenReturn("Enemy");
     }
 
@@ -46,7 +46,7 @@ class AuthoringModelTest {
     @Test
     public void findEntityType_EntityExists_ReturnsEntity() {
         model.addEntityType(mockTemplate1);
-        Optional<EntityType> result = model.findEntityType("Player");
+        Optional<EntityTypeRecord> result = model.findEntityType("Player");
 
         assertTrue(result.isPresent());
         assertEquals(mockTemplate1, result.get());
@@ -62,7 +62,7 @@ class AuthoringModelTest {
         model.addEntityType(mockTemplate1);
         EntityPlacement placement = level.createAndAddEntityPlacement(mockTemplate1, 10, 20);
 
-        EntityType updated = mock(EntityType.class);
+        EntityTypeRecord updated = mock(EntityTypeRecord.class);
         when(updated.type()).thenReturn("Player");
 
         model.updateEntityType(mockTemplate1.type(), updated);
@@ -157,7 +157,7 @@ class AuthoringModelTest {
     @Test
     public void getEntityTypes_ModifyReturnedCollection_ThrowsException() {
         model.addEntityType(mockTemplate1);
-        Collection<EntityType> types = model.getEntityTypes();
+        Collection<EntityTypeRecord> types = model.getEntityTypes();
 
         assertThrows(UnsupportedOperationException.class, types::clear);
     }

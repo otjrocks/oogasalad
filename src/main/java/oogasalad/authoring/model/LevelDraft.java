@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
+import oogasalad.engine.model.EntityTypeRecord;
 
 /**
  * Represents a draft of a single level in the authoring environment. Stores metadata such as name,
@@ -69,7 +69,7 @@ public class LevelDraft {
    * @param y    the Y-coordinate (in pixels)
    * @return the created EntityPlacement, or null if the type is null
    */
-  public EntityPlacement createAndAddEntityPlacement(EntityType type, double x, double y) {
+  public EntityPlacement createAndAddEntityPlacement(EntityTypeRecord type, double x, double y) {
     if (type == null) {
       return null;
     }
@@ -204,7 +204,7 @@ public class LevelDraft {
 
   /**
    * Updates the mode name for all {@link EntityPlacement}s that belong to the specified entity type
-   * and currently use the old mode name. This is used when renaming a mode in the {@link EntityType}
+   * and currently use the old mode name. This is used when renaming a mode in the {@link EntityTypeRecord}
    * so that all existing placements referencing the old mode are updated to the new mode name.
    *
    * @param entityTypeName the name of the entity type to update
@@ -222,12 +222,12 @@ public class LevelDraft {
 
   /**
    * Re-resolves all {@link EntityPlacement}s in the level using the given map of updated
-   * {@link EntityType}s. This should be called after replacing or modifying an entity type
+   * {@link EntityTypeRecord}s. This should be called after replacing or modifying an entity type
    * in the global entity type map to ensure that all placements use the latest version.
    *
-   * @param typeMap a map of entity type names to updated {@link EntityType} instances
+   * @param typeMap a map of entity type names to updated {@link EntityTypeRecord} instances
    */
-  public void refreshEntityTypes(Map<String, EntityType> typeMap) {
+  public void refreshEntityTypes(Map<String, EntityTypeRecord> typeMap) {
     for (EntityPlacement p : entityPlacements) {
       if (typeMap.containsKey(p.getTypeString())) {
         p.setResolvedEntityType(typeMap.get(p.getTypeString()));

@@ -8,7 +8,7 @@ import javafx.animation.Timeline;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.model.GameState;
+import oogasalad.engine.model.GameStateInterface;
 import oogasalad.player.view.components.HudView;
 
 /**
@@ -19,7 +19,7 @@ import oogasalad.player.view.components.HudView;
 public class GameScreenView extends VBox {
 
   private final MainController mainController;
-  private final GameState gameState;
+  private final GameStateInterface gameState;
   private final HudView hudView;
   private int lastScore;
   private int lastLives;
@@ -30,7 +30,7 @@ public class GameScreenView extends VBox {
    * @param controller The main controller for the player view.
    * @param gameState  The game state object for this current game.
    */
-  public GameScreenView(MainController controller, GameState gameState) {
+  public GameScreenView(MainController controller, GameStateInterface gameState) {
     super();
     this.gameState = gameState;
     this.mainController = controller;

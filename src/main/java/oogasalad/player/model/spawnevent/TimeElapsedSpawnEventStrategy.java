@@ -2,18 +2,18 @@ package oogasalad.player.model.spawnevent;
 
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.records.GameContextRecord;
-import oogasalad.engine.records.config.model.SpawnEvent;
+import oogasalad.engine.records.config.model.SpawnEventRecord;
 
 /**
  * A spawn event strategy that handles TimeElapsed conditions.
  *
  * @author Owen Jennings
  */
-public class TimeElapsedSpawnEventStrategy implements SpawnEventStrategy {
+public class TimeElapsedSpawnEventStrategy implements SpawnEventStrategyInterface {
   // I used ChatGPT to refactor parts of this code.
 
   @Override
-  public boolean shouldSpawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord) {
+  public boolean shouldSpawn(SpawnEventRecord spawnEvent, GameContextRecord gameContextRecord) {
     Object amountObj = spawnEvent.spawnCondition().parameters().get("amount");
     if (amountObj == null) {
       LoggingManager.LOGGER.warn(
@@ -32,7 +32,7 @@ public class TimeElapsedSpawnEventStrategy implements SpawnEventStrategy {
   }
 
   @Override
-  public boolean shouldDespawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord) {
+  public boolean shouldDespawn(SpawnEventRecord spawnEvent, GameContextRecord gameContextRecord) {
     Object amountObj = spawnEvent.despawnCondition().parameters().get("amount");
     if (amountObj == null) {
       LoggingManager.LOGGER.warn(

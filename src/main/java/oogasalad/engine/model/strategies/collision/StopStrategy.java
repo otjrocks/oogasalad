@@ -10,7 +10,7 @@ import oogasalad.engine.records.CollisionContextRecord;
  *
  * @author Owen Jennings
  */
-public class StopStrategy implements CollisionStrategy {
+public class StopStrategy implements CollisionStrategyInterface {
 
   @Override
   public void handleCollision(CollisionContextRecord collisionContext)

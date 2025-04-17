@@ -15,11 +15,11 @@ public class SpawnEventStrategyFactory {
    * @param type The type string of the spawn event strategy you wish to create.
    * @return A spawn event strategy of the correct type.
    */
-  public static SpawnEventStrategy createSpawnEventStrategy(String type) {
+  public static SpawnEventStrategyInterface createSpawnEventStrategy(String type) {
     try {
       Class<?> clazz = Class.forName(STRATEGY_PACKAGE + "." + type + "SpawnEventStrategy");
-      if (SpawnEventStrategy.class.isAssignableFrom(clazz)) {
-        return (SpawnEventStrategy) clazz.getDeclaredConstructor().newInstance();
+      if (SpawnEventStrategyInterface.class.isAssignableFrom(clazz)) {
+        return (SpawnEventStrategyInterface) clazz.getDeclaredConstructor().newInstance();
       } else {
         throw new IllegalArgumentException(
             type + "SpawnEventStrategy does not implement SpawnEventStrategy.");

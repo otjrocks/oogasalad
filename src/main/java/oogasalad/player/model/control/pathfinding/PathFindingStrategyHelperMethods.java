@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.GameMap;
+import oogasalad.engine.model.GameMapInterface;
 
 /**
  * A utility class that provides helper methods for pathfinding strategies. This class includes
@@ -26,7 +26,7 @@ import oogasalad.engine.model.GameMap;
  */
 public class PathFindingStrategyHelperMethods {
 
-  static List<int[]> getPreferredNeighbors(GameMap map, int x, int y,
+  static List<int[]> getPreferredNeighbors(GameMapInterface map, int x, int y,
       EntityPlacement thisEntity,
       Direction thisDirection) {
     if (thisDirection == Direction.NONE) {
@@ -43,7 +43,7 @@ public class PathFindingStrategyHelperMethods {
     return getValidNeighborsFromDirections(map, x, y, thisEntity, preferredDirs);
   }
 
-  static List<int[]> getAllValidNeighbors(GameMap map, int x, int y,
+  static List<int[]> getAllValidNeighbors(GameMapInterface map, int x, int y,
       EntityPlacement thisEntity) {
     List<Direction> allDirs = new ArrayList<>();
     for (Direction dir : Direction.values()) {
@@ -56,7 +56,7 @@ public class PathFindingStrategyHelperMethods {
   }
 
 
-  static List<int[]> getValidDirections(GameMap map, int startX, int startY,
+  static List<int[]> getValidDirections(GameMapInterface map, int startX, int startY,
       EntityPlacement thisEntity, Direction thisDirection) {
     if (thisDirection == null || thisDirection == Direction.NONE) {
       return getAllValidNeighbors(map, startX, startY, thisEntity);
@@ -65,7 +65,7 @@ public class PathFindingStrategyHelperMethods {
     }
   }
 
-  private static List<int[]> getValidNeighborsFromDirections(GameMap map, int x, int y,
+  private static List<int[]> getValidNeighborsFromDirections(GameMapInterface map, int x, int y,
       EntityPlacement thisEntity, List<Direction> directions) {
     List<int[]> neighbors = new ArrayList<>();
 

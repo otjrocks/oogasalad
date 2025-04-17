@@ -11,10 +11,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import oogasalad.engine.LoggingManager;
-import oogasalad.engine.config.api.ConfigSaver;
+import oogasalad.engine.config.api.ConfigSaverInterface;
 
 /**
- * Implementation of {@link ConfigSaver} that writes configuration data as JSON files using the
+ * Implementation of {@link ConfigSaverInterface} that writes configuration data as JSON files using the
  * Jackson library.
  * <p>
  * This class supports saving:
@@ -40,7 +40,7 @@ import oogasalad.engine.config.api.ConfigSaver;
  *
  * @author Will He
  */
-public class JsonConfigSaver implements ConfigSaver {
+public class JsonConfigSaver implements ConfigSaverInterface {
 
   private final ObjectMapper mapper;
   private static final String CORE_FOLDER = "core";
