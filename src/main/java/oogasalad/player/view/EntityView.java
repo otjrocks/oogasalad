@@ -42,7 +42,7 @@ public class EntityView {
     this.totalFrames = entity.getEntityPlacement().getEntityFrameNumber();
     this.height = entity.getEntityPlacement().getEntityImageHeight();
     this.width = entity.getEntityPlacement().getEntityImageWidth();
-    String imagePath = CURRENT_GAME_CONFIG_PATH + entity.getEntityPlacement().getDefaultImagePath();
+    String imagePath = CURRENT_GAME_CONFIG_PATH + entity.getEntityPlacement().getEntityImagePath();
     this.sprite = SPRITE_CACHE.computeIfAbsent(imagePath, path -> {
       try {
         return new Image(new FileInputStream(imagePath)); // Load from file path

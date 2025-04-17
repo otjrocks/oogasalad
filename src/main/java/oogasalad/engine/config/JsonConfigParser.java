@@ -365,13 +365,12 @@ public class JsonConfigParser implements ConfigParser {
     if (modeList == null || modeList.isEmpty()) {
       return "Any";   // default behave if no specified mode
     }
-    // TODO: taking first for now
-    if (entity == null || entity.modes() == null
-        || !entity.modes().contains(modeList.getFirst())) {
+    int modeIdx = modeList.getFirst();
+    if (entity == null || entity.modes() == null || modeIdx >= entity.modes().size()) {
       LoggingManager.LOGGER.warn("Unable to resolve mode. For config: {}", entity);
       return "Any";
     }
-    return entity.modes().get(modeList.getFirst()).name();
+    return entity.modes().get(modeIdx).name();
   }
 
 
