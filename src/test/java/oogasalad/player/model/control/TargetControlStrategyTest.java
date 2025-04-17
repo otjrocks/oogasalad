@@ -22,14 +22,13 @@ class TargetControlStrategyTest {
 
   private GameMap gameMap;
   private EntityPlacement placement;
-  private EntityType entityType;
   private Entity entity;
 
   @BeforeEach
   void setup() {
     gameMap = mock(GameMap.class);
     placement = mock(EntityPlacement.class);
-    entityType = mock(EntityType.class);
+    EntityType entityType = mock(EntityType.class);
     entity = mock(Entity.class);
 
     when(placement.getX()).thenReturn(5.0);

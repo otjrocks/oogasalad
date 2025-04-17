@@ -26,7 +26,6 @@ public class GameScreenView extends VBox {
   private final MainController mainController;
   private final GameState gameState;
   private final HudView hudView;
-  private GamePlayerView gamePlayerView;
   private int lastScore;
   private int lastLives;
 
@@ -41,7 +40,7 @@ public class GameScreenView extends VBox {
     this.gameState = gameState;
     this.mainController = controller;
 
-    gamePlayerView = new GamePlayerView(controller, gameState);
+    GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState);
     GameView gameView = gamePlayerView.getGameView();
 
     hudView = new HudView(

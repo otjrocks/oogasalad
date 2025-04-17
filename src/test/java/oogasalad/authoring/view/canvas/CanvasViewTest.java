@@ -25,12 +25,11 @@ import java.util.List;
 public class CanvasViewTest extends DukeApplicationTest {
 
   private CanvasView canvasView;
-  private AuthoringController controller;
 
 
   @Override
   public void start(Stage stage) {
-    controller = mock(AuthoringController.class);
+    AuthoringController controller = mock(AuthoringController.class);
 
     AuthoringModel model = mock(AuthoringModel.class);
     LevelDraft level = mock(LevelDraft.class);

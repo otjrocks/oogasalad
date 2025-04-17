@@ -32,8 +32,6 @@ import oogasalad.engine.records.config.ImageConfig;
  */
 public class EntitySelectorView {
 
-  private final String DEFAULT_MODE = "Default";
-
   private final VBox root;
   private final FlowPane tileGrid;
   private final AuthoringController controller;
@@ -139,6 +137,7 @@ public class EntitySelectorView {
     imageView.setFitHeight(48);
 
     // Get preview from the sprite sheet
+    String DEFAULT_MODE = "Default";
     if (type.modes().containsKey(DEFAULT_MODE)) {
       imageView.setImage(SpriteSheetUtil.getPreviewTile(type.modes().get(DEFAULT_MODE)));
     }

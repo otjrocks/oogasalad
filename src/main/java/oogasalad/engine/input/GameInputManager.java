@@ -11,8 +11,7 @@ import java.util.Set;
  */
 public class GameInputManager {
     private final Group root;
-    private final Scene scene;
-    private final Set<KeyCode> activeKeys = new HashSet<>();
+  private final Set<KeyCode> activeKeys = new HashSet<>();
     private KeyCode lastActiveKey = null;
 
     /**
@@ -23,8 +22,7 @@ public class GameInputManager {
      * @param root: The content root the game player is a child of
      */
     public GameInputManager(Scene scene, Group root) {
-        this.scene = scene;
-        this.root = root;
+      this.root = root;
         scene.setOnKeyPressed(event -> {
           activeKeys.remove(lastActiveKey);
           activeKeys.add(event.getCode());

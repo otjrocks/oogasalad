@@ -30,14 +30,13 @@ import org.testfx.framework.junit5.ApplicationTest;
 
 public class EntityTypeEditorViewTest extends ApplicationTest {
 
-  private AuthoringController mockController;
   private EntityTypeEditorView view;
   private EntityType mockEntityType;
 
   @BeforeEach
   public void setUp() {
     LanguageManager.setLanguage("English");
-    mockController = mock(AuthoringController.class);
+    AuthoringController mockController = mock(AuthoringController.class);
     view = new EntityTypeEditorView(mockController);
 
     // === Construct ModeConfig using new record-based structure ===

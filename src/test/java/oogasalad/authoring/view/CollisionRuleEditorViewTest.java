@@ -24,14 +24,12 @@ import java.util.Map;
 public class CollisionRuleEditorViewTest extends DukeApplicationTest {
 
   private CollisionRuleEditorView view;
-  private AuthoringController mockController;
-  private AuthoringModel mockModel;
 
   @Override
   public void start(Stage stage) {
     LanguageManager.setLanguage("English");
-    mockController = mock(AuthoringController.class);
-    mockModel = mock(AuthoringModel.class);
+    AuthoringController mockController = mock(AuthoringController.class);
+    AuthoringModel mockModel = mock(AuthoringModel.class);
 
     when(mockModel.getEntityTypeToModes()).thenReturn(
         Map.of("Pacman", List.of("Default"), "Ghost", List.of("Default"))

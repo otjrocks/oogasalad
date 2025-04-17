@@ -12,8 +12,6 @@ import static org.mockito.Mockito.*;
 class StopStrategyTest {
 
   private StopStrategy strategy;
-  private Entity entity1;
-  private Entity entity2;
   private EntityPlacement placement1;
   private EntityPlacement placement2;
   private CollisionContextRecord context;
@@ -21,8 +19,8 @@ class StopStrategyTest {
   @BeforeEach
   void setUp() {
     strategy = new StopStrategy();
-    entity1 = mock(Entity.class);
-    entity2 = mock(Entity.class);
+    Entity entity1 = mock(Entity.class);
+    Entity entity2 = mock(Entity.class);
     placement1 = mock(EntityPlacement.class);
     placement2 = mock(EntityPlacement.class);
     context = mock(CollisionContextRecord.class);

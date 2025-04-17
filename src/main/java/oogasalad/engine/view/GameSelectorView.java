@@ -24,7 +24,6 @@ import oogasalad.engine.view.components.Selector;
  */
 public class GameSelectorView extends VBox {
 
-  private final ThemeManager myThemeManager;
   private final MainController myMainController;
 
   /**
@@ -34,7 +33,7 @@ public class GameSelectorView extends VBox {
    */
   public GameSelectorView(MainController mainController) {
     super();
-    myThemeManager = new ThemeManager(mainController.getStage());
+    ThemeManager myThemeManager = new ThemeManager(mainController.getStage());
     myMainController = mainController;
     setupLayout();
 

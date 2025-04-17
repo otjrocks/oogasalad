@@ -23,9 +23,6 @@ import oogasalad.player.model.exceptions.TargetStrategyException;
  */
 public class TargetStrategyFactory {
 
-  private static String STRATEGY_PACKAGE
-      = "oogasalad.player.model.control.targetcalculation.";
-
   /**
    * Factory method to create a TargetStrategy based on the control type of the given
    * EntityPlacement.
@@ -51,6 +48,7 @@ public class TargetStrategyFactory {
           "No TargetStrategy available for control config: " + config.getClass());
     }
 
+    String STRATEGY_PACKAGE = "oogasalad.player.model.control.targetcalculation.";
     String className =
         STRATEGY_PACKAGE + targetCalculationConfig.getClass().getSimpleName()
             .replace("Config", "Strategy");

@@ -21,8 +21,7 @@ class AuthoringModelTest {
 
     private AuthoringModel model;
     private EntityType mockTemplate1;
-    private EntityType mockTemplate2;
-    private LevelDraft level;
+  private LevelDraft level;
 
     @BeforeEach
     public void setUp() {
@@ -33,7 +32,7 @@ class AuthoringModelTest {
         mockTemplate1 = mock(EntityType.class);
         when(mockTemplate1.type()).thenReturn("Player");
 
-        mockTemplate2 = mock(EntityType.class);
+      EntityType mockTemplate2 = mock(EntityType.class);
         when(mockTemplate2.type()).thenReturn("Enemy");
     }
 

@@ -43,9 +43,6 @@ import oogasalad.player.model.exceptions.ControlStrategyException;
  */
 public class ControlStrategyFactory {
 
-  private static String STRATEGY_PACKAGE
-      = "oogasalad.player.model.control.";
-
   /**
    * Creates a {@link ControlStrategyInterface} instance based on the control type of the given
    * {@link EntityPlacement}.
@@ -61,6 +58,7 @@ public class ControlStrategyFactory {
       GameMap gameMap)
       throws ControlStrategyException {
     ControlConfig controlConfig = entityPlacement.getType().controlConfig();
+    String STRATEGY_PACKAGE = "oogasalad.player.model.control.";
     String className =
         STRATEGY_PACKAGE + controlConfig.getClass().getSimpleName().replace("Config", "Strategy");
 
