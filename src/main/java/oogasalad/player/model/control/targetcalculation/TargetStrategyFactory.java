@@ -53,7 +53,7 @@ public class TargetStrategyFactory {
 
     String className =
         STRATEGY_PACKAGE + targetCalculationConfig.getClass().getSimpleName()
-            .replace("Config", "Strategy");
+            .replace("ConfigRecord", "Strategy");
 
     Map<String, Object> argsMap = recordToMap(targetCalculationConfig);
 

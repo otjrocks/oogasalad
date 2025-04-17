@@ -134,7 +134,7 @@ public class EntityTypeEditorView {
   }
 
   private void populateControlConfigUI(ControlConfigInterface config) {
-    String type = config.getClass().getSimpleName().replace("ControlConfig", "");
+    String type = config.getClass().getSimpleName().replace("ControlConfigRecord", "");
     controlTypeBox.setValue(type);
 
     controlTypeParameters.getChildren().clear();
@@ -256,7 +256,7 @@ public class EntityTypeEditorView {
       }
 
       String fullClassName =
-          "oogasalad.engine.model.controlConfig." + controlType + "ControlConfig";
+          "oogasalad.engine.model.controlConfig." + controlType + "ControlConfigRecord";
       Class<?> configClass = Class.forName(fullClassName);
       Constructor<?> constructor = configClass.getDeclaredConstructors()[0];
 

@@ -29,7 +29,7 @@ public class CollisionStrategyFactory {
       CollisionEventInterface collisionEvent) {
     try {
       String eventClassName = collisionEvent.getClass().getSimpleName();
-      String strategyClassName = eventClassName.replace("CollisionEvent",
+      String strategyClassName = eventClassName.replace("CollisionEventRecord",
           "Strategy");
       Class<?> strategyClass = Class.forName(STRATEGY_PACKAGE + "." + strategyClassName);
 

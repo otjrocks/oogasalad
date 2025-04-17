@@ -22,8 +22,8 @@ import oogasalad.player.model.exceptions.ControlStrategyException;
  *
  * <p>Usage of this class involves providing a {@link GameInputManager}, an
  * {@link EntityPlacement}, and a {@link GameMapInterface} to the
- * {@link #createControlStrategy(GameInputManager, EntityPlacement, GameMapInterface)} method, which returns
- * an instance of the appropriate {@link ControlStrategyInterface}.</p>
+ * {@link #createControlStrategy(GameInputManager, EntityPlacement, GameMapInterface)} method, which
+ * returns an instance of the appropriate {@link ControlStrategyInterface}.</p>
  *
  * <p>Note: This class assumes that the control strategy classes follow a specific naming
  * convention and are located within the {@code oogasalad.player.model.control} package. If the
@@ -61,7 +61,8 @@ public class ControlStrategyFactory {
       throws ControlStrategyException {
     ControlConfigInterface controlConfig = entityPlacement.getType().controlConfig();
     String className =
-        STRATEGY_PACKAGE + controlConfig.getClass().getSimpleName().replace("Config", "Strategy");
+        STRATEGY_PACKAGE + controlConfig.getClass().getSimpleName()
+            .replace("ConfigRecord", "Strategy");
 
     try {
       Class<?> strategyClass = Class.forName(className);

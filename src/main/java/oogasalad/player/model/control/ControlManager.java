@@ -91,7 +91,7 @@ public class ControlManager {
    */
   public static Map<String, Class<?>> getControlRequiredFields(String controlStrategyName) {
     return FileUtility.getRequiredFieldsForRecord(
-        CONTROL_CONFIG_PACKAGE_PATH + controlStrategyName + "ControlConfig");
+        CONTROL_CONFIG_PACKAGE_PATH + controlStrategyName + "ControlConfigRecord");
   }
 
   /**
@@ -102,7 +102,7 @@ public class ControlManager {
    */
   public static Map<String, Class<?>> getTargetRequiredFields(String targetStrategyName) {
     return FileUtility.getRequiredFieldsForRecord(
-        TARGET_CONFIG_PACKAGE_PATH + targetStrategyName + "Config");
+        TARGET_CONFIG_PACKAGE_PATH + targetStrategyName + "ConfigRecord");
   }
 
   /**
@@ -113,7 +113,7 @@ public class ControlManager {
    */
   public static List<String> getControlRequiredFieldsOrder(String controlStrategyName) {
     return FileUtility.getRequiredFieldsForRecordOrder(
-        CONTROL_CONFIG_PACKAGE_PATH + controlStrategyName + "ControlConfig");
+        CONTROL_CONFIG_PACKAGE_PATH + controlStrategyName + "ControlConfigRecord");
   }
 
   /**
@@ -124,6 +124,6 @@ public class ControlManager {
    */
   public static List<String> getTargetRequiredFieldsOrder(String targetStrategyName) {
     return FileUtility.getRequiredFieldsForRecordOrder(
-        TARGET_CONFIG_PACKAGE_PATH + targetStrategyName + "Config");
+        TARGET_CONFIG_PACKAGE_PATH + targetStrategyName + "ConfigRecord");
   }
 }

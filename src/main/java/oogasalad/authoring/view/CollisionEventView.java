@@ -67,7 +67,7 @@ public class CollisionEventView {
   public CollisionEventInterface getCollisionEvent() {
     try {
       String collisionName = mySelector.getValue();
-      String fullClassName = COLLISION_EVENTS_PACKAGE_PATH + collisionName + "CollisionEvent";
+      String fullClassName = COLLISION_EVENTS_PACKAGE_PATH + collisionName + "CollisionEventRecord";
       Class<?> collisionEventClass = Class.forName(fullClassName);
 
       Map<String, Class<?>> requiredFields = getCollisionRequiredFields(collisionName);
@@ -132,11 +132,11 @@ public class CollisionEventView {
   }
 
   private static List<String> getCollisionEventClassNames() {
-    return FileUtility.getFileNamesInDirectory(COLLISION_EVENTS_PATH, "CollisionEvent.java");
+    return FileUtility.getFileNamesInDirectory(COLLISION_EVENTS_PATH, "CollisionEventRecord.java");
   }
 
   private static Map<String, Class<?>> getCollisionRequiredFields(String collisionName) {
     return FileUtility.getRequiredFieldsForRecord(
-        COLLISION_EVENTS_PACKAGE_PATH + collisionName + "CollisionEvent");
+        COLLISION_EVENTS_PACKAGE_PATH + collisionName + "CollisionEventRecord");
   }
 }
