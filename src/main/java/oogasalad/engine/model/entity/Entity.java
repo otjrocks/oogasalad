@@ -5,7 +5,7 @@ import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameMap;
-import oogasalad.player.model.control.ControlStrategyInterface;
+import oogasalad.player.model.control.ControlStrategy;
 import oogasalad.player.model.control.ControlStrategyFactory;
 
 /**
@@ -20,11 +20,8 @@ public class Entity {
   private final GameMap gameMap;
   private double dx;
   private double dy;
-  private final double speed;
   private Direction currentDirection;
-  public static final double ENTITY_SPEED_MULTIPLIER = 0.12;
-  public static final double MIN_SPEED = 0;
-  public static final double MAX_SPEED = 0.5;
+  public static final double ENTITY_SPEED = 0.12;
 
   /**
    * Initialize the entity with the provided entity data.
@@ -37,33 +34,6 @@ public class Entity {
     myEntityPlacement = entityPlacement;
     this.inputManager = input;
     this.gameMap = gameMap;
-    speed = setSpeedFromConfig(entityPlacement);
-  }
-
-  private double setSpeedFromConfig(EntityPlacement entityPlacement) {
-    final double speed;
-    if (myEntityPlacement != null && myEntityPlacement.getType() != null) {
-      speed = getTransformedSpeed(entityPlacement);
-    } else {
-      speed = 0;
-    }
-    return speed;
-  }
-
-  private static double getTransformedSpeed(EntityPlacement entityPlacement) {
-    // Enforce speed is in range [0, 0.5] and multiply by a constant to transform to a reasonable amount
-    return Math.max(MIN_SPEED,
-        Math.min(ENTITY_SPEED_MULTIPLIER * entityPlacement.getType().speed(), MAX_SPEED));
-  }
-
-  /**
-   * Get the speed associated with this entity.
-   *
-   * @return A double representing the transformed and validated speed of this entity. The speed
-   * will be in the range [MIN_SPEED, MAX_SPEED]
-   */
-  double getSpeed() {
-    return speed;
   }
 
   /**
@@ -82,7 +52,7 @@ public class Entity {
    * Handle the update of an Entity.
    */
   public void update() {
-    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(inputManager,
+    ControlStrategy strategy = ControlStrategyFactory.createControlStrategy(inputManager,
         myEntityPlacement, gameMap);
 
     strategy.update(this);
@@ -99,8 +69,8 @@ public class Entity {
   }
 
   /**
-   * Set the movement direction of this entity and if changing directions snap it to the nearest int
-   * if it is close enough.
+   * Set the movement direction of this entity and if changing directions snap it to the nearest
+   * int if it is close enough.
    *
    * @param direction The new movement direction.
    */
@@ -146,8 +116,8 @@ public class Entity {
   }
 
   private void updateEntityVelocity() {
-    setDx(currentDirection.getDx() * speed);
-    setDy(currentDirection.getDy() * speed);
+    setDx(currentDirection.getDx() * ENTITY_SPEED);
+    setDy(currentDirection.getDy() * ENTITY_SPEED);
   }
 
   /**
@@ -187,8 +157,8 @@ public class Entity {
   }
 
   /**
-   * Determines if the entity can move in the specified direction based on its current position and
-   * the defined movement speed.
+   * Determines if the entity can move in the specified direction based on its current position
+   * and the defined movement speed.
    *
    * @param direction the direction to check for movement ('R' for right, 'L' for left, or other
    *                  characters for vertical movement)
@@ -197,10 +167,10 @@ public class Entity {
   public boolean canMove(Direction direction) {
     if (direction == Direction.R || direction == Direction.L) {
       return this.getEntityPlacement().getY() - (int) this.getEntityPlacement().getY()
-          < speed;
+          < ENTITY_SPEED;
     } else {
       return this.getEntityPlacement().getX() - (int) this.getEntityPlacement().getX()
-          < speed;
+          < ENTITY_SPEED;
     }
   }
 

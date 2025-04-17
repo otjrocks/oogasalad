@@ -215,24 +215,6 @@ public class CanvasView {
     }
   }
 
-
-  /**
-   * Removes all visual representations of {@link EntityPlacement}s that belong to the specified
-   * entity type. This is typically used when an EntityType is deleted from the model.
-   * <p>
-   * This method does not modify the model itself—only the visual state on the canvas.
-   *
-   * @param entityTypeName the name of the entity type whose placements should be removed
-   */
-  public void removeAllPlacementsOfType(String entityTypeName) {
-    List<EntityPlacement> toRemove = entityManager.getPlacementsForEntityType(entityTypeName);
-    for (EntityPlacement placement : toRemove) {
-      removeEntityVisual(placement);
-    }
-  }
-
-
-
   /**
    * Returns the tile highlighter used for hover and selection visuals.
    *

@@ -45,7 +45,7 @@ class TargetEntityWithTrapStrategyTest {
         "tilesAhead", 1
     );
 
-    TargetStrategyInterface strategy = new TargetEntityWithTrapStrategy(mockMap, config, "Caller");
+    TargetStrategy strategy = new TargetEntityWithTrapStrategy(mockMap, config, "Caller");
 
     // Original ahead target = (4, 3)
     // Teammate = (1, 3)
@@ -75,7 +75,7 @@ class TargetEntityWithTrapStrategyTest {
         "tilesAhead", 1
     );
 
-    TargetStrategyInterface strategy = new TargetEntityWithTrapStrategy(mockMap, config, "Caller");
+    TargetStrategy strategy = new TargetEntityWithTrapStrategy(mockMap, config, "Caller");
 
     // No teammate → just return position ahead
     assertArrayEquals(new int[]{3, 3}, strategy.getTargetPosition());
@@ -92,7 +92,7 @@ class TargetEntityWithTrapStrategyTest {
         "tilesAhead", 2
     );
 
-    TargetStrategyInterface strategy = new TargetEntityWithTrapStrategy(mockMap, config, "Caller");
+    TargetStrategy strategy = new TargetEntityWithTrapStrategy(mockMap, config, "Caller");
 
     assertArrayEquals(new int[]{0, 0}, strategy.getTargetPosition());
   }

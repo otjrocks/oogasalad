@@ -43,13 +43,11 @@ public class GameView extends StackPane {
     this.getChildren().add(myGameMapView);
     this.getStyleClass().add("game-view");
     this.setFocusTraversable(true);
-    boolean isFinalLevel = levelIndex >= configModel.levels().size() - 1;
-
     myGameLoopController = new GameLoopController(gameContext, myGameMapView,
         configModel.levels().get(levelIndex));
     myGameMapView.setGameLoopController(myGameLoopController);
     setUpEndMessage();
-    myGameMapView.setEndGameCallback(won -> showEndMessage(won, isFinalLevel));
+    myGameMapView.setEndGameCallback(this::showEndMessage);
   }
 
   private void setUpEndMessage() {
@@ -71,23 +69,13 @@ public class GameView extends StackPane {
     this.getChildren().add(node);
   }
 
-  private void showEndMessage(boolean gameWon, boolean isFinalLevel) {
-    if (gameWon) {
-      if (isFinalLevel) {
-        endLabel.setText("🎉 Congrats! 🎉");
-      } else {
-        endLabel.setText(LanguageManager.getMessage("LEVEL_PASSED"));
-      }
-    } else {
-      endLabel.setText(LanguageManager.getMessage("GAME_OVER"));
-    }
-
+  private void showEndMessage(boolean gameWon) {
+    endLabel.setText(gameWon ? LanguageManager.getMessage("LEVEL_PASSED")
+        : LanguageManager.getMessage("GAME_OVER"));
     endLabel.setVisible(true);
-    nextLevelButton.setVisible(gameWon && !isFinalLevel);
-    restartButton.setVisible(!gameWon || isFinalLevel);
+    nextLevelButton.setVisible(gameWon);
+    restartButton.setVisible(!gameWon);
   }
-
-
 
   /**
    * Sets the action to be executed when the restart button is clicked.
@@ -100,15 +88,6 @@ public class GameView extends StackPane {
    */
   public void setRestartAction(Runnable action) {
     restartButton.setOnAction(e -> action.run());
-  }
-
-  /**
-   * Sets the action to be executed when the next level button is clicked.
-   *
-   * @param action a {@code Runnable} representing the restart behavior
-   */
-  public void setNextLevelAction(Runnable action) {
-    nextLevelButton.setOnAction(e -> action.run());
   }
 
   /**

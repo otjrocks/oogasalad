@@ -9,7 +9,7 @@ import oogasalad.engine.model.GameMap;
  * A strategy for pathfinding that calculates the direction to move in order to minimize the
  * Euclidean distance to a specified target.
  */
-public class EuclideanPathFindingStrategy implements PathFindingStrategyInterface {
+public class EuclideanPathFindingStrategy implements PathFindingStrategy {
 
   @Override
   public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY,

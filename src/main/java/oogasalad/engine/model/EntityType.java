@@ -15,8 +15,7 @@ public record EntityType(
     String type,
     ControlConfig controlConfig,
     Map<String, ModeConfig> modes,
-    List<String> blocks,
-    double speed
+    List<String> blocks
 ) {
 
 }

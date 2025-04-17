@@ -16,7 +16,7 @@ class TargetLocationStrategyTest {
     GameMap mockMap = mock(GameMap.class);
     Map<String, Object> config = Map.of("targetX", 7, "targetY", 3);
 
-    TargetStrategyInterface strategy = new TargetLocationStrategy(mockMap, config);
+    TargetStrategy strategy = new TargetLocationStrategy(mockMap, config);
 
     assertArrayEquals(new int[]{7, 3}, strategy.getTargetPosition());
   }

@@ -287,12 +287,12 @@ public class JsonConfigBuilder {
       modeNode.put("name", mode.name());
 
       ObjectNode imageNode = modeNode.putObject("image");
-      imageNode.put("imagePath", getImagePath(mode.image().imagePath()));
+      imageNode.put("imagePath", getRelativeImagePath(mode.image().imagePath()));
 
       // Replace with actual values if ModeConfig/Image provides them
       imageNode.put("tileWidth", 14);
       imageNode.put("tileHeight", 14);
-      imageNode.put("tilesToCycle", 1);
+      imageNode.putArray("tilesToCycle").add(1);
       imageNode.put("animationSpeed", 2);
     }
   }
@@ -316,10 +316,11 @@ public class JsonConfigBuilder {
     return result;
   }
 
-  private String getImagePath(String fullPath) {
-    // Extract just the file name from the full path
-    String fileName = fullPath.substring(fullPath.lastIndexOf('/') + 1);
-    return "assets/" + fileName;
+  private String getRelativeImagePath(String fullPath) {
+    // Assume your assets root is in `src/main/resources/assets/`
+    String marker = "assets/";
+    int index = fullPath.indexOf(marker);
+    return index >= 0 ? fullPath.substring(index) : fullPath;
   }
 
 }

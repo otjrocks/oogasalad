@@ -31,7 +31,7 @@ class TargetAheadOfEntityStrategyTest {
     when(mockMap.isNotBlocked("Caller", 6, 4)).thenReturn(true);
 
     Map<String, Object> config = Map.of("targetType", "Enemy", "tilesAhead", 2);
-    TargetStrategyInterface strategy = new TargetAheadOfEntityStrategy(mockMap, config, "Caller");
+    TargetStrategy strategy = new TargetAheadOfEntityStrategy(mockMap, config, "Caller");
 
     assertArrayEquals(new int[]{6, 4}, strategy.getTargetPosition());
   }
@@ -42,7 +42,7 @@ class TargetAheadOfEntityStrategyTest {
     when(mockMap.iterator()).thenReturn(java.util.Collections.emptyIterator());
 
     Map<String, Object> config = Map.of("targetType", "Enemy", "tilesAhead", 3);
-    TargetStrategyInterface strategy = new TargetAheadOfEntityStrategy(mockMap, config, "Caller");
+    TargetStrategy strategy = new TargetAheadOfEntityStrategy(mockMap, config, "Caller");
 
     assertArrayEquals(new int[]{0, 0}, strategy.getTargetPosition());
   }
@@ -67,7 +67,7 @@ class TargetAheadOfEntityStrategyTest {
     when(mockMap.isNotBlocked("Caller", 2, 4)).thenReturn(false); // Blocked
 
     Map<String, Object> config = Map.of("targetType", "Enemy", "tilesAhead", 1);
-    TargetStrategyInterface strategy = new TargetAheadOfEntityStrategy(mockMap, config, "Caller");
+    TargetStrategy strategy = new TargetAheadOfEntityStrategy(mockMap, config, "Caller");
 
     assertArrayEquals(new int[]{2, 3}, strategy.getTargetPosition());
   }

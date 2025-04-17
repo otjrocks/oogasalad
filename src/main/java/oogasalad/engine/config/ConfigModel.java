@@ -4,6 +4,7 @@ import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.model.GameSettings;
 import oogasalad.engine.model.MetaData;
+import oogasalad.engine.model.Tiles;
 import java.util.List;
 import oogasalad.engine.records.config.model.ParsedLevel;
 import oogasalad.engine.records.config.model.wincondition.WinCondition;
@@ -31,6 +32,6 @@ public record ConfigModel(MetaData metadata,
                           List<ParsedLevel> levels,
                           List<CollisionRule> collisionRules,
                           WinCondition winCondition,
-                          int currentLevelIndex) {
+                          List<Tiles> tiles) {
 
 }

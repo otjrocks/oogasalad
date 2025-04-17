@@ -1,14 +1,13 @@
 package oogasalad.player.view;
 
-import static oogasalad.player.view.GamePlayerView.CURRENT_GAME_CONFIG_PATH;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.ResourceBundle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import oogasalad.engine.LoggingManager;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.entity.Entity;
 
@@ -28,27 +27,24 @@ public class EntityView {
   private static final Map<String, Image> SPRITE_CACHE = new HashMap<>();
   private final Entity entity;
   private final int totalFrames;
-  private final int height;
-  private final int width;
+  private final int dimension;
   private final Image sprite;
 
   /**
    * Initialize an Entity view.
    *
-   * @param entity The Entity model used to represent this view.
+   * @param entity      The Entity model used to represent this view.
    */
   public EntityView(Entity entity) {
     this.entity = entity;
     this.totalFrames = entity.getEntityPlacement().getEntityFrameNumber();
-    this.height = entity.getEntityPlacement().getEntityImageHeight();
-    this.width = entity.getEntityPlacement().getEntityImageWidth();
-    String imagePath = CURRENT_GAME_CONFIG_PATH + entity.getEntityPlacement().getEntityImagePath();
-    this.sprite = SPRITE_CACHE.computeIfAbsent(imagePath, path -> {
-      try {
-        return new Image(new FileInputStream(imagePath)); // Load from file path
-      } catch (FileNotFoundException e) {
-        LoggingManager.LOGGER.warn("Unable to load entity image {}", imagePath);
-        throw new RuntimeException("Failed to load image from path: " + imagePath, e);
+    this.dimension = 28;
+    this.sprite = SPRITE_CACHE.computeIfAbsent(entity.getEntityPlacement().getEntityImagePath(), name -> {
+      try (InputStream stream = EntityView.class.getClassLoader().getResourceAsStream("sprites/" + name + ".png")) {
+        if (stream == null) throw new IllegalArgumentException("Image not found: " + name);
+        return new Image(stream);
+      } catch (IOException e) {
+        throw new RuntimeException("Failed to load image: " + name, e);
       }
     });
   }
@@ -65,13 +61,13 @@ public class EntityView {
     int frameIndex = entity.getEntityPlacement().getCurrentFrame() % totalFrames;
     int dirOffset = 0;
 
-    if (entity.getEntityDirection() == Direction.L) {
+    if (entity.getEntityDirection() == Direction.L){
       dirOffset = 28;
     }
-    if (entity.getEntityDirection() == Direction.U) {
+    if (entity.getEntityDirection() == Direction.U){
       dirOffset = 56;
     }
-    if (entity.getEntityDirection() == Direction.D) {
+    if(entity.getEntityDirection() == Direction.D){
       dirOffset = 84;
     }
 
@@ -80,10 +76,10 @@ public class EntityView {
 
     gc.drawImage(
         sprite,
-        frameIndex * width,
+            frameIndex * dimension,
         dirOffset,
-        width,
-        height,
+        dimension,
+        dimension,
         destX,
         destY,
         tileWidth,

@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -14,7 +13,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.authoring.view.util.SpriteSheetUtil;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.model.EntityType;
 
@@ -22,17 +20,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.config.ImageConfig;
 
 /**
- * View displaying all defined EntityTypes in a draggable grid. Clicking on a tile notifies the
- * controller to open an editor. Selected tile is visually highlighted.
+ * View displaying all defined EntityTypes in a draggable grid.
+ * Clicking on a tile notifies the controller to open an editor.
+ * Selected tile is visually highlighted.
  *
  * @author Will He, Ishan Madan
  */
 public class EntitySelectorView {
-
-  private final String DEFAULT_MODE = "Default";
 
   private final VBox root;
   private final FlowPane tileGrid;
@@ -43,7 +39,6 @@ public class EntitySelectorView {
 
   /**
    * View for selecting EntityType to drag onto Canvas
-   *
    * @param controller Wiring with model
    */
   public EntitySelectorView(AuthoringController controller) {
@@ -75,7 +70,7 @@ public class EntitySelectorView {
 
   /**
    * Returns the root JavaFX node of this view
-   *
+   * 
    * @return the root node
    */
   public Parent getRoot() {
@@ -137,13 +132,12 @@ public class EntitySelectorView {
     ImageView imageView = new ImageView();
     imageView.setFitWidth(48);
     imageView.setFitHeight(48);
-
-    // Get preview from the sprite sheet
-    if (type.modes().containsKey(DEFAULT_MODE)) {
-      imageView.setImage(SpriteSheetUtil.getPreviewTile(type.modes().get(DEFAULT_MODE)));
+    String imagePath = getDefaultModeImage(type);
+    if (imagePath != null) {
+      imageView.setImage(new Image(imagePath));
     }
 
-    tile.getChildren().add(imageView);
+    tile.getChildren().addAll(imageView);
 
     // Click to open in EntityEditor
     tile.setOnMouseClicked(e -> controller.selectEntityType(type.type()));
@@ -155,11 +149,15 @@ public class EntitySelectorView {
       ClipboardContent content = new ClipboardContent();
       content.putString(type.type());
       db.setContent(content);
-      content.putString(type.type());
-      db.setContent(content);
       e.consume();
     });
 
     return tile;
+  }
+
+  private String getDefaultModeImage(EntityType type) {
+    Map<String, ModeConfig> modes = type.modes();
+    if (modes == null || !modes.containsKey("Default")) return null;
+    return modes.get("Default").image().imagePath();
   }
 }

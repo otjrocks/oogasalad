@@ -63,7 +63,7 @@ public class GameStateImplTest {
     gameState.resetState();
 
     assertEquals(0, gameState.getScore());
-    assertEquals(0, gameState.getLives());
+    assertEquals(3, gameState.getLives());
     assertTrue(gameState.getHudComponents().isEmpty());
   }
 
