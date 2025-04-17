@@ -26,6 +26,7 @@ public class GameScreenView extends VBox {
   private final MainController mainController;
   private final GameState gameState;
   private final HudView hudView;
+  private GamePlayerView gamePlayerView;
   private int lastScore;
   private int lastLives;
 
@@ -40,16 +41,13 @@ public class GameScreenView extends VBox {
     this.gameState = gameState;
     this.mainController = controller;
 
-    GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState);
+    gamePlayerView = new GamePlayerView(controller, gameState);
     GameView gameView = gamePlayerView.getGameView();
 
     hudView = new HudView(
         gameState,
         gameView,
-        () -> {
-          mainController.getInputManager().getRoot().getChildren().remove(this);
-          mainController.showSplashScreen();
-        }
+        this::handleReturnToMainMenu
     );
 
     this.getChildren().addAll(hudView, gamePlayerView);
@@ -66,6 +64,11 @@ public class GameScreenView extends VBox {
     );
     hudUpdater.setCycleCount(Timeline.INDEFINITE);
     hudUpdater.play();
+  }
+
+  private void handleReturnToMainMenu() {
+    mainController.getInputManager().getRoot().getChildren().remove(this);
+    mainController.showSplashScreen();
   }
 
 
