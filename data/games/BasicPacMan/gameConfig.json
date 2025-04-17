@@ -406,6 +406,11 @@
         },
         {
           "type": "ReturnToSpawnLocation"
+        },
+        {
+          "type": "ChangeModeForType",
+          "entityType": "RedGhost",
+          "newMode": "Dead"
         }
       ],
       "modeB": "Default",
@@ -420,6 +425,11 @@
         {
           "type": "UpdateScore",
           "amount": 200
+        },
+        {
+          "type": "ChangeModeForType",
+          "entityType": "OrangeGhost",
+          "newMode": "Dead"
         }
       ],
       "modeB": "Default",
@@ -437,6 +447,11 @@
         {
           "type": "UpdateScore",
           "amount": 200
+        },
+        {
+          "type": "ChangeModeForType",
+          "entityType": "BlueGhost",
+          "newMode": "Dead"
         }
       ],
       "modeB": "Default",
@@ -454,6 +469,11 @@
         {
           "type": "UpdateScore",
           "amount": 200
+        },
+        {
+          "type": "ChangeModeForType",
+          "entityType": "PinkGhost",
+          "newMode": "Dead"
         }
       ],
       "modeB": "Default",
@@ -462,6 +482,59 @@
           "type": "ReturnToSpawnLocation"
         }
       ]
+    },
+
+
+
+
+
+    {
+      "entityA": "redghost",
+      "modeA": "Frightened",
+      "entityB": "wall",
+      "eventsA": [
+        {
+          "type": "Stop"
+        }
+      ],
+      "modeB": "Default",
+      "eventsB": []
+    },
+    {
+      "entityA": "blueghost",
+      "modeA": "Frightened",
+      "entityB": "wall",
+      "eventsA": [
+        {
+          "type": "Stop"
+        }
+      ],
+      "modeB": "Default",
+      "eventsB": []
+    },
+    {
+      "entityA": "pinkghost",
+      "modeA": "Frightened",
+      "entityB": "wall",
+      "eventsA": [
+        {
+          "type": "Stop"
+        }
+      ],
+      "modeB": "Default",
+      "eventsB": []
+    },
+    {
+      "entityA": "orangeghost",
+      "modeA": "Frightened",
+      "entityB": "wall",
+      "eventsA": [
+        {
+          "type": "Stop"
+        }
+      ],
+      "modeB": "Default",
+      "eventsB": []
     }
   ],
   "currentLevelIndex": 0
