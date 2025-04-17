@@ -1,8 +1,7 @@
 package oogasalad.engine.records.config.model.losecondition;
 
 import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategy;
-import oogasalad.engine.model.strategies.gameoutcome.LivesBasedOutcome;
-import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.model.strategies.gameoutcome.LivesBasedOutcomeStrategy;
 
 /**
  * A record that encapsulates information about the entity-based win condition.
@@ -10,12 +9,12 @@ import oogasalad.engine.records.GameContextRecord;
 public record LivesBasedCondition() implements LoseCondition {
 
   /**
-   * Converts loseCondition to LivesBasedOutcome strategy.
+   * Converts loseCondition to LivesBasedOutcomeStrategy.
    *
-   * @return LivesBasedOutcome strategy
+   * @return LivesBasedOutcomeStrategy
    */
   @Override
   public GameOutcomeStrategy toStrategy() {
-    return new LivesBasedOutcome();
+    return new LivesBasedOutcomeStrategy();
   }
 }

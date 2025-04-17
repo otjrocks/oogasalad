@@ -11,7 +11,7 @@ import oogasalad.engine.records.GameContextRecord;
  *
  * @author Austin Huang
  */
-public class LivesBasedOutcome implements GameOutcomeStrategy {
+public class LivesBasedOutcomeStrategy implements GameOutcomeStrategy {
 
   /**
    * Determines if the game has ended based on the player's remaining lives.
