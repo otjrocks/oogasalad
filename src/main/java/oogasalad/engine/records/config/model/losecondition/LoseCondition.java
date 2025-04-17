@@ -2,6 +2,7 @@ package oogasalad.engine.records.config.model.losecondition;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategy;
 
 /**
  * An interface used to parse information about a lose condition from the configuration file.
@@ -12,4 +13,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({
     @JsonSubTypes.Type(value = LivesBasedCondition.class, name = "LivesBased")
 })
-public interface LoseCondition { }
+public interface LoseCondition {
+  GameOutcomeStrategy toStrategy();
+}
