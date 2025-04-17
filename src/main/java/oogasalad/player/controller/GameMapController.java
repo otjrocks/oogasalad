@@ -96,7 +96,7 @@ public class GameMapController {
   }
 
   private void applyEntityBCollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
-    if (checkEntityTypesAndModesMatch(e1, e2, collisionRule)) {
+    if (checkEntityTypesMatch(e1, e2, collisionRule)) {
       for (CollisionEvent eventB : collisionRule.getEventsB()) {
         createAndApplyCollisionStrategy(e1, e2, eventB);
       }
@@ -104,7 +104,7 @@ public class GameMapController {
   }
 
   private void applyEntityACollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
-    if (checkEntityTypesAndModesMatch(e1, e2, collisionRule)) {
+    if (checkEntityTypesMatch(e1, e2, collisionRule)) {
       for (CollisionEvent eventA : collisionRule.getEventsA()) {
         createAndApplyCollisionStrategy(e1, e2, eventA);
       }
@@ -113,7 +113,8 @@ public class GameMapController {
 
   private void createAndApplyCollisionStrategy(Entity e1, Entity e2,
       CollisionEvent collisionEvent) {
-    CollisionStrategy collisionStrategy = CollisionStrategyFactory.createCollisionStrategy(collisionEvent);
+    CollisionStrategy collisionStrategy = CollisionStrategyFactory.createCollisionStrategy(
+        collisionEvent);
     try {
       collisionStrategy.handleCollision(new CollisionContextRecord(e1, e2, gameMap, gameState));
     } catch (EntityNotFoundException e) {
@@ -122,19 +123,19 @@ public class GameMapController {
     }
   }
 
-  private static boolean checkEntityTypesAndModesMatch(Entity e1, Entity e2, CollisionRule collisionRule) {
+  private static boolean checkEntityTypesMatch(Entity e1, Entity e2, CollisionRule collisionRule) {
     return checkCollisionRuleEntityAMatches(e1, collisionRule) && checkCollisionRuleEntityBMatches(
         e2, collisionRule);
   }
 
   private static boolean checkCollisionRuleEntityBMatches(Entity e2, CollisionRule collisionRule) {
-    return collisionRule.getEntityB().equals(e2.getEntityPlacement().getType().type()) &&
-            collisionRule.getModeB().equals(e2.getEntityPlacement().getMode());
+    return collisionRule.getEntityB().equals(e2.getEntityPlacement().getType().type())
+        && collisionRule.getModeB().equals(e2.getEntityPlacement().getMode());
   }
 
   private static boolean checkCollisionRuleEntityAMatches(Entity e1, CollisionRule collisionRule) {
-    return collisionRule.getEntityA().equals(e1.getEntityPlacement().getType().type()) &&
-            collisionRule.getModeA().equals(e1.getEntityPlacement().getMode());
+    return collisionRule.getEntityA().equals(e1.getEntityPlacement().getType().type())
+        && collisionRule.getModeA().equals(e1.getEntityPlacement().getMode());
   }
 
   private List<List<Entity>> getAllCollisions() {

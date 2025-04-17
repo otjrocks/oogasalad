@@ -16,6 +16,7 @@ public class GameStateImpl implements GameState {
   private int lives;
   private boolean gameOver;
   private final List<HudComponent> hudComponents;
+  private double timeElapsed = 0;
 
   /**
    * Creates game state representation (for HUD elements) based on a number of initial lives
@@ -93,6 +94,21 @@ public class GameStateImpl implements GameState {
   @Override
   public void setGameOver(boolean gameOver) {
     this.gameOver = gameOver;
+  }
+
+  @Override
+  public double getTimeElapsed() {
+    return timeElapsed;
+  }
+
+  @Override
+  public void setTimeElapsed(double timeElapsed) {
+    this.timeElapsed = timeElapsed;
+  }
+
+  @Override
+  public void resetTimeElapsed() {
+    this.timeElapsed = 0;
   }
 
   @Override

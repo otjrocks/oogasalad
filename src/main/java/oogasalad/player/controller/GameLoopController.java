@@ -8,7 +8,6 @@ import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.EntityNotFoundException;
 import oogasalad.engine.model.exceptions.InvalidPositionException;
-import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.model.ParsedLevel;
 import oogasalad.engine.records.config.model.SpawnEvent;
@@ -25,8 +24,8 @@ public class GameLoopController {
   private final GameContextRecord myGameContext;
   private final GameMapView myGameMapView;
   private final ParsedLevel myLevel;
-  private double myTotalElapsedTime = 0;
   private final Map<SpawnEvent, Entity> activeSpawnedEntities = new HashMap<>();
+  private double myTotalElapsedTime = 0;
 
 
   /**
@@ -64,12 +63,29 @@ public class GameLoopController {
 
         if (elapsedTime > 1.0 / 60.0) {
           updateGame();
+          clearActiveSpawnedEntitiesIfTimeElapsedWasReset();
           myTotalElapsedTime += elapsedTime;
+          myGameContext.gameState()
+              .setTimeElapsed(myGameContext.gameState().getTimeElapsed() + elapsedTime);
           lastUpdateTime = now;
         }
       }
     };
     myGameLoop.start(); // Start the game loop
+  }
+
+  private void clearActiveSpawnedEntitiesIfTimeElapsedWasReset() {
+    if (myGameContext.gameState().getTimeElapsed() < myTotalElapsedTime) {
+      for (Entity entity : activeSpawnedEntities.values()) {
+        try {
+          myGameContext.gameMap().removeEntity(entity);
+        } catch (EntityNotFoundException e) {
+          LoggingManager.LOGGER.warn("Unable to remove entity " + entity, e);
+        }
+      }
+      activeSpawnedEntities.clear();
+      myTotalElapsedTime = 0;
+    }
   }
 
   /**
@@ -96,7 +112,8 @@ public class GameLoopController {
   private void checkAndHandleSpawn(SpawnEvent spawnEvent) {
     SpawnEventStrategy spawnEventStrategy = SpawnEventStrategyFactory.createSpawnEventStrategy(
         spawnEvent.spawnCondition().type());
-    if (spawnEventStrategy.shouldSpawn(spawnEvent, myGameContext, myTotalElapsedTime)) {
+    if (spawnEventStrategy.shouldSpawn(spawnEvent, myGameContext
+    )) {
       spawnEntity(spawnEvent);
     }
   }
@@ -104,7 +121,8 @@ public class GameLoopController {
   private void checkAndHandleDespawn(SpawnEvent spawnEvent) {
     SpawnEventStrategy despawnEventStrategy = SpawnEventStrategyFactory.createSpawnEventStrategy(
         spawnEvent.despawnCondition().type());
-    if (despawnEventStrategy.shouldDespawn(spawnEvent, myGameContext, myTotalElapsedTime)) {
+    if (despawnEventStrategy.shouldDespawn(spawnEvent, myGameContext
+    )) {
       despawnEntity(spawnEvent);
     }
   }

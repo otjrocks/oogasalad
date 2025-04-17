@@ -3,9 +3,9 @@ package oogasalad.engine.model;
 import java.util.List;
 
 /**
- * The {@code GameState} interface defines methods to manage HUD elements and game metadata
- * like score, lives, and serialization functionality for pause/save/resume capabilities.
- * It is used to keep track of dynamic values and HUD components throughout the game.
+ * The {@code GameState} interface defines methods to manage HUD elements and game metadata like
+ * score, lives, and serialization functionality for pause/save/resume capabilities. It is used to
+ * keep track of dynamic values and HUD components throughout the game.
  *
  * @author Luke Fu
  */
@@ -47,6 +47,25 @@ public interface GameState {
   void setGameOver(boolean gameOver);
 
   /**
+   * Get the time elapsed in the game.
+   *
+   * @return A double representing time elapsed since the last reset.
+   */
+  double getTimeElapsed();
+
+  /**
+   * Set the amount of time that has elapsed so far in the game.
+   *
+   * @param timeElapsed The amount of time that has elapsed.
+   */
+  void setTimeElapsed(double timeElapsed);
+
+  /**
+   * Reset the time elapsed counter.
+   */
+  void resetTimeElapsed();
+
+  /**
    * Retrieves status of if game is over.
    *
    * @return if game is over.
@@ -84,7 +103,8 @@ public interface GameState {
   List<HudComponent> getHudComponents();
 
   /**
-   * Resets the game state to its initial configuration, including score, lives, and registered HUD.
+   * Resets the game state to its initial configuration, including score, lives, and registered
+   * HUD.
    */
   void resetState();
 
@@ -103,6 +123,7 @@ public interface GameState {
    * Exception thrown when saving the game state fails.
    */
   class SaveFailedException extends Exception {
+
     /**
      * Throws exception with corresponding message.
      */
@@ -115,11 +136,13 @@ public interface GameState {
    * Exception thrown when loading the game state fails.
    */
   class LoadFailedException extends Exception {
+
     /**
      * Loads failed exception with corresponding message.
      */
     public LoadFailedException(String message) {
       super(message);
     }
+
   }
 }

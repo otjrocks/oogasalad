@@ -13,8 +13,7 @@ public class TimeElapsedSpawnEventStrategy implements SpawnEventStrategy {
   // I used ChatGPT to refactor parts of this code.
 
   @Override
-  public boolean shouldSpawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord,
-      double elapsedTime) {
+  public boolean shouldSpawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord) {
     Object amountObj = spawnEvent.spawnCondition().parameters().get("amount");
     if (amountObj == null) {
       LoggingManager.LOGGER.warn(
@@ -23,7 +22,7 @@ public class TimeElapsedSpawnEventStrategy implements SpawnEventStrategy {
     }
     try {
       int amount = Integer.parseInt(amountObj.toString());
-      return elapsedTime >= amount;
+      return gameContextRecord.gameState().getTimeElapsed() >= amount;
     } catch (NumberFormatException e) {
       LoggingManager.LOGGER.warn(
           "TimeElapsedSpawnEventStrategy spawnCondition parameter 'amount' must be an integer, but received: {}",
@@ -33,8 +32,7 @@ public class TimeElapsedSpawnEventStrategy implements SpawnEventStrategy {
   }
 
   @Override
-  public boolean shouldDespawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord,
-      double elapsedTime) {
+  public boolean shouldDespawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord) {
     Object amountObj = spawnEvent.despawnCondition().parameters().get("amount");
     if (amountObj == null) {
       LoggingManager.LOGGER.warn(
@@ -43,7 +41,7 @@ public class TimeElapsedSpawnEventStrategy implements SpawnEventStrategy {
     }
     try {
       int amount = Integer.parseInt(amountObj.toString());
-      return elapsedTime >= amount;
+      return gameContextRecord.gameState().getTimeElapsed() >= amount;
     } catch (NumberFormatException e) {
       LoggingManager.LOGGER.warn(
           "TimeElapsedSpawnEventStrategy despawnCondition parameter 'amount' must be an integer, but received: {}",
