@@ -53,6 +53,7 @@ public class GameSettingsView {
   private static final String ENTITY_BASED_CLASS = "EntityBased";
   private static final String SCORE_BASED_CLASS = "ScoreBased";
   private static final String SURVIVE_FOR_TIME_CLASS = "SurviveForTime";
+  private static final String PARAMETER_LABEL = "Parameter:";
 
   /**
    * Constructor initializes the view with the given controller
@@ -165,7 +166,7 @@ public class GameSettingsView {
     winConditionParam = new TextField(getWinConditionParam());
     winConditionParam.setPrefWidth(150);
 
-    winConditionParamLabel = new Label("Parameter:");
+    winConditionParamLabel = new Label(PARAMETER_LABEL);
 
     winGrid.add(new Label("Win Condition Type:"), 0, 0);
     winGrid.add(winConditionType, 1, 0);
@@ -223,7 +224,7 @@ public class GameSettingsView {
     String type = winConditionType.getValue();
 
     if (type == null) {
-      winConditionParamLabel.setText("Parameter:");
+      winConditionParamLabel.setText(PARAMETER_LABEL);
       return;
     }
 
@@ -238,7 +239,7 @@ public class GameSettingsView {
         winConditionParamLabel.setText("Seconds:");
         break;
       default:
-        winConditionParamLabel.setText("Parameter:");
+        winConditionParamLabel.setText(PARAMETER_LABEL);
     }
   }
 
