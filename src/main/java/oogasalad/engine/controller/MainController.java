@@ -8,6 +8,7 @@ import oogasalad.authoring.view.AuthoringView;
 import oogasalad.engine.LoggingManager;
 import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.GameStateImpl;
+import oogasalad.engine.view.GameSelectorView;
 import oogasalad.engine.view.SplashScreenView;
 import oogasalad.player.view.GameScreenView;
 
@@ -26,6 +27,7 @@ public class MainController {
   private SplashScreenView mySplashScreenView = null;
   private GameScreenView myGameScreenView = null;
   private AuthoringView myAuthoringView = null;
+  private GameSelectorView myGameSelectorView = null;
 
   /**
    * Create a main controller for the program.
@@ -38,6 +40,7 @@ public class MainController {
     myStage = stage;
     myInputManager = new GameInputManager(stage.getScene(), myRoot);
     myGameState = new GameStateImpl(3);
+
     showSplashScreen();
   }
 
@@ -62,6 +65,24 @@ public class MainController {
     } else {
       LoggingManager.LOGGER.warn(
           "Attempted to hide the splash screen, even though it wasn't being displayed.");
+    }
+  }
+
+  public void showGameSelectorView() {
+    if (myGameSelectorView == null) {
+      myGameSelectorView = new GameSelectorView(this);
+    }
+    if (!myRoot.getChildren().contains(myGameSelectorView)) {
+      myRoot.getChildren().add(myGameSelectorView);
+    }
+  }
+
+  public void hideGameSelectorView() {
+    if (myRoot.getChildren().contains(myGameSelectorView)) {
+      myRoot.getChildren().remove(myGameSelectorView);
+    } else {
+      LoggingManager.LOGGER.warn(
+          "Attempted to hide the game selector screen, even though it wasn't being displayed.");
     }
   }
 
