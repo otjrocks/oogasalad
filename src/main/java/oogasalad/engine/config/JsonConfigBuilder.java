@@ -28,9 +28,15 @@ import oogasalad.engine.records.config.model.wincondition.WinCondition;
  * <p>
  * All methods assume that the structure of the AuthoringModel is valid and complete.
  *
- * @author Will He
+ * @author Will He, Angela Predolac
  */
 public class JsonConfigBuilder {
+
+  private static final String TYPE_KEY = "type";
+  private static final String ENTITY_TYPE_KEY = "entityType";
+  private static final String ENTITY_BASED_TYPE = "EntityBased";
+  private static final String SURVIVE_FOR_TIME_TYPE = "SurviveForTime";
+  private static final String DEFAULT_ENTITY_TYPE = "dot";
 
   /**
    * Builds the top-level game configuration (gameConfig.json) from the model.
@@ -93,11 +99,11 @@ public class JsonConfigBuilder {
 
     String className = winConditionObj.getClass().getSimpleName();
 
-    if (className.contains("EntityBased")) {
+    if (className.contains(ENTITY_BASED_TYPE)) {
       return buildEntityBasedWinCondition(winConditionObj, winCondition);
     }
 
-    if (className.contains("SurviveForTime")) {
+    if (className.contains(SURVIVE_FOR_TIME_TYPE)) {
       return buildSurviveForTimeWinCondition(winConditionObj, winCondition);
     }
 
@@ -108,8 +114,8 @@ public class JsonConfigBuilder {
    * Creates a default win condition
    */
   private ObjectNode createDefaultWinCondition(ObjectNode winCondition) {
-    winCondition.put("type", "EntityBased");
-    winCondition.put("entityType", "dot");
+    winCondition.put(TYPE_KEY, ENTITY_BASED_TYPE);
+    winCondition.put(ENTITY_TYPE_KEY, DEFAULT_ENTITY_TYPE);
     return winCondition;
   }
 
@@ -117,12 +123,12 @@ public class JsonConfigBuilder {
    * Builds an entity-based win condition
    */
   private ObjectNode buildEntityBasedWinCondition(WinCondition winConditionObj, ObjectNode winCondition) {
-    winCondition.put("type", "EntityBased");
+    winCondition.put(TYPE_KEY, ENTITY_BASED_TYPE);
     try {
       EntityBasedCondition entityBased = (EntityBasedCondition) winConditionObj;
-      winCondition.put("entityType", entityBased.entityType());
+      winCondition.put(ENTITY_TYPE_KEY, entityBased.entityType());
     } catch (Exception e) {
-      winCondition.put("entityType", "dot");  // Default
+      winCondition.put(ENTITY_TYPE_KEY, DEFAULT_ENTITY_TYPE);  // Default
     }
     return winCondition;
   }
@@ -131,7 +137,7 @@ public class JsonConfigBuilder {
    * Builds a survive-for-time win condition
    */
   private ObjectNode buildSurviveForTimeWinCondition(WinCondition winConditionObj, ObjectNode winCondition) {
-    winCondition.put("type", "SurviveForTime");
+    winCondition.put(TYPE_KEY, SURVIVE_FOR_TIME_TYPE);
     try {
       SurviveForTimeCondition surviveTime = (SurviveForTimeCondition) winConditionObj;
       winCondition.put("amount", surviveTime.amount());
