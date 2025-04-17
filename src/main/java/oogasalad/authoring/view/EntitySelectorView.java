@@ -4,9 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -21,8 +19,6 @@ import oogasalad.engine.model.EntityType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.config.ImageConfig;
 
 /**
  * View displaying all defined EntityTypes in a draggable grid. Clicking on a tile notifies the

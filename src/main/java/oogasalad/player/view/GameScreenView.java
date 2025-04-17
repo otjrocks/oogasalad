@@ -1,17 +1,12 @@
 package oogasalad.player.view;
 
-import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
 import static oogasalad.engine.config.GameConfig.HEIGHT;
 import static oogasalad.engine.config.GameConfig.WIDTH;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import oogasalad.engine.LanguageManager;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.GameState;
 import oogasalad.player.view.components.HudView;

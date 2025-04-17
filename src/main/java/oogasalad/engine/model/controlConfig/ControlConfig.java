@@ -2,9 +2,6 @@ package oogasalad.engine.model.controlConfig;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * An interface that defines how to convert JSON objects into the correct corresponding java

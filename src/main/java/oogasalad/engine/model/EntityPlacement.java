@@ -1,7 +1,5 @@
 package oogasalad.engine.model;
 
-import java.util.Objects;
-
 /**
  * Represents a specific instance of an {@link EntityType} placed at a location on the map. Each
  * placement includes an (x, y) coordinate and a mode (e.g., "Default", "PoweredUp"). Used to
