@@ -42,6 +42,12 @@ public class GameOutcomeFactory {
     throw new IllegalArgumentException("Unknown win condition type: " + winCondition.getClass());
   }
 
+  /**
+   * Creates the appropriate GameOutcomeStrategy based on the LoseCondition string.
+   *
+   * @param loseCondition the loseCondition object
+   * @return corresponding GameOutcomeStrategy
+   */
   public static GameOutcomeStrategy createLoseStrategy(LoseCondition loseCondition) {
     if (loseCondition == null) {
       throw new IllegalArgumentException("Lose condition cannot be null");

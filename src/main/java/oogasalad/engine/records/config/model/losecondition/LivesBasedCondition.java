@@ -8,6 +8,12 @@ import oogasalad.engine.records.GameContextRecord;
  * A record that encapsulates information about the entity-based win condition.
  */
 public record LivesBasedCondition() implements LoseCondition {
+
+  /**
+   * Converts loseCondition to LivesBasedOutcome strategy.
+   *
+   * @return LivesBasedOutcome strategy
+   */
   @Override
   public GameOutcomeStrategy toStrategy() {
     return new LivesBasedOutcome();

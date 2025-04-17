@@ -14,5 +14,11 @@ import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategy;
     @JsonSubTypes.Type(value = LivesBasedCondition.class, name = "LivesBased")
 })
 public interface LoseCondition {
+
+  /**
+   * Convert lose condition from JSON type to a GameOutcomeStrategy and returns it.
+   *
+   * @return GameOutcomeStrategy
+   */
   GameOutcomeStrategy toStrategy();
 }

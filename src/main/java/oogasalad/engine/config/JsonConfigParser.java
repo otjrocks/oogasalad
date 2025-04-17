@@ -465,12 +465,17 @@ public class JsonConfigParser implements ConfigParser {
     }
 
     return new Settings(
-        override.gameSpeed() != null ? override.gameSpeed() : defaults.gameSpeed(),
-        override.startingLives() != null ? override.startingLives() : defaults.startingLives(),
-        override.initialScore() != null ? override.initialScore() : defaults.initialScore(),
-        override.scoreStrategy() != null ? override.scoreStrategy() : defaults.scoreStrategy(),
-        override.winCondition() != null ? override.winCondition() : defaults.winCondition(),
-        override.loseCondition() != null ? override.loseCondition() : defaults.loseCondition());
+        pick(override.gameSpeed(), defaults.gameSpeed()),
+        pick(override.startingLives(), defaults.startingLives()),
+        pick(override.initialScore(), defaults.initialScore()),
+        pick(override.scoreStrategy(), defaults.scoreStrategy()),
+        pick(override.winCondition(), defaults.winCondition()),
+        pick(override.loseCondition(), defaults.loseCondition())
+    );
+  }
+
+  private <T> T pick(T overrideValue, T defaultValue) {
+    return overrideValue != null ? overrideValue : defaultValue;
   }
 
   private String getFolderPath(String filepath) throws ConfigException {
