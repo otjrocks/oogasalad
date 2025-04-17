@@ -1,0 +1,32 @@
+package oogasalad.engine.model.strategies.collision;
+
+import java.util.Iterator;
+import oogasalad.engine.model.entity.Entity;
+import oogasalad.engine.model.exceptions.EntityNotFoundException;
+import oogasalad.engine.records.CollisionContextRecord;
+
+public class RemoveAllEntitiesOfTypeStrategy implements CollisionStrategy {
+
+  private final String myTargetType;
+
+  public RemoveAllEntitiesOfTypeStrategy(String targetType) {
+    myTargetType = targetType;
+  }
+
+  @Override
+  public void handleCollision(CollisionContextRecord collisionContext)
+      throws EntityNotFoundException {
+    Iterator<Entity> iterator = collisionContext.gameMap().iterator();
+    while (iterator.hasNext()) {
+      Entity entity = iterator.next();
+      if (entity.getEntityPlacement().getType().type().equals(myTargetType)) {
+        try {
+          iterator.remove(); // remove entity concurrently from list safely.
+        } catch (IllegalStateException e) {
+          throw new RuntimeException("Failed to remove entity using iterator", e);
+        }
+      }
+    }
+
+  }
+}
