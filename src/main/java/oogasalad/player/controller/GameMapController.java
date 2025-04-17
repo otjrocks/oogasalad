@@ -39,7 +39,8 @@ public class GameMapController {
   private final GameContextRecord gameContext;
   private int frameCount = 0;
   private GameEndHandler gameEndHandler;
-  private final GameOutcomeStrategy gameOutcomeStrategy;
+  private final GameOutcomeStrategy winGameOutcomeStrategy;
+  private final GameOutcomeStrategy loseGameOutcomeStrategy;
   private final ConfigModel myConfigModel;
 
   /**
@@ -53,7 +54,8 @@ public class GameMapController {
     gameState = gameContext.gameState();
     this.gameContext = gameContext;
     myConfigModel = configModel;
-    gameOutcomeStrategy = GameOutcomeFactory.create(configModel.winCondition());
+    winGameOutcomeStrategy = GameOutcomeFactory.createWinStrategy(configModel.winCondition());
+    loseGameOutcomeStrategy = GameOutcomeFactory.createLoseStrategy(configModel.loseCondition());
   }
 
   /**
@@ -74,6 +76,11 @@ public class GameMapController {
       handleCollision(collision.get(0), collision.get(1));
     }
 
+    checkGameOutcome(winGameOutcomeStrategy);
+    checkGameOutcome(loseGameOutcomeStrategy);
+  }
+
+  private void checkGameOutcome(GameOutcomeStrategy gameOutcomeStrategy) {
     if (gameOutcomeStrategy.hasGameEnded(gameContext)) {
       gameState.setGameOver(true);
       String result = gameOutcomeStrategy.getGameOutcome(gameContext);

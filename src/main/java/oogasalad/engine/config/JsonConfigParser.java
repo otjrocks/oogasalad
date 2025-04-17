@@ -37,6 +37,7 @@ import oogasalad.engine.records.config.model.ParsedLevel;
 import oogasalad.engine.records.config.model.Settings;
 import oogasalad.engine.records.config.model.SpawnEvent;
 import oogasalad.engine.records.config.model.wincondition.WinCondition;
+import oogasalad.engine.records.config.model.losecondition.LoseCondition;
 import oogasalad.engine.utility.FileUtility;
 
 /**
@@ -124,12 +125,13 @@ public class JsonConfigParser implements ConfigParser {
     // Step 7: Parse collision rules and win condition
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
     WinCondition winCondition = gameConfig.settings().winCondition();
+    LoseCondition loseCondition = gameConfig.settings().loseCondition();
 
     // Step 8: Get current level from gameConfig
     int currentLevel = gameConfig.currentLevelIndex();
     // Step 9: Return the full config model using the first level only for now
     return new ConfigModel(metaData, settings, entityTypes, levels, collisionRules,
-        winCondition, currentLevel);
+        winCondition, loseCondition, currentLevel);
   }
 
   private ParsedLevel loadLevelConfig(String filepath) throws ConfigException {
@@ -463,11 +465,17 @@ public class JsonConfigParser implements ConfigParser {
     }
 
     return new Settings(
-        override.gameSpeed() != null ? override.gameSpeed() : defaults.gameSpeed(),
-        override.startingLives() != null ? override.startingLives() : defaults.startingLives(),
-        override.initialScore() != null ? override.initialScore() : defaults.initialScore(),
-        override.scoreStrategy() != null ? override.scoreStrategy() : defaults.scoreStrategy(),
-        override.winCondition() != null ? override.winCondition() : defaults.winCondition());
+        pick(override.gameSpeed(), defaults.gameSpeed()),
+        pick(override.startingLives(), defaults.startingLives()),
+        pick(override.initialScore(), defaults.initialScore()),
+        pick(override.scoreStrategy(), defaults.scoreStrategy()),
+        pick(override.winCondition(), defaults.winCondition()),
+        pick(override.loseCondition(), defaults.loseCondition())
+    );
+  }
+
+  private <T> T pick(T overrideValue, T defaultValue) {
+    return overrideValue != null ? overrideValue : defaultValue;
   }
 
   private String getFolderPath(String filepath) throws ConfigException {

@@ -12,6 +12,9 @@
     "winCondition" : {
       "type" : "EntityBased",
       "entityType" : "dot"
+    },
+    "loseCondition" : {
+      "type" : "LivesBased"
     }
   },
   "levels" : [ {

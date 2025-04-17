@@ -6,6 +6,7 @@ import oogasalad.engine.model.GameSettings;
 import oogasalad.engine.model.MetaData;
 import java.util.List;
 import oogasalad.engine.records.config.model.ParsedLevel;
+import oogasalad.engine.records.config.model.losecondition.LoseCondition;
 import oogasalad.engine.records.config.model.wincondition.WinCondition;
 
 /**
@@ -31,6 +32,7 @@ public record ConfigModel(MetaData metadata,
                           List<ParsedLevel> levels,
                           List<CollisionRule> collisionRules,
                           WinCondition winCondition,
+                          LoseCondition loseCondition,
                           int currentLevelIndex) {
 
 }

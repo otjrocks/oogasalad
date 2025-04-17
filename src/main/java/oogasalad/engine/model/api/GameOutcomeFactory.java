@@ -3,6 +3,8 @@ package oogasalad.engine.model.api;
 import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategy;
 import oogasalad.engine.model.strategies.gameoutcome.ScoreBasedOutcomeStrategy;
+import oogasalad.engine.records.config.model.losecondition.LivesBasedCondition;
+import oogasalad.engine.records.config.model.losecondition.LoseCondition;
 import oogasalad.engine.records.config.model.wincondition.EntityBasedCondition;
 import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
 import oogasalad.engine.records.config.model.wincondition.WinCondition;
@@ -24,19 +26,24 @@ public class GameOutcomeFactory {
    * @param winCondition the WinCondition object
    * @return corresponding GameOutcomeStrategy
    */
-  public static GameOutcomeStrategy create(WinCondition winCondition) {
+  public static GameOutcomeStrategy createWinStrategy(WinCondition winCondition) {
     if (winCondition == null) {
       throw new IllegalArgumentException("Win condition cannot be null");
     }
 
-    if (winCondition instanceof SurviveForTimeCondition(int amount)) {
-      return new ScoreBasedOutcomeStrategy(amount);
-    }
+    return winCondition.toStrategy();
+  }
 
-    if (winCondition instanceof EntityBasedCondition(String entityType)) {
-      return new EntityBasedOutcomeStrategy(entityType);
+  /**
+   * Creates the appropriate GameOutcomeStrategy based on the LoseCondition string.
+   *
+   * @param loseCondition the loseCondition object
+   * @return corresponding GameOutcomeStrategy
+   */
+  public static GameOutcomeStrategy createLoseStrategy(LoseCondition loseCondition) {
+    if (loseCondition == null) {
+      throw new IllegalArgumentException("Lose condition cannot be null");
     }
-
-    throw new IllegalArgumentException("Unknown win condition type: " + winCondition.getClass());
+    return loseCondition.toStrategy();
   }
 }

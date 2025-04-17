@@ -41,13 +41,8 @@ public class GamePlayerView extends StackPane {
   }
 
   private void createExampleMap() {
-    JsonConfigParser configParser = new JsonConfigParser();
-    try {
-      myConfigModel = configParser.loadFromFile(CURRENT_GAME_CONFIG_PATH + GAME_CONFIG_JSON);
-    } catch (ConfigException e) {
-      LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
-    }
-    loadConfig();
+    loadConfigFromFile();
+    loadGameViewFromConfig();
     this.getChildren().add(myGameView);
     updateGameStateFromConfigurationFile();
   }
@@ -58,15 +53,16 @@ public class GamePlayerView extends StackPane {
     myGameState.updateScore(myConfigModel.settings().initialScore());
   }
 
-  private void loadConfig() {
+  private void loadConfigFromFile() {
     JsonConfigParser configParser = new JsonConfigParser();
     try {
       myConfigModel = configParser.loadFromFile(CURRENT_GAME_CONFIG_PATH + GAME_CONFIG_JSON);
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to reload updated config", e);
-      return;
     }
+  }
 
+  private void loadGameViewFromConfig() {
     LevelController levelController = new LevelController(myMainController, myConfigModel);
     if (levelController.getCurrentLevelMap() != null) {
       myGameView = new GameView(
@@ -74,30 +70,27 @@ public class GamePlayerView extends StackPane {
           myConfigModel, levelController.getCurrentLevelIndex());
 
       myGameView.setRestartAction(this::restartLevel);
-      myGameView.setNextLevelAction(() -> {
-        if (levelController.hasNextLevel()) {
-          levelController.incrementAndUpdateConfig();
-          this.getChildren().clear();
-          loadConfig();
-          this.getChildren().add(myGameView);
-        } else {
-          LoggingManager.LOGGER.info("No more levels to load.");
-        }
-      });
+      myGameView.setNextLevelAction(() -> loadNextLevel(levelController));
     }
   }
 
-
-  /**
-   * Restarts the current level by clearing the view and reloading the game configuration.
-   *
-   * <p>This method replaces the current {@code GameView} with a fresh instance,
-   * effectively resetting the level state.</p>
-   */
-  public void restartLevel() {
+  private void restartLevel() {
     this.getChildren().clear();
-    loadConfig();
+    // currently resets the score to 0. can change to set score to score at level start
+    updateGameStateFromConfigurationFile();
+    loadGameViewFromConfig();
     this.getChildren().add(myGameView);
+  }
+
+  private void loadNextLevel(LevelController levelController) {
+    if (levelController.hasNextLevel()) {
+      levelController.incrementAndUpdateConfig();
+      this.getChildren().clear();
+      loadGameViewFromConfig();
+      this.getChildren().add(myGameView);
+    } else {
+      LoggingManager.LOGGER.info("No more levels to load.");
+    }
   }
 
   /**

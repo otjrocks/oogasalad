@@ -6,6 +6,7 @@ import oogasalad.engine.model.GameMapImpl;
 import oogasalad.engine.model.GameStateImpl;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.model.ParsedLevel;
+import oogasalad.engine.records.config.model.losecondition.LivesBasedCondition;
 import oogasalad.engine.records.config.model.wincondition.EntityBasedCondition;
 import oogasalad.player.view.GameMapView;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +35,7 @@ class GameLoopControllerTest extends DukeApplicationTest {
 
     ConfigModel mockConfigModel = mock(ConfigModel.class);
     when(mockConfigModel.winCondition()).thenReturn(new EntityBasedCondition("dot"));
+    when(mockConfigModel.loseCondition()).thenReturn(new LivesBasedCondition());
 
     gameMapView = Mockito.spy(new GameMapView(gameContext, mockConfigModel));
     gameLoopController = Mockito.spy(new GameLoopController(gameContext, gameMapView, mock(ParsedLevel.class)));

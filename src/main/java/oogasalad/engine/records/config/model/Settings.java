@@ -1,5 +1,6 @@
 package oogasalad.engine.records.config.model;
 
+import oogasalad.engine.records.config.model.losecondition.LoseCondition;
 import oogasalad.engine.records.config.model.wincondition.WinCondition;
 
 /**
@@ -15,6 +16,6 @@ import oogasalad.engine.records.config.model.wincondition.WinCondition;
  * @author Owen Jennings, Jessica Chen
  */
 public record Settings(Double gameSpeed, Integer startingLives, Integer initialScore,
-                       String scoreStrategy, WinCondition winCondition) {
+                       String scoreStrategy, WinCondition winCondition, LoseCondition loseCondition) {
 
 }
