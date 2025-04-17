@@ -17,6 +17,11 @@ import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.view.components.Selector;
 
+/**
+ * The game selector splash screen after game player button on splash screen is clicked.
+ *
+ * @author Austin Huang
+ */
 public class GameSelectorView extends VBox {
 
   private Selector myLanguageSelector;
@@ -40,9 +45,8 @@ public class GameSelectorView extends VBox {
 
     // initializeTitle()
     Label title = new Label(LanguageManager.getMessage("GAME_PLAYER"));
-//    title.setId("gameSelectorScreenTitle");
+    title.setId("gameSelectorScreenTitle");
     title.getStyleClass().add("title");
-//    this.getChildren().add(title);
 
     // initializeHBox()
     HBox gameGrid = new HBox(30);
@@ -77,6 +81,7 @@ public class GameSelectorView extends VBox {
     VBox card = new VBox(10);
     card.setAlignment(Pos.CENTER);
 
+    // placeholder image to be replaced later
     Image im = new Image(getClass().getResourceAsStream("/assets/images/placeholder.png"));
     ImageView image = new ImageView(im); // Replace with actual path
     image.setFitWidth(200);
