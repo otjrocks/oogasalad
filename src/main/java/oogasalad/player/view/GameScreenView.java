@@ -68,39 +68,6 @@ public class GameScreenView extends VBox {
     hudUpdater.play();
   }
 
-  /**
-   * Returns Horizontal Box With Pause and Play
-   */
-  private HBox getHBox(GamePlayerView gamePlayerView) {
-    GameView gameView = gamePlayerView.getGameView();
-
-    Button pauseButton = new Button("⏸");
-    Button playButton = new Button("▶");
-    Button returnToMenuButton = new Button(LanguageManager.getMessage("RETURN_TO_MENU"));
-
-    pauseButton.setFocusTraversable(false);
-    playButton.setFocusTraversable(false);
-    returnToMenuButton.setFocusTraversable(false);
-
-    pauseButton.setOnAction(e -> {
-      gameView.pauseGame();
-      gameView.requestFocus();
-    });
-
-    playButton.setOnAction(e -> {
-      gameView.resumeGame();
-      gameView.requestFocus();
-    });
-
-    returnToMenuButton.setOnAction(e -> {
-      mainController.getInputManager().getRoot().getChildren().remove(this);
-      mainController.showSplashScreen();
-    });
-
-    HBox buttonBox = new HBox(ELEMENT_SPACING, playButton, pauseButton, returnToMenuButton);
-    buttonBox.getStyleClass().add("hud-container");
-    return buttonBox;
-  }
 
   /**
    * Checks if score or lives have changed before updating HUD.
