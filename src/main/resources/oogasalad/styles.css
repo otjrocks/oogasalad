@@ -58,15 +58,16 @@ Label, Text {
 }
 
 .v-menu .button {
-  -fx-font-size: 24px;
+  -fx-font-size: 18px;
   -fx-padding: 10px 20px;
-  -fx-min-width: 400px;
+  -fx-min-width: 440px;
   -fx-background-color: -fx-primary;
   -fx-text-fill: -fx-secondary;
   -fx-border-color: -fx-secondary;
   -fx-border-width: 3px;
   -fx-background-radius: 5px;
   -fx-border-radius: 5px;
+  -fx-font-family: "Press Start 2P";
 }
 
 .v-menu .button:hover {
@@ -176,3 +177,24 @@ Label, Text {
   -fx-translate-y: 80px;
 }
 
+.small-button {
+  -fx-font-size: 10px;
+  -fx-padding: 10px 20px;
+  -fx-min-width: 100px;
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 3px;
+  -fx-background-radius: 5px;
+  -fx-border-radius: 5px;
+  -fx-font-family: "Press Start 2P";
+}
+
+.small-button:hover {
+  -fx-background-color: -fx-highlight;
+}
+
+.game-name {
+  -fx-font-size: 16px;
+  -fx-font-family: "Press Start 2P";
+}
