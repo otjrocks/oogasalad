@@ -18,7 +18,7 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
 public class LevelController {
 
   private int myLevelIndex;
-  private ConfigModel myConfigModel;
+  private final ConfigModel myConfigModel;
   private final MainController myMainController;
 
   /**

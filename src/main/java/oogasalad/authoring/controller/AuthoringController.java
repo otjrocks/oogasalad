@@ -10,7 +10,6 @@ import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import java.util.*;
 import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
 import oogasalad.engine.model.controlConfig.NoneControlConfig;
 import oogasalad.engine.records.config.ImageConfig;
 import oogasalad.engine.config.ModeConfig;

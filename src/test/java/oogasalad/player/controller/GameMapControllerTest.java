@@ -21,16 +21,14 @@ public class GameMapControllerTest {
 
   private GameMap mockGameMap;
   private GameState mockGameState;
-  private GameMapView mockGameView;
-  private GameContextRecord gameContext;
   private GameMapController controller;
 
   @BeforeEach
   public void setUp() {
     mockGameMap = mock(GameMap.class);
     mockGameState = mock(GameState.class);
-    mockGameView = mock(GameMapView.class);
-    gameContext = new GameContextRecord(mockGameMap, mockGameState);
+    GameMapView mockGameView = mock(GameMapView.class);
+    GameContextRecord gameContext = new GameContextRecord(mockGameMap, mockGameState);
 
     ConfigModel mockConfigModel = mock(ConfigModel.class);
     when(mockConfigModel.winCondition()).thenReturn(new EntityBasedCondition("dot")); // or any WinCondition

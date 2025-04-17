@@ -19,7 +19,6 @@ public class HudView extends VBox {
 
   private final Label scoreLabel;
   private final Label livesLabel;
-  private final String style = "hud-container";
 
   /**
    * Constructs HUDView according to state, game view, and runnable
@@ -31,6 +30,7 @@ public class HudView extends VBox {
     scoreLabel = new Label();
     livesLabel = new Label();
     HBox statsRow = new HBox(ELEMENT_SPACING, scoreLabel, livesLabel);
+    String style = "hud-container";
     statsRow.getStyleClass().add(style);
 
     // Row 2: Buttons

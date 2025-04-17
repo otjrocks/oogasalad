@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;

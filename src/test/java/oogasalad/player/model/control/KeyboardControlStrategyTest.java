@@ -17,7 +17,6 @@ class KeyboardControlStrategyTest {
 
   private GameInputManager input;
   private GameMap gameMap;
-  private EntityPlacement placement;
   private Entity entity;
   private KeyboardControlStrategy strategy;
 
@@ -25,7 +24,7 @@ class KeyboardControlStrategyTest {
   void setup() {
     input = mock(GameInputManager.class);
     gameMap = mock(GameMap.class);
-    placement = mock(EntityPlacement.class);
+    EntityPlacement placement = mock(EntityPlacement.class);
     entity = mock(Entity.class);
 
     when(placement.getX()).thenReturn(5.0);

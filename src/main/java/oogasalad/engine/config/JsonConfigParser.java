@@ -62,9 +62,8 @@ public class JsonConfigParser implements ConfigParser {
 
   public static final String ENTITY_TYPE = "entityType";
   private final ObjectMapper mapper;
-  private GameConfig gameConfig;
   private Map<String, EntityConfig> entityMap;
-  private Map<String, EntityType> entityTypeMap = new HashMap<>();
+  private final Map<String, EntityType> entityTypeMap = new HashMap<>();
 
   private static final String JSON_IDENTIFIER = ".json";
 
@@ -90,7 +89,7 @@ public class JsonConfigParser implements ConfigParser {
    */
   public ConfigModel loadFromFile(String filepath) throws ConfigException {
     // Step 1: Load primary game config JSON (e.g., gameConfig.json)
-    gameConfig = loadGameConfig(filepath);
+    GameConfig gameConfig = loadGameConfig(filepath);
 
     // Step 2: Load entities from the entity folder
     entityMap = constructEntities(gameConfig.gameFolderPath());

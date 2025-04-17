@@ -1,17 +1,12 @@
 package oogasalad.player.view;
 
-import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
 import static oogasalad.engine.config.GameConfig.HEIGHT;
 import static oogasalad.engine.config.GameConfig.WIDTH;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import oogasalad.engine.LanguageManager;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.GameState;
 import oogasalad.player.view.components.HudView;
@@ -26,7 +21,6 @@ public class GameScreenView extends VBox {
   private final MainController mainController;
   private final GameState gameState;
   private final HudView hudView;
-  private GamePlayerView gamePlayerView;
   private int lastScore;
   private int lastLives;
 
@@ -41,7 +35,7 @@ public class GameScreenView extends VBox {
     this.gameState = gameState;
     this.mainController = controller;
 
-    gamePlayerView = new GamePlayerView(controller, gameState);
+    GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState);
     GameView gameView = gamePlayerView.getGameView();
 
     hudView = new HudView(
