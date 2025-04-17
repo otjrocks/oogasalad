@@ -23,6 +23,8 @@ import oogasalad.player.model.exceptions.TargetStrategyException;
  */
 public class TargetStrategyFactory {
 
+  private static String STRATEGY_PACKAGE = "oogasalad.player.model.control.targetcalculation."; // Keep field as global and non-final for testing purposes.
+
   /**
    * Factory method to create a TargetStrategy based on the control type of the given
    * EntityPlacement.
@@ -33,7 +35,8 @@ public class TargetStrategyFactory {
    * @return a TargetStrategy instance corresponding to the control type of the entity
    * @throws TargetStrategyException if the control type of the entity is unknown or unsupported
    */
-  public static TargetStrategyInterface createTargetStrategy(EntityPlacement placement, GameMap gameMap)
+  public static TargetStrategyInterface createTargetStrategy(EntityPlacement placement,
+      GameMap gameMap)
       throws TargetStrategyException {
 
     ControlConfig config = placement.getType().controlConfig();
@@ -48,11 +51,9 @@ public class TargetStrategyFactory {
           "No TargetStrategy available for control config: " + config.getClass());
     }
 
-    String STRATEGY_PACKAGE = "oogasalad.player.model.control.targetcalculation.";
     String className =
         STRATEGY_PACKAGE + targetCalculationConfig.getClass().getSimpleName()
             .replace("Config", "Strategy");
-
 
     Map<String, Object> argsMap = recordToMap(targetCalculationConfig);
 
@@ -96,7 +97,8 @@ public class TargetStrategyFactory {
         ));
   }
 
-  private static Object extractFieldValue(RecordComponent component, TargetCalculationConfig event) {
+  private static Object extractFieldValue(RecordComponent component,
+      TargetCalculationConfig event) {
     try {
       return component.getAccessor().invoke(event);
     } catch (Exception e) {
