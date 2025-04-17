@@ -54,7 +54,6 @@ public class LevelController {
    */
   public void switchToLevel(int index) {
     model.setCurrentLevelIndex(index);
-    view.getLevelSettingsView().refresh(); // or similar
     mainController.updateCanvas();
     mainController.updateEntitySelector(); // if needed
     view.getLevelSelectorView().highlightLevel(index); // optional
@@ -74,8 +73,8 @@ public class LevelController {
   public void initDefaultLevelIfEmpty() {
     if (model.getLevels().isEmpty()) {
       LevelDraft defaultLevel = new LevelDraft("Level 1", "level1_map.json");
-      defaultLevel.setWidth(20);
-      defaultLevel.setHeight(15);
+      defaultLevel.setWidth(15);
+      defaultLevel.setHeight(20);
       model.addLevel(defaultLevel);
     }
   }

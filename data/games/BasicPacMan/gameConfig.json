@@ -1,17 +1,17 @@
 {
-  "metadata" : {
-    "gameTitle" : "Advanced Ghost AI Demo",
-    "author" : "CS308 Team",
-    "gameDescription" : "Shows different controlTypes with strategyConfig and collision/mode logic."
+  "metadata": {
+    "gameTitle": "Advanced Ghost AI Demo",
+    "author": "CS308 Team",
+    "gameDescription": "Shows different controlTypes with strategyConfig and collision/mode logic."
   },
-  "defaultSettings" : {
-    "gameSpeed" : 1.0,
-    "startingLives" : 10,
-    "initialScore" : 0,
-    "scoreStrategy" : "Cumulative",
-    "winCondition" : {
-      "type" : "EntityBased",
-      "entityType" : "dot"
+  "defaultSettings": {
+    "gameSpeed": 1.0,
+    "startingLives": 3,
+    "initialScore": 0,
+    "scoreStrategy": "Cumulative",
+    "winCondition": {
+      "type": "EntityBased",
+      "entityType": "dot"
     }
   },
   "levels" : [ {

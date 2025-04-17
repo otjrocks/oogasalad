@@ -17,7 +17,7 @@ import oogasalad.engine.model.entity.Entity;
  *
  * @author Jessica Chen
  */
-public class KeyboardControlStrategy implements ControlStrategyInterface {
+public class KeyboardControlStrategy implements ControlStrategy {
 
   private final GameMap myGameMap;
   private final EntityPlacement myEntityPlacement;

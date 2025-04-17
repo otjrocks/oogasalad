@@ -8,7 +8,10 @@ import oogasalad.engine.config.ConfigException;
 import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
+import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.GameState;
+import oogasalad.engine.model.api.GameMapFactory;
+import oogasalad.engine.model.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.player.controller.LevelController;
 
@@ -19,12 +22,11 @@ import oogasalad.player.controller.LevelController;
  */
 public class GamePlayerView extends StackPane {
 
-  public static final String CURRENT_GAME_CONFIG_PATH = "data/games/BasicPacMan/";
-  public static final String GAME_CONFIG_JSON = "gameConfig.json";
   private final MainController myMainController;
   private final GameState myGameState;
   private GameView myGameView;
   private ConfigModel myConfigModel = null;
+  private int myLevelIndex = 0;
 
   /**
    * Create the Game Player View.
@@ -43,50 +45,22 @@ public class GamePlayerView extends StackPane {
   private void createExampleMap() {
     JsonConfigParser configParser = new JsonConfigParser();
     try {
-      myConfigModel = configParser.loadFromFile(CURRENT_GAME_CONFIG_PATH + GAME_CONFIG_JSON);
+      myConfigModel = configParser.loadFromFile("data/games/BasicPacMan/gameConfig.json");
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to load configuration file: ", e);
     }
     loadConfig();
     this.getChildren().add(myGameView);
-    updateGameStateFromConfigurationFile();
-  }
-
-  private void updateGameStateFromConfigurationFile() {
-    myGameState.resetState();
-    myGameState.updateLives(myConfigModel.settings().startingLives());
-    myGameState.updateScore(myConfigModel.settings().initialScore());
   }
 
   private void loadConfig() {
-    JsonConfigParser configParser = new JsonConfigParser();
-    try {
-      myConfigModel = configParser.loadFromFile(CURRENT_GAME_CONFIG_PATH + GAME_CONFIG_JSON);
-    } catch (ConfigException e) {
-      LoggingManager.LOGGER.warn("Failed to reload updated config", e);
-      return;
-    }
-
     LevelController levelController = new LevelController(myMainController, myConfigModel);
     if (levelController.getCurrentLevelMap() != null) {
-      myGameView = new GameView(
-          new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
+      myGameView = new GameView(new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
           myConfigModel, levelController.getCurrentLevelIndex());
-
       myGameView.setRestartAction(this::restartLevel);
-      myGameView.setNextLevelAction(() -> {
-        if (levelController.hasNextLevel()) {
-          levelController.incrementAndUpdateConfig();
-          this.getChildren().clear();
-          loadConfig();
-          this.getChildren().add(myGameView);
-        } else {
-          LoggingManager.LOGGER.info("No more levels to load.");
-        }
-      });
     }
   }
-
 
   /**
    * Restarts the current level by clearing the view and reloading the game configuration.

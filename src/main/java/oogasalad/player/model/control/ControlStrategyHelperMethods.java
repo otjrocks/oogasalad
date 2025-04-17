@@ -1,12 +1,14 @@
 package oogasalad.player.model.control;
 
+import java.util.Map;
 import oogasalad.engine.enums.Directions.Direction;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.exceptions.BfsEntityException;
-import oogasalad.player.model.control.pathfinding.PathFindingStrategyInterface;
-import oogasalad.player.model.control.targetcalculation.TargetStrategyInterface;
+import oogasalad.player.model.control.pathfinding.PathFindingStrategy;
+import oogasalad.player.model.control.targetcalculation.TargetStrategy;
+import oogasalad.player.model.exceptions.TargetStrategyException;
 
 /**
  * The {@code ControlStrategyHelperMethods} class provides utility methods to assist in validating
@@ -19,8 +21,8 @@ import oogasalad.player.model.control.targetcalculation.TargetStrategyInterface;
 public class ControlStrategyHelperMethods {
 
   static void getDirectionFromTargetAndPath(GameMap gameMap, Entity entity,
-      EntityPlacement entityPlacement, TargetStrategyInterface targetStrategy,
-      PathFindingStrategyInterface pathFindingStrategy) {
+      EntityPlacement entityPlacement, TargetStrategy targetStrategy,
+      PathFindingStrategy pathFindingStrategy) {
     int[] target = validateAndGetTargetPosition(targetStrategy);
 
     int[] dir = pathFindingStrategy.getPath(gameMap,
@@ -32,7 +34,7 @@ public class ControlStrategyHelperMethods {
     setEntityDirection(dir[0], dir[1], entity);
   }
 
-  static int[] validateAndGetTargetPosition(TargetStrategyInterface targetStrategy) {
+  static int[] validateAndGetTargetPosition(TargetStrategy targetStrategy) {
     int[] targetPosition = targetStrategy.getTargetPosition();
     if (targetPosition.length != 2) {
       throw new BfsEntityException("Target position must be of length 2");

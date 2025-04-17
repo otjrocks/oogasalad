@@ -90,7 +90,7 @@
       },
       "x": 13,
       "y": 17,
-      "mode": "Default",
+      "mode": "test",
       "despawnCondition": {
         "type": "ScoreBased",
         "parameters": {
@@ -108,7 +108,7 @@
       },
       "x": 15,
       "y": 17,
-      "mode": "Default",
+      "mode": "test",
       "despawnCondition": {
         "type": "TimeElapsed",
         "parameters": {

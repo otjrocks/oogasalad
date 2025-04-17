@@ -40,7 +40,7 @@ import oogasalad.engine.model.entity.Entity;
  * @author Jessica Chen
  * @author Chatgpt for javadoc
  */
-public class TargetEntityWithTrapStrategy implements TargetStrategyInterface {
+public class TargetEntityWithTrapStrategy implements TargetStrategy {
 
   private final GameMap myGameMap;
   private final String myTargetType;

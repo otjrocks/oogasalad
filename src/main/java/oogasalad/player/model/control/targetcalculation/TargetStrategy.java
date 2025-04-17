@@ -5,7 +5,7 @@ package oogasalad.player.model.control.targetcalculation;
  * Implementations of this interface define how to determine the X and Y
  * coordinates of a target position.
  */
-public interface TargetStrategyInterface {
+public interface TargetStrategy {
 
   /**
    * Calculates and returns the coordinate of the target position.

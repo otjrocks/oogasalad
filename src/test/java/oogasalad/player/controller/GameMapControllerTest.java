@@ -40,7 +40,7 @@ public class GameMapControllerTest {
 
   @Test
   public void updateEntityModels_setVelocityForEntity_entityPositionUpdates() throws Exception {
-    EntityType type = new EntityType("SomeEntity", null, null, null, 1.0);
+    EntityType type = new EntityType("SomeEntity", null, null, null);
     EntityPlacement placement = new EntityPlacement(type, 5, 5, "Default");
     GameInputManager mockInputManager = mock(GameInputManager.class);
     Entity entity = new Entity(mockInputManager, placement, mockGameMap);

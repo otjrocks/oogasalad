@@ -11,16 +11,21 @@
         "teamEntityType": "PinkGhost"
       }
     },
-    "movementSpeed": 0.5
+    "movementSpeed": 90
   },
   "modes": [
     {
       "name": "Default",
       "image": {
-        "imagePath": "assets/blueghost.png",
-        "tileWidth": 28,
-        "tileHeight": 28,
-        "tilesToCycle": 4,
+        "imagePath": "blueghost",
+        "tileWidth": 14,
+        "tileHeight": 14,
+        "tilesToCycle": [
+          0,
+          1,
+          2,
+          3
+        ],
         "animationSpeed": 1.0
       }
     }, {

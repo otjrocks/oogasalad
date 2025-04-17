@@ -1,18 +1,18 @@
 {
   "entityType" : {
-    "name" : "NewEntity7570",
+    "name" : "NewEntity2dec",
     "controlConfig" : {
-      "controlStrategy" : "None"
+      "controlStrategy" : "Keyboard"
     },
     "movementSpeed" : 100.0
   },
   "modes" : [ {
     "name" : "Default",
     "image" : {
-      "imagePath" : "assets/pacman.png",
+      "imagePath" : "assets/images/pacman.png",
       "tileWidth" : 14,
       "tileHeight" : 14,
-      "tilesToCycle" : 1,
+      "tilesToCycle" : [ 1 ],
       "animationSpeed" : 2
     }
   } ]

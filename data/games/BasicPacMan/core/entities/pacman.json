@@ -4,16 +4,23 @@
     "controlConfig": {
       "controlStrategy": "Keyboard"
     },
-    "movementSpeed": 1.5
+    "movementSpeed": 100
   },
   "modes": [
     {
       "name": "Default",
       "image": {
-        "imagePath": "assets/pacman.png",
-        "tileWidth": 28,
-        "tileHeight": 28,
-        "tilesToCycle": 6,
+        "imagePath": "pacman",
+        "tileWidth": 13,
+        "tileHeight": 13,
+        "tilesToCycle": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
         "animationSpeed": 1.0
       }
     },
@@ -21,10 +28,17 @@
       "name": "PoweredUp",
       "movementSpeed": 150,
       "image": {
-        "imagePath": "assets/pacman.png",
-        "tileWidth": 28,
-        "tileHeight": 28,
-        "tilesToCycle": 6,
+        "imagePath": "pacman",
+        "tileWidth": 13,
+        "tileHeight": 13,
+        "tilesToCycle": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
         "animationSpeed": 1.0
       }
     }

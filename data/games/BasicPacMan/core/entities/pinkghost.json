@@ -10,16 +10,21 @@
         "tilesAhead": 4
       }
     },
-    "movementSpeed": 1
+    "movementSpeed": 90
   },
   "modes": [
     {
       "name": "Default",
       "image": {
-        "imagePath": "assets/pinkghost.png",
-        "tileWidth": 28,
-        "tileHeight": 28,
-        "tilesToCycle": 4,
+        "imagePath": "pinkghost",
+        "tileWidth": 14,
+        "tileHeight": 14,
+        "tilesToCycle": [
+          0,
+          1,
+          2,
+          3
+        ],
         "animationSpeed": 1.0
       }
     }, {

@@ -46,7 +46,7 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
         imagePath,
         14,
         14,
-        2,
+        List.of(0, 1),
         1.0
     );
 
@@ -63,7 +63,7 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
     Map<String, ModeConfig> modeMap = new HashMap<>();
     modeMap.put("Default", mockMode);
 
-    mockEntityType = new EntityType("Pacman", new KeyboardControlConfig(), modeMap, List.of(), 1.0);
+    mockEntityType = new EntityType("Pacman", new KeyboardControlConfig(), modeMap, List.of());
 
     AuthoringModel mockModel = mock(AuthoringModel.class);
     when(mockController.getModel()).thenReturn(mockModel);
@@ -79,6 +79,20 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
     ComboBox<String> controlBox = (ComboBox<String>) root.getChildren().get(3);
 
     assertEquals("Pacman", typeField.getText());
+  }
+
+  @Test
+  public void commitChanges_UpdatesController() {
+    view.setEntityType(mockEntityType);
+
+    VBox root = (VBox) view.getRoot();
+    ComboBox<String> controlBox = (ComboBox<String>) root.getChildren().get(3);
+
+    controlBox.setValue("FollowMouse");
+    controlBox.getOnAction().handle(new ActionEvent());
+
+    verify(mockController.getModel()).updateEntityType(any(), any(EntityType.class));
+    verify(mockController).updateEntitySelector();
   }
 
 }
