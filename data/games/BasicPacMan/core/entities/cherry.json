@@ -10,10 +10,10 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "cherry",
-        "tileWidth": 2,
-        "tileHeight": 2,
-        "tilesToCycle": [0],
+        "imagePath": "assets/cherry.png",
+        "tileWidth": 28,
+        "tileHeight": 28,
+        "tilesToCycle": 1,
         "animationSpeed": 1.0
       }
     }

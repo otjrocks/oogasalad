@@ -4,8 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import oogasalad.engine.LoggingManager;
 import oogasalad.engine.config.api.ConfigSaver;
 
 /**
@@ -88,6 +93,27 @@ public class JsonConfigSaver implements ConfigSaver {
   }
 
   /**
+   * Saves the current level into the configuration file.
+   *
+   * @param newLevelIndex Level to save as curr level
+   * @param folder        the folder to save to
+   */
+  public void saveUpdatedLevelIndex(int newLevelIndex, Path folder)
+      throws ConfigException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    Path configPath = folder.resolve("gameConfig.json");
+    try {
+      ObjectNode root = (ObjectNode) mapper.readTree(configPath.toFile());
+      root.put("currentLevelIndex", newLevelIndex);
+      mapper.writeValue(configPath.toFile(), root);
+    } catch (IOException e) {
+      throw new ConfigException("Failed to update currentLevelIndex in gameConfig.json", e);
+    }
+  }
+
+
+  /**
    * Writes the given JSON object to the specified file path.
    *
    * @param config the JSON object to write
@@ -103,6 +129,31 @@ public class JsonConfigSaver implements ConfigSaver {
       mapper.writeValue(path.toFile(), config);
     } catch (IOException e) {
       throw new ConfigException("Failed to write: " + path, e);
+    }
+  }
+
+  /**
+   * Copy a game asset (i.e. image) from a current location into the game asset's folder.
+   *
+   * @param currentAssetPath The current path of the asset on the user's device.
+   * @param folder           The folder to copy the asset to.
+   * @throws ConfigException An error if the asset cannot be copied.
+   */
+  public void writeAsset(String currentAssetPath, Path folder) throws ConfigException {
+    Path assetsFolder = folder.resolve("assets");
+    try {
+      Files.createDirectories(assetsFolder);
+      Path source = Paths.get(new URI(currentAssetPath));
+      String fileName = source.getFileName().toString();
+      Path destination = assetsFolder.resolve(fileName);
+      Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+    } catch (IOException e) {
+      LoggingManager.LOGGER.warn("Failed to write asset: {}", currentAssetPath, e);
+      throw new ConfigException("Failed to copy assets when creating game file", e);
+    } catch (URISyntaxException e) {
+      LoggingManager.LOGGER.warn("Failed to write asset due to URI syntax error: {}",
+          currentAssetPath, e);
+      throw new ConfigException("Failed to copy assets when creating game file", e);
     }
   }
 

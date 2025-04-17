@@ -11,21 +11,16 @@
         "targetType": "Pacman"
       }
     },
-    "movementSpeed": 90
+    "movementSpeed": 1
   },
   "modes": [
     {
       "name": "Default",
       "image": {
-        "imagePath": "orangeghost",
-        "tileWidth": 14,
-        "tileHeight": 14,
-        "tilesToCycle": [
-          0,
-          1,
-          2,
-          3
-        ],
+        "imagePath": "assets/orangeghost.png",
+        "tileWidth": 28,
+        "tileHeight": 28,
+        "tilesToCycle": 4,
         "animationSpeed": 1.0
       }
     }

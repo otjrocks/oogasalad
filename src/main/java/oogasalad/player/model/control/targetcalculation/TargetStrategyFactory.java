@@ -36,7 +36,7 @@ public class TargetStrategyFactory {
    * @return a TargetStrategy instance corresponding to the control type of the entity
    * @throws TargetStrategyException if the control type of the entity is unknown or unsupported
    */
-  public static TargetStrategy createTargetStrategy(EntityPlacement placement, GameMap gameMap)
+  public static TargetStrategyInterface createTargetStrategy(EntityPlacement placement, GameMap gameMap)
       throws TargetStrategyException {
 
     ControlConfig config = placement.getType().controlConfig();
@@ -68,7 +68,7 @@ public class TargetStrategyFactory {
 
   }
 
-  private static TargetStrategy instantiateStrategy(Class<?> strategyClass,
+  private static TargetStrategyInterface instantiateStrategy(Class<?> strategyClass,
       Map<String, Object> targetCalculationConfig,
       EntityPlacement placement,
       GameMap gameMap)
@@ -76,7 +76,7 @@ public class TargetStrategyFactory {
     try {
       for (Constructor<?> constructor : strategyClass.getConstructors()) {
         if (isPublicConstructor(constructor)) {
-          TargetStrategy strategy = tryInstantiateStrategy(constructor, gameMap,
+          TargetStrategyInterface strategy = tryInstantiateStrategy(constructor, gameMap,
               targetCalculationConfig, placement);
           if (strategy != null) {
             return strategy;
@@ -111,20 +111,20 @@ public class TargetStrategyFactory {
     return Modifier.isPublic(constructor.getModifiers());
   }
 
-  private static TargetStrategy tryInstantiateStrategy(Constructor<?> constructor,
+  private static TargetStrategyInterface tryInstantiateStrategy(Constructor<?> constructor,
       GameMap gameMap, Map<String, Object> targetCalculationConfig,
       EntityPlacement placement)
       throws TargetStrategyException {
     try {
       if (matchesTwoArgConstructor(constructor)) {
-        return (TargetStrategy) constructor.newInstance(
+        return (TargetStrategyInterface) constructor.newInstance(
             gameMap,
             targetCalculationConfig
         );
       }
 
       if (matchesThreeArgConstructor(constructor)) {
-        return (TargetStrategy) constructor.newInstance(
+        return (TargetStrategyInterface) constructor.newInstance(
             gameMap,
             targetCalculationConfig,
             placement.getTypeString()

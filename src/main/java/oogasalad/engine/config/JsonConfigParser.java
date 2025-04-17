@@ -25,7 +25,6 @@ import oogasalad.engine.model.GameSettings;
 import oogasalad.engine.model.MapInfo;
 import oogasalad.engine.model.MetaData;
 import oogasalad.engine.model.ModeChangeEvent;
-import oogasalad.engine.model.Tiles;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.records.config.CollisionConfig;
 import oogasalad.engine.records.config.EntityConfig;
@@ -127,12 +126,11 @@ public class JsonConfigParser implements ConfigParser {
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
     WinCondition winCondition = gameConfig.settings().winCondition();
 
-    // Step 8: Tiles currently unused — placeholder
-    List<Tiles> tiles = new ArrayList<>();
-
+    // Step 8: Get current level from gameConfig
+    int currentLevel = gameConfig.currentLevelIndex();
     // Step 9: Return the full config model using the first level only for now
     return new ConfigModel(metaData, settings, entityTypes, levels, collisionRules,
-        winCondition, tiles);
+        winCondition, currentLevel);
   }
 
   private ParsedLevel loadLevelConfig(String filepath) throws ConfigException {
@@ -207,30 +205,52 @@ public class JsonConfigParser implements ConfigParser {
 
 
   private Condition parseCondition(JsonNode conditionNode) {
-    String type = conditionNode.get("type").asText();
-    Map<String, Object> parameters = new HashMap<>();
-
-    for (Iterator<Entry<String, JsonNode>> it = conditionNode.get("parameters").fields();
-        it.hasNext(); ) {
-      Map.Entry<String, JsonNode> entry = it.next();
-      JsonNode val = entry.getValue();
-
-      Object value;
-      if (val.isInt()) {
-        value = val.asInt();
-      } else if (val.isDouble()) {
-        value = val.asDouble();
-      } else if (val.isBoolean()) {
-        value = val.asBoolean();
-      } else {
-        value = val.asText();
-      }
-
-      parameters.put(entry.getKey(), value);
+    if (isNullOrMissing(conditionNode)) {
+      return defaultCondition();
     }
+
+    String type = getConditionType(conditionNode);
+    Map<String, Object> parameters = extractParameters(conditionNode.get("parameters"));
 
     return new Condition(type, parameters);
   }
+
+  private boolean isNullOrMissing(JsonNode node) {
+    return node == null || node.isNull();
+  }
+
+  private Condition defaultCondition() {
+    LoggingManager.LOGGER.warn("Condition is missing or incomplete. Using default 'Always'.");
+    return new Condition("Always", Map.of());
+  }
+
+  private String getConditionType(JsonNode conditionNode) {
+    JsonNode typeNode = conditionNode.get("type");
+    if (isNullOrMissing(typeNode)) {
+      LoggingManager.LOGGER.warn("Condition is missing a 'type' field. Using default 'Always'.");
+      return "Always";
+    }
+    return typeNode.asText();
+  }
+
+  private Map<String, Object> extractParameters(JsonNode paramNode) {
+    Map<String, Object> parameters = new HashMap<>();
+    if (paramNode != null && paramNode.isObject()) {
+      for (Iterator<Entry<String, JsonNode>> it = paramNode.fields(); it.hasNext(); ) {
+        Map.Entry<String, JsonNode> entry = it.next();
+        parameters.put(entry.getKey(), parseValue(entry.getValue()));
+      }
+    }
+    return parameters;
+  }
+
+  private Object parseValue(JsonNode valueNode) {
+    if (valueNode.isInt()) return valueNode.asInt();
+    if (valueNode.isDouble()) return valueNode.asDouble();
+    if (valueNode.isBoolean()) return valueNode.asBoolean();
+    return valueNode.asText();
+  }
+
 
 
   private Map<Integer, EntityType> buildEntityMappings(JsonNode mappings) throws ConfigException {
@@ -349,13 +369,12 @@ public class JsonConfigParser implements ConfigParser {
     if (modeList == null || modeList.isEmpty()) {
       return "Any";   // default behave if no specified mode
     }
-    // TODO: taking first for now
-    if (entity == null || entity.modes() == null
-        || !entity.modes().contains(modeList.getFirst())) {
+    int modeIdx = modeList.getFirst();
+    if (entity == null || entity.modes() == null || modeIdx >= entity.modes().size()) {
       LoggingManager.LOGGER.warn("Unable to resolve mode. For config: {}", entity);
       return "Any";
     }
-    return entity.modes().get(modeList.getFirst()).name();
+    return entity.modes().get(modeIdx).name();
   }
 
 
@@ -390,7 +409,8 @@ public class JsonConfigParser implements ConfigParser {
         entity.name(),
         control,
         modes,
-        entity.entityProperties().blocks()
+        entity.entityProperties().blocks(),
+        entity.entityProperties().movementSpeed()
     );
 
   }
@@ -405,8 +425,9 @@ public class JsonConfigParser implements ConfigParser {
       Settings defaultSettings = parseDefaultSettings(root);
       List<Level> levels = parseLevels(root, defaultSettings);
       List<CollisionConfig> collisions = parseCollisions(root);
-
-      return new GameConfig(metadata, defaultSettings, levels, collisions, getFolderPath(filepath));
+      JsonNode currentLevelNode = root.get("currentLevelIndex");
+      int currentLevelIndex = currentLevelNode != null ? currentLevelNode.asInt() : 0;
+      return new GameConfig(metadata, defaultSettings, levels, collisions, getFolderPath(filepath), currentLevelIndex);
 
     } catch (IOException e) {
       throw new ConfigException("Failed to parse config file: " + filepath, e);

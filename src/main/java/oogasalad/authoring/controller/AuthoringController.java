@@ -11,6 +11,7 @@ import oogasalad.engine.model.EntityType;
 import java.util.*;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
+import oogasalad.engine.model.controlConfig.NoneControlConfig;
 import oogasalad.engine.records.config.ImageConfig;
 import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.records.config.model.EntityProperties;
@@ -62,10 +63,8 @@ public class AuthoringController {
 
     String newTypeName = "NewEntity" + UUID.randomUUID().toString().substring(0, 4);
 
-    // TODO: Update to be NoneControlConfig
-    EntityType newType = new EntityType(newTypeName, new KeyboardControlConfig(), defaultModeMap(),
-        null);
-    // TODO: update this to include all required fields such as control type and effect type instead of providing null.
+    EntityType newType = new EntityType(newTypeName, new NoneControlConfig(), defaultModeMap(),
+        null, 1.0); // Update this to use no hardcoded speed value.
     model.addEntityType(newType);
     updateEntitySelector();
     selectEntityType(newTypeName);
@@ -148,27 +147,33 @@ public class AuthoringController {
     List<EntityPlacement> placements = model.getCurrentLevel().getEntityPlacements();
     view.getCanvasView().reloadFromPlacements(placements);
 
-    // Re-select the currently selected placement after canvas update
-    if (selectedPlacement != null && placements.contains(selectedPlacement)) {
-      selectEntityPlacement(selectedPlacement);
-    } else {
-      // If the selected placement was removed, clear the selection
-      selectedPlacement = null;
-      view.getEntityPlacementView().setVisible(false);
+    // Re-select the placement by object identity (not equals)
+    if (selectedPlacement != null) {
+      for (EntityPlacement p : placements) {
+        if (p == selectedPlacement) {
+          selectEntityPlacement(p);
+          return;
+        }
+      }
     }
+
+    // Otherwise, clear selection
+    selectedPlacement = null;
+    view.getEntityPlacementView().setVisible(false);
   }
+
 
 
   private Map<String, ModeConfig> defaultModeMap() {
     // Default image file
-    File imageFile = new File("src/main/resources/assets/images/pacman.png");
+    File imageFile = new File("data/games/BasicPacMan/core/assets/pacman.png");
     String imagePath = imageFile.toURI().toString();
 
     ImageConfig imageConfig = new ImageConfig(
         imagePath,
-        14,
-        14,
-        List.of(0, 1, 2, 3), // Default animation frames
+        28,
+        28,
+        6, // Default animation frames
         1.0
     );
 
@@ -176,8 +181,7 @@ public class AuthoringController {
   }
 
   private static ModeConfig createDefaultMode(ImageConfig imageConfig) {
-    // TODO: Switch to NoneControlConfig
-    ControlConfig defaultControlConfig = new KeyboardControlConfig();
+    ControlConfig defaultControlConfig = new NoneControlConfig();
 
     EntityProperties entityProperties = new EntityProperties(
         DEFAULT_MODE,
@@ -253,20 +257,16 @@ public class AuthoringController {
    * @param typeName the name of the entity type to delete
    */
   public void deleteEntityType(String typeName) {
-    List<EntityPlacement> placementsToRemove = getPlacementsOfType(typeName);
-
-    // Remove visual representations
-    removeVisualPlacements(placementsToRemove);
+    // Remove visual representations using the actual EntityPlacements tied to ImageViews
+    view.getCanvasView().removeAllPlacementsOfType(typeName);
 
     // Delete from model
     if (model.deleteEntityType(typeName)) {
-      // Update selected entity references
       clearSelectionIfDeleted(typeName);
-
-      // Update UI
       updateEntitySelector();
     }
   }
+
 
   /**
    * Gets all entity placements of a specific type in the current level.
@@ -277,15 +277,6 @@ public class AuthoringController {
             .toList();
   }
 
-  /**
-   * Removes visual representations of the given placements from the canvas.
-   */
-  private void removeVisualPlacements(List<EntityPlacement> placements) {
-    CanvasView canvasView = view.getCanvasView();
-    for (EntityPlacement placement : placements) {
-      canvasView.removeEntityVisual(placement);
-    }
-  }
 
   /**
    * Clears selection references if they match the deleted entity type.
