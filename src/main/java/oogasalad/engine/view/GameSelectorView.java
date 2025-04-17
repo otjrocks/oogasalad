@@ -24,9 +24,7 @@ import oogasalad.engine.view.components.Selector;
  */
 public class GameSelectorView extends VBox {
 
-  private Selector myLanguageSelector;
   private final ThemeManager myThemeManager;
-  private Selector myThemeSelector;
   private final MainController myMainController;
 
   /**
@@ -38,43 +36,49 @@ public class GameSelectorView extends VBox {
     super();
     myThemeManager = new ThemeManager(mainController.getStage());
     myMainController = mainController;
+    setupLayout();
+
+    HBox topBar = createTopBar();
+    HBox gameGrid = createGameGrid(List.of("Basic Pacman", "Complex Pacman", "Pacman", "Pacman"));
+
+    this.getChildren().addAll(topBar, gameGrid);
+  }
+
+  private void setupLayout() {
     this.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
     this.setSpacing(20);
     this.setAlignment(Pos.CENTER);
     this.getStyleClass().add("game-selector-view");
+  }
 
-    // initializeTitle()
-    Label title = new Label(LanguageManager.getMessage("GAME_PLAYER"));
-    title.setId("gameSelectorScreenTitle");
-    title.getStyleClass().add("title");
-
-    // initializeHBox()
+  private HBox createGameGrid(List<String> gameNames) {
     HBox gameGrid = new HBox(30);
     gameGrid.setAlignment(Pos.CENTER);
-
-    List<String> gameNames = List.of("Basic Pacman", "Complex Pacman", "Pacman", "Pacman");
     for (String name : gameNames) {
       VBox gameCard = createGameCard(name);
       gameGrid.getChildren().add(gameCard);
     }
+    return gameGrid;
+  }
 
+  private HBox createTopBar() {
+    Label title = new Label(LanguageManager.getMessage("GAME_PLAYER"));
+    title.getStyleClass().add("title");
     HBox topBar = new HBox(10);
     topBar.setAlignment(Pos.CENTER);
     Button back = new Button("Back");
     back.getStyleClass().add("small-button");
+    back.setOnAction(e -> {
+      myMainController.hideGameSelectorView();
+      myMainController.showSplashScreen();
+    });
     Button help = new Button("Help");
     help.getStyleClass().add("small-button");
     topBar.getChildren().addAll(back, title, help);
     HBox.setHgrow(title, Priority.ALWAYS);
     title.setMaxWidth(Double.MAX_VALUE);
     title.setAlignment(Pos.TOP_CENTER);
-
-    this.getChildren().addAll(topBar, gameGrid);
-
-    back.setOnAction(e -> {
-      mainController.hideGameSelectorView();
-      mainController.showSplashScreen();
-    });
+    return topBar;
   }
 
   private VBox createGameCard(String gameName) {
