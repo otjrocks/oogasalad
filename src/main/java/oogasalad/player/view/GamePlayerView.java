@@ -76,6 +76,7 @@ public class GamePlayerView extends StackPane {
 
   private void restartLevel() {
     this.getChildren().clear();
+    // currently resets the score to 0. can change to set score to score at level start
     updateGameStateFromConfigurationFile();
     loadGameViewFromConfig();
     this.getChildren().add(myGameView);
