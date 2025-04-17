@@ -68,6 +68,9 @@ public class MainController {
     }
   }
 
+  /**
+   * Show the game selector view if it is not already being displayed.
+   */
   public void showGameSelectorView() {
     if (myGameSelectorView == null) {
       myGameSelectorView = new GameSelectorView(this);
@@ -77,6 +80,9 @@ public class MainController {
     }
   }
 
+  /**
+   * Hide the game selector view.
+   */
   public void hideGameSelectorView() {
     if (myRoot.getChildren().contains(myGameSelectorView)) {
       myRoot.getChildren().remove(myGameSelectorView);
