@@ -33,7 +33,7 @@ import oogasalad.engine.config.ConfigException;
  */
 public class AuthoringView {
 
-  private BorderPane root;
+  private final BorderPane root;
   private EntitySelectorView selectorView;
   private CanvasView canvasView;
   private EntityTypeEditorView entityTypeEditorView;

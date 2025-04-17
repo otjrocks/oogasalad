@@ -63,7 +63,7 @@ public class JsonConfigParser implements ConfigParser {
   public static final String ENTITY_TYPE = "entityType";
   private final ObjectMapper mapper;
   private Map<String, EntityConfig> entityMap;
-  private Map<String, EntityType> entityTypeMap = new HashMap<>();
+  private final Map<String, EntityType> entityTypeMap = new HashMap<>();
 
   private static final String JSON_IDENTIFIER = ".json";
 
