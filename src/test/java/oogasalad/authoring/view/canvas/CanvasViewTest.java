@@ -3,8 +3,6 @@ package oogasalad.authoring.view.canvas;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -12,10 +10,7 @@ import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
-import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
-import oogasalad.engine.records.config.ImageConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -27,6 +22,13 @@ public class CanvasViewTest extends DukeApplicationTest {
   private CanvasView canvasView;
   private AuthoringController controller;
 
+  private EntityPlacement mockPlacement(double x, double y) {
+    EntityPlacement p = mock(EntityPlacement.class);
+    when(p.getX()).thenReturn(x);
+    when(p.getY()).thenReturn(y);
+    when(p.getEntityImagePath()).thenReturn(getClass().getResource("/mock.png").toExternalForm());
+    return p;
+  }
 
   @Override
   public void start(Stage stage) {
@@ -92,33 +94,8 @@ public class CanvasViewTest extends DukeApplicationTest {
     assertEquals(80.0, canvasView.getTileHighlighter().getSelectionY(), 0.1);
   }
 
-
   @Test
   public void testDragDoesNotThrowOnNullSelection() {
     assertDoesNotThrow(() -> interact(() -> canvasView.handleEntityMouseDragged(null)));
   }
-
-  private EntityPlacement mockPlacement(double x, double y) {
-    ImageConfig imageConfig = new ImageConfig(
-        getClass().getResource("/mock.png").toExternalForm(), 28, 28, 4, 1.0
-    );
-
-    ModeConfig modeConfig = new ModeConfig("Default", null, imageConfig);
-
-    Map<String, ModeConfig> modes = new HashMap<>();
-    modes.put("Default", modeConfig);
-
-    EntityType mockType = mock(EntityType.class);
-    when(mockType.type()).thenReturn("MockType");
-    when(mockType.modes()).thenReturn(modes);
-
-    EntityPlacement placement = new EntityPlacement();
-    placement.setResolvedEntityType(mockType);
-    placement.setX(x);
-    placement.setY(y);
-    placement.setMode("Default");
-
-    return placement;
-  }
-
 }

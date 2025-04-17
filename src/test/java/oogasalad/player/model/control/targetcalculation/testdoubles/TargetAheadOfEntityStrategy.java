@@ -2,9 +2,9 @@ package oogasalad.player.model.control.targetcalculation.testdoubles;
 
 import java.util.Map;
 import oogasalad.engine.model.GameMap;
-import oogasalad.player.model.control.targetcalculation.TargetStrategyInterface;
+import oogasalad.player.model.control.targetcalculation.TargetStrategy;
 
-public class TargetAheadOfEntityStrategy implements TargetStrategyInterface {
+public class TargetAheadOfEntityStrategy implements TargetStrategy {
 
   public TargetAheadOfEntityStrategy(GameMap map, Map<String, Object> config) {
   }

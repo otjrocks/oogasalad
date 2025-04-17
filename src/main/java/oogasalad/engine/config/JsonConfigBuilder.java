@@ -9,10 +9,15 @@ import oogasalad.engine.model.CollisionRule;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 
+import java.lang.reflect.Method;
 import java.util.*;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.engine.records.config.model.CollisionEvent;
+import oogasalad.engine.records.config.model.Settings;
+import oogasalad.engine.records.config.model.wincondition.EntityBasedCondition;
+import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
+import oogasalad.engine.records.config.model.wincondition.WinCondition;
 
 /**
  * Utility class for converting the internal AuthoringModel data structures into serializable JSON
@@ -23,13 +28,18 @@ import oogasalad.engine.records.config.model.CollisionEvent;
  * <p>
  * All methods assume that the structure of the AuthoringModel is valid and complete.
  *
- * @author Will He
+ * @author Will He, Angela Predolac
  */
 public class JsonConfigBuilder {
 
+  private static final String TYPE_KEY = "type";
+  private static final String ENTITY_TYPE_KEY = "entityType";
+  private static final String ENTITY_BASED_TYPE = "EntityBased";
+  private static final String SURVIVE_FOR_TIME_TYPE = "SurviveForTime";
+  private static final String DEFAULT_ENTITY_TYPE = "dot";
+
   /**
-   * Builds the top-level game configuration (gameConfig.json) from the model. Includes metadata,
-   * global settings, and references to level config files.
+   * Builds the top-level game configuration (gameConfig.json) from the model.
    *
    * @param model  the authoring model representing the game's data
    * @param mapper the Jackson ObjectMapper instance
@@ -38,41 +48,125 @@ public class JsonConfigBuilder {
   public ObjectNode buildGameConfig(AuthoringModel model, ObjectMapper mapper) {
     ObjectNode root = mapper.createObjectNode();
 
-    // === metadata ===
+    addMetadata(model, root);
+    addDefaultSettings(model, root, mapper);
+    addLevels(model, root, mapper);
+    addCollisionRules(model, root, mapper);
+
+    return root;
+  }
+
+  /**
+   * Adds metadata to the game configuration
+   */
+  private void addMetadata(AuthoringModel model, ObjectNode root) {
     ObjectNode metadata = root.putObject("metadata");
     metadata.put("gameTitle", model.getGameTitle());
     metadata.put("author", model.getAuthor());
     metadata.put("gameDescription", model.getGameDescription());
+  }
 
-    // === defaultSettings ===
+  /**
+   * Adds default settings including win conditions to the game configuration
+   */
+  private void addDefaultSettings(AuthoringModel model, ObjectNode root, ObjectMapper mapper) {
     ObjectNode defaultSettings = root.putObject("defaultSettings");
-    defaultSettings.put("gameSpeed", model.getDefaultSettings().gameSpeed());
-    defaultSettings.put("startingLives", model.getDefaultSettings().startingLives());
-    defaultSettings.put("initialScore", model.getDefaultSettings().initialScore());
-    // TODO: add these to settings
-    defaultSettings.put("scoreStrategy", "Cumulative"); // TODO: remove hardcoded value
+    Settings settings = model.getDefaultSettings();
 
-    // === win conditions ===
-    // TODO: remove hard coded win condition and replace with settings from authoring environment
-    ObjectNode winCondition = mapper.createObjectNode();
-    winCondition.put("type", "EntityBased");
-    winCondition.put("entityType", "dot");
+    // Add basic settings
+    defaultSettings.put("gameSpeed", settings.gameSpeed());
+    defaultSettings.put("startingLives", settings.startingLives());
+    defaultSettings.put("initialScore", settings.initialScore());
+
+    // Add score strategy
+    String scoreStrategy = settings.scoreStrategy();
+    defaultSettings.put("scoreStrategy", scoreStrategy != null ? scoreStrategy : "Cumulative");
+
+    // Add win condition
+    ObjectNode winCondition = buildWinCondition(settings.winCondition(), mapper);
     defaultSettings.set("winCondition", winCondition);
+  }
 
-    // === levels ===
+  /**
+   * Builds the win condition node based on the win condition object
+   */
+  private ObjectNode buildWinCondition(WinCondition winConditionObj, ObjectMapper mapper) {
+    ObjectNode winCondition = mapper.createObjectNode();
+
+    if (winConditionObj == null) {
+      return createDefaultWinCondition(winCondition);
+    }
+
+    String className = winConditionObj.getClass().getSimpleName();
+
+    if (className.contains(ENTITY_BASED_TYPE)) {
+      return buildEntityBasedWinCondition(winConditionObj, winCondition);
+    }
+
+    if (className.contains(SURVIVE_FOR_TIME_TYPE)) {
+      return buildSurviveForTimeWinCondition(winConditionObj, winCondition);
+    }
+
+    return createDefaultWinCondition(winCondition);
+  }
+
+  /**
+   * Creates a default win condition
+   */
+  private ObjectNode createDefaultWinCondition(ObjectNode winCondition) {
+    winCondition.put(TYPE_KEY, ENTITY_BASED_TYPE);
+    winCondition.put(ENTITY_TYPE_KEY, DEFAULT_ENTITY_TYPE);
+    return winCondition;
+  }
+
+  /**
+   * Builds an entity-based win condition
+   */
+  private ObjectNode buildEntityBasedWinCondition(WinCondition winConditionObj, ObjectNode winCondition) {
+    winCondition.put(TYPE_KEY, ENTITY_BASED_TYPE);
+    try {
+      EntityBasedCondition entityBased = (EntityBasedCondition) winConditionObj;
+      winCondition.put(ENTITY_TYPE_KEY, entityBased.entityType());
+    } catch (Exception e) {
+      winCondition.put(ENTITY_TYPE_KEY, DEFAULT_ENTITY_TYPE);  // Default
+    }
+    return winCondition;
+  }
+
+  /**
+   * Builds a survive-for-time win condition
+   */
+  private ObjectNode buildSurviveForTimeWinCondition(WinCondition winConditionObj, ObjectNode winCondition) {
+    winCondition.put(TYPE_KEY, SURVIVE_FOR_TIME_TYPE);
+    try {
+      SurviveForTimeCondition surviveTime = (SurviveForTimeCondition) winConditionObj;
+      winCondition.put("amount", surviveTime.amount());
+    } catch (Exception e) {
+      winCondition.put("amount", 5);  // Default
+    }
+    return winCondition;
+  }
+
+  /**
+   * Adds level references to the game configuration
+   */
+  private void addLevels(AuthoringModel model, ObjectNode root, ObjectMapper mapper) {
     ArrayNode levels = root.putArray("levels");
     for (int i = 0; i < model.getLevels().size(); i++) {
       ObjectNode levelRef = mapper.createObjectNode();
       levelRef.put("levelMap", "level" + (i + 1));
       levels.add(levelRef);
     }
+  }
 
-    // === collisions ===
+  /**
+   * Adds collision rules to the game configuration
+   */
+  private void addCollisionRules(AuthoringModel model, ObjectNode root, ObjectMapper mapper) {
     ArrayNode collisionRules = root.putArray("collisions");
     for (CollisionRule collisionRule : model.getCollisionRules()) {
       collisionRules.add(mapper.valueToTree(collisionRule));
     }
-    return root;
   }
 
   /**
@@ -198,7 +292,7 @@ public class JsonConfigBuilder {
       // Replace with actual values if ModeConfig/Image provides them
       imageNode.put("tileWidth", 14);
       imageNode.put("tileHeight", 14);
-      imageNode.put("tilesToCycle", 1);
+      imageNode.putArray("tilesToCycle").add(1);
       imageNode.put("animationSpeed", 2);
     }
   }

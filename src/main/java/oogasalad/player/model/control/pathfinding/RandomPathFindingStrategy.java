@@ -26,7 +26,7 @@ import oogasalad.engine.model.GameMap;
  * 
  * @author Jessica Chen
  */
-public class RandomPathFindingStrategy implements PathFindingStrategyInterface {
+public class RandomPathFindingStrategy implements PathFindingStrategy {
 
   private final Random random = new Random();
 

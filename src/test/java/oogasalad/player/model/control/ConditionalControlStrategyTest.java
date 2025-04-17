@@ -5,9 +5,9 @@ import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.controlConfig.ConditionalControlConfig;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.player.model.control.pathfinding.PathFindingStrategyInterface;
+import oogasalad.player.model.control.pathfinding.PathFindingStrategy;
 import oogasalad.player.model.control.pathfinding.PathFindingStrategyFactory;
-import oogasalad.player.model.control.targetcalculation.TargetStrategyInterface;
+import oogasalad.player.model.control.targetcalculation.TargetStrategy;
 import oogasalad.player.model.control.targetcalculation.TargetStrategyFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,18 +20,18 @@ class ConditionalControlStrategyTest {
   private GameMap mockMap;
   private EntityPlacement mockPlacement;
   private Entity mockEntity;
-  private PathFindingStrategyInterface mockStrategyIn;
-  private PathFindingStrategyInterface mockStrategyOut;
-  private TargetStrategyInterface mockTargetStrategy;
+  private PathFindingStrategy mockStrategyIn;
+  private PathFindingStrategy mockStrategyOut;
+  private TargetStrategy mockTargetStrategy;
 
   @BeforeEach
   void setup() {
     mockMap = mock(GameMap.class);
     mockPlacement = mock(EntityPlacement.class);
     mockEntity = mock(Entity.class);
-    mockStrategyIn = mock(PathFindingStrategyInterface.class);
-    mockStrategyOut = mock(PathFindingStrategyInterface.class);
-    mockTargetStrategy = mock(TargetStrategyInterface.class);
+    mockStrategyIn = mock(PathFindingStrategy.class);
+    mockStrategyOut = mock(PathFindingStrategy.class);
+    mockTargetStrategy = mock(TargetStrategy.class);
   }
 
   @Test

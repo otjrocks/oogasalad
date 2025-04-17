@@ -17,10 +17,10 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "wall.png",
+        "imagePath": "wall",
         "tileWidth": 8,
         "tileHeight": 8,
-        "tilesToCycle": 1,
+        "tilesToCycle": [0],
         "animationSpeed": 1.0
       }
     }

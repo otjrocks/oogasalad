@@ -88,27 +88,6 @@ public class JsonConfigSaver implements ConfigSaver {
   }
 
   /**
-   * Saves the current level into the configuration file.
-   *
-   * @param configModel   the config model to change level index for
-   * @param newLevelIndex Level to save as curr level
-   * @param folder the folder to save to
-   */
-  public void saveUpdatedLevelIndex(ConfigModel configModel, int newLevelIndex, Path folder) throws ConfigException {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.enable(SerializationFeature.INDENT_OUTPUT);
-    Path configPath = folder.resolve("gameConfig.json");
-    try {
-      ObjectNode root = (ObjectNode) mapper.readTree(configPath.toFile());
-      root.put("currentLevelIndex", newLevelIndex);
-      mapper.writeValue(configPath.toFile(), root);
-    } catch (IOException e) {
-      throw new ConfigException("Failed to update currentLevelIndex in gameConfig.json", e);
-    }
-  }
-
-
-  /**
    * Writes the given JSON object to the specified file path.
    *
    * @param config the JSON object to write

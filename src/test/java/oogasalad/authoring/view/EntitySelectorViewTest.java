@@ -40,7 +40,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
         "mock.png", // Should be a relative path or valid URI
         14,
         14,
-        3,
+        List.of(0, 1, 2),
         1.0
     );
 
@@ -80,7 +80,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
         "Ghost",
         new KeyboardControlConfig(),
         Map.of("Default", mode),
-        List.of(), 1.0
+        List.of()
     );
 
     // --- Run and verify ---
@@ -99,7 +99,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
         "Pacman",
         new NoneControlConfig(),
         Map.of("Default", mode),
-        List.of(), 1.0
+        List.of()
     );    runAsJFXAction(() -> view.updateEntities(List.of(entity)));
 
     VBox tile = (VBox) ((FlowPane) lookup(".flow-pane").query()).getChildren().getFirst();
@@ -114,7 +114,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
         "Wall",
         new NoneControlConfig(),
         Map.of("Default", mode),
-        List.of(), 1.0
+        List.of()
     );
     runAsJFXAction(() -> view.updateEntities(List.of(entity)));
     runAsJFXAction(() -> view.highlightEntityTile("Wall"));

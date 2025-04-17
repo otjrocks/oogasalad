@@ -11,7 +11,7 @@ import oogasalad.engine.model.GameMap;
  * target position on a game map. It considers valid positions, entity placement, and directional
  * preferences when determining the path.
  */
-public class BfsPathFindingStrategy implements PathFindingStrategyInterface {
+public class BfsPathFindingStrategy implements PathFindingStrategy {
 
   @Override
   public int[] getPath(GameMap map, int startX, int startY, int targetX, int targetY,

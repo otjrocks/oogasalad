@@ -48,7 +48,7 @@ public class TargetStrategyFactoryTest {
   @Test
   void createTargetStrategy_targetLocationStrategy_createdSuccessfully() {
     mockTargetControlConfig(new TargetLocationConfig(10.0, 20.0));
-    TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
+    TargetStrategy strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
     assertInstanceOf(
         oogasalad.player.model.control.targetcalculation.testdoubles.TargetLocationStrategy.class, strategy);
   }
@@ -56,7 +56,7 @@ public class TargetStrategyFactoryTest {
   @Test
   void createTargetStrategy_targetEntityStrategy_createdSuccessfully() {
     mockTargetControlConfig(new TargetEntityConfig("Enemy"));
-    TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
+    TargetStrategy strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
     assertInstanceOf(
         oogasalad.player.model.control.targetcalculation.testdoubles.TargetEntityStrategy.class, strategy);
   }
@@ -64,7 +64,7 @@ public class TargetStrategyFactoryTest {
   @Test
   void createTargetStrategy_targetAheadOfEntityStrategy_createdSuccessfully() {
     mockTargetControlConfig(new TargetAheadOfEntityConfig("Ally", 2));
-    TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
+    TargetStrategy strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
     assertInstanceOf(
         oogasalad.player.model.control.targetcalculation.testdoubles.TargetAheadOfEntityStrategy.class, strategy);
   }
@@ -72,7 +72,7 @@ public class TargetStrategyFactoryTest {
   @Test
   void createTargetStrategy_targetEntityWithTrapStrategy_createdSuccessfully() {
     mockConditionalControlConfig(new TargetEntityWithTrapConfig("Enemy", 1, "Trap"));
-    TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
+    TargetStrategy strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
     assertInstanceOf(
         oogasalad.player.model.control.targetcalculation.testdoubles.TargetEntityWithTrapStrategy.class, strategy);
   }
@@ -102,7 +102,7 @@ public class TargetStrategyFactoryTest {
   // Dummy config and class with no matching constructor
   record TargetNoConstructorConfig(String key) implements TargetCalculationConfig {}
 
-  static class TargetNoConstructorStrategy implements TargetStrategyInterface {
+  static class TargetNoConstructorStrategy implements TargetStrategy {
     private TargetNoConstructorStrategy() {} // Private constructor
     @Override
     public int[] getTargetPosition() {

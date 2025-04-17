@@ -48,7 +48,7 @@ public class ControlStrategyFactoryTest {
     ControlConfig config = new NoneControlConfig();
     mockControlConfig(config);
 
-    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
+    ControlStrategy strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
     assertInstanceOf(oogasalad.player.model.control.testdoubles.NoneControlStrategy.class, strategy);
   }
 
@@ -57,7 +57,7 @@ public class ControlStrategyFactoryTest {
     ControlConfig config = new KeyboardControlConfig();
     mockControlConfig(config);
 
-    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
+    ControlStrategy strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
     assertInstanceOf(oogasalad.player.model.control.testdoubles.KeyboardControlStrategy.class, strategy);
   }
 
@@ -66,7 +66,7 @@ public class ControlStrategyFactoryTest {
     ControlConfig config = new TargetControlConfig("A*", null);
     mockControlConfig(config);
 
-    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
+    ControlStrategy strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
     assertInstanceOf(oogasalad.player.model.control.testdoubles.TargetControlStrategy.class, strategy);
   }
 
@@ -75,7 +75,7 @@ public class ControlStrategyFactoryTest {
     ControlConfig config = new ConditionalControlConfig(5, "A*", "Dijkstra", null);
     mockControlConfig(config);
 
-    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
+    ControlStrategy strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
     assertInstanceOf(oogasalad.player.model.control.testdoubles.ConditionalControlStrategy.class, strategy);
   }
 

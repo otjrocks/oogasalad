@@ -3,7 +3,6 @@ package oogasalad.authoring.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
@@ -202,40 +201,4 @@ public class LevelDraft {
   public void setEdgePolicy(String edgePolicy) {
     this.edgePolicy = edgePolicy;
   }
-
-  /**
-   * Updates the mode name for all {@link EntityPlacement}s that belong to the specified entity type
-   * and currently use the old mode name. This is used when renaming a mode in the {@link EntityType}
-   * so that all existing placements referencing the old mode are updated to the new mode name.
-   *
-   * @param entityTypeName the name of the entity type to update
-   * @param oldMode the previous name of the mode
-   * @param newMode the new name to replace the old mode
-   */
-  public void updateModeName(String entityTypeName, String oldMode, String newMode) {
-    for (EntityPlacement placement : entityPlacements) {
-      if (placement.getTypeString().equals(entityTypeName) &&
-          placement.getMode().equals(oldMode)) {
-        placement.setMode(newMode);
-      }
-    }
-  }
-
-  /**
-   * Re-resolves all {@link EntityPlacement}s in the level using the given map of updated
-   * {@link EntityType}s. This should be called after replacing or modifying an entity type
-   * in the global entity type map to ensure that all placements use the latest version.
-   *
-   * @param typeMap a map of entity type names to updated {@link EntityType} instances
-   */
-  public void refreshEntityTypes(Map<String, EntityType> typeMap) {
-    for (EntityPlacement p : entityPlacements) {
-      if (typeMap.containsKey(p.getTypeString())) {
-        p.setResolvedEntityType(typeMap.get(p.getTypeString()));
-      }
-    }
-  }
-
-
-
 }

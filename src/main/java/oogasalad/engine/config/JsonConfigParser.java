@@ -25,6 +25,7 @@ import oogasalad.engine.model.GameSettings;
 import oogasalad.engine.model.MapInfo;
 import oogasalad.engine.model.MetaData;
 import oogasalad.engine.model.ModeChangeEvent;
+import oogasalad.engine.model.Tiles;
 import oogasalad.engine.model.controlConfig.ControlConfig;
 import oogasalad.engine.records.config.CollisionConfig;
 import oogasalad.engine.records.config.EntityConfig;
@@ -126,11 +127,12 @@ public class JsonConfigParser implements ConfigParser {
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
     WinCondition winCondition = gameConfig.settings().winCondition();
 
-    // Step 8: Get current level from gameConfig
-    int currentLevel = gameConfig.currentLevelIndex();
+    // Step 8: Tiles currently unused — placeholder
+    List<Tiles> tiles = new ArrayList<>();
+
     // Step 9: Return the full config model using the first level only for now
     return new ConfigModel(metaData, settings, entityTypes, levels, collisionRules,
-        winCondition, currentLevel);
+        winCondition, tiles);
   }
 
   private ParsedLevel loadLevelConfig(String filepath) throws ConfigException {
@@ -205,52 +207,30 @@ public class JsonConfigParser implements ConfigParser {
 
 
   private Condition parseCondition(JsonNode conditionNode) {
-    if (isNullOrMissing(conditionNode)) {
-      return defaultCondition();
-    }
+    String type = conditionNode.get("type").asText();
+    Map<String, Object> parameters = new HashMap<>();
 
-    String type = getConditionType(conditionNode);
-    Map<String, Object> parameters = extractParameters(conditionNode.get("parameters"));
+    for (Iterator<Entry<String, JsonNode>> it = conditionNode.get("parameters").fields();
+        it.hasNext(); ) {
+      Map.Entry<String, JsonNode> entry = it.next();
+      JsonNode val = entry.getValue();
+
+      Object value;
+      if (val.isInt()) {
+        value = val.asInt();
+      } else if (val.isDouble()) {
+        value = val.asDouble();
+      } else if (val.isBoolean()) {
+        value = val.asBoolean();
+      } else {
+        value = val.asText();
+      }
+
+      parameters.put(entry.getKey(), value);
+    }
 
     return new Condition(type, parameters);
   }
-
-  private boolean isNullOrMissing(JsonNode node) {
-    return node == null || node.isNull();
-  }
-
-  private Condition defaultCondition() {
-    LoggingManager.LOGGER.warn("Condition is missing or incomplete. Using default 'Always'.");
-    return new Condition("Always", Map.of());
-  }
-
-  private String getConditionType(JsonNode conditionNode) {
-    JsonNode typeNode = conditionNode.get("type");
-    if (isNullOrMissing(typeNode)) {
-      LoggingManager.LOGGER.warn("Condition is missing a 'type' field. Using default 'Always'.");
-      return "Always";
-    }
-    return typeNode.asText();
-  }
-
-  private Map<String, Object> extractParameters(JsonNode paramNode) {
-    Map<String, Object> parameters = new HashMap<>();
-    if (paramNode != null && paramNode.isObject()) {
-      for (Iterator<Entry<String, JsonNode>> it = paramNode.fields(); it.hasNext(); ) {
-        Map.Entry<String, JsonNode> entry = it.next();
-        parameters.put(entry.getKey(), parseValue(entry.getValue()));
-      }
-    }
-    return parameters;
-  }
-
-  private Object parseValue(JsonNode valueNode) {
-    if (valueNode.isInt()) return valueNode.asInt();
-    if (valueNode.isDouble()) return valueNode.asDouble();
-    if (valueNode.isBoolean()) return valueNode.asBoolean();
-    return valueNode.asText();
-  }
-
 
 
   private Map<Integer, EntityType> buildEntityMappings(JsonNode mappings) throws ConfigException {
@@ -326,12 +306,16 @@ public class JsonConfigParser implements ConfigParser {
     Settings baseSettings = gameConfig.settings();
 
     return new GameSettings(
-        baseSettings.gameSpeed(),
-        baseSettings.startingLives(),
-        baseSettings.initialScore(),
-        "wrap"
+            baseSettings.gameSpeed(),
+            baseSettings.startingLives(),
+            baseSettings.initialScore(),
+            "wrap",
+            baseSettings.scoreStrategy(),
+            baseSettings.winCondition()
     );
   }
+
+
 
 
   private List<CollisionRule> convertToCollisionRules(GameConfig gameConfig) {
@@ -406,8 +390,7 @@ public class JsonConfigParser implements ConfigParser {
         entity.name(),
         control,
         modes,
-        entity.entityProperties().blocks(),
-        entity.entityProperties().movementSpeed()
+        entity.entityProperties().blocks()
     );
 
   }
@@ -422,9 +405,8 @@ public class JsonConfigParser implements ConfigParser {
       Settings defaultSettings = parseDefaultSettings(root);
       List<Level> levels = parseLevels(root, defaultSettings);
       List<CollisionConfig> collisions = parseCollisions(root);
-      JsonNode currentLevelNode = root.get("currentLevelIndex");
-      int currentLevelIndex = currentLevelNode != null ? currentLevelNode.asInt() : 0;
-      return new GameConfig(metadata, defaultSettings, levels, collisions, getFolderPath(filepath), currentLevelIndex);
+
+      return new GameConfig(metadata, defaultSettings, levels, collisions, getFolderPath(filepath));
 
     } catch (IOException e) {
       throw new ConfigException("Failed to parse config file: " + filepath, e);
@@ -465,11 +447,11 @@ public class JsonConfigParser implements ConfigParser {
     }
 
     return new Settings(
-        override.gameSpeed() != null ? override.gameSpeed() : defaults.gameSpeed(),
-        override.startingLives() != null ? override.startingLives() : defaults.startingLives(),
-        override.initialScore() != null ? override.initialScore() : defaults.initialScore(),
-        override.scoreStrategy() != null ? override.scoreStrategy() : defaults.scoreStrategy(),
-        override.winCondition() != null ? override.winCondition() : defaults.winCondition());
+            override.gameSpeed() != 0 ? override.gameSpeed() : defaults.gameSpeed(),
+            override.startingLives() != 0 ? override.startingLives() : defaults.startingLives(),
+            override.initialScore() != 0 ? override.initialScore() : defaults.initialScore(),
+            override.scoreStrategy() != null ? override.scoreStrategy() : defaults.scoreStrategy(),
+            override.winCondition() != null ? override.winCondition() : defaults.winCondition());
   }
 
   private String getFolderPath(String filepath) throws ConfigException {

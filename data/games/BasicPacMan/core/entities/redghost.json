@@ -9,15 +9,29 @@
         "targetType": "Pacman"
       }
     },
-    "movementSpeed": 1
+    "movementSpeed": 90
   },
   "modes": [
     {
       "name": "Default",
       "image": {
-        "imagePath": "redghost.png",
+        "imagePath": "redghost",
         "tileWidth": 14,
         "tileHeight": 14,
+        "tilesToCycle": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "animationSpeed": 1.0
+      }
+    }, {
+      "name": "Frightened",
+      "image": {
+        "imagePath": "assets/frightenedghost.png",
+        "tileWidth": 28,
+        "tileHeight": 28,
         "tilesToCycle": 4,
         "animationSpeed": 1.0
       }

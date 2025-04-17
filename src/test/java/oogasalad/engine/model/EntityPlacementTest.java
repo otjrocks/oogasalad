@@ -12,7 +12,7 @@ public class EntityPlacementTest {
 
   @BeforeEach
   public void setUp() {
-    testEntityType = new EntityType("Enemy", null, null, null, 1.0);
+    testEntityType = new EntityType("Enemy", null, null, null);
     testPlacement = new EntityPlacement(testEntityType, 30.0, 40.0, "Default");
   }
 
@@ -25,7 +25,7 @@ public class EntityPlacementTest {
 
   @Test
   public void testGetSetEntityData() {
-    EntityType newEntityType = new EntityType("Player", null, null, null, 1.0);
+    EntityType newEntityType = new EntityType("Player", null, null, null);
     testPlacement.setResolvedEntityType(newEntityType);
     assertEquals(newEntityType, testPlacement.getType());
     assertEquals("Player", testPlacement.getType().type());

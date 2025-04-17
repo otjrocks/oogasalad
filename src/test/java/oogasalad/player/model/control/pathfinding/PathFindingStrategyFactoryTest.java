@@ -12,21 +12,21 @@ public class PathFindingStrategyFactoryTest {
 
   @Test
   void createPathFindingStrategy_bfsStrategy_createsInstanceOfBfsPathFindingStrategy() {
-    PathFindingStrategyInterface strategy = PathFindingStrategyFactory.createPathFindingStrategy("Bfs");
+    PathFindingStrategy strategy = PathFindingStrategyFactory.createPathFindingStrategy("Bfs");
     assertNotNull(strategy);
     assertInstanceOf(BfsPathFindingStrategy.class, strategy);
   }
 
   @Test
   void createPathFindingStrategy_euclideanStrategy_createsInstanceOfEuclideanPathFindingStrategy() {
-    PathFindingStrategyInterface strategy = PathFindingStrategyFactory.createPathFindingStrategy("Euclidean");
+    PathFindingStrategy strategy = PathFindingStrategyFactory.createPathFindingStrategy("Euclidean");
     assertNotNull(strategy);
     assertInstanceOf(EuclideanPathFindingStrategy.class, strategy);
   }
 
   @Test
   void createPathFindingStrategy_randomStrategy_createsInstanceOfRandomPathFindingStrategy() {
-    PathFindingStrategyInterface strategy = PathFindingStrategyFactory.createPathFindingStrategy("Random");
+    PathFindingStrategy strategy = PathFindingStrategyFactory.createPathFindingStrategy("Random");
     assertNotNull(strategy);
     assertInstanceOf(RandomPathFindingStrategy.class, strategy);
   }
@@ -41,7 +41,7 @@ public class PathFindingStrategyFactoryTest {
   }
 
   // Dummy class for testing no public constructor case
-  public static class HiddenPathFindingStrategy implements PathFindingStrategyInterface {
+  public static class HiddenPathFindingStrategy implements PathFindingStrategy {
     private HiddenPathFindingStrategy() {}
 
     @Override

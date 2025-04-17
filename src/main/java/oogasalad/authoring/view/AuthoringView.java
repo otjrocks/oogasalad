@@ -131,12 +131,28 @@ public class AuthoringView {
         MenuBar menuBar = createMenuBar();
         BorderPane mainContent = createMainContent();
 
-        // Create a VBox for the main layout
-        VBox fullLayout = new VBox(10);
-        fullLayout.getChildren().addAll(menuBar, mainContent, gameSettingsView.getNode());
-        VBox.setVgrow(mainContent, Priority.ALWAYS);
+      // Create vertical layout for everything
+      VBox fullLayout = new VBox();
 
-        // Set the main layout as the center of this BorderPane
+// Give the menu bar fixed height
+      fullLayout.getChildren().add(menuBar);
+
+// Shrink the mainContent height
+      mainContent.setMaxHeight(600); // Reduce canvas size
+      fullLayout.getChildren().add(mainContent);
+
+// Add game settings with more vertical space
+      Node gameSettingsNode = gameSettingsView.getNode();
+      gameSettingsNode.setStyle("-fx-background-color: #f4f4f4; -fx-border-color: #ccc; -fx-border-width: 1px 0 0 0; -fx-padding: 10px;");
+      VBox.setVgrow(gameSettingsNode, Priority.ALWAYS); // Expand
+      fullLayout.getChildren().add(gameSettingsNode);
+
+// Apply layout
+      root.setCenter(fullLayout);
+
+      VBox.setVgrow(mainContent, Priority.ALWAYS);
+
+      // Set the main layout as the center of this BorderPane
         root.setCenter(fullLayout);
 
         applyStyles();
