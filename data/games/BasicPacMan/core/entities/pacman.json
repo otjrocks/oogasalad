@@ -11,8 +11,8 @@
       "name": "Default",
       "image": {
         "imagePath": "assets/pacman.png",
-        "tileWidth": 13,
-        "tileHeight": 13,
+        "tileWidth": 28,
+        "tileHeight": 28,
         "tilesToCycle": 6,
         "animationSpeed": 1.0
       }
@@ -22,8 +22,8 @@
       "movementSpeed": 150,
       "image": {
         "imagePath": "assets/pacman.png",
-        "tileWidth": 13,
-        "tileHeight": 13,
+        "tileWidth": 28,
+        "tileHeight": 28,
         "tilesToCycle": 6,
         "animationSpeed": 1.0
       }
