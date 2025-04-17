@@ -21,6 +21,7 @@ import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.EntityType;
 import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.records.config.model.Settings;
+import oogasalad.engine.records.config.model.losecondition.LivesBasedCondition;
 import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
 
 /**
@@ -52,7 +53,8 @@ public class AuthoringModel {
     this.levels = new ArrayList<>();
     this.collisionRules = new ArrayList<>();
     // TODO: add score strategy and win condition
-    this.defaultSettings = new Settings(1.0, 3, 0, "", new SurviveForTimeCondition(5));
+    this.defaultSettings = new Settings(1.0, 3, 0, "",
+        new SurviveForTimeCondition(5), new LivesBasedCondition());
   }
 
   /**
