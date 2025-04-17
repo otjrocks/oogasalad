@@ -61,7 +61,7 @@ public class SplashScreenView extends VBox {
         LanguageManager.getMessage("AUTHORING_ENVIRONMENT"),
         LanguageManager.getMessage("CONFIGURATION"));
     List<EventHandler<ActionEvent>> actions = List.of(
-        e -> activateGamePlayerMode(),
+        e -> loadGameSelector(),
         e -> activateAuthoringMode(),
         e -> toggleConfigurationMenu()
     );
@@ -74,9 +74,9 @@ public class SplashScreenView extends VBox {
     myConfigurationBox.setVisible(!myConfigurationBox.isVisible());
   }
 
-  private void activateGamePlayerMode() {
+  private void loadGameSelector() {
     myMainController.hideSplashScreen();
-    myMainController.showGamePlayerView();
+    myMainController.showGameSelectorView();
   }
 
   private void activateAuthoringMode() {
