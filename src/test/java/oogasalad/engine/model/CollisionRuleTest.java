@@ -72,8 +72,8 @@ class CollisionRuleTest {
 
     String expected = """
         (Type Pacman: Mode PoweredUp) ↔ (Type Ghost: Mode Default)
-        Events A: [UpdateScoreCollisionEvent[amount=5]]
-        Events B: [ConsumeCollisionEvent[]]""";
+        Events A: [UpdateScoreCollisionEventRecord[amount=5]]
+        Events B: [ConsumeCollisionEventRecord[]]""";
     assertEquals(expected, rule.toString());
   }
 
