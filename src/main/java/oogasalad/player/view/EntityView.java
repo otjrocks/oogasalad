@@ -4,12 +4,8 @@ import static oogasalad.player.view.GamePlayerView.CURRENT_GAME_CONFIG_PATH;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import oogasalad.engine.LoggingManager;
@@ -32,7 +28,8 @@ public class EntityView {
   private static final Map<String, Image> SPRITE_CACHE = new HashMap<>();
   private final Entity entity;
   private final int totalFrames;
-  private final int dimension;
+  private final int height;
+  private final int width;
   private final Image sprite;
 
   /**
@@ -43,7 +40,8 @@ public class EntityView {
   public EntityView(Entity entity) {
     this.entity = entity;
     this.totalFrames = entity.getEntityPlacement().getEntityFrameNumber();
-    this.dimension = 28;
+    this.height = entity.getEntityPlacement().getEntityImageHeight();
+    this.width = entity.getEntityPlacement().getEntityImageWidth();
     String imagePath = CURRENT_GAME_CONFIG_PATH + entity.getEntityPlacement().getDefaultImagePath();
     this.sprite = SPRITE_CACHE.computeIfAbsent(imagePath, path -> {
       try {
@@ -82,10 +80,10 @@ public class EntityView {
 
     gc.drawImage(
         sprite,
-        frameIndex * dimension,
+        frameIndex * width,
         dirOffset,
-        dimension,
-        dimension,
+        width,
+        height,
         destX,
         destY,
         tileWidth,

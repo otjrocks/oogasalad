@@ -262,6 +262,26 @@ public class EntityPlacement {
   }
 
   /**
+   * Returns the width of the entity's associated image in pixels
+   */
+  public int getEntityImageWidth() {
+    return this.getType()
+            .modes()
+            .get("Default")
+            .image().tileWidth();
+  }
+
+  /**
+   * Returns the height of the entity's associated image in pixels
+   */
+  public int getEntityImageHeight() {
+    return this.getType()
+            .modes()
+            .get("Default")
+            .image().tileHeight();
+  }
+
+  /**
    * Gets the number of frames for the current entity mode sprite.
    */
   public int getEntityFrameNumber() {

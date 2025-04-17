@@ -18,8 +18,8 @@
       "name": "Default",
       "image": {
         "imagePath": "assets/blueghost.png",
-        "tileWidth": 14,
-        "tileHeight": 14,
+        "tileWidth": 28,
+        "tileHeight": 28,
         "tilesToCycle": 4,
         "animationSpeed": 1.0
       }
