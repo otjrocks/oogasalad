@@ -1,17 +1,12 @@
 package oogasalad.authoring.view;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -30,14 +25,13 @@ import org.testfx.framework.junit5.ApplicationTest;
 
 public class EntityTypeEditorViewTest extends ApplicationTest {
 
-  private AuthoringController mockController;
   private EntityTypeEditorView view;
   private EntityType mockEntityType;
 
   @BeforeEach
   public void setUp() {
     LanguageManager.setLanguage("English");
-    mockController = mock(AuthoringController.class);
+    AuthoringController mockController = mock(AuthoringController.class);
     view = new EntityTypeEditorView(mockController);
 
     // === Construct ModeConfig using new record-based structure ===

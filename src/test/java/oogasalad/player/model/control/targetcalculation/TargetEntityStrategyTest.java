@@ -1,5 +1,6 @@
 package oogasalad.player.model.control.targetcalculation;
 
+import java.util.Collections;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
 import oogasalad.engine.model.EntityPlacement;
@@ -37,7 +38,7 @@ class TargetEntityStrategyTest {
   @Test
   void getTargetPosition_noEntity_returnsDefaultZero() {
     GameMap mockMap = mock(GameMap.class);
-    Iterator<Entity> emptyIterator = java.util.Collections.<Entity>emptyList().iterator();
+    Iterator<Entity> emptyIterator = Collections.emptyIterator();
     when(mockMap.iterator()).thenReturn(emptyIterator);
 
     Map<String, Object> config = Map.of("targetType", "Enemy");

@@ -16,8 +16,8 @@ import oogasalad.engine.records.CollisionContextRecord;
  * @author Austin Huang
  */
 public class ChangeModeForTypeStrategy implements CollisionStrategy {
-  private String entityType;
-  private String newMode;
+  private final String entityType;
+  private final String newMode;
 
   /**
    * Constructs a new {@code ChangeModeForTypeStrategy} with the specified target type and newMode.

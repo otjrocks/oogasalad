@@ -1,7 +1,5 @@
 package oogasalad.engine.view;
 
-import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
-
 import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -15,7 +13,6 @@ import oogasalad.engine.LanguageManager;
 import oogasalad.engine.ThemeManager;
 import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.view.components.Selector;
 
 /**
  * The game selector splash screen after game player button on splash screen is clicked.
@@ -24,7 +21,6 @@ import oogasalad.engine.view.components.Selector;
  */
 public class GameSelectorView extends VBox {
 
-  private final ThemeManager myThemeManager;
   private final MainController myMainController;
 
   /**
@@ -34,7 +30,7 @@ public class GameSelectorView extends VBox {
    */
   public GameSelectorView(MainController mainController) {
     super();
-    myThemeManager = new ThemeManager(mainController.getStage());
+    ThemeManager myThemeManager = new ThemeManager(mainController.getStage());
     myMainController = mainController;
     setupLayout();
 

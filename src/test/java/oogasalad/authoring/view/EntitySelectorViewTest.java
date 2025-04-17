@@ -32,7 +32,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
   public void start(javafx.stage.Stage stage) {
     mockController = mock(AuthoringController.class);
     view = new EntitySelectorView(mockController);
-    javafx.scene.Scene scene = new javafx.scene.Scene((VBox) view.getRoot(), 500, 400);
+    javafx.scene.Scene scene = new javafx.scene.Scene(view.getRoot(), 500, 400);
     stage.setScene(scene);
 
     // --- Create ImageConfig ---
@@ -86,7 +86,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
     // --- Run and verify ---
     runAsJFXAction(() -> view.updateEntities(List.of(entity)));
 
-    FlowPane tileGrid = (FlowPane) lookup(".flow-pane").query();
+    FlowPane tileGrid = lookup(".flow-pane").query();
     assertEquals(1, tileGrid.getChildren().size());
     VBox tile = (VBox) tileGrid.getChildren().get(0);
     assertTrue(tile.getChildren().get(0) instanceof ImageView);

@@ -42,9 +42,7 @@ public class EntityTypeEditorView {
   private final VBox modeList;
   private final AuthoringController controller;
   private EntityType current;
-  private Button deleteButton;
 
-  private final Button saveCollisionButton;
   private final VBox controlTypeParameters;
   private final List<TextField> controlTypeParameterFields;
   private final List<TextField> targetStrategyParameterFields;
@@ -74,7 +72,7 @@ public class EntityTypeEditorView {
     controlTypeParameterFields = new ArrayList<>();
     targetStrategyParameterFields = new ArrayList<>();
 
-    saveCollisionButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
+    Button saveCollisionButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
     saveCollisionButton.setOnAction(e -> commitChanges());
 
     modeList = new VBox(5);
@@ -82,7 +80,7 @@ public class EntityTypeEditorView {
     Button addModeButton = new Button(LanguageManager.getMessage("ADD_MODE"));
     addModeButton.setOnAction(e -> openAddModeDialog());
 
-    deleteButton = new Button("Delete Entity Type");
+    Button deleteButton = new Button("Delete Entity Type");
     deleteButton.getStyleClass().add("delete-button");
     deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
     deleteButton.setOnAction(e -> deleteEntityType());

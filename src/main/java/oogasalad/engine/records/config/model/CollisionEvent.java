@@ -16,7 +16,9 @@ import oogasalad.engine.records.config.model.collisionevent.*;
     @JsonSubTypes.Type(value = ConsumeCollisionEvent.class, name = "Consume"),
     @JsonSubTypes.Type(value = UpdateLivesCollisionEvent.class, name = "UpdateLives"),
     @JsonSubTypes.Type(value = ReturnToSpawnLocationCollisionEvent.class, name = "ReturnToSpawnLocation"),
-    @JsonSubTypes.Type(value = ChangeModeForTypeCollisionEvent.class, name = "ChangeModeForType")
+    @JsonSubTypes.Type(value = ChangeModeForTypeCollisionEvent.class, name = "ChangeModeForType"),
+    @JsonSubTypes.Type(value = ResetTimeElapsedCollisionEvent.class, name = "ResetTimeElapsed"),
+    @JsonSubTypes.Type(value = RemoveAllEntitiesOfTypeCollisionEvent.class, name = "RemoveAllEntitiesOfType")
 })
 public interface CollisionEvent {
 

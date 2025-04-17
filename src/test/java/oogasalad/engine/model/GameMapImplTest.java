@@ -27,13 +27,12 @@ class GameMapImplTest extends DukeApplicationTest {
   private final int height = 10;
   private GameMap myGameMap;
   private Entity myEntity;
-  private Scene myScene;
   private GameInputManager myInput;
 
   @Override
   public void start(Stage stage) {
     Group root = new Group();
-    myScene = new Scene(root, GameConfig.WIDTH, GameConfig.HEIGHT);
+    Scene myScene = new Scene(root, GameConfig.WIDTH, GameConfig.HEIGHT);
     myInput = new GameInputManager(myScene, root);
   }
 

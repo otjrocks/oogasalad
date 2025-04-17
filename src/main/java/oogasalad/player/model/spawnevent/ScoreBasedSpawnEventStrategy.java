@@ -12,8 +12,7 @@ import oogasalad.engine.records.config.model.SpawnEvent;
 public class ScoreBasedSpawnEventStrategy implements SpawnEventStrategy {
 
   @Override
-  public boolean shouldSpawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord,
-      double elapsedTime) {
+  public boolean shouldSpawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord) {
     Object amountObj = spawnEvent.spawnCondition().parameters().get("amount");
     if (amountObj == null) {
       LoggingManager.LOGGER.warn(
@@ -32,8 +31,7 @@ public class ScoreBasedSpawnEventStrategy implements SpawnEventStrategy {
   }
 
   @Override
-  public boolean shouldDespawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord,
-      double elapsedTime) {
+  public boolean shouldDespawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord) {
     Object amountObj = spawnEvent.despawnCondition().parameters().get("amount");
     if (amountObj == null) {
       LoggingManager.LOGGER.warn(

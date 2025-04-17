@@ -16,11 +16,9 @@ public interface SpawnEventStrategy {
    *
    * @param spawnEvent        The spawn event you are checking for
    * @param gameContextRecord The game context information to use in your determination.
-   * @param elapsedTime       The elapsed time of the game.
    * @return true if an entity should be spawned by the current point in the game, false otherwise.
    */
-  boolean shouldSpawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord,
-      double elapsedTime);
+  boolean shouldSpawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord);
 
   /**
    * Determine if a spawn event entity should be despawned based on a specific strategy.
@@ -28,9 +26,7 @@ public interface SpawnEventStrategy {
    * @param spawnEvent        The spawn event that you are checking to see if it should be
    *                          despawned.
    * @param gameContextRecord The game context information you can use in your determination.
-   * @param elapsedTime       The total time elapsed of the game.
    * @return true if the current entity should be despawned, false otherwise.
    */
-  boolean shouldDespawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord,
-      double elapsedTime);
+  boolean shouldDespawn(SpawnEvent spawnEvent, GameContextRecord gameContextRecord);
 }

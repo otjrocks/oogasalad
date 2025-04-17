@@ -11,9 +11,9 @@ import oogasalad.player.model.exceptions.ControlStrategyException;
 
 /**
  * The {@code ControlStrategyFactory} class is responsible for dynamically creating instances of
- * {@link ControlStrategyInterface} based on the control type specified in an {@link EntityPlacement}. It
- * uses reflection to identify and instantiate the appropriate control strategy class, supporting
- * constructors with varying argument requirements.
+ * {@link ControlStrategyInterface} based on the control type specified in an
+ * {@link EntityPlacement}. It uses reflection to identify and instantiate the appropriate control
+ * strategy class, supporting constructors with varying argument requirements.
  *
  * <p>This factory class provides flexibility in creating control strategies by allowing
  * different implementations to be dynamically loaded at runtime. It supports constructors with
@@ -43,8 +43,7 @@ import oogasalad.player.model.exceptions.ControlStrategyException;
  */
 public class ControlStrategyFactory {
 
-  private static String STRATEGY_PACKAGE
-      = "oogasalad.player.model.control.";
+  private static String STRATEGY_PACKAGE = "oogasalad.player.model.control."; // Keep field as global and non-final for testing purposes.
 
   /**
    * Creates a {@link ControlStrategyInterface} instance based on the control type of the given
@@ -74,14 +73,16 @@ public class ControlStrategyFactory {
     }
   }
 
-  private static ControlStrategyInterface instantiateStrategy(Class<?> strategyClass, GameInputManager input,
+  private static ControlStrategyInterface instantiateStrategy(Class<?> strategyClass,
+      GameInputManager input,
       EntityPlacement placement,
       GameMap gameMap, ControlConfig controlConfig)
       throws ControlStrategyException {
     try {
       for (Constructor<?> constructor : strategyClass.getConstructors()) {
         if (isPublicConstructor(constructor)) {
-          ControlStrategyInterface strategy = tryInstantiateStrategy(constructor, input, gameMap, placement,
+          ControlStrategyInterface strategy = tryInstantiateStrategy(constructor, input, gameMap,
+              placement,
               controlConfig);
           if (strategy != null) {
             return strategy;

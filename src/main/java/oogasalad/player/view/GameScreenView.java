@@ -1,17 +1,12 @@
 package oogasalad.player.view;
 
-import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
 import static oogasalad.engine.config.GameConfig.HEIGHT;
 import static oogasalad.engine.config.GameConfig.WIDTH;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import oogasalad.engine.LanguageManager;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.model.GameState;
 import oogasalad.player.view.components.HudView;
@@ -46,10 +41,7 @@ public class GameScreenView extends VBox {
     hudView = new HudView(
         gameState,
         gameView,
-        () -> {
-          mainController.getInputManager().getRoot().getChildren().remove(this);
-          mainController.showSplashScreen();
-        }
+        this::handleReturnToMainMenu
     );
 
     this.getChildren().addAll(hudView, gamePlayerView);
@@ -68,39 +60,11 @@ public class GameScreenView extends VBox {
     hudUpdater.play();
   }
 
-  /**
-   * Returns Horizontal Box With Pause and Play
-   */
-  private HBox getHBox(GamePlayerView gamePlayerView) {
-    GameView gameView = gamePlayerView.getGameView();
-
-    Button pauseButton = new Button("⏸");
-    Button playButton = new Button("▶");
-    Button returnToMenuButton = new Button(LanguageManager.getMessage("RETURN_TO_MENU"));
-
-    pauseButton.setFocusTraversable(false);
-    playButton.setFocusTraversable(false);
-    returnToMenuButton.setFocusTraversable(false);
-
-    pauseButton.setOnAction(e -> {
-      gameView.pauseGame();
-      gameView.requestFocus();
-    });
-
-    playButton.setOnAction(e -> {
-      gameView.resumeGame();
-      gameView.requestFocus();
-    });
-
-    returnToMenuButton.setOnAction(e -> {
-      mainController.getInputManager().getRoot().getChildren().remove(this);
-      mainController.showSplashScreen();
-    });
-
-    HBox buttonBox = new HBox(ELEMENT_SPACING, playButton, pauseButton, returnToMenuButton);
-    buttonBox.getStyleClass().add("hud-container");
-    return buttonBox;
+  private void handleReturnToMainMenu() {
+    mainController.getInputManager().getRoot().getChildren().remove(this);
+    mainController.showSplashScreen();
   }
+
 
   /**
    * Checks if score or lives have changed before updating HUD.

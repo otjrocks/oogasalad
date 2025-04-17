@@ -26,13 +26,13 @@ import oogasalad.engine.records.config.model.EntityProperties;
  */
 public class ModeEditorDialog {
 
-  private TextField nameField;
-  private TextField speedField;
-  private TextField imagePathField;
-  private TextField tileWidthField;
-  private TextField tileHeightField;
-  private TextField tilesToCycleField;
-  private TextField animationSpeedField;
+  private final TextField nameField;
+  private final TextField speedField;
+  private final TextField imagePathField;
+  private final TextField tileWidthField;
+  private final TextField tileHeightField;
+  private final TextField tilesToCycleField;
+  private final TextField animationSpeedField;
 
   private File selectedImageFile;
   private ModeConfig preparedResult;

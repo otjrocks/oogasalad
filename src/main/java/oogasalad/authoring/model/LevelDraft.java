@@ -22,7 +22,7 @@ public class LevelDraft {
   private int height;
   private String edgePolicy;
 
-  private List<EntityPlacement> entityPlacements;
+  private final List<EntityPlacement> entityPlacements;
 
   /**
    * Constructs a new LevelDraft with the given name and output file name.

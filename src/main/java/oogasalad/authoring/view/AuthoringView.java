@@ -2,7 +2,6 @@ package oogasalad.authoring.view;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.time.zone.ZoneRulesProvider;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -17,7 +16,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.config.ConfigException;
@@ -33,7 +31,7 @@ import oogasalad.engine.config.ConfigException;
  */
 public class AuthoringView {
 
-  private BorderPane root;
+  private final BorderPane root;
   private EntitySelectorView selectorView;
   private CanvasView canvasView;
   private EntityTypeEditorView entityTypeEditorView;

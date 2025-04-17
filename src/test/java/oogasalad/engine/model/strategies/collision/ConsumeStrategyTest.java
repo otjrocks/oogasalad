@@ -14,7 +14,6 @@ import static org.mockito.Mockito.*;
 class ConsumeStrategyTest {
 
   private GameMap gameMap;
-  private Entity entity1;
   private Entity entity2;
   private CollisionContextRecord context;
   private ConsumeStrategy strategy;
@@ -23,7 +22,7 @@ class ConsumeStrategyTest {
   void setUp() {
     gameMap = mock(GameMap.class);
     GameState gameState = mock(GameState.class);
-    entity1 = mock(Entity.class);
+    Entity entity1 = mock(Entity.class);
     entity2 = mock(Entity.class);
     context = mock(CollisionContextRecord.class);
     strategy = new ConsumeStrategy();

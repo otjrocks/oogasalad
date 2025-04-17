@@ -11,7 +11,7 @@
         "teamEntityType": "PinkGhost"
       }
     },
-    "movementSpeed": 0.5
+    "movementSpeed": 1
   },
   "modes": [
     {
@@ -30,6 +30,16 @@
         "tileWidth": 28,
         "tileHeight": 28,
         "tilesToCycle": 4,
+        "animationSpeed": 1.0
+      }
+    },
+    {
+      "name": "Dead",
+      "image": {
+        "imagePath": "assets/dead.png",
+        "tileWidth": 16,
+        "tileHeight": 16,
+        "tilesToCycle": 1,
         "animationSpeed": 1.0
       }
     }
