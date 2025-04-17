@@ -46,14 +46,9 @@ public class GameSettingsView {
   private TextField winConditionParam;
   private Label winConditionParamLabel;
 
-  /**
-   * Creates constants for the win condition types
-   */
-  private static final class WinConditionTypes {
-    static final String ENTITY_BASED = "EntityBased";
-    static final String SCORE_BASED = "ScoreBased";
-    static final String SURVIVE_FOR_TIME = "SurviveForTime";
-  }
+  private static final String ENTITY_BASED = "EntityBased";
+  private static final String SCORE_BASED = "ScoreBased";
+  private static final String SURVIVE_FOR_TIME = "SurviveForTime";
 
   /**
    * Constructor initializes the view with the given controller
@@ -159,11 +154,8 @@ public class GameSettingsView {
     winGrid.setPadding(new Insets(10));
 
     winConditionType = new ComboBox<>();
-    winConditionType.getItems().addAll(
-            WinConditionTypes.ENTITY_BASED,
-            WinConditionTypes.SCORE_BASED,
-            WinConditionTypes.SURVIVE_FOR_TIME
-    );
+    winConditionType.getItems().addAll(ENTITY_BASED, SCORE_BASED, SURVIVE_FOR_TIME);
+    winConditionType.setPrefWidth(150);
     winConditionType.setPrefWidth(150);
 
     winConditionParam = new TextField(getWinConditionParam());
@@ -180,9 +172,9 @@ public class GameSettingsView {
     VBox descriptions = new VBox(5);
     descriptions.setPadding(new Insets(10, 0, 0, 0));
     descriptions.getChildren().addAll(
-            new Label(WinConditionTypes.ENTITY_BASED + ": Win by consuming all entities of type"),
-            new Label(WinConditionTypes.SCORE_BASED + ": Win by reaching target score"),
-            new Label(WinConditionTypes.SURVIVE_FOR_TIME + ": Win by surviving for X seconds")
+            new Label(ENTITY_BASED + ": Win by consuming all entities of type"),
+            new Label(SCORE_BASED + ": Win by reaching target score"),
+            new Label(SURVIVE_FOR_TIME + ": Win by surviving for X seconds")
     );
     descriptions.setStyle("-fx-font-style: italic; -fx-font-size: 12px;");
 
@@ -227,13 +219,13 @@ public class GameSettingsView {
     String type = winConditionType.getValue();
 
     switch (type) {
-      case WinConditionTypes.ENTITY_BASED:
+      case ENTITY_BASED:
         winConditionParamLabel.setText("Entity Type:");
         break;
-      case WinConditionTypes.SCORE_BASED:
+      case SCORE_BASED:
         winConditionParamLabel.setText("Target Score:");
         break;
-      case WinConditionTypes.SURVIVE_FOR_TIME:
+      case SURVIVE_FOR_TIME:
         winConditionParamLabel.setText("Seconds:");
         break;
       default:
@@ -243,19 +235,19 @@ public class GameSettingsView {
 
   private String getWinConditionType() {
     if (gameSettings.winCondition() == null) {
-      return WinConditionTypes.SURVIVE_FOR_TIME;
+      return SURVIVE_FOR_TIME;
     }
 
     String className = gameSettings.winCondition().getClass().getSimpleName();
     if (className.contains("EntityBased")) {
-      return WinConditionTypes.ENTITY_BASED;
+      return ENTITY_BASED;
     } else if (className.contains("ScoreBased")) {
-      return WinConditionTypes.SCORE_BASED;
+      return SCORE_BASED;
     } else if (className.contains("SurviveForTime")) {
-      return WinConditionTypes.SURVIVE_FOR_TIME;
+      return SURVIVE_FOR_TIME;
     }
 
-    return WinConditionTypes.SURVIVE_FOR_TIME; // Default
+    return SURVIVE_FOR_TIME; // Default
   }
 
   private String getWinConditionParam() {
@@ -424,14 +416,17 @@ public class GameSettingsView {
     String param = winConditionParam.getText();
 
     try {
-        return switch (type) {
-            case WinConditionTypes.ENTITY_BASED -> new EntityBasedCondition(param);
-            case WinConditionTypes.SURVIVE_FOR_TIME -> {
-                int seconds = Integer.parseInt(param);
-                yield new SurviveForTimeCondition(seconds);
-            }
-            default -> new SurviveForTimeCondition(5);
-        };
+      switch (type) {
+        case ENTITY_BASED:
+          return new EntityBasedCondition(param);
+
+        case SURVIVE_FOR_TIME:
+          int seconds = Integer.parseInt(param);
+          return new SurviveForTimeCondition(seconds);
+
+        default:
+          return new SurviveForTimeCondition(5);
+      }
     } catch (Exception e) {
       // Default to SurviveForTime if any errors
       return new SurviveForTimeCondition(5);
@@ -457,9 +452,9 @@ public class GameSettingsView {
     String param = winConditionParam.getText();
 
       return switch (type) {
-          case WinConditionTypes.ENTITY_BASED -> createEntityBasedWinCondition(param);
-          case WinConditionTypes.SCORE_BASED -> createScoreBasedWinCondition(param);
-          case WinConditionTypes.SURVIVE_FOR_TIME -> createSurviveForTimeCondition(param);
+          case ENTITY_BASED -> createEntityBasedWinCondition(param);
+          case SCORE_BASED -> createScoreBasedWinCondition(param);
+          case SURVIVE_FOR_TIME -> createSurviveForTimeCondition(param);
           default -> createSurviveForTimeCondition("5"); // Default
       };
   }
