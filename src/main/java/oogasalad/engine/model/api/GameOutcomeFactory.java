@@ -31,15 +31,7 @@ public class GameOutcomeFactory {
       throw new IllegalArgumentException("Win condition cannot be null");
     }
 
-    if (winCondition instanceof SurviveForTimeCondition(int amount)) {
-      return new ScoreBasedOutcomeStrategy(amount);
-    }
-
-    if (winCondition instanceof EntityBasedCondition(String entityType)) {
-      return new EntityBasedOutcomeStrategy(entityType);
-    }
-
-    throw new IllegalArgumentException("Unknown win condition type: " + winCondition.getClass());
+    return winCondition.toStrategy();
   }
 
   /**
