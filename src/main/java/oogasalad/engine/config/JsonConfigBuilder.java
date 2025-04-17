@@ -33,8 +33,7 @@ import oogasalad.engine.records.config.model.wincondition.WinCondition;
 public class JsonConfigBuilder {
 
   /**
-   * Builds the top-level game configuration (gameConfig.json) from the model. Includes metadata,
-   * global settings, and references to level config files.
+   * Builds the top-level game configuration (gameConfig.json) from the model.
    *
    * @param model  the authoring model representing the game's data
    * @param mapper the Jackson ObjectMapper instance
@@ -43,77 +42,125 @@ public class JsonConfigBuilder {
   public ObjectNode buildGameConfig(AuthoringModel model, ObjectMapper mapper) {
     ObjectNode root = mapper.createObjectNode();
 
-    // === metadata ===
+    addMetadata(model, root);
+    addDefaultSettings(model, root, mapper);
+    addLevels(model, root, mapper);
+    addCollisionRules(model, root, mapper);
+
+    return root;
+  }
+
+  /**
+   * Adds metadata to the game configuration
+   */
+  private void addMetadata(AuthoringModel model, ObjectNode root) {
     ObjectNode metadata = root.putObject("metadata");
     metadata.put("gameTitle", model.getGameTitle());
     metadata.put("author", model.getAuthor());
     metadata.put("gameDescription", model.getGameDescription());
+  }
 
-    // === defaultSettings ===
+  /**
+   * Adds default settings including win conditions to the game configuration
+   */
+  private void addDefaultSettings(AuthoringModel model, ObjectNode root, ObjectMapper mapper) {
     ObjectNode defaultSettings = root.putObject("defaultSettings");
     Settings settings = model.getDefaultSettings();
+
+    // Add basic settings
     defaultSettings.put("gameSpeed", settings.gameSpeed());
     defaultSettings.put("startingLives", settings.startingLives());
     defaultSettings.put("initialScore", settings.initialScore());
 
-// Add scoreStrategy from settings or use default
+    // Add score strategy
     String scoreStrategy = settings.scoreStrategy();
     defaultSettings.put("scoreStrategy", scoreStrategy != null ? scoreStrategy : "Cumulative");
 
-// === win conditions ===
+    // Add win condition
+    ObjectNode winCondition = buildWinCondition(settings.winCondition(), mapper);
+    defaultSettings.set("winCondition", winCondition);
+  }
+
+  /**
+   * Builds the win condition node based on the win condition object
+   */
+  private ObjectNode buildWinCondition(WinCondition winConditionObj, ObjectMapper mapper) {
     ObjectNode winCondition = mapper.createObjectNode();
 
-// Process win condition from settings
-    WinCondition winConditionObj = settings.winCondition();
-    if (winConditionObj != null) {
-      // Extract type and parameters based on class
-      String className = winConditionObj.getClass().getSimpleName();
-
-      if (className.contains("EntityBased")) {
-        winCondition.put("type", "EntityBased");
-        try {
-          // Access entityType field from EntityBasedCondition
-          EntityBasedCondition entityBased = (EntityBasedCondition) winConditionObj;
-          winCondition.put("entityType", entityBased.entityType());
-        } catch (Exception e) {
-          winCondition.put("entityType", "dot");  // Default
-        }
-      } else if (className.contains("SurviveForTime")) {
-        winCondition.put("type", "SurviveForTime");
-        try {
-          // Access amount field from SurviveForTimeCondition
-          SurviveForTimeCondition surviveTime = (SurviveForTimeCondition) winConditionObj;
-          winCondition.put("amount", surviveTime.amount());
-        } catch (Exception e) {
-          winCondition.put("amount", 5);  // Default
-        }
-      } else {
-        // Default win condition if type can't be determined
-        winCondition.put("type", "EntityBased");
-        winCondition.put("entityType", "dot");
-      }
-    } else {
-      // Default win condition if none exists
-      winCondition.put("type", "EntityBased");
-      winCondition.put("entityType", "dot");
+    if (winConditionObj == null) {
+      return createDefaultWinCondition(winCondition);
     }
 
-    defaultSettings.set("winCondition", winCondition);
+    String className = winConditionObj.getClass().getSimpleName();
 
-    // === levels ===
+    if (className.contains("EntityBased")) {
+      return buildEntityBasedWinCondition(winConditionObj, winCondition);
+    }
+
+    if (className.contains("SurviveForTime")) {
+      return buildSurviveForTimeWinCondition(winConditionObj, winCondition);
+    }
+
+    return createDefaultWinCondition(winCondition);
+  }
+
+  /**
+   * Creates a default win condition
+   */
+  private ObjectNode createDefaultWinCondition(ObjectNode winCondition) {
+    winCondition.put("type", "EntityBased");
+    winCondition.put("entityType", "dot");
+    return winCondition;
+  }
+
+  /**
+   * Builds an entity-based win condition
+   */
+  private ObjectNode buildEntityBasedWinCondition(WinCondition winConditionObj, ObjectNode winCondition) {
+    winCondition.put("type", "EntityBased");
+    try {
+      EntityBasedCondition entityBased = (EntityBasedCondition) winConditionObj;
+      winCondition.put("entityType", entityBased.entityType());
+    } catch (Exception e) {
+      winCondition.put("entityType", "dot");  // Default
+    }
+    return winCondition;
+  }
+
+  /**
+   * Builds a survive-for-time win condition
+   */
+  private ObjectNode buildSurviveForTimeWinCondition(WinCondition winConditionObj, ObjectNode winCondition) {
+    winCondition.put("type", "SurviveForTime");
+    try {
+      SurviveForTimeCondition surviveTime = (SurviveForTimeCondition) winConditionObj;
+      winCondition.put("amount", surviveTime.amount());
+    } catch (Exception e) {
+      winCondition.put("amount", 5);  // Default
+    }
+    return winCondition;
+  }
+
+  /**
+   * Adds level references to the game configuration
+   */
+  private void addLevels(AuthoringModel model, ObjectNode root, ObjectMapper mapper) {
     ArrayNode levels = root.putArray("levels");
     for (int i = 0; i < model.getLevels().size(); i++) {
       ObjectNode levelRef = mapper.createObjectNode();
       levelRef.put("levelMap", "level" + (i + 1));
       levels.add(levelRef);
     }
+  }
 
-    // === collisions ===
+  /**
+   * Adds collision rules to the game configuration
+   */
+  private void addCollisionRules(AuthoringModel model, ObjectNode root, ObjectMapper mapper) {
     ArrayNode collisionRules = root.putArray("collisions");
     for (CollisionRule collisionRule : model.getCollisionRules()) {
       collisionRules.add(mapper.valueToTree(collisionRule));
     }
-    return root;
   }
 
   /**
