@@ -63,4 +63,29 @@ public class FileUtility {
     }
     return fields;
   }
+
+  /**
+   * Using reflection API, get a list of the required fields and their type for a given class.
+   *
+   * @param recordPath The path for the class you are querying for
+   * @return A map with the key being the field name and the value being the type class for the
+   * field
+   */
+  public static List<String> getRequiredFieldsForRecordOrder(String recordPath) {
+    // ChatGPT assisted in generating this method.
+    List<String> fields = new ArrayList<>();
+    try {
+      Class<?> clazz = Class.forName(recordPath);
+      if (clazz.isRecord()) {
+        for (RecordComponent component : clazz.getRecordComponents()) {
+          fields.add(component.getName());
+        }
+      } else {
+        LoggingManager.LOGGER.warn("Class {} is not a record.", recordPath);
+      }
+    } catch (ClassNotFoundException e) {
+      LoggingManager.LOGGER.warn("Class not found: {}", recordPath);
+    }
+    return fields;
+  }
 }
