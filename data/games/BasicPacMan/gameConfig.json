@@ -52,6 +52,17 @@
   }, {
     "entityA" : "pacman",
     "modeA" : "A",
+    "entityB" : "powerpellet",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 10
+    } ],
+    "eventsB" : [ {
+      "type" : "Consume"
+    } ]
+  }, {
+    "entityA" : "pacman",
+    "modeA" : "A",
     "entityB" : "cherry",
     "eventsA" : [ {
       "type" : "UpdateScore",
@@ -123,5 +134,5 @@
     } ],
     "eventsB" : [ ]
   } ],
-  "currentLevelIndex" : 0
+  "currentLevelIndex" : 1
 }
