@@ -2,6 +2,7 @@ package oogasalad.authoring.view;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.time.zone.ZoneRulesProvider;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -16,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.config.ConfigException;
@@ -131,28 +133,12 @@ public class AuthoringView {
         MenuBar menuBar = createMenuBar();
         BorderPane mainContent = createMainContent();
 
-      // Create vertical layout for everything
-      VBox fullLayout = new VBox();
+        // Create a VBox for the main layout
+        VBox fullLayout = new VBox(10);
+        fullLayout.getChildren().addAll(menuBar, mainContent, gameSettingsView.getNode());
+        VBox.setVgrow(mainContent, Priority.ALWAYS);
 
-// Give the menu bar fixed height
-      fullLayout.getChildren().add(menuBar);
-
-// Shrink the mainContent height
-      mainContent.setMaxHeight(600); // Reduce canvas size
-      fullLayout.getChildren().add(mainContent);
-
-// Add game settings with more vertical space
-      Node gameSettingsNode = gameSettingsView.getNode();
-      gameSettingsNode.setStyle("-fx-background-color: #f4f4f4; -fx-border-color: #ccc; -fx-border-width: 1px 0 0 0; -fx-padding: 10px;");
-      VBox.setVgrow(gameSettingsNode, Priority.ALWAYS); // Expand
-      fullLayout.getChildren().add(gameSettingsNode);
-
-// Apply layout
-      root.setCenter(fullLayout);
-
-      VBox.setVgrow(mainContent, Priority.ALWAYS);
-
-      // Set the main layout as the center of this BorderPane
+        // Set the main layout as the center of this BorderPane
         root.setCenter(fullLayout);
 
         applyStyles();
@@ -334,4 +320,11 @@ public class AuthoringView {
   }
 
 
+  /**
+   * Get view for level settings
+   * @return LevelSettingsView
+   */
+  public LevelSettingsView getLevelSettingsView() {
+    return levelSettingsView;
+  }
 }

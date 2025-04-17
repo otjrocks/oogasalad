@@ -6,14 +6,17 @@ import java.util.List;
 import java.util.Map;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import oogasalad.authoring.view.util.SpriteSheetUtil;
+import oogasalad.engine.config.ModeConfig;
 import oogasalad.engine.model.EntityPlacement;
 
 /**
- * Manages visual representation and placement of entities on the canvas grid.
- * Responsible for adding, updating, and removing ImageViews tied to entity data.
- * Also connects drag interaction events to controller logic.
+ * Manages visual representation and placement of entities on the canvas grid. Responsible for
+ * adding, updating, and removing ImageViews tied to entity data. Also connects drag interaction
+ * events to controller logic.
  *
  * @author Will He
  */
@@ -31,12 +34,12 @@ public class EntityManager {
   /**
    * Constructs an EntityManager for a canvas grid.
    *
-   * @param root the JavaFX Pane to attach visuals to
-   * @param grid the CanvasGrid providing layout information
+   * @param root             the JavaFX Pane to attach visuals to
+   * @param grid             the CanvasGrid providing layout information
    * @param placementHandler callback to notify controller when an entity is moved
-   * @param onPressed mouse press handler for entity interaction
-   * @param onDragged mouse drag handler for entity interaction
-   * @param onReleased mouse release handler for entity interaction
+   * @param onPressed        mouse press handler for entity interaction
+   * @param onDragged        mouse drag handler for entity interaction
+   * @param onReleased       mouse release handler for entity interaction
    */
   public EntityManager(Pane root, CanvasGrid grid, PlacementHandler placementHandler,
       Consumer<MouseEvent> onPressed,
@@ -54,6 +57,8 @@ public class EntityManager {
    * Clears all visual entities and resets the backing grid.
    */
   public void clear() {
+    root.getChildren().removeIf(n -> n instanceof ImageView && entityViews.containsKey(n));
+
     entityViews.clear();
     gridEntities = new EntityPlacement[grid.getRows()][grid.getCols()];
   }
@@ -88,7 +93,11 @@ public class EntityManager {
     double x = grid.getXFromCol(col);
     double y = grid.getYFromRow(row);
 
-    ImageView imageView = new ImageView(new Image(placement.getEntityImagePath()));
+    // Get full spritesheet image and extract first tile
+    ModeConfig modeConfig = placement.getType().modes().get(placement.getMode());
+    WritableImage previewTile = SpriteSheetUtil.getPreviewTile(modeConfig);
+    ImageView imageView = new ImageView(previewTile);
+
     imageView.setX(x);
     imageView.setY(y);
     imageView.setFitWidth(grid.getTileWidth());
@@ -103,12 +112,13 @@ public class EntityManager {
     gridEntities[row][col] = placement;
   }
 
+
   /**
    * Updates an entity's position in the grid and notifies the controller.
    *
    * @param placement the entity to move
-   * @param newRow new row position
-   * @param newCol new column position
+   * @param newRow    new row position
+   * @param newCol    new column position
    */
   public void updateEntityPosition(EntityPlacement placement, int newRow, int newCol) {
     int oldRow = grid.getRowFromY(placement.getY());
@@ -125,8 +135,8 @@ public class EntityManager {
   /**
    * Checks if a cell is valid and unoccupied, optionally ignoring a specific placement.
    *
-   * @param row the row to check
-   * @param col the column to check
+   * @param row    the row to check
+   * @param col    the column to check
    * @param ignore an entity placement to ignore (for dragging/moving)
    * @return true if the cell is available, false otherwise
    */
@@ -170,16 +180,31 @@ public class EntityManager {
   }
 
   /**
+   * Retrieves a list of {@link EntityPlacement}s that belong to the specified entity type. This is
+   * used to identify all placements of a particular EntityType currently visible on the canvas.
+   *
+   * @param entityTypeName the name of the entity type to filter by
+   * @return a list of matching {@link EntityPlacement} instances
+   */
+  public List<EntityPlacement> getPlacementsForEntityType(String entityTypeName) {
+    return entityViews.values().stream()
+        .filter(p -> p.getType().type().equals(entityTypeName))
+        .toList();
+  }
+
+
+  /**
    * Callback interface for updating entity positions.
    */
   @FunctionalInterface
   public interface PlacementHandler {
+
     /**
      * Called when an entity is moved to a new position.
      *
      * @param placement the moved entity
-     * @param newX new x-coordinate
-     * @param newY new y-coordinate
+     * @param newX      new x-coordinate
+     * @param newY      new y-coordinate
      */
     void moveEntity(EntityPlacement placement, double newX, double newY);
   }

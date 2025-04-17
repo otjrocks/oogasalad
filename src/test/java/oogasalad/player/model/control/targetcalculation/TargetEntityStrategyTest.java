@@ -28,7 +28,7 @@ class TargetEntityStrategyTest {
     );
 
     Map<String, Object> config = Map.of("targetType", "Enemy");
-    TargetStrategy strategy = new TargetEntityStrategy(mockMap, config);
+    TargetStrategyInterface strategy = new TargetEntityStrategy(mockMap, config);
 
     int[] result = strategy.getTargetPosition();
     assertArrayEquals(new int[]{2, 4}, result);
@@ -41,7 +41,7 @@ class TargetEntityStrategyTest {
     when(mockMap.iterator()).thenReturn(emptyIterator);
 
     Map<String, Object> config = Map.of("targetType", "Enemy");
-    TargetStrategy strategy = new TargetEntityStrategy(mockMap, config);
+    TargetStrategyInterface strategy = new TargetEntityStrategy(mockMap, config);
 
     int[] result = strategy.getTargetPosition();
     assertArrayEquals(new int[]{0, 0}, result);

@@ -7,7 +7,7 @@ import oogasalad.engine.model.GameMap;
  * A strategy for determining the target location based on the configuration. This class is
  * responsible for setting the location to one specified in the configuration.
  */
-public class TargetLocationStrategy implements TargetStrategy {
+public class TargetLocationStrategy implements TargetStrategyInterface {
 
   private final int myTargetX;
   private final int myTargetY;

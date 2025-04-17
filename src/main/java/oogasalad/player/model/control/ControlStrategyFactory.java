@@ -11,7 +11,7 @@ import oogasalad.player.model.exceptions.ControlStrategyException;
 
 /**
  * The {@code ControlStrategyFactory} class is responsible for dynamically creating instances of
- * {@link ControlStrategy} based on the control type specified in an {@link EntityPlacement}. It
+ * {@link ControlStrategyInterface} based on the control type specified in an {@link EntityPlacement}. It
  * uses reflection to identify and instantiate the appropriate control strategy class, supporting
  * constructors with varying argument requirements.
  *
@@ -23,7 +23,7 @@ import oogasalad.player.model.exceptions.ControlStrategyException;
  * <p>Usage of this class involves providing a {@link GameInputManager}, an
  * {@link EntityPlacement}, and a {@link GameMap} to the
  * {@link #createControlStrategy(GameInputManager, EntityPlacement, GameMap)} method, which returns
- * an instance of the appropriate {@link ControlStrategy}.</p>
+ * an instance of the appropriate {@link ControlStrategyInterface}.</p>
  *
  * <p>Note: This class assumes that the control strategy classes follow a specific naming
  * convention and are located within the {@code oogasalad.player.model.control} package. If the
@@ -47,16 +47,16 @@ public class ControlStrategyFactory {
       = "oogasalad.player.model.control.";
 
   /**
-   * Creates a {@link ControlStrategy} instance based on the control type of the given
+   * Creates a {@link ControlStrategyInterface} instance based on the control type of the given
    * {@link EntityPlacement}.
    *
    * @param input           the {@link GameInputManager} to be used by the control strategy
    * @param entityPlacement the {@link EntityPlacement} containing the control type
    * @param gameMap         the {@link GameMap} to be used by the control strategy
-   * @return an instance of {@link ControlStrategy} corresponding to the control type
+   * @return an instance of {@link ControlStrategyInterface} corresponding to the control type
    * @throws ControlStrategyException if the control strategy cannot be created or instantiated
    */
-  public static ControlStrategy createControlStrategy(
+  public static ControlStrategyInterface createControlStrategy(
       GameInputManager input, EntityPlacement entityPlacement,
       GameMap gameMap)
       throws ControlStrategyException {
@@ -74,14 +74,14 @@ public class ControlStrategyFactory {
     }
   }
 
-  private static ControlStrategy instantiateStrategy(Class<?> strategyClass, GameInputManager input,
+  private static ControlStrategyInterface instantiateStrategy(Class<?> strategyClass, GameInputManager input,
       EntityPlacement placement,
       GameMap gameMap, ControlConfig controlConfig)
       throws ControlStrategyException {
     try {
       for (Constructor<?> constructor : strategyClass.getConstructors()) {
         if (isPublicConstructor(constructor)) {
-          ControlStrategy strategy = tryInstantiateStrategy(constructor, input, gameMap, placement,
+          ControlStrategyInterface strategy = tryInstantiateStrategy(constructor, input, gameMap, placement,
               controlConfig);
           if (strategy != null) {
             return strategy;
@@ -96,7 +96,7 @@ public class ControlStrategyFactory {
         "No valid constructor found for: " + strategyClass.getName());
   }
 
-  private static ControlStrategy tryInstantiateStrategy(Constructor<?> constructor,
+  private static ControlStrategyInterface tryInstantiateStrategy(Constructor<?> constructor,
       GameInputManager input,
       GameMap gameMap,
       EntityPlacement placement, ControlConfig controlConfig)
@@ -104,12 +104,12 @@ public class ControlStrategyFactory {
     try {
       // target and bfs, keyboard uses 3, basic uses 0
       if (matchesZeroArgConstructor(constructor)) {
-        return (ControlStrategy) constructor.newInstance(
+        return (ControlStrategyInterface) constructor.newInstance(
         );
       }
 
       if (matchesThreeArgConstructorConfig(constructor)) {
-        return (ControlStrategy) constructor.newInstance(
+        return (ControlStrategyInterface) constructor.newInstance(
             gameMap,
             placement,
             controlConfig
@@ -117,7 +117,7 @@ public class ControlStrategyFactory {
       }
 
       if (matchesThreeArgConstructorInput(constructor)) {
-        return (ControlStrategy) constructor.newInstance(
+        return (ControlStrategyInterface) constructor.newInstance(
             input,
             gameMap,
             placement

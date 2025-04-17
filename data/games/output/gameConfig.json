@@ -8,10 +8,10 @@
     "gameSpeed" : 1.0,
     "startingLives" : 3,
     "initialScore" : 0,
-    "scoreStrategy" : "",
+    "scoreStrategy" : "Cumulative",
     "winCondition" : {
-      "type" : "SurviveForTime",
-      "seconds" : 5
+      "type" : "EntityBased",
+      "entityType" : "dot"
     }
   },
   "levels" : [ {
