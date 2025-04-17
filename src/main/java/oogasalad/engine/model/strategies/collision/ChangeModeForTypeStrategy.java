@@ -26,7 +26,6 @@ public class ChangeModeForTypeStrategy implements CollisionStrategy {
    * @param newMode       the new newMode to assign to matching entities
    */
   public ChangeModeForTypeStrategy(String entityType, String newMode) {
-    System.out.println("We made a new collision strategy");
     this.entityType = entityType;
     this.newMode = newMode;
   }
@@ -40,7 +39,6 @@ public class ChangeModeForTypeStrategy implements CollisionStrategy {
   public void handleCollision(CollisionContextRecord collisionContext) {
     for (Entity entity : collisionContext.gameMap()) {
       if (entity.getEntityPlacement().getTypeString().equals(entityType)) {
-        System.out.println("Now changing " + entity.getEntityPlacement().getTypeString() + " to " + newMode);
         entity.getEntityPlacement().setMode(newMode);
       }
     }
