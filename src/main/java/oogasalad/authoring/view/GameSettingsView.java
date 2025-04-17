@@ -10,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.layout.Priority;
 import oogasalad.engine.LanguageManager;
 import oogasalad.engine.records.config.model.Settings;
 import oogasalad.engine.records.config.model.wincondition.EntityBasedCondition;
@@ -31,7 +32,7 @@ public class GameSettingsView {
   private Settings gameSettings;
 
   // Root node containing the view
-  private final HBox rootNode;
+  private final VBox rootNode;
 
   // UI Components
   private Spinner<Double> gameSpeedSpinner;
@@ -51,7 +52,7 @@ public class GameSettingsView {
   public GameSettingsView(AuthoringController controller) {
     this.controller = controller;
     this.gameSettings = controller.getModel().getDefaultSettings();
-    this.rootNode = new HBox();
+    this.rootNode = new VBox();
     setupUI();
     bindToModel();
   }
@@ -68,9 +69,9 @@ public class GameSettingsView {
    */
   private void setupUI() {
     // Setup the root container
-    rootNode.setSpacing(15);
+    rootNode.setSpacing(0);
     rootNode.setPadding(new Insets(DEFAULT_PADDING));
-    rootNode.setAlignment(Pos.CENTER_LEFT);
+    VBox.setVgrow(rootNode, Priority.ALWAYS);
     rootNode.getStyleClass().add("game-settings-view");
 
     // Create "Game Settings" label
@@ -87,27 +88,34 @@ public class GameSettingsView {
     Tab gameplayTab = new Tab("Gameplay Settings");
     Tab winConditionTab = new Tab("Win Conditions");
 
-    // Create contents for metadata tab
     GridPane metadataGrid = new GridPane();
     metadataGrid.setHgap(10);
     metadataGrid.setVgap(10);
     metadataGrid.setPadding(new Insets(10));
 
+// Game Title & Author side-by-side
+    Label gameTitleLabel = new Label("Game Title:");
     gameTitle = new TextField(controller.getModel().getGameTitle());
-    gameTitle.setPrefWidth(300);
-    authorField = new TextField(controller.getModel().getAuthor());
-    authorField.setPrefWidth(300);
-    gameDescriptionArea = new TextArea(controller.getModel().getGameDescription());
-    gameDescriptionArea.setPrefRowCount(5);
-    gameDescriptionArea.setPrefWidth(300);
-    gameDescriptionArea.setWrapText(true);
+    gameTitle.setPrefWidth(200);
 
-    metadataGrid.add(new Label("Game Title:"), 0, 0);
+    Label authorLabel = new Label("Author:");
+    authorField = new TextField(controller.getModel().getAuthor());
+    authorField.setPrefWidth(200);
+
+    metadataGrid.add(gameTitleLabel, 0, 0);
     metadataGrid.add(gameTitle, 1, 0);
-    metadataGrid.add(new Label("Author:"), 0, 1);
-    metadataGrid.add(authorField, 1, 1);
-    metadataGrid.add(new Label("Description:"), 0, 2);
-    metadataGrid.add(gameDescriptionArea, 1, 2);
+    metadataGrid.add(authorLabel, 2, 0);
+    metadataGrid.add(authorField, 3, 0);
+
+// Description below, spanning all columns
+    Label descLabel = new Label("Description:");
+    gameDescriptionArea = new TextArea(controller.getModel().getGameDescription());
+    gameDescriptionArea.setPrefRowCount(4);
+    gameDescriptionArea.setWrapText(true);
+    gameDescriptionArea.setPrefWidth(400);
+
+    metadataGrid.add(descLabel, 0, 1);
+    metadataGrid.add(gameDescriptionArea, 0, 2, 4, 1); // Span 4 columns
 
     // Create contents for gameplay settings tab
     GridPane gameplayGrid = new GridPane();
@@ -201,6 +209,9 @@ public class GameSettingsView {
     // Add listeners
     winConditionType.setOnAction(e -> updateWinConditionParamLabel());
     updateWinConditionParamLabel();
+
+    VBox.setVgrow(mainLayout, Priority.ALWAYS);
+
   }
 
   private void updateWinConditionParamLabel() {

@@ -45,7 +45,7 @@ public class CanvasView {
   public CanvasView(AuthoringController controller) {
     this.controller = controller;
     this.root = new Pane();
-    root.setPrefSize(800, 600);
+    root.setPrefSize(800, 400);
     root.getStyleClass().add("canvas-view");
 
     this.canvasGrid = new CanvasGrid(DEFAULT_ROWS, DEFAULT_COLS);
