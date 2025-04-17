@@ -11,6 +11,7 @@ import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
 import oogasalad.engine.records.config.model.Settings;
+import oogasalad.engine.records.config.model.losecondition.LivesBasedCondition;
 import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ public class AuthoringViewTest extends DukeApplicationTest {
     AuthoringModel mockModel = mock(AuthoringModel.class);
     LevelDraft mockLevel = mock(LevelDraft.class);
 
-    when(mockModel.getDefaultSettings()).thenReturn(new Settings(2.0, 2, 2, "", new SurviveForTimeCondition(5)));
+    when(mockModel.getDefaultSettings()).thenReturn(new Settings(2.0, 2, 2, "", new SurviveForTimeCondition(5), new LivesBasedCondition()));
     when(mockModel.getCurrentLevel()).thenReturn(mockLevel);
     when(mockLevel.getEntityPlacements()).thenReturn(List.of());
     when(mockLevelController.getCurrentLevel()).thenReturn(mockLevel);
@@ -55,7 +56,7 @@ public class AuthoringViewTest extends DukeApplicationTest {
   @Test
   public void setController_ValidController_SubViewsInitialized() {
     AuthoringModel mockModel = mock(AuthoringModel.class);
-    when(mockModel.getDefaultSettings()).thenReturn(new Settings(2.0, 2, 2, "", new SurviveForTimeCondition(5)));
+    when(mockModel.getDefaultSettings()).thenReturn(new Settings(2.0, 2, 2, "", new SurviveForTimeCondition(5), new LivesBasedCondition()));
 
     when(mockController.getModel()).thenReturn(mockModel);
     when(mockController.getLevelController()).thenReturn(mockLevelController);

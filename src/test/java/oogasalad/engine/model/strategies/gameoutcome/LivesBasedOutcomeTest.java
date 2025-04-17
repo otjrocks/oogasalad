@@ -12,14 +12,14 @@ class LivesBasedOutcomeTest {
 
   private GameState gameState;
   private GameContextRecord context;
-  private LivesBasedOutcome strategy;
+  private LivesBasedOutcomeStrategy strategy;
 
   @BeforeEach
   void setUp() {
     gameState = mock(GameState.class);
     context = mock(GameContextRecord.class);
     when(context.gameState()).thenReturn(gameState);
-    strategy = new LivesBasedOutcome();
+    strategy = new LivesBasedOutcomeStrategy();
   }
 
   @Test
