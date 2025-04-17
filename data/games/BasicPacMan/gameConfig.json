@@ -30,17 +30,6 @@
   }, {
     "entityA" : "pacman",
     "modeA" : "A",
-    "entityB" : "blueghost",
-    "eventsA" : [ {
-      "type" : "UpdateScore",
-      "amount" : 200
-    } ],
-    "eventsB" : [ {
-      "type" : "Consume"
-    } ]
-  }, {
-    "entityA" : "pacman",
-    "modeA" : "A",
     "entityB" : "dot",
     "eventsA" : [ {
       "type" : "UpdateScore",
@@ -102,6 +91,63 @@
     } ],
     "eventsB" : [ ]
   }, {
+    "entityA" : "pacman",
+    "modeA" : "A",
+    "entityB" : "blueghost",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    }, {
+      "type" : "ReturnToSpawnLocation"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "blueghost",
+    "modeA" : "A",
+    "entityB" : "pacman",
+    "eventsA" : [ {
+      "type" : "ReturnToSpawnLocation"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "pacman",
+    "modeA" : "A",
+    "entityB" : "pinkghost",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    }, {
+      "type" : "ReturnToSpawnLocation"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "pinkghost",
+    "modeA" : "A",
+    "entityB" : "pacman",
+    "eventsA" : [ {
+      "type" : "ReturnToSpawnLocation"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "pacman",
+    "modeA" : "A",
+    "entityB" : "orangeghost",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    }, {
+      "type" : "ReturnToSpawnLocation"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "orangeghost",
+    "modeA" : "A",
+    "entityB" : "pacman",
+    "eventsA" : [ {
+      "type" : "ReturnToSpawnLocation"
+    } ],
+    "eventsB" : [ ]
+  }, {
     "entityA" : "redghost",
     "modeA" : "A",
     "entityB" : "wall",
@@ -133,6 +179,54 @@
       "type" : "Stop"
     } ],
     "eventsB" : [ ]
-  } ],
-  "currentLevelIndex" : 1
+  }, {
+    "entityA": "pacman",
+    "modeA": "A",
+    "entityB": "powerpellet",
+    "eventsA": [
+      {
+        "type": "ChangeModeForType",
+        "entityType": "RedGhost",
+        "newMode": "Frightened"
+      }
+    ],
+    "eventsB": []
+  }, {
+    "entityA": "pacman",
+    "modeA": "A",
+    "entityB": "powerpellet",
+    "eventsA": [
+      {
+        "type": "ChangeModeForType",
+        "entityType": "OrangeGhost",
+        "newMode": "Frightened"
+      }
+    ],
+    "eventsB": []
+  }, {
+    "entityA": "pacman",
+    "modeA": "A",
+    "entityB": "powerpellet",
+    "eventsA": [
+      {
+        "type": "ChangeModeForType",
+        "entityType": "PinkGhost",
+        "newMode": "Frightened"
+      }
+    ],
+    "eventsB": []
+  }, {
+    "entityA": "pacman",
+    "modeA": "A",
+    "entityB": "powerpellet",
+    "eventsA": [
+      {
+        "type": "ChangeModeForType",
+        "entityType": "BlueGhost",
+        "newMode": "Frightened"
+      }
+    ],
+    "eventsB": []
+  }],
+  "currentLevelIndex" : 0
 }
