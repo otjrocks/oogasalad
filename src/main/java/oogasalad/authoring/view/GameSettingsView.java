@@ -50,6 +50,10 @@ public class GameSettingsView {
   private static final String SCORE_BASED = "ScoreBased";
   private static final String SURVIVE_FOR_TIME = "SurviveForTime";
 
+  private static final String ENTITY_BASED_CLASS = "EntityBased";
+  private static final String SCORE_BASED_CLASS = "ScoreBased";
+  private static final String SURVIVE_FOR_TIME_CLASS = "SurviveForTime";
+
   /**
    * Constructor initializes the view with the given controller
    */
@@ -218,6 +222,11 @@ public class GameSettingsView {
   private void updateWinConditionParamLabel() {
     String type = winConditionType.getValue();
 
+    if (type == null) {
+      winConditionParamLabel.setText("Parameter:");
+      return;
+    }
+
     switch (type) {
       case ENTITY_BASED:
         winConditionParamLabel.setText("Entity Type:");
@@ -233,23 +242,33 @@ public class GameSettingsView {
     }
   }
 
+  /**
+   * Determines the win condition type based on the current settings.
+   *
+   * @return the string representation of the current win condition type
+   */
   private String getWinConditionType() {
     if (gameSettings.winCondition() == null) {
       return SURVIVE_FOR_TIME;
     }
 
     String className = gameSettings.winCondition().getClass().getSimpleName();
-    if (className.contains("EntityBased")) {
+    if (className.contains(ENTITY_BASED_CLASS)) {
       return ENTITY_BASED;
-    } else if (className.contains("ScoreBased")) {
+    } else if (className.contains(SCORE_BASED_CLASS)) {
       return SCORE_BASED;
-    } else if (className.contains("SurviveForTime")) {
+    } else if (className.contains(SURVIVE_FOR_TIME_CLASS)) {
       return SURVIVE_FOR_TIME;
     }
 
     return SURVIVE_FOR_TIME; // Default
   }
 
+  /**
+   * Retrieves the parameter value for the current win condition.
+   *
+   * @return the string representation of the win condition parameter
+   */
   private String getWinConditionParam() {
     if (gameSettings.winCondition() == null) {
       return "5"; // Default if no win condition
@@ -257,30 +276,17 @@ public class GameSettingsView {
 
     String className = gameSettings.winCondition().getClass().getSimpleName();
 
-    if (className.contains("EntityBased")) {
+    if (className.contains(ENTITY_BASED_CLASS)) {
       return "dot";
     }
-    if (className.contains("ScoreBased")) {
+    if (className.contains(SCORE_BASED_CLASS)) {
       return "1000";
     }
-    if (className.contains("SurviveForTime")) {
+    if (className.contains(SURVIVE_FOR_TIME_CLASS)) {
       return "5";
     }
 
     return "5"; // Fallback default
-  }
-
-  private HBox getHBox() {
-    Button saveButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
-    saveButton.setOnAction(e -> saveSettings());
-
-    Button collisionRulesButton = new Button(LanguageManager.getMessage("COLLISION_RULES"));
-    collisionRulesButton.setOnAction(e -> showCollisionRulesPopup());
-
-    // Create button container with more space between buttons
-    HBox buttonBox = new HBox(15, saveButton, collisionRulesButton);
-    buttonBox.setAlignment(Pos.CENTER_LEFT);
-    return buttonBox;
   }
 
   /**
