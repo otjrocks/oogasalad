@@ -12,6 +12,7 @@ import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
 
 /**
  * A reusable HUD component that displays score/lives on one row and controls on the next.
+ *
  * @author Luke Fu
  */
 public class HudView extends VBox {
@@ -19,6 +20,7 @@ public class HudView extends VBox {
   private final Label scoreLabel;
   private final Label livesLabel;
   private final String style = "hud-container";
+
   /**
    * Constructs HUDView according to state, game view, and runnable
    */
@@ -63,7 +65,9 @@ public class HudView extends VBox {
    * Updates the HUD score label and lives label
    */
   public void update(GameState gameState) {
-    scoreLabel.setText(String.format(LanguageManager.getMessage("SCORE_LABEL"), gameState.getScore()));
-    livesLabel.setText(String.format(LanguageManager.getMessage("LIVES_LABEL"), gameState.getLives()));
+    scoreLabel.setText(
+        String.format(LanguageManager.getMessage("SCORE_LABEL"), gameState.getScore()));
+    livesLabel.setText(
+        String.format(LanguageManager.getMessage("LIVES_LABEL"), gameState.getLives()));
   }
 }

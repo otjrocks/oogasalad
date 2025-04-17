@@ -23,9 +23,7 @@ public class MainController {
   private final Group myRoot;
   private final Stage myStage;
   private final GameInputManager myInputManager;
-  private final GameStateImpl myGameState;
   private SplashScreenView mySplashScreenView = null;
-  private GameScreenView myGameScreenView = null;
   private AuthoringView myAuthoringView = null;
   private GameSelectorView myGameSelectorView = null;
 
@@ -39,8 +37,6 @@ public class MainController {
     myRoot = root;
     myStage = stage;
     myInputManager = new GameInputManager(stage.getScene(), myRoot);
-    myGameState = new GameStateImpl(3);
-
     showSplashScreen();
   }
 
@@ -96,8 +92,7 @@ public class MainController {
    * Show the game player view if it is not already being displayed.
    */
   public void showGamePlayerView() {
-    myGameState.resetState();
-    myGameScreenView = new GameScreenView(this, myGameState);
+    GameScreenView myGameScreenView = new GameScreenView(this, new GameStateImpl(3));
     myInputManager.getRoot().getChildren().add(myGameScreenView);
   }
 

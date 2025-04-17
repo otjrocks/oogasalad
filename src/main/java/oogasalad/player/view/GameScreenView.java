@@ -26,6 +26,7 @@ public class GameScreenView extends VBox {
   private final MainController mainController;
   private final GameState gameState;
   private final HudView hudView;
+  private GamePlayerView gamePlayerView;
   private int lastScore;
   private int lastLives;
 
@@ -40,16 +41,13 @@ public class GameScreenView extends VBox {
     this.gameState = gameState;
     this.mainController = controller;
 
-    GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState);
+    gamePlayerView = new GamePlayerView(controller, gameState);
     GameView gameView = gamePlayerView.getGameView();
 
     hudView = new HudView(
         gameState,
         gameView,
-        () -> {
-          mainController.getInputManager().getRoot().getChildren().remove(this);
-          mainController.showSplashScreen();
-        }
+        this::handleReturnToMainMenu
     );
 
     this.getChildren().addAll(hudView, gamePlayerView);
@@ -68,39 +66,11 @@ public class GameScreenView extends VBox {
     hudUpdater.play();
   }
 
-  /**
-   * Returns Horizontal Box With Pause and Play
-   */
-  private HBox getHBox(GamePlayerView gamePlayerView) {
-    GameView gameView = gamePlayerView.getGameView();
-
-    Button pauseButton = new Button("⏸");
-    Button playButton = new Button("▶");
-    Button returnToMenuButton = new Button(LanguageManager.getMessage("RETURN_TO_MENU"));
-
-    pauseButton.setFocusTraversable(false);
-    playButton.setFocusTraversable(false);
-    returnToMenuButton.setFocusTraversable(false);
-
-    pauseButton.setOnAction(e -> {
-      gameView.pauseGame();
-      gameView.requestFocus();
-    });
-
-    playButton.setOnAction(e -> {
-      gameView.resumeGame();
-      gameView.requestFocus();
-    });
-
-    returnToMenuButton.setOnAction(e -> {
-      mainController.getInputManager().getRoot().getChildren().remove(this);
-      mainController.showSplashScreen();
-    });
-
-    HBox buttonBox = new HBox(ELEMENT_SPACING, playButton, pauseButton, returnToMenuButton);
-    buttonBox.getStyleClass().add("hud-container");
-    return buttonBox;
+  private void handleReturnToMainMenu() {
+    mainController.getInputManager().getRoot().getChildren().remove(this);
+    mainController.showSplashScreen();
   }
+
 
   /**
    * Checks if score or lives have changed before updating HUD.
