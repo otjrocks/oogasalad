@@ -250,15 +250,23 @@ public class EntityPlacement {
   }
 
   /**
-   * Gets the image path for default entity.
-   *
-   * @return the string path to default image
+   * Returns the width of the entity's associated image in pixels
    */
-  public String getDefaultImagePath() {
+  public int getEntityImageWidth() {
     return this.getType()
-        .modes()
-        .get("Default")
-        .image().imagePath();
+            .modes()
+            .get(this.getMode())
+            .image().tileWidth();
+  }
+
+  /**
+   * Returns the height of the entity's associated image in pixels
+   */
+  public int getEntityImageHeight() {
+    return this.getType()
+            .modes()
+            .get(this.getMode())
+            .image().tileHeight();
   }
 
   /**
@@ -267,7 +275,7 @@ public class EntityPlacement {
   public int getEntityFrameNumber() {
     return this.getType()
             .modes()
-            .get("Default")
+            .get(this.getMode())
             .image().tilesToCycle();
   }
 }

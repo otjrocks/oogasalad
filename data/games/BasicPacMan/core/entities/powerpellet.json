@@ -11,8 +11,8 @@
       "name": "Default",
       "image": {
         "imagePath": "assets/powerpellet.png",
-        "tileWidth": 2,
-        "tileHeight": 2,
+        "tileWidth": 28,
+        "tileHeight": 28,
         "tilesToCycle": 1,
         "animationSpeed": 1.0
       }
