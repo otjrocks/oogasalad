@@ -1,10 +1,12 @@
 package oogasalad.engine.config;
 
 import java.nio.file.Path;
+import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.CollisionConfigRecord;
 import oogasalad.engine.records.config.EntityConfigRecord;
 import oogasalad.engine.records.config.GameConfigRecord;
 import oogasalad.engine.records.config.ImageConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
 import oogasalad.engine.records.config.model.LevelRecord;
 import oogasalad.engine.records.config.model.MetadataRecord;

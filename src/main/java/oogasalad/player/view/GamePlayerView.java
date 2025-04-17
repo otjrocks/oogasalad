@@ -1,14 +1,14 @@
 package oogasalad.player.view;
 
-import static oogasalad.engine.config.GameConfig.WIDTH;
+import static oogasalad.engine.utility.constants.GameConfig.WIDTH;
 
 import javafx.scene.layout.StackPane;
-import oogasalad.engine.LoggingManager;
-import oogasalad.engine.config.ConfigException;
-import oogasalad.engine.config.ConfigModelRecord;
+import oogasalad.engine.utility.LoggingManager;
+import oogasalad.engine.exceptions.ConfigException;
+import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.model.GameStateInterface;
+import oogasalad.player.model.GameStateInterface;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.player.controller.LevelController;
 

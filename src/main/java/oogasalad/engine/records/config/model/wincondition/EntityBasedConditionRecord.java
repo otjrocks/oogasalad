@@ -1,7 +1,7 @@
 package oogasalad.engine.records.config.model.wincondition;
 
-import oogasalad.engine.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
-import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
+import oogasalad.player.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
+import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
 
 /**
  * A record that encapsulates information about the entity-based win condition.

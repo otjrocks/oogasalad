@@ -1,13 +1,13 @@
 package oogasalad.engine.view.components;
 
-import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
+import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
 
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import oogasalad.engine.LoggingManager;
+import oogasalad.engine.utility.LoggingManager;
 
 /**
  * A class to create a vertical menu of options.

@@ -2,7 +2,7 @@ package oogasalad.engine.records.config.model.wincondition;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
+import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
 
 /**
  * An interface used to parse information about a win condition from the configuration file.

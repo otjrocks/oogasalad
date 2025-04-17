@@ -1,6 +1,6 @@
 package oogasalad.engine.view.components;
 
-import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
+import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
 
 import java.util.List;
 import javafx.event.ActionEvent;

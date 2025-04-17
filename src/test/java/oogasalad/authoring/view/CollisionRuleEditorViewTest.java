@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
-import oogasalad.engine.LanguageManager;
+import oogasalad.engine.utility.LanguageManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;

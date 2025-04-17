@@ -1,7 +1,7 @@
 package oogasalad.engine.records;
 
-import oogasalad.engine.model.GameMapInterface;
-import oogasalad.engine.model.GameStateInterface;
+import oogasalad.player.model.GameMapInterface;
+import oogasalad.player.model.GameStateInterface;
 
 /**
  * A record representing the context of the current game environment, including

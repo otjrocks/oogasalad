@@ -13,8 +13,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.view.util.SpriteSheetUtil;
-import oogasalad.engine.LanguageManager;
-import oogasalad.engine.model.EntityTypeRecord;
+import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.records.model.EntityTypeRecord;
 
 import java.util.HashMap;
 import java.util.List;

@@ -19,12 +19,12 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.engine.LanguageManager;
-import oogasalad.engine.config.ModeConfigRecord;
-import oogasalad.engine.model.EntityTypeRecord;
-import oogasalad.engine.model.controlConfig.ControlConfigInterface;
-import oogasalad.engine.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
-import oogasalad.player.model.control.ControlManager;
+import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
+import oogasalad.player.model.strategies.control.ControlManager;
 
 /**
  * View for editing a selected EntityType.
@@ -109,7 +109,9 @@ public class EntityTypeEditorView {
    */
   public void setEntityType(EntityTypeRecord type) {
     this.current = type;
-    if (type == null) return;
+    if (type == null) {
+      return;
+    }
 
     typeField.setText(type.type());
     typeField.setOnAction(e -> commitChanges());
@@ -150,14 +152,16 @@ public class EntityTypeEditorView {
 
       if (field.startsWith(PATH_FINDING_STRATEGY)) {
         ComboBox<String> combo = new ComboBox<>();
-        combo.setItems(FXCollections.observableArrayList(ControlManager.getPathFindingStrategies()));
+        combo.setItems(
+            FXCollections.observableArrayList(ControlManager.getPathFindingStrategies()));
         combo.setValue(getStrategyValueFromConfig(config, field));
         controlTypeComboBoxes.put(field, combo);
         controlTypeParameters.getChildren().add(new VBox(label, combo));
 
       } else if (field.startsWith(TARGET_CALCULATION_CONFIG)) {
         ComboBox<String> targetCombo = new ComboBox<>();
-        targetCombo.setItems(FXCollections.observableArrayList(ControlManager.getTargetCalculationStrategies()));
+        targetCombo.setItems(
+            FXCollections.observableArrayList(ControlManager.getTargetCalculationStrategies()));
         String selected = getStrategyValueFromConfig(config, field);
         targetCombo.setValue(selected);
         controlTypeComboBoxes.put(field, targetCombo);
@@ -198,8 +202,6 @@ public class EntityTypeEditorView {
       return "";
     }
   }
-
-
 
 
   /**
@@ -256,7 +258,8 @@ public class EntityTypeEditorView {
       }
 
       String fullClassName =
-          "oogasalad.engine.model.controlConfig." + controlType + "ControlConfigRecord";
+          "oogasalad.engine.records.config.model.controlConfig." + controlType
+              + "ControlConfigRecord";
       Class<?> configClass = Class.forName(fullClassName);
       Constructor<?> constructor = configClass.getDeclaredConstructors()[0];
 
@@ -284,7 +287,8 @@ public class EntityTypeEditorView {
       }
 
       String fullClassName =
-          "oogasalad.engine.model.controlConfig.targetStrategy." + selectedStrategy + "Config";
+          "oogasalad.engine.records.config.model.controlConfig.targetStrategy." + selectedStrategy
+              + "ConfigRecord";
       Class<?> strategyClass = Class.forName(fullClassName);
       Constructor<?> constructor = strategyClass.getDeclaredConstructors()[0];
 
@@ -362,8 +366,8 @@ public class EntityTypeEditorView {
 
       // 2. Replace in model
       controller.getModel().addEntityType(updated);
-      controller.getModel().getCurrentLevel().refreshEntityTypes(controller.getModel().getEntityTypeMap());
-
+      controller.getModel().getCurrentLevel()
+          .refreshEntityTypes(controller.getModel().getEntityTypeMap());
 
       // 3. Update placements to reflect renamed mode
       if (renamed) {

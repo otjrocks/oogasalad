@@ -9,7 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.config.EntityPlacement;
 
 /**
  * Visual canvas where entity instances are placed via drag and drop.

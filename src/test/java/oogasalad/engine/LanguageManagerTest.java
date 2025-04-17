@@ -1,6 +1,7 @@
 package oogasalad.engine;
 
 import java.util.List;
+import oogasalad.engine.utility.LanguageManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

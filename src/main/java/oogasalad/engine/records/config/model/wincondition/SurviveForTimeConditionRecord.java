@@ -1,7 +1,7 @@
 package oogasalad.engine.records.config.model.wincondition;
 
-import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
-import oogasalad.engine.model.strategies.gameoutcome.ScoreBasedOutcomeStrategy;
+import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
+import oogasalad.player.model.strategies.gameoutcome.ScoreBasedOutcomeStrategy;
 
 /**
  * A record that encapsulates information about the survive for time win condition.

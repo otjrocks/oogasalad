@@ -2,7 +2,7 @@ package oogasalad.engine.config.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.nio.file.Path;
-import oogasalad.engine.config.ConfigException;
+import oogasalad.engine.exceptions.ConfigException;
 
 /**
  * Interface for saving various parts of a game configuration into separate JSON files.

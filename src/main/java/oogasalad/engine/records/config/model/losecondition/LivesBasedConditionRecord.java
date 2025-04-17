@@ -1,7 +1,7 @@
 package oogasalad.engine.records.config.model.losecondition;
 
-import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
-import oogasalad.engine.model.strategies.gameoutcome.LivesBasedOutcomeStrategy;
+import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
+import oogasalad.player.model.strategies.gameoutcome.LivesBasedOutcomeStrategy;
 
 /**
  * A record that encapsulates information about the entity-based win condition.

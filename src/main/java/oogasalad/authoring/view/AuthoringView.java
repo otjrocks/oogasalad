@@ -17,8 +17,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.view.canvas.CanvasView;
-import oogasalad.engine.LanguageManager;
-import oogasalad.engine.config.ConfigException;
+import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.exceptions.ConfigException;
 
 /**
  * Top-level view for the Authoring Environment. Combines and arranges all major UI components

@@ -1,14 +1,14 @@
 package oogasalad.player.view;
 
-import static oogasalad.engine.config.GameConfig.HEIGHT;
-import static oogasalad.engine.config.GameConfig.WIDTH;
+import static oogasalad.engine.utility.constants.GameConfig.HEIGHT;
+import static oogasalad.engine.utility.constants.GameConfig.WIDTH;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.model.GameStateInterface;
+import oogasalad.player.model.GameStateInterface;
 import oogasalad.player.view.components.HudView;
 
 /**

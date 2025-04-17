@@ -5,10 +5,10 @@ import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
-import oogasalad.engine.LoggingManager;
-import oogasalad.engine.input.GameInputManager;
-import oogasalad.engine.model.GameStateImpl;
-import oogasalad.engine.view.GameSelectorView;
+import oogasalad.engine.utility.LoggingManager;
+import oogasalad.player.controller.GameInputManager;
+import oogasalad.player.model.GameState;
+import oogasalad.player.view.GameSelectorView;
 import oogasalad.engine.view.SplashScreenView;
 import oogasalad.player.view.GameScreenView;
 
@@ -92,7 +92,7 @@ public class MainController {
    * Show the game player view if it is not already being displayed.
    */
   public void showGamePlayerView() {
-    GameScreenView myGameScreenView = new GameScreenView(this, new GameStateImpl(3));
+    GameScreenView myGameScreenView = new GameScreenView(this, new GameState(3));
     myInputManager.getRoot().getChildren().add(myGameScreenView);
   }
 

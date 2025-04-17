@@ -1,9 +1,9 @@
 package oogasalad.player.controller;
 
-import oogasalad.engine.config.ConfigModelRecord;
-import oogasalad.engine.model.GameMapInterface;
-import oogasalad.engine.model.GameMapImpl;
-import oogasalad.engine.model.GameStateImpl;
+import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.player.model.GameMapInterface;
+import oogasalad.player.model.GameMap;
+import oogasalad.player.model.GameState;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
@@ -29,8 +29,8 @@ class GameLoopControllerTest extends DukeApplicationTest {
 
   @BeforeEach
   void setUp() {
-    gameMap = Mockito.spy(new GameMapImpl(10, 10));
-    GameStateImpl gameState = new GameStateImpl(5);
+    gameMap = Mockito.spy(new GameMap(10, 10));
+    GameState gameState = new GameState(5);
     GameContextRecord gameContext = new GameContextRecord(gameMap, gameState);
 
     ConfigModelRecord mockConfigModel = mock(ConfigModelRecord.class);

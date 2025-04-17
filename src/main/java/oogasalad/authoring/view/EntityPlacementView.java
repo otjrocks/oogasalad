@@ -6,8 +6,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.engine.LanguageManager;
-import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.config.EntityPlacement;
 
 /**
  * View component for displaying and editing properties of a selected entity placement. This

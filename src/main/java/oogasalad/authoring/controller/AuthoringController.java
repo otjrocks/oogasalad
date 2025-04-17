@@ -6,13 +6,13 @@ import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
 import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.authoring.view.EntityPlacementView;
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityTypeRecord;
+import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.model.EntityTypeRecord;
 import java.util.*;
-import oogasalad.engine.model.controlConfig.ControlConfigInterface;
-import oogasalad.engine.model.controlConfig.NoneControlConfigRecord;
+import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.config.ImageConfigRecord;
-import oogasalad.engine.config.ModeConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
 
 /**

@@ -11,11 +11,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import oogasalad.engine.model.controlConfig.ControlConfigInterface;
-import oogasalad.engine.model.controlConfig.KeyboardControlConfigRecord;
-import oogasalad.engine.LanguageManager;
+import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
+import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.records.config.ImageConfigRecord;
-import oogasalad.engine.config.ModeConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
 
 /**

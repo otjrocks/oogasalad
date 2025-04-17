@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityTypeRecord;
+import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.model.EntityTypeRecord;
 
 /**
  * Represents a draft of a single level in the authoring environment. Stores metadata such as name,

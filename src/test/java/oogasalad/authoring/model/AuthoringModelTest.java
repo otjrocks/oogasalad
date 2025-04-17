@@ -12,8 +12,8 @@ import static org.mockito.Mockito.when;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityTypeRecord;
+import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.model.EntityTypeRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

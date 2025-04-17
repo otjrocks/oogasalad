@@ -1,7 +1,7 @@
 package oogasalad.authoring.model;
 
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityTypeRecord;
+import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.model.EntityTypeRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

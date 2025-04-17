@@ -7,8 +7,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import java.util.*;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.engine.LanguageManager;
-import oogasalad.engine.model.CollisionRule;
+import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.records.config.model.CollisionEventInterface;
 
 /**

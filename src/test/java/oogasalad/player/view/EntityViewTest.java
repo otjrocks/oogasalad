@@ -1,9 +1,9 @@
 package oogasalad.player.view;
 
 import javafx.scene.canvas.GraphicsContext;
-import oogasalad.engine.enums.Directions.Direction;
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.entity.Entity;
+import oogasalad.engine.utility.constants.Directions.Direction;
+import oogasalad.engine.config.EntityPlacement;
+import oogasalad.player.model.Entity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;

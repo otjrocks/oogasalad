@@ -9,8 +9,8 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import oogasalad.authoring.view.util.SpriteSheetUtil;
-import oogasalad.engine.config.ModeConfigRecord;
-import oogasalad.engine.model.EntityPlacement;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.config.EntityPlacement;
 
 /**
  * Manages visual representation and placement of entities on the canvas grid. Responsible for

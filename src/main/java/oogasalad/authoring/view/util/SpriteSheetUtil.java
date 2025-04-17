@@ -2,7 +2,7 @@ package oogasalad.authoring.view.util;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import oogasalad.engine.config.ModeConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
 
 /**
  * Utility class for extracting a single preview tile from a sprite sheet image defined by a {@link ModeConfigRecord}.

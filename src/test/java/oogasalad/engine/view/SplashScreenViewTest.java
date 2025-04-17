@@ -1,6 +1,6 @@
 package oogasalad.engine.view;
 
-import static oogasalad.engine.LanguageManager.getMessage;
+import static oogasalad.engine.utility.LanguageManager.getMessage;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
@@ -8,7 +8,7 @@ import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import oogasalad.engine.config.GameConfig;
+import oogasalad.engine.utility.constants.GameConfig;
 import oogasalad.engine.controller.MainController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

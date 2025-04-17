@@ -1,14 +1,14 @@
 package oogasalad.player.controller;
 
 import java.nio.file.Paths;
-import oogasalad.engine.LoggingManager;
-import oogasalad.engine.config.ConfigException;
-import oogasalad.engine.config.ConfigModelRecord;
+import oogasalad.engine.utility.LoggingManager;
+import oogasalad.engine.exceptions.ConfigException;
+import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.config.JsonConfigSaver;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.model.GameMapInterface;
-import oogasalad.engine.model.api.GameMapFactory;
-import oogasalad.engine.model.exceptions.InvalidPositionException;
+import oogasalad.player.model.GameMapInterface;
+import oogasalad.player.model.api.GameMapFactory;
+import oogasalad.engine.exceptions.InvalidPositionException;
 
 /**
  * A controller that is used to progress through levels of the game.

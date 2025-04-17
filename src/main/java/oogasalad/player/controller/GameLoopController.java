@@ -3,16 +3,16 @@ package oogasalad.player.controller;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.animation.AnimationTimer;
-import oogasalad.engine.LoggingManager;
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.entity.Entity;
-import oogasalad.engine.model.exceptions.EntityNotFoundException;
-import oogasalad.engine.model.exceptions.InvalidPositionException;
+import oogasalad.engine.utility.LoggingManager;
+import oogasalad.engine.config.EntityPlacement;
+import oogasalad.player.model.Entity;
+import oogasalad.engine.exceptions.EntityNotFoundException;
+import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
-import oogasalad.player.model.spawnevent.SpawnEventStrategyInterface;
-import oogasalad.player.model.spawnevent.SpawnEventStrategyFactory;
+import oogasalad.player.model.strategies.spawnevent.SpawnEventStrategyInterface;
+import oogasalad.player.model.api.SpawnEventStrategyFactory;
 import oogasalad.player.view.GameMapView;
 
 /**

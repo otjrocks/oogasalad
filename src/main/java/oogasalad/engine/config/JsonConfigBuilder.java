@@ -5,12 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.*;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
-import oogasalad.engine.model.CollisionRule;
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityTypeRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
 
 import java.util.*;
-import oogasalad.engine.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 
 /**
  * Utility class for converting the internal AuthoringModel data structures into serializable JSON

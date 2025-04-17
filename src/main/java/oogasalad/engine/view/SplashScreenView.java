@@ -1,16 +1,16 @@
 package oogasalad.engine.view;
 
 
-import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
+import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
 
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import oogasalad.engine.LanguageManager;
-import oogasalad.engine.ThemeManager;
-import oogasalad.engine.config.GameConfig;
+import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.ThemeManager;
+import oogasalad.engine.utility.constants.GameConfig;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.view.components.Selector;
 import oogasalad.engine.view.components.Vmenu;
