@@ -254,12 +254,7 @@ class JsonConfigParserTest {
                    "imagePath": "redghost",
                    "tileWidth": 14,
                    "tileHeight": 14,
-                   "tilesToCycle": [
-                     0,
-                     1,
-                     2,
-                     3
-                   ],
+                   "tilesToCycle": 1,
                    "animationSpeed": 1.0
                  }
                }
@@ -292,7 +287,7 @@ class JsonConfigParserTest {
     ImageConfig defaultImg = defaultMode.image();
     assertEquals("redghost", defaultImg.imagePath());
     assertEquals(14, defaultImg.tileWidth());
-    assertEquals(List.of(0, 1, 2, 3), defaultImg.tilesToCycle());
+    assertEquals(1, defaultImg.tilesToCycle());
 
   }
 

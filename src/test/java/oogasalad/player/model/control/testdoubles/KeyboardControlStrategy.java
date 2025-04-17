@@ -4,9 +4,9 @@ import oogasalad.engine.input.GameInputManager;
 import oogasalad.engine.model.EntityPlacement;
 import oogasalad.engine.model.GameMap;
 import oogasalad.engine.model.entity.Entity;
-import oogasalad.player.model.control.ControlStrategy;
+import oogasalad.player.model.control.ControlStrategyInterface;
 
-public class KeyboardControlStrategy implements ControlStrategy {
+public class KeyboardControlStrategy implements ControlStrategyInterface {
 
   public KeyboardControlStrategy(GameInputManager input, GameMap map, EntityPlacement placement) {
   }

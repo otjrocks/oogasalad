@@ -1,0 +1,28 @@
+{
+  "entityType" : {
+    "name" : "NewEntityace4",
+    "controlConfig" : {
+      "controlStrategy" : "None"
+    },
+    "movementSpeed" : 100.0
+  },
+  "modes" : [ {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "assets/pacman.png",
+      "tileWidth" : 14,
+      "tileHeight" : 14,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 2
+    }
+  }, {
+    "name" : "Ghost Pink",
+    "image" : {
+      "imagePath" : "assets/pinkghost.png",
+      "tileWidth" : 14,
+      "tileHeight" : 14,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 2
+    }
+  } ]
+}

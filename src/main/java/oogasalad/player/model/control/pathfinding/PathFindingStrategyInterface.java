@@ -9,7 +9,7 @@ import oogasalad.engine.model.GameMap;
  *
  * @author Jessica Chen
  */
-public interface PathFindingStrategy {
+public interface PathFindingStrategyInterface {
 
   /**
    * Get the path of a path finding algorithm.
