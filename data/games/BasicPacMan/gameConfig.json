@@ -12,6 +12,9 @@
     "winCondition" : {
       "type" : "EntityBased",
       "entityType" : "dot"
+    },
+    "loseCondition" : {
+      "type" : "LivesBased"
     }
   },
   "levels" : [ {
@@ -89,18 +92,18 @@
     } ],
     "eventsB" : [ ]
   }, {
-      "entityA" : "pacman",
-      "modeA" : "Default",
-      "entityB" : "redghost",
-      "modeB" : "Frightened",
-      "eventsA" : [ {
-        "type" : "Consume"
-      },{
-        "type" : "UpdateScore",
-        "amount" : 300
-      }],
-      "eventsB" : []
+    "entityA" : "pacman",
+    "modeA" : "Default",
+    "entityB" : "redghost",
+    "modeB" : "Frightened",
+    "eventsA" : [ {
+      "type" : "Consume"
     }, {
+      "type" : "UpdateScore",
+      "amount" : 300
+    } ],
+    "eventsB" : [ ]
+  }, {
     "entityA" : "redghost",
     "modeA" : "Default",
     "entityB" : "pacman",
@@ -114,14 +117,13 @@
     "modeA" : "Frightened",
     "entityB" : "pacman",
     "modeB" : "Default",
-    "eventsA" : [{
-      "type": "ReturnToSpawnLocation"
-    },
-      {
-        "type": "ChangeModeForType",
-        "entityType": "RedGhost",
-        "newMode": "Default"
-      }],
+    "eventsA" : [ {
+      "type" : "ReturnToSpawnLocation"
+    }, {
+      "type" : "ChangeModeForType",
+      "entityType" : "RedGhost",
+      "newMode" : "Default"
+    } ],
     "eventsB" : [ ]
   }, {
     "entityA" : "pacman",
@@ -149,14 +151,13 @@
     "modeA" : "Frightened",
     "entityB" : "pacman",
     "modeB" : "Default",
-    "eventsA" : [{
-      "type": "ReturnToSpawnLocation"
-    },
-      {
-        "type": "ChangeModeForType",
-        "entityType": "BlueGhost",
-        "newMode": "Default"
-      }],
+    "eventsA" : [ {
+      "type" : "ReturnToSpawnLocation"
+    }, {
+      "type" : "ChangeModeForType",
+      "entityType" : "BlueGhost",
+      "newMode" : "Default"
+    } ],
     "eventsB" : [ ]
   }, {
     "entityA" : "pacman",
@@ -165,11 +166,11 @@
     "modeB" : "Frightened",
     "eventsA" : [ {
       "type" : "Consume"
-    },{
+    }, {
       "type" : "UpdateScore",
       "amount" : 300
-    }],
-    "eventsB" : []
+    } ],
+    "eventsB" : [ ]
   }, {
     "entityA" : "pacman",
     "modeA" : "Default",
@@ -189,11 +190,11 @@
     "modeB" : "Frightened",
     "eventsA" : [ {
       "type" : "Consume"
-    },{
+    }, {
       "type" : "UpdateScore",
       "amount" : 300
-    }],
-    "eventsB" : []
+    } ],
+    "eventsB" : [ ]
   }, {
     "entityA" : "pinkghost",
     "modeA" : "Default",
@@ -208,14 +209,13 @@
     "modeA" : "Frightened",
     "entityB" : "pacman",
     "modeB" : "Default",
-    "eventsA" : [{
-      "type": "ReturnToSpawnLocation"
-    },
-      {
-        "type": "ChangeModeForType",
-        "entityType": "PinkGhost",
-        "newMode": "Default"
-      }],
+    "eventsA" : [ {
+      "type" : "ReturnToSpawnLocation"
+    }, {
+      "type" : "ChangeModeForType",
+      "entityType" : "PinkGhost",
+      "newMode" : "Default"
+    } ],
     "eventsB" : [ ]
   }, {
     "entityA" : "pacman",
@@ -236,24 +236,23 @@
     "modeB" : "Frightened",
     "eventsA" : [ {
       "type" : "Consume"
-    },{
+    }, {
       "type" : "UpdateScore",
       "amount" : 300
-    }],
-    "eventsB" : []
+    } ],
+    "eventsB" : [ ]
   }, {
     "entityA" : "orangeghost",
     "modeA" : "Frightened",
     "entityB" : "pacman",
     "modeB" : "Default",
-    "eventsA" : [{
-      "type": "ReturnToSpawnLocation"
-    },
-      {
-        "type": "ChangeModeForType",
-        "entityType": "OrangeGhost",
-        "newMode": "Default"
-      }],
+    "eventsA" : [ {
+      "type" : "ReturnToSpawnLocation"
+    }, {
+      "type" : "ChangeModeForType",
+      "entityType" : "OrangeGhost",
+      "newMode" : "Default"
+    } ],
     "eventsB" : [ ]
   }, {
     "entityA" : "orangeghost",
@@ -336,58 +335,50 @@
       "type" : "Stop"
     } ],
     "eventsB" : [ ]
-  },{
-    "entityA": "pacman",
-    "modeA" : "Default",
-    "modeB" : "Default",
-    "entityB": "powerpellet",
-    "eventsA": [
-      {
-        "type": "ChangeModeForType",
-        "entityType": "RedGhost",
-        "newMode": "Frightened"
-      }
-    ],
-    "eventsB": []
   }, {
-    "entityA": "pacman",
+    "entityA" : "pacman",
     "modeA" : "Default",
-    "entityB": "powerpellet",
     "modeB" : "Default",
-    "eventsA": [
-      {
-        "type": "ChangeModeForType",
-        "entityType": "OrangeGhost",
-        "newMode": "Frightened"
-      }
-    ],
-    "eventsB": []
+    "entityB" : "powerpellet",
+    "eventsA" : [ {
+      "type" : "ChangeModeForType",
+      "entityType" : "RedGhost",
+      "newMode" : "Frightened"
+    } ],
+    "eventsB" : [ ]
   }, {
-    "entityA": "pacman",
+    "entityA" : "pacman",
     "modeA" : "Default",
-    "entityB": "powerpellet",
+    "entityB" : "powerpellet",
     "modeB" : "Default",
-    "eventsA": [
-      {
-        "type": "ChangeModeForType",
-        "entityType": "PinkGhost",
-        "newMode": "Frightened"
-      }
-    ],
-    "eventsB": []
+    "eventsA" : [ {
+      "type" : "ChangeModeForType",
+      "entityType" : "OrangeGhost",
+      "newMode" : "Frightened"
+    } ],
+    "eventsB" : [ ]
   }, {
-    "entityA": "pacman",
+    "entityA" : "pacman",
     "modeA" : "Default",
-    "entityB": "powerpellet",
+    "entityB" : "powerpellet",
     "modeB" : "Default",
-    "eventsA": [
-      {
-        "type": "ChangeModeForType",
-        "entityType": "BlueGhost",
-        "newMode": "Frightened"
-      }
-    ],
-    "eventsB": []
-  }],
-  "currentLevelIndex" : 0
+    "eventsA" : [ {
+      "type" : "ChangeModeForType",
+      "entityType" : "PinkGhost",
+      "newMode" : "Frightened"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "pacman",
+    "modeA" : "Default",
+    "entityB" : "powerpellet",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "ChangeModeForType",
+      "entityType" : "BlueGhost",
+      "newMode" : "Frightened"
+    } ],
+    "eventsB" : [ ]
+  } ],
+  "currentLevelIndex" : 1
 }
