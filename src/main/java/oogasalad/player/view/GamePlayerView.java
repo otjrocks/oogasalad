@@ -1,16 +1,16 @@
 package oogasalad.player.view;
 
-import static oogasalad.engine.config.GameConfig.WIDTH;
+import static oogasalad.engine.utility.constants.GameConfig.WIDTH;
 
 import javafx.scene.layout.StackPane;
-import oogasalad.engine.LoggingManager;
-import oogasalad.engine.config.ConfigException;
-import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.model.GameState;
+import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.controller.LevelController;
+import oogasalad.player.model.GameStateInterface;
 
 /**
  * The view that displays only the game grid.
@@ -22,14 +22,14 @@ public class GamePlayerView extends StackPane {
   public static final String CURRENT_GAME_CONFIG_PATH = "data/games/BasicPacMan/";
   public static final String GAME_CONFIG_JSON = "gameConfig.json";
   private final MainController myMainController;
-  private final GameState myGameState;
+  private final GameStateInterface myGameState;
   private GameView myGameView;
-  private ConfigModel myConfigModel = null;
+  private ConfigModelRecord myConfigModel = null;
 
   /**
    * Create the Game Player View.
    */
-  public GamePlayerView(MainController controller, GameState gameState) {
+  public GamePlayerView(MainController controller, GameStateInterface gameState) {
     super();
     myMainController = controller;
     myGameState = gameState;

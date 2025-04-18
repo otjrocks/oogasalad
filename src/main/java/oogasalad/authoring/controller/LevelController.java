@@ -1,10 +1,9 @@
 package oogasalad.authoring.controller;
 
+import java.util.List;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
 import oogasalad.authoring.view.AuthoringView;
-
-import java.util.List;
 
 /**
  * Handles creation, selection, and organization of levels.

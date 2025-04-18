@@ -13,16 +13,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import oogasalad.engine.config.ConfigException;
+import oogasalad.engine.config.CollisionRule;
+import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.config.JsonConfigBuilder;
 import oogasalad.engine.config.JsonConfigSaver;
-import oogasalad.engine.model.CollisionRule;
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
-import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.config.model.Settings;
-import oogasalad.engine.records.config.model.losecondition.LivesBasedCondition;
-import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
+import oogasalad.engine.exceptions.ConfigException;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.config.model.SettingsRecord;
+import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
+import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
 
 /**
  * The central model for the Authoring Environment. Stores global game settings, entity templates,
@@ -38,10 +38,10 @@ public class AuthoringModel {
   private String gameTitle;
   private String author;
   private String gameDescription;
-  private Settings defaultSettings;
+  private SettingsRecord defaultSettings;
   private List<CollisionRule> collisionRules;
 
-  private Map<String, EntityType> entityTypeMap;
+  private Map<String, EntityTypeRecord> entityTypeMap;
   private List<LevelDraft> levels;
   private int currentLevelIndex;
 
@@ -53,8 +53,8 @@ public class AuthoringModel {
     this.levels = new ArrayList<>();
     this.collisionRules = new ArrayList<>();
     // TODO: add score strategy and win condition
-    this.defaultSettings = new Settings(1.0, 3, 0, "",
-        new SurviveForTimeCondition(5), new LivesBasedCondition());
+    this.defaultSettings = new SettingsRecord(1.0, 3, 0, "",
+        new SurviveForTimeConditionRecord(5), new LivesBasedConditionRecord());
   }
 
   /**
@@ -82,7 +82,7 @@ public class AuthoringModel {
    *
    * @param type the EntityType to add
    */
-  public void addEntityType(EntityType type) {
+  public void addEntityType(EntityTypeRecord type) {
     entityTypeMap.put(type.type(), type);
   }
 
@@ -94,7 +94,7 @@ public class AuthoringModel {
    * @param oldTypeName the name of the type to replace
    * @param newType     the new EntityType data
    */
-  public void updateEntityType(String oldTypeName, EntityType newType) {
+  public void updateEntityType(String oldTypeName, EntityTypeRecord newType) {
     if (!isValidUpdate(oldTypeName, newType)) {
       return;
     }
@@ -103,18 +103,18 @@ public class AuthoringModel {
     updateEntityPlacements(oldTypeName, newType);
   }
 
-  private boolean isValidUpdate(String oldTypeName, EntityType newType) {
+  private boolean isValidUpdate(String oldTypeName, EntityTypeRecord newType) {
     return oldTypeName != null && newType != null && entityTypeMap.containsKey(oldTypeName);
   }
 
-  private void updateEntityTypeMap(String oldTypeName, EntityType newType) {
+  private void updateEntityTypeMap(String oldTypeName, EntityTypeRecord newType) {
     if (!oldTypeName.equals(newType.type())) {
       entityTypeMap.remove(oldTypeName);
     }
     addEntityType(newType);
   }
 
-  private void updateEntityPlacements(String oldTypeName, EntityType newType) {
+  private void updateEntityPlacements(String oldTypeName, EntityTypeRecord newType) {
 
     for (LevelDraft level : levels) {
       for (EntityPlacement placement : level.getEntityPlacements()) {
@@ -131,7 +131,7 @@ public class AuthoringModel {
    *
    * @return the entity types
    */
-  public Collection<EntityType> getEntityTypes() {
+  public Collection<EntityTypeRecord> getEntityTypes() {
     return Collections.unmodifiableCollection(entityTypeMap.values());
   }
 
@@ -141,7 +141,7 @@ public class AuthoringModel {
    * @param typeName the name of the entity type to look up
    * @return an Optional containing the EntityType if found; empty otherwise
    */
-  public Optional<EntityType> findEntityType(String typeName) {
+  public Optional<EntityTypeRecord> findEntityType(String typeName) {
     return Optional.ofNullable(entityTypeMap.get(typeName));
   }
 
@@ -176,7 +176,7 @@ public class AuthoringModel {
    *
    * @return the Settings object
    */
-  public Settings getDefaultSettings() {
+  public SettingsRecord getDefaultSettings() {
     return defaultSettings;
   }
 
@@ -185,7 +185,7 @@ public class AuthoringModel {
    *
    * @param settings the new Settings to use
    */
-  public void setDefaultSettings(Settings settings) {
+  public void setDefaultSettings(SettingsRecord settings) {
     this.defaultSettings = settings;
   }
 
@@ -266,7 +266,7 @@ public class AuthoringModel {
    *
    * @return a map from entity name (String) to EntityType
    */
-  public Map<String, EntityType> getEntityTypeMap() {
+  public Map<String, EntityTypeRecord> getEntityTypeMap() {
     return entityTypeMap;
   }
 
@@ -275,7 +275,7 @@ public class AuthoringModel {
    *
    * @param entityTypeMap a map from entity name to EntityType
    */
-  public void setEntityTypeMap(Map<String, EntityType> entityTypeMap) {
+  public void setEntityTypeMap(Map<String, EntityTypeRecord> entityTypeMap) {
     this.entityTypeMap = entityTypeMap;
   }
 
@@ -304,8 +304,8 @@ public class AuthoringModel {
    */
   public Map<String, List<String>> getEntityTypeToModes() {
     Map<String, List<String>> result = new HashMap<>();
-    for (EntityType entity : entityTypeMap.values()) {
-      Map<String, ModeConfig> modeMap = entity.modes();
+    for (EntityTypeRecord entity : entityTypeMap.values()) {
+      Map<String, ModeConfigRecord> modeMap = entity.modes();
       result.put(entity.type(), new ArrayList<>(modeMap.keySet()));
     }
     return result;
@@ -351,16 +351,16 @@ public class AuthoringModel {
     }
 
     // EntityTypes
-    for (EntityType e : entityTypeMap.values()) {
+    for (EntityTypeRecord e : entityTypeMap.values()) {
       copyImagesToAssetFolder(outputFolder, e, saver);
       ObjectNode entityJson = builder.buildEntityTypeConfig(e, mapper);
       saver.saveEntityType(e.type(), entityJson, outputFolder);
     }
   }
 
-  private static void copyImagesToAssetFolder(Path outputFolder, EntityType e, JsonConfigSaver saver)
+  private static void copyImagesToAssetFolder(Path outputFolder, EntityTypeRecord e, JsonConfigSaver saver)
       throws ConfigException {
-    for (ModeConfig modeConfig : e.modes().values()) {
+    for (ModeConfigRecord modeConfig : e.modes().values()) {
       saver.writeAsset(modeConfig.image().imagePath(), outputFolder);
     }
   }

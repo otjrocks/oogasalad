@@ -1,6 +1,6 @@
 package oogasalad.authoring.view;
 
-import static oogasalad.engine.config.GameConfig.ELEMENT_SPACING;
+import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -11,10 +11,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import oogasalad.engine.LanguageManager;
-import oogasalad.engine.LoggingManager;
-import oogasalad.engine.records.config.model.CollisionEvent;
+import oogasalad.engine.records.config.model.CollisionEventInterface;
 import oogasalad.engine.utility.FileUtility;
+import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.view.components.Selector;
 
 /**
@@ -64,10 +64,10 @@ public class CollisionEventView {
    * @throws IllegalArgumentException If the collision event cannot be created with the provided
    *                                  parameters.
    */
-  public CollisionEvent getCollisionEvent() {
+  public CollisionEventInterface getCollisionEvent() {
     try {
       String collisionName = mySelector.getValue();
-      String fullClassName = COLLISION_EVENTS_PACKAGE_PATH + collisionName + "CollisionEvent";
+      String fullClassName = COLLISION_EVENTS_PACKAGE_PATH + collisionName + "CollisionEventRecord";
       Class<?> collisionEventClass = Class.forName(fullClassName);
 
       Map<String, Class<?>> requiredFields = getCollisionRequiredFields(collisionName);
@@ -83,7 +83,7 @@ public class CollisionEventView {
       Constructor<?> constructor = collisionEventClass.getDeclaredConstructors()[0];
       Object eventInstance = constructor.newInstance(constructorArgs);
 
-      return (CollisionEvent) eventInstance;
+      return (CollisionEventInterface) eventInstance;
 
     } catch (IllegalArgumentException e) {
       throw e;
@@ -132,11 +132,11 @@ public class CollisionEventView {
   }
 
   private static List<String> getCollisionEventClassNames() {
-    return FileUtility.getFileNamesInDirectory(COLLISION_EVENTS_PATH, "CollisionEvent.java");
+    return FileUtility.getFileNamesInDirectory(COLLISION_EVENTS_PATH, "CollisionEventRecord.java");
   }
 
   private static Map<String, Class<?>> getCollisionRequiredFields(String collisionName) {
     return FileUtility.getRequiredFieldsForRecord(
-        COLLISION_EVENTS_PACKAGE_PATH + collisionName + "CollisionEvent");
+        COLLISION_EVENTS_PACKAGE_PATH + collisionName + "CollisionEventRecord");
   }
 }

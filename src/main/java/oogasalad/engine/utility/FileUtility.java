@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import oogasalad.engine.LoggingManager;
 
 /**
  * A class containing utility methods pertaining to files. From Cell Society project.

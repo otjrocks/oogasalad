@@ -3,17 +3,16 @@ package oogasalad.player.view;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import java.util.function.Consumer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import oogasalad.engine.config.ConfigModel;
-import oogasalad.engine.model.GameEndStatus;
-import oogasalad.engine.model.entity.Entity;
-import oogasalad.engine.model.exceptions.InvalidPositionException;
+import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.utility.constants.GameEndStatus;
 import oogasalad.player.controller.GameLoopController;
 import oogasalad.player.controller.GameMapController;
+import oogasalad.player.model.Entity;
 
 /**
  * A Canvas-based view for rendering the entire GameMap and all its corresponding entities.
@@ -36,7 +35,7 @@ public class GameMapView extends Canvas {
    * @param gameContext The game context object for this view.
    * @param configModel The config model for this view.
    */
-  public GameMapView(GameContextRecord gameContext, ConfigModel configModel) {
+  public GameMapView(GameContextRecord gameContext, ConfigModelRecord configModel) {
     super(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
     myGameContext = gameContext;
     myGameMapController = new GameMapController(myGameContext, configModel);

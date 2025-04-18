@@ -1,24 +1,27 @@
 package oogasalad.engine.config;
 
-import java.nio.file.Path;
-import oogasalad.engine.records.config.CollisionConfig;
-import oogasalad.engine.records.config.EntityConfig;
-import oogasalad.engine.records.config.GameConfig;
-import oogasalad.engine.records.config.ImageConfig;
-import oogasalad.engine.records.config.model.EntityProperties;
-import oogasalad.engine.records.config.model.Level;
-import oogasalad.engine.records.config.model.Metadata;
-import oogasalad.engine.records.config.model.Settings;
-import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import oogasalad.engine.exceptions.ConfigException;
+import oogasalad.engine.records.config.CollisionConfigRecord;
+import oogasalad.engine.records.config.EntityConfigRecord;
+import oogasalad.engine.records.config.GameConfigRecord;
+import oogasalad.engine.records.config.ImageConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.config.model.EntityPropertiesRecord;
+import oogasalad.engine.records.config.model.LevelRecord;
+import oogasalad.engine.records.config.model.MetadataRecord;
+import oogasalad.engine.records.config.model.SettingsRecord;
+import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 class JsonConfigParserTest {
 
@@ -191,27 +194,27 @@ class JsonConfigParserTest {
     JsonConfigParser parser = new JsonConfigParser();
 
     // Act
-    GameConfig config = parser.loadGameConfig(configFile.getAbsolutePath());
+    GameConfigRecord config = parser.loadGameConfig(configFile.getAbsolutePath());
 
     // Assert
     assertNotNull(config);
 
     // Metadata checks
-    Metadata metadata = config.metadata();
+    MetadataRecord metadata = config.metadata();
     assertEquals("Test Game", metadata.gameTitle());
     assertEquals("Alice", metadata.author());
     assertEquals("A sample test game", metadata.gameDescription());
 
     // Default settings check
-    Settings defaultSettings = config.settings();
+    SettingsRecord defaultSettings = config.settings();
     assertEquals(1.5, defaultSettings.gameSpeed());
     assertEquals(3, defaultSettings.startingLives());
     assertEquals(0, defaultSettings.initialScore());
     assertEquals("Cumulative", defaultSettings.scoreStrategy());
-    assertEquals(new SurviveForTimeCondition(5), defaultSettings.winCondition());
+    assertEquals(new SurviveForTimeConditionRecord(5), defaultSettings.winCondition());
 
     // Levels check
-    List<Level> levels = config.levels();
+    List<LevelRecord> levels = config.levels();
     assertEquals(1, levels.size());
 
     assertEquals(1.5, defaultSettings.gameSpeed());
@@ -219,7 +222,7 @@ class JsonConfigParserTest {
     assertEquals(0, defaultSettings.initialScore());
 
     // Collision check
-    List<CollisionConfig> collisions = config.collisions();
+    List<CollisionConfigRecord> collisions = config.collisions();
     assertNotNull(collisions);
     assertEquals(9, collisions.size());
 
@@ -266,25 +269,25 @@ class JsonConfigParserTest {
     Files.writeString(entityFile.toPath(), json);
 
     JsonConfigParser parser = new JsonConfigParser();
-    EntityConfig config = parser.loadEntityConfig(entityFile.getAbsolutePath());
+    EntityConfigRecord config = parser.loadEntityConfig(entityFile.getAbsolutePath());
 
     // Act & Assert
     assertEquals("RedGhost", config.name());
 
     // Default properties
-    EntityProperties baseProps = config.entityProperties();
+    EntityPropertiesRecord baseProps = config.entityProperties();
     assertEquals("RedGhost", baseProps.name());
     assertEquals(90.0, baseProps.movementSpeed());
 
     // Modes
-    List<ModeConfig> modes = config.modes();
+    List<ModeConfigRecord> modes = config.modes();
     assertEquals(1, modes.size());
 
-    ModeConfig defaultMode = modes.getFirst();
+    ModeConfigRecord defaultMode = modes.getFirst();
     assertEquals("Default", defaultMode.name());
     assertEquals("Default", defaultMode.entityProperties().name()); // now mode name
 
-    ImageConfig defaultImg = defaultMode.image();
+    ImageConfigRecord defaultImg = defaultMode.image();
     assertEquals("redghost", defaultImg.imagePath());
     assertEquals(14, defaultImg.tileWidth());
     assertEquals(1, defaultImg.tilesToCycle());

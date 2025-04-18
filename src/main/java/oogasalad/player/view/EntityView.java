@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import oogasalad.engine.LoggingManager;
-import oogasalad.engine.enums.Directions.Direction;
-import oogasalad.engine.model.entity.Entity;
+import oogasalad.engine.utility.LoggingManager;
+import oogasalad.engine.utility.constants.Directions.Direction;
+import oogasalad.player.model.Entity;
 
 /**
  * A class used to display a specific Entity from the {@code Entity} model API. This view has a

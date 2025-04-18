@@ -4,10 +4,10 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import oogasalad.engine.LanguageManager;
-import oogasalad.engine.LoggingManager;
-import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.controller.MainController;
+import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.LoggingManager;
+import oogasalad.engine.utility.constants.GameConfig;
 
 /**
  * The Main class of the project.

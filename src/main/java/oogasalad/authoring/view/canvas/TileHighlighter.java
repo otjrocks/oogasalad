@@ -1,8 +1,8 @@
 package oogasalad.authoring.view.canvas;
 
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.layout.Pane;
 
 /**
  * Handles the hover and selection highlighting of tiles on the canvas grid.

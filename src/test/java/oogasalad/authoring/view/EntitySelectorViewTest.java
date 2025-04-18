@@ -1,32 +1,34 @@
 package oogasalad.authoring.view;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+
+import java.util.List;
+import java.util.Map;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.engine.model.EntityType;
-import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
-import oogasalad.engine.model.controlConfig.NoneControlConfig;
-import oogasalad.engine.records.config.ImageConfig;
-import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.config.model.EntityProperties;
+import oogasalad.engine.records.config.ImageConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.config.model.EntityPropertiesRecord;
+import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
+import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
-
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class EntitySelectorViewTest extends DukeApplicationTest {
 
   private EntitySelectorView view;
   private AuthoringController mockController;
-  private ModeConfig mode;
+  private ModeConfigRecord mode;
 
   @Override
   public void start(javafx.stage.Stage stage) {
@@ -36,7 +38,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
     stage.setScene(scene);
 
     // --- Create ImageConfig ---
-    ImageConfig imageConfig = new ImageConfig(
+    ImageConfigRecord imageConfig = new ImageConfigRecord(
         "mock.png", // Should be a relative path or valid URI
         14,
         14,
@@ -45,9 +47,9 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
     );
 
     // --- Create EntityProperties ---
-    ControlConfig controlConfig = new KeyboardControlConfig();
+    ControlConfigInterface controlConfig = new KeyboardControlConfigRecord();
 
-    EntityProperties props = new EntityProperties(
+    EntityPropertiesRecord props = new EntityPropertiesRecord(
         "Mode 1",
         controlConfig,
         100.0,
@@ -55,7 +57,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
     );
 
     // --- Create ModeConfig ---
-    mode = new ModeConfig("Default", props, imageConfig);
+    mode = new ModeConfigRecord("Default", props, imageConfig);
 
     stage.show();
   }
@@ -76,9 +78,9 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
   public void updateEntities_CreatesCorrectTiles() {
 
     // --- Create EntityType ---
-    EntityType entity = new EntityType(
+    EntityTypeRecord entity = new EntityTypeRecord(
         "Ghost",
-        new KeyboardControlConfig(),
+        new KeyboardControlConfigRecord(),
         Map.of("Default", mode),
         List.of(), 1.0
     );
@@ -95,9 +97,9 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
 
   @Test
   public void selectEntityType_ClickTile_CallsSelectEntityType() {
-    EntityType entity = new EntityType(
+    EntityTypeRecord entity = new EntityTypeRecord(
         "Pacman",
-        new NoneControlConfig(),
+        new NoneControlConfigRecord(),
         Map.of("Default", mode),
         List.of(), 1.0
     );    runAsJFXAction(() -> view.updateEntities(List.of(entity)));
@@ -110,9 +112,9 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
 
   @Test
   public void highlightEntityTile_HighlightsCorrectTile() {
-    EntityType entity = new EntityType(
+    EntityTypeRecord entity = new EntityTypeRecord(
         "Wall",
-        new NoneControlConfig(),
+        new NoneControlConfigRecord(),
         Map.of("Default", mode),
         List.of(), 1.0
     );

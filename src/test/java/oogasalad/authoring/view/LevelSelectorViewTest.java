@@ -1,8 +1,13 @@
 package oogasalad.authoring.view;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+import java.util.List;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -12,8 +17,6 @@ import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.LevelDraft;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
-
-import java.util.List;
 
 public class LevelSelectorViewTest extends DukeApplicationTest {
 

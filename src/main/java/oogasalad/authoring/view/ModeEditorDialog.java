@@ -1,22 +1,25 @@
 package oogasalad.authoring.view;
 
+import java.io.File;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.io.File;
-import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
-import oogasalad.engine.LanguageManager;
-import oogasalad.engine.records.config.ImageConfig;
-import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.config.model.EntityProperties;
+import oogasalad.engine.records.config.ImageConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.config.model.EntityPropertiesRecord;
+import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
+import oogasalad.engine.utility.LanguageManager;
 
 /**
  * Dialog for creating a new ModeConfig with a user-uploaded image. Returns a ModeConfig object via
@@ -35,9 +38,9 @@ public class ModeEditorDialog {
   private final TextField animationSpeedField;
 
   private File selectedImageFile;
-  private ModeConfig preparedResult;
+  private ModeConfigRecord preparedResult;
 
-  private final Dialog<ModeConfig> dialog;
+  private final Dialog<ModeConfigRecord> dialog;
 
 
   /**
@@ -109,7 +112,7 @@ public class ModeEditorDialog {
    *
    * @return the mode config dialog
    */
-  public Dialog<ModeConfig> getDialog() {
+  public Dialog<ModeConfigRecord> getDialog() {
     return dialog;
   }
 
@@ -119,7 +122,7 @@ public class ModeEditorDialog {
    * @return Optional containing the list of collision rules if OK was pressed, empty Optional
    * otherwise
    */
-  public Optional<ModeConfig> showAndWait() {
+  public Optional<ModeConfigRecord> showAndWait() {
     return dialog.showAndWait();
   }
 
@@ -128,7 +131,7 @@ public class ModeEditorDialog {
    *
    * @param existingConfig already existing mode config
    */
-  public ModeEditorDialog(ModeConfig existingConfig) {
+  public ModeEditorDialog(ModeConfigRecord existingConfig) {
     this(); // call default constructor first
 
     if (existingConfig != null) {
@@ -186,18 +189,18 @@ public class ModeEditorDialog {
 
     try {
       double speed = Double.parseDouble(speedField.getText());
-      ImageConfig imageConfig = getImageConfig();
+      ImageConfigRecord imageConfig = getImageConfig();
 
-      ControlConfig controlConfig = new KeyboardControlConfig(); // temp fallback
+      ControlConfigInterface controlConfig = new KeyboardControlConfigRecord(); // temp fallback
 
-      EntityProperties entityProps = new EntityProperties(
+      EntityPropertiesRecord entityProps = new EntityPropertiesRecord(
           name,
           controlConfig,
           speed,
           List.of()
       );
 
-      preparedResult = new ModeConfig(name, entityProps, imageConfig);
+      preparedResult = new ModeConfigRecord(name, entityProps, imageConfig);
       return true;
 
     } catch (NumberFormatException ex) {
@@ -206,14 +209,14 @@ public class ModeEditorDialog {
     }
   }
 
-  private ImageConfig getImageConfig() {
+  private ImageConfigRecord getImageConfig() {
     int tileWidth = Integer.parseInt(tileWidthField.getText());
     int tileHeight = Integer.parseInt(tileHeightField.getText());
     int tilesToCycle = Integer.parseInt(tilesToCycleField.getText());
     double animationSpeed = Double.parseDouble(animationSpeedField.getText());
 
     String imagePath = selectedImageFile.toURI().toString();
-    return new ImageConfig(
+    return new ImageConfigRecord(
         imagePath,
         tileWidth,
         tileHeight,

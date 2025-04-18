@@ -1,7 +1,12 @@
 package oogasalad.authoring.view;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
@@ -9,10 +14,10 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
-import oogasalad.engine.LanguageManager;
-import oogasalad.engine.records.config.model.Settings;
-import oogasalad.engine.records.config.model.losecondition.LivesBasedCondition;
-import oogasalad.engine.records.config.model.wincondition.SurviveForTimeCondition;
+import oogasalad.engine.records.config.model.SettingsRecord;
+import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
+import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
+import oogasalad.engine.utility.LanguageManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -22,7 +27,7 @@ public class GameSettingsViewTest extends DukeApplicationTest {
   private GameSettingsView view;
   private AuthoringController mockController;
   private AuthoringModel mockModel;
-  private Settings defaultSettings;
+  private SettingsRecord defaultSettings;
 
   @Override
   public void start(Stage stage) {
@@ -30,7 +35,7 @@ public class GameSettingsViewTest extends DukeApplicationTest {
     mockController = mock(AuthoringController.class);
     mockModel = mock(AuthoringModel.class);
 
-    defaultSettings = new Settings(1.0, 3, 100, "", new SurviveForTimeCondition(5), new LivesBasedCondition());
+    defaultSettings = new SettingsRecord(1.0, 3, 100, "", new SurviveForTimeConditionRecord(5), new LivesBasedConditionRecord());
     when(mockController.getModel()).thenReturn(mockModel);
     when(mockModel.getDefaultSettings()).thenReturn(defaultSettings);
 

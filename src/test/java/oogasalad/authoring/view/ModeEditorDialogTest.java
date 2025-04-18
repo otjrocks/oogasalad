@@ -1,5 +1,9 @@
 package oogasalad.authoring.view;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -7,8 +11,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class ModeEditorDialogTest extends DukeApplicationTest {
 

@@ -1,9 +1,14 @@
 package oogasalad.authoring.view.canvas;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -12,15 +17,13 @@ import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
-import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
-import oogasalad.engine.records.config.ImageConfig;
+import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.config.ImageConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
-
-import java.util.List;
 
 public class CanvasViewTest extends DukeApplicationTest {
 
@@ -98,16 +101,16 @@ public class CanvasViewTest extends DukeApplicationTest {
   }
 
   private EntityPlacement mockPlacement(double x, double y) {
-    ImageConfig imageConfig = new ImageConfig(
+    ImageConfigRecord imageConfig = new ImageConfigRecord(
         getClass().getResource("/mock.png").toExternalForm(), 28, 28, 4, 1.0
     );
 
-    ModeConfig modeConfig = new ModeConfig("Default", null, imageConfig);
+    ModeConfigRecord modeConfig = new ModeConfigRecord("Default", null, imageConfig);
 
-    Map<String, ModeConfig> modes = new HashMap<>();
+    Map<String, ModeConfigRecord> modes = new HashMap<>();
     modes.put("Default", modeConfig);
 
-    EntityType mockType = mock(EntityType.class);
+    EntityTypeRecord mockType = mock(EntityTypeRecord.class);
     when(mockType.type()).thenReturn("MockType");
     when(mockType.modes()).thenReturn(modes);
 

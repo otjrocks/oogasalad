@@ -1,15 +1,27 @@
 package oogasalad.authoring.view;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import java.util.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.engine.LanguageManager;
-import oogasalad.engine.model.CollisionRule;
-import oogasalad.engine.records.config.model.CollisionEvent;
+import oogasalad.engine.config.CollisionRule;
+import oogasalad.engine.records.config.model.CollisionEventInterface;
+import oogasalad.engine.utility.LanguageManager;
 
 /**
  * A dialog view that allows the user to define and edit collision rules between pairs of entity
@@ -262,8 +274,8 @@ public class CollisionRuleEditorView {
       CollisionRule rule, boolean isA) {
     rule.setEntityA(a);
     rule.setEntityB(b);
-    CollisionEvent eventA;
-    CollisionEvent eventB;
+    CollisionEventInterface eventA;
+    CollisionEventInterface eventB;
     try {
       eventA = myRuleViewA.getCollisionEvent();
       eventB = myRuleViewB.getCollisionEvent();
@@ -271,12 +283,12 @@ public class CollisionRuleEditorView {
       showError(e.getMessage());
       throw e;
     }
-    List<CollisionEvent> eventsA = rule.getEventsA();
+    List<CollisionEventInterface> eventsA = rule.getEventsA();
     if (eventsA == null) {
       eventsA = new ArrayList<>();
       rule.setEventsA(eventsA);
     }
-    List<CollisionEvent> eventsB = rule.getEventsB();
+    List<CollisionEventInterface> eventsB = rule.getEventsB();
     if (eventsB == null) {
       eventsB = new ArrayList<>();
       rule.setEventsB(eventsB);

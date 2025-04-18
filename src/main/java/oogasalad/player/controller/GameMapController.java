@@ -4,25 +4,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import oogasalad.engine.LoggingManager;
-import oogasalad.engine.config.ConfigModel;
-import oogasalad.engine.model.CollisionRule;
-import oogasalad.engine.model.GameEndHandler;
-
-import oogasalad.engine.model.GameEndStatus;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.GameState;
-import oogasalad.engine.model.api.CollisionStrategyFactory;
-import oogasalad.engine.model.api.GameOutcomeFactory;
-import oogasalad.engine.model.entity.Entity;
-import oogasalad.engine.model.exceptions.EntityNotFoundException;
-import oogasalad.engine.model.exceptions.InvalidPositionException;
-import oogasalad.engine.model.strategies.collision.CollisionStrategy;
-
-import oogasalad.engine.model.strategies.gameoutcome.GameOutcomeStrategy;
-import oogasalad.engine.records.config.model.CollisionEvent;
+import oogasalad.engine.config.CollisionRule;
+import oogasalad.engine.exceptions.EntityNotFoundException;
+import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.CollisionContextRecord;
 import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.records.config.model.CollisionEventInterface;
+import oogasalad.engine.utility.LoggingManager;
+import oogasalad.engine.utility.constants.GameEndStatus;
+import oogasalad.player.controller.api.GameEndHandlerInterface;
+import oogasalad.player.model.Entity;
+import oogasalad.player.model.GameMapInterface;
+import oogasalad.player.model.GameStateInterface;
+import oogasalad.player.model.api.CollisionStrategyFactory;
+import oogasalad.player.model.api.GameOutcomeFactory;
+import oogasalad.player.model.strategies.collision.CollisionStrategyInterface;
+import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
 
 /**
  * A controller that handles all the updates of the game map models whenever the game map view is
@@ -34,14 +32,14 @@ public class GameMapController {
 
   // TODO: This should be removed when hardcoded methods are refactored
   private static final int SPRITE_ANIMATION_SPEED = 6;
-  private final GameMap gameMap;
-  private final GameState gameState;
+  private final GameMapInterface gameMap;
+  private final GameStateInterface gameState;
   private final GameContextRecord gameContext;
   private int frameCount = 0;
-  private GameEndHandler gameEndHandler;
-  private final GameOutcomeStrategy winGameOutcomeStrategy;
-  private final GameOutcomeStrategy loseGameOutcomeStrategy;
-  private final ConfigModel myConfigModel;
+  private GameEndHandlerInterface gameEndHandler;
+  private final GameOutcomeStrategyInterface winGameOutcomeStrategy;
+  private final GameOutcomeStrategyInterface loseGameOutcomeStrategy;
+  private final ConfigModelRecord myConfigModel;
 
   /**
    * Create a game map controller with the provided game context.
@@ -49,7 +47,7 @@ public class GameMapController {
    * @param gameContext The game context object for this controller.
    * @param configModel The game config model for this controller.
    */
-  public GameMapController(GameContextRecord gameContext, ConfigModel configModel) {
+  public GameMapController(GameContextRecord gameContext, ConfigModelRecord configModel) {
     gameMap = gameContext.gameMap();
     gameState = gameContext.gameState();
     this.gameContext = gameContext;
@@ -80,7 +78,7 @@ public class GameMapController {
     checkGameOutcome(loseGameOutcomeStrategy);
   }
 
-  private void checkGameOutcome(GameOutcomeStrategy gameOutcomeStrategy) {
+  private void checkGameOutcome(GameOutcomeStrategyInterface gameOutcomeStrategy) {
     if (gameOutcomeStrategy.hasGameEnded(gameContext)) {
       gameState.setGameOver(true);
       String result = gameOutcomeStrategy.getGameOutcome(gameContext);
@@ -104,7 +102,7 @@ public class GameMapController {
 
   private void applyEntityBCollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
     if (checkEntityTypesMatch(e1, e2, collisionRule)) {
-      for (CollisionEvent eventB : collisionRule.getEventsB()) {
+      for (CollisionEventInterface eventB : collisionRule.getEventsB()) {
         createAndApplyCollisionStrategy(e1, e2, eventB);
       }
     }
@@ -112,15 +110,15 @@ public class GameMapController {
 
   private void applyEntityACollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
     if (checkEntityTypesMatch(e1, e2, collisionRule)) {
-      for (CollisionEvent eventA : collisionRule.getEventsA()) {
+      for (CollisionEventInterface eventA : collisionRule.getEventsA()) {
         createAndApplyCollisionStrategy(e1, e2, eventA);
       }
     }
   }
 
   private void createAndApplyCollisionStrategy(Entity e1, Entity e2,
-      CollisionEvent collisionEvent) {
-    CollisionStrategy collisionStrategy = CollisionStrategyFactory.createCollisionStrategy(
+      CollisionEventInterface collisionEvent) {
+    CollisionStrategyInterface collisionStrategy = CollisionStrategyFactory.createCollisionStrategy(
         collisionEvent);
     try {
       collisionStrategy.handleCollision(new CollisionContextRecord(e1, e2, gameMap, gameState));
@@ -166,7 +164,7 @@ public class GameMapController {
    *
    * @param handler the callback to execute when the game ends
    */
-  public void setGameEndHandler(GameEndHandler handler) {
+  public void setGameEndHandler(GameEndHandlerInterface handler) {
     this.gameEndHandler = handler;
   }
 

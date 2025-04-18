@@ -1,19 +1,20 @@
 package oogasalad.engine.records;
 
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.GameState;
-import oogasalad.engine.model.entity.Entity;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
+
+import oogasalad.player.model.Entity;
+import oogasalad.player.model.GameMapInterface;
+import oogasalad.player.model.GameStateInterface;
+import org.junit.jupiter.api.Test;
 
 class CollisionContextTest {
 
   private final Entity entity1 = mock(Entity.class);
   private final Entity entity2 = mock(Entity.class);
-  private final GameMap gameMap = mock(GameMap.class);
-  private final GameState gameState = mock(GameState.class);
+  private final GameMapInterface gameMap = mock(GameMapInterface.class);
+  private final GameStateInterface gameState = mock(GameStateInterface.class);
 
   @Test
   void collisionContext_validInputs_createsCollisionContextSuccessfully() {

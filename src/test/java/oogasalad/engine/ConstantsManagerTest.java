@@ -1,5 +1,7 @@
 package oogasalad.engine;
 
+import oogasalad.engine.exceptions.ConstantsManagerException;
+import oogasalad.engine.utility.ConstantsManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -1,14 +1,14 @@
 package oogasalad.player.controller;
 
 import java.nio.file.Paths;
-import oogasalad.engine.LoggingManager;
-import oogasalad.engine.config.ConfigException;
-import oogasalad.engine.config.ConfigModel;
 import oogasalad.engine.config.JsonConfigSaver;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.api.GameMapFactory;
-import oogasalad.engine.model.exceptions.InvalidPositionException;
+import oogasalad.engine.exceptions.ConfigException;
+import oogasalad.engine.exceptions.InvalidPositionException;
+import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.utility.LoggingManager;
+import oogasalad.player.model.GameMapInterface;
+import oogasalad.player.model.api.GameMapFactory;
 
 /**
  * A controller that is used to progress through levels of the game.
@@ -18,7 +18,7 @@ import oogasalad.engine.model.exceptions.InvalidPositionException;
 public class LevelController {
 
   private int myLevelIndex;
-  private final ConfigModel myConfigModel;
+  private final ConfigModelRecord myConfigModel;
   private final MainController myMainController;
 
   /**
@@ -27,7 +27,7 @@ public class LevelController {
    * @param mainController The main controller for this program.
    * @param configModel    The config model for this level controller.
    */
-  public LevelController(MainController mainController, ConfigModel configModel) {
+  public LevelController(MainController mainController, ConfigModelRecord configModel) {
     myMainController = mainController;
     myConfigModel = configModel;
     myLevelIndex = configModel.currentLevelIndex();
@@ -38,13 +38,13 @@ public class LevelController {
    *
    * @return The current level map or null if the level does not exist
    */
-  public GameMap getCurrentLevelMap() {
+  public GameMapInterface getCurrentLevelMap() {
     if (myLevelIndex > myConfigModel.levels().size() - 1) { // you have completed last level.
       LoggingManager.LOGGER.info(
           "You have requested to get the level map for a nonexistent level.");
       return null;
     }
-    GameMap gameMap = null;
+    GameMapInterface gameMap = null;
     try {
       gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(),
           myConfigModel,

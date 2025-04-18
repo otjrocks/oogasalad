@@ -12,13 +12,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
-import oogasalad.engine.LanguageManager;
-import oogasalad.engine.model.EntityType;
-import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.engine.model.controlConfig.KeyboardControlConfig;
-import oogasalad.engine.records.config.ImageConfig;
-import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.config.model.EntityProperties;
+import oogasalad.engine.records.config.ImageConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.config.model.EntityPropertiesRecord;
+import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.engine.utility.LanguageManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -26,7 +26,7 @@ import org.testfx.framework.junit5.ApplicationTest;
 public class EntityTypeEditorViewTest extends ApplicationTest {
 
   private EntityTypeEditorView view;
-  private EntityType mockEntityType;
+  private EntityTypeRecord mockEntityType;
 
   @BeforeEach
   public void setUp() {
@@ -36,7 +36,7 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
 
     // === Construct ModeConfig using new record-based structure ===
     String imagePath = "mock.png";
-    ImageConfig image = new ImageConfig(
+    ImageConfigRecord image = new ImageConfigRecord(
         imagePath,
         14,
         14,
@@ -44,20 +44,20 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
         1.0
     );
 
-    ControlConfig controlConfig = new KeyboardControlConfig();
+    ControlConfigInterface controlConfig = new KeyboardControlConfigRecord();
 
-    EntityProperties entityProps = new EntityProperties(
+    EntityPropertiesRecord entityProps = new EntityPropertiesRecord(
         "Default",
         controlConfig,
         2.0,
         List.of()
     );
 
-    ModeConfig mockMode = new ModeConfig("Default", entityProps, image);
-    Map<String, ModeConfig> modeMap = new HashMap<>();
+    ModeConfigRecord mockMode = new ModeConfigRecord("Default", entityProps, image);
+    Map<String, ModeConfigRecord> modeMap = new HashMap<>();
     modeMap.put("Default", mockMode);
 
-    mockEntityType = new EntityType("Pacman", new KeyboardControlConfig(), modeMap, List.of(), 1.0);
+    mockEntityType = new EntityTypeRecord("Pacman", new KeyboardControlConfigRecord(), modeMap, List.of(), 1.0);
 
     AuthoringModel mockModel = mock(AuthoringModel.class);
     when(mockController.getModel()).thenReturn(mockModel);

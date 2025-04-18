@@ -11,14 +11,21 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.view.canvas.CanvasView;
-import oogasalad.engine.LanguageManager;
-import oogasalad.engine.config.ConfigException;
+import oogasalad.engine.exceptions.ConfigException;
+import oogasalad.engine.utility.LanguageManager;
 
 /**
  * Top-level view for the Authoring Environment. Combines and arranges all major UI components

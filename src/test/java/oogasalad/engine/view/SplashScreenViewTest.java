@@ -1,6 +1,6 @@
 package oogasalad.engine.view;
 
-import static oogasalad.engine.LanguageManager.getMessage;
+import static oogasalad.engine.utility.LanguageManager.getMessage;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
@@ -8,14 +8,14 @@ import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import oogasalad.engine.config.GameConfig;
 import oogasalad.engine.controller.MainController;
+import oogasalad.engine.utility.constants.GameConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import util.DukeApplicationTest;
 import util.TestUtils;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class SplashScreenViewTest extends DukeApplicationTest {

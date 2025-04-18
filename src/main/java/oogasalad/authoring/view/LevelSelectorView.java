@@ -1,13 +1,12 @@
 package oogasalad.authoring.view;
 
+import java.util.List;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.LevelDraft;
-
-import java.util.List;
-import oogasalad.engine.LanguageManager;
+import oogasalad.engine.utility.LanguageManager;
 
 /**
  * A view component that displays a dropdown for selecting levels, and includes a "+ Add Level"

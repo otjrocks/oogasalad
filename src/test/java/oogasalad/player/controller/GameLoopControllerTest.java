@@ -1,13 +1,21 @@
 package oogasalad.player.controller;
 
-import oogasalad.engine.config.ConfigModel;
-import oogasalad.engine.model.GameMap;
-import oogasalad.engine.model.GameMapImpl;
-import oogasalad.engine.model.GameStateImpl;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.clearInvocations;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import oogasalad.engine.records.GameContextRecord;
-import oogasalad.engine.records.config.model.ParsedLevel;
-import oogasalad.engine.records.config.model.losecondition.LivesBasedCondition;
-import oogasalad.engine.records.config.model.wincondition.EntityBasedCondition;
+import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.records.config.model.ParsedLevelRecord;
+import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
+import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
+import oogasalad.player.model.GameMap;
+import oogasalad.player.model.GameMapInterface;
+import oogasalad.player.model.GameState;
 import oogasalad.player.view.GameMapView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,29 +24,27 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import util.DukeApplicationTest;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
 class GameLoopControllerTest extends DukeApplicationTest {
 
   // I used ChatGPT to assist in writing the test methods below.
   private GameLoopController gameLoopController;
   private GameMapView gameMapView;
-  private GameMap gameMap;
+  private GameMapInterface gameMap;
 
   @BeforeEach
   void setUp() {
-    gameMap = Mockito.spy(new GameMapImpl(10, 10));
-    GameStateImpl gameState = new GameStateImpl(5);
+    gameMap = Mockito.spy(new GameMap(10, 10));
+    GameState gameState = new GameState(5);
     GameContextRecord gameContext = new GameContextRecord(gameMap, gameState);
 
-    ConfigModel mockConfigModel = mock(ConfigModel.class);
-    when(mockConfigModel.winCondition()).thenReturn(new EntityBasedCondition("dot"));
-    when(mockConfigModel.loseCondition()).thenReturn(new LivesBasedCondition());
+    ConfigModelRecord mockConfigModel = mock(ConfigModelRecord.class);
+    when(mockConfigModel.winCondition()).thenReturn(new EntityBasedConditionRecord("dot"));
+    when(mockConfigModel.loseCondition()).thenReturn(new LivesBasedConditionRecord());
 
     gameMapView = Mockito.spy(new GameMapView(gameContext, mockConfigModel));
-    gameLoopController = Mockito.spy(new GameLoopController(gameContext, gameMapView, mock(ParsedLevel.class)));
+    gameLoopController = Mockito.spy(new GameLoopController(gameContext, gameMapView, mock(
+        ParsedLevelRecord.class)));
   }
 
   @Test

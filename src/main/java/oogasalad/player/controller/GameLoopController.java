@@ -3,16 +3,16 @@ package oogasalad.player.controller;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.animation.AnimationTimer;
-import oogasalad.engine.LoggingManager;
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.entity.Entity;
-import oogasalad.engine.model.exceptions.EntityNotFoundException;
-import oogasalad.engine.model.exceptions.InvalidPositionException;
+import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.exceptions.EntityNotFoundException;
+import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContextRecord;
-import oogasalad.engine.records.config.model.ParsedLevel;
-import oogasalad.engine.records.config.model.SpawnEvent;
-import oogasalad.player.model.spawnevent.SpawnEventStrategy;
-import oogasalad.player.model.spawnevent.SpawnEventStrategyFactory;
+import oogasalad.engine.records.config.model.ParsedLevelRecord;
+import oogasalad.engine.records.config.model.SpawnEventRecord;
+import oogasalad.engine.utility.LoggingManager;
+import oogasalad.player.model.Entity;
+import oogasalad.player.model.api.SpawnEventStrategyFactory;
+import oogasalad.player.model.strategies.spawnevent.SpawnEventStrategyInterface;
 import oogasalad.player.view.GameMapView;
 
 /**
@@ -23,8 +23,8 @@ public class GameLoopController {
   private AnimationTimer myGameLoop;
   private final GameContextRecord myGameContext;
   private final GameMapView myGameMapView;
-  private final ParsedLevel myLevel;
-  private final Map<SpawnEvent, Entity> activeSpawnedEntities = new HashMap<>();
+  private final ParsedLevelRecord myLevel;
+  private final Map<SpawnEventRecord, Entity> activeSpawnedEntities = new HashMap<>();
   private double myTotalElapsedTime = 0;
 
 
@@ -37,7 +37,7 @@ public class GameLoopController {
    * @param level       The parsed level information for this game loop.
    */
   public GameLoopController(GameContextRecord gameContext, GameMapView gameMapView,
-      ParsedLevel level) {
+      ParsedLevelRecord level) {
     myGameContext = gameContext;
     myGameMapView = gameMapView;
     myLevel = level;
@@ -99,18 +99,18 @@ public class GameLoopController {
   }
 
   private void handleSpawnEvents() {
-    for (SpawnEvent spawnEvent : myLevel.spawnEvents()) {
+    for (SpawnEventRecord spawnEvent : myLevel.spawnEvents()) {
       handleSpawnEvent(spawnEvent);
     }
   }
 
-  private void handleSpawnEvent(SpawnEvent spawnEvent) {
+  private void handleSpawnEvent(SpawnEventRecord spawnEvent) {
     checkAndHandleSpawn(spawnEvent);
     checkAndHandleDespawn(spawnEvent);
   }
 
-  private void checkAndHandleSpawn(SpawnEvent spawnEvent) {
-    SpawnEventStrategy spawnEventStrategy = SpawnEventStrategyFactory.createSpawnEventStrategy(
+  private void checkAndHandleSpawn(SpawnEventRecord spawnEvent) {
+    SpawnEventStrategyInterface spawnEventStrategy = SpawnEventStrategyFactory.createSpawnEventStrategy(
         spawnEvent.spawnCondition().type());
     if (spawnEventStrategy.shouldSpawn(spawnEvent, myGameContext
     )) {
@@ -118,8 +118,8 @@ public class GameLoopController {
     }
   }
 
-  private void checkAndHandleDespawn(SpawnEvent spawnEvent) {
-    SpawnEventStrategy despawnEventStrategy = SpawnEventStrategyFactory.createSpawnEventStrategy(
+  private void checkAndHandleDespawn(SpawnEventRecord spawnEvent) {
+    SpawnEventStrategyInterface despawnEventStrategy = SpawnEventStrategyFactory.createSpawnEventStrategy(
         spawnEvent.despawnCondition().type());
     if (despawnEventStrategy.shouldDespawn(spawnEvent, myGameContext
     )) {
@@ -128,7 +128,7 @@ public class GameLoopController {
   }
 
 
-  private void spawnEntity(SpawnEvent spawnEvent) {
+  private void spawnEntity(SpawnEventRecord spawnEvent) {
     // only spawn if it has not already been spawned
     if (!activeSpawnedEntities.containsKey(spawnEvent)) {
       // Create and spawn entity
@@ -146,7 +146,7 @@ public class GameLoopController {
     }
   }
 
-  private void despawnEntity(SpawnEvent spawnEvent) {
+  private void despawnEntity(SpawnEventRecord spawnEvent) {
     Entity entityToRemove = activeSpawnedEntities.get(spawnEvent);
     try {
       myGameContext.gameMap().removeEntity(entityToRemove);

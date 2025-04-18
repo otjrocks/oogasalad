@@ -1,19 +1,21 @@
 package oogasalad.authoring.controller;
 
 import java.io.File;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
-import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.authoring.view.EntityPlacementView;
-import oogasalad.engine.model.EntityPlacement;
-import oogasalad.engine.model.EntityType;
-import java.util.*;
-import oogasalad.engine.model.controlConfig.ControlConfig;
-import oogasalad.engine.model.controlConfig.NoneControlConfig;
-import oogasalad.engine.records.config.ImageConfig;
-import oogasalad.engine.config.ModeConfig;
-import oogasalad.engine.records.config.model.EntityProperties;
+import oogasalad.authoring.view.canvas.CanvasView;
+import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.config.ImageConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.config.model.EntityPropertiesRecord;
+import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
 
 /**
  * Coordinates updates between the {@link AuthoringModel} and {@link AuthoringView}. This controller
@@ -34,7 +36,7 @@ public class AuthoringController {
   private final LevelController levelController;
 
 
-  private EntityType selectedType;
+  private EntityTypeRecord selectedType;
   private EntityPlacement selectedPlacement;
 
   private static final String DEFAULT_MODE = "Default";
@@ -52,7 +54,7 @@ public class AuthoringController {
   }
 
   /**
-   * Creates a new {@link EntityType} with a default mode and registers it in the model. Updates the
+   * Creates a new {@link EntityTypeRecord} with a default mode and registers it in the model. Updates the
    * entity selector and opens the entity editor for the newly created type.
    * <p>
    * Triggered when the user clicks the "+ Add Entity Type" button.
@@ -62,7 +64,7 @@ public class AuthoringController {
 
     String newTypeName = "NewEntity" + UUID.randomUUID().toString().substring(0, 4);
 
-    EntityType newType = new EntityType(newTypeName, new NoneControlConfig(), defaultModeMap(),
+    EntityTypeRecord newType = new EntityTypeRecord(newTypeName, new NoneControlConfigRecord(), defaultModeMap(),
         null, 1.0); // Update this to use no hardcoded speed value.
     model.addEntityType(newType);
     updateEntitySelector();
@@ -70,7 +72,7 @@ public class AuthoringController {
   }
 
   /**
-   * Selects an existing {@link EntityType} by its name and updates the entity editor with its
+   * Selects an existing {@link EntityTypeRecord} by its name and updates the entity editor with its
    * details.
    * <p>
    * Triggered when a tile is clicked in the EntitySelectorView.
@@ -163,12 +165,12 @@ public class AuthoringController {
 
 
 
-  private Map<String, ModeConfig> defaultModeMap() {
+  private Map<String, ModeConfigRecord> defaultModeMap() {
     // Default image file
     File imageFile = new File("data/games/BasicPacMan/core/assets/pacman.png");
     String imagePath = imageFile.toURI().toString();
 
-    ImageConfig imageConfig = new ImageConfig(
+    ImageConfigRecord imageConfig = new ImageConfigRecord(
         imagePath,
         28,
         28,
@@ -179,17 +181,17 @@ public class AuthoringController {
     return Map.of(DEFAULT_MODE, createDefaultMode(imageConfig));
   }
 
-  private static ModeConfig createDefaultMode(ImageConfig imageConfig) {
-    ControlConfig defaultControlConfig = new NoneControlConfig();
+  private static ModeConfigRecord createDefaultMode(ImageConfigRecord imageConfig) {
+    ControlConfigInterface defaultControlConfig = new NoneControlConfigRecord();
 
-    EntityProperties entityProperties = new EntityProperties(
+    EntityPropertiesRecord entityProperties = new EntityPropertiesRecord(
         DEFAULT_MODE,
         defaultControlConfig,
         100.0,
         List.of() // No blocks
     );
 
-    return new ModeConfig(DEFAULT_MODE, entityProperties, imageConfig);
+    return new ModeConfigRecord(DEFAULT_MODE, entityProperties, imageConfig);
   }
 
 
