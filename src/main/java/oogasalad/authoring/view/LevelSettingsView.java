@@ -51,6 +51,15 @@ public class LevelSettingsView {
       dialog.showAndWait();
     });
 
+    Button editSpawnEventsButton = new Button("Edit Spawn Events");
+    editSpawnEventsButton.setOnAction(e -> {
+      SpawnEventDialog dialog = new SpawnEventDialog(
+          controller.getAvailableEntityTypes(),
+          controller.getCurrentLevel()
+      );
+      dialog.showAndWait();
+    });
+
     GridPane grid = new GridPane();
     grid.setHgap(10);
     grid.setVgap(10);
@@ -59,7 +68,7 @@ public class LevelSettingsView {
     grid.add(new Label("Height:"), 0, 1);
     grid.add(heightSpinner, 1, 1);
 
-    root.getChildren().addAll(titleLabel, grid, saveButton, editModeEventsButton);
+    root.getChildren().addAll(titleLabel, grid, saveButton, editModeEventsButton, editSpawnEventsButton);
   }
 
   /**

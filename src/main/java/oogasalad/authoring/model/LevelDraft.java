@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
 
@@ -25,6 +26,7 @@ public class LevelDraft {
 
   private final List<EntityPlacement> entityPlacements;
   private List<ModeChangeEventRecord> modeChangeEvents;
+  private List<SpawnEventRecord> spawnEvents;
 
   /**
    * Constructs a new LevelDraft with the given name and output file name.
@@ -37,6 +39,7 @@ public class LevelDraft {
     this.outputFileName = outputFileName;
     this.entityPlacements = new ArrayList<>();
     this.modeChangeEvents = new ArrayList<>();
+    this.spawnEvents = new ArrayList<>();
 
     // Default init values
     this.width = 20;
@@ -245,5 +248,9 @@ public class LevelDraft {
 
   public List<ModeChangeEventRecord> getModeChangeEvents() {
     return modeChangeEvents;
+  }
+
+  public List<SpawnEventRecord> getSpawnEvents() {
+    return spawnEvents;
   }
 }
