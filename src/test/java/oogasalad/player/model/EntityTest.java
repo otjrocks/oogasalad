@@ -1,17 +1,25 @@
 package oogasalad.player.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.anyDouble;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.controller.GameInputManager;
-import oogasalad.engine.records.model.EntityTypeRecord;
-import oogasalad.player.model.strategies.control.ControlStrategyInterface;
 import oogasalad.player.model.api.ControlStrategyFactory;
+import oogasalad.player.model.strategies.control.ControlStrategyInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class EntityTest {
 

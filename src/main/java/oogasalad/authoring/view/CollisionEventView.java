@@ -11,10 +11,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import oogasalad.engine.utility.LanguageManager;
-import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.records.config.model.CollisionEventInterface;
 import oogasalad.engine.utility.FileUtility;
+import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.view.components.Selector;
 
 /**

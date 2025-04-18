@@ -1,11 +1,11 @@
 package oogasalad.player.model;
 
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.controller.GameInputManager;
-import oogasalad.engine.records.model.EntityTypeRecord;
-import oogasalad.player.model.strategies.control.ControlStrategyInterface;
 import oogasalad.player.model.api.ControlStrategyFactory;
+import oogasalad.player.model.strategies.control.ControlStrategyInterface;
 
 /**
  * An abstract class to represent an Entity in the game.

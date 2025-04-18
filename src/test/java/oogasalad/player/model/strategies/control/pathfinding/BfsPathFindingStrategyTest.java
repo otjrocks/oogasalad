@@ -1,6 +1,6 @@
 package oogasalad.player.model.strategies.control.pathfinding;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -8,15 +8,13 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
-import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.model.Entity;
-import oogasalad.player.model.strategies.control.pathfinding.BfsPathFindingStrategy;
+import oogasalad.player.model.GameMapInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import oogasalad.player.model.GameMapInterface;
 
 class BfsPathFindingStrategyTest {
 

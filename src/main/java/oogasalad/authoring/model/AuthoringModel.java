@@ -13,16 +13,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import oogasalad.engine.exceptions.ConfigException;
-import oogasalad.engine.config.JsonConfigBuilder;
-import oogasalad.engine.config.JsonConfigSaver;
 import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.config.EntityPlacement;
-import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.engine.config.JsonConfigBuilder;
+import oogasalad.engine.config.JsonConfigSaver;
+import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
 
 /**
  * The central model for the Authoring Environment. Stores global game settings, entity templates,

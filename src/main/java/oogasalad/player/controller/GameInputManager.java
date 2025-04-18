@@ -1,10 +1,10 @@
 package oogasalad.player.controller;
 
+import java.util.HashSet;
+import java.util.Set;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Class for handling user input for controllable entities in the game player

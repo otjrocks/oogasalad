@@ -4,25 +4,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import oogasalad.engine.utility.LoggingManager;
-import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.config.CollisionRule;
-import oogasalad.player.controller.api.GameEndHandlerInterface;
-
+import oogasalad.engine.exceptions.EntityNotFoundException;
+import oogasalad.engine.exceptions.InvalidPositionException;
+import oogasalad.engine.records.CollisionContextRecord;
+import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.records.config.model.CollisionEventInterface;
+import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.utility.constants.GameEndStatus;
+import oogasalad.player.controller.api.GameEndHandlerInterface;
+import oogasalad.player.model.Entity;
 import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.GameStateInterface;
 import oogasalad.player.model.api.CollisionStrategyFactory;
 import oogasalad.player.model.api.GameOutcomeFactory;
-import oogasalad.player.model.Entity;
-import oogasalad.engine.exceptions.EntityNotFoundException;
-import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.player.model.strategies.collision.CollisionStrategyInterface;
-
 import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
-import oogasalad.engine.records.config.model.CollisionEventInterface;
-import oogasalad.engine.records.CollisionContextRecord;
-import oogasalad.engine.records.GameContextRecord;
 
 /**
  * A controller that handles all the updates of the game map models whenever the game map view is

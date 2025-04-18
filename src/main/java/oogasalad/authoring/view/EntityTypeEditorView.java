@@ -19,11 +19,11 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.records.config.ModeConfigRecord;
-import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
+import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.engine.utility.LanguageManager;
 import oogasalad.player.model.strategies.control.ControlManager;
 
 /**

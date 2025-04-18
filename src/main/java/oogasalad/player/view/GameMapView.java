@@ -3,17 +3,16 @@ package oogasalad.player.view;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import java.util.function.Consumer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import oogasalad.engine.records.config.ConfigModelRecord;
-import oogasalad.engine.utility.constants.GameEndStatus;
-import oogasalad.player.model.Entity;
 import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.utility.constants.GameEndStatus;
 import oogasalad.player.controller.GameLoopController;
 import oogasalad.player.controller.GameMapController;
+import oogasalad.player.model.Entity;
 
 /**
  * A Canvas-based view for rendering the entire GameMap and all its corresponding entities.

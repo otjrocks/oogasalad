@@ -1,7 +1,7 @@
 package oogasalad.player.model.strategies.collision;
 
-import oogasalad.player.model.GameStateInterface;
 import oogasalad.engine.records.CollisionContextRecord;
+import oogasalad.player.model.GameStateInterface;
 
 /**
  * The {@code UpdateScore} class implements the {@link CollisionStrategyInterface} interface to update the

@@ -1,18 +1,16 @@
 package oogasalad.player.model.strategies.control.targetcalculation;
 
-import java.util.Collections;
-import oogasalad.player.model.GameMapInterface;
-import oogasalad.player.model.Entity;
-import oogasalad.engine.config.EntityPlacement;
-import oogasalad.player.model.strategies.control.targetcalculation.TargetEntityStrategy;
-import oogasalad.player.model.strategies.control.targetcalculation.TargetStrategyInterface;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import oogasalad.engine.config.EntityPlacement;
+import oogasalad.player.model.Entity;
+import oogasalad.player.model.GameMapInterface;
+import org.junit.jupiter.api.Test;
 
 class TargetEntityStrategyTest {
 

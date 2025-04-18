@@ -2,8 +2,8 @@ package oogasalad.player.model.strategies.control.targetcalculation;
 
 import java.util.Map;
 import java.util.Optional;
-import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.Entity;
+import oogasalad.player.model.GameMapInterface;
 
 /**
  * The TargetAheadOfEntityStrategy class implements the TargetStrategy interface and provides a

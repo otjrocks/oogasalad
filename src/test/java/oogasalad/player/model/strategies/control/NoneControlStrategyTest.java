@@ -1,6 +1,7 @@
 package oogasalad.player.model.strategies.control;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import oogasalad.player.model.Entity;
 import oogasalad.player.model.strategies.control.testdoubles.NoneControlStrategy;

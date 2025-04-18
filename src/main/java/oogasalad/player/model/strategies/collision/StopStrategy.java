@@ -1,8 +1,8 @@
 package oogasalad.player.model.strategies.collision;
 
-import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContextRecord;
+import oogasalad.engine.utility.constants.Directions.Direction;
 
 /**
  * An implementation of the collision strategy that stops the first entity's movement when it

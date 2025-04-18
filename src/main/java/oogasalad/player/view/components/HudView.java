@@ -1,5 +1,7 @@
 package oogasalad.player.view.components;
 
+import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -7,8 +9,6 @@ import javafx.scene.layout.VBox;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.player.model.GameStateInterface;
 import oogasalad.player.view.GameView;
-
-import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
 
 /**
  * A reusable HUD component that displays score/lives on one row and controls on the next.

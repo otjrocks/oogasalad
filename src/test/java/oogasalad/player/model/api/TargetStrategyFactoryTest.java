@@ -1,20 +1,23 @@
 package oogasalad.player.model.api;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
 import oogasalad.engine.config.EntityPlacement;
-import oogasalad.engine.records.model.EntityTypeRecord;
-import oogasalad.player.model.GameMapInterface;
+import oogasalad.engine.records.config.model.controlConfig.ConditionalControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.TargetControlConfigRecord;
-import oogasalad.engine.records.config.model.controlConfig.ConditionalControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetAheadOfEntityConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetEntityConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetEntityWithTrapConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetLocationConfigRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.exceptions.TargetStrategyException;
 import oogasalad.player.model.strategies.control.targetcalculation.TargetStrategyInterface;
 import oogasalad.player.model.strategies.control.targetcalculation.testdoubles.TargetAheadOfEntityStrategy;

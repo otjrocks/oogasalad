@@ -1,7 +1,7 @@
 package oogasalad.engine.config.api;
 
-import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.exceptions.ConfigException;
+import oogasalad.engine.records.config.ConfigModelRecord;
 
 /**
  * Interface for parsing configuration files and converting them into a {@link ConfigModelRecord}.

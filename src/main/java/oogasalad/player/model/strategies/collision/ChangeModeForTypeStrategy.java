@@ -1,7 +1,7 @@
 package oogasalad.player.model.strategies.collision;
 
-import oogasalad.player.model.Entity;
 import oogasalad.engine.records.CollisionContextRecord;
+import oogasalad.player.model.Entity;
 
 /**
  * A {@link CollisionStrategyInterface} that changes the newMode of all entities of a specified type

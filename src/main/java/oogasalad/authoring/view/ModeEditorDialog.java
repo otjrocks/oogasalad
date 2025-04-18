@@ -1,22 +1,25 @@
 package oogasalad.authoring.view;
 
+import java.io.File;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.io.File;
-import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
-import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
-import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
+import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
+import oogasalad.engine.utility.LanguageManager;
 
 /**
  * Dialog for creating a new ModeConfig with a user-uploaded image. Returns a ModeConfig object via

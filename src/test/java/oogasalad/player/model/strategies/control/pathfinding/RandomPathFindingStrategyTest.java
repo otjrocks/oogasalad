@@ -1,19 +1,19 @@
 package oogasalad.player.model.strategies.control.pathfinding;
 
-import oogasalad.engine.utility.constants.Directions.Direction;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.model.GameMapInterface;
-import oogasalad.player.model.strategies.control.pathfinding.PathFindingStrategyHelperMethods;
-import oogasalad.player.model.strategies.control.pathfinding.RandomPathFindingStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class RandomPathFindingStrategyTest {
 

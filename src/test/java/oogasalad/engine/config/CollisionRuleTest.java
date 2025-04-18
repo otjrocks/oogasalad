@@ -1,15 +1,15 @@
 package oogasalad.engine.config;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Collections;
+import java.util.List;
 import oogasalad.engine.records.config.model.CollisionEventInterface;
 import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEventRecord;
 import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEventRecord;
 import oogasalad.engine.records.config.model.collisionevent.UpdateScoreCollisionEventRecord;
 import org.junit.jupiter.api.Test;
-
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CollisionRuleTest {
 

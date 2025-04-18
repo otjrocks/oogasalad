@@ -1,6 +1,10 @@
 package oogasalad.player.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 import java.util.List;
@@ -9,12 +13,12 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.exceptions.EntityNotFoundException;
+import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.utility.constants.GameConfig;
 import oogasalad.player.controller.GameInputManager;
 import oogasalad.player.model.api.EntityFactory;
-import oogasalad.engine.exceptions.EntityNotFoundException;
-import oogasalad.engine.exceptions.InvalidPositionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

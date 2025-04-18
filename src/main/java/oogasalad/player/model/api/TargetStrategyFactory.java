@@ -7,13 +7,13 @@ import java.lang.reflect.RecordComponent;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
-import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.config.EntityPlacement;
-import oogasalad.player.model.GameMapInterface;
 import oogasalad.engine.records.config.model.controlConfig.ConditionalControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.TargetControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
+import oogasalad.engine.utility.LoggingManager;
+import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.exceptions.TargetStrategyException;
 import oogasalad.player.model.strategies.control.targetcalculation.TargetStrategyInterface;
 

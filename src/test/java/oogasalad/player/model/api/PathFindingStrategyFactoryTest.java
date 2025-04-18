@@ -1,7 +1,12 @@
 package oogasalad.player.model.api;
 
-import oogasalad.engine.utility.constants.Directions.Direction;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.exceptions.PathFindingStrategyException;
 import oogasalad.player.model.strategies.control.pathfinding.BfsPathFindingStrategy;
@@ -9,8 +14,6 @@ import oogasalad.player.model.strategies.control.pathfinding.EuclideanPathFindin
 import oogasalad.player.model.strategies.control.pathfinding.PathFindingStrategyInterface;
 import oogasalad.player.model.strategies.control.pathfinding.RandomPathFindingStrategy;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class PathFindingStrategyFactoryTest {
 

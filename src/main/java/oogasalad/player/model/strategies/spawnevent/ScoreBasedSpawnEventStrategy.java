@@ -1,8 +1,8 @@
 package oogasalad.player.model.strategies.spawnevent;
 
-import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
+import oogasalad.engine.utility.LoggingManager;
 
 /**
  * A spawn event strategy that handles score based spawning and despawn.

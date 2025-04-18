@@ -1,11 +1,11 @@
 package oogasalad.player.model.api;
 
+import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.player.controller.GameInputManager;
-import oogasalad.engine.config.EntityPlacement;
-import oogasalad.player.model.GameMap;
 import oogasalad.player.model.Entity;
-import oogasalad.engine.exceptions.InvalidPositionException;
+import oogasalad.player.model.GameMap;
 import oogasalad.player.model.GameMapInterface;
 
 /**

@@ -1,6 +1,8 @@
 package oogasalad.engine.config;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import oogasalad.engine.records.model.EntityTypeRecord;
 import org.junit.jupiter.api.BeforeEach;

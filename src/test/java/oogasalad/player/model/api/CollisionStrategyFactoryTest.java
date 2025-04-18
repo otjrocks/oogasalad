@@ -1,16 +1,16 @@
 package oogasalad.player.model.api;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
+import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.StopCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.UpdateScoreCollisionEventRecord;
 import oogasalad.player.model.strategies.collision.CollisionStrategyInterface;
 import oogasalad.player.model.strategies.collision.ConsumeStrategy;
 import oogasalad.player.model.strategies.collision.StopStrategy;
 import oogasalad.player.model.strategies.collision.UpdateLivesStrategy;
 import oogasalad.player.model.strategies.collision.UpdateScoreStrategy;
-import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEventRecord;
-import oogasalad.engine.records.config.model.collisionevent.StopCollisionEventRecord;
-import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEventRecord;
-import oogasalad.engine.records.config.model.collisionevent.UpdateScoreCollisionEventRecord;
 import org.junit.jupiter.api.Test;
 
 class CollisionStrategyFactoryTest {

@@ -1,13 +1,13 @@
 package oogasalad.engine.records.config;
 
-import oogasalad.engine.config.CollisionRule;
-import oogasalad.engine.records.model.EntityTypeRecord;
-import oogasalad.engine.records.model.GameSettingsRecord;
-import oogasalad.engine.records.model.MetaDataRecord;
 import java.util.List;
+import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.config.model.losecondition.LoseConditionInterface;
 import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
+import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.engine.records.model.GameSettingsRecord;
+import oogasalad.engine.records.model.MetaDataRecord;
 
 /**
  * The ConfigModel record serves as a container for the configuration data of a game. It

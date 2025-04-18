@@ -10,9 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.config.api.ConfigSaverInterface;
 import oogasalad.engine.exceptions.ConfigException;
+import oogasalad.engine.utility.LoggingManager;
 
 /**
  * Implementation of {@link ConfigSaverInterface} that writes configuration data as JSON files using the

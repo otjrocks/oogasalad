@@ -1,26 +1,28 @@
 package oogasalad.authoring.view;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+
+import java.util.List;
+import java.util.Map;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.engine.records.model.EntityTypeRecord;
-import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
-import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
-import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
+import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
+import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
-
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class EntitySelectorViewTest extends DukeApplicationTest {
 

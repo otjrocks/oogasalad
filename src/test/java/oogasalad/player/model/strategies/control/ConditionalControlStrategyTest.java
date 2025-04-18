@@ -1,20 +1,24 @@
 package oogasalad.player.model.strategies.control;
 
-import oogasalad.engine.utility.constants.Directions.Direction;
-import oogasalad.player.model.GameMapInterface;
-import oogasalad.engine.records.config.model.controlConfig.ConditionalControlConfigRecord;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.config.model.controlConfig.ConditionalControlConfigRecord;
+import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.model.Entity;
-import oogasalad.player.model.strategies.control.ConditionalControlStrategy;
-import oogasalad.player.model.strategies.control.pathfinding.PathFindingStrategyInterface;
+import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.api.PathFindingStrategyFactory;
-import oogasalad.player.model.strategies.control.targetcalculation.TargetStrategyInterface;
 import oogasalad.player.model.api.TargetStrategyFactory;
+import oogasalad.player.model.strategies.control.pathfinding.PathFindingStrategyInterface;
+import oogasalad.player.model.strategies.control.targetcalculation.TargetStrategyInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
-
-import static org.mockito.Mockito.*;
 
 class ConditionalControlStrategyTest {
 

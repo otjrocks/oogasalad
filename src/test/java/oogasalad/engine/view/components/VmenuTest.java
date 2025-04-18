@@ -1,6 +1,7 @@
 package oogasalad.engine.view.components;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import javafx.event.ActionEvent;

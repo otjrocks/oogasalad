@@ -1,8 +1,8 @@
 package oogasalad.player.model.strategies.collision;
 
-import oogasalad.player.model.GameMapInterface;
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContextRecord;
+import oogasalad.player.model.GameMapInterface;
 
 /**
  * The {@code ConsumeStrategy} class implements the {@link CollisionStrategyInterface} interface

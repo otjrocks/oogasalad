@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.config.EntityPlacement;
-import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.exceptions.InvalidPositionException;
+import oogasalad.engine.utility.LoggingManager;
 
 /**
  * A simple implementation of a {@code GameMap}.

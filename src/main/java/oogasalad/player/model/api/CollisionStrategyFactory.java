@@ -1,12 +1,11 @@
 package oogasalad.player.model.api;
 
-import oogasalad.engine.utility.LoggingManager;
-import oogasalad.player.model.strategies.collision.CollisionStrategyInterface;
-import oogasalad.engine.records.config.model.CollisionEventInterface;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.RecordComponent;
 import java.util.Arrays;
+import oogasalad.engine.records.config.model.CollisionEventInterface;
+import oogasalad.engine.utility.LoggingManager;
+import oogasalad.player.model.strategies.collision.CollisionStrategyInterface;
 
 /**
  * A factory design pattern to create collision strategies based on a provided event.

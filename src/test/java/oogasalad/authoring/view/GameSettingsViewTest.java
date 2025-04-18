@@ -1,7 +1,12 @@
 package oogasalad.authoring.view;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
@@ -9,10 +14,10 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
-import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
+import oogasalad.engine.utility.LanguageManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;

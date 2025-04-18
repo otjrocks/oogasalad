@@ -8,10 +8,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import oogasalad.engine.controller.MainController;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.utility.constants.GameConfig;
-import oogasalad.engine.controller.MainController;
 import oogasalad.engine.view.components.Selector;
 import oogasalad.engine.view.components.Vmenu;
 

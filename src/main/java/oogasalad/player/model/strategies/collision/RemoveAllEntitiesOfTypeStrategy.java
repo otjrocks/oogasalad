@@ -1,9 +1,9 @@
 package oogasalad.player.model.strategies.collision;
 
 import java.util.Iterator;
-import oogasalad.player.model.Entity;
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContextRecord;
+import oogasalad.player.model.Entity;
 
 /**
  * A collision strategy that removes all the entities of the provided type from the game map.

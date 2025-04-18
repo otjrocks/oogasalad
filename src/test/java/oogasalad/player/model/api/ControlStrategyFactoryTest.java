@@ -1,18 +1,20 @@
 package oogasalad.player.model.api;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
-import oogasalad.player.controller.GameInputManager;
 import oogasalad.engine.config.EntityPlacement;
-import oogasalad.engine.records.model.EntityTypeRecord;
-import oogasalad.player.model.GameMapInterface;
 import oogasalad.engine.records.config.model.controlConfig.ConditionalControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.TargetControlConfigRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.player.controller.GameInputManager;
+import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.exceptions.ControlStrategyException;
 import oogasalad.player.model.strategies.control.ControlStrategyInterface;
 import oogasalad.player.model.strategies.control.testdoubles.ConditionalControlStrategy;

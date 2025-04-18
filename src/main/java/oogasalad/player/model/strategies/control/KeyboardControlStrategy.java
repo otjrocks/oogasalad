@@ -1,10 +1,10 @@
 package oogasalad.player.model.strategies.control;
 
+import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.controller.GameInputManager;
-import oogasalad.engine.config.EntityPlacement;
-import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.Entity;
+import oogasalad.player.model.GameMapInterface;
 
 /**
  * The KeyboardControlStrategy class implements the ControlStrategy interface and provides

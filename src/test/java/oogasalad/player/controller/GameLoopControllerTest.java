@@ -1,13 +1,21 @@
 package oogasalad.player.controller;
 
-import oogasalad.engine.records.config.ConfigModelRecord;
-import oogasalad.player.model.GameMapInterface;
-import oogasalad.player.model.GameMap;
-import oogasalad.player.model.GameState;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.clearInvocations;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
+import oogasalad.player.model.GameMap;
+import oogasalad.player.model.GameMapInterface;
+import oogasalad.player.model.GameState;
 import oogasalad.player.view.GameMapView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,9 +23,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import util.DukeApplicationTest;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class GameLoopControllerTest extends DukeApplicationTest {

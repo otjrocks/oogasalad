@@ -1,12 +1,13 @@
 package oogasalad.engine.records;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+
+import oogasalad.player.model.Entity;
 import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.GameStateInterface;
-import oogasalad.player.model.Entity;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 class CollisionContextTest {
 

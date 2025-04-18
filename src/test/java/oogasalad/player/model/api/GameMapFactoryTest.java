@@ -12,14 +12,14 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import oogasalad.engine.records.config.ConfigModelRecord;
-import oogasalad.player.controller.GameInputManager;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.exceptions.InvalidPositionException;
+import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.model.GameSettingsRecord;
 import oogasalad.engine.records.model.MapInfoRecord;
+import oogasalad.player.controller.GameInputManager;
 import oogasalad.player.model.Entity;
-import oogasalad.engine.exceptions.InvalidPositionException;
-import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.player.model.GameMapInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

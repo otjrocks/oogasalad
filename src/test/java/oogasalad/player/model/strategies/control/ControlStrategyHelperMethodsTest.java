@@ -1,18 +1,24 @@
 package oogasalad.player.model.strategies.control;
 
-import oogasalad.engine.utility.constants.Directions.Direction;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import oogasalad.engine.config.EntityPlacement;
-import oogasalad.player.model.GameMapInterface;
+import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.model.Entity;
-import oogasalad.player.model.strategies.control.ControlStrategyHelperMethods;
+import oogasalad.player.model.GameMapInterface;
+import oogasalad.player.model.exceptions.ControlStrategyException;
 import oogasalad.player.model.strategies.control.pathfinding.PathFindingStrategyInterface;
 import oogasalad.player.model.strategies.control.targetcalculation.TargetStrategyInterface;
-import oogasalad.player.model.exceptions.ControlStrategyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class ControlStrategyHelperMethodsTest {
 

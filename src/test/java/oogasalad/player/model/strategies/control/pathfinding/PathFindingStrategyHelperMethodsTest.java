@@ -1,16 +1,21 @@
 package oogasalad.player.model.strategies.control.pathfinding;
 
-import oogasalad.engine.utility.constants.Directions.Direction;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.model.GameMapInterface;
-import oogasalad.player.model.strategies.control.pathfinding.PathFindingStrategyHelperMethods;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class PathFindingStrategyHelperMethodsTest {
 

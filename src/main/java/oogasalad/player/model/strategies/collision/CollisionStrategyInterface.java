@@ -1,10 +1,10 @@
 package oogasalad.player.model.strategies.collision;
 
-import oogasalad.player.model.GameMapInterface;
-import oogasalad.player.model.GameStateInterface;
-import oogasalad.player.model.Entity;
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContextRecord;
+import oogasalad.player.model.Entity;
+import oogasalad.player.model.GameMapInterface;
+import oogasalad.player.model.GameStateInterface;
 
 /**
  * Represents a strategy for handling the outcome of collisions between entities in the game.

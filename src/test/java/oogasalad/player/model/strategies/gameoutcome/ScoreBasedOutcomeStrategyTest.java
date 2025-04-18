@@ -1,12 +1,15 @@
 package oogasalad.player.model.strategies.gameoutcome;
 
-import oogasalad.player.model.GameStateInterface;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import oogasalad.engine.records.GameContextRecord;
+import oogasalad.player.model.GameStateInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 // chatgpt this given the tests for entity based outcome strategy and its tests
 class ScoreBasedOutcomeStrategyTest {

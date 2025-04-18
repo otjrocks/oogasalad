@@ -1,16 +1,20 @@
 package oogasalad.authoring.view;
 
-import oogasalad.authoring.controller.AuthoringController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import oogasalad.engine.utility.LanguageManager;
+import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.records.config.model.SettingsRecord;
+import oogasalad.engine.utility.LanguageManager;
 
 
 /**

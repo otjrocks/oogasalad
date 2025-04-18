@@ -1,17 +1,15 @@
 package oogasalad.player.model.strategies.control.targetcalculation;
 
-import oogasalad.engine.utility.constants.Directions.Direction;
-import oogasalad.player.model.GameMapInterface;
-import oogasalad.engine.config.EntityPlacement;
-import oogasalad.player.model.Entity;
-import oogasalad.player.model.strategies.control.targetcalculation.TargetEntityWithTrapStrategy;
-import oogasalad.player.model.strategies.control.targetcalculation.TargetStrategyInterface;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.utility.constants.Directions.Direction;
+import oogasalad.player.model.Entity;
+import oogasalad.player.model.GameMapInterface;
+import org.junit.jupiter.api.Test;
 
 class TargetEntityWithTrapStrategyTest {
 

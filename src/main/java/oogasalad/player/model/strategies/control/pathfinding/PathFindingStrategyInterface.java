@@ -1,7 +1,7 @@
 package oogasalad.player.model.strategies.control.pathfinding;
 
-import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.model.GameMapInterface;
 
 /**

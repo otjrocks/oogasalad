@@ -1,18 +1,20 @@
 package oogasalad.player.model.strategies.control;
 
-import oogasalad.engine.utility.constants.Directions.Direction;
-import oogasalad.player.controller.GameInputManager;
-import oogasalad.engine.config.EntityPlacement;
-import oogasalad.player.model.GameMapInterface;
-import oogasalad.player.model.Entity;
-import oogasalad.engine.records.model.EntityTypeRecord;
-import oogasalad.player.model.strategies.control.KeyboardControlStrategy;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Optional;
-
-import static org.mockito.Mockito.*;
+import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.engine.utility.constants.Directions.Direction;
+import oogasalad.player.controller.GameInputManager;
+import oogasalad.player.model.Entity;
+import oogasalad.player.model.GameMapInterface;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class KeyboardControlStrategyTest {
 

@@ -1,16 +1,16 @@
 package oogasalad.authoring.view.canvas;
 
-import java.util.function.Consumer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import oogasalad.authoring.view.util.SpriteSheetUtil;
-import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.config.ModeConfigRecord;
 
 /**
  * Manages visual representation and placement of entities on the canvas grid. Responsible for

@@ -1,15 +1,27 @@
 package oogasalad.authoring.view;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import java.util.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.records.config.model.CollisionEventInterface;
+import oogasalad.engine.utility.LanguageManager;
 
 /**
  * A dialog view that allows the user to define and edit collision rules between pairs of entity

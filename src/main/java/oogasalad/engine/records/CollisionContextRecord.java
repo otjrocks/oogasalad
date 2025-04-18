@@ -1,8 +1,8 @@
 package oogasalad.engine.records;
 
+import oogasalad.player.model.Entity;
 import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.GameStateInterface;
-import oogasalad.player.model.Entity;
 
 /**
  * A record that encapsulates the context of a collision event in the game.

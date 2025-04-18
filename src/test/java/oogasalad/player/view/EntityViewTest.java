@@ -1,14 +1,18 @@
 package oogasalad.player.view;
 
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import javafx.scene.canvas.GraphicsContext;
-import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.model.Entity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
-
-import static org.mockito.Mockito.*;
 
 class EntityViewTest extends DukeApplicationTest {
 

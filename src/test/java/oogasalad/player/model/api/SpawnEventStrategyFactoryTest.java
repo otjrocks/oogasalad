@@ -1,11 +1,13 @@
 package oogasalad.player.model.api;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import oogasalad.player.model.strategies.spawnevent.ScoreBasedSpawnEventStrategy;
 import oogasalad.player.model.strategies.spawnevent.SpawnEventStrategyInterface;
 import oogasalad.player.model.strategies.spawnevent.TimeElapsedSpawnEventStrategy;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SpawnEventStrategyFactoryTest {
   // ChatGPT assisted in generating these tests.

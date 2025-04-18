@@ -1,18 +1,18 @@
 package oogasalad.player.model.strategies.spawnevent;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.Map;
+import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.player.model.GameMap;
 import oogasalad.player.model.GameStateInterface;
-import oogasalad.engine.records.GameContextRecord;
-import oogasalad.engine.records.config.model.SpawnEventRecord;
-import oogasalad.player.model.strategies.spawnevent.TimeElapsedSpawnEventStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class TimeElapsedSpawnEventStrategyTest {
 

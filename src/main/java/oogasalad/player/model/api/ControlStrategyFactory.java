@@ -3,10 +3,10 @@ package oogasalad.player.model.api;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import oogasalad.player.controller.GameInputManager;
 import oogasalad.engine.config.EntityPlacement;
-import oogasalad.player.model.GameMapInterface;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.player.controller.GameInputManager;
+import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.exceptions.ControlStrategyException;
 import oogasalad.player.model.strategies.control.ControlStrategyInterface;
 

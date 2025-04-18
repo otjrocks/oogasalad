@@ -1,18 +1,17 @@
 package oogasalad.player.model.strategies.spawnevent;
 
-import oogasalad.engine.records.model.ConditionRecord;
-import oogasalad.player.model.GameMap;
-import oogasalad.player.model.GameStateInterface;
-import oogasalad.player.model.GameState;
-import oogasalad.engine.records.GameContextRecord;
-import oogasalad.engine.records.config.model.SpawnEventRecord;
-import oogasalad.player.model.strategies.spawnevent.ScoreBasedSpawnEventStrategy;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.records.config.model.SpawnEventRecord;
+import oogasalad.engine.records.model.ConditionRecord;
+import oogasalad.player.model.GameMap;
+import oogasalad.player.model.GameState;
+import oogasalad.player.model.GameStateInterface;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class ScoreBasedSpawnEventStrategyTest {
   // ChatGPT helped in generating these tests.

@@ -1,9 +1,14 @@
 package oogasalad.authoring.view.canvas;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -12,15 +17,13 @@ import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
-import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.config.EntityPlacement;
-import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.config.ImageConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
-
-import java.util.List;
 
 public class CanvasViewTest extends DukeApplicationTest {
 

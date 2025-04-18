@@ -2,7 +2,14 @@ package oogasalad.engine.records.config.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import oogasalad.engine.records.config.model.collisionevent.*;
+import oogasalad.engine.records.config.model.collisionevent.ChangeModeForTypeCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.RemoveAllEntitiesOfTypeCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.ResetTimeElapsedCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.ReturnToSpawnLocationCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.StopCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.UpdateScoreCollisionEventRecord;
 
 /**
  * An interface used to parse the collision events that occur in the game.

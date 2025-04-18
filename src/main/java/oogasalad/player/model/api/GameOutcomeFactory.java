@@ -1,8 +1,8 @@
 package oogasalad.player.model.api;
 
-import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
 import oogasalad.engine.records.config.model.losecondition.LoseConditionInterface;
 import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
+import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
 
 /**
  * A factory design pattern to create the appropriate GameOutcome strategy

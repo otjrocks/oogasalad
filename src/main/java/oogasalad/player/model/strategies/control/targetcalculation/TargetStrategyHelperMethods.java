@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.utility.constants.Directions.Direction;
-import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.Entity;
+import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.exceptions.TargetStrategyException;
 
 /**

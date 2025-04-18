@@ -1,19 +1,21 @@
 package oogasalad.authoring.controller;
 
 import java.io.File;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
-import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.authoring.view.EntityPlacementView;
+import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.engine.config.EntityPlacement;
-import oogasalad.engine.records.model.EntityTypeRecord;
-import java.util.*;
-import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
-import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
+import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
 
 /**
  * Coordinates updates between the {@link AuthoringModel} and {@link AuthoringView}. This controller

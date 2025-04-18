@@ -2,12 +2,24 @@ package oogasalad.authoring.view;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.utility.LanguageManager;
 
 /**
  * View component for displaying and editing properties of a selected entity placement. This

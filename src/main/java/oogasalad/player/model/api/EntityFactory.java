@@ -1,7 +1,7 @@
 package oogasalad.player.model.api;
 
-import oogasalad.player.controller.GameInputManager;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.player.controller.GameInputManager;
 import oogasalad.player.model.Entity;
 import oogasalad.player.model.GameMapInterface;
 

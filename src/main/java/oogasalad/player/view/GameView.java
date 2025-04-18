@@ -6,10 +6,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.layout.StackPane;
-import oogasalad.engine.utility.LanguageManager;
-import oogasalad.engine.records.config.ConfigModelRecord;
-import oogasalad.engine.utility.constants.GameConfig;
 import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.constants.GameConfig;
 import oogasalad.player.controller.GameLoopController;
 
 /**

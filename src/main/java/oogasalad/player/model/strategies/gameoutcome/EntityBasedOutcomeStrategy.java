@@ -1,7 +1,7 @@
 package oogasalad.player.model.strategies.gameoutcome;
 
-import oogasalad.player.model.GameStateInterface;
 import oogasalad.engine.records.GameContextRecord;
+import oogasalad.player.model.GameStateInterface;
 
 /**
  * The {@code EntityBasedOutcomeStrategy} class implements the {@link GameOutcomeStrategyInterface} interface

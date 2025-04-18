@@ -1,5 +1,8 @@
 package oogasalad.authoring.view;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -13,12 +16,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.view.util.SpriteSheetUtil;
-import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.records.model.EntityTypeRecord;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import oogasalad.engine.utility.LanguageManager;
 
 /**
  * View displaying all defined EntityTypes in a draggable grid. Clicking on a tile notifies the

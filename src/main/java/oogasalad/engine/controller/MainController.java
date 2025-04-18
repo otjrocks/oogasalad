@@ -6,11 +6,11 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
 import oogasalad.engine.utility.LoggingManager;
+import oogasalad.engine.view.SplashScreenView;
 import oogasalad.player.controller.GameInputManager;
 import oogasalad.player.model.GameState;
-import oogasalad.player.view.GameSelectorView;
-import oogasalad.engine.view.SplashScreenView;
 import oogasalad.player.view.GameScreenView;
+import oogasalad.player.view.GameSelectorView;
 
 /**
  * The main controller of the game engine. This class controls the interactions between the model

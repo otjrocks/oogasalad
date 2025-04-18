@@ -1,12 +1,11 @@
 package oogasalad.authoring.view;
 
+import java.util.List;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.LevelDraft;
-
-import java.util.List;
 import oogasalad.engine.utility.LanguageManager;
 
 /**

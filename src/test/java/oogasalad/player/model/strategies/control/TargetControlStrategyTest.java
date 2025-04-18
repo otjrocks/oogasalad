@@ -1,23 +1,27 @@
 package oogasalad.player.model.strategies.control;
 
-import oogasalad.engine.utility.constants.Directions.Direction;
-import oogasalad.player.model.GameMapInterface;
-import oogasalad.engine.records.config.model.controlConfig.TargetControlConfigRecord;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Collections;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.config.model.controlConfig.TargetControlConfigRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.model.Entity;
-import oogasalad.player.model.strategies.control.TargetControlStrategy;
-import oogasalad.player.model.strategies.control.pathfinding.PathFindingStrategyInterface;
+import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.api.PathFindingStrategyFactory;
-import oogasalad.player.model.strategies.control.targetcalculation.TargetStrategyInterface;
 import oogasalad.player.model.api.TargetStrategyFactory;
+import oogasalad.player.model.strategies.control.pathfinding.PathFindingStrategyInterface;
+import oogasalad.player.model.strategies.control.targetcalculation.TargetStrategyInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
-
-import java.util.Collections;
-
-import static org.mockito.Mockito.*;
 
 class TargetControlStrategyTest {
 

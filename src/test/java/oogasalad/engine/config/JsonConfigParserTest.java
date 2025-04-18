@@ -1,6 +1,14 @@
 package oogasalad.engine.config;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.CollisionConfigRecord;
 import oogasalad.engine.records.config.EntityConfigRecord;
@@ -14,13 +22,6 @@ import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class JsonConfigParserTest {
 

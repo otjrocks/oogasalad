@@ -1,18 +1,20 @@
 package oogasalad.player.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
-import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.config.EntityPlacement;
-import oogasalad.engine.records.model.EntityTypeRecord;
-import oogasalad.player.model.GameMapInterface;
-import oogasalad.player.model.GameStateInterface;
-import oogasalad.player.model.Entity;
 import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.player.model.Entity;
+import oogasalad.player.model.GameMapInterface;
+import oogasalad.player.model.GameStateInterface;
 import oogasalad.player.view.GameMapView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

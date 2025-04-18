@@ -9,10 +9,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import oogasalad.engine.controller.MainController;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.utility.constants.GameConfig;
-import oogasalad.engine.controller.MainController;
 
 /**
  * The game selector splash screen after game player button on splash screen is clicked.
