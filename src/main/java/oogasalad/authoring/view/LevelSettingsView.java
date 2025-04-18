@@ -42,6 +42,15 @@ public class LevelSettingsView {
     Button saveButton = new Button("Apply Size");
     saveButton.setOnAction(e -> applyChanges());
 
+    Button editModeEventsButton = new Button("Edit Mode Change Events");
+    editModeEventsButton.setOnAction(e -> {
+      ModeChangeEventDialog dialog = new ModeChangeEventDialog(
+          controller.getAvailableEntityTypes(),
+          controller.getCurrentLevel()
+      );
+      dialog.showAndWait();
+    });
+
     GridPane grid = new GridPane();
     grid.setHgap(10);
     grid.setVgap(10);
@@ -50,7 +59,7 @@ public class LevelSettingsView {
     grid.add(new Label("Height:"), 0, 1);
     grid.add(heightSpinner, 1, 1);
 
-    root.getChildren().addAll(titleLabel, grid, saveButton);
+    root.getChildren().addAll(titleLabel, grid, saveButton, editModeEventsButton);
   }
 
   /**
