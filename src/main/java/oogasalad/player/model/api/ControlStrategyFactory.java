@@ -4,6 +4,7 @@ package oogasalad.player.model.api;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.player.controller.GameInputManager;
 import oogasalad.player.model.GameMapInterface;
@@ -60,7 +61,11 @@ public class ControlStrategyFactory {
       GameInputManager input, EntityPlacement entityPlacement,
       GameMapInterface gameMap)
       throws ControlStrategyException {
-    ControlConfigInterface controlConfig = entityPlacement.getType().controlConfig();
+
+    String mode = entityPlacement.getMode();
+    ModeConfigRecord modeConfig = entityPlacement.getType().modes().get(mode);
+    ControlConfigInterface controlConfig = modeConfig.entityProperties().controlConfig();
+
     String className =
         STRATEGY_PACKAGE + controlConfig.getClass().getSimpleName()
             .replace("ConfigRecord", "Strategy");

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.ConditionalControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.TargetControlConfigRecord;
@@ -40,7 +41,9 @@ public class TargetStrategyFactory {
       GameMapInterface gameMap)
       throws TargetStrategyException {
 
-    ControlConfigInterface config = placement.getType().controlConfig();
+    String mode = placement.getMode();
+    ModeConfigRecord modeConfig = placement.getType().modes().get(mode);
+    ControlConfigInterface config = modeConfig.entityProperties().controlConfig();
     TargetCalculationConfigInterface targetCalculationConfig;
 
     if (config instanceof TargetControlConfigRecord targetConfig) {
