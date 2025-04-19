@@ -145,4 +145,9 @@ public class GameMap implements GameMapInterface {
             .noneMatch(block -> block.equalsIgnoreCase(entityType))).orElse(true);
 
   }
+
+  @Override
+  public boolean contains(Entity entity) {
+    return myEntityList.contains(entity);
+  }
 }

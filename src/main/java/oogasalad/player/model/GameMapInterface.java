@@ -107,4 +107,12 @@ public interface GameMapInterface extends Iterable<Entity> {
    * @return true if not blocked, false otherwise
    */
   boolean isNotBlocked(String entityType, int x, int y);
+
+  /**
+   * Determine if the game map contains the provided Entity object.
+   *
+   * @param entity The entity you are querying for.
+   * @return true if the entity is part of the game map, false if it was not found on the map.
+   */
+  boolean contains(Entity entity);
 }
