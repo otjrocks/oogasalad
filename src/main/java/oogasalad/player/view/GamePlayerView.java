@@ -17,10 +17,11 @@ import oogasalad.player.model.GameStateInterface;
  *
  * @author Owen Jennings
  */
-public class GamePlayerView extends StackPane {
+public class GamePlayerView {
 
   public static final String CURRENT_GAME_CONFIG_PATH = "data/games/BasicPacMan/";
   public static final String GAME_CONFIG_JSON = "gameConfig.json";
+  private final StackPane myPane;
   private final MainController myMainController;
   private final GameStateInterface myGameState;
   private GameView myGameView;
@@ -30,20 +31,29 @@ public class GamePlayerView extends StackPane {
    * Create the Game Player View.
    */
   public GamePlayerView(MainController controller, GameStateInterface gameState) {
-    super();
+    myPane = new StackPane();
     myMainController = controller;
     myGameState = gameState;
 
-    this.setPrefWidth(WIDTH);
-    this.getStyleClass().add("game-player-view");
+    myPane.setPrefWidth(WIDTH);
+    myPane.getStyleClass().add("game-player-view");
 
     createExampleMap();
+  }
+
+  /**
+   * Get the root stack pane that is used to display elements in the view.
+   *
+   * @return A StackPane JavaFX object that is added to for this view.
+   */
+  public StackPane getPane() {
+    return myPane;
   }
 
   private void createExampleMap() {
     loadConfigFromFile();
     loadGameViewFromConfig();
-    this.getChildren().add(myGameView);
+    myPane.getChildren().add(myGameView.getRoot());
     updateGameStateFromConfigurationFile();
   }
 
@@ -75,19 +85,19 @@ public class GamePlayerView extends StackPane {
   }
 
   private void restartLevel() {
-    this.getChildren().clear();
+    myPane.getChildren().clear();
     // currently resets the score to 0. can change to set score to score at level start
     updateGameStateFromConfigurationFile();
     loadGameViewFromConfig();
-    this.getChildren().add(myGameView);
+    myPane.getChildren().add(myGameView.getRoot());
   }
 
   private void loadNextLevel(LevelController levelController) {
     if (levelController.hasNextLevel()) {
       levelController.incrementAndUpdateConfig();
-      this.getChildren().clear();
+      myPane.getChildren().clear();
       loadGameViewFromConfig();
-      this.getChildren().add(myGameView);
+      myPane.getChildren().add(myGameView.getRoot());
     } else {
       LoggingManager.LOGGER.info("No more levels to load.");
     }

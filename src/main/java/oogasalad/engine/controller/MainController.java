@@ -71,8 +71,8 @@ public class MainController {
     if (myGameSelectorView == null) {
       myGameSelectorView = new GameSelectorView(this);
     }
-    if (!myRoot.getChildren().contains(myGameSelectorView)) {
-      myRoot.getChildren().add(myGameSelectorView);
+    if (!myRoot.getChildren().contains(myGameSelectorView.getRoot())) {
+      myRoot.getChildren().add(myGameSelectorView.getRoot());
     }
   }
 
@@ -80,8 +80,8 @@ public class MainController {
    * Hide the game selector view.
    */
   public void hideGameSelectorView() {
-    if (myRoot.getChildren().contains(myGameSelectorView)) {
-      myRoot.getChildren().remove(myGameSelectorView);
+    if (myRoot.getChildren().contains(myGameSelectorView.getRoot())) {
+      myRoot.getChildren().remove(myGameSelectorView.getRoot());
     } else {
       LoggingManager.LOGGER.warn(
           "Attempted to hide the game selector screen, even though it wasn't being displayed.");
@@ -93,7 +93,7 @@ public class MainController {
    */
   public void showGamePlayerView() {
     GameScreenView myGameScreenView = new GameScreenView(this, new GameState(3));
-    myInputManager.getRoot().getChildren().add(myGameScreenView);
+    myInputManager.getRoot().getChildren().add(myGameScreenView.getRoot());
   }
 
   /**

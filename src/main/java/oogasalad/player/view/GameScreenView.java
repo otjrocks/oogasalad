@@ -16,8 +16,9 @@ import oogasalad.player.view.components.HudView;
  *
  * @author Owen Jennings, Troy Ludwig
  */
-public class GameScreenView extends VBox {
+public class GameScreenView {
 
+  private final VBox myRoot;
   private final MainController mainController;
   private final GameStateInterface gameState;
   private final HudView hudView;
@@ -32,6 +33,7 @@ public class GameScreenView extends VBox {
    */
   public GameScreenView(MainController controller, GameStateInterface gameState) {
     super();
+    myRoot = new VBox();
     this.gameState = gameState;
     this.mainController = controller;
 
@@ -44,9 +46,9 @@ public class GameScreenView extends VBox {
         this::handleReturnToMainMenu
     );
 
-    this.getChildren().addAll(hudView, gamePlayerView);
-    this.getStyleClass().add("game-screen-view");
-    this.setPrefSize(WIDTH, HEIGHT);
+    myRoot.getChildren().addAll(hudView, gamePlayerView.getPane());
+    myRoot.getStyleClass().add("game-screen-view");
+    myRoot.setPrefSize(WIDTH, HEIGHT);
 
     // Store initial values
     lastScore = gameState.getScore();
@@ -60,8 +62,17 @@ public class GameScreenView extends VBox {
     hudUpdater.play();
   }
 
+  /**
+   * Get the root VBox for this view.
+   *
+   * @return A JavaFX VBox to display information from this view.
+   */
+  public VBox getRoot() {
+    return myRoot;
+  }
+
   private void handleReturnToMainMenu() {
-    mainController.getInputManager().getRoot().getChildren().remove(this);
+    mainController.getInputManager().getRoot().getChildren().remove(myRoot);
     mainController.showSplashScreen();
   }
 

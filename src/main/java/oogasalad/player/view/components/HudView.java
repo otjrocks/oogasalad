@@ -44,12 +44,12 @@ public class HudView extends VBox {
 
     playButton.setOnAction(e -> {
       gameView.resumeGame();
-      gameView.requestFocus();
+      gameView.getRoot().requestFocus();
     });
 
     pauseButton.setOnAction(e -> {
       gameView.pauseGame();
-      gameView.requestFocus();
+      gameView.getRoot().requestFocus();
     });
 
     returnButton.setOnAction(e -> onReturnToMenu.run());
