@@ -14,9 +14,10 @@ import javafx.scene.text.Text;
  *
  * @author Owen Jennings
  */
-public class Selector extends VBox {
+public class Selector {
 
   private final ComboBox<String> myComboBox;
+  private final VBox myRoot;
 
   /**
    * Create a Selector field.
@@ -29,7 +30,7 @@ public class Selector extends VBox {
    */
   public Selector(List<String> options, String defaultValue, String id, String labelText,
       EventHandler<ActionEvent> action) {
-    super();
+    myRoot = new VBox();
     Text myLabel = new Text(labelText);
     myComboBox = new ComboBox<>();
     myComboBox.getItems().addAll(options);
@@ -38,9 +39,9 @@ public class Selector extends VBox {
     myComboBox.setId(id);
     myLabel.setId(id + "-label");
     myComboBox.getStyleClass().add("combo-box");
-    this.setSpacing(ELEMENT_SPACING);
-    this.getChildren().addAll(myLabel, myComboBox);
-    this.getStyleClass().add("selector-container");
+    myRoot.setSpacing(ELEMENT_SPACING);
+    myRoot.getChildren().addAll(myLabel, myComboBox);
+    myRoot.getStyleClass().add("selector-container");
   }
 
   /**
@@ -50,6 +51,15 @@ public class Selector extends VBox {
    */
   public String getValue() {
     return myComboBox.getValue();
+  }
+
+  /**
+   * Get the root element of this selector field.
+   *
+   * @return The VBox which encapsulates the Selector view.
+   */
+  public VBox getRoot() {
+    return myRoot;
   }
 
 }

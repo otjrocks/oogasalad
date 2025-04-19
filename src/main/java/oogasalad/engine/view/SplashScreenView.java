@@ -76,7 +76,7 @@ public class SplashScreenView {
         e -> toggleConfigurationMenu()
     );
     VMenu splashMenu = new VMenu(options, actions);
-    myRoot.getChildren().add(splashMenu);
+    myRoot.getChildren().add(splashMenu.getRoot());
   }
 
   private void toggleConfigurationMenu() {
@@ -99,7 +99,7 @@ public class SplashScreenView {
     myThemeSelector = new Selector(myThemeManager.getAvailableThemes(),
         ThemeManager.DEFAULT_THEME, "themeSelector",
         LanguageManager.getMessage("THEME_SELECTOR_TITLE"), e -> switchTheme());
-    myConfigurationBox.getChildren().add(myThemeSelector);
+    myConfigurationBox.getChildren().add(myThemeSelector.getRoot());
   }
 
   private void initializeLanguageSelector() {
@@ -107,7 +107,7 @@ public class SplashScreenView {
         LanguageManager.getLanguage(),
         "languageSelector", LanguageManager.getMessage("LANGUAGE_SELECTOR_TITLE"),
         e -> handleLanguageSelection());
-    myConfigurationBox.getChildren().add(myLanguageSelector);
+    myConfigurationBox.getChildren().add(myLanguageSelector.getRoot());
   }
 
   private void initializeTitle() {
