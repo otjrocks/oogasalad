@@ -13,20 +13,21 @@ import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.utility.constants.GameConfig;
 import oogasalad.engine.view.components.Selector;
-import oogasalad.engine.view.components.Vmenu;
+import oogasalad.engine.view.components.VMenu;
 
 /**
  * The initial splash screen shown when the program is started.
  *
  * @author Owen Jennings
  */
-public class SplashScreenView extends VBox {
+public class SplashScreenView {
 
   private Selector myLanguageSelector;
   private final ThemeManager myThemeManager;
   private Selector myThemeSelector;
   private final MainController myMainController;
   private final VBox myConfigurationBox;
+  private final VBox myRoot;
 
   /**
    * Create a splash screen view.
@@ -34,14 +35,23 @@ public class SplashScreenView extends VBox {
    * @param mainController The main controller of the program.
    */
   public SplashScreenView(MainController mainController) {
-    super();
+    myRoot = new VBox();
     myThemeManager = new ThemeManager(mainController.getStage());
     myMainController = mainController;
     myConfigurationBox = new VBox(ELEMENT_SPACING);
     myConfigurationBox.setId("splash-configuration-box");
-    this.getStyleClass().add("splash-screen-view");
-    this.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
+    myRoot.getStyleClass().add("splash-screen-view");
+    myRoot.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
     initializeSplashScreen();
+  }
+
+  /**
+   * Get the root element where all the splash screen components are added to.
+   *
+   * @return A VBox JavaFX element.
+   */
+  public VBox getRoot() {
+    return myRoot;
   }
 
   /**
@@ -52,7 +62,7 @@ public class SplashScreenView extends VBox {
     initializeLanguageSelector();
     initializeThemeSelector();
     initializeSplashMenu();
-    this.getChildren().add(myConfigurationBox);
+    myRoot.getChildren().add(myConfigurationBox);
     myConfigurationBox.setVisible(false);
   }
 
@@ -65,8 +75,8 @@ public class SplashScreenView extends VBox {
         e -> activateAuthoringMode(),
         e -> toggleConfigurationMenu()
     );
-    Vmenu splashMenu = new Vmenu(options, actions);
-    this.getChildren().add(splashMenu);
+    VMenu splashMenu = new VMenu(options, actions);
+    myRoot.getChildren().add(splashMenu);
   }
 
   private void toggleConfigurationMenu() {
@@ -104,7 +114,7 @@ public class SplashScreenView extends VBox {
     Text title = new Text(LanguageManager.getMessage("TITLE"));
     title.setId("splashScreenTitle");
     title.getStyleClass().add("title");
-    this.getChildren().add(title);
+    myRoot.getChildren().add(title);
   }
 
   private void handleLanguageSelection() {
@@ -118,7 +128,7 @@ public class SplashScreenView extends VBox {
 
 
   private void refresh() {
-    this.getChildren().clear();
+    myRoot.getChildren().clear();
     myConfigurationBox.getChildren().clear();
     initializeSplashScreen();
   }
