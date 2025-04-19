@@ -40,7 +40,7 @@ public class GameView extends StackPane {
     this.setPrefSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
     this.setMinSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
     this.setMaxSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
-    this.getChildren().add(myGameMapView);
+    this.getChildren().add(myGameMapView.getCanvas());
     this.getStyleClass().add("game-view");
     this.setFocusTraversable(true);
     boolean isFinalLevel = levelIndex >= configModel.levels().size() - 1;
