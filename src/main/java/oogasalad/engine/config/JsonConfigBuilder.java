@@ -67,16 +67,9 @@ public class JsonConfigBuilder {
     defaultSettings.put("scoreStrategy", "Cumulative");
 
     // === win conditions ===
-    // TODO: No instanceOf checks here
-    ObjectNode winCondition = mapper.createObjectNode();
-    if (model.getDefaultSettings().winCondition() instanceof SurviveForTimeConditionRecord(int amount)) {
-      winCondition.put(TYPE, WIN_CONDITION_SURVIVE_FOR_TIME);
-      winCondition.put("amount", amount);
-    } else if (model.getDefaultSettings().winCondition() instanceof EntityBasedConditionRecord(String entityType)) {
-      winCondition.put(TYPE, WIN_CONDITION_ENTITY_BASED);
-      winCondition.put(ENTITY_TYPE, entityType);
-    }
-    defaultSettings.set("winCondition", winCondition);
+    defaultSettings.set("winCondition", ConditionSerializer.serialize(model.getDefaultSettings().winCondition(), mapper));
+    defaultSettings.set("loseCondition", ConditionSerializer.serialize(model.getDefaultSettings().loseCondition(), mapper));
+
 
     // === levels ===
     ArrayNode levels = root.putArray("levels");
