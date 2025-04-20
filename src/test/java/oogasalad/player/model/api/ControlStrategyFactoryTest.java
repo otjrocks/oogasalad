@@ -6,39 +6,37 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
+import java.util.Map;
+
 import oogasalad.engine.config.EntityPlacement;
-import oogasalad.engine.records.config.model.controlConfig.ConditionalControlConfigRecord;
-import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
-import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
-import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
-import oogasalad.engine.records.config.model.controlConfig.TargetControlConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.config.model.EntityPropertiesRecord;
+import oogasalad.engine.records.config.model.controlConfig.*;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.player.controller.GameInputManager;
 import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.exceptions.ControlStrategyException;
 import oogasalad.player.model.strategies.control.ControlStrategyInterface;
-import oogasalad.player.model.strategies.control.testdoubles.ConditionalControlStrategy;
-import oogasalad.player.model.strategies.control.testdoubles.KeyboardControlStrategy;
-import oogasalad.player.model.strategies.control.testdoubles.NoneControlStrategy;
-import oogasalad.player.model.strategies.control.testdoubles.TargetControlStrategy;
+import oogasalad.player.model.strategies.control.testdoubles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 
 public class ControlStrategyFactoryTest {
 
   private GameInputManager mockInput;
   private GameMapInterface mockMap;
   private EntityPlacement mockPlacement;
+  private EntityTypeRecord mockType;
+  private final String mockMode = "DEFAULT";
 
   @BeforeEach
   void setup() throws Exception {
     mockInput = mock(GameInputManager.class);
     mockMap = mock(GameMapInterface.class);
     mockPlacement = mock(EntityPlacement.class);
+    mockType = mock(EntityTypeRecord.class);
 
-    // Set up mock control type
-    EntityTypeRecord mockType = mock(EntityTypeRecord.class);
+    when(mockPlacement.getMode()).thenReturn(mockMode);
     when(mockPlacement.getType()).thenReturn(mockType);
 
     // Override the strategy package for testing
@@ -47,17 +45,19 @@ public class ControlStrategyFactoryTest {
     strategyPackageField.set(null, "oogasalad.player.model.strategies.control.testdoubles.");
   }
 
-
   private void mockControlConfig(ControlConfigInterface config) {
-    EntityTypeRecord mockType = mock(EntityTypeRecord.class);
-    when(mockType.controlConfig()).thenReturn(config);
-    when(mockPlacement.getType()).thenReturn(mockType);
+    EntityPropertiesRecord mockProperties = mock(EntityPropertiesRecord.class);
+    when(mockProperties.controlConfig()).thenReturn(config);
+
+    ModeConfigRecord mockModeConfig = mock(ModeConfigRecord.class);
+    when(mockModeConfig.entityProperties()).thenReturn(mockProperties);
+
+    when(mockType.modes()).thenReturn(Map.of(mockMode, mockModeConfig));
   }
 
   @Test
   void createControlStrategy_noneControl_strategyCreated() {
-    ControlConfigInterface config = new NoneControlConfigRecord();
-    mockControlConfig(config);
+    mockControlConfig(new NoneControlConfigRecord());
 
     ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
     assertInstanceOf(NoneControlStrategy.class, strategy);
@@ -65,8 +65,7 @@ public class ControlStrategyFactoryTest {
 
   @Test
   void createControlStrategy_keyboardControl_strategyCreated() {
-    ControlConfigInterface config = new KeyboardControlConfigRecord();
-    mockControlConfig(config);
+    mockControlConfig(new KeyboardControlConfigRecord());
 
     ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
     assertInstanceOf(KeyboardControlStrategy.class, strategy);
@@ -74,8 +73,7 @@ public class ControlStrategyFactoryTest {
 
   @Test
   void createControlStrategy_targetControl_strategyCreated() {
-    ControlConfigInterface config = new TargetControlConfigRecord("A*", null);
-    mockControlConfig(config);
+    mockControlConfig(new TargetControlConfigRecord("A*", null));
 
     ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
     assertInstanceOf(TargetControlStrategy.class, strategy);
@@ -83,8 +81,7 @@ public class ControlStrategyFactoryTest {
 
   @Test
   void createControlStrategy_conditionalControl_strategyCreated() {
-    ControlConfigInterface config = new ConditionalControlConfigRecord(5, "A*", "Dijkstra", null);
-    mockControlConfig(config);
+    mockControlConfig(new ConditionalControlConfigRecord(5, "A*", "Dijkstra", null));
 
     ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
     assertInstanceOf(ConditionalControlStrategy.class, strategy);
@@ -92,8 +89,8 @@ public class ControlStrategyFactoryTest {
 
   @Test
   void createControlStrategy_invalidStrategyControl_throwsControlStrategyException() {
-    ControlConfigInterface config = new ControlConfigInterface() {}; // anonymous class to simulate an unknown config
-    mockControlConfig(config);
+    // Use anonymous subclass to simulate unsupported config
+    mockControlConfig(new ControlConfigInterface() {});
 
     assertThrows(ControlStrategyException.class,
         () -> ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap));
