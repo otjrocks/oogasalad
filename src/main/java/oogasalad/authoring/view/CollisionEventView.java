@@ -44,7 +44,7 @@ public class CollisionEventView {
         getCollisionEventClassNames().getFirst(), "collision-rule-selector",
         LanguageManager.getMessage("COLLISION_RULE_SELECTOR"), e -> updateParameterFields());
     myRoot.getChildren().add(new Label(labelText));
-    myRoot.getChildren().add(mySelector);
+    myRoot.getChildren().add(mySelector.getRoot());
     myRoot.getChildren().add(myParameters);
   }
 

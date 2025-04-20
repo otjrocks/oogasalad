@@ -47,8 +47,8 @@ public class MainController {
     if (mySplashScreenView == null) {
       mySplashScreenView = new SplashScreenView(this);
     }
-    if (!myRoot.getChildren().contains(mySplashScreenView)) {
-      myRoot.getChildren().add(mySplashScreenView);
+    if (!myRoot.getChildren().contains(mySplashScreenView.getRoot())) {
+      myRoot.getChildren().add(mySplashScreenView.getRoot());
     }
   }
 
@@ -56,8 +56,8 @@ public class MainController {
    * Hide the splash screen view.
    */
   public void hideSplashScreen() {
-    if (myRoot.getChildren().contains(mySplashScreenView)) {
-      myRoot.getChildren().remove(mySplashScreenView);
+    if (myRoot.getChildren().contains(mySplashScreenView.getRoot())) {
+      myRoot.getChildren().remove(mySplashScreenView.getRoot());
     } else {
       LoggingManager.LOGGER.warn(
           "Attempted to hide the splash screen, even though it wasn't being displayed.");
@@ -71,8 +71,8 @@ public class MainController {
     if (myGameSelectorView == null) {
       myGameSelectorView = new GameSelectorView(this);
     }
-    if (!myRoot.getChildren().contains(myGameSelectorView)) {
-      myRoot.getChildren().add(myGameSelectorView);
+    if (!myRoot.getChildren().contains(myGameSelectorView.getRoot())) {
+      myRoot.getChildren().add(myGameSelectorView.getRoot());
     }
   }
 
@@ -80,8 +80,8 @@ public class MainController {
    * Hide the game selector view.
    */
   public void hideGameSelectorView() {
-    if (myRoot.getChildren().contains(myGameSelectorView)) {
-      myRoot.getChildren().remove(myGameSelectorView);
+    if (myRoot.getChildren().contains(myGameSelectorView.getRoot())) {
+      myRoot.getChildren().remove(myGameSelectorView.getRoot());
     } else {
       LoggingManager.LOGGER.warn(
           "Attempted to hide the game selector screen, even though it wasn't being displayed.");
@@ -93,7 +93,7 @@ public class MainController {
    */
   public void showGamePlayerView() {
     GameScreenView myGameScreenView = new GameScreenView(this, new GameState(3));
-    myInputManager.getRoot().getChildren().add(myGameScreenView);
+    myInputManager.getRoot().getChildren().add(myGameScreenView.getRoot());
   }
 
   /**
@@ -106,7 +106,7 @@ public class MainController {
       AuthoringController controller = new AuthoringController(model, myAuthoringView);
       myAuthoringView.setController(controller);
     }
-    if (!myInputManager.getRoot().getChildren().contains(myAuthoringView)) {
+    if (!myInputManager.getRoot().getChildren().contains(myAuthoringView.getNode())) {
       myInputManager.getRoot().getChildren().add(myAuthoringView.getNode());
     }
   }

@@ -17,11 +17,12 @@ import oogasalad.player.controller.GameLoopController;
  *
  * @author Owen Jennings
  */
-public class GameView extends StackPane {
+public class GameView {
 
   public static final int GAME_VIEW_WIDTH = GameConfig.WIDTH - 2 * GameConfig.MARGIN;
   public static final int GAME_VIEW_HEIGHT = GameConfig.HEIGHT - 2 * GameConfig.MARGIN;
 
+  private final StackPane myRoot;
   private final GameLoopController myGameLoopController;
   private final Label endLabel = new Label();
   private final Button restartButton = new Button();
@@ -35,14 +36,14 @@ public class GameView extends StackPane {
    * @param levelIndex  The index of the level that is displayed on this view.
    */
   public GameView(GameContextRecord gameContext, ConfigModelRecord configModel, int levelIndex) {
-    super();
+    myRoot = new StackPane();
     GameMapView myGameMapView = new GameMapView(gameContext, configModel);
-    this.setPrefSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
-    this.setMinSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
-    this.setMaxSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
-    this.getChildren().add(myGameMapView);
-    this.getStyleClass().add("game-view");
-    this.setFocusTraversable(true);
+    myRoot.setPrefSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
+    myRoot.setMinSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
+    myRoot.setMaxSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
+    myRoot.getChildren().add(myGameMapView.getCanvas());
+    myRoot.getStyleClass().add("game-view");
+    myRoot.setFocusTraversable(true);
     boolean isFinalLevel = levelIndex >= configModel.levels().size() - 1;
 
     myGameLoopController = new GameLoopController(gameContext, myGameMapView,
@@ -50,6 +51,15 @@ public class GameView extends StackPane {
     myGameMapView.setGameLoopController(myGameLoopController);
     setUpEndMessage();
     myGameMapView.setEndGameCallback(won -> showEndMessage(won, isFinalLevel));
+  }
+
+  /**
+   * Return the javafx root element that is modified by this view class.
+   *
+   * @return A StackPane which is added to by this view class.
+   */
+  public StackPane getRoot() {
+    return myRoot;
   }
 
   private void setUpEndMessage() {
@@ -68,7 +78,7 @@ public class GameView extends StackPane {
     if (node instanceof Labeled && text != null) {
       ((Labeled) node).setText(text);
     }
-    this.getChildren().add(node);
+    myRoot.getChildren().add(node);
   }
 
   private void showEndMessage(boolean gameWon, boolean isFinalLevel) {
@@ -86,7 +96,6 @@ public class GameView extends StackPane {
     nextLevelButton.setVisible(gameWon && !isFinalLevel);
     restartButton.setVisible(!gameWon || isFinalLevel);
   }
-
 
 
   /**

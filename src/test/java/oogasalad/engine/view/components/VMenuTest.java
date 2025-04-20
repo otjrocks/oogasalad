@@ -9,13 +9,13 @@ import javafx.event.EventHandler;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
 
-class VmenuTest extends DukeApplicationTest {
+class VMenuTest extends DukeApplicationTest {
 
   @Test
   void VMenu_Create_Success() {
     List<String> values = List.of("Test");
     List<EventHandler<ActionEvent>> actions = List.of(e -> {});
-    assertDoesNotThrow(() -> new Vmenu(values, actions));
+    assertDoesNotThrow(() -> new VMenu(values, actions));
   }
 
   @Test
@@ -23,7 +23,7 @@ class VmenuTest extends DukeApplicationTest {
     List<String> values = List.of("Test", "Test", "Test");
     List<EventHandler<ActionEvent>> actions = List.of(e -> {
     });
-    assertThrows(IllegalArgumentException.class, () -> new Vmenu(values, actions));
+    assertThrows(IllegalArgumentException.class, () -> new VMenu(values, actions));
   }
 
 }

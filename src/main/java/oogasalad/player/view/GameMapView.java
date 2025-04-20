@@ -1,7 +1,6 @@
 package oogasalad.player.view;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 import javafx.scene.canvas.Canvas;
@@ -21,13 +20,14 @@ import oogasalad.player.model.Entity;
  *
  * @author Owen Jennings
  */
-public class GameMapView extends Canvas {
+public class GameMapView {
 
   private final GameContextRecord myGameContext;
   private final GameMapController myGameMapController;
   private final List<EntityView> entityViews = new ArrayList<>();
   private GameLoopController myGameLoopController;
   private Consumer<Boolean> endGameCallback;
+  private final Canvas myCanvas;
 
   /**
    * Initialize a game map view.
@@ -36,7 +36,7 @@ public class GameMapView extends Canvas {
    * @param configModel The config model for this view.
    */
   public GameMapView(GameContextRecord gameContext, ConfigModelRecord configModel) {
-    super(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
+    myCanvas = new Canvas(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
     myGameContext = gameContext;
     myGameMapController = new GameMapController(myGameContext, configModel);
     myGameMapController.setGameEndHandler(status -> {
@@ -48,11 +48,18 @@ public class GameMapView extends Canvas {
     initializeEntityViews();
   }
 
+  /**
+   * Get the canvas that is created and modified by this view.
+   *
+   * @return A JavaFX Canvas component.
+   */
+  public Canvas getCanvas() {
+    return myCanvas;
+  }
+
   private void initializeEntityViews() {
     entityViews.clear();
-    for (Iterator<Entity> it = myGameContext.gameMap().iterator();
-        it.hasNext(); ) {
-      Entity entity = it.next();
+    for (Entity entity : myGameContext.gameMap()) {
       entityViews.add(new EntityView(entity));
     }
   }
@@ -71,12 +78,12 @@ public class GameMapView extends Canvas {
   }
 
   private void drawAll() {
-    GraphicsContext gc = getGraphicsContext2D();
-    gc.clearRect(0, 0, getWidth(), getHeight());
+    GraphicsContext gc = myCanvas.getGraphicsContext2D();
+    gc.clearRect(0, 0, myCanvas.getWidth(), myCanvas.getHeight());
 
-    double tileWidth = getWidth() / myGameContext.gameMap().getWidth();
+    double tileWidth = myCanvas.getWidth() / myGameContext.gameMap().getWidth();
     double tileHeight =
-        getHeight() / myGameContext.gameMap().getHeight();
+        myCanvas.getHeight() / myGameContext.gameMap().getHeight();
 
     for (EntityView ev : entityViews) {
       ev.draw(gc, tileWidth, tileHeight);

@@ -1,6 +1,7 @@
 package oogasalad.player.view;
 
 import java.util.List;
+import java.util.Objects;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,8 +20,9 @@ import oogasalad.engine.utility.constants.GameConfig;
  *
  * @author Austin Huang
  */
-public class GameSelectorView extends VBox {
+public class GameSelectorView {
 
+  private final VBox myRoot;
   private final MainController myMainController;
 
   /**
@@ -30,21 +32,31 @@ public class GameSelectorView extends VBox {
    */
   public GameSelectorView(MainController mainController) {
     super();
-    ThemeManager myThemeManager = new ThemeManager(mainController.getStage());
+    myRoot = new VBox();
+    new ThemeManager(mainController.getStage());
     myMainController = mainController;
     setupLayout();
 
     HBox topBar = createTopBar();
     HBox gameGrid = createGameGrid(List.of("Basic Pacman", "Complex Pacman", "Pacman", "Pacman"));
 
-    this.getChildren().addAll(topBar, gameGrid);
+    myRoot.getChildren().addAll(topBar, gameGrid);
+  }
+
+  /**
+   * Return the root JavaFX element for this view.
+   *
+   * @return A VBox which is used to display this view.
+   */
+  public VBox getRoot() {
+    return myRoot;
   }
 
   private void setupLayout() {
-    this.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
-    this.setSpacing(20);
-    this.setAlignment(Pos.CENTER);
-    this.getStyleClass().add("game-selector-view");
+    myRoot.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
+    myRoot.setSpacing(20);
+    myRoot.setAlignment(Pos.CENTER);
+    myRoot.getStyleClass().add("game-selector-view");
   }
 
   private HBox createGameGrid(List<String> gameNames) {
@@ -82,7 +94,8 @@ public class GameSelectorView extends VBox {
     card.setAlignment(Pos.CENTER);
 
     // placeholder image to be replaced later
-    Image im = new Image(getClass().getResourceAsStream("/assets/images/placeholder.png"));
+    Image im = new Image(
+        Objects.requireNonNull(getClass().getResourceAsStream("/assets/images/placeholder.png")));
     ImageView image = new ImageView(im); // Replace with actual path
     image.setFitWidth(200);
     image.setFitHeight(400);

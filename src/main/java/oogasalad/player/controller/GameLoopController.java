@@ -77,14 +77,20 @@ public class GameLoopController {
   private void clearActiveSpawnedEntitiesIfTimeElapsedWasReset() {
     if (myGameContext.gameState().getTimeElapsed() < myTotalElapsedTime) {
       for (Entity entity : activeSpawnedEntities.values()) {
-        try {
-          myGameContext.gameMap().removeEntity(entity);
-        } catch (EntityNotFoundException e) {
-          LoggingManager.LOGGER.warn("Unable to remove entity " + entity, e);
-        }
+        attemptRemovingEntity(entity);
       }
       activeSpawnedEntities.clear();
       myTotalElapsedTime = 0;
+    }
+  }
+
+  private void attemptRemovingEntity(Entity entity) {
+    if (myGameContext.gameMap().contains(entity)) {
+      try {
+        myGameContext.gameMap().removeEntity(entity);
+      } catch (EntityNotFoundException e) {
+        LoggingManager.LOGGER.warn("Unable to remove entity {}", entity, e);
+      }
     }
   }
 
@@ -148,13 +154,7 @@ public class GameLoopController {
 
   private void despawnEntity(SpawnEventRecord spawnEvent) {
     Entity entityToRemove = activeSpawnedEntities.get(spawnEvent);
-    try {
-      myGameContext.gameMap().removeEntity(entityToRemove);
-    } catch (EntityNotFoundException e) {
-      LoggingManager.LOGGER.info(
-          "Entity not despawned following configuration rules, since it no longer exists on the game map {}",
-          spawnEvent);
-    }
+    attemptRemovingEntity(entityToRemove);
     activeSpawnedEntities.remove(spawnEvent);
 
   }
