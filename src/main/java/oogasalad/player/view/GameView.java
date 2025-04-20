@@ -84,7 +84,7 @@ public class GameView {
   private void showEndMessage(boolean gameWon, boolean isFinalLevel) {
     if (gameWon) {
       if (isFinalLevel) {
-        endLabel.setText("🎉 Congrats! 🎉");
+        endLabel.setText(LanguageManager.getMessage("GAME_WON"));
       } else {
         endLabel.setText(LanguageManager.getMessage("LEVEL_PASSED"));
       }
