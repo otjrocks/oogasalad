@@ -69,8 +69,19 @@ public class LevelController {
     }
   }
 
-
-
+  /**
+   * Resets the current level back to 0 and updates the config file.
+   */
+  public void resetAndUpdateConfig() {
+    myLevelIndex = 0;
+    try {
+      JsonConfigSaver saver = new JsonConfigSaver();
+      saver.saveUpdatedLevelIndex(myLevelIndex, Paths.get("data/games/BasicPacMan"));
+      LoggingManager.LOGGER.info("Level index reset and saved to gameConfig.json");
+    } catch (ConfigException e) {
+      LoggingManager.LOGGER.warn("Failed to reset and save level index", e);
+    }
+  }
 
   /**
    * Get the current level index.
