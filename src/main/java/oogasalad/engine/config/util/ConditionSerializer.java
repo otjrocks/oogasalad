@@ -6,30 +6,59 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.lang.reflect.RecordComponent;
 
+/**
+ * Utility class for serializing condition records (win/lose/etc.) into JSON format.
+ * This class uses reflection to extract record field names and values,
+ * and formats them into a structure like:
+ *
+ * {
+ *   "type": "SurviveForTime",
+ *   "parameters": {
+ *     "amount": 60
+ *   }
+ * }
+ *
+ * This avoids instanceof checks and keeps model classes decoupled from serialization.
+ *
+ * @author Will
+ */
 public class ConditionSerializer {
 
+  private static final String TYPE = "type";
+  private static final String PARAMETERS = "parameters";
+
+  /**
+   * Serializes a record-like condition object (e.g., WinConditionInterface) into a JSON node
+   * with a "type" and "parameters" block using reflection.
+   *
+   * @param condition the condition object to serialize
+   * @param mapper    Jackson ObjectMapper instance
+   * @return a structured JsonNode with "type" and "parameters"
+   */
   public static JsonNode serialize(Object condition, ObjectMapper mapper) {
     ObjectNode root = mapper.createObjectNode();
-    String typeName = condition.getClass().getAnnotation(JsonSubTypes.Type.class) != null
-        ? condition.getClass().getAnnotation(JsonSubTypes.Type.class).name()
+    root.put(TYPE, resolveTypeName(condition));
+    root.set(PARAMETERS, extractParameters(condition, mapper));
+    return root;
+  }
+
+  private static String resolveTypeName(Object condition) {
+    JsonSubTypes.Type annotation = condition.getClass().getAnnotation(JsonSubTypes.Type.class);
+    return annotation != null
+        ? annotation.name()
         : condition.getClass().getSimpleName().replace("ConditionRecord", "");
+  }
 
-    root.put("type", typeName);
-
+  private static ObjectNode extractParameters(Object condition, ObjectMapper mapper) {
     ObjectNode parameters = mapper.createObjectNode();
     for (RecordComponent comp : condition.getClass().getRecordComponents()) {
       try {
         Object value = comp.getAccessor().invoke(condition);
-        if (value instanceof Integer i) parameters.put(comp.getName(), i);
-        else if (value instanceof Double d) parameters.put(comp.getName(), d);
-        else if (value instanceof Boolean b) parameters.put(comp.getName(), b);
-        else parameters.putPOJO(comp.getName(), value);
-      } catch (Exception e) {
+        parameters.set(comp.getName(), mapper.valueToTree(value));
+      } catch (ReflectiveOperationException e) {
         throw new RuntimeException("Failed to serialize condition parameter: " + comp.getName(), e);
       }
     }
-
-    root.set("parameters", parameters);
-    return root;
+    return parameters;
   }
 }
