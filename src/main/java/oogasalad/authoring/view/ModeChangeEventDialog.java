@@ -13,7 +13,13 @@ import oogasalad.engine.records.model.ModeChangeEventRecord;
 
 import java.util.*;
 
+/**
+ * A dialog window that allows the user to configure mode change events for entities.
+ * These events specify transitions between behavior modes based on certain conditions (e.g., time).
+ */
 public class ModeChangeEventDialog extends Stage {
+
+  private static final String TIME_CONDITION_TYPE = "time";
 
   private final LevelDraft level;
   private final Map<String, EntityTypeRecord> entityTypes;
@@ -25,6 +31,12 @@ public class ModeChangeEventDialog extends Stage {
   private final VBox conditionParamsBox = new VBox(5);
   private final TableView<ModeChangeEventRecord> table = new TableView<>();
 
+  /**
+   * Constructs a dialog window for editing mode change events.
+   *
+   * @param entityTypeMap a map of available entity types
+   * @param level         the LevelDraft object to which mode change events are tied
+   */
   public ModeChangeEventDialog(Map<String, EntityTypeRecord> entityTypeMap, LevelDraft level) {
     this.entityTypes = entityTypeMap;
     this.level = level;
@@ -43,9 +55,8 @@ public class ModeChangeEventDialog extends Stage {
 
     populateEntityTypeDropdown();
 
-    conditionTypeDropdown.getItems().add("time");
-    conditionTypeDropdown.setValue("time");
-
+    conditionTypeDropdown.getItems().add(TIME_CONDITION_TYPE);
+    conditionTypeDropdown.setValue(TIME_CONDITION_TYPE);
     conditionTypeDropdown.setOnAction(e -> renderConditionParams());
 
     renderConditionParams(); // initial
@@ -98,17 +109,12 @@ public class ModeChangeEventDialog extends Stage {
   private void renderConditionParams() {
     conditionParamsBox.getChildren().clear();
 
-
-    // TODO: This shouldn't be an if statement
-    String type = conditionTypeDropdown.getValue();
-    if ("time".equals(type)) {
+    if (TIME_CONDITION_TYPE.equals(conditionTypeDropdown.getValue())) {
       Label label = new Label("Amount (seconds):");
       TextField amountField = new TextField();
       amountField.setId("amountField");
       conditionParamsBox.getChildren().addAll(label, amountField);
     }
-
-    // Easily extensible for more types later
   }
 
   private void addModeChangeEvent() {
@@ -123,7 +129,7 @@ public class ModeChangeEventDialog extends Stage {
     }
 
     Map<String, Object> params = new HashMap<>();
-    if ("time".equals(conditionType)) {
+    if (TIME_CONDITION_TYPE.equals(conditionType)) {
       TextField amountField = (TextField) conditionParamsBox.lookup("#amountField");
       try {
         int amount = Integer.parseInt(amountField.getText());
@@ -140,10 +146,10 @@ public class ModeChangeEventDialog extends Stage {
     ModeChangeEventRecord event = new ModeChangeEventRecord(
         new EntityTypeRecord(
             entityType.type(),
-            null,           // controlConfig (not needed for mode events)
-            Collections.emptyMap(),     // modes
-            Collections.emptyList(),    // blocks
-            0.0                         // speed
+            null,
+            Collections.emptyMap(),
+            Collections.emptyList(),
+            0.0
         ),
         currentMode,
         nextMode,

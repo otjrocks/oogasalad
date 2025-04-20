@@ -246,10 +246,18 @@ public class LevelDraft {
   }
 
 
+  /**
+   * Return all modeChangeEvents
+   * @return ModeChangeEvents
+   */
   public List<ModeChangeEventRecord> getModeChangeEvents() {
     return modeChangeEvents;
   }
 
+  /**
+   * Return all spawnEvents
+   * @return SpawnEvents
+   */
   public List<SpawnEventRecord> getSpawnEvents() {
     return spawnEvents;
   }

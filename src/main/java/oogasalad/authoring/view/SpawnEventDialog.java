@@ -15,7 +15,16 @@ import oogasalad.engine.records.model.EntityTypeRecord;
 import java.util.*;
 import java.util.function.Consumer;
 
+/**
+ * A dialog window for editing spawn events within a level.
+ * Allows the user to configure entities that spawn under specific conditions,
+ * along with optional despawn conditions.
+ */
 public class SpawnEventDialog extends Stage {
+
+  private static final String CONDITION_TIME_ELAPSED = "TimeElapsed";
+  private static final String CONDITION_SCORE_BASED = "ScoreBased";
+  private static final String PARAM_AMOUNT = "amount";
 
   private final LevelDraft level;
   private final Map<String, EntityTypeRecord> entityTypes;
@@ -34,6 +43,12 @@ public class SpawnEventDialog extends Stage {
 
   private final TableView<SpawnEventRecord> table = new TableView<>();
 
+  /**
+   * Constructs a dialog for adding and editing spawn events tied to a level.
+   *
+   * @param entityTypes a map of all entity types available
+   * @param level       the current level draft that holds the spawn events
+   */
   public SpawnEventDialog(Map<String, EntityTypeRecord> entityTypes, LevelDraft level) {
     this.entityTypes = entityTypes;
     this.level = level;
@@ -55,13 +70,13 @@ public class SpawnEventDialog extends Stage {
     entityTypeDropdown.getItems().addAll(entityTypes.keySet());
     entityTypeDropdown.setOnAction(e -> updateModes());
 
-    spawnConditionTypeDropdown.getItems().addAll("TimeElapsed", "ScoreBased");
-    spawnConditionTypeDropdown.setValue("TimeElapsed");
+    spawnConditionTypeDropdown.getItems().addAll(CONDITION_TIME_ELAPSED, CONDITION_SCORE_BASED);
+    spawnConditionTypeDropdown.setValue(CONDITION_TIME_ELAPSED);
     spawnConditionTypeDropdown.setOnAction(e -> renderConditionUI(spawnConditionTypeDropdown, spawnConditionParamsBox));
     renderConditionUI(spawnConditionTypeDropdown, spawnConditionParamsBox);
 
     hasDespawnCondition.setOnAction(e -> toggleDespawnControls());
-    despawnConditionTypeDropdown.getItems().addAll("TimeElapsed", "ScoreBased");
+    despawnConditionTypeDropdown.getItems().addAll(CONDITION_TIME_ELAPSED, CONDITION_SCORE_BASED);
     despawnConditionTypeDropdown.setOnAction(e -> renderConditionUI(despawnConditionTypeDropdown, despawnConditionParamsBox));
     toggleDespawnControls();
 
@@ -105,10 +120,11 @@ public class SpawnEventDialog extends Stage {
   }
 
   private void toggleDespawnControls() {
-    despawnConditionTypeDropdown.setDisable(!hasDespawnCondition.isSelected());
-    despawnConditionParamsBox.setDisable(!hasDespawnCondition.isSelected());
-    if (hasDespawnCondition.isSelected()) {
-      despawnConditionTypeDropdown.setValue("TimeElapsed");
+    boolean enabled = hasDespawnCondition.isSelected();
+    despawnConditionTypeDropdown.setDisable(!enabled);
+    despawnConditionParamsBox.setDisable(!enabled);
+    if (enabled) {
+      despawnConditionTypeDropdown.setValue(CONDITION_TIME_ELAPSED);
       renderConditionUI(despawnConditionTypeDropdown, despawnConditionParamsBox);
     }
   }
@@ -116,10 +132,10 @@ public class SpawnEventDialog extends Stage {
   private void renderConditionUI(ComboBox<String> typeDropdown, VBox paramBox) {
     paramBox.getChildren().clear();
     String type = typeDropdown.getValue();
-    if (type.equals("TimeElapsed") || type.equals("ScoreBased")) {
+    if (CONDITION_TIME_ELAPSED.equals(type) || CONDITION_SCORE_BASED.equals(type)) {
       Label label = new Label("Amount:");
       TextField field = new TextField();
-      field.setUserData("amount");
+      field.setUserData(PARAM_AMOUNT);
       paramBox.getChildren().addAll(label, field);
     }
   }
@@ -127,8 +143,8 @@ public class SpawnEventDialog extends Stage {
   private Map<String, Object> extractParameters(VBox paramBox) {
     Map<String, Object> map = new HashMap<>();
     for (Node node : paramBox.getChildren()) {
-      if (node instanceof TextField field && "amount".equals(field.getUserData())) {
-        map.put("amount", Double.parseDouble(field.getText()));
+      if (node instanceof TextField field && PARAM_AMOUNT.equals(field.getUserData())) {
+        map.put(PARAM_AMOUNT, Double.parseDouble(field.getText()));
       }
     }
     return map;

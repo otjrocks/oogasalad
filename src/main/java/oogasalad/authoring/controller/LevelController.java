@@ -98,6 +98,10 @@ public class LevelController {
     mainController.getCanvasView().resizeGrid(width, height);
   }
 
+  /**
+   * Get all entity types from the model
+   * @return Map of entityType names to Record
+   */
   public Map<String, EntityTypeRecord> getAvailableEntityTypes() {
     return mainController.getModel().getEntityTypeMap();
   }
