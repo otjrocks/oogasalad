@@ -1,4 +1,4 @@
-package oogasalad.authoring.help;
+package oogasalad.authoring.help.templates;
 
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Top-down shooter template with projectiles and enemies.
+ * @author Angela Predolac
  */
 public class ShooterTemplate extends GameTemplate {
 

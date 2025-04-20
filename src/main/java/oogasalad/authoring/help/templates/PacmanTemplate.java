@@ -1,4 +1,4 @@
-package oogasalad.authoring.help;
+package oogasalad.authoring.help.templates;
 
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
@@ -14,10 +14,16 @@ import java.util.List;
  */
 public class PacmanTemplate extends GameTemplate {
 
+    /**
+     * Default constructor for PacmanTemplate
+     */
     public PacmanTemplate() {
         super("Pacman-style Game", "A maze game with collectibles and enemies");
     }
 
+    /**
+     * Overrides applyTo method from GameTemplate
+     */
     @Override
     public void applyTo(AuthoringModel model) {
         // Clear old data

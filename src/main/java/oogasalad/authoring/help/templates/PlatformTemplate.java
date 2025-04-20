@@ -1,4 +1,4 @@
-package oogasalad.authoring.help;
+package oogasalad.authoring.help.templates;
 
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;

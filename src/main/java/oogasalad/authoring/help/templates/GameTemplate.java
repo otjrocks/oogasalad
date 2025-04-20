@@ -1,13 +1,11 @@
-package oogasalad.authoring.help;
+package oogasalad.authoring.help.templates;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
-import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.ImageConfigRecord;
