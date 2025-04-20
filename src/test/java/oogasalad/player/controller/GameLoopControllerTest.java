@@ -10,9 +10,11 @@ import static org.mockito.Mockito.when;
 
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.records.config.GameConfigRecord;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
+import oogasalad.engine.records.model.GameSettingsRecord;
 import oogasalad.player.model.GameMap;
 import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.GameState;
@@ -41,10 +43,12 @@ class GameLoopControllerTest extends DukeApplicationTest {
     ConfigModelRecord mockConfigModel = mock(ConfigModelRecord.class);
     when(mockConfigModel.winCondition()).thenReturn(new EntityBasedConditionRecord("dot"));
     when(mockConfigModel.loseCondition()).thenReturn(new LivesBasedConditionRecord());
+    when(mockConfigModel.settings()).thenReturn(new GameSettingsRecord(1.0, 1, 1));
 
     gameMapView = Mockito.spy(new GameMapView(gameContext, mockConfigModel));
-    gameLoopController = Mockito.spy(new GameLoopController(gameContext, gameMapView, mock(
-        ParsedLevelRecord.class)));
+    gameLoopController = Mockito.spy(
+        new GameLoopController(mockConfigModel, gameContext, gameMapView, mock(
+            ParsedLevelRecord.class)));
   }
 
   @Test

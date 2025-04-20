@@ -195,31 +195,14 @@ public class LevelDraft {
   }
 
   /**
-   * Returns the edge policy used for the level (e.g., regular, toroidal).
-   *
-   * @return the edge policy as a String
-   */
-  public String getEdgePolicy() {
-    return edgePolicy;
-  }
-
-  /**
-   * Sets the edge policy used for the level.
-   *
-   * @param edgePolicy the new edge policy
-   */
-  public void setEdgePolicy(String edgePolicy) {
-    this.edgePolicy = edgePolicy;
-  }
-
-  /**
    * Updates the mode name for all {@link EntityPlacement}s that belong to the specified entity type
-   * and currently use the old mode name. This is used when renaming a mode in the {@link EntityTypeRecord}
-   * so that all existing placements referencing the old mode are updated to the new mode name.
+   * and currently use the old mode name. This is used when renaming a mode in the
+   * {@link EntityTypeRecord} so that all existing placements referencing the old mode are updated
+   * to the new mode name.
    *
    * @param entityTypeName the name of the entity type to update
-   * @param oldMode the previous name of the mode
-   * @param newMode the new name to replace the old mode
+   * @param oldMode        the previous name of the mode
+   * @param newMode        the new name to replace the old mode
    */
   public void updateModeName(String entityTypeName, String oldMode, String newMode) {
     for (EntityPlacement placement : entityPlacements) {
@@ -232,8 +215,8 @@ public class LevelDraft {
 
   /**
    * Re-resolves all {@link EntityPlacement}s in the level using the given map of updated
-   * {@link EntityTypeRecord}s. This should be called after replacing or modifying an entity type
-   * in the global entity type map to ensure that all placements use the latest version.
+   * {@link EntityTypeRecord}s. This should be called after replacing or modifying an entity type in
+   * the global entity type map to ensure that all placements use the latest version.
    *
    * @param typeMap a map of entity type names to updated {@link EntityTypeRecord} instances
    */
@@ -248,6 +231,7 @@ public class LevelDraft {
 
   /**
    * Return all modeChangeEvents
+   *
    * @return ModeChangeEvents
    */
   public List<ModeChangeEventRecord> getModeChangeEvents() {
@@ -256,6 +240,7 @@ public class LevelDraft {
 
   /**
    * Return all spawnEvents
+   *
    * @return SpawnEvents
    */
   public List<SpawnEventRecord> getSpawnEvents() {

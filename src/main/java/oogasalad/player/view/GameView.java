@@ -47,7 +47,8 @@ public class GameView {
     myRoot.setFocusTraversable(true);
     boolean isFinalLevel = levelIndex >= configModel.levels().size() - 1;
 
-    myGameLoopController = new GameLoopController(gameContext, myGameMapView,
+    myGameLoopController = new GameLoopController(configModel, gameContext,
+        myGameMapView,
         configModel.levels().get(levelIndex));
     myGameMapView.setGameLoopController(myGameLoopController);
     setUpEndMessage();

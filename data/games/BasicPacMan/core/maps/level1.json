@@ -43,8 +43,7 @@
   ],
   "mapInfo": {
     "width": 28,
-    "height": 32,
-    "edgePolicy": "Wrap"
+    "height": 31
   },
   "layout": [
     "5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5",
