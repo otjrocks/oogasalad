@@ -38,7 +38,7 @@ class StopStrategyTest {
   }
 
   // again using verify because the stuff that should change is mocked
-  // so if you chage what happens within the call, its kinda an oof
+  // so if you change what happens within the call, its kinda an oof
 
   @Test
   void handleCollision_entity1ToLeft_movesLeftAndStopsDirection() throws EntityNotFoundException {
