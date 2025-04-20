@@ -34,6 +34,9 @@ public class GameSettingsView {
   private final HBox rootNode;
 
   // UI Components
+  private TextField gameTitleField;
+  private TextField authorField;
+  private TextField descriptionField;
   private Spinner<Double> gameSpeedSpinner;
   private Spinner<Integer> startingLivesSpinner;
   private Spinner<Integer> initialScoreSpinner;
@@ -83,6 +86,16 @@ public class GameSettingsView {
     settingsGrid.setVgap(5);
     settingsGrid.setPadding(new Insets(0));
 
+    // Create text fields for game metadata
+    gameTitleField = new TextField(controller.getModel().getGameTitle());
+    gameTitleField.setPrefWidth(150);
+
+    authorField = new TextField(controller.getModel().getAuthor());
+    authorField.setPrefWidth(150);
+
+    descriptionField = new TextField(controller.getModel().getGameDescription());
+    descriptionField.setPrefWidth(250);
+
     // Create compact spinners and combo boxes
     gameSpeedSpinner = createDoubleSpinner(0.5, 3.0, 0.1, gameSettings.gameSpeed());
     startingLivesSpinner = createIntegerSpinner(1, 10, 1, gameSettings.startingLives());
@@ -108,24 +121,34 @@ public class GameSettingsView {
     // Add change listener to update the label based on selected win condition type
     winConditionTypeComboBox.setOnAction(e -> updateWinConditionValueLabel());
 
-    // Add first row of settings
-    settingsGrid.add(new Label(LanguageManager.getMessage("GAME_SPEED")), 0, 0);
-    settingsGrid.add(gameSpeedSpinner, 1, 0);
-    settingsGrid.add(new Label(LanguageManager.getMessage("STARTING_LIVES")), 2, 0);
-    settingsGrid.add(startingLivesSpinner, 3, 0);
+    // Add metadata fields
+    settingsGrid.add(new Label(LanguageManager.getMessage("GAME_TITLE")), 0, 0);
+    settingsGrid.add(gameTitleField, 1, 0);
+    settingsGrid.add(new Label(LanguageManager.getMessage("AUTHOR")), 2, 0);
+    settingsGrid.add(authorField, 3, 0);
 
-    // Add second row of settings
-    settingsGrid.add(new Label(LanguageManager.getMessage("INITIAL_SCORE")), 0, 1);
-    settingsGrid.add(initialScoreSpinner, 1, 1);
-    settingsGrid.add(new Label(LanguageManager.getMessage("SCORE_STRATEGY")), 2, 1);
-    settingsGrid.add(scoreStrategyComboBox, 3, 1);
+    settingsGrid.add(new Label(LanguageManager.getMessage("DESCRIPTION")), 0, 1);
+    settingsGrid.add(descriptionField, 1, 1, 3, 1); // Span across multiple columns
 
-    // Add third row for win conditions
-    settingsGrid.add(new Label(LanguageManager.getMessage("WIN_CONDITION_TYPE")), 0, 2);
-    settingsGrid.add(winConditionTypeComboBox, 1, 2);
-    settingsGrid.add(winConditionValueLabel, 2, 2);
-    settingsGrid.add(winConditionValueField, 3, 2);
+    // Add game settings fields
+    settingsGrid.add(new Label(LanguageManager.getMessage("GAME_SPEED")), 0, 2);
+    settingsGrid.add(gameSpeedSpinner, 1, 2);
+    settingsGrid.add(new Label(LanguageManager.getMessage("STARTING_LIVES")), 2, 2);
+    settingsGrid.add(startingLivesSpinner, 3, 2);
 
+    // Add more game settings
+    settingsGrid.add(new Label(LanguageManager.getMessage("INITIAL_SCORE")), 0, 3);
+    settingsGrid.add(initialScoreSpinner, 1, 3);
+    settingsGrid.add(new Label(LanguageManager.getMessage("SCORE_STRATEGY")), 2, 3);
+    settingsGrid.add(scoreStrategyComboBox, 3, 3);
+
+    // Add win condition fields
+    settingsGrid.add(new Label(LanguageManager.getMessage("WIN_CONDITION_TYPE")), 0, 4);
+    settingsGrid.add(winConditionTypeComboBox, 1, 4);
+    settingsGrid.add(winConditionValueLabel, 2, 4);
+    settingsGrid.add(winConditionValueField, 3, 4);
+
+    // Add bottom buttons
     HBox buttonBox = getHBox();
 
     rootNode.getChildren().addAll(titleLabel, settingsGrid, buttonBox);
@@ -229,6 +252,11 @@ public class GameSettingsView {
     // Get the latest settings from the model
     this.gameSettings = controller.getModel().getDefaultSettings();
 
+    // Update metadata fields with model values
+    gameTitleField.setText(controller.getModel().getGameTitle());
+    authorField.setText(controller.getModel().getAuthor());
+    descriptionField.setText(controller.getModel().getGameDescription());
+
     // Update UI elements with model values
     gameSpeedSpinner.getValueFactory().setValue(gameSettings.gameSpeed());
     startingLivesSpinner.getValueFactory().setValue(gameSettings.startingLives());
@@ -254,6 +282,10 @@ public class GameSettingsView {
   private void saveSettings() {
     // Commit any edited values in spinners
     commitSpinnerValues();
+    // Save metadata fields
+    controller.getModel().setGameTitle(gameTitleField.getText());
+    controller.getModel().setAuthor(authorField.getText());
+    controller.getModel().setGameDescription(descriptionField.getText());
     // Create new win condition based on current UI values
     WinConditionInterface newWinCondition = createWinConditionFromUI();
     // Create new settings record with updated values
