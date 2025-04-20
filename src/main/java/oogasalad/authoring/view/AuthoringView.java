@@ -3,6 +3,7 @@ package oogasalad.authoring.view;
 import java.io.File;
 import java.nio.file.Path;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
@@ -263,8 +264,18 @@ public class AuthoringView {
         AnchorPane editorContainer = (AnchorPane) rightPanel.getChildren().get(1);
         VBox.setVgrow(editorContainer, Priority.ALWAYS);
 
+        // Give more space to the game settings view using the new methods
+        gameSettingsView.setPreferredHeight(200);
+        gameSettingsView.setMinimumHeight(180);
+
+        // Add bottom margin
+        VBox.setMargin(gameSettingsView.getNode(), new Insets(0, 0, 20, 0));
+
+
         gameSettingsView.getNode().setStyle(
                 "-fx-background-color: #f4f4f4; -fx-border-color: #cccccc; -fx-border-width: 1px 0 0 0; -fx-padding: 10px;");
+
+        fullLayout.setSpacing(10);
     }
 
     /**
