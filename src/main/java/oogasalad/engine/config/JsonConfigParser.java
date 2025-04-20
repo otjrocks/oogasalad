@@ -330,8 +330,7 @@ public class JsonConfigParser implements ConfigParserInterface {
     return new GameSettingsRecord(
         baseSettings.gameSpeed(),
         baseSettings.startingLives(),
-        baseSettings.initialScore(),
-        "wrap"
+        baseSettings.initialScore()
     );
   }
 

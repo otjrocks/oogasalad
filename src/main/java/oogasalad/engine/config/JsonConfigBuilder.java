@@ -111,7 +111,6 @@ public class JsonConfigBuilder {
     ObjectNode settings = root.putObject("mapInfo");
     settings.put("width", draft.getWidth());
     settings.put("height", draft.getHeight());
-    settings.put("edgePolicy", draft.getEdgePolicy());
 
     // === layout ===
     ArrayNode layout = root.putArray("layout");
