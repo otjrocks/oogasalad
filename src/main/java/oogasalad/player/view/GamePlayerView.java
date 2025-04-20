@@ -96,6 +96,7 @@ public class GamePlayerView {
     if (levelController.hasNextLevel()) {
       levelController.incrementAndUpdateConfig();
       myPane.getChildren().clear();
+      loadConfigFromFile();
       loadGameViewFromConfig();
       myPane.getChildren().add(myGameView.getRoot());
     } else {
