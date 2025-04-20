@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
@@ -59,6 +60,24 @@ public class GameSettingsView {
   }
 
   /**
+   * Set a specific preferred height for the view
+   *
+   * @param height the preferred height in pixels
+   */
+  public void setPreferredHeight(double height) {
+    rootNode.setPrefHeight(height);
+  }
+
+  /**
+   * Set a specific minimum height for the view
+   *
+   * @param height the minimum height in pixels
+   */
+  public void setMinimumHeight(double height) {
+    rootNode.setMinHeight(height);
+  }
+
+  /**
    * Returns the JavaFX node that represents this view
    */
   public Node getNode() {
@@ -71,9 +90,19 @@ public class GameSettingsView {
   private void setupUI() {
     // Setup the root container
     rootNode.setSpacing(15);
-    rootNode.setPadding(new Insets(DEFAULT_PADDING));
+    rootNode.setPadding(new Insets(15)); // Increase padding
     rootNode.setAlignment(Pos.CENTER_LEFT);
     rootNode.getStyleClass().add("game-settings-view");
+
+    // Create scrollable container for all content
+    ScrollPane scrollPane = new ScrollPane();
+    scrollPane.setFitToWidth(true);
+    scrollPane.setPrefHeight(150); // Smaller preferred height to fit the container
+    scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+    VBox contentBox = new VBox(10); // Main content container with spacing
+    contentBox.setPadding(new Insets(5));
 
     // Create "Game Settings" label
     Label titleLabel = new Label(LanguageManager.getMessage("GAME_SETTINGS"));
@@ -82,8 +111,8 @@ public class GameSettingsView {
 
     // Create compact grid layout for settings
     GridPane settingsGrid = new GridPane();
-    settingsGrid.setHgap(8);
-    settingsGrid.setVgap(5);
+    settingsGrid.setHgap(10);
+    settingsGrid.setVgap(8); // Increase vertical gap
     settingsGrid.setPadding(new Insets(0));
 
     // Create text fields for game metadata
@@ -148,13 +177,17 @@ public class GameSettingsView {
     settingsGrid.add(winConditionValueLabel, 2, 4);
     settingsGrid.add(winConditionValueField, 3, 4);
 
-    // Add bottom buttons
+    // Add buttons
     HBox buttonBox = getHBox();
 
-    rootNode.getChildren().addAll(titleLabel, settingsGrid, buttonBox);
+    // Add everything to the content box
+    contentBox.getChildren().addAll(titleLabel, settingsGrid, buttonBox);
 
-    // Initial update of the win condition value label
-    updateWinConditionValueLabel();
+    // Set content to scroll pane
+    scrollPane.setContent(contentBox);
+
+    // Add scroll pane to root
+    rootNode.getChildren().add(scrollPane);
   }
 
   private void updateWinConditionValueLabel() {
