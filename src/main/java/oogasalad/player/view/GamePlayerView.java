@@ -81,6 +81,7 @@ public class GamePlayerView {
 
       myGameView.setRestartAction(this::restartLevel);
       myGameView.setNextLevelAction(() -> loadNextLevel(levelController));
+      myGameView.setResetAction(() -> resetGame(levelController));
     }
   }
 
@@ -91,6 +92,15 @@ public class GamePlayerView {
     loadGameViewFromConfig();
     myPane.getChildren().add(myGameView.getRoot());
   }
+
+  private void resetGame(LevelController levelController) {
+    levelController.resetAndUpdateConfig();
+    myPane.getChildren().clear();
+    loadConfigFromFile();
+    loadGameViewFromConfig();
+    myPane.getChildren().add(myGameView.getRoot());
+  }
+
 
   private void loadNextLevel(LevelController levelController) {
     if (levelController.hasNextLevel()) {
