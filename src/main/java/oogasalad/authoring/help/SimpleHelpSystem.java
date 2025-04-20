@@ -50,7 +50,7 @@ public class SimpleHelpSystem {
     /**
      * Adds a help button to the main view.
      */
-    private void addHelpButton() {
+    void addHelpButton() {
         Button helpButton = new Button("?");
         helpButton.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; " +
                 "-fx-background-color: #3498db; -fx-text-fill: white; " +
@@ -70,7 +70,7 @@ public class SimpleHelpSystem {
         rootPane.setCenter(overlayPane);
     }
 
-    private void showHelpDialog() {
+    public void showHelpDialog() {
         if (helpStage != null && helpStage.isShowing()) {
             helpStage.requestFocus();
             return;
