@@ -12,6 +12,7 @@ import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRe
  * @param scoreStrategy The strategy for calculating scores (e.g., "Cumulative", "HighestLevel")
  * @param winCondition  The condition that determines when a level is won
  * @param loseCondition The condition that determines when the game is lost
+ * @author angelapredolac
  */
 public record SettingsRecord(
         double gameSpeed,
