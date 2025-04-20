@@ -85,21 +85,26 @@ public class GameView {
   }
 
   private void showEndMessage(boolean gameWon, boolean isFinalLevel) {
-    if (gameWon) {
-      if (isFinalLevel) {
-        endLabel.setText(LanguageManager.getMessage("GAME_WON"));
-      } else {
-        endLabel.setText(LanguageManager.getMessage("LEVEL_PASSED"));
-      }
-    } else {
-      endLabel.setText(LanguageManager.getMessage("GAME_OVER"));
-    }
+    String messageKey = determineEndMessageKey(gameWon, isFinalLevel);
+    endLabel.setText(LanguageManager.getMessage(messageKey));
 
+    configureButtonVisibility(gameWon, isFinalLevel);
+  }
+
+  private String determineEndMessageKey(boolean gameWon, boolean isFinalLevel) {
+    if (!gameWon) {
+      return "GAME_OVER";
+    }
+    return isFinalLevel ? "GAME_WON" : "LEVEL_PASSED";
+  }
+
+  private void configureButtonVisibility(boolean gameWon, boolean isFinalLevel) {
     endLabel.setVisible(true);
     nextLevelButton.setVisible(gameWon && !isFinalLevel);
     restartLevelButton.setVisible(!gameWon && !isFinalLevel);
     resetButton.setVisible(gameWon && isFinalLevel);
   }
+
 
 
   /**
