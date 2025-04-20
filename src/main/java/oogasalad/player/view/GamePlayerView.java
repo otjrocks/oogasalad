@@ -79,14 +79,15 @@ public class GamePlayerView {
           new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
           myConfigModel, levelController.getCurrentLevelIndex());
 
-      myGameView.setRestartAction(this::restartLevel);
       myGameView.setNextLevelAction(() -> loadNextLevel(levelController));
+      myGameView.setResetAction(() -> resetGame(levelController));
     }
   }
 
-  private void restartLevel() {
+  private void resetGame(LevelController levelController) {
     myPane.getChildren().clear();
-    // currently resets the score to 0. can change to set score to score at level start
+    levelController.resetAndUpdateConfig();
+    loadConfigFromFile();
     updateGameStateFromConfigurationFile();
     loadGameViewFromConfig();
     myPane.getChildren().add(myGameView.getRoot());
