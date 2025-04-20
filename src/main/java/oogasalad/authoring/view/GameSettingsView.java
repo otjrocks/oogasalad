@@ -1,19 +1,19 @@
 package oogasalad.authoring.view;
 
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.records.config.model.SettingsRecord;
+import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
+import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
+import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
 import oogasalad.engine.utility.LanguageManager;
 
 
@@ -37,6 +37,10 @@ public class GameSettingsView {
   private Spinner<Double> gameSpeedSpinner;
   private Spinner<Integer> startingLivesSpinner;
   private Spinner<Integer> initialScoreSpinner;
+  private ComboBox<String> scoreStrategyComboBox;
+  private ComboBox<String> winConditionTypeComboBox;
+  private TextField winConditionValueField;
+  private Label winConditionValueLabel;
 
   /**
    * Constructor initializes the view with the given controller
@@ -84,6 +88,26 @@ public class GameSettingsView {
     startingLivesSpinner = createIntegerSpinner(1, 10, 1, gameSettings.startingLives());
     initialScoreSpinner = createIntegerSpinner(0, 1000, 50, gameSettings.initialScore());
 
+    // Create score strategy dropdown
+    scoreStrategyComboBox = new ComboBox<>(FXCollections.observableArrayList(
+            "Cumulative", "HighestLevel", "TimeBasedMultiplier"));
+    scoreStrategyComboBox.setValue(gameSettings.scoreStrategy());
+    scoreStrategyComboBox.setPrefWidth(150);
+
+    // Create win condition type dropdown
+    winConditionTypeComboBox = new ComboBox<>(FXCollections.observableArrayList(
+            "SurviveForTime", "EntityBased"));
+    winConditionTypeComboBox.setValue(getWinConditionType());
+    winConditionTypeComboBox.setPrefWidth(150);
+
+    // Create win condition value field
+    winConditionValueLabel = new Label(LanguageManager.getMessage("WIN_CONDITION_VALUE"));
+    winConditionValueField = new TextField(getWinConditionValue());
+    winConditionValueField.setPrefWidth(80);
+
+    // Add change listener to update the label based on selected win condition type
+    winConditionTypeComboBox.setOnAction(e -> updateWinConditionValueLabel());
+
     // Add first row of settings
     settingsGrid.add(new Label(LanguageManager.getMessage("GAME_SPEED")), 0, 0);
     settingsGrid.add(gameSpeedSpinner, 1, 0);
@@ -93,10 +117,50 @@ public class GameSettingsView {
     // Add second row of settings
     settingsGrid.add(new Label(LanguageManager.getMessage("INITIAL_SCORE")), 0, 1);
     settingsGrid.add(initialScoreSpinner, 1, 1);
-    settingsGrid.add(new Label(LanguageManager.getMessage("EDGE_POLICY")), 2, 1);
+    settingsGrid.add(new Label(LanguageManager.getMessage("SCORE_STRATEGY")), 2, 1);
+    settingsGrid.add(scoreStrategyComboBox, 3, 1);
+
+    // Add third row for win conditions
+    settingsGrid.add(new Label(LanguageManager.getMessage("WIN_CONDITION_TYPE")), 0, 2);
+    settingsGrid.add(winConditionTypeComboBox, 1, 2);
+    settingsGrid.add(winConditionValueLabel, 2, 2);
+    settingsGrid.add(winConditionValueField, 3, 2);
+
     HBox buttonBox = getHBox();
 
     rootNode.getChildren().addAll(titleLabel, settingsGrid, buttonBox);
+
+    // Initial update of the win condition value label
+    updateWinConditionValueLabel();
+  }
+
+  private void updateWinConditionValueLabel() {
+    String selectedType = winConditionTypeComboBox.getValue();
+    if ("SurviveForTime".equals(selectedType)) {
+      winConditionValueLabel.setText(LanguageManager.getMessage("SURVIVE_TIME_SECONDS"));
+    } else if ("EntityBased".equals(selectedType)) {
+      winConditionValueLabel.setText(LanguageManager.getMessage("ENTITY_TYPE"));
+    }
+  }
+
+  private String getWinConditionType() {
+    WinConditionInterface condition = gameSettings.winCondition();
+    if (condition instanceof SurviveForTimeConditionRecord) {
+      return "SurviveForTime";
+    } else if (condition instanceof EntityBasedConditionRecord) {
+      return "EntityBased";
+    }
+    return "SurviveForTime"; // Default
+  }
+
+  private String getWinConditionValue() {
+    WinConditionInterface condition = gameSettings.winCondition();
+    if (condition instanceof SurviveForTimeConditionRecord(int amount)) {
+      return String.valueOf(amount);
+    } else if (condition instanceof EntityBasedConditionRecord(String entityType)) {
+      return entityType;
+    }
+    return "5"; // Default time
   }
 
   private HBox getHBox() {
@@ -169,6 +233,12 @@ public class GameSettingsView {
     gameSpeedSpinner.getValueFactory().setValue(gameSettings.gameSpeed());
     startingLivesSpinner.getValueFactory().setValue(gameSettings.startingLives());
     initialScoreSpinner.getValueFactory().setValue(gameSettings.initialScore());
+    scoreStrategyComboBox.setValue(gameSettings.scoreStrategy());
+
+    // Update win condition fields
+    winConditionTypeComboBox.setValue(getWinConditionType());
+    winConditionValueField.setText(getWinConditionValue());
+    updateWinConditionValueLabel();
   }
 
   /**
@@ -184,8 +254,19 @@ public class GameSettingsView {
   private void saveSettings() {
     // Commit any edited values in spinners
     commitSpinnerValues();
+    // Create new win condition based on current UI values
+    WinConditionInterface newWinCondition = createWinConditionFromUI();
+    // Create new settings record with updated values
+    SettingsRecord updatedSettings = new SettingsRecord(
+            gameSpeedSpinner.getValue(),
+            startingLivesSpinner.getValue(),
+            initialScoreSpinner.getValue(),
+            scoreStrategyComboBox.getValue(),
+            newWinCondition,
+            gameSettings.loseCondition() // Keep the existing lose condition
+    );
     // Update the model with the current settings
-    controller.getModel().setDefaultSettings(gameSettings);
+    controller.getModel().setDefaultSettings(updatedSettings);
 
     // Show confirmation to user
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -193,6 +274,26 @@ public class GameSettingsView {
     alert.setHeaderText(null);
     alert.setContentText(LanguageManager.getMessage("GAME_SETTINGS_SAVED"));
     alert.showAndWait();
+  }
+
+  private WinConditionInterface createWinConditionFromUI() {
+    String type = winConditionTypeComboBox.getValue();
+    String value = winConditionValueField.getText();
+
+    if ("SurviveForTime".equals(type)) {
+      try {
+        int seconds = Integer.parseInt(value);
+        return new SurviveForTimeConditionRecord(seconds);
+      } catch (NumberFormatException e) {
+        // Default to 5 seconds if invalid input
+        return new SurviveForTimeConditionRecord(5);
+      }
+    } else if ("EntityBased".equals(type)) {
+      return new EntityBasedConditionRecord(value.isEmpty() ? "dot" : value);
+    }
+
+    // Default to survive for 5 seconds
+    return new SurviveForTimeConditionRecord(5);
   }
 
   /**
