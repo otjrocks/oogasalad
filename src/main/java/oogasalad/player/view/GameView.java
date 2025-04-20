@@ -25,9 +25,9 @@ public class GameView {
   private final StackPane myRoot;
   private final GameLoopController myGameLoopController;
   private final Label endLabel = new Label();
-  private final Button restartLevelButton = new Button();
   private final Button nextLevelButton = new Button();
   private final Button resetButton = new Button();
+  private static final String END_BUTTON_STYLE = "end-button";
 
   /**
    * Create the game view.
@@ -68,11 +68,9 @@ public class GameView {
     configureEndNode(endLabel, "end-label", null);
     StackPane.setAlignment(endLabel, Pos.CENTER);
 
-    configureEndNode(restartLevelButton, "end-button",
-        LanguageManager.getMessage("RESTART_LEVEL"));
-    configureEndNode(nextLevelButton, "end-button",
+    configureEndNode(nextLevelButton, END_BUTTON_STYLE,
         LanguageManager.getMessage("NEXT_LEVEL"));
-    configureEndNode(resetButton, "end-button",
+    configureEndNode(resetButton, END_BUTTON_STYLE,
         LanguageManager.getMessage("RESET_GAME"));
   }
 
@@ -102,23 +100,7 @@ public class GameView {
   private void configureButtonVisibility(boolean gameWon, boolean isFinalLevel) {
     endLabel.setVisible(true);
     nextLevelButton.setVisible(gameWon && !isFinalLevel);
-    restartLevelButton.setVisible(!gameWon && !isFinalLevel);
-    resetButton.setVisible(gameWon && isFinalLevel);
-  }
-
-
-
-  /**
-   * Sets the action to be executed when the restart button is clicked.
-   *
-   * <p>This allows external components (such as {@link GamePlayerView}) to define what
-   * should happen when the player chooses to restart the current level. The provided
-   * {@link Runnable} will be invoked when the restart button is activated.</p>
-   *
-   * @param action a {@code Runnable} representing the restart behavior
-   */
-  public void setRestartAction(Runnable action) {
-    restartLevelButton.setOnAction(e -> action.run());
+    resetButton.setVisible(!gameWon || isFinalLevel);
   }
 
   /**
