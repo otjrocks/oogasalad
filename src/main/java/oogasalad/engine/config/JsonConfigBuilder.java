@@ -13,6 +13,8 @@ import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
+import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 
 /**
@@ -56,8 +58,13 @@ public class JsonConfigBuilder {
     // === win conditions ===
     // TODO: remove hard coded win condition and replace with settings from authoring environment
     ObjectNode winCondition = mapper.createObjectNode();
-    winCondition.put("type", "EntityBased");
-    winCondition.put("entityType", "dot");
+    if (model.getDefaultSettings().winCondition() instanceof SurviveForTimeConditionRecord(int amount)) {
+      winCondition.put("type", "SurviveForTime");
+      winCondition.put("amount", amount);
+    } else if (model.getDefaultSettings().winCondition() instanceof EntityBasedConditionRecord(String entityType)) {
+      winCondition.put("type", "EntityBased");
+      winCondition.put("entityType", entityType);
+    }
     defaultSettings.set("winCondition", winCondition);
 
     // === levels ===
