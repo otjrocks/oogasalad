@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContextRecord;
+import oogasalad.engine.records.CollisionContextRecord.StrategyAppliesTo;
 import oogasalad.player.model.Entity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,7 @@ class StopStrategyTest {
     when(context.entity2()).thenReturn(entity2);
     when(entity1.getEntityPlacement()).thenReturn(placement1);
     when(entity2.getEntityPlacement()).thenReturn(placement2);
+    when(context.strategyAppliesTo()).thenReturn(StrategyAppliesTo.ENTITY1);
   }
 
   // again using verify because the stuff that should change is mocked
