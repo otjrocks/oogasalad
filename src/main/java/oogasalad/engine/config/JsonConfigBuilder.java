@@ -12,10 +12,12 @@ import java.util.Optional;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
 import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.engine.records.model.ModeChangeEventRecord;
 
 /**
  * Utility class for converting the internal AuthoringModel data structures into serializable JSON
@@ -55,11 +57,12 @@ public class JsonConfigBuilder {
     defaultSettings.put("gameSpeed", model.getDefaultSettings().gameSpeed());
     defaultSettings.put("startingLives", model.getDefaultSettings().startingLives());
     defaultSettings.put("initialScore", model.getDefaultSettings().initialScore());
-    // TODO: add these to settings
-    defaultSettings.put("scoreStrategy", "Cumulative"); // TODO: remove hardcoded value
+
+    // TODO: remove hardcoded value
+    defaultSettings.put("scoreStrategy", "Cumulative");
 
     // === win conditions ===
-    // TODO: remove hard coded win condition and replace with settings from authoring environment
+    // TODO: No instanceOf checks here
     ObjectNode winCondition = mapper.createObjectNode();
     if (model.getDefaultSettings().winCondition() instanceof SurviveForTimeConditionRecord(int amount)) {
       winCondition.put("type", WIN_CONDITION_SURVIVE_FOR_TIME);
@@ -137,11 +140,57 @@ public class JsonConfigBuilder {
 
     // === spawn events ===
     ArrayNode spawnEvents = root.putArray("spawnEvents");
-    // TODO: Implement spawn events
+    for (SpawnEventRecord record : draft.getSpawnEvents()) {
+      ObjectNode eventNode = mapper.createObjectNode();
+      eventNode.put("entityType", String.valueOf(entityToIdMap.get(record.entityType().type())));
+      eventNode.put("x", record.x());
+      eventNode.put("y", record.y());
+      eventNode.put("mode", record.mode());
+
+      ObjectNode spawnCondition = mapper.createObjectNode();
+      spawnCondition.put("type", record.spawnCondition().type());
+
+      ObjectNode spawnParams = mapper.createObjectNode();
+      record.spawnCondition().parameters().forEach(spawnParams::putPOJO);
+      spawnCondition.set("parameters", spawnParams);
+
+      eventNode.set("spawnCondition", spawnCondition);
+
+      if (record.despawnCondition() != null) {
+        ObjectNode despawnCondition = mapper.createObjectNode();
+        despawnCondition.put("type", record.despawnCondition().type());
+
+        ObjectNode despawnParams = mapper.createObjectNode();
+        record.despawnCondition().parameters().forEach(despawnParams::putPOJO);
+        despawnCondition.set("parameters", despawnParams);
+
+        eventNode.set("despawnCondition", despawnCondition);
+      }
+
+      spawnEvents.add(eventNode);
+    }
+
 
     // === mode change events ===
     ArrayNode modeChangeEvents = root.putArray("modeChangeEvents");
-    // TODO: Implement mode change events
+    for (ModeChangeEventRecord record : draft.getModeChangeEvents()) {
+      ObjectNode eventNode = mapper.createObjectNode();
+      eventNode.put("entityType", String.valueOf(entityToIdMap.get(record.entityType().type())));
+      eventNode.put("currentMode", record.currentMode());
+      eventNode.put("nextMode", record.nextMode());
+
+      ObjectNode conditionNode = mapper.createObjectNode();
+      conditionNode.put("type", record.changeCondition().type());
+
+      ObjectNode conditionParams = mapper.createObjectNode();
+      record.changeCondition().parameters().forEach(conditionParams::putPOJO);
+      conditionNode.set("parameters", conditionParams);
+
+      eventNode.set("changeCondition", conditionNode);
+      modeChangeEvents.add(eventNode);
+    }
+
+
 
     return root;
   }
@@ -206,11 +255,10 @@ public class JsonConfigBuilder {
       ObjectNode imageNode = modeNode.putObject("image");
       imageNode.put("imagePath", getImagePath(mode.image().imagePath()));
 
-      // Replace with actual values if ModeConfig/Image provides them
-      imageNode.put("tileWidth", 14);
-      imageNode.put("tileHeight", 14);
-      imageNode.put("tilesToCycle", 1);
-      imageNode.put("animationSpeed", 2);
+      imageNode.put("tileWidth", mode.image().tileWidth());
+      imageNode.put("tileHeight", mode.image().tileHeight());
+      imageNode.put("tilesToCycle", mode.image().tilesToCycle());
+      imageNode.put("animationSpeed", mode.image().animationSpeed());
     }
   }
 
