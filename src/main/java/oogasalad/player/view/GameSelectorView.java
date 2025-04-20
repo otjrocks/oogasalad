@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
@@ -35,6 +34,7 @@ import oogasalad.engine.utility.constants.GameConfig;
 public class GameSelectorView {
 
   private final String gamesFolderPath = "data/games/";
+  private final String smallButtonString = "small-button";
 
   private final VBox myRoot;
   private final MainController myMainController;
@@ -126,13 +126,13 @@ public class GameSelectorView {
     HBox topBar = new HBox(10);
     topBar.setAlignment(Pos.CENTER);
     Button back = new Button("Back");
-    back.getStyleClass().add("small-button");
+    back.getStyleClass().add(smallButtonString);
     back.setOnAction(e -> {
       myMainController.hideGameSelectorView();
       myMainController.showSplashScreen();
     });
     Button help = new Button("Help");
-    help.getStyleClass().add("small-button");
+    help.getStyleClass().add(smallButtonString);
     topBar.getChildren().addAll(back, title, help);
     HBox.setHgrow(title, Priority.ALWAYS);
     title.setMaxWidth(Double.MAX_VALUE);
@@ -153,9 +153,9 @@ public class GameSelectorView {
     name.getStyleClass().add("game-name");
 
     Button randomizeButton = new Button("Randomize Levels");
-    randomizeButton.getStyleClass().add("small-button");
+    randomizeButton.getStyleClass().add(smallButtonString);
     randomizeButton.setOnAction(e -> {
-      System.out.println("Randomizing levels for " + gameName);
+      // doesn't do anything currently
     });
 
     card.getChildren().addAll(image, name, randomizeButton);
