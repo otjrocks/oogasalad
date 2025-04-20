@@ -5,10 +5,9 @@
     "gameDescription" : "Shows different controlTypes with strategyConfig and collision/mode logic."
   },
   "defaultSettings" : {
-    "gameSpeed" : 1.0,
+    "gameSpeed" : 1,
     "startingLives" : 10,
     "initialScore" : 0,
-    "scoreStrategy" : "Cumulative",
     "winCondition" : {
       "type" : "EntityBased",
       "entityType" : "dot"

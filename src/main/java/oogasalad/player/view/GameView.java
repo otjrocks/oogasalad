@@ -46,7 +46,8 @@ public class GameView {
     myRoot.setFocusTraversable(true);
     boolean isFinalLevel = levelIndex >= configModel.levels().size() - 1;
 
-    myGameLoopController = new GameLoopController(gameContext, myGameMapView,
+    myGameLoopController = new GameLoopController(configModel, gameContext,
+        myGameMapView,
         configModel.levels().get(levelIndex));
     myGameMapView.setGameLoopController(myGameLoopController);
     setUpEndMessage();
@@ -84,7 +85,7 @@ public class GameView {
   private void showEndMessage(boolean gameWon, boolean isFinalLevel) {
     if (gameWon) {
       if (isFinalLevel) {
-        endLabel.setText("🎉 Congrats! 🎉");
+        endLabel.setText(LanguageManager.getMessage("GAME_WON"));
       } else {
         endLabel.setText(LanguageManager.getMessage("LEVEL_PASSED"));
       }
