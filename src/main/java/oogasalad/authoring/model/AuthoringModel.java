@@ -57,7 +57,6 @@ public class AuthoringModel {
             1.0,                                    // Default game speed
             3,                                      // Default starting lives
             0,                                      // Default initial score
-            "Cumulative",                           // Default score strategy
             new SurviveForTimeConditionRecord(5),   // Default win condition - survive for 5 seconds
             new LivesBasedConditionRecord()         // Default lose condition
     );
