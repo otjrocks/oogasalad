@@ -52,10 +52,18 @@ public class AuthoringModel {
     this.entityTypeMap = new LinkedHashMap<>();
     this.levels = new ArrayList<>();
     this.collisionRules = new ArrayList<>();
-    // TODO: add score strategy and win condition
-    this.defaultSettings = new SettingsRecord(1.0, 3, 0, "",
-        new SurviveForTimeConditionRecord(5), new LivesBasedConditionRecord());
+    // Create default settings with appropriate win condition and score strategy
+    this.defaultSettings = new SettingsRecord(
+            1.0,                                    // Default game speed
+            3,                                      // Default starting lives
+            0,                                      // Default initial score
+            "Cumulative",                           // Default score strategy
+            new SurviveForTimeConditionRecord(5),   // Default win condition - survive for 5 seconds
+            new LivesBasedConditionRecord()         // Default lose condition
+    );
   }
+
+
 
   /**
    * Returns the currently selected level being edited.
