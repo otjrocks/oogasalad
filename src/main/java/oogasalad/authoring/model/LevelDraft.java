@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.engine.records.model.ModeChangeEventRecord;
 
 /**
  * Represents a draft of a single level in the authoring environment. Stores metadata such as name,
@@ -23,6 +25,8 @@ public class LevelDraft {
   private String edgePolicy;
 
   private final List<EntityPlacement> entityPlacements;
+  private List<ModeChangeEventRecord> modeChangeEvents;
+  private List<SpawnEventRecord> spawnEvents;
 
   /**
    * Constructs a new LevelDraft with the given name and output file name.
@@ -34,6 +38,8 @@ public class LevelDraft {
     this.name = name;
     this.outputFileName = outputFileName;
     this.entityPlacements = new ArrayList<>();
+    this.modeChangeEvents = new ArrayList<>();
+    this.spawnEvents = new ArrayList<>();
 
     // Default init values
     this.width = 20;
@@ -47,7 +53,11 @@ public class LevelDraft {
    * @return true if the placement was added successfully; false if null
    */
   public boolean addEntityPlacement(EntityPlacement placement) {
-    return placement != null && entityPlacements.add(placement);
+    if (placement == null) {
+      return false;
+    }
+    entityPlacements.add(placement);
+    return true;
   }
 
   /**
@@ -236,5 +246,19 @@ public class LevelDraft {
   }
 
 
+  /**
+   * Return all modeChangeEvents
+   * @return ModeChangeEvents
+   */
+  public List<ModeChangeEventRecord> getModeChangeEvents() {
+    return modeChangeEvents;
+  }
 
+  /**
+   * Return all spawnEvents
+   * @return SpawnEvents
+   */
+  public List<SpawnEventRecord> getSpawnEvents() {
+    return spawnEvents;
+  }
 }

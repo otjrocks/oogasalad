@@ -186,13 +186,6 @@ public class CollisionRuleEditorView {
 
     entityASelector.setOnAction(e -> updateModes(modeASelector, entityASelector.getValue()));
     entityBSelector.setOnAction(e -> updateModes(modeBSelector, entityBSelector.getValue()));
-
-    if (!entities.isEmpty()) {
-      entityASelector.getSelectionModel().selectFirst();
-      entityBSelector.getSelectionModel().selectFirst();
-      updateModes(modeASelector, entityASelector.getValue());
-      updateModes(modeBSelector, entityBSelector.getValue());
-    }
   }
 
   /**

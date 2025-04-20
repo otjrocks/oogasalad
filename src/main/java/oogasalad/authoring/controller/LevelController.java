@@ -1,9 +1,11 @@
 package oogasalad.authoring.controller;
 
 import java.util.List;
+import java.util.Map;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
 import oogasalad.authoring.view.AuthoringView;
+import oogasalad.engine.records.model.EntityTypeRecord;
 
 /**
  * Handles creation, selection, and organization of levels.
@@ -94,5 +96,13 @@ public class LevelController {
    */
   public void updateCanvasSize(int width, int height) {
     mainController.getCanvasView().resizeGrid(width, height);
+  }
+
+  /**
+   * Get all entity types from the model
+   * @return Map of entityType names to Record
+   */
+  public Map<String, EntityTypeRecord> getAvailableEntityTypes() {
+    return mainController.getModel().getEntityTypeMap();
   }
 }
