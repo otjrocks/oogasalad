@@ -202,9 +202,9 @@ public class GameSettingsView {
 
   private void updateWinConditionValueLabel() {
     String selectedType = winConditionTypeComboBox.getValue();
-    if ("SurviveForTime".equals(selectedType)) {
+    if (WIN_CONDITION_SURVIVE_FOR_TIME.equals(selectedType)) {
       winConditionValueLabel.setText(LanguageManager.getMessage("SURVIVE_TIME_SECONDS"));
-    } else if ("EntityBased".equals(selectedType)) {
+    } else if (WIN_CONDITION_ENTITY_BASED.equals(selectedType)) {
       winConditionValueLabel.setText(LanguageManager.getMessage("ENTITY_TYPE"));
     }
   }
@@ -212,11 +212,11 @@ public class GameSettingsView {
   private String getWinConditionType() {
     WinConditionInterface condition = gameSettings.winCondition();
     if (condition instanceof SurviveForTimeConditionRecord) {
-      return "SurviveForTime";
+      return WIN_CONDITION_SURVIVE_FOR_TIME;
     } else if (condition instanceof EntityBasedConditionRecord) {
-      return "EntityBased";
+      return WIN_CONDITION_ENTITY_BASED;
     }
-    return "SurviveForTime"; // Default
+    return WIN_CONDITION_SURVIVE_FOR_TIME; // Default
   }
 
   private String getWinConditionValue() {
@@ -355,7 +355,7 @@ public class GameSettingsView {
     String type = winConditionTypeComboBox.getValue();
     String value = winConditionValueField.getText();
 
-    if ("SurviveForTime".equals(type)) {
+    if (WIN_CONDITION_SURVIVE_FOR_TIME.equals(type)) {
       try {
         int seconds = Integer.parseInt(value);
         return new SurviveForTimeConditionRecord(seconds);
@@ -363,7 +363,7 @@ public class GameSettingsView {
         // Default to 5 seconds if invalid input
         return new SurviveForTimeConditionRecord(5);
       }
-    } else if ("EntityBased".equals(type)) {
+    } else if (WIN_CONDITION_ENTITY_BASED.equals(type)) {
       return new EntityBasedConditionRecord(value.isEmpty() ? "dot" : value);
     }
 
