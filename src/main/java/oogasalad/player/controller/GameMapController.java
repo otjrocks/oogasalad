@@ -7,6 +7,7 @@ import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.CollisionContextRecord;
+import oogasalad.engine.records.CollisionContextRecord.StrategyAppliesTo;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.model.CollisionEventInterface;
@@ -99,24 +100,25 @@ public class GameMapController {
     }
   }
 
-  private void applyEntityBCollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
-    for (CollisionEventInterface eventB : collisionRule.getEventsB()) {
-      createAndApplyCollisionStrategy(e1, e2, eventB);
+  private void applyEntityACollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
+    for (CollisionEventInterface eventA : collisionRule.getEventsA()) {
+      createAndApplyCollisionStrategy(e1, e2, eventA, StrategyAppliesTo.ENTITY1);
     }
   }
 
-  private void applyEntityACollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
-    for (CollisionEventInterface eventA : collisionRule.getEventsA()) {
-      createAndApplyCollisionStrategy(e1, e2, eventA);
+  private void applyEntityBCollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
+    for (CollisionEventInterface eventB : collisionRule.getEventsB()) {
+      createAndApplyCollisionStrategy(e1, e2, eventB, StrategyAppliesTo.ENTITY2);
     }
   }
 
   private void createAndApplyCollisionStrategy(Entity e1, Entity e2,
-      CollisionEventInterface collisionEvent) {
+      CollisionEventInterface collisionEvent, StrategyAppliesTo appliesTo) {
     CollisionStrategyInterface collisionStrategy = CollisionStrategyFactory.createCollisionStrategy(
         collisionEvent);
     try {
-      collisionStrategy.handleCollision(new CollisionContextRecord(e1, e2, gameMap, gameState));
+      collisionStrategy.handleCollision(
+          new CollisionContextRecord(e1, e2, gameMap, gameState, appliesTo));
     } catch (EntityNotFoundException e) {
       LoggingManager.LOGGER.warn("Unable to handle collision event: {}", collisionEvent, e);
       throw new RuntimeException(e);
