@@ -1,7 +1,10 @@
 package oogasalad.player.view;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -31,9 +34,12 @@ import oogasalad.engine.utility.constants.GameConfig;
  */
 public class GameSelectorView {
 
+  private final String gamesFolderPath = "data/games/";
+
   private final VBox myRoot;
   private final MainController myMainController;
   private final List<GameConfigRecord> gameConfigRecords;
+  private final Map<String, String> gameNameToFolder = new HashMap<>();
 
   /**
    * Create a game selector splash screen view.
@@ -101,7 +107,6 @@ public class GameSelectorView {
         gameGrid.setAlignment(Pos.CENTER);
         gameGrid.getStyleClass().add("game-grid");
 
-
         for (String name : pageGames) {
           VBox gameCard = createGameCard(name);
           gameGrid.getChildren().add(gameCard);
@@ -140,10 +145,7 @@ public class GameSelectorView {
     card.setAlignment(Pos.CENTER);
     card.getStyleClass().add("game-card");
 
-    // placeholder image to be replaced later
-    Image im = new Image(
-        Objects.requireNonNull(getClass().getResourceAsStream("/assets/images/placeholder.png")));
-    ImageView image = new ImageView(im); // Replace with actual path
+    ImageView image = new ImageView(getImage(gameName)); // Replace with actual path
     image.setFitWidth(200);
     image.setFitHeight(400);
 
@@ -167,22 +169,52 @@ public class GameSelectorView {
     return card;
   }
 
+  private Image getImage(String gameName) {
+    GameConfigRecord config = gameConfigRecords.stream()
+        .filter(g -> g.metadata().gameTitle().equals(gameName))
+        .findFirst()
+        .orElse(null);
+    String folderName = gameNameToFolder.get(gameName);
+
+    Image image;
+    if (config != null && config.metadata().image() != null) {
+      try {
+        image = new Image(
+            new FileInputStream(gamesFolderPath + folderName + "/" + config.metadata().image()));
+
+      } catch (Exception e) {
+        LoggingManager.LOGGER.warn(
+            "Could not load image for " + gameName + ", using placeholder.");
+        image = new Image(Objects.requireNonNull(
+            getClass().getResourceAsStream("/assets/images/placeholder.png")));
+      }
+    } else {
+      image = new Image(
+          Objects.requireNonNull(getClass().getResourceAsStream("/assets/images/placeholder.png")));
+    }
+
+    return image;
+
+  }
+
   private List<GameConfigRecord> getAllGameConfigs() {
     JsonConfigParser configParser = new JsonConfigParser();
-    String gamesFolderPath = "data/games/";
 
     List<String> folderNames = FileUtility.getFolderNamesInDirectory(gamesFolderPath);
     List<GameConfigRecord> gameConfigs = new ArrayList<>();
     for (String folderName : folderNames) {
       try {
-        gameConfigs.add(
-            configParser.loadGameConfig(gamesFolderPath + folderName + "/gameConfig.json"));
+        GameConfigRecord config = configParser.loadGameConfig(
+            gamesFolderPath + folderName + "/gameConfig.json");
+        gameConfigs.add(config);
+        gameNameToFolder.put(config.metadata().gameTitle(), folderName);
       } catch (ConfigException e) {
-        LoggingManager.LOGGER.warn("Could not load config file " + folderName + e);
-        // not an error, just don't load game if no config
+        LoggingManager.LOGGER.warn("Could not load config file " + folderName, e);
+        // this one is just a warning since if it don't have a valid game config we just don't load
       }
     }
 
     return gameConfigs;
   }
+
 }

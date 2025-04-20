@@ -1,14 +1,13 @@
 {
   "metadata" : {
-    "gameTitle" : "Really Long Name To See What Happens",
+    "gameTitle" : "Advanced Ghost AI Demo2",
     "author" : "CS308 Team",
     "gameDescription" : "Shows different controlTypes with strategyConfig and collision/mode logic."
   },
   "defaultSettings" : {
-    "gameSpeed" : 1.0,
+    "gameSpeed" : 1,
     "startingLives" : 10,
     "initialScore" : 0,
-    "scoreStrategy" : "Cumulative",
     "winCondition" : {
       "type" : "EntityBased",
       "entityType" : "dot"
