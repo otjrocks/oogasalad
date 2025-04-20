@@ -124,9 +124,15 @@ public class SimpleHelpSystem {
 
         // Show the first slide
         currentSlideIndex = 0;
-        showCurrentSlide();
 
+        // Show the stage first, then update the slide content
         helpStage.show();
+
+        // Add the first slide to the content pane
+        if (!helpSlides.isEmpty()) {
+            HelpSlide firstSlide = helpSlides.getFirst();
+            slideContent.getChildren().add(firstSlide.createSlideNode());
+        }
     }
 
     /**
