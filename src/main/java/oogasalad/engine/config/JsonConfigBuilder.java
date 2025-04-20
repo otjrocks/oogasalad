@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
+import oogasalad.engine.config.util.ConditionSerializer;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
@@ -31,6 +32,10 @@ import oogasalad.engine.records.model.ModeChangeEventRecord;
  * @author Will He, Angela Predolac
  */
 public class JsonConfigBuilder {
+
+  private static final String TYPE = "type";
+  private static final String ENTITY_TYPE = "entityType";
+
 
   /**
    * Builds the top-level game configuration (gameConfig.json) from the model. Includes metadata,
@@ -65,11 +70,11 @@ public class JsonConfigBuilder {
     // TODO: No instanceOf checks here
     ObjectNode winCondition = mapper.createObjectNode();
     if (model.getDefaultSettings().winCondition() instanceof SurviveForTimeConditionRecord(int amount)) {
-      winCondition.put("type", WIN_CONDITION_SURVIVE_FOR_TIME);
+      winCondition.put(TYPE, WIN_CONDITION_SURVIVE_FOR_TIME);
       winCondition.put("amount", amount);
     } else if (model.getDefaultSettings().winCondition() instanceof EntityBasedConditionRecord(String entityType)) {
-      winCondition.put("type", WIN_CONDITION_ENTITY_BASED);
-      winCondition.put("entityType", entityType);
+      winCondition.put(TYPE, WIN_CONDITION_ENTITY_BASED);
+      winCondition.put(ENTITY_TYPE, entityType);
     }
     defaultSettings.set("winCondition", winCondition);
 
@@ -98,10 +103,10 @@ public class JsonConfigBuilder {
    * @param mapper        the Jackson ObjectMapper instance
    * @return a JSON ObjectNode representing the level configuration
    */
-  public ObjectNode buildLevelConfig(LevelDraft draft, Map<String, Integer> entityToIdMap,
-      ObjectMapper mapper) {
+  public ObjectNode buildLevelConfig(LevelDraft draft, Map<String, Integer> entityToIdMap, ObjectMapper mapper) {
     ObjectNode root = mapper.createObjectNode();
 
+    // === entity mappings ===
     ArrayNode mappings = root.putArray("entityMappings");
     entityToIdMap.forEach((name, id) -> {
       ObjectNode entry = mapper.createObjectNode();
@@ -110,11 +115,13 @@ public class JsonConfigBuilder {
       mappings.add(entry);
     });
 
+    // === map info ===
     ObjectNode settings = root.putObject("mapInfo");
     settings.put("width", draft.getWidth());
     settings.put("height", draft.getHeight());
     settings.put("edgePolicy", draft.getEdgePolicy());
 
+    // === layout ===
     ArrayNode layout = root.putArray("layout");
     double tileSize = 40.0;
     double threshold = 1.0;
@@ -124,7 +131,6 @@ public class JsonConfigBuilder {
       for (int col = 0; col < draft.getWidth(); col++) {
         double x = col * tileSize;
         double y = row * tileSize;
-
         Optional<EntityPlacement> opt = draft.findEntityPlacementAt(x, y, threshold);
         if (opt.isPresent()) {
           EntityPlacement placement = opt.get();
@@ -138,62 +144,42 @@ public class JsonConfigBuilder {
       layout.add(String.join(" ", rowTiles));
     }
 
-    // === spawn events ===
-    ArrayNode spawnEvents = root.putArray("spawnEvents");
-    for (SpawnEventRecord record : draft.getSpawnEvents()) {
-      ObjectNode eventNode = mapper.createObjectNode();
-      eventNode.put("entityType", String.valueOf(entityToIdMap.get(record.entityType().type())));
-      eventNode.put("x", record.x());
-      eventNode.put("y", record.y());
-      eventNode.put("mode", record.mode());
-
-      ObjectNode spawnCondition = mapper.createObjectNode();
-      spawnCondition.put("type", record.spawnCondition().type());
-
-      ObjectNode spawnParams = mapper.createObjectNode();
-      record.spawnCondition().parameters().forEach(spawnParams::putPOJO);
-      spawnCondition.set("parameters", spawnParams);
-
-      eventNode.set("spawnCondition", spawnCondition);
-
-      if (record.despawnCondition() != null) {
-        ObjectNode despawnCondition = mapper.createObjectNode();
-        despawnCondition.put("type", record.despawnCondition().type());
-
-        ObjectNode despawnParams = mapper.createObjectNode();
-        record.despawnCondition().parameters().forEach(despawnParams::putPOJO);
-        despawnCondition.set("parameters", despawnParams);
-
-        eventNode.set("despawnCondition", despawnCondition);
-      }
-
-      spawnEvents.add(eventNode);
-    }
-
-
-    // === mode change events ===
-    ArrayNode modeChangeEvents = root.putArray("modeChangeEvents");
-    for (ModeChangeEventRecord record : draft.getModeChangeEvents()) {
-      ObjectNode eventNode = mapper.createObjectNode();
-      eventNode.put("entityType", String.valueOf(entityToIdMap.get(record.entityType().type())));
-      eventNode.put("currentMode", record.currentMode());
-      eventNode.put("nextMode", record.nextMode());
-
-      ObjectNode conditionNode = mapper.createObjectNode();
-      conditionNode.put("type", record.changeCondition().type());
-
-      ObjectNode conditionParams = mapper.createObjectNode();
-      record.changeCondition().parameters().forEach(conditionParams::putPOJO);
-      conditionNode.set("parameters", conditionParams);
-
-      eventNode.set("changeCondition", conditionNode);
-      modeChangeEvents.add(eventNode);
-    }
-
-
+    // === spawn and mode change events ===
+    serializeSpawnEvents(draft, entityToIdMap, mapper, root.putArray("spawnEvents"));
+    serializeModeChangeEvents(draft, entityToIdMap, mapper, root.putArray("modeChangeEvents"));
 
     return root;
   }
+
+  private void serializeSpawnEvents(LevelDraft draft, Map<String, Integer> idMap, ObjectMapper mapper, ArrayNode array) {
+    for (SpawnEventRecord record : draft.getSpawnEvents()) {
+      ObjectNode event = mapper.createObjectNode();
+      event.put(ENTITY_TYPE, String.valueOf(idMap.get(record.entityType().type())));
+      event.put("x", record.x());
+      event.put("y", record.y());
+      event.put("mode", record.mode());
+
+      event.set("spawnCondition", ConditionSerializer.serialize(record.spawnCondition(), mapper));
+      if (record.despawnCondition() != null) {
+        event.set("despawnCondition", ConditionSerializer.serialize(record.despawnCondition(), mapper));
+      }
+
+      array.add(event);
+    }
+  }
+
+  private void serializeModeChangeEvents(LevelDraft draft, Map<String, Integer> idMap, ObjectMapper mapper, ArrayNode array) {
+    for (ModeChangeEventRecord record : draft.getModeChangeEvents()) {
+      ObjectNode event = mapper.createObjectNode();
+      event.put(ENTITY_TYPE, String.valueOf(idMap.get(record.entityType().type())));
+      event.put("currentMode", record.currentMode());
+      event.put("nextMode", record.nextMode());
+
+      event.set("changeCondition", ConditionSerializer.serialize(record.changeCondition(), mapper));
+      array.add(event);
+    }
+  }
+
 
   /**
    * Determines the mode index (e.g., "1.0" → 0) based on the placement's mode name.
@@ -218,7 +204,7 @@ public class JsonConfigBuilder {
    */
   public ObjectNode buildEntityTypeConfig(EntityTypeRecord type, ObjectMapper mapper) {
     ObjectNode root = mapper.createObjectNode();
-    ObjectNode entityTypeNode = root.putObject("entityType");
+    ObjectNode entityTypeNode = root.putObject(ENTITY_TYPE);
 
     addEntityBasics(type, entityTypeNode);
     addControlConfig(type.controlConfig(), entityTypeNode, mapper);
