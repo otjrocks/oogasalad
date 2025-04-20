@@ -2,7 +2,6 @@ package oogasalad.player.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.exceptions.EntityNotFoundException;
@@ -87,32 +86,28 @@ public class GameMapController {
     }
   }
 
-  // TODO: Right now, we have hardcoded the collision strategies for the game player.
-  // This should be refactored when the entity configuration is read in from the config file.
   private void handleCollision(Entity e1, Entity e2) {
     applyCollisionStrategiesFromCollisionRules(e1, e2);
   }
 
   private void applyCollisionStrategiesFromCollisionRules(Entity e1, Entity e2) {
     for (CollisionRule collisionRule : myConfigModel.collisionRules()) {
-      applyEntityACollisionStrategy(e1, e2, collisionRule);
-      applyEntityBCollisionStrategy(e1, e2, collisionRule);
+      if (checkEntityTypesAndModesMatch(e1, e2, collisionRule)) {
+        applyEntityACollisionStrategy(e1, e2, collisionRule);
+        applyEntityBCollisionStrategy(e1, e2, collisionRule);
+      }
     }
   }
 
   private void applyEntityBCollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
-    if (checkEntityTypesMatch(e1, e2, collisionRule)) {
-      for (CollisionEventInterface eventB : collisionRule.getEventsB()) {
-        createAndApplyCollisionStrategy(e1, e2, eventB);
-      }
+    for (CollisionEventInterface eventB : collisionRule.getEventsB()) {
+      createAndApplyCollisionStrategy(e1, e2, eventB);
     }
   }
 
   private void applyEntityACollisionStrategy(Entity e1, Entity e2, CollisionRule collisionRule) {
-    if (checkEntityTypesMatch(e1, e2, collisionRule)) {
-      for (CollisionEventInterface eventA : collisionRule.getEventsA()) {
-        createAndApplyCollisionStrategy(e1, e2, eventA);
-      }
+    for (CollisionEventInterface eventA : collisionRule.getEventsA()) {
+      createAndApplyCollisionStrategy(e1, e2, eventA);
     }
   }
 
@@ -128,7 +123,8 @@ public class GameMapController {
     }
   }
 
-  private static boolean checkEntityTypesMatch(Entity e1, Entity e2, CollisionRule collisionRule) {
+  private static boolean checkEntityTypesAndModesMatch(Entity e1, Entity e2,
+      CollisionRule collisionRule) {
     return checkCollisionRuleEntityAMatches(e1, collisionRule) && checkCollisionRuleEntityBMatches(
         e2, collisionRule);
   }
@@ -145,10 +141,8 @@ public class GameMapController {
 
   private List<List<Entity>> getAllCollisions() {
     List<List<Entity>> collisions = new ArrayList<>();
-    for (Iterator<Entity> it = gameMap.iterator(); it.hasNext(); ) {
-      Entity a = it.next();
-      for (Iterator<Entity> iter = gameMap.iterator(); iter.hasNext(); ) {
-        Entity b = iter.next();
+    for (Entity a : gameMap) {
+      for (Entity b : gameMap) {
         if (a != b
             && Math.abs(a.getEntityPlacement().getX() - b.getEntityPlacement().getX()) < 1
             && Math.abs(a.getEntityPlacement().getY() - b.getEntityPlacement().getY()) < 1) {
