@@ -26,17 +26,9 @@ import oogasalad.engine.utility.LanguageManager;
  */
 public class GameSettingsView {
 
-  private static final double DEFAULT_PADDING = 5;
-
   // Constants for win condition types
   private static final String WIN_CONDITION_SURVIVE_FOR_TIME = "SurviveForTime";
   private static final String WIN_CONDITION_ENTITY_BASED = "EntityBased";
-
-  // Constants for score strategy types
-  private static final String SCORE_STRATEGY_CUMULATIVE = "Cumulative";
-  private static final String SCORE_STRATEGY_HIGHEST_LEVEL = "HighestLevel";
-  private static final String SCORE_STRATEGY_TIME_BASED = "TimeBasedMultiplier";
-
 
   private final AuthoringController controller;
   private SettingsRecord gameSettings;
@@ -97,7 +89,7 @@ public class GameSettingsView {
    * Set up the UI components in a compact layout making sure buttons are visible
    */
   private void setupUI() {
-    // Setup the root container
+    // Set up the root container
     rootNode.setSpacing(15);
     rootNode.setPadding(new Insets(15)); // Increase padding
     rootNode.setAlignment(Pos.CENTER_LEFT);
@@ -141,7 +133,7 @@ public class GameSettingsView {
 
     // Create win condition type dropdown
     winConditionTypeComboBox = new ComboBox<>(FXCollections.observableArrayList(
-            WIN_CONDITION_SURVIVE_FOR_TIME, WIN_CONDITION_ENTITY_BASED));
+        WIN_CONDITION_SURVIVE_FOR_TIME, WIN_CONDITION_ENTITY_BASED));
     winConditionTypeComboBox.setValue(getWinConditionType());
     winConditionTypeComboBox.setPrefWidth(150);
 
@@ -275,9 +267,7 @@ public class GameSettingsView {
 
     // Create a new CollisionRuleEditorView
     CollisionRuleEditorView collisionEditor = new CollisionRuleEditorView(controller);
-    collisionEditor.showAndWait().ifPresent(updatedRules -> {
-      controller.getModel().setCollisionRules(updatedRules);
-    });
+    collisionEditor.showAndWait().ifPresent(updatedRules -> controller.getModel().setCollisionRules(updatedRules));
   }
 
   /**
@@ -324,11 +314,11 @@ public class GameSettingsView {
     WinConditionInterface newWinCondition = createWinConditionFromUI();
     // Create new settings record with updated values
     SettingsRecord updatedSettings = new SettingsRecord(
-            gameSpeedSpinner.getValue(),
-            startingLivesSpinner.getValue(),
-            initialScoreSpinner.getValue(),
-            newWinCondition,
-            gameSettings.loseCondition() // Keep the existing lose condition
+        gameSpeedSpinner.getValue(),
+        startingLivesSpinner.getValue(),
+        initialScoreSpinner.getValue(),
+        newWinCondition,
+        gameSettings.loseCondition() // Keep the existing lose condition
     );
     // Update the model with the current settings
     controller.getModel().setDefaultSettings(updatedSettings);
