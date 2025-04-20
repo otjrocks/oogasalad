@@ -16,7 +16,7 @@ import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
  * @author Owen Jennings, Jessica Chen
  */
 public record SettingsRecord(Double gameSpeed, Integer startingLives, Integer initialScore,
-                             String scoreStrategy, WinConditionInterface winCondition,
+                             WinConditionInterface winCondition,
                              LoseConditionInterface loseCondition) {
 
 }

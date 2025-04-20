@@ -51,7 +51,6 @@ public class GameSettingsView {
   private Spinner<Double> gameSpeedSpinner;
   private Spinner<Integer> startingLivesSpinner;
   private Spinner<Integer> initialScoreSpinner;
-  private ComboBox<String> scoreStrategyComboBox;
   private ComboBox<String> winConditionTypeComboBox;
   private TextField winConditionValueField;
   private Label winConditionValueLabel;
@@ -140,12 +139,6 @@ public class GameSettingsView {
     startingLivesSpinner = createIntegerSpinner(1, 10, 1, gameSettings.startingLives());
     initialScoreSpinner = createIntegerSpinner(0, 1000, 50, gameSettings.initialScore());
 
-    // Create score strategy dropdown
-    scoreStrategyComboBox = new ComboBox<>(FXCollections.observableArrayList(
-            SCORE_STRATEGY_CUMULATIVE, SCORE_STRATEGY_HIGHEST_LEVEL, SCORE_STRATEGY_TIME_BASED));
-    scoreStrategyComboBox.setValue(gameSettings.scoreStrategy());
-    scoreStrategyComboBox.setPrefWidth(150);
-
     // Create win condition type dropdown
     winConditionTypeComboBox = new ComboBox<>(FXCollections.observableArrayList(
             WIN_CONDITION_SURVIVE_FOR_TIME, WIN_CONDITION_ENTITY_BASED));
@@ -179,7 +172,6 @@ public class GameSettingsView {
     settingsGrid.add(new Label(LanguageManager.getMessage("INITIAL_SCORE")), 0, 3);
     settingsGrid.add(initialScoreSpinner, 1, 3);
     settingsGrid.add(new Label(LanguageManager.getMessage("SCORE_STRATEGY")), 2, 3);
-    settingsGrid.add(scoreStrategyComboBox, 3, 3);
 
     // Add win condition fields
     settingsGrid.add(new Label(LanguageManager.getMessage("WIN_CONDITION_TYPE")), 0, 4);
@@ -304,7 +296,6 @@ public class GameSettingsView {
     gameSpeedSpinner.getValueFactory().setValue(gameSettings.gameSpeed());
     startingLivesSpinner.getValueFactory().setValue(gameSettings.startingLives());
     initialScoreSpinner.getValueFactory().setValue(gameSettings.initialScore());
-    scoreStrategyComboBox.setValue(gameSettings.scoreStrategy());
 
     // Update win condition fields
     winConditionTypeComboBox.setValue(getWinConditionType());
@@ -336,7 +327,6 @@ public class GameSettingsView {
             gameSpeedSpinner.getValue(),
             startingLivesSpinner.getValue(),
             initialScoreSpinner.getValue(),
-            scoreStrategyComboBox.getValue(),
             newWinCondition,
             gameSettings.loseCondition() // Keep the existing lose condition
     );

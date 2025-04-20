@@ -469,7 +469,6 @@ public class JsonConfigParser implements ConfigParserInterface {
         pick(override.gameSpeed(), defaults.gameSpeed()),
         pick(override.startingLives(), defaults.startingLives()),
         pick(override.initialScore(), defaults.initialScore()),
-        pick(override.scoreStrategy(), defaults.scoreStrategy()),
         pick(override.winCondition(), defaults.winCondition()),
         pick(override.loseCondition(), defaults.loseCondition())
     );

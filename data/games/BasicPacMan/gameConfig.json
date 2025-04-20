@@ -8,7 +8,6 @@
     "gameSpeed" : 1.0,
     "startingLives" : 10,
     "initialScore" : 0,
-    "scoreStrategy" : "Cumulative",
     "winCondition" : {
       "type" : "EntityBased",
       "entityType" : "dot"
