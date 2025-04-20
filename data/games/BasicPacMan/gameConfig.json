@@ -5,7 +5,7 @@
     "gameDescription" : "Shows different controlTypes with strategyConfig and collision/mode logic."
   },
   "defaultSettings" : {
-    "gameSpeed" : 1.0,
+    "gameSpeed" : 5,
     "startingLives" : 10,
     "initialScore" : 0,
     "winCondition" : {
