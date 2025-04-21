@@ -1,12 +1,16 @@
 package oogasalad.player.view;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
@@ -15,12 +19,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.GameConfigRecord;
-import oogasalad.engine.records.config.model.MetadataRecord;
 import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.LoggingManager;
@@ -41,6 +45,14 @@ public class GameSelectorView {
   private final MainController myMainController;
   private final List<GameConfigRecord> gameConfigRecords;
   private final Map<String, String> gameNameToFolder = new HashMap<>();
+  private JsonConfigParser configParser = new JsonConfigParser();
+  private Label titleLabel;
+  private Label fileLabel;
+  private Button backButton;
+  private Button helpButton;
+  private Button uploadButton;
+  private Button startButton;
+  private FileChooser fileChooser;
 
   /**
    * Create a game selector splash screen view.
@@ -56,6 +68,7 @@ public class GameSelectorView {
 
     gameConfigRecords = getAllGameConfigs();
 
+    fileChooser = new FileChooser();
     HBox topBar = createTopBar();
 
     List<String> gameNames = new ArrayList<>();
@@ -64,7 +77,7 @@ public class GameSelectorView {
     }
     Pagination gameGrid = createGameGrid(gameNames);
 
-    myRoot.getChildren().addAll(topBar, gameGrid);
+    myRoot.getChildren().addAll(topBar, createFileUploadSection(), gameGrid);
   }
 
   /**
@@ -122,22 +135,25 @@ public class GameSelectorView {
   }
 
   private HBox createTopBar() {
-    Label title = new Label(LanguageManager.getMessage("GAME_PLAYER"));
-    title.getStyleClass().add("title");
+    titleLabel = new Label(LanguageManager.getMessage("GAME_PLAYER"));
+    titleLabel.getStyleClass().add("title");
     HBox topBar = new HBox(10);
     topBar.setAlignment(Pos.CENTER);
-    Button back = new Button("Back");
-    back.getStyleClass().add(smallButtonString);
-    back.setOnAction(e -> {
+
+    backButton = new Button("Back");
+    backButton.getStyleClass().add(smallButtonString);
+    backButton.setOnAction(e -> {
       myMainController.hideGameSelectorView();
       myMainController.showSplashScreen();
     });
-    Button help = new Button("Help");
-    help.getStyleClass().add(smallButtonString);
-    topBar.getChildren().addAll(back, title, help);
-    HBox.setHgrow(title, Priority.ALWAYS);
-    title.setMaxWidth(Double.MAX_VALUE);
-    title.setAlignment(Pos.TOP_CENTER);
+
+    helpButton = new Button("Help");
+    helpButton.getStyleClass().add(smallButtonString);
+
+    topBar.getChildren().addAll(backButton, titleLabel, helpButton);
+    HBox.setHgrow(titleLabel, Priority.ALWAYS);
+    titleLabel.setMaxWidth(Double.MAX_VALUE);
+    titleLabel.setAlignment(Pos.TOP_CENTER);
     return topBar;
   }
 
@@ -148,7 +164,7 @@ public class GameSelectorView {
 
     ImageView image = new ImageView(getImage(gameName)); // Replace with actual path
     image.setFitWidth(200);
-    image.setFitHeight(400);
+    image.setFitHeight(300);
 
     Label name = new Label(gameName);
     name.getStyleClass().add("game-name");
@@ -194,12 +210,9 @@ public class GameSelectorView {
     }
 
     return image;
-
   }
 
   private List<GameConfigRecord> getAllGameConfigs() {
-    JsonConfigParser configParser = new JsonConfigParser();
-
     List<String> folderNames = FileUtility.getFolderNamesInDirectory(gamesFolderPath);
     List<GameConfigRecord> gameConfigs = new ArrayList<>();
     for (String folderName : folderNames) {
@@ -217,4 +230,79 @@ public class GameSelectorView {
     return gameConfigs;
   }
 
+  private VBox createFileUploadSection() {
+    // This method is adapted from file upload code by Will He in the Cell Society project.
+    uploadButton = new Button("Upload");
+    uploadButton.getStyleClass().add(smallButtonString);
+    startButton = new Button("Start");
+    startButton.getStyleClass().add(smallButtonString);
+    startButton.setDisable(true);
+    fileLabel = new Label("No file selected");
+
+    uploadButton.setOnAction(e -> handleFileUpload(fileChooser, fileLabel, startButton));
+    startButton.setOnAction(e -> {
+      String filePath = fileLabel.getText();
+      try {
+        GameConfigRecord config = configParser.loadGameConfig(filePath);
+        String gameName = config.metadata().gameTitle();
+        myMainController.hideGameSelectorView();
+        myMainController.showGamePlayerView(gameNameToFolder.get(gameName), false);
+      } catch (Exception ex) {
+        LoggingManager.LOGGER.error("Exception: {}", ex.getMessage());
+        showErrorDialog("Exception", ex.getMessage()); // use languageController later
+      }
+    });
+
+    VBox fileUploadSection = new VBox(10, uploadButton, fileLabel, startButton);
+    fileUploadSection.setAlignment(Pos.CENTER);
+    VBox.setMargin(fileUploadSection, new Insets(30, 0, 0, 0));
+    return fileUploadSection;
+  }
+
+  private void handleFileUpload(FileChooser fileChooser, Label label, Button startButton) {
+    // This method is adapted from file upload code by Will He in the Cell Society project.
+    fileChooser.setTitle("Open File"); // use languageController later
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
+
+    File selectedFile = fileChooser.showOpenDialog(null);
+    if (selectedFile != null) {
+      String relativePath = getRelativePath(selectedFile, "data");
+      if (relativePath != null) {
+        fileLabel.setText(relativePath);
+        startButton.setDisable(false);
+      }
+      else {
+        fileLabel.setText("Invalid file"); // use languageController later
+      }
+    }
+  }
+
+  private String getRelativePath(File file, String baseFolder) {
+    // This method is adapted from file upload code by Will He in the Cell Society project.
+    File baseDir = new File(System.getProperty("user.dir"), baseFolder);
+    String absolutePath = file.getAbsolutePath();
+    String basePath = baseDir.getAbsolutePath();
+
+    if (absolutePath.startsWith(basePath)) {
+      return "data/" + absolutePath.substring(basePath.length() + 1).replace("\\", "/");
+    }
+    return null;
+  }
+
+  private void showErrorDialog(String title, String message) {
+    // This method is adapted from file upload code by Will He in the Cell Society project.
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle(title);
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.showAndWait();
+  }
+
+  /**
+   * Resets file label and disables start button.
+   */
+  public void resetUploadSection() {
+    fileLabel.setText("No file selected");
+    startButton.setDisable(true);
+  }
 }

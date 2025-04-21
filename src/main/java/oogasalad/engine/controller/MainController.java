@@ -72,6 +72,7 @@ public class MainController {
       myGameSelectorView = new GameSelectorView(this);
     }
     if (!myRoot.getChildren().contains(myGameSelectorView.getRoot())) {
+      myGameSelectorView.resetUploadSection();
       myRoot.getChildren().add(myGameSelectorView.getRoot());
     }
   }
