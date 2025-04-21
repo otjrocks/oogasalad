@@ -15,7 +15,7 @@ public class EntityPlacementTest {
 
   @BeforeEach
   public void setUp() {
-    testEntityType = new EntityTypeRecord("Enemy", null, null, null, 1.0);
+    testEntityType = new EntityTypeRecord("Enemy", null, null, 1.0);
     testPlacement = new EntityPlacement(testEntityType, 30.0, 40.0, "Default");
   }
 
@@ -28,7 +28,7 @@ public class EntityPlacementTest {
 
   @Test
   public void testGetSetEntityData() {
-    EntityTypeRecord newEntityType = new EntityTypeRecord("Player", null, null, null, 1.0);
+    EntityTypeRecord newEntityType = new EntityTypeRecord("Player", null, null, 1.0);
     testPlacement.setResolvedEntityType(newEntityType);
     assertEquals(newEntityType, testPlacement.getType());
     assertEquals("Player", testPlacement.getType().type());

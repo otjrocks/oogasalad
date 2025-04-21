@@ -20,6 +20,7 @@ import oogasalad.authoring.model.LevelDraft;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,11 +68,13 @@ public class CanvasViewTest extends DukeApplicationTest {
 
     interact(() -> canvasView.handleEntityMousePressed(press));
 
-    assertTrue(canvasView.getTileHighlighter().isSelectionVisible(), "Should show selection before removal");
+    assertTrue(canvasView.getTileHighlighter().isSelectionVisible(),
+        "Should show selection before removal");
 
     interact(() -> canvasView.removeEntityVisual(placement));
 
-    assertFalse(canvasView.getTileHighlighter().isSelectionVisible(), "Selection should be hidden after removal");
+    assertFalse(canvasView.getTileHighlighter().isSelectionVisible(),
+        "Selection should be hidden after removal");
   }
 
   @Test
@@ -89,7 +92,8 @@ public class CanvasViewTest extends DukeApplicationTest {
 
     interact(() -> canvasView.handleEntityMousePressed(press));
 
-    assertTrue(canvasView.getTileHighlighter().isSelectionVisible(), "Selection should be shown after click");
+    assertTrue(canvasView.getTileHighlighter().isSelectionVisible(),
+        "Selection should be shown after click");
     assertEquals(80.0, canvasView.getTileHighlighter().getSelectionX(), 0.1);
     assertEquals(80.0, canvasView.getTileHighlighter().getSelectionY(), 0.1);
   }
@@ -105,7 +109,8 @@ public class CanvasViewTest extends DukeApplicationTest {
         getClass().getResource("/mock.png").toExternalForm(), 28, 28, 4, 1.0
     );
 
-    ModeConfigRecord modeConfig = new ModeConfigRecord("Default", null, imageConfig);
+    ModeConfigRecord modeConfig = new ModeConfigRecord("Default", null,
+        new NoneControlConfigRecord(), imageConfig);
 
     Map<String, ModeConfigRecord> modes = new HashMap<>();
     modes.put("Default", modeConfig);

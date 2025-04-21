@@ -51,13 +51,12 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
 
     EntityPropertiesRecord props = new EntityPropertiesRecord(
         "Mode 1",
-        controlConfig,
         100.0,
         List.of()
     );
 
     // --- Create ModeConfig ---
-    mode = new ModeConfigRecord("Default", props, imageConfig);
+    mode = new ModeConfigRecord("Default", props, new NoneControlConfigRecord(), imageConfig);
 
     stage.show();
   }
@@ -80,7 +79,6 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
     // --- Create EntityType ---
     EntityTypeRecord entity = new EntityTypeRecord(
         "Ghost",
-        new KeyboardControlConfigRecord(),
         Map.of("Default", mode),
         List.of(), 1.0
     );
@@ -99,10 +97,10 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
   public void selectEntityType_ClickTile_CallsSelectEntityType() {
     EntityTypeRecord entity = new EntityTypeRecord(
         "Pacman",
-        new NoneControlConfigRecord(),
         Map.of("Default", mode),
         List.of(), 1.0
-    );    runAsJFXAction(() -> view.updateEntities(List.of(entity)));
+    );
+    runAsJFXAction(() -> view.updateEntities(List.of(entity)));
 
     VBox tile = (VBox) ((FlowPane) lookup(".flow-pane").query()).getChildren().getFirst();
     runAsJFXAction(() -> clickOn(tile));
@@ -114,7 +112,6 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
   public void highlightEntityTile_HighlightsCorrectTile() {
     EntityTypeRecord entity = new EntityTypeRecord(
         "Wall",
-        new NoneControlConfigRecord(),
         Map.of("Default", mode),
         List.of(), 1.0
     );
