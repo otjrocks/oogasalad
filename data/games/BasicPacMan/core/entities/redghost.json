@@ -1,15 +1,7 @@
 {
   "entityType": {
     "name": "RedGhost",
-    "controlConfig": {
-      "controlStrategy": "Target",
-      "pathFindingStrategy": "Euclidean",
-      "targetCalculationConfig": {
-        "targetCalculationStrategy": "TargetEntity",
-        "targetType": "Pacman"
-      }
-    },
-    "movementSpeed": 1
+    "movementSpeed": 1.0
   },
   "modes": [
     {
@@ -20,6 +12,14 @@
         "tileHeight": 28,
         "tilesToCycle": 4,
         "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "Target",
+        "pathFindingStrategy": "Euclidean",
+        "targetCalculationConfig": {
+          "targetCalculationStrategy": "TargetEntity",
+          "targetType": "Pacman"
+        }
       }
     }, {
       "name": "Frightened",

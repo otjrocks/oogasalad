@@ -33,7 +33,7 @@ class EntityTest {
     mockPlacement = mock(EntityPlacement.class);
     mockInput = mock(GameInputManager.class);
     mockMap = mock(GameMapInterface.class);
-    when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", null, null, null, 1));
+    when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", null, null, 1));
     entity = new Entity(mockInput, mockPlacement, mockMap);
   }
 
@@ -96,7 +96,7 @@ class EntityTest {
 
   @Test
   void testCanMove_validAndInvalidMoveHorizontal_returnsTrueThenFalse() {
-    when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", null, null, null, 1));
+    when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", null, null, 1));
     when(mockPlacement.getY()).thenReturn(4.00005);
     assertTrue(entity.canMove(Direction.R));
     when(mockPlacement.getY()).thenReturn(4.5);

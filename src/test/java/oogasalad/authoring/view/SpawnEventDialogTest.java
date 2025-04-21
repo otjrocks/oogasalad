@@ -36,7 +36,6 @@ public class SpawnEventDialogTest extends DukeApplicationTest {
 
     EntityTypeRecord entity = new EntityTypeRecord(
         "Cherry",
-        new KeyboardControlConfigRecord(),
         modes,
         Collections.emptyList(),
         1.0
@@ -98,7 +97,8 @@ public class SpawnEventDialogTest extends DukeApplicationTest {
   private ModeConfigRecord dummyMode(String name) {
     return new ModeConfigRecord(
         name,
-        new EntityPropertiesRecord(name, new KeyboardControlConfigRecord(), 1.0, Collections.emptyList()),
+        new EntityPropertiesRecord(name, 1.0, Collections.emptyList()),
+        new KeyboardControlConfigRecord(),
         new ImageConfigRecord("file:test.png", 32, 32, 4, 1.0)
     );
   }

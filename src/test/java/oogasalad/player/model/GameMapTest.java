@@ -44,7 +44,7 @@ class GameMapTest extends DukeApplicationTest {
   @BeforeEach
   void setUp() {
     myGameMap = new GameMap(width, height);
-    EntityTypeRecord data = new EntityTypeRecord("test", null, null, null, 1.0);
+    EntityTypeRecord data = new EntityTypeRecord("test", null, null, 1.0);
     EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
     myEntity = EntityFactory.createEntity(myInput, placement, myGameMap);
   }
@@ -94,7 +94,7 @@ class GameMapTest extends DukeApplicationTest {
   @Test
   void iterator_ensureEntityIteratorContainsAddedEntities_Success() {
     assertDoesNotThrow(() -> myGameMap.addEntity(myEntity));
-    EntityTypeRecord data = new EntityTypeRecord("test", null, null, null, 1.0);
+    EntityTypeRecord data = new EntityTypeRecord("test", null, null, 1.0);
     EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
     Entity secondEntity = EntityFactory.createEntity(myInput, placement, myGameMap);
     assertDoesNotThrow(() -> myGameMap.addEntity(secondEntity));
@@ -137,7 +137,7 @@ class GameMapTest extends DukeApplicationTest {
   void isNotBlocked_attemptNonBlockingEntityAtPosition_ReturnsTrue()
       throws InvalidPositionException {
     // Create an entity that does NOT block anything
-    EntityTypeRecord data = new EntityTypeRecord("nonBlocker", null, null, null, 1.0);
+    EntityTypeRecord data = new EntityTypeRecord("nonBlocker", null, null, 1.0);
     EntityPlacement placement = new EntityPlacement(data, 3, 3, "Default");
     Entity nonBlockingEntity = EntityFactory.createEntity(myInput, placement, myGameMap);
     myGameMap.addEntity(nonBlockingEntity);
@@ -148,7 +148,7 @@ class GameMapTest extends DukeApplicationTest {
   @Test
   void isNotBlocked_attemptBlockingEntityAtPosition_ReturnsFalse() throws InvalidPositionException {
     // Create an entity that blocks "Player"
-    EntityTypeRecord data = new EntityTypeRecord("blocker", null, null, List.of("Player"), 1.0);
+    EntityTypeRecord data = new EntityTypeRecord("blocker", null, List.of("Player"), 1.0);
     EntityPlacement placement = new EntityPlacement(data, 4, 4, "Default");
     Entity blockingEntity = EntityFactory.createEntity(myInput, placement, myGameMap);
     myGameMap.addEntity(blockingEntity);

@@ -1,10 +1,7 @@
 {
   "entityType": {
     "name": "PowerPellet",
-    "controlConfig": {
-      "controlStrategy": "None"
-    },
-    "movementSpeed": 0
+    "movementSpeed": 0.0
   },
   "modes": [
     {
@@ -15,6 +12,9 @@
         "tileHeight": 28,
         "tilesToCycle": 1,
         "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "None"
       }
     }
   ]

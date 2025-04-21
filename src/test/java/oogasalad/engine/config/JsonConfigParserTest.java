@@ -238,14 +238,6 @@ class JsonConfigParserTest {
         {
              "entityType": {
                "name": "RedGhost",
-               "controlConfig": {
-                 "controlStrategy": "Target",
-                 "pathFindingStrategy": "Euclidean",
-                 "targetCalculationConfig": {
-                   "targetCalculationStrategy": "TargetEntity",
-                   "targetType": "Pacman"
-                 }
-               },
                "movementSpeed": 90
              },
              "modes": [

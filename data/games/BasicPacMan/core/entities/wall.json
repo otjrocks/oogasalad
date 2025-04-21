@@ -1,17 +1,14 @@
 {
   "entityType": {
     "name": "Wall",
-    "controlConfig": {
-      "controlStrategy": "None"
-    },
-    "movementSpeed": 0,
     "blocks": [
       "Pacman",
       "RedGhost",
       "BlueGhost",
       "PinkGhost",
       "OrangeGhost"
-    ]
+    ],
+    "movementSpeed": 1.0
   },
   "modes": [
     {
@@ -22,6 +19,9 @@
         "tileHeight": 8,
         "tilesToCycle": 1,
         "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "None"
       }
     }
   ]

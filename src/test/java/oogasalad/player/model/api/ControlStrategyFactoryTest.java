@@ -46,13 +46,10 @@ public class ControlStrategyFactoryTest {
   }
 
   private void mockControlConfig(ControlConfigInterface config) {
-    EntityPropertiesRecord mockProperties = mock(EntityPropertiesRecord.class);
+    ModeConfigRecord mockProperties = mock(ModeConfigRecord.class);
     when(mockProperties.controlConfig()).thenReturn(config);
 
-    ModeConfigRecord mockModeConfig = mock(ModeConfigRecord.class);
-    when(mockModeConfig.entityProperties()).thenReturn(mockProperties);
-
-    when(mockType.modes()).thenReturn(Map.of(mockMode, mockModeConfig));
+    when(mockType.modes()).thenReturn(Map.of(mockMode, mockProperties));
   }
 
   @Test
