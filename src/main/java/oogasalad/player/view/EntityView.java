@@ -1,6 +1,5 @@
 package oogasalad.player.view;
 
-import static oogasalad.player.view.GamePlayerView.CURRENT_GAME_CONFIG_PATH;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,6 +23,8 @@ import oogasalad.player.model.Entity;
  * @author Troy Ludwig
  */
 public class EntityView {
+
+  public static final String CURRENT_GAME_CONFIG_PATH = "data/games/BasicPacMan/";
 
   private static final Map<String, Image> SPRITE_CACHE = new HashMap<>();
   private final Entity entity;

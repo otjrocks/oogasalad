@@ -20,6 +20,7 @@ import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.GameConfigRecord;
+import oogasalad.engine.records.config.model.MetadataRecord;
 import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.LoggingManager;
@@ -155,15 +156,14 @@ public class GameSelectorView {
     Button randomizeButton = new Button("Randomize Levels");
     randomizeButton.getStyleClass().add(smallButtonString);
     randomizeButton.setOnAction(e -> {
-      // doesn't do anything currently
+      myMainController.hideGameSelectorView();
+      myMainController.showGamePlayerView(gameNameToFolder.get(gameName), true);
     });
 
     card.getChildren().addAll(image, name, randomizeButton);
     card.setOnMouseClicked(e -> {
-      // TODO: Load game based on gameName
-      // to be refactored to accommodate different games
       myMainController.hideGameSelectorView();
-      myMainController.showGamePlayerView();
+      myMainController.showGamePlayerView(gameNameToFolder.get(gameName), false);
     });
 
     return card;
