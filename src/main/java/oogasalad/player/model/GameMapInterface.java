@@ -120,5 +120,8 @@ public interface GameMapInterface extends Iterable<Entity> {
    */
   boolean contains(Entity entity);
 
+  /**
+   * Returns the current entities undergoing a temporary mode change
+   */
   Map<Entity, ModeChangeInfo> getActiveModeChanges();
 }

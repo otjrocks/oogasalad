@@ -16,6 +16,15 @@ public class TemporaryModeChangeStrategy implements CollisionStrategyInterface {
     private final double duration;
     private final double transitionTime;
 
+    /**
+     * Temporarily changes the mode of an entity
+     *
+     * @param entityType: The type of entity you want to change
+     * @param temporaryMode: What mode it should be changed to
+     * @param transitionMode: A transition mode for returning to default
+     * @param durationSeconds: The amount of time the entity to take before returning to default
+     * @param transitionTime: The length of the transition period
+     */
     public TemporaryModeChangeStrategy(String entityType, String temporaryMode,
                                        String transitionMode, double durationSeconds, double transitionTime) {
         this.entityType = entityType;

@@ -154,6 +154,9 @@ public class GameMap implements GameMapInterface {
     return myEntityList.contains(entity);
   }
 
+  /**
+   * Returns the current entities undergoing a temporary mode change
+   */
   public Map<Entity, ModeChangeInfo> getActiveModeChanges() {
     return activeModeChanges;
   }
