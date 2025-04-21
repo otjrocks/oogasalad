@@ -100,23 +100,8 @@ public class EntityTypeEditorView {
       }
     });
 
-    blocksList.getChildren().clear();
+    populateBlocksList(this.current);
 
-    String currentName = type.type();
-    Map<String, EntityTypeRecord> allTypes = controller.getModel().getEntityTypeMap();
-
-    for (String otherType : allTypes.keySet()) {
-      if (otherType.equals(currentName)) continue; // skip self
-
-      CheckBox box = new CheckBox(otherType);
-      box.setSelected(type.blocks() != null && type.blocks().contains(otherType));
-      box.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-        commitChanges();
-      });
-
-      blocksList.getChildren().add(box);
-
-    }
 
     // Refresh mode list UI
     modeList.getChildren().clear();
@@ -129,6 +114,26 @@ public class EntityTypeEditorView {
       modeList.getChildren().addAll(label, editButton);
     }
   }
+
+  private void populateBlocksList(EntityTypeRecord type) {
+    blocksList.getChildren().clear();
+
+    String currentName = type.type();
+    Map<String, EntityTypeRecord> allTypes = controller.getModel().getEntityTypeMap();
+
+    for (String otherType : allTypes.keySet()) {
+      if (otherType.equals(currentName)) continue;
+
+      CheckBox box = new CheckBox(otherType);
+      box.setSelected(type.blocks() != null && type.blocks().contains(otherType));
+      box.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+        commitChanges();
+      });
+
+      blocksList.getChildren().add(box);
+    }
+  }
+
 
 
   /**
