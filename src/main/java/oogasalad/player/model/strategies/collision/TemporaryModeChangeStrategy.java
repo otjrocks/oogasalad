@@ -30,10 +30,13 @@ public class TemporaryModeChangeStrategy implements CollisionStrategyInterface {
         double currentTime = context.gameState().getTimeElapsed();
 
         for (Entity entity : context.gameMap()) {
-            if (entity.getEntityPlacement().getTypeString().equals(entityType)
-                    && !context.gameMap().getActiveModeChanges().containsKey(entity)) {
+            if (entity.getEntityPlacement().getTypeString().equals(entityType)) {
 
                 String originalMode = entity.getEntityPlacement().getMode();
+                if(context.gameMap().getActiveModeChanges().containsKey(entity)) {
+                    originalMode = context.gameMap().getActiveModeChanges().get(entity).originalMode;
+                    context.gameMap().getActiveModeChanges().remove(entity);
+                }
                 entity.getEntityPlacement().setMode(temporaryMode);
 
                 context.gameMap().getActiveModeChanges().put(entity,

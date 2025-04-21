@@ -352,11 +352,12 @@
       "type" : "UpdateScore",
       "amount" : 200
     }, {
-      "type" : "ReturnToSpawnLocation"
-    }, {
-      "type" : "ChangeModeForType",
-      "entityType" : "RedGhost",
-      "newMode" : "Dead"
+      "type" : "TemporaryModeChange",
+      "entityType": "RedGhost",
+      "temporaryMode" : "Dead",
+      "transitionMode" : "Dead",
+      "duration" : 5,
+      "transitionTime" : 1
     } ],
     "modeB" : "Default",
     "eventsB" : [ ]
@@ -368,9 +369,12 @@
       "type" : "UpdateScore",
       "amount" : 200
     }, {
-      "type" : "ChangeModeForType",
-      "entityType" : "OrangeGhost",
-      "newMode" : "Dead"
+      "type" : "TemporaryModeChange",
+      "entityType": "OrangeGhost",
+      "temporaryMode" : "Dead",
+      "transitionMode" : "Dead",
+      "duration" : 5,
+      "transitionTime" : 1
     } ],
     "modeB" : "Default",
     "eventsB" : [ {
@@ -384,9 +388,12 @@
       "type" : "UpdateScore",
       "amount" : 200
     }, {
-      "type" : "ChangeModeForType",
-      "entityType" : "BlueGhost",
-      "newMode" : "Dead"
+      "type" : "TemporaryModeChange",
+      "entityType": "BlueGhost",
+      "temporaryMode" : "Dead",
+      "transitionMode" : "Dead",
+      "duration" : 5,
+      "transitionTime" : 1
     } ],
     "modeB" : "Default",
     "eventsB" : [ {
@@ -400,9 +407,12 @@
       "type" : "UpdateScore",
       "amount" : 200
     }, {
-      "type" : "ChangeModeForType",
-      "entityType" : "PinkGhost",
-      "newMode" : "Dead"
+      "type" : "TemporaryModeChange",
+      "entityType": "PinkGhost",
+      "temporaryMode" : "Dead",
+      "transitionMode" : "Dead",
+      "duration" : 5,
+      "transitionTime" : 1
     } ],
     "modeB" : "Default",
     "eventsB" : [ {
@@ -418,9 +428,12 @@
     }, {
       "type" : "ReturnToSpawnLocation"
     }, {
-      "type" : "ChangeModeForType",
-      "entityType" : "RedGhost",
-      "newMode" : "Dead"
+      "type" : "TemporaryModeChange",
+      "entityType": "RedGhost",
+      "temporaryMode" : "Dead",
+      "transitionMode" : "Dead",
+      "duration" : 5,
+      "transitionTime" : 1
     } ],
     "modeB" : "Default",
     "eventsB" : [ ]
@@ -432,11 +445,12 @@
       "type" : "UpdateScore",
       "amount" : 200
     }, {
-      "type" : "ReturnToSpawnLocation"
-    }, {
-      "type" : "ChangeModeForType",
-      "entityType" : "BlueGhost",
-      "newMode" : "Dead"
+      "type" : "TemporaryModeChange",
+      "entityType": "BlueGhost",
+      "temporaryMode" : "Dead",
+      "transitionMode" : "Dead",
+      "duration" : 5,
+      "transitionTime" : 1
     } ],
     "modeB" : "Default",
     "eventsB" : [ ]
@@ -448,11 +462,12 @@
       "type" : "UpdateScore",
       "amount" : 200
     }, {
-      "type" : "ReturnToSpawnLocation"
-    }, {
-      "type" : "ChangeModeForType",
-      "entityType" : "PinkGhost",
-      "newMode" : "Dead"
+      "type" : "TemporaryModeChange",
+      "entityType": "PinkGhost",
+      "temporaryMode" : "Dead",
+      "transitionMode" : "Dead",
+      "duration" : 5,
+      "transitionTime" : 1
     } ],
     "modeB" : "Default",
     "eventsB" : [ ]
@@ -464,11 +479,12 @@
       "type" : "UpdateScore",
       "amount" : 200
     }, {
-      "type" : "ReturnToSpawnLocation"
-    }, {
-      "type" : "ChangeModeForType",
-      "entityType" : "OrangeGhost",
-      "newMode" : "Dead"
+      "type" : "TemporaryModeChange",
+      "entityType": "OrangeGhost",
+      "temporaryMode" : "Dead",
+      "transitionMode" : "Dead",
+      "duration" : 5,
+      "transitionTime" : 1
     } ],
     "modeB" : "Default",
     "eventsB" : [ ]
