@@ -1,7 +1,6 @@
 {
   "entityType": {
-    "name": "PinkGhost",
-    "movementSpeed": 1.0
+    "name": "PinkGhost"
   },
   "modes": [
     {
@@ -21,7 +20,8 @@
           "targetType": "Pacman",
           "tilesAhead": 4
         }
-      }
+      },
+      "movementSpeed": 1.0
     }, {
       "name": "Frightened",
       "image": {
@@ -39,7 +39,8 @@
           "targetX": 14,
           "targetY": 14
         }
-      }
+      },
+      "movementSpeed": 1.0
     },
     {
       "name": "Dead",
@@ -58,7 +59,8 @@
           "targetX": 14,
           "targetY": 14
         }
-      }
+      },
+      "movementSpeed": 1.0
     }, {
       "name": "Flashing",
       "image": {
@@ -76,7 +78,8 @@
           "targetX": 14,
           "targetY": 14
         }
-      }
+      },
+      "movementSpeed": 1.0
     }
   ]
 }

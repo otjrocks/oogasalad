@@ -396,7 +396,7 @@ public class JsonConfigParser implements ConfigParserInterface {
       for (ModeConfigRecord mode : entity.modes()) {
         ModeConfigRecord modeConfig = new ModeConfigRecord(mode.name(), mode.entityProperties(),
             mode.controlConfig(),
-            mode.image());
+            mode.image(), mode.movementSpeed());
         modes.put(mode.name(), modeConfig);
       }
 
@@ -415,8 +415,7 @@ public class JsonConfigParser implements ConfigParserInterface {
     return new EntityTypeRecord(
         entity.name(),
         modes,
-        entity.entityProperties().blocks(),
-        entity.entityProperties().movementSpeed()
+        entity.entityProperties().blocks()
     );
 
   }
@@ -573,7 +572,8 @@ public class JsonConfigParser implements ConfigParserInterface {
             ImageConfigRecord.class);
         ControlConfigInterface controlConfig = mapper.treeToValue(modeNode.get("controlConfig"),
             ControlConfigInterface.class);
-        modes.add(new ModeConfigRecord(name, overrideProps, controlConfig, image));
+        Double speed = modeNode.get("movementSpeed").asDouble();
+        modes.add(new ModeConfigRecord(name, overrideProps, controlConfig, image, speed));
       }
       return modes;
     } catch (JsonProcessingException e) {
@@ -586,8 +586,6 @@ public class JsonConfigParser implements ConfigParserInterface {
       JsonNode modeNode) throws JsonProcessingException {
     final String BLOCKS = "blocks";
 
-    double movementSpeed = defaultProps.movementSpeed();
-
     List<String> blocks = modeNode.has(BLOCKS)
         ? mapper.convertValue(modeNode.get(BLOCKS),
         mapper.getTypeFactory().constructCollectionType(List.class, String.class))
@@ -595,7 +593,6 @@ public class JsonConfigParser implements ConfigParserInterface {
 
     return new EntityPropertiesRecord(
         modeName,
-        movementSpeed,
         blocks
     );
   }

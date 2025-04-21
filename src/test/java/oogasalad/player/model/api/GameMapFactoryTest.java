@@ -68,10 +68,10 @@ public class GameMapFactoryTest {
     // ChatGPT on how to mock entity factory correctly
     try (MockedStatic<EntityFactory> mockedFactory = mockStatic(EntityFactory.class)) {
       mockedFactory.when(() -> EntityFactory.createEntity(eq(inputManager), eq(entityPlacement1),
-              any(GameMapInterface.class)))
+              any(GameMapInterface.class), mock(ConfigModelRecord.class)))
           .thenReturn(entity1);
       mockedFactory.when(() -> EntityFactory.createEntity(eq(inputManager), eq(entityPlacement2),
-              any(GameMapInterface.class)))
+              any(GameMapInterface.class), mock(ConfigModelRecord.class)))
           .thenReturn(entity2);
 
       GameMapInterface gameMap = GameMapFactory.createGameMap(inputManager, configModel, 0);
@@ -106,10 +106,10 @@ public class GameMapFactoryTest {
     // ChatGPT on how to mock entity factory correctly
     try (MockedStatic<EntityFactory> mockedFactory = mockStatic(EntityFactory.class)) {
       mockedFactory.when(() -> EntityFactory.createEntity(eq(inputManager), eq(entityPlacement1),
-              any(GameMapInterface.class)))
+              any(GameMapInterface.class), mock(ConfigModelRecord.class)))
           .thenReturn(entity1);
       mockedFactory.when(() -> EntityFactory.createEntity(eq(inputManager), eq(entityPlacement2),
-              any(GameMapInterface.class)))
+              any(GameMapInterface.class), mock(ConfigModelRecord.class)))
           .thenReturn(entity2);
 
       assertThrows(InvalidPositionException.class,

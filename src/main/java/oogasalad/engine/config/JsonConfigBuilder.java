@@ -200,7 +200,6 @@ public class JsonConfigBuilder {
     ObjectNode entityTypeNode = root.putObject(ENTITY_TYPE);
 
     addEntityBasics(type, entityTypeNode);
-    addMovementSpeed(type, entityTypeNode);
     addModesArray(type, root, mapper);
 
     return root;
@@ -219,7 +218,7 @@ public class JsonConfigBuilder {
   private void addMovementSpeed(EntityTypeRecord type, ObjectNode entityTypeNode) {
     ModeConfigRecord defaultMode = type.modes().get("Default");
     if (defaultMode != null) {
-      entityTypeNode.put("movementSpeed", defaultMode.entityProperties().movementSpeed());
+      entityTypeNode.put("movementSpeed", defaultMode.movementSpeed());
     }
   }
 

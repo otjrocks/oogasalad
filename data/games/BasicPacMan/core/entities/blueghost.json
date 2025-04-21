@@ -1,7 +1,6 @@
 {
   "entityType": {
-    "name": "BlueGhost",
-    "movementSpeed": 1.0
+    "name": "BlueGhost"
   },
   "modes": [
     {
@@ -22,7 +21,8 @@
           "tilesAhead": 2,
           "teamEntityType": "PinkGhost"
         }
-      }
+      },
+      "movementSpeed": 1.0
     }, {
       "name": "Frightened",
       "image": {
@@ -40,7 +40,8 @@
           "targetX": 14,
           "targetY": 14
         }
-      }
+      },
+      "movementSpeed": 1.0
     },
     {
       "name": "Dead",
@@ -59,7 +60,8 @@
           "targetX": 14,
           "targetY": 14
         }
-      }
+      },
+      "movementSpeed": 1.0
     },
     {
       "name": "Flashing",
@@ -78,7 +80,8 @@
           "targetX": 14,
           "targetY": 14
         }
-      }
+      },
+      "movementSpeed": 1.0
     }
   ]
 }

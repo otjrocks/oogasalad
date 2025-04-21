@@ -67,7 +67,7 @@ public class AuthoringController {
 
     EntityTypeRecord newType = new EntityTypeRecord(newTypeName,
         defaultModeMap(),
-        null, 1.0); // Update this to use no hardcoded speed value.
+        null); // Update this to use no hardcoded speed value.
     model.addEntityType(newType);
     updateEntitySelector();
     selectEntityType(newTypeName);
@@ -187,11 +187,10 @@ public class AuthoringController {
 
     EntityPropertiesRecord entityProperties = new EntityPropertiesRecord(
         DEFAULT_MODE,
-        100.0,
         List.of() // No blocks
     );
 
-    return new ModeConfigRecord(DEFAULT_MODE, entityProperties, defaultControlConfig, imageConfig);
+    return new ModeConfigRecord(DEFAULT_MODE, entityProperties, defaultControlConfig, imageConfig, 1.0);
   }
 
 

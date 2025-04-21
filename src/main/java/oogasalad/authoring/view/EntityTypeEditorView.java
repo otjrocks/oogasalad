@@ -114,8 +114,7 @@ public class EntityTypeEditorView {
     EntityTypeRecord newEntity = new EntityTypeRecord(
         typeField.getText(),
         current.modes(),
-        current.blocks(),
-        current.speed()
+        current.blocks()
     );
 
     controller.getModel().updateEntityType(current.type(), newEntity);
@@ -141,8 +140,7 @@ public class EntityTypeEditorView {
       current = new EntityTypeRecord(
           current.type(),
           newModes,
-          current.blocks(),
-          current.speed()
+          current.blocks()
       );
 
       setEntityType(current); // this pushes it wherever it needs to go
@@ -168,8 +166,7 @@ public class EntityTypeEditorView {
       EntityTypeRecord updated = new EntityTypeRecord(
           current.type(),
           newModes,
-          current.blocks(),
-          current.speed()
+          current.blocks()
       );
 
       // 2. Replace in model
