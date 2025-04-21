@@ -45,7 +45,7 @@
     {
       "name": "Dead",
       "image": {
-        "imagePath": "assets/dead.png",
+        "imagePath": "assets/eyeghost.png",
         "tileWidth": 16,
         "tileHeight": 16,
         "tilesToCycle": 1,
