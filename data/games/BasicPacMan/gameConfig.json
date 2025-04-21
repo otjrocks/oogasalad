@@ -260,9 +260,10 @@
     "modeA" : "Default",
     "entityB" : "powerpellet",
     "eventsA" : [ {
-      "type" : "ChangeModeForType",
+      "type" : "TemporaryModeChange",
       "entityType" : "RedGhost",
-      "newMode" : "Frightened"
+      "temporaryMode" : "Frightened",
+      "duration" : 5
     } ],
     "modeB" : "Default",
     "eventsB" : [ ]

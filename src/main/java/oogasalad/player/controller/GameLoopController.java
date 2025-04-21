@@ -1,6 +1,7 @@
 package oogasalad.player.controller;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import javafx.animation.AnimationTimer;
 import oogasalad.engine.config.EntityPlacement;
@@ -12,6 +13,7 @@ import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.model.Entity;
 import oogasalad.player.model.api.SpawnEventStrategyFactory;
+import oogasalad.player.model.strategies.collision.TemporaryModeChangeStrategy;
 import oogasalad.player.model.strategies.spawnevent.SpawnEventStrategyInterface;
 import oogasalad.player.view.GameMapView;
 
@@ -101,7 +103,25 @@ public class GameLoopController {
     //Updates the game map and entity positions
     myGameContext.gameMap().update();
     myGameMapView.update();
+    handleModeChanges();
     handleSpawnEvents();
+  }
+
+  private void handleModeChanges() {
+
+    double currentTime = myGameContext.gameState().getTimeElapsed();
+    Iterator<Map.Entry<Entity, TemporaryModeChangeStrategy.ModeChangeInfo>> iterator =
+            myGameContext.gameMap().getActiveModeChanges().entrySet().iterator();
+
+    while (iterator.hasNext()) {
+      Map.Entry<Entity, TemporaryModeChangeStrategy.ModeChangeInfo> entry = iterator.next();
+      Entity entity = entry.getKey();
+      TemporaryModeChangeStrategy.ModeChangeInfo info = entry.getValue();
+      if (currentTime >= info.revertTime) {
+        entity.getEntityPlacement().setMode(info.originalMode);
+        iterator.remove();
+      }
+    }
   }
 
   private void handleSpawnEvents() {
