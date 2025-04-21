@@ -23,7 +23,7 @@ public class GamePlayerView {
   public static final String GAME_FOLDER = "data/games/";
   public static final String GAME_CONFIG_JSON = "gameConfig.json";
 
-  public final String gameFolderName;
+  private final String gameFolderName;
   private final StackPane myPane;
   private final MainController myMainController;
   private final GameStateInterface myGameState;
