@@ -13,10 +13,20 @@
       "items": {
         "type": "number"
       }
+    },
+    "lives": {
+      "type": "integer"
+    },
+    "levelOrder": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
     }
   },
   "required": [
     "saveName",
-    "currentLevel"
+    "currentLevel",
+    "lives"
   ]
 }
