@@ -117,6 +117,9 @@ public class GameLoopController {
       Map.Entry<Entity, TemporaryModeChangeStrategy.ModeChangeInfo> entry = iterator.next();
       Entity entity = entry.getKey();
       TemporaryModeChangeStrategy.ModeChangeInfo info = entry.getValue();
+      if(currentTime >= info.transitionTime && currentTime < info.revertTime){
+        entity.getEntityPlacement().setMode(info.transitionMode);
+      }
       if (currentTime >= info.revertTime) {
         entity.getEntityPlacement().setMode(info.originalMode);
         iterator.remove();

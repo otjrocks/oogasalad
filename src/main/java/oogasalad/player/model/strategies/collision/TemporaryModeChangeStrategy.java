@@ -12,13 +12,17 @@ public class TemporaryModeChangeStrategy implements CollisionStrategyInterface {
 
     private final String entityType;
     private final String temporaryMode;
+    private final String transitionMode;
     private final double duration;
+    private final double transitionTime;
 
-    public TemporaryModeChangeStrategy(String entityType, String temporaryMode, double durationSeconds) {
+    public TemporaryModeChangeStrategy(String entityType, String temporaryMode,
+                                       String transitionMode, double durationSeconds, double transitionTime) {
         this.entityType = entityType;
-        System.out.println(entityType);
         this.temporaryMode = temporaryMode;
         this.duration = durationSeconds;
+        this.transitionMode = transitionMode;
+        this.transitionTime = transitionTime;
     }
 
     @Override
@@ -33,18 +37,22 @@ public class TemporaryModeChangeStrategy implements CollisionStrategyInterface {
                 entity.getEntityPlacement().setMode(temporaryMode);
 
                 context.gameMap().getActiveModeChanges().put(entity,
-                        new ModeChangeInfo(originalMode, currentTime + duration));
+                        new ModeChangeInfo(originalMode, transitionMode, currentTime + duration, currentTime + duration - transitionTime));
             }
         }
     }
 
     public static class ModeChangeInfo {
         public String originalMode;
+        public String transitionMode;
+        public double transitionTime;
         public double revertTime;
 
-        ModeChangeInfo(String originalMode, double revertTime) {
+        ModeChangeInfo(String originalMode, String transitionMode, double revertTime, double transitionTime) {
             this.originalMode = originalMode;
+            this.transitionMode = transitionMode;
             this.revertTime = revertTime;
+            this.transitionTime = transitionTime;
         }
     }
 }
