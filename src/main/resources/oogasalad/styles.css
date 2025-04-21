@@ -124,7 +124,6 @@ Label, Text {
 .entity-selector-view .button {
   -fx-font-size: 14px;
   -fx-padding: 10px 20px;
-  -fx-min-width: 400px;
   -fx-background-color: -fx-primary;
   -fx-text-fill: -fx-secondary;
   -fx-border-color: -fx-secondary;

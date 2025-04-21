@@ -17,6 +17,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.records.config.ModeConfigRecord;
@@ -68,25 +70,28 @@ public class EntityTypeEditorView {
     controlTypeBox.setValue("None");
     controlTypeBox.setOnAction(e -> updateControlParameterFields());
 
-    controlTypeParameters = new VBox(5);
+    controlTypeParameters = new VBox(2);
     controlTypeParameterFields = new ArrayList<>();
     targetStrategyParameterFields = new ArrayList<>();
 
     Button saveCollisionButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
     saveCollisionButton.setOnAction(e -> commitChanges());
 
-    modeList = new VBox(5);
+    modeList = new VBox(2);
 
     Button addModeButton = new Button(LanguageManager.getMessage("ADD_MODE"));
     addModeButton.setOnAction(e -> openAddModeDialog());
 
     Button deleteButton = new Button("Delete Entity Type");
     deleteButton.getStyleClass().add("delete-button");
-    deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
     deleteButton.setOnAction(e -> deleteEntityType());
 
     ScrollPane controlTypeScrollPane = new ScrollPane(controlTypeParameters);
     controlTypeScrollPane.setFitToWidth(true);
+    controlTypeScrollPane.setFitToHeight(false);
+
+// Constrain the scroll height to avoid layout push
+    controlTypeScrollPane.setMaxHeight(200);
 
     controlTypeScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     controlTypeScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -144,7 +149,6 @@ public class EntityTypeEditorView {
     targetStrategyParameterFields.clear();
     controlTypeComboBoxes.clear();
 
-    Map<String, Class<?>> fieldTypes = ControlManager.getControlRequiredFields(type);
     List<String> fieldOrder = ControlManager.getControlRequiredFieldsOrder(type);
 
     for (String field : fieldOrder) {
