@@ -6,7 +6,6 @@ import oogasalad.player.model.Entity;
 
 /**
  * Temporarily changes the mode of all entities of a given type, and reverts after a duration.
- * This version is designed to work without multithreading, using elapsedTime to track reversion.
  */
 public class TemporaryModeChangeStrategy implements CollisionStrategyInterface {
 
