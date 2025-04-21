@@ -19,26 +19,37 @@ import oogasalad.player.model.GameStateInterface;
  */
 public class GamePlayerView {
 
-  public static final String CURRENT_GAME_CONFIG_PATH = "data/games/BasicPacMan/";
+
+  public static final String GAME_FOLDER = "data/games/";
   public static final String GAME_CONFIG_JSON = "gameConfig.json";
+
+  private final String gameFolderName;
   private final StackPane myPane;
   private final MainController myMainController;
   private final GameStateInterface myGameState;
+  private final boolean isRandomized;
   private GameView myGameView;
   private ConfigModelRecord myConfigModel = null;
 
   /**
    * Create the Game Player View.
+   *
+   * @param gameFolderName name of game folder to create
+   * @param randomized     if levels should be randomized
    */
-  public GamePlayerView(MainController controller, GameStateInterface gameState) {
+  public GamePlayerView(MainController controller, GameStateInterface gameState,
+      String gameFolderName, boolean randomized) {
     myPane = new StackPane();
     myMainController = controller;
     myGameState = gameState;
+    isRandomized = randomized;
+
+    this.gameFolderName = gameFolderName;
 
     myPane.setPrefWidth(WIDTH);
     myPane.getStyleClass().add("game-player-view");
 
-    createExampleMap();
+    createMap();
   }
 
   /**
@@ -50,7 +61,7 @@ public class GamePlayerView {
     return myPane;
   }
 
-  private void createExampleMap() {
+  private void createMap() {
     loadConfigFromFile();
     loadGameViewFromConfig();
     myPane.getChildren().add(myGameView.getRoot());
@@ -66,14 +77,16 @@ public class GamePlayerView {
   private void loadConfigFromFile() {
     JsonConfigParser configParser = new JsonConfigParser();
     try {
-      myConfigModel = configParser.loadFromFile(CURRENT_GAME_CONFIG_PATH + GAME_CONFIG_JSON);
+      myConfigModel = configParser.loadFromFile(
+          GAME_FOLDER + gameFolderName + "/" + GAME_CONFIG_JSON);
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to reload updated config", e);
     }
   }
 
   private void loadGameViewFromConfig() {
-    LevelController levelController = new LevelController(myMainController, myConfigModel);
+    LevelController levelController = new LevelController(myMainController, myConfigModel,
+        isRandomized);
     if (levelController.getCurrentLevelMap() != null) {
       myGameView = new GameView(
           new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
@@ -86,6 +99,7 @@ public class GamePlayerView {
 
   private void resetGame(LevelController levelController) {
     myPane.getChildren().clear();
+    myGameState.resetTimeElapsed();
     levelController.resetAndUpdateConfig();
     loadConfigFromFile();
     updateGameStateFromConfigurationFile();

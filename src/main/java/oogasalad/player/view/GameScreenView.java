@@ -28,16 +28,20 @@ public class GameScreenView {
   /**
    * Create a game screen view.
    *
-   * @param controller The main controller for the player view.
-   * @param gameState  The game state object for this current game.
+   * @param controller     The main controller for the player view.
+   * @param gameState      The game state object for this current game.
+   * @param gameFolderName name of game folder to create
+   * @param randomized     if levels should be randomized
    */
-  public GameScreenView(MainController controller, GameStateInterface gameState) {
+  public GameScreenView(MainController controller, GameStateInterface gameState,
+      String gameFolderName, boolean randomized) {
     super();
     myRoot = new VBox();
     this.gameState = gameState;
     this.mainController = controller;
 
-    GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState);
+    GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState, gameFolderName,
+        randomized);
     GameView gameView = gamePlayerView.getGameView();
 
     hudView = new HudView(
