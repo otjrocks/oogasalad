@@ -38,13 +38,6 @@ public interface GameStateInterface {
   int getLives();
 
   /**
-   * Update game over to reflect game status.
-   *
-   * @param gameOver status of game over.
-   */
-  void setGameOver(boolean gameOver);
-
-  /**
    * Get the time elapsed in the game.
    *
    * @return A double representing time elapsed since the last reset.

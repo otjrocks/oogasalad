@@ -10,7 +10,6 @@ public class GameState implements GameStateInterface {
 
   private int score;
   private int lives;
-  private boolean gameOver;
   private double timeElapsed = 0;
 
   /**
@@ -21,7 +20,6 @@ public class GameState implements GameStateInterface {
   public GameState(int initialLives) {
     this.score = 0;
     this.lives = initialLives;
-    this.gameOver = false;
   }
 
   @Override
@@ -48,11 +46,6 @@ public class GameState implements GameStateInterface {
   public void resetState() {
     this.score = 0;
     this.lives = 0;
-  }
-
-  @Override
-  public void setGameOver(boolean gameOver) {
-    this.gameOver = gameOver;
   }
 
   @Override
