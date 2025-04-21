@@ -6,24 +6,14 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.authoring.help.SimpleHelpSystem;
 import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.utility.LanguageManager;
@@ -49,6 +39,7 @@ public class AuthoringView {
   private GameSettingsView gameSettingsView;
   private CollisionRuleEditorView collisionEditorView;
   private EntityPlacementView entityPlacementView;
+  private SimpleHelpSystem helpSystem;
 
   /**
    * Constructs the full authoring environment interface without a controller. The controller should
@@ -149,6 +140,98 @@ public class AuthoringView {
 
         applyStyles();
         setupWindowMaximization();
+
+        Platform.runLater(this::setupHelpSystem);
+    }
+
+    /**
+     * Sets up the help system for the authoring environment.
+     */
+    private void setupHelpSystem() {
+        Stage stage = (Stage) root.getScene().getWindow();
+        this.helpSystem = new SimpleHelpSystem(controller, this, stage);
+
+        addHelpMenu();
+        addHelpButton();
+        setupHelpKeyboardShortcuts();
+    }
+
+    /**
+     * Adds a help button to the main view.
+     */
+    private void addHelpButton() {
+        Button helpButton = new Button("?");
+        helpButton.setId("helpButton");
+        helpButton.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; " +
+                "-fx-background-color: #3498db; -fx-text-fill: white; " +
+                "-fx-background-radius: 50%; -fx-min-width: 30px; " +
+                "-fx-min-height: 30px; -fx-max-width: 30px; -fx-max-height: 30px;");
+        helpButton.setTooltip(new Tooltip("Show Help"));
+        helpButton.setOnAction(e -> helpSystem.showHelpDialog());
+
+        // Get the BorderPane that contains the canvas
+        VBox fullLayout = (VBox) root.getCenter();
+        BorderPane mainContent = (BorderPane) fullLayout.getChildren().get(1);
+
+        // Create a StackPane to overlay the help button on the canvas
+        StackPane canvasWithHelp = new StackPane();
+        canvasWithHelp.getChildren().addAll(canvasView.getNode(), helpButton);
+        mainContent.setCenter(canvasWithHelp);
+
+        // Position the help button in the top-right corner
+        StackPane.setAlignment(helpButton, javafx.geometry.Pos.TOP_RIGHT);
+        StackPane.setMargin(helpButton, new Insets(10));
+    }
+
+    /**
+     * Adds a help menu to the menu bar.
+     */
+    private void addHelpMenu() {
+        MenuBar menuBar = (MenuBar) ((VBox) root.getCenter()).getChildren().get(0);
+
+        // Check if Help menu already exists
+        for (Menu menu : menuBar.getMenus()) {
+            if (menu.getText().equals(LanguageManager.getMessage("HELP"))) {
+                return; // Help menu already exists
+            }
+        }
+
+        // Create Help menu
+        Menu helpMenu = new Menu(LanguageManager.getMessage("HELP"));
+        MenuItem helpContentsItem = new MenuItem(LanguageManager.getMessage("HELP_CONTENTS"));
+        helpContentsItem.setOnAction(e -> helpSystem.showHelpDialog());
+
+        MenuItem aboutItem = new MenuItem(LanguageManager.getMessage("ABOUT"));
+        aboutItem.setOnAction(e -> showAboutDialog());
+
+        helpMenu.getItems().addAll(helpContentsItem, new SeparatorMenuItem(), aboutItem);
+        menuBar.getMenus().add(helpMenu);
+    }
+
+    /**
+     * Shows the about dialog.
+     */
+    private void showAboutDialog() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(LanguageManager.getMessage("ABOUT"));
+        alert.setHeaderText("Game Authoring Environment");
+        alert.setContentText(
+                "Version: 1.0\n" +
+                        "A powerful tool for creating 2D games without writing code.\n\n" +
+                        "Part of the OOGASalad project."
+        );
+
+        alert.showAndWait();
+    }
+
+    /**
+     * Sets up keyboard shortcuts for the help system.
+     */
+    private void setupHelpKeyboardShortcuts() {
+        root.getScene().getAccelerators().put(
+                new javafx.scene.input.KeyCodeCombination(javafx.scene.input.KeyCode.F1),
+                () -> helpSystem.showHelpDialog()
+        );
     }
 
     /**
