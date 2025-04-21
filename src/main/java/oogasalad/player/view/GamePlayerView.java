@@ -99,6 +99,7 @@ public class GamePlayerView {
 
   private void resetGame(LevelController levelController) {
     myPane.getChildren().clear();
+    myGameState.resetTimeElapsed();
     levelController.resetAndUpdateConfig();
     loadConfigFromFile();
     updateGameStateFromConfigurationFile();
