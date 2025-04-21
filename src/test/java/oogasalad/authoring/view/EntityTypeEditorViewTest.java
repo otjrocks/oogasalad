@@ -57,7 +57,8 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
     Map<String, ModeConfigRecord> modeMap = new HashMap<>();
     modeMap.put("Default", mockMode);
 
-    mockEntityType = new EntityTypeRecord("Pacman", new KeyboardControlConfigRecord(), modeMap, List.of(), 1.0);
+    mockEntityType = new EntityTypeRecord("Pacman", new KeyboardControlConfigRecord(), modeMap,
+        List.of(), 1.0);
 
     AuthoringModel mockModel = mock(AuthoringModel.class);
     when(mockController.getModel()).thenReturn(mockModel);
@@ -70,8 +71,6 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
 
     VBox root = (VBox) view.getRoot();
     TextField typeField = (TextField) root.getChildren().get(1);
-    ComboBox<String> controlBox = (ComboBox<String>) root.getChildren().get(3);
-
     assertEquals("Pacman", typeField.getText());
   }
 

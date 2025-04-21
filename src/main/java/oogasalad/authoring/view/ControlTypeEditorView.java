@@ -18,10 +18,16 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.player.model.strategies.control.ControlManager;
 
+/**
+ * A class that allows the user to select and edit a control type for an entity mode.
+ *
+ * @author Owen Jennings
+ */
 public class ControlTypeEditorView {
 
   private static final String TARGET_CALCULATION_CONFIG = "targetCalculationConfig";
@@ -33,7 +39,10 @@ public class ControlTypeEditorView {
   private final Map<String, ComboBox<String>> controlTypeComboBoxes = new HashMap<>();
   private final VBox root;
 
-  public ControlTypeEditorView(ControlConfigInterface current) {
+  /**
+   * Initialize a control type editor view with the default values for each field.
+   */
+  public ControlTypeEditorView() {
     root = new VBox();
     root.setSpacing(ELEMENT_SPACING);
     root.setPadding(new Insets(ELEMENT_SPACING));
@@ -61,14 +70,24 @@ public class ControlTypeEditorView {
         controlTypeScrollPane
     );
 
-    populateControlConfigUI(current);
+    populateControlConfigUI(new NoneControlConfigRecord());
   }
 
+  /**
+   * Get the root JavaFX element of this view.
+   *
+   * @return A VBox object containing all the fields of this view.
+   */
   public VBox getRoot() {
     return root;
   }
 
 
+  /**
+   * Construct a control config object using the values of the user input into this view.
+   *
+   * @return A control config interface constructed from this view.
+   */
   public ControlConfigInterface getControlConfig() {
     String controlType = controlTypeBox.getValue();
     Map<String, Class<?>> requiredFieldTypes = ControlManager.getControlRequiredFields(controlType);
@@ -107,7 +126,12 @@ public class ControlTypeEditorView {
     }
   }
 
-
+  /**
+   * Populate the control config user interface with the values in this provided configuration
+   * interface.
+   *
+   * @param config The config you want to use to populate this view.
+   */
   public void populateControlConfigUI(ControlConfigInterface config) {
     String type = config.getClass().getSimpleName().replace("ControlConfigRecord", "");
     controlTypeBox.setValue(type);
@@ -252,7 +276,8 @@ public class ControlTypeEditorView {
       var field = config.getClass().getDeclaredField(fieldName);
       field.setAccessible(true);
       Object strategy = field.get(config);
-      return strategy != null ? strategy.getClass().getSimpleName().replace("ConfigRecord", "") : "";
+      return strategy != null ? strategy.getClass().getSimpleName().replace("ConfigRecord", "")
+          : "";
     } catch (Exception e) {
       return "";
     }

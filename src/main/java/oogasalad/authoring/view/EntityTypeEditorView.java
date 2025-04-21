@@ -19,7 +19,7 @@ import oogasalad.engine.utility.LanguageManager;
 /**
  * View for editing a selected EntityType.
  *
- * @author Will He, Ishan Madan, Angela Predolac
+ * @author Will He, Ishan Madan, Angela Predolac, Owen Jennings
  */
 public class EntityTypeEditorView {
 

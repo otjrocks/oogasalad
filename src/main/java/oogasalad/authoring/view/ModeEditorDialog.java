@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -19,7 +18,6 @@ import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
-import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.utility.LanguageManager;
 
@@ -27,7 +25,7 @@ import oogasalad.engine.utility.LanguageManager;
  * Dialog for creating a new ModeConfig with a user-uploaded image. Returns a ModeConfig object via
  * showAndWait().ifPresent(...)
  *
- * @author Will He, Ishan Madan
+ * @author Will He, Ishan Madan, Owen Jennings
  */
 public class ModeEditorDialog {
 
@@ -69,7 +67,7 @@ public class ModeEditorDialog {
     tilesToCycleField = new TextField("4");
     animationSpeedField = new TextField("1.0");
 
-    controlTypeEditorView = new ControlTypeEditorView(new NoneControlConfigRecord());
+    controlTypeEditorView = new ControlTypeEditorView();
 
     speedField = new TextField();
 
