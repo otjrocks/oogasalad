@@ -46,10 +46,7 @@ public class JsonConfigBuilder {
     ObjectNode root = mapper.createObjectNode();
 
     // === metadata ===
-    ObjectNode metadata = root.putObject("metadata");
-    metadata.put("gameTitle", model.getGameTitle());
-    metadata.put("author", model.getAuthor());
-    metadata.put("gameDescription", model.getGameDescription());
+    writeMetaData(model, root);
 
     // === defaultSettings ===
     ObjectNode defaultSettings = root.putObject("defaultSettings");
@@ -77,6 +74,14 @@ public class JsonConfigBuilder {
       collisionRules.add(mapper.valueToTree(collisionRule));
     }
     return root;
+  }
+
+  private static void writeMetaData(AuthoringModel model, ObjectNode root) {
+    ObjectNode metadata = root.putObject("metadata");
+    metadata.put("gameTitle", model.getGameTitle() == null ? "" : model.getGameTitle());
+    metadata.put("author", model.getAuthor() == null ? "" : model.getAuthor());
+    metadata.put("gameDescription",
+        model.getGameDescription() == null ? "" : model.getGameDescription());
   }
 
   /**
