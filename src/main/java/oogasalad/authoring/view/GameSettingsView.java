@@ -331,6 +331,7 @@ public class GameSettingsView {
     alert.showAndWait();
   }
 
+  // TODO: This should not be hardcoded
   private WinConditionInterface createWinConditionFromUI() {
     String type = winConditionTypeComboBox.getValue();
     String value = winConditionValueField.getText();
