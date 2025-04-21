@@ -15,8 +15,6 @@ import oogasalad.engine.config.util.ConditionSerializer;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
-import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
-import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
 
@@ -33,9 +31,7 @@ import oogasalad.engine.records.model.ModeChangeEventRecord;
  */
 public class JsonConfigBuilder {
 
-  private static final String TYPE = "type";
   private static final String ENTITY_TYPE = "entityType";
-
 
   /**
    * Builds the top-level game configuration (gameConfig.json) from the model. Includes metadata,
@@ -46,8 +42,6 @@ public class JsonConfigBuilder {
    * @return a JSON ObjectNode representing the game configuration
    */
   public ObjectNode buildGameConfig(AuthoringModel model, ObjectMapper mapper) {
-    final String WIN_CONDITION_SURVIVE_FOR_TIME = "SurviveForTime";
-    final String WIN_CONDITION_ENTITY_BASED = "EntityBased";
 
     ObjectNode root = mapper.createObjectNode();
 
@@ -201,9 +195,8 @@ public class JsonConfigBuilder {
     ObjectNode entityTypeNode = root.putObject(ENTITY_TYPE);
 
     addEntityBasics(type, entityTypeNode);
-    addControlConfig(type.controlConfig(), entityTypeNode, mapper);
     addMovementSpeed(type, entityTypeNode);
-    addModesArray(type, root);
+    addModesArray(type, root, mapper);
 
     return root;
   }
@@ -225,7 +218,7 @@ public class JsonConfigBuilder {
     }
   }
 
-  private void addModesArray(EntityTypeRecord type, ObjectNode root) {
+  private void addModesArray(EntityTypeRecord type, ObjectNode root, ObjectMapper mapper) {
     ArrayNode modesArray = root.putArray("modes");
 
     for (ModeConfigRecord mode : type.modes().values()) {
@@ -239,6 +232,8 @@ public class JsonConfigBuilder {
       imageNode.put("tileHeight", mode.image().tileHeight());
       imageNode.put("tilesToCycle", mode.image().tilesToCycle());
       imageNode.put("animationSpeed", mode.image().animationSpeed());
+
+      addControlConfig(mode.entityProperties().controlConfig(), modeNode, mapper);
     }
   }
 
