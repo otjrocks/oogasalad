@@ -1,12 +1,15 @@
 package oogasalad.player.controller;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import javafx.animation.AnimationTimer;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.records.config.model.ModeChangeInfo;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.utility.LoggingManager;
@@ -25,6 +28,7 @@ public class GameLoopController {
   private final GameMapView myGameMapView;
   private final ParsedLevelRecord myLevel;
   private final Map<SpawnEventRecord, Entity> activeSpawnedEntities = new HashMap<>();
+  private final double myGameSpeedMultiplier;
   private double myTotalElapsedTime = 0;
 
 
@@ -32,15 +36,18 @@ public class GameLoopController {
    * Initialize the game loop controller and start the animation. Calling the constructor will
    * automatically start the animation.
    *
+   * @param gameConfig  The game config used for this game loop.
    * @param gameContext The game context to use for updating each frame.
    * @param gameMapView The game map view used with this animation loop.
    * @param level       The parsed level information for this game loop.
    */
-  public GameLoopController(GameContextRecord gameContext, GameMapView gameMapView,
+  public GameLoopController(ConfigModelRecord gameConfig, GameContextRecord gameContext,
+      GameMapView gameMapView,
       ParsedLevelRecord level) {
     myGameContext = gameContext;
     myGameMapView = gameMapView;
     myLevel = level;
+    myGameSpeedMultiplier = gameConfig.settings().gameSpeed();
     initializeGameLoop();
   }
   // this and following methods are written by ChatGPT
@@ -60,13 +67,14 @@ public class GameLoopController {
         }
 
         double elapsedTime = (now - lastUpdateTime) / 1_000_000_000.0;
-
-        if (elapsedTime > 1.0 / 60.0) {
+        double updateFrequency = (1.0 / 60.0) * (1 / myGameSpeedMultiplier);
+        if (elapsedTime > updateFrequency) {
           updateGame();
           clearActiveSpawnedEntitiesIfTimeElapsedWasReset();
-          myTotalElapsedTime += elapsedTime;
+          myTotalElapsedTime += elapsedTime * myGameSpeedMultiplier;
           myGameContext.gameState()
-              .setTimeElapsed(myGameContext.gameState().getTimeElapsed() + elapsedTime);
+              .setTimeElapsed(
+                  myGameContext.gameState().getTimeElapsed() + elapsedTime * myGameSpeedMultiplier);
           lastUpdateTime = now;
         }
       }
@@ -101,7 +109,28 @@ public class GameLoopController {
     //Updates the game map and entity positions
     myGameContext.gameMap().update();
     myGameMapView.update();
+    handleModeChanges();
     handleSpawnEvents();
+  }
+
+  private void handleModeChanges() {
+
+    double currentTime = myGameContext.gameState().getTimeElapsed();
+    Iterator<Map.Entry<Entity, ModeChangeInfo>> iterator =
+            myGameContext.gameMap().getActiveModeChanges().entrySet().iterator();
+
+    while (iterator.hasNext()) {
+      Map.Entry<Entity, ModeChangeInfo> entry = iterator.next();
+      Entity entity = entry.getKey();
+      ModeChangeInfo info = entry.getValue();
+      if(currentTime >= info.transitionTime() && currentTime < info.revertTime()){
+        entity.getEntityPlacement().setMode(info.transitionMode());
+      }
+      if (currentTime >= info.revertTime()) {
+        entity.getEntityPlacement().setMode(info.originalMode());
+        iterator.remove();
+      }
+    }
   }
 
   private void handleSpawnEvents() {

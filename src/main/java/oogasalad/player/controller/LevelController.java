@@ -1,6 +1,9 @@
 package oogasalad.player.controller;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import oogasalad.engine.config.JsonConfigSaver;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
@@ -20,17 +23,29 @@ public class LevelController {
   private int myLevelIndex;
   private final ConfigModelRecord myConfigModel;
   private final MainController myMainController;
+  private final List<Integer> myLevelOrder;
 
   /**
    * Create a level controller with the current config model.
    *
    * @param mainController The main controller for this program.
    * @param configModel    The config model for this level controller.
+   * @param randomized     If it's randomized, shuffle the order of the levels
    */
-  public LevelController(MainController mainController, ConfigModelRecord configModel) {
+  public LevelController(MainController mainController, ConfigModelRecord configModel,
+      boolean randomized) {
     myMainController = mainController;
     myConfigModel = configModel;
     myLevelIndex = configModel.currentLevelIndex();
+
+    myLevelOrder = new ArrayList<>();
+    for (int i = 0; i < myConfigModel.levels().size(); i++) {
+      myLevelOrder.add(i);
+    }
+
+    if (randomized) {
+      Collections.shuffle(myLevelOrder);
+    }
   }
 
   /**
@@ -48,7 +63,7 @@ public class LevelController {
     try {
       gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(),
           myConfigModel,
-          myLevelIndex);
+          myLevelOrder.get(myLevelIndex));
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn("Failed to create or populate GameMap: ", e);
     }
@@ -62,15 +77,28 @@ public class LevelController {
     myLevelIndex++;
     try {
       JsonConfigSaver saver = new JsonConfigSaver();
-      saver.saveUpdatedLevelIndex(myLevelIndex, Paths.get("data/games/BasicPacMan"));
+      saver.saveUpdatedLevelIndex(myLevelIndex,
+          Paths.get("data/games/BasicPacMan"));
       LoggingManager.LOGGER.info("Level index updated and saved to gameConfig.json");
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to save updated level index", e);
     }
   }
 
-
-
+  /**
+   * Resets the current level back to 0 and updates the config file.
+   */
+  public void resetAndUpdateConfig() {
+    myLevelIndex = 0;
+    try {
+      JsonConfigSaver saver = new JsonConfigSaver();
+      saver.saveUpdatedLevelIndex(myLevelOrder.get(myLevelIndex),
+          Paths.get("data/games/BasicPacMan"));
+      LoggingManager.LOGGER.info("Level index reset and saved to gameConfig.json");
+    } catch (ConfigException e) {
+      LoggingManager.LOGGER.warn("Failed to reset and save level index", e);
+    }
+  }
 
   /**
    * Get the current level index.
@@ -82,7 +110,15 @@ public class LevelController {
   }
 
   /**
+   * Get the current level loaded
+   *
+   * @return The int representing the current level loaded 0-indexed.
+   */
+  public int getCurrentLevel() { return myLevelOrder.get(myLevelIndex); }
+
+  /**
    * Gets if there are any levels remaining
+   *
    * @return Whether a next level exists
    */
   public boolean hasNextLevel() {

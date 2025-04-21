@@ -44,7 +44,6 @@ class JsonConfigParserTest {
                  "gameSpeed": 1.5,
                  "startingLives": 3,
                  "initialScore": 0,
-                 "scoreStrategy": "Cumulative",
                  "winCondition": {
                    "type": "SurviveForTime",
                    "amount": 5
@@ -210,7 +209,6 @@ class JsonConfigParserTest {
     assertEquals(1.5, defaultSettings.gameSpeed());
     assertEquals(3, defaultSettings.startingLives());
     assertEquals(0, defaultSettings.initialScore());
-    assertEquals("Cumulative", defaultSettings.scoreStrategy());
     assertEquals(new SurviveForTimeConditionRecord(5), defaultSettings.winCondition());
 
     // Levels check

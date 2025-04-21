@@ -1,10 +1,7 @@
 package oogasalad.player.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
-import oogasalad.player.model.GameStateInterface.HudComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,42 +30,5 @@ public class GameStateTest {
 
     gameState.updateLives(2);
     assertEquals(6, gameState.getLives());
-  }
-
-  @Test
-  void addHudComponent_newHudComponent_addsHudComponentCorrectly() {
-    HudComponent hud = new MockHudComponent("HealthBar");
-    gameState.addHudComponent(hud);
-
-    List<HudComponent> components = gameState.getHudComponents();
-    assertEquals(1, components.size());
-    assertEquals("HealthBar", ((MockHudComponent) components.getFirst()).name());
-  }
-
-  @Test
-  void getHudComponents_returnsDefensiveHudComponent_hudComponentReturnedCorrectlyEvenWithAttemptedChange() {
-    gameState.addHudComponent(new MockHudComponent("Ammo"));
-
-    List<HudComponent> copy = gameState.getHudComponents();
-    copy.clear();
-
-    assertEquals(1, gameState.getHudComponents().size());
-  }
-
-  @Test
-  void resetState_defaultCall_resetsValuesRemoveComponentsCorrectly() {
-    gameState.updateScore(50);
-    gameState.updateLives(-2);
-    gameState.addHudComponent(new MockHudComponent("Timer"));
-
-    gameState.resetState();
-
-    assertEquals(0, gameState.getScore());
-    assertEquals(0, gameState.getLives());
-    assertTrue(gameState.getHudComponents().isEmpty());
-  }
-
-  private record MockHudComponent(String name) implements HudComponent, java.io.Serializable {
-
   }
 }

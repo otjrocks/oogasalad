@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -35,7 +36,7 @@ public class GameSettingsViewTest extends DukeApplicationTest {
     mockController = mock(AuthoringController.class);
     mockModel = mock(AuthoringModel.class);
 
-    defaultSettings = new SettingsRecord(1.0, 3, 100, "", new SurviveForTimeConditionRecord(5), new LivesBasedConditionRecord());
+    defaultSettings = new SettingsRecord(1.0, 3, 100,  new SurviveForTimeConditionRecord(5), new LivesBasedConditionRecord());
     when(mockController.getModel()).thenReturn(mockModel);
     when(mockModel.getDefaultSettings()).thenReturn(defaultSettings);
 
@@ -71,8 +72,12 @@ public class GameSettingsViewTest extends DukeApplicationTest {
 
   @Test
   public void saveSettings_Click_ModelUpdated() {
+    runAsJFXAction(() -> {
+      ScrollPane pane = lookup(".scroll-pane").queryAs(ScrollPane.class);
+      pane.setVvalue(1.0); // Scroll all the way down
+    });
     Button saveButton = lookup(LanguageManager.getMessage("SAVE_SETTINGS")).queryButton();
-    runAsJFXAction(() -> clickOn(saveButton));
+    clickOn(saveButton);
     verify(mockModel, times(1)).setDefaultSettings(any());
   }
 

@@ -44,15 +44,33 @@
     {
       "name": "Dead",
       "image": {
-        "imagePath": "assets/dead.png",
-        "tileWidth": 16,
-        "tileHeight": 16,
+        "imagePath": "assets/eyeghost.png",
+        "tileWidth": 28,
+        "tileHeight": 28,
         "tilesToCycle": 1,
         "animationSpeed": 1.0
       },
       "controlConfig": {
         "controlStrategy": "Target",
         "pathFindingStrategy": "Euclidean",
+        "targetCalculationConfig": {
+          "targetCalculationStrategy": "TargetLocation",
+          "targetX": 14,
+          "targetY": 14
+        }
+      }
+    }, {
+      "name": "Flashing",
+      "image": {
+        "imagePath": "assets/flashingghost.png",
+        "tileWidth": 28,
+        "tileHeight": 28,
+        "tilesToCycle": 4,
+        "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "Target",
+        "pathFindingStrategy": "Random",
         "targetCalculationConfig": {
           "targetCalculationStrategy": "TargetLocation",
           "targetX": 14,

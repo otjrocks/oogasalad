@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.view.AuthoringView;
@@ -54,8 +55,8 @@ public class AuthoringController {
   }
 
   /**
-   * Creates a new {@link EntityTypeRecord} with a default mode and registers it in the model. Updates the
-   * entity selector and opens the entity editor for the newly created type.
+   * Creates a new {@link EntityTypeRecord} with a default mode and registers it in the model.
+   * Updates the entity selector and opens the entity editor for the newly created type.
    * <p>
    * Triggered when the user clicks the "+ Add Entity Type" button.
    * </p>
@@ -64,7 +65,8 @@ public class AuthoringController {
 
     String newTypeName = "NewEntity" + UUID.randomUUID().toString().substring(0, 4);
 
-    EntityTypeRecord newType = new EntityTypeRecord(newTypeName, new NoneControlConfigRecord(), defaultModeMap(),
+    EntityTypeRecord newType = new EntityTypeRecord(newTypeName, new NoneControlConfigRecord(),
+        defaultModeMap(),
         null, 1.0); // Update this to use no hardcoded speed value.
     model.addEntityType(newType);
     updateEntitySelector();
@@ -107,7 +109,8 @@ public class AuthoringController {
    */
   public void placeEntity(String typeName, double x, double y) {
     model.findEntityType(typeName).ifPresent(template -> {
-      EntityPlacement placement = model.getCurrentLevel().createAndAddEntityPlacement(template, x, y);
+      EntityPlacement placement = model.getCurrentLevel()
+          .createAndAddEntityPlacement(template, x, y);
       view.getCanvasView().placeEntity(placement);
     });
   }
@@ -164,11 +167,9 @@ public class AuthoringController {
   }
 
 
-
   private Map<String, ModeConfigRecord> defaultModeMap() {
-    // Default image file
-    File imageFile = new File("data/games/BasicPacMan/core/assets/pacman.png");
-    String imagePath = imageFile.toURI().toString();
+    String imagePath = Objects.requireNonNull(getClass().getResource("/assets/images/pacman.png"))
+        .toExternalForm();
 
     ImageConfigRecord imageConfig = new ImageConfigRecord(
         imagePath,
@@ -246,6 +247,7 @@ public class AuthoringController {
 
   /**
    * Get canvas view
+   *
    * @return canvas view object
    */
   public CanvasView getCanvasView() {
@@ -274,8 +276,8 @@ public class AuthoringController {
    */
   private List<EntityPlacement> getPlacementsOfType(String typeName) {
     return model.getCurrentLevel().getEntityPlacements().stream()
-            .filter(p -> typeName.equals(p.getTypeString()))
-            .toList();
+        .filter(p -> typeName.equals(p.getTypeString()))
+        .toList();
   }
 
 
