@@ -2,12 +2,14 @@ package oogasalad.authoring.view.canvas;
 
 import java.util.List;
 import java.util.Map;
+import javafx.application.Platform;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.config.EntityPlacement;
 
@@ -45,7 +47,10 @@ public class CanvasView {
   public CanvasView(AuthoringController controller) {
     this.controller = controller;
     this.root = new Pane();
-    root.setPrefSize(800, 600);
+    root.setMinSize(0, 0);
+    root.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+    root.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
     root.getStyleClass().add("canvas-view");
 
     this.canvasGrid = new CanvasGrid(DEFAULT_ROWS, DEFAULT_COLS);
@@ -59,7 +64,9 @@ public class CanvasView {
     );
     this.tileHighlighter = new TileHighlighter(root);
 
-    resizeGrid(DEFAULT_COLS, DEFAULT_ROWS);
+    Platform.runLater(() -> {
+      resizeGrid(DEFAULT_COLS, DEFAULT_ROWS);
+    });
     setupDragAndDropHandlers();
   }
 
@@ -79,7 +86,7 @@ public class CanvasView {
    * @param newRows number of rows
    */
   public void resizeGrid(int newCols, int newRows) {
-    canvasGrid.resizeGrid(root.getPrefWidth(), root.getPrefHeight(), newCols, newRows);
+    canvasGrid.resizeGrid(root.getWidth(), root.getHeight(), newCols, newRows);
     root.getChildren().clear();
     entityManager.clear();
     tileHighlighter.resizeTo(canvasGrid.getTileWidth(), canvasGrid.getTileHeight());
