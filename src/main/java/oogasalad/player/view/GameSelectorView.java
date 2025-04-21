@@ -45,7 +45,7 @@ public class GameSelectorView {
   private final MainController myMainController;
   private final List<GameConfigRecord> gameConfigRecords;
   private final Map<String, String> gameNameToFolder = new HashMap<>();
-  JsonConfigParser configParser = new JsonConfigParser();
+  private JsonConfigParser configParser = new JsonConfigParser();
   private Label titleLabel;
   private Label fileLabel;
   private Button backButton;
