@@ -1,9 +1,6 @@
 {
   "entityType": {
     "name": "Strawberry",
-    "controlConfig": {
-      "controlStrategy": "None"
-    },
     "movementSpeed": 0
   },
   "modes": [

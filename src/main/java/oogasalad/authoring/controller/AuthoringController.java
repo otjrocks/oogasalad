@@ -65,7 +65,7 @@ public class AuthoringController {
 
     String newTypeName = "NewEntity" + UUID.randomUUID().toString().substring(0, 4);
 
-    EntityTypeRecord newType = new EntityTypeRecord(newTypeName, new NoneControlConfigRecord(),
+    EntityTypeRecord newType = new EntityTypeRecord(newTypeName,
         defaultModeMap(),
         null, 1.0); // Update this to use no hardcoded speed value.
     model.addEntityType(newType);
@@ -187,7 +187,6 @@ public class AuthoringController {
 
     EntityPropertiesRecord entityProperties = new EntityPropertiesRecord(
         DEFAULT_MODE,
-        defaultControlConfig,
         100.0,
         List.of() // No blocks
     );

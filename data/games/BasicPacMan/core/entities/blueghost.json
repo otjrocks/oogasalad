@@ -1,17 +1,7 @@
 {
   "entityType": {
     "name": "BlueGhost",
-    "controlConfig": {
-      "controlStrategy": "Target",
-      "pathFindingStrategy": "Euclidean",
-      "targetCalculationConfig": {
-        "targetCalculationStrategy": "TargetEntityWithTrap",
-        "targetType": "Pacman",
-        "tilesAhead": 2,
-        "teamEntityType": "PinkGhost"
-      }
-    },
-    "movementSpeed": 1
+    "movementSpeed": 1.0
   },
   "modes": [
     {

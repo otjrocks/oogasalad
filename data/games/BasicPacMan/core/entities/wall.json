@@ -1,14 +1,14 @@
 {
   "entityType": {
     "name": "Wall",
-    "movementSpeed": 0,
     "blocks": [
       "Pacman",
       "RedGhost",
       "BlueGhost",
       "PinkGhost",
       "OrangeGhost"
-    ]
+    ],
+    "movementSpeed": 1.0
   },
   "modes": [
     {
@@ -22,20 +22,6 @@
       },
       "controlConfig": {
         "controlStrategy": "None"
-      },
-      "entityProperties": {
-        "name": "Default",
-        "controlConfig": {
-          "controlStrategy": "None"
-        },
-        "movementSpeed": 1,
-        "blocks": [
-          "Pacman",
-          "RedGhost",
-          "BlueGhost",
-          "PinkGhost",
-          "OrangeGhost"
-        ]
       }
     }
   ]

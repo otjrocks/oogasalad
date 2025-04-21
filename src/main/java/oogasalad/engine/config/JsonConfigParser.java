@@ -411,11 +411,9 @@ public class JsonConfigParser implements ConfigParserInterface {
 
   private static EntityTypeRecord getEntityType(EntityConfigRecord entity,
       Map<String, ModeConfigRecord> modes) {
-    ControlConfigInterface control = entity.entityProperties().controlConfig();
 
     return new EntityTypeRecord(
         entity.name(),
-        control,
         modes,
         entity.entityProperties().blocks(),
         entity.entityProperties().movementSpeed()
@@ -586,17 +584,9 @@ public class JsonConfigParser implements ConfigParserInterface {
   private EntityPropertiesRecord mergeProperties(String modeName,
       EntityPropertiesRecord defaultProps,
       JsonNode modeNode) throws JsonProcessingException {
-    final String CONTROL_CONFIG = "controlConfig";
-    final String MOVEMENT_SPEED = "movementSpeed";
     final String BLOCKS = "blocks";
 
-    ControlConfigInterface controlConfig = modeNode.has(CONTROL_CONFIG)
-        ? mapper.treeToValue(modeNode.get(CONTROL_CONFIG), ControlConfigInterface.class)
-        : defaultProps.controlConfig();
-
-    double movementSpeed = modeNode.has(MOVEMENT_SPEED)
-        ? modeNode.get(MOVEMENT_SPEED).asDouble()
-        : defaultProps.movementSpeed();
+    double movementSpeed = defaultProps.movementSpeed();
 
     List<String> blocks = modeNode.has(BLOCKS)
         ? mapper.convertValue(modeNode.get(BLOCKS),
@@ -605,7 +595,6 @@ public class JsonConfigParser implements ConfigParserInterface {
 
     return new EntityPropertiesRecord(
         modeName,
-        controlConfig,
         movementSpeed,
         blocks
     );

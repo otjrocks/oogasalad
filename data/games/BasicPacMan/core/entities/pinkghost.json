@@ -1,16 +1,7 @@
 {
   "entityType": {
     "name": "PinkGhost",
-    "controlConfig": {
-      "controlStrategy": "Target",
-      "pathFindingStrategy": "Euclidean",
-      "targetCalculationConfig": {
-        "targetCalculationStrategy": "TargetAheadOfEntity",
-        "targetType": "Pacman",
-        "tilesAhead": 4
-      }
-    },
-    "movementSpeed": 1
+    "movementSpeed": 1.0
   },
   "modes": [
     {

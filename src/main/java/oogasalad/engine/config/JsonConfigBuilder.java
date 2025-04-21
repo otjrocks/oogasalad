@@ -233,7 +233,7 @@ public class JsonConfigBuilder {
       imageNode.put("tilesToCycle", mode.image().tilesToCycle());
       imageNode.put("animationSpeed", mode.image().animationSpeed());
 
-      addControlConfig(mode.entityProperties().controlConfig(), modeNode, mapper);
+      addControlConfig(mode.controlConfig(), modeNode, mapper);
     }
   }
 

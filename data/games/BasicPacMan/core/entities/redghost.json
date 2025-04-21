@@ -1,15 +1,7 @@
 {
   "entityType": {
     "name": "RedGhost",
-    "controlConfig": {
-      "controlStrategy": "Target",
-      "pathFindingStrategy": "Euclidean",
-      "targetCalculationConfig": {
-        "targetCalculationStrategy": "TargetEntity",
-        "targetType": "Pacman"
-      }
-    },
-    "movementSpeed": 1
+    "movementSpeed": 1.0
   },
   "modes": [
     {

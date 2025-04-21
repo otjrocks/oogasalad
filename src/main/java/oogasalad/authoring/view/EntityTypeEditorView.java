@@ -113,7 +113,6 @@ public class EntityTypeEditorView {
 
     EntityTypeRecord newEntity = new EntityTypeRecord(
         typeField.getText(),
-        null,
         current.modes(),
         current.blocks(),
         current.speed()
@@ -141,7 +140,6 @@ public class EntityTypeEditorView {
       // Replace current with new EntityType (workaround for record immutability)
       current = new EntityTypeRecord(
           current.type(),
-          current.controlConfig(),
           newModes,
           current.blocks(),
           current.speed()
@@ -169,7 +167,6 @@ public class EntityTypeEditorView {
       // 1. Create updated EntityType
       EntityTypeRecord updated = new EntityTypeRecord(
           current.type(),
-          current.controlConfig(),
           newModes,
           current.blocks(),
           current.speed()

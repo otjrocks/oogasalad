@@ -1,9 +1,6 @@
 {
   "entityType": {
     "name": "Pacman",
-    "controlConfig": {
-      "controlStrategy": "None"
-    },
     "movementSpeed": 1.5
   },
   "modes": [

@@ -151,8 +151,7 @@ public class ModeEditorDialog {
       tileHeightField.setText(String.valueOf(existingConfig.image().tileHeight()));
       tilesToCycleField.setText(String.valueOf(existingConfig.image().tilesToCycle()));
       animationSpeedField.setText(String.valueOf(existingConfig.image().animationSpeed()));
-      controlTypeEditorView.populateControlConfigUI(existingConfig.entityProperties()
-          .controlConfig());
+      controlTypeEditorView.populateControlConfigUI(existingConfig.controlConfig());
 
     }
   }
@@ -203,7 +202,6 @@ public class ModeEditorDialog {
 
       EntityPropertiesRecord entityProps = new EntityPropertiesRecord(
           name,
-          controlConfig,
           speed,
           List.of()
       );
