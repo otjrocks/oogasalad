@@ -1,9 +1,13 @@
 package oogasalad.player.model;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.exceptions.InvalidPositionException;
+import oogasalad.engine.records.config.model.ModeChangeInfo;
+import oogasalad.player.model.strategies.collision.TemporaryModeChangeStrategy;
 
 /**
  * The {@code GameMap} interface provides methods for managing the game's map, which consists of
@@ -115,4 +119,9 @@ public interface GameMapInterface extends Iterable<Entity> {
    * @return true if the entity is part of the game map, false if it was not found on the map.
    */
   boolean contains(Entity entity);
+
+  /**
+   * Returns the current entities undergoing a temporary mode change
+   */
+  Map<Entity, ModeChangeInfo> getActiveModeChanges();
 }

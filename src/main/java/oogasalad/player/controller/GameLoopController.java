@@ -1,6 +1,7 @@
 package oogasalad.player.controller;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import javafx.animation.AnimationTimer;
 import oogasalad.engine.config.EntityPlacement;
@@ -8,6 +9,7 @@ import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.records.config.model.ModeChangeInfo;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.utility.LoggingManager;
@@ -107,7 +109,28 @@ public class GameLoopController {
     //Updates the game map and entity positions
     myGameContext.gameMap().update();
     myGameMapView.update();
+    handleModeChanges();
     handleSpawnEvents();
+  }
+
+  private void handleModeChanges() {
+
+    double currentTime = myGameContext.gameState().getTimeElapsed();
+    Iterator<Map.Entry<Entity, ModeChangeInfo>> iterator =
+            myGameContext.gameMap().getActiveModeChanges().entrySet().iterator();
+
+    while (iterator.hasNext()) {
+      Map.Entry<Entity, ModeChangeInfo> entry = iterator.next();
+      Entity entity = entry.getKey();
+      ModeChangeInfo info = entry.getValue();
+      if(currentTime >= info.transitionTime() && currentTime < info.revertTime()){
+        entity.getEntityPlacement().setMode(info.transitionMode());
+      }
+      if (currentTime >= info.revertTime()) {
+        entity.getEntityPlacement().setMode(info.originalMode());
+        iterator.remove();
+      }
+    }
   }
 
   private void handleSpawnEvents() {
