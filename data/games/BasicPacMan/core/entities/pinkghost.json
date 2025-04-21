@@ -21,6 +21,15 @@
         "tileHeight": 28,
         "tilesToCycle": 4,
         "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "Target",
+        "pathFindingStrategy": "Euclidean",
+        "targetCalculationConfig": {
+          "targetCalculationStrategy": "TargetAheadOfEntity",
+          "targetType": "Pacman",
+          "tilesAhead": 4
+        }
       }
     }, {
       "name": "Frightened",

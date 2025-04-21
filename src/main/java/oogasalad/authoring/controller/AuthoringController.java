@@ -192,7 +192,7 @@ public class AuthoringController {
         List.of() // No blocks
     );
 
-    return new ModeConfigRecord(DEFAULT_MODE, entityProperties, imageConfig);
+    return new ModeConfigRecord(DEFAULT_MODE, entityProperties, defaultControlConfig, imageConfig);
   }
 
 

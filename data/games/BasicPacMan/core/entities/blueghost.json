@@ -22,6 +22,16 @@
         "tileHeight": 28,
         "tilesToCycle": 4,
         "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "Target",
+        "pathFindingStrategy": "Euclidean",
+        "targetCalculationConfig": {
+          "targetCalculationStrategy": "TargetEntityWithTrap",
+          "targetType": "Pacman",
+          "tilesAhead": 2,
+          "teamEntityType": "PinkGhost"
+        }
       }
     }, {
       "name": "Frightened",

@@ -15,6 +15,9 @@
         "tileHeight": 28,
         "tilesToCycle": 1,
         "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "None"
       }
     }
   ]

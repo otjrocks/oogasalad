@@ -2,7 +2,7 @@
   "entityType": {
     "name": "Pacman",
     "controlConfig": {
-      "controlStrategy": "Keyboard"
+      "controlStrategy": "None"
     },
     "movementSpeed": 1.5
   },
@@ -15,17 +15,9 @@
         "tileHeight": 28,
         "tilesToCycle": 6,
         "animationSpeed": 1.0
-      }
-    },
-    {
-      "name": "PoweredUp",
-      "movementSpeed": 150,
-      "image": {
-        "imagePath": "assets/pacman.png",
-        "tileWidth": 28,
-        "tileHeight": 28,
-        "tilesToCycle": 6,
-        "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "Keyboard"
       }
     }
   ]

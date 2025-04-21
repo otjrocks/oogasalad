@@ -22,6 +22,16 @@
         "tileHeight": 28,
         "tilesToCycle": 4,
         "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "Conditional",
+        "radius": 8,
+        "pathFindingStrategyInRadius": "Euclidean",
+        "pathFindingStrategyOutRadius": "Random",
+        "targetCalculationConfig": {
+          "targetCalculationStrategy": "TargetEntity",
+          "targetType": "Pacman"
+        }
       }
     }, {
       "name": "Frightened",

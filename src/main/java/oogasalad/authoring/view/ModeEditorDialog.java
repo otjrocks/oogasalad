@@ -208,7 +208,7 @@ public class ModeEditorDialog {
           List.of()
       );
 
-      preparedResult = new ModeConfigRecord(name, entityProps, imageConfig);
+      preparedResult = new ModeConfigRecord(name, entityProps, controlConfig, imageConfig);
       return true;
 
     } catch (NumberFormatException ex) {
