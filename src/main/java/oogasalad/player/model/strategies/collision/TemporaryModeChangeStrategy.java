@@ -1,7 +1,7 @@
 package oogasalad.player.model.strategies.collision;
 
-import java.util.*;
 import oogasalad.engine.records.CollisionContextRecord;
+import oogasalad.engine.records.config.model.ModeChangeInfo;
 import oogasalad.player.model.Entity;
 
 /**
@@ -34,7 +34,7 @@ public class TemporaryModeChangeStrategy implements CollisionStrategyInterface {
 
                 String originalMode = entity.getEntityPlacement().getMode();
                 if(context.gameMap().getActiveModeChanges().containsKey(entity)) {
-                    originalMode = context.gameMap().getActiveModeChanges().get(entity).originalMode;
+                    originalMode = context.gameMap().getActiveModeChanges().get(entity).originalMode();
                     context.gameMap().getActiveModeChanges().remove(entity);
                 }
                 entity.getEntityPlacement().setMode(temporaryMode);
@@ -42,20 +42,6 @@ public class TemporaryModeChangeStrategy implements CollisionStrategyInterface {
                 context.gameMap().getActiveModeChanges().put(entity,
                         new ModeChangeInfo(originalMode, transitionMode, currentTime + duration, currentTime + duration - transitionTime));
             }
-        }
-    }
-
-    public static class ModeChangeInfo {
-        public String originalMode;
-        public String transitionMode;
-        public double transitionTime;
-        public double revertTime;
-
-        ModeChangeInfo(String originalMode, String transitionMode, double revertTime, double transitionTime) {
-            this.originalMode = originalMode;
-            this.transitionMode = transitionMode;
-            this.revertTime = revertTime;
-            this.transitionTime = transitionTime;
         }
     }
 }

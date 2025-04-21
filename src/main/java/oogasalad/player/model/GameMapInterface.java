@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.exceptions.InvalidPositionException;
+import oogasalad.engine.records.config.model.ModeChangeInfo;
 import oogasalad.player.model.strategies.collision.TemporaryModeChangeStrategy;
 
 /**
@@ -119,5 +120,5 @@ public interface GameMapInterface extends Iterable<Entity> {
    */
   boolean contains(Entity entity);
 
-  Map<Entity, TemporaryModeChangeStrategy.ModeChangeInfo> getActiveModeChanges();
+  Map<Entity, ModeChangeInfo> getActiveModeChanges();
 }

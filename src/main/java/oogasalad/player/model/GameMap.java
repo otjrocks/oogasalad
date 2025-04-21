@@ -9,6 +9,7 @@ import java.util.Optional;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.exceptions.InvalidPositionException;
+import oogasalad.engine.records.config.model.ModeChangeInfo;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.model.strategies.collision.TemporaryModeChangeStrategy;
 
@@ -23,7 +24,7 @@ public class GameMap implements GameMapInterface {
   private final int myWidth;
   private final int myHeight;
   private final Map<String, Integer> entityFrequencyMap;
-  private final Map<Entity, TemporaryModeChangeStrategy.ModeChangeInfo> activeModeChanges = new HashMap<>();
+  private final Map<Entity, ModeChangeInfo> activeModeChanges = new HashMap<>();
 
   /**
    * The constructor for a game map.
@@ -153,7 +154,7 @@ public class GameMap implements GameMapInterface {
     return myEntityList.contains(entity);
   }
 
-  public Map<Entity, TemporaryModeChangeStrategy.ModeChangeInfo> getActiveModeChanges() {
+  public Map<Entity, ModeChangeInfo> getActiveModeChanges() {
     return activeModeChanges;
   }
 }
