@@ -260,9 +260,54 @@
     "modeA" : "Default",
     "entityB" : "powerpellet",
     "eventsA" : [ {
-      "type" : "ChangeModeForType",
+      "type" : "TemporaryModeChange",
       "entityType" : "RedGhost",
-      "newMode" : "Frightened"
+      "temporaryMode" : "Frightened",
+      "transitionMode" : "Flashing",
+      "duration" : 5,
+      "transitionTime" : 2
+    } ],
+    "modeB" : "Default",
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "pacman",
+    "modeA" : "Default",
+    "entityB" : "powerpellet",
+    "eventsA" : [ {
+      "type" : "TemporaryModeChange",
+      "entityType" : "BlueGhost",
+      "temporaryMode" : "Frightened",
+      "transitionMode" : "Flashing",
+      "duration" : 5,
+      "transitionTime" : 2
+    } ],
+    "modeB" : "Default",
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "pacman",
+    "modeA" : "Default",
+    "entityB" : "powerpellet",
+    "eventsA" : [ {
+      "type" : "TemporaryModeChange",
+      "entityType" : "PinkGhost",
+      "temporaryMode" : "Frightened",
+      "transitionMode" : "Flashing",
+      "duration" : 5,
+      "transitionTime" : 2
+    } ],
+    "modeB" : "Default",
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "pacman",
+    "modeA" : "Default",
+    "entityB" : "powerpellet",
+    "eventsA" : [ {
+      "type" : "TemporaryModeChange",
+      "entityType" : "OrangeGhost",
+      "temporaryMode" : "Frightened",
+      "transitionMode" : "Flashing",
+      "duration" : 5,
+      "transitionTime" : 2
     } ],
     "modeB" : "Default",
     "eventsB" : [ ]
@@ -307,9 +352,9 @@
       "type" : "UpdateScore",
       "amount" : 200
     }, {
-      "type" : "ChangeModeForType",
-      "entityType" : "RedGhost",
-      "newMode" : "Dead"
+      "type" : "ChangeModeForEntity",
+      "newMode" : "Dead",
+      "duration" : 5
     } ],
     "modeB" : "Default",
     "eventsB" : [ ]
@@ -321,9 +366,9 @@
       "type" : "UpdateScore",
       "amount" : 200
     }, {
-      "type" : "ChangeModeForType",
-      "entityType" : "OrangeGhost",
-      "newMode" : "Dead"
+      "type" : "ChangeModeForEntity",
+      "newMode" : "Dead",
+      "duration" : 5
     } ],
     "modeB" : "Default",
     "eventsB" : [ ]
@@ -335,9 +380,9 @@
       "type" : "UpdateScore",
       "amount" : 200
     }, {
-      "type" : "ChangeModeForType",
-      "entityType" : "BlueGhost",
-      "newMode" : "Dead"
+      "type" : "ChangeModeForEntity",
+      "newMode" : "Dead",
+      "duration" : 5
     } ],
     "modeB" : "Default",
     "eventsB" : [ ]
@@ -349,9 +394,67 @@
       "type" : "UpdateScore",
       "amount" : 200
     }, {
-      "type" : "ChangeModeForType",
-      "entityType" : "PinkGhost",
-      "newMode" : "Dead"
+      "type" : "ChangeModeForEntity",
+      "newMode" : "Dead",
+      "duration" : 5
+    } ],
+    "modeB" : "Default",
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "redghost",
+    "modeA" : "Flashing",
+    "entityB" : "pacman",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 200
+    }, {
+      "type" : "ReturnToSpawnLocation"
+    }, {
+      "type" : "ChangeModeForEntity",
+      "newMode" : "Dead",
+      "duration" : 5
+    } ],
+    "modeB" : "Default",
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "blueghost",
+    "modeA" : "Flashing",
+    "entityB" : "pacman",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 200
+    }, {
+      "type" : "ChangeModeForEntity",
+      "newMode" : "Dead",
+      "duration" : 5
+    } ],
+    "modeB" : "Default",
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "pinkghost",
+    "modeA" : "Flashing",
+    "entityB" : "pacman",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 200
+    }, {
+      "type" : "ChangeModeForEntity",
+      "newMode" : "Dead",
+      "duration" : 5
+    } ],
+    "modeB" : "Default",
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "orangeghost",
+    "modeA" : "Flashing",
+    "entityB" : "pacman",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 200
+    }, {
+      "type" : "ChangeModeForEntity",
+      "newMode" : "Dead",
+      "duration" : 5
     } ],
     "modeB" : "Default",
     "eventsB" : [ ]
@@ -385,6 +488,42 @@
   }, {
     "entityA" : "orangeghost",
     "modeA" : "Frightened",
+    "entityB" : "wall",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "modeB" : "Default",
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "redghost",
+    "modeA" : "Flashing",
+    "entityB" : "wall",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "modeB" : "Default",
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "blueghost",
+    "modeA" : "Flashing",
+    "entityB" : "wall",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "modeB" : "Default",
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "pinkghost",
+    "modeA" : "Flashing",
+    "entityB" : "wall",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "modeB" : "Default",
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "orangeghost",
+    "modeA" : "Flashing",
     "entityB" : "wall",
     "eventsA" : [ {
       "type" : "Stop"
