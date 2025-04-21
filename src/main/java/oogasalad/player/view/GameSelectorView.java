@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -24,7 +25,6 @@ import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.GameConfigRecord;
-import oogasalad.engine.records.config.model.MetadataRecord;
 import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.LoggingManager;
@@ -49,6 +49,7 @@ public class GameSelectorView {
   private Label titleLabel;
   private Label fileLabel;
   private Button backButton;
+  private Button helpButton;
   private Button uploadButton;
   private Button startButton;
   private FileChooser fileChooser;
@@ -76,7 +77,7 @@ public class GameSelectorView {
     }
     Pagination gameGrid = createGameGrid(gameNames);
 
-    myRoot.getChildren().addAll(topBar, gameGrid);
+    myRoot.getChildren().addAll(topBar, createFileUploadSection(), gameGrid);
   }
 
   /**
@@ -146,7 +147,10 @@ public class GameSelectorView {
       myMainController.showSplashScreen();
     });
 
-    topBar.getChildren().addAll(backButton, titleLabel, createFileUploadSection());
+    helpButton = new Button("Help");
+    helpButton.getStyleClass().add(smallButtonString);
+
+    topBar.getChildren().addAll(backButton, titleLabel, helpButton);
     HBox.setHgrow(titleLabel, Priority.ALWAYS);
     titleLabel.setMaxWidth(Double.MAX_VALUE);
     titleLabel.setAlignment(Pos.TOP_CENTER);
@@ -160,7 +164,7 @@ public class GameSelectorView {
 
     ImageView image = new ImageView(getImage(gameName)); // Replace with actual path
     image.setFitWidth(200);
-    image.setFitHeight(400);
+    image.setFitHeight(300);
 
     Label name = new Label(gameName);
     name.getStyleClass().add("game-name");
@@ -249,11 +253,10 @@ public class GameSelectorView {
       }
     });
 
-    return new VBox(10,
-        uploadButton,
-        fileLabel,
-        startButton
-    );
+    VBox fileUploadSection = new VBox(10, uploadButton, fileLabel, startButton);
+    fileUploadSection.setAlignment(Pos.CENTER);
+    VBox.setMargin(fileUploadSection, new Insets(30, 0, 0, 0));
+    return fileUploadSection;
   }
 
   private void handleFileUpload(FileChooser fileChooser, Label label, Button startButton) {
@@ -293,5 +296,13 @@ public class GameSelectorView {
     alert.setHeaderText(null);
     alert.setContentText(message);
     alert.showAndWait();
+  }
+
+  /**
+   * Resets file label and disables start button.
+   */
+  public void resetUploadSection() {
+    fileLabel.setText("No file selected");
+    startButton.setDisable(true);
   }
 }
