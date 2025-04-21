@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
+import oogasalad.engine.records.CollisionContextRecord.StrategyAppliesTo;
 import oogasalad.player.model.Entity;
 import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.GameStateInterface;
@@ -18,7 +19,8 @@ class CollisionContextTest {
 
   @Test
   void collisionContext_validInputs_createsCollisionContextSuccessfully() {
-    CollisionContextRecord context = new CollisionContextRecord(entity1, entity2, gameMap, gameState);
+    CollisionContextRecord context = new CollisionContextRecord(entity1, entity2, gameMap,
+        gameState, StrategyAppliesTo.ENTITY1);
 
     assertEquals(entity1, context.entity1());
     assertEquals(entity2, context.entity2());
@@ -31,24 +33,24 @@ class CollisionContextTest {
   @Test
   void collisionContext_nullEntity1_throwsIllegalArgumentException() {
     assertThrows(IllegalArgumentException.class, () ->
-        new CollisionContextRecord(null, entity2, gameMap, gameState));
+        new CollisionContextRecord(null, entity2, gameMap, gameState, StrategyAppliesTo.ENTITY1));
   }
 
   @Test
   void collisionContext_nullEntity2_throwsIllegalArgumentException() {
     assertThrows(IllegalArgumentException.class, () ->
-        new CollisionContextRecord(entity1, null, gameMap, gameState));
+        new CollisionContextRecord(entity1, null, gameMap, gameState, StrategyAppliesTo.ENTITY1));
   }
 
   @Test
   void collisionContext_nullGameMap_throwsIllegalArgumentException() {
     assertThrows(IllegalArgumentException.class, () ->
-        new CollisionContextRecord(entity1, entity2, null, gameState));
+        new CollisionContextRecord(entity1, entity2, null, gameState, StrategyAppliesTo.ENTITY1));
   }
 
   @Test
   void collisionContext_nullGameState_throwsIllegalArgumentException() {
     assertThrows(IllegalArgumentException.class, () ->
-        new CollisionContextRecord(entity1, entity2, gameMap, null));
+        new CollisionContextRecord(entity1, entity2, gameMap, null, StrategyAppliesTo.ENTITY1));
   }
 }

@@ -198,3 +198,49 @@ Label, Text {
   -fx-font-size: 16px;
   -fx-font-family: "Press Start 2P";
 }
+
+.pagination {
+  -fx-page-information-visible: false;
+  -fx-arrows-visible: false;
+  -fx-background-color: transparent;
+  -fx-padding: 20px;
+  -fx-spacing: 10px;
+  -fx-alignment: center;
+}
+
+.pagination > .pagination-control > .control-box {
+  -fx-spacing: 0;
+  -fx-font-size: 12;
+
+  -fx-border-width: 2px;
+  -fx-font-family: "Press Start 2P";
+}
+
+.pagination .number-button {
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+}
+
+.pagination .number-button:hover {
+  -fx-background-color: -fx-highlight;
+}
+
+.pagination > .pagination-control > .control-box > .number-button:selected,
+.pagination > .pagination-control > .control-box > .bullet-button:selected{
+  -fx-background-color: -fx-highlight;
+}
+
+.game-card {
+  -fx-background-color: transparent;
+  -fx-padding: 10px;
+  -fx-min-width: 250px;
+  -fx-alignment: center;
+  -fx-spacing: 10px;
+}
+
+.game-grid {
+  -fx-spacing: 30px;
+  -fx-padding: 20px;
+  -fx-alignment: center;
+}

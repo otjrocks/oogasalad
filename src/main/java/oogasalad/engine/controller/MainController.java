@@ -90,9 +90,13 @@ public class MainController {
 
   /**
    * Show the game player view if it is not already being displayed.
+   *
+   * @param gameFolderName name of game folder to create
+   * @param randomized     if levels should be randomized
    */
-  public void showGamePlayerView() {
-    GameScreenView myGameScreenView = new GameScreenView(this, new GameState(3));
+  public void showGamePlayerView(String gameFolderName, boolean randomized) {
+    GameScreenView myGameScreenView = new GameScreenView(this, new GameState(3), gameFolderName,
+        randomized);
     myInputManager.getRoot().getChildren().add(myGameScreenView.getRoot());
   }
 

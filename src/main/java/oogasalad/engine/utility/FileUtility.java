@@ -39,6 +39,27 @@ public class FileUtility {
   }
 
   /**
+   * Get a list of all the folder names in the provided directory.
+   *
+   * @param directoryPath The directory you are querying
+   * @return A list of all the folder names in the directory provided
+   */
+  public static List<String> getFolderNamesInDirectory(String directoryPath) {
+    List<String> folderNames = new ArrayList<>();
+    File directory = new File(directoryPath);
+    File[] folders = directory.listFiles(File::isDirectory);
+
+    if (folders != null) {
+      for (File folder : folders) {
+        folderNames.add(folder.getName());
+      }
+    }
+    Collections.sort(folderNames);
+    return folderNames;
+  }
+
+
+  /**
    * Using reflection API, get a list of the required fields and their type for a given class.
    *
    * @param recordPath The path for the class you are querying for
