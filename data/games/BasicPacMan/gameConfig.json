@@ -263,8 +263,9 @@
       "type" : "TemporaryModeChange",
       "entityType" : "RedGhost",
       "temporaryMode" : "Frightened",
-      "transitionMode" : "Frightened",
-      "duration" : 5
+      "transitionMode" : "Flashing",
+      "duration" : 5,
+      "transitionTime" : 2
     } ],
     "modeB" : "Default",
     "eventsB" : [ ]
