@@ -80,7 +80,6 @@ public class GameMapController {
 
   private void checkGameOutcome(GameOutcomeStrategyInterface gameOutcomeStrategy) {
     if (gameOutcomeStrategy.hasGameEnded(gameContext)) {
-      gameState.setGameOver(true);
       String result = gameOutcomeStrategy.getGameOutcome(gameContext);
       GameEndStatus status = result.equals("Level Passed") ? GameEndStatus.WIN : GameEndStatus.LOSS;
       stopGameLoop(status);
