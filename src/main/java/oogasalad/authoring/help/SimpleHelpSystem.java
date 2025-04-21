@@ -5,7 +5,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -48,28 +47,8 @@ public class SimpleHelpSystem {
     }
 
     /**
-     * Adds a help button to the main view.
+     * Displays the help dialog.
      */
-    void addHelpButton() {
-        Button helpButton = new Button("?");
-        helpButton.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; " +
-                "-fx-background-color: #3498db; -fx-text-fill: white; " +
-                "-fx-background-radius: 50%; -fx-min-width: 30px; " +
-                "-fx-min-height: 30px; -fx-max-width: 30px; -fx-max-height: 30px;");
-        helpButton.setTooltip(new Tooltip("Show help"));
-        helpButton.setOnAction(e -> showHelpDialog());
-
-        // Add the button to the top right corner of the view
-        BorderPane rootPane = (BorderPane) view.getNode();
-        StackPane.setAlignment(helpButton, Pos.TOP_RIGHT);
-        StackPane.setMargin(helpButton, new Insets(10));
-
-        // Create a stack pane to overlay the help button on the existing UI
-        StackPane overlayPane = new StackPane();
-        overlayPane.getChildren().addAll(rootPane.getCenter(), helpButton);
-        rootPane.setCenter(overlayPane);
-    }
-
     public void showHelpDialog() {
         if (helpStage != null && helpStage.isShowing()) {
             helpStage.requestFocus();
