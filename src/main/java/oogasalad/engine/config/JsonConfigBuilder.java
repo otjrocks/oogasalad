@@ -63,13 +63,11 @@ public class JsonConfigBuilder {
     defaultSettings.put("startingLives", model.getDefaultSettings().startingLives());
     defaultSettings.put("initialScore", model.getDefaultSettings().initialScore());
 
-    // TODO: remove hardcoded value
-    defaultSettings.put("scoreStrategy", "Cumulative");
-
     // === win conditions ===
-    defaultSettings.set("winCondition", ConditionSerializer.serialize(model.getDefaultSettings().winCondition(), mapper));
-    defaultSettings.set("loseCondition", ConditionSerializer.serialize(model.getDefaultSettings().loseCondition(), mapper));
-
+    defaultSettings.set("winCondition",
+        ConditionSerializer.serialize(model.getDefaultSettings().winCondition(), mapper));
+    defaultSettings.set("loseCondition",
+        ConditionSerializer.serialize(model.getDefaultSettings().loseCondition(), mapper));
 
     // === levels ===
     ArrayNode levels = root.putArray("levels");
@@ -96,7 +94,8 @@ public class JsonConfigBuilder {
    * @param mapper        the Jackson ObjectMapper instance
    * @return a JSON ObjectNode representing the level configuration
    */
-  public ObjectNode buildLevelConfig(LevelDraft draft, Map<String, Integer> entityToIdMap, ObjectMapper mapper) {
+  public ObjectNode buildLevelConfig(LevelDraft draft, Map<String, Integer> entityToIdMap,
+      ObjectMapper mapper) {
     ObjectNode root = mapper.createObjectNode();
 
     // === entity mappings ===
@@ -112,7 +111,6 @@ public class JsonConfigBuilder {
     ObjectNode settings = root.putObject("mapInfo");
     settings.put("width", draft.getWidth());
     settings.put("height", draft.getHeight());
-    settings.put("edgePolicy", draft.getEdgePolicy());
 
     // === layout ===
     ArrayNode layout = root.putArray("layout");
@@ -144,7 +142,8 @@ public class JsonConfigBuilder {
     return root;
   }
 
-  private void serializeSpawnEvents(LevelDraft draft, Map<String, Integer> idMap, ObjectMapper mapper, ArrayNode array) {
+  private void serializeSpawnEvents(LevelDraft draft, Map<String, Integer> idMap,
+      ObjectMapper mapper, ArrayNode array) {
     for (SpawnEventRecord record : draft.getSpawnEvents()) {
       ObjectNode event = mapper.createObjectNode();
       event.put(ENTITY_TYPE, String.valueOf(idMap.get(record.entityType().type())));
@@ -154,14 +153,16 @@ public class JsonConfigBuilder {
 
       event.set("spawnCondition", ConditionSerializer.serialize(record.spawnCondition(), mapper));
       if (record.despawnCondition() != null) {
-        event.set("despawnCondition", ConditionSerializer.serialize(record.despawnCondition(), mapper));
+        event.set("despawnCondition",
+            ConditionSerializer.serialize(record.despawnCondition(), mapper));
       }
 
       array.add(event);
     }
   }
 
-  private void serializeModeChangeEvents(LevelDraft draft, Map<String, Integer> idMap, ObjectMapper mapper, ArrayNode array) {
+  private void serializeModeChangeEvents(LevelDraft draft, Map<String, Integer> idMap,
+      ObjectMapper mapper, ArrayNode array) {
     for (ModeChangeEventRecord record : draft.getModeChangeEvents()) {
       ObjectNode event = mapper.createObjectNode();
       event.put(ENTITY_TYPE, String.valueOf(idMap.get(record.entityType().type())));

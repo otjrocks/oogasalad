@@ -330,8 +330,7 @@ public class JsonConfigParser implements ConfigParserInterface {
     return new GameSettingsRecord(
         baseSettings.gameSpeed(),
         baseSettings.startingLives(),
-        baseSettings.initialScore(),
-        "wrap"
+        baseSettings.initialScore()
     );
   }
 
@@ -415,7 +414,14 @@ public class JsonConfigParser implements ConfigParserInterface {
 
   // ---- Methods for loading Game Config ----
 
-  GameConfigRecord loadGameConfig(String filepath) throws ConfigException {
+  /**
+   * Loads the game configuration from a JSON file at the specified filepath.
+   *
+   * @param filepath the path to the JSON configuration file
+   * @return a {@code GameConfigRecord} containing the parsed game configuration
+   * @throws ConfigException if there is an error reading or parsing the configuration file
+   */
+  public GameConfigRecord loadGameConfig(String filepath) throws ConfigException {
     try {
       JsonNode root = mapper.readTree(new File(filepath));
 
@@ -469,7 +475,6 @@ public class JsonConfigParser implements ConfigParserInterface {
         pick(override.gameSpeed(), defaults.gameSpeed()),
         pick(override.startingLives(), defaults.startingLives()),
         pick(override.initialScore(), defaults.initialScore()),
-        pick(override.scoreStrategy(), defaults.scoreStrategy()),
         pick(override.winCondition(), defaults.winCondition()),
         pick(override.loseCondition(), defaults.loseCondition())
     );

@@ -26,17 +26,9 @@ import oogasalad.engine.utility.LanguageManager;
  */
 public class GameSettingsView {
 
-  private static final double DEFAULT_PADDING = 5;
-
   // Constants for win condition types
   private static final String WIN_CONDITION_SURVIVE_FOR_TIME = "SurviveForTime";
   private static final String WIN_CONDITION_ENTITY_BASED = "EntityBased";
-
-  // Constants for score strategy types
-  private static final String SCORE_STRATEGY_CUMULATIVE = "Cumulative";
-  private static final String SCORE_STRATEGY_HIGHEST_LEVEL = "HighestLevel";
-  private static final String SCORE_STRATEGY_TIME_BASED = "TimeBasedMultiplier";
-
 
   private final AuthoringController controller;
   private SettingsRecord gameSettings;
@@ -51,7 +43,6 @@ public class GameSettingsView {
   private Spinner<Double> gameSpeedSpinner;
   private Spinner<Integer> startingLivesSpinner;
   private Spinner<Integer> initialScoreSpinner;
-  private ComboBox<String> scoreStrategyComboBox;
   private ComboBox<String> winConditionTypeComboBox;
   private TextField winConditionValueField;
   private Label winConditionValueLabel;
@@ -98,7 +89,7 @@ public class GameSettingsView {
    * Set up the UI components in a compact layout making sure buttons are visible
    */
   private void setupUI() {
-    // Setup the root container
+    // Set up the root container
     rootNode.setSpacing(15);
     rootNode.setPadding(new Insets(15)); // Increase padding
     rootNode.setAlignment(Pos.CENTER_LEFT);
@@ -140,15 +131,9 @@ public class GameSettingsView {
     startingLivesSpinner = createIntegerSpinner(1, 10, 1, gameSettings.startingLives());
     initialScoreSpinner = createIntegerSpinner(0, 1000, 50, gameSettings.initialScore());
 
-    // Create score strategy dropdown
-    scoreStrategyComboBox = new ComboBox<>(FXCollections.observableArrayList(
-            SCORE_STRATEGY_CUMULATIVE, SCORE_STRATEGY_HIGHEST_LEVEL, SCORE_STRATEGY_TIME_BASED));
-    scoreStrategyComboBox.setValue(gameSettings.scoreStrategy());
-    scoreStrategyComboBox.setPrefWidth(150);
-
     // Create win condition type dropdown
     winConditionTypeComboBox = new ComboBox<>(FXCollections.observableArrayList(
-            WIN_CONDITION_SURVIVE_FOR_TIME, WIN_CONDITION_ENTITY_BASED));
+        WIN_CONDITION_SURVIVE_FOR_TIME, WIN_CONDITION_ENTITY_BASED));
     winConditionTypeComboBox.setValue(getWinConditionType());
     winConditionTypeComboBox.setPrefWidth(150);
 
@@ -179,7 +164,6 @@ public class GameSettingsView {
     settingsGrid.add(new Label(LanguageManager.getMessage("INITIAL_SCORE")), 0, 3);
     settingsGrid.add(initialScoreSpinner, 1, 3);
     settingsGrid.add(new Label(LanguageManager.getMessage("SCORE_STRATEGY")), 2, 3);
-    settingsGrid.add(scoreStrategyComboBox, 3, 3);
 
     // Add win condition fields
     settingsGrid.add(new Label(LanguageManager.getMessage("WIN_CONDITION_TYPE")), 0, 4);
@@ -283,9 +267,7 @@ public class GameSettingsView {
 
     // Create a new CollisionRuleEditorView
     CollisionRuleEditorView collisionEditor = new CollisionRuleEditorView(controller);
-    collisionEditor.showAndWait().ifPresent(updatedRules -> {
-      controller.getModel().setCollisionRules(updatedRules);
-    });
+    collisionEditor.showAndWait().ifPresent(updatedRules -> controller.getModel().setCollisionRules(updatedRules));
   }
 
   /**
@@ -304,7 +286,6 @@ public class GameSettingsView {
     gameSpeedSpinner.getValueFactory().setValue(gameSettings.gameSpeed());
     startingLivesSpinner.getValueFactory().setValue(gameSettings.startingLives());
     initialScoreSpinner.getValueFactory().setValue(gameSettings.initialScore());
-    scoreStrategyComboBox.setValue(gameSettings.scoreStrategy());
 
     // Update win condition fields
     winConditionTypeComboBox.setValue(getWinConditionType());
@@ -333,12 +314,11 @@ public class GameSettingsView {
     WinConditionInterface newWinCondition = createWinConditionFromUI();
     // Create new settings record with updated values
     SettingsRecord updatedSettings = new SettingsRecord(
-            gameSpeedSpinner.getValue(),
-            startingLivesSpinner.getValue(),
-            initialScoreSpinner.getValue(),
-            scoreStrategyComboBox.getValue(),
-            newWinCondition,
-            gameSettings.loseCondition() // Keep the existing lose condition
+        gameSpeedSpinner.getValue(),
+        startingLivesSpinner.getValue(),
+        initialScoreSpinner.getValue(),
+        newWinCondition,
+        gameSettings.loseCondition() // Keep the existing lose condition
     );
     // Update the model with the current settings
     controller.getModel().setDefaultSettings(updatedSettings);

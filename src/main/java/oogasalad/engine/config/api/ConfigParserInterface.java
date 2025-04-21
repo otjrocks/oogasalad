@@ -2,6 +2,7 @@ package oogasalad.engine.config.api;
 
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.records.config.GameConfigRecord;
 
 /**
  * Interface for parsing configuration files and converting them into a {@link ConfigModelRecord}.
@@ -21,4 +22,14 @@ public interface ConfigParserInterface {
    * @throws ConfigException if an error occurs while loading or parsing the configuration file
    */
   ConfigModelRecord loadFromFile(String filepath) throws ConfigException;
+
+
+  /**
+   * Loads a game configuration model from the specified file path.
+   *
+   * @param filepath the path to the configuration file to be loaded
+   * @return a {@code GameConfigRecord} object representing the loaded configuration
+   * @throws ConfigException if an error occurs while loading or parsing the configuration file
+   */
+  GameConfigRecord loadGameConfig(String filepath) throws ConfigException;
 }
