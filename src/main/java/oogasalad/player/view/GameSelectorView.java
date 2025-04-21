@@ -45,6 +45,7 @@ public class GameSelectorView {
   private final MainController myMainController;
   private final List<GameConfigRecord> gameConfigRecords;
   private final Map<String, String> gameNameToFolder = new HashMap<>();
+  JsonConfigParser configParser = new JsonConfigParser();
   private Label titleLabel;
   private Label fileLabel;
   private Button backButton;
@@ -72,7 +73,6 @@ public class GameSelectorView {
     List<String> gameNames = new ArrayList<>();
     for (GameConfigRecord gameConfigRecord : gameConfigRecords) {
       gameNames.add(gameConfigRecord.metadata().gameTitle());
-      System.out.println(gameConfigRecord.metadata().gameTitle());
     }
     Pagination gameGrid = createGameGrid(gameNames);
 
@@ -209,8 +209,6 @@ public class GameSelectorView {
   }
 
   private List<GameConfigRecord> getAllGameConfigs() {
-    JsonConfigParser configParser = new JsonConfigParser();
-
     List<String> folderNames = FileUtility.getFolderNamesInDirectory(gamesFolderPath);
     List<GameConfigRecord> gameConfigs = new ArrayList<>();
     for (String folderName : folderNames) {
@@ -241,7 +239,10 @@ public class GameSelectorView {
     startButton.setOnAction(e -> {
       String filePath = fileLabel.getText();
       try {
-        myMainController.showGamePlayerView(filePath, false);
+        GameConfigRecord config = configParser.loadGameConfig(filePath);
+        String gameName = config.metadata().gameTitle();
+        myMainController.hideGameSelectorView();
+        myMainController.showGamePlayerView(gameNameToFolder.get(gameName), false);
       } catch (Exception ex) {
         LoggingManager.LOGGER.error("Exception: {}", ex.getMessage());
         showErrorDialog("Exception", ex.getMessage()); // use languageController later
@@ -286,6 +287,7 @@ public class GameSelectorView {
   }
 
   private void showErrorDialog(String title, String message) {
+    // This method is adapted from file upload code by Will He in the Cell Society project.
     Alert alert = new Alert(AlertType.ERROR);
     alert.setTitle(title);
     alert.setHeaderText(null);
