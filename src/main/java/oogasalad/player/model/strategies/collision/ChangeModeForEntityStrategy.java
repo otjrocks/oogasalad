@@ -3,13 +3,18 @@ package oogasalad.player.model.strategies.collision;
 import oogasalad.engine.records.CollisionContextRecord;
 import oogasalad.engine.records.config.model.ModeChangeInfo;
 
+/**
+ * Temporarily changes the mode of a specific entity, and reverts after a duration.
+ */
 public class ChangeModeForEntityStrategy implements CollisionStrategyInterface{
     private final String newMode;
     private final double duration;
 
     /**
-     * Temporarily changes the mode of an entity
+     * Changes the mode of a single entity for a set duration
      *
+     * @param newMode: The mode you want to change the entity to
+     * @param duration: How long the entity should remain changed
      */
     public ChangeModeForEntityStrategy(String newMode, int duration) {
         this.newMode = newMode;
