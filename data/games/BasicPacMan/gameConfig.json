@@ -307,8 +307,6 @@
       "type" : "UpdateScore",
       "amount" : 200
     }, {
-      "type" : "ReturnToSpawnLocation"
-    }, {
       "type" : "ChangeModeForType",
       "entityType" : "RedGhost",
       "newMode" : "Dead"
@@ -328,9 +326,7 @@
       "newMode" : "Dead"
     } ],
     "modeB" : "Default",
-    "eventsB" : [ {
-      "type" : "ReturnToSpawnLocation"
-    } ]
+    "eventsB" : [ ]
   }, {
     "entityA" : "blueghost",
     "modeA" : "Frightened",
@@ -344,9 +340,7 @@
       "newMode" : "Dead"
     } ],
     "modeB" : "Default",
-    "eventsB" : [ {
-      "type" : "ReturnToSpawnLocation"
-    } ]
+    "eventsB" : [ ]
   }, {
     "entityA" : "pinkghost",
     "modeA" : "Frightened",
@@ -360,9 +354,7 @@
       "newMode" : "Dead"
     } ],
     "modeB" : "Default",
-    "eventsB" : [ {
-      "type" : "ReturnToSpawnLocation"
-    } ]
+    "eventsB" : [ ]
   }, {
     "entityA" : "redghost",
     "modeA" : "Frightened",
