@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -19,7 +18,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
@@ -99,7 +97,7 @@ public class ControlTypeEditorView {
     List<String> requiredFieldOrder = ControlManager.getControlRequiredFieldsOrder(controlType);
     List<Object> constructorArgs = new ArrayList<>();
     try {
-      getContructorArguments(requiredFieldOrder, requiredFieldTypes, constructorArgs);
+      getConstructorArguments(requiredFieldOrder, requiredFieldTypes, constructorArgs);
       return getControlConfigInterface(controlType, constructorArgs);
 
     } catch (Exception e) {
@@ -108,31 +106,44 @@ public class ControlTypeEditorView {
     }
   }
 
-  private void getContructorArguments(List<String> requiredFieldOrder,
+  private void getConstructorArguments(List<String> requiredFieldOrder,
       Map<String, Class<?>> requiredFieldTypes,
       List<Object> constructorArgs) {
     int textFieldIndex = 0;
 
     for (String param : requiredFieldOrder) {
-      Class<?> type = requiredFieldTypes.get(param);
-
-      if (param.startsWith(PATH_FINDING_STRATEGY)) {
-        constructorArgs.add(controlTypeComboBoxes.get(param).getValue());
-
-      } else if (param.startsWith(TARGET_CALCULATION_CONFIG)) {
-        constructorArgs.add(buildTargetStrategyFromUI());
-
-      } else {
-        String input = controlTypeParameterFields.get(textFieldIndex++).getText();
-        try {
-          constructorArgs.add(FileUtility.castInputToCorrectType(input, type));
-        } catch (ViewException e) {
-          showError("Unable to cast " + input + " to " + type);
-          LoggingManager.LOGGER.warn(
-              "Unable to cast control type parameter: {} to required type {}", input, type);
-        }
-      }
+      textFieldIndex = extractAllConstructorArguments(requiredFieldTypes, constructorArgs, param,
+          textFieldIndex);
     }
+  }
+
+  private int extractAllConstructorArguments(Map<String, Class<?>> requiredFieldTypes,
+      List<Object> constructorArgs, String param, int textFieldIndex) {
+    Class<?> type = requiredFieldTypes.get(param);
+
+    if (param.startsWith(PATH_FINDING_STRATEGY)) {
+      constructorArgs.add(controlTypeComboBoxes.get(param).getValue());
+
+    } else if (param.startsWith(TARGET_CALCULATION_CONFIG)) {
+      constructorArgs.add(buildTargetStrategyFromUI());
+
+    } else {
+      textFieldIndex = extractConstructorArgument(constructorArgs, textFieldIndex, type);
+    }
+    return textFieldIndex;
+  }
+
+  private int extractConstructorArgument(List<Object> constructorArgs, int textFieldIndex,
+      Class<?> type) {
+    String input = controlTypeParameterFields.get(textFieldIndex++).getText();
+    try {
+      constructorArgs.add(FileUtility.castInputToCorrectType(input, type));
+    } catch (ViewException e) {
+      showError("Unable to cast " + input + " to " + type);
+      LoggingManager.LOGGER.warn(
+          "Unable to cast control type parameter: {} to required type {}", input, type);
+    }
+    return textFieldIndex;
   }
 
   private static ControlConfigInterface getControlConfigInterface(String controlType,
@@ -275,23 +286,39 @@ public class ControlTypeEditorView {
   private void generateTargetParameterTextFields(VBox targetParameterBox,
       TargetCalculationConfigInterface config,
       List<String> targetParams) {
+    createAllTargetParameterFieldsFromConfig(targetParameterBox, config, targetParams);
+  }
+
+  private void createAllTargetParameterFieldsFromConfig(VBox targetParameterBox,
+      TargetCalculationConfigInterface config,
+      List<String> targetParams) {
     if (!targetParams.isEmpty()) {
       for (String targetParam : targetParams) {
-        Label targetParamLabel = new Label(targetParam + ": ");
-        TextField targetParamField = new TextField();
+        createTextFieldForCurrentParameter(targetParameterBox, config, targetParam);
+      }
+    }
+  }
 
-        if (config != null) {
-          try {
-            var field = config.getClass().getDeclaredField(targetParam);
-            field.setAccessible(true);
-            Object value = field.get(config);
-            targetParamField.setText(value != null ? value.toString() : "");
-          } catch (Exception ignored) {
-          }
-        }
+  private void createTextFieldForCurrentParameter(VBox targetParameterBox,
+      TargetCalculationConfigInterface config,
+      String targetParam) {
+    Label targetParamLabel = new Label(targetParam + ": ");
+    TextField targetParamField = new TextField();
+    attemptSettingTargetParameterFieldValue(config, targetParam, targetParamField);
+    targetStrategyParameterFields.add(targetParamField);
+    targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
+  }
 
-        targetStrategyParameterFields.add(targetParamField);
-        targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
+  private static void attemptSettingTargetParameterFieldValue(
+      TargetCalculationConfigInterface config, String targetParam,
+      TextField targetParamField) {
+    if (config != null) {
+      try {
+        var field = config.getClass().getDeclaredField(targetParam);
+        field.setAccessible(true);
+        Object value = field.get(config);
+        targetParamField.setText(value != null ? value.toString() : "");
+      } catch (Exception ignored) {
       }
     }
   }
