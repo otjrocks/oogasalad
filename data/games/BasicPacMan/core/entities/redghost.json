@@ -1,7 +1,6 @@
 {
   "entityType": {
-    "name": "RedGhost",
-    "movementSpeed": 1.0
+    "name": "RedGhost"
   },
   "modes": [
     {
@@ -20,7 +19,8 @@
           "targetCalculationStrategy": "TargetEntity",
           "targetType": "Pacman"
         }
-      }
+      },
+      "movementSpeed": 1.0
     }, {
       "name": "Frightened",
       "image": {
@@ -38,7 +38,8 @@
           "targetX": 14,
           "targetY": 14
         }
-      }
+      },
+      "movementSpeed": 1.0
     },
     {
       "name": "Dead",
@@ -57,7 +58,8 @@
           "targetX": 14,
           "targetY": 14
         }
-      }
+      },
+      "movementSpeed": 1.0
     }, {
       "name": "Flashing",
       "image": {
@@ -75,7 +77,8 @@
           "targetX": 14,
           "targetY": 14
         }
-      }
+      },
+      "movementSpeed": 1.0
     }
   ]
 }

@@ -1,7 +1,6 @@
 {
   "entityType": {
-    "name": "Dot",
-    "movementSpeed": 0.0
+    "name": "Dot"
   },
   "modes": [
     {
@@ -15,7 +14,8 @@
       },
       "controlConfig": {
         "controlStrategy": "None"
-      }
+      },
+      "movementSpeed": 0.0
     }
   ]
 }

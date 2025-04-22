@@ -4,18 +4,13 @@ import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import oogasalad.authoring.view.util.InputField;
-import oogasalad.authoring.view.util.InputFieldFactory;
 import oogasalad.engine.records.config.model.CollisionEventInterface;
 import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LanguageManager;
@@ -32,16 +27,14 @@ public class CollisionEventView {
   private final VBox myRoot;
   private final Selector mySelector;
   private final VBox myParameters;
-  private final List<InputField> myParameterFields;
-  private final InputFieldFactory fieldFactory;
-  private final Map<String, InputField> inputFieldMap;
+  private final List<TextField> myParameterFields;
 
-
-  public CollisionEventView(
-      String labelText,
-      Supplier<List<String>> entityTypeSupplier,
-      Function<String, List<String>> modeSupplierForType
-  ) {
+  /**
+   * Create a collision event view with the provided label text.
+   *
+   * @param labelText The label text for this view.
+   */
+  public CollisionEventView(String labelText) {
     myRoot = new VBox();
     myParameters = new VBox();
     myRoot.setSpacing(ELEMENT_SPACING);
@@ -50,15 +43,10 @@ public class CollisionEventView {
     mySelector = new Selector(getCollisionEventClassNames(),
         null, "collision-rule-selector",
         LanguageManager.getMessage("COLLISION_RULE_SELECTOR"), e -> updateParameterFields());
-
-    fieldFactory = new InputFieldFactory(entityTypeSupplier, modeSupplierForType);
-    inputFieldMap = new HashMap<>();
-
     myRoot.getChildren().add(new Label(labelText));
     myRoot.getChildren().add(mySelector.getRoot());
     myRoot.getChildren().add(myParameters);
   }
-
 
   /**
    * Get the root element of this view.
@@ -86,10 +74,10 @@ public class CollisionEventView {
       Object[] constructorArgs = new Object[requiredFields.size()];
 
       int index = 0;
-      for (String param : requiredFields.keySet()) {
-        String userInput = inputFieldMap.get(param).getValue();
-        Class<?> type = requiredFields.get(param);
-        constructorArgs[index++] = parseInput(userInput, type);
+      for (Class<?> paramType : requiredFields.values()) {
+        String userInput = myParameterFields.get(index).getText();
+        constructorArgs[index] = FileUtility.castInputToCorrectType(userInput, paramType);
+        index++;
       }
 
       Constructor<?> constructor = collisionEventClass.getDeclaredConstructors()[0];
@@ -106,50 +94,27 @@ public class CollisionEventView {
   }
 
 
-  private static final Map<Class<?>, Function<String, Object>> PARSERS = Map.of(
-      int.class, Integer::parseInt,
-      Integer.class, Integer::parseInt,
-      double.class, Double::parseDouble,
-      Double.class, Double::parseDouble,
-      boolean.class, Boolean::parseBoolean,
-      Boolean.class, Boolean::parseBoolean
-  );
-
-
-  private Object parseInput(String input, Class<?> targetType) {
-    Function<String, Object> parser = PARSERS.get(targetType);
-    if (parser == null) { // Fall back to just returning the string for unknown types (optional)
-      return input;
-    }
-    try {
-      return parser.apply(input);
-    } catch (Exception e) {
-      LoggingManager.LOGGER.warn("Unable to parse input into correct parameter format", e);
-      throw new IllegalArgumentException("Unable to parse input into correct parameter format");
-    }
-  }
-
-
   private void updateParameterFields() {
     myParameters.getChildren().clear();
-    inputFieldMap.clear();
+    myParameterFields.clear();
 
-    VBox parameterBox = new VBox(10);
-    Map<String, Class<?>> required = getCollisionRequiredFields(mySelector.getValue());
+    VBox parameterBox = new VBox();
+    parameterBox.setSpacing(ELEMENT_SPACING); // vertical spacing between rows
 
-    for (Map.Entry<String, Class<?>> entry : required.entrySet()) {
-      String paramName = entry.getKey();
-      Class<?> paramType = entry.getValue();
+    for (String parameter : getCollisionRequiredFields(mySelector.getValue()).keySet()) {
+      Label parameterLabel = new Label(parameter + ": ");
+      TextField parameterField = new TextField();
 
-      InputField input = fieldFactory.create(paramName, paramType, inputFieldMap);
-      inputFieldMap.put(paramName, input);
+      VBox fieldGroup = new VBox(4); // small gap between label and text field
+      fieldGroup.getChildren().addAll(parameterLabel, parameterField);
 
-      VBox fieldGroup = new VBox(4, new Label(paramName + ":"), input.getNode());
       parameterBox.getChildren().add(fieldGroup);
+      myParameterFields.add(parameterField);
     }
 
     myParameters.getChildren().add(parameterBox);
   }
+
 
   private static List<String> getCollisionEventClassNames() {
     return FileUtility.getFileNamesInDirectory(COLLISION_EVENTS_PATH, "CollisionEventRecord.java");
@@ -160,4 +125,3 @@ public class CollisionEventView {
         COLLISION_EVENTS_PACKAGE_PATH + collisionName + "CollisionEventRecord");
   }
 }
-

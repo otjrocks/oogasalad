@@ -237,8 +237,7 @@ class JsonConfigParserTest {
     String json = """
         {
              "entityType": {
-               "name": "RedGhost",
-               "movementSpeed": 90
+               "name": "RedGhost"
              },
              "modes": [
                {
@@ -249,6 +248,10 @@ class JsonConfigParserTest {
                    "tileHeight": 14,
                    "tilesToCycle": 1,
                    "animationSpeed": 1.0
+                 },
+                 "movementSpeed": 90,
+                 "controlConfig": {
+                  "controlStrategy": "None"
                  }
                }
              ]
@@ -267,11 +270,11 @@ class JsonConfigParserTest {
     // Default properties
     EntityPropertiesRecord baseProps = config.entityProperties();
     assertEquals("RedGhost", baseProps.name());
-    assertEquals(90.0, baseProps.movementSpeed());
 
     // Modes
     List<ModeConfigRecord> modes = config.modes();
     assertEquals(1, modes.size());
+    assertEquals(90.0, modes.getFirst().movementSpeed());
 
     ModeConfigRecord defaultMode = modes.getFirst();
     assertEquals("Default", defaultMode.name());

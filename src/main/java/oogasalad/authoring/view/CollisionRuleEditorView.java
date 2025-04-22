@@ -131,24 +131,12 @@ public class CollisionRuleEditorView {
   private HBox createCollisionRuleHBox() {
     HBox addRule = new HBox(15);
 
-    Supplier<List<String>> typeSupplier = () ->
-        controller.getModel().getEntityTypeMap().keySet().stream().toList();
-
-    Function<String, List<String>> modeSupplier = (typeName) -> {
-      var record = controller.getModel().getEntityTypeMap().get(typeName);
-      return record != null ? new ArrayList<>(record.modes().keySet()) : List.of();
-    };
-
     myRuleViewA = new CollisionEventView(
-        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "A"),
-        typeSupplier,
-        modeSupplier
+        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "A")
     );
 
     myRuleViewB = new CollisionEventView(
-        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "B"),
-        typeSupplier,
-        modeSupplier
+        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "B")
     );
 
     addRule.getChildren().addAll(myRuleViewA.getRoot(), myRuleViewB.getRoot());

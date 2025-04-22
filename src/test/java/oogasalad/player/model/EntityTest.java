@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.controller.GameInputManager;
@@ -33,8 +34,8 @@ class EntityTest {
     mockPlacement = mock(EntityPlacement.class);
     mockInput = mock(GameInputManager.class);
     mockMap = mock(GameMapInterface.class);
-    when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", null, null, 1));
-    entity = new Entity(mockInput, mockPlacement, mockMap);
+    when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", null, null));
+    entity = new Entity(mockInput, mockPlacement, mockMap, mock(ConfigModelRecord.class));
   }
 
   @Test
@@ -96,7 +97,7 @@ class EntityTest {
 
   @Test
   void testCanMove_validAndInvalidMoveHorizontal_returnsTrueThenFalse() {
-    when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", null, null, 1));
+    when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", null, null));
     when(mockPlacement.getY()).thenReturn(4.00005);
     assertTrue(entity.canMove(Direction.R));
     when(mockPlacement.getY()).thenReturn(4.5);
