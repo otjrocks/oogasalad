@@ -20,7 +20,6 @@ import oogasalad.player.model.GameStateInterface;
 public class GamePlayerView {
 
 
-  public static final String GAME_FOLDER = "data/games/";
   public static final String GAME_CONFIG_JSON = "gameConfig.json";
 
   private final String gameFolderName;
@@ -28,6 +27,7 @@ public class GamePlayerView {
   private final MainController myMainController;
   private final GameStateInterface myGameState;
   private final boolean isRandomized;
+  private String gameFolderBasePath = "data/games/";
   private GameView myGameView;
   private ConfigModelRecord myConfigModel = null;
 
@@ -45,6 +45,21 @@ public class GamePlayerView {
     isRandomized = randomized;
 
     this.gameFolderName = gameFolderName;
+
+    myPane.setPrefWidth(WIDTH);
+    myPane.getStyleClass().add("game-player-view");
+
+    createMap();
+  }
+
+  public GamePlayerView(MainController controller, GameStateInterface gameState,
+      String gameFolderName, boolean randomized, String customBasePath) {
+    myPane = new StackPane();
+    myMainController = controller;
+    myGameState = gameState;
+    this.isRandomized = randomized;
+    this.gameFolderName = gameFolderName;
+    this.gameFolderBasePath = customBasePath;
 
     myPane.setPrefWidth(WIDTH);
     myPane.getStyleClass().add("game-player-view");
@@ -78,7 +93,7 @@ public class GamePlayerView {
     JsonConfigParser configParser = new JsonConfigParser();
     try {
       myConfigModel = configParser.loadFromFile(
-          GAME_FOLDER + gameFolderName + "/" + GAME_CONFIG_JSON);
+          gameFolderBasePath + gameFolderName + "/" + GAME_CONFIG_JSON);
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to reload updated config", e);
     }
