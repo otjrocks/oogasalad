@@ -120,15 +120,6 @@ public class AuthoringView {
   }
 
   /**
-   * Returns the view for editing collision rules between entities.
-   *
-   * @return the collision rule editor view component
-   */
-  public CollisionRuleEditorView getCollisionEditorView() {
-    return collisionEditorView;
-  }
-
-  /**
    * Sets the {@link AuthoringController} to be used by all child components. Also initializes the
    * subviews and injects the controller into them.
    *

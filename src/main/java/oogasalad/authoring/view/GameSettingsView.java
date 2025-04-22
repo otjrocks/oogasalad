@@ -407,6 +407,7 @@ public class GameSettingsView {
     return new LivesBasedConditionRecord();
   }
 
+  // TODO: This should not be hardcoded
   private WinConditionInterface createWinConditionFromUI() {
     String type = winConditionTypeComboBox.getValue();
     String value = winConditionValueField.getText();

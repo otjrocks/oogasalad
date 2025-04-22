@@ -200,6 +200,7 @@ public class JsonConfigBuilder {
     ObjectNode entityTypeNode = root.putObject(ENTITY_TYPE);
 
     addEntityBasics(type, entityTypeNode);
+    addEntityBlocks(type, entityTypeNode);
     addMovementSpeed(type, entityTypeNode);
     addModesArray(type, root, mapper);
 
@@ -209,6 +210,14 @@ public class JsonConfigBuilder {
   private void addEntityBasics(EntityTypeRecord type, ObjectNode entityTypeNode) {
     entityTypeNode.put("name", type.type());
   }
+
+  private void addEntityBlocks(EntityTypeRecord type, ObjectNode entityTypeNode) {
+    ArrayNode blocksArray = entityTypeNode.putArray("blocks");
+    for (String block : type.blocks()) {
+      blocksArray.add(block);
+    }
+  }
+
 
   private void addControlConfig(ControlConfigInterface config, ObjectNode entityTypeNode,
       ObjectMapper mapper) {
