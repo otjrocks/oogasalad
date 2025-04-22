@@ -277,38 +277,31 @@ public class CollisionRuleEditorView {
     rule.setEntityB(b);
     rule.setModeA(aMode);
     rule.setModeB(bMode);
-    if (rule.getEventsA() != null) {
-      rule.setEventsA(rule.getEventsA());
-    }
-    else {
-      rule.setEventsA(new ArrayList<>());
-    }
 
-    if (rule.getEventsB() != null) {
-      rule.setEventsB(rule.getEventsB());
-    }
-    else {
-      rule.setEventsB(new ArrayList<>());
-    }
+    initializeEventListsIfNull(rule);
 
     if (isA) {
-      try {
-        CollisionEventInterface eventA = myRuleViewA.getCollisionEvent();
-        if (!containsDuplicateEvent(rule.getEventsA(), eventA)) {
-          rule.getEventsA().add(eventA);
-        }
-      } catch (IllegalArgumentException e) {
-        showError("Invalid A-side event: " + e.getMessage());
-      }
+      addEventSafely(rule.getEventsA(), myRuleViewA, "A-side event");
     } else {
-      try {
-        CollisionEventInterface eventB = myRuleViewB.getCollisionEvent();
-        if (!containsDuplicateEvent(rule.getEventsB(), eventB)) {
-          rule.getEventsB().add(eventB);
-        }
-      } catch (IllegalArgumentException e) {
-        showError("Invalid B-side event: " + e.getMessage());
+      addEventSafely(rule.getEventsB(), myRuleViewB, "B-side event");
+    }
+  }
+
+  private void initializeEventListsIfNull(CollisionRule rule) {
+    if (rule.getEventsA() == null) rule.setEventsA(new ArrayList<>());
+    if (rule.getEventsB() == null) rule.setEventsB(new ArrayList<>());
+  }
+
+  private void addEventSafely(List<CollisionEventInterface> targetList,
+      CollisionEventView view,
+      String errorContext) {
+    try {
+      CollisionEventInterface event = view.getCollisionEvent();
+      if (!containsDuplicateEvent(targetList, event)) {
+        targetList.add(event);
       }
+    } catch (IllegalArgumentException e) {
+      showError("Invalid " + errorContext + ": " + e.getMessage());
     }
   }
 
