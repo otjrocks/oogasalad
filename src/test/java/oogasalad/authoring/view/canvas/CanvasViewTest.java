@@ -110,7 +110,7 @@ public class CanvasViewTest extends DukeApplicationTest {
     );
 
     ModeConfigRecord modeConfig = new ModeConfigRecord("Default", null,
-        new NoneControlConfigRecord(), imageConfig);
+        new NoneControlConfigRecord(), imageConfig, 1.0);
 
     Map<String, ModeConfigRecord> modes = new HashMap<>();
     modes.put("Default", modeConfig);

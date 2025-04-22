@@ -37,8 +37,7 @@ public class SpawnEventDialogTest extends DukeApplicationTest {
     EntityTypeRecord entity = new EntityTypeRecord(
         "Cherry",
         modes,
-        Collections.emptyList(),
-        1.0
+        Collections.emptyList()
     );
 
     Map<String, EntityTypeRecord> entityTypes = new HashMap<>();
@@ -97,9 +96,10 @@ public class SpawnEventDialogTest extends DukeApplicationTest {
   private ModeConfigRecord dummyMode(String name) {
     return new ModeConfigRecord(
         name,
-        new EntityPropertiesRecord(name, 1.0, Collections.emptyList()),
+        new EntityPropertiesRecord(name, Collections.emptyList()),
         new KeyboardControlConfigRecord(),
-        new ImageConfigRecord("file:test.png", 32, 32, 4, 1.0)
+        new ImageConfigRecord("file:test.png", 32, 32, 4, 1.0),
+        1.0
     );
   }
 }

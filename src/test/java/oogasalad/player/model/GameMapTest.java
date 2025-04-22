@@ -46,7 +46,7 @@ class GameMapTest extends DukeApplicationTest {
   @BeforeEach
   void setUp() {
     myGameMap = new GameMap(width, height);
-    EntityTypeRecord data = new EntityTypeRecord("test", null, null, 1.0);
+    EntityTypeRecord data = new EntityTypeRecord("test", null, null);
     EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
     myEntity = EntityFactory.createEntity(myInput, placement, myGameMap, mock(ConfigModelRecord.class));
   }
@@ -96,7 +96,7 @@ class GameMapTest extends DukeApplicationTest {
   @Test
   void iterator_ensureEntityIteratorContainsAddedEntities_Success() {
     assertDoesNotThrow(() -> myGameMap.addEntity(myEntity));
-    EntityTypeRecord data = new EntityTypeRecord("test", null, null, 1.0);
+    EntityTypeRecord data = new EntityTypeRecord("test", null, null);
     EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
     Entity secondEntity = EntityFactory.createEntity(myInput, placement, myGameMap, mock(ConfigModelRecord.class));
     assertDoesNotThrow(() -> myGameMap.addEntity(secondEntity));
@@ -150,7 +150,7 @@ class GameMapTest extends DukeApplicationTest {
   @Test
   void isNotBlocked_attemptBlockingEntityAtPosition_ReturnsFalse() throws InvalidPositionException {
     // Create an entity that blocks "Player"
-    EntityTypeRecord data = new EntityTypeRecord("blocker", null, List.of("Player"), 1.0);
+    EntityTypeRecord data = new EntityTypeRecord("blocker", null, List.of("Player"));
     EntityPlacement placement = new EntityPlacement(data, 4, 4, "Default");
     Entity blockingEntity = EntityFactory.createEntity(myInput, placement, myGameMap, mock(ConfigModelRecord.class));
     myGameMap.addEntity(blockingEntity);
