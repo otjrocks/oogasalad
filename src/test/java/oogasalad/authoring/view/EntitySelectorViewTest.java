@@ -51,12 +51,11 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
 
     EntityPropertiesRecord props = new EntityPropertiesRecord(
         "Mode 1",
-        100.0,
         List.of()
     );
 
     // --- Create ModeConfig ---
-    mode = new ModeConfigRecord("Default", props, new NoneControlConfigRecord(), imageConfig);
+    mode = new ModeConfigRecord("Default", props, new NoneControlConfigRecord(), imageConfig, 1.0);
 
     stage.show();
   }
@@ -80,7 +79,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
     EntityTypeRecord entity = new EntityTypeRecord(
         "Ghost",
         Map.of("Default", mode),
-        List.of(), 1.0
+        List.of()
     );
 
     // --- Run and verify ---
@@ -98,7 +97,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
     EntityTypeRecord entity = new EntityTypeRecord(
         "Pacman",
         Map.of("Default", mode),
-        List.of(), 1.0
+        List.of()
     );
     runAsJFXAction(() -> view.updateEntities(List.of(entity)));
 
@@ -113,7 +112,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
     EntityTypeRecord entity = new EntityTypeRecord(
         "Wall",
         Map.of("Default", mode),
-        List.of(), 1.0
+        List.of()
     );
     runAsJFXAction(() -> view.updateEntities(List.of(entity)));
     runAsJFXAction(() -> view.highlightEntityTile("Wall"));

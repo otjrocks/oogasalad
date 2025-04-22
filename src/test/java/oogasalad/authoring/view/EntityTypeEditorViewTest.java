@@ -44,21 +44,18 @@ public class EntityTypeEditorViewTest extends ApplicationTest {
         1.0
     );
 
-    ControlConfigInterface controlConfig = new KeyboardControlConfigRecord();
-
     EntityPropertiesRecord entityProps = new EntityPropertiesRecord(
         "Default",
-        2.0,
         List.of()
     );
 
     ModeConfigRecord mockMode = new ModeConfigRecord("Default", entityProps,
-        new KeyboardControlConfigRecord(), image);
+        new KeyboardControlConfigRecord(), image, 1.0);
     Map<String, ModeConfigRecord> modeMap = new HashMap<>();
     modeMap.put("Default", mockMode);
 
     mockEntityType = new EntityTypeRecord("Pacman", modeMap,
-        List.of(), 1.0);
+        List.of());
 
     AuthoringModel mockModel = mock(AuthoringModel.class);
     when(mockController.getModel()).thenReturn(mockModel);

@@ -61,17 +61,18 @@ public class GameMapFactoryTest {
     // Mock level and placements
     List<ParsedLevelRecord> levels = new ArrayList<>();
     levels.add(
-        new ParsedLevelRecord(List.of(entityPlacement1, entityPlacement2), new MapInfoRecord("wrap", 10, 10),
+        new ParsedLevelRecord(List.of(entityPlacement1, entityPlacement2),
+            new MapInfoRecord("wrap", 10, 10),
             null, null));
     when(configModel.levels()).thenReturn(levels);
 
     // ChatGPT on how to mock entity factory correctly
     try (MockedStatic<EntityFactory> mockedFactory = mockStatic(EntityFactory.class)) {
       mockedFactory.when(() -> EntityFactory.createEntity(eq(inputManager), eq(entityPlacement1),
-              any(GameMapInterface.class)))
+              any(GameMapInterface.class), any(ConfigModelRecord.class)))
           .thenReturn(entity1);
       mockedFactory.when(() -> EntityFactory.createEntity(eq(inputManager), eq(entityPlacement2),
-              any(GameMapInterface.class)))
+              any(GameMapInterface.class), any(ConfigModelRecord.class)))
           .thenReturn(entity2);
 
       GameMapInterface gameMap = GameMapFactory.createGameMap(inputManager, configModel, 0);
@@ -99,17 +100,19 @@ public class GameMapFactoryTest {
     // Mock level and placements
     List<ParsedLevelRecord> levels = new ArrayList<>();
     levels.add(
-        new ParsedLevelRecord(List.of(entityPlacement1, entityPlacement2), new MapInfoRecord("wrap", 10, 10),
+        new ParsedLevelRecord(List.of(entityPlacement1, entityPlacement2),
+            new MapInfoRecord("wrap", 10, 10),
             null, null));
     when(configModel.levels()).thenReturn(levels);
 
     // ChatGPT on how to mock entity factory correctly
     try (MockedStatic<EntityFactory> mockedFactory = mockStatic(EntityFactory.class)) {
-      mockedFactory.when(() -> EntityFactory.createEntity(eq(inputManager), eq(entityPlacement1),
-              any(GameMapInterface.class)))
+      mockedFactory.when(() -> EntityFactory.createEntity(
+              eq(inputManager), eq(entityPlacement1), any(GameMapInterface.class), eq(configModel)))
           .thenReturn(entity1);
-      mockedFactory.when(() -> EntityFactory.createEntity(eq(inputManager), eq(entityPlacement2),
-              any(GameMapInterface.class)))
+
+      mockedFactory.when(() -> EntityFactory.createEntity(
+              eq(inputManager), eq(entityPlacement2), any(GameMapInterface.class), eq(configModel)))
           .thenReturn(entity2);
 
       assertThrows(InvalidPositionException.class,
