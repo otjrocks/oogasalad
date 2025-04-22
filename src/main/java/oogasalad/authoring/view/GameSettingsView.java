@@ -486,32 +486,93 @@ public class GameSettingsView {
   private WinConditionInterface createWinConditionFromUI() {
     String typeName = winConditionTypeComboBox.getValue();
     String value = winConditionValueField.getText();
-    Class<?> conditionClass = winConditionClasses.get(typeName);
 
-    if (conditionClass != null) {
-      try {
-        if ("SurviveForTime".equals(typeName)) {
-          // For SurviveForTimeConditionRecord, we need an int parameter
-          try {
-            int seconds = Integer.parseInt(value);
-            Constructor<?> constructor = conditionClass.getDeclaredConstructor(int.class);
-            return (WinConditionInterface) constructor.newInstance(seconds);
-          } catch (NumberFormatException e) {
-            // Default to 5 seconds if invalid input
-            Constructor<?> constructor = conditionClass.getDeclaredConstructor(int.class);
-            return (WinConditionInterface) constructor.newInstance(5);
-          }
-        } else if ("EntityBased".equals(typeName)) {
-          // For EntityBasedConditionRecord, we need a String parameter
-          Constructor<?> constructor = conditionClass.getDeclaredConstructor(String.class);
-          return (WinConditionInterface) constructor.newInstance(value.isEmpty() ? "dot" : value);
-        }
-      } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-        LoggingManager.LOGGER.error("Error creating win condition instance", e);
+    try {
+      // Get the selected class from our map
+      Class<?> conditionClass = winConditionClasses.get(typeName);
+      if (conditionClass == null) {
+        LoggingManager.LOGGER.warn("Win condition class not found for type: {}", typeName);
+        return createDefaultWinCondition();
       }
-    }
 
-    // Default to survive for 5 seconds
+      // Create the condition instance using the appropriate helper method
+      return createWinConditionInstance(conditionClass, typeName, value);
+    } catch (Exception e) {
+      LoggingManager.LOGGER.error("Error creating win condition", e);
+      return createDefaultWinCondition();
+    }
+  }
+
+  /**
+   * Helper method to create a win condition instance with the correct parameters
+   *
+   * @param conditionClass The class to instantiate
+   * @param typeName The type name (for parameter type determination)
+   * @param value The parameter value from the UI
+   * @return A WinConditionInterface instance
+   */
+  private WinConditionInterface createWinConditionInstance(Class<?> conditionClass, String typeName, String value)
+          throws ReflectiveOperationException {
+
+    // Get parameter type and parsed value based on the condition type
+    Object[] constructorArgs = getConstructorArgsForType(typeName, value);
+    Class<?>[] paramTypes = getParameterTypesForType(typeName);
+
+    // Get the constructor and create the instance
+    Constructor<?> constructor = conditionClass.getDeclaredConstructor(paramTypes);
+    return (WinConditionInterface) constructor.newInstance(constructorArgs);
+  }
+
+  /**
+   * Gets the constructor parameter types for a given win condition type
+   *
+   * @param typeName The win condition type name
+   * @return An array of parameter types
+   */
+  private Class<?>[] getParameterTypesForType(String typeName) {
+    return switch (typeName) {
+      case "SurviveForTime" -> new Class<?>[] { int.class };
+      case "EntityBased" -> new Class<?>[] { String.class };
+      default -> new Class<?>[0];
+    };
+  }
+
+  /**
+   * Gets the constructor arguments for a given win condition type
+   *
+   * @param typeName The win condition type name
+   * @param value The value from the UI field
+   * @return An array of constructor arguments
+   */
+  private Object[] getConstructorArgsForType(String typeName, String value) {
+    return switch (typeName) {
+      case "SurviveForTime" -> new Object[] { parseIntWithDefault(value, 5) };
+      case "EntityBased" -> new Object[] { value.isEmpty() ? "dot" : value };
+      default -> new Object[0];
+    };
+  }
+
+  /**
+   * Parse an integer with a default value if parsing fails
+   *
+   * @param value The string to parse
+   * @param defaultValue The default value to use if parsing fails
+   * @return The parsed integer or the default value
+   */
+  private int parseIntWithDefault(String value, int defaultValue) {
+    try {
+      return Integer.parseInt(value);
+    } catch (NumberFormatException e) {
+      return defaultValue;
+    }
+  }
+
+  /**
+   * Creates a default win condition when other methods fail
+   *
+   * @return A default win condition
+   */
+  private WinConditionInterface createDefaultWinCondition() {
     return new SurviveForTimeConditionRecord(5);
   }
 
