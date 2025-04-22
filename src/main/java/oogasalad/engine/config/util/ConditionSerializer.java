@@ -42,6 +42,12 @@ public class ConditionSerializer {
     return root;
   }
 
+  /**
+   * Serialize flat, no parameters object
+   * @param condition the condition object to serialize
+   * @param mapper Jackson ObjectMapper instance
+   * @return a structured JsonNode with "type" and any other additional fields
+   */
   public static JsonNode serializeFlat(Object condition, ObjectMapper mapper) {
     ObjectNode root = mapper.createObjectNode();
     root.put(TYPE, resolveTypeName(condition));
