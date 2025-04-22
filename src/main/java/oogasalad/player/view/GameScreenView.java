@@ -66,6 +66,15 @@ public class GameScreenView {
     hudUpdater.play();
   }
 
+  /**
+   * Create a game screen view.
+   *
+   * @param controller     The main controller for the player view.
+   * @param gameState      The game state object for this current game.
+   * @param gameFolderName name of game folder to create
+   * @param randomized     if levels should be randomized
+   * @param baseFolderPath  The base folder path for the game resources, overrides the default path useful for tests
+   */
   public GameScreenView(MainController controller, GameStateInterface gameState,
       String gameFolderName, boolean randomized, String baseFolderPath) {
     super();

@@ -52,6 +52,15 @@ public class GamePlayerView {
     createMap();
   }
 
+  /**
+   * Constructs a GamePlayerView object that represents the visual interface for the game player.
+   *
+   * @param controller       the main controller that manages the game logic and interactions
+   * @param gameState        the current state of the game, providing access to game data
+   * @param gameFolderName   the name of the folder containing game-specific resources
+   * @param randomized       a flag indicating whether the game is randomized
+   * @param customBasePath   the custom base path for game resources
+   */
   public GamePlayerView(MainController controller, GameStateInterface gameState,
       String gameFolderName, boolean randomized, String customBasePath) {
     myPane = new StackPane();
