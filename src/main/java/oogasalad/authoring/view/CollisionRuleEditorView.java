@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -128,13 +130,19 @@ public class CollisionRuleEditorView {
 
   private HBox createCollisionRuleHBox() {
     HBox addRule = new HBox(15);
+
     myRuleViewA = new CollisionEventView(
-        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "A"));
+        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "A")
+    );
+
     myRuleViewB = new CollisionEventView(
-        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "B"));
+        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "B")
+    );
+
     addRule.getChildren().addAll(myRuleViewA.getRoot(), myRuleViewB.getRoot());
     return addRule;
   }
+
 
   /**
    * Shows the dialog and waits for user input.
@@ -267,35 +275,36 @@ public class CollisionRuleEditorView {
       CollisionRule rule, boolean isA) {
     rule.setEntityA(a);
     rule.setEntityB(b);
-    CollisionEventInterface eventA;
-    CollisionEventInterface eventB;
-    try {
-      eventA = myRuleViewA.getCollisionEvent();
-      eventB = myRuleViewB.getCollisionEvent();
-    } catch (IllegalArgumentException e) {
-      showError(e.getMessage());
-      throw e;
-    }
-    List<CollisionEventInterface> eventsA = rule.getEventsA();
-    if (eventsA == null) {
-      eventsA = new ArrayList<>();
-      rule.setEventsA(eventsA);
-    }
-    List<CollisionEventInterface> eventsB = rule.getEventsB();
-    if (eventsB == null) {
-      eventsB = new ArrayList<>();
-      rule.setEventsB(eventsB);
-    }
-    if (isA) {
-      eventsA.add(eventA);
-      rule.setEventsA(eventsA);
-    } else {
-      eventsB.add(eventB);
-      rule.setEventsB(eventsB);
-    }
     rule.setModeA(aMode);
     rule.setModeB(bMode);
+
+    initializeEventListsIfNull(rule);
+
+    if (isA) {
+      addEventSafely(rule.getEventsA(), myRuleViewA, "A-side event");
+    } else {
+      addEventSafely(rule.getEventsB(), myRuleViewB, "B-side event");
+    }
   }
+
+  private void initializeEventListsIfNull(CollisionRule rule) {
+    if (rule.getEventsA() == null) rule.setEventsA(new ArrayList<>());
+    if (rule.getEventsB() == null) rule.setEventsB(new ArrayList<>());
+  }
+
+  private void addEventSafely(List<CollisionEventInterface> targetList,
+      CollisionEventView view,
+      String errorContext) {
+    try {
+      CollisionEventInterface event = view.getCollisionEvent();
+      if (!containsDuplicateEvent(targetList, event)) {
+        targetList.add(event);
+      }
+    } catch (IllegalArgumentException e) {
+      showError("Invalid " + errorContext + ": " + e.getMessage());
+    }
+  }
+
 
   /**
    * Displays an error alert dialog with the given message.
@@ -316,5 +325,15 @@ public class CollisionRuleEditorView {
   public Node getNode() {
     return root;
   }
+
+
+  private boolean containsDuplicateEvent(List<CollisionEventInterface> existingEvents,
+      CollisionEventInterface newEvent) {
+    return existingEvents != null && existingEvents.stream().anyMatch(existing ->
+        existing.getClass().equals(newEvent.getClass()) &&
+            existing.equals(newEvent)
+    );
+  }
+
 
 }

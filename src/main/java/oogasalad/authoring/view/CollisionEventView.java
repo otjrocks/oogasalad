@@ -41,7 +41,7 @@ public class CollisionEventView {
     myParameterFields = new ArrayList<>();
 
     mySelector = new Selector(getCollisionEventClassNames(),
-        getCollisionEventClassNames().getFirst(), "collision-rule-selector",
+        null, "collision-rule-selector",
         LanguageManager.getMessage("COLLISION_RULE_SELECTOR"), e -> updateParameterFields());
     myRoot.getChildren().add(new Label(labelText));
     myRoot.getChildren().add(mySelector.getRoot());
@@ -97,16 +97,24 @@ public class CollisionEventView {
   private void updateParameterFields() {
     myParameters.getChildren().clear();
     myParameterFields.clear();
-    HBox parameterBox = new HBox();
-    parameterBox.setSpacing(ELEMENT_SPACING);
+
+    VBox parameterBox = new VBox();
+    parameterBox.setSpacing(ELEMENT_SPACING); // vertical spacing between rows
+
     for (String parameter : getCollisionRequiredFields(mySelector.getValue()).keySet()) {
       Label parameterLabel = new Label(parameter + ": ");
       TextField parameterField = new TextField();
-      parameterBox.getChildren().addAll(parameterLabel, parameterField);
+
+      VBox fieldGroup = new VBox(4); // small gap between label and text field
+      fieldGroup.getChildren().addAll(parameterLabel, parameterField);
+
+      parameterBox.getChildren().add(fieldGroup);
       myParameterFields.add(parameterField);
     }
+
     myParameters.getChildren().add(parameterBox);
   }
+
 
   private static List<String> getCollisionEventClassNames() {
     return FileUtility.getFileNamesInDirectory(COLLISION_EVENTS_PATH, "CollisionEventRecord.java");
