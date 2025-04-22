@@ -104,14 +104,14 @@ public class GameSettingsView {
         Class<?> surviveForTimeClass = Class.forName(WIN_CONDITION_PACKAGE + ".SurviveForTimeConditionRecord");
         Class<?> entityBasedClass = Class.forName(WIN_CONDITION_PACKAGE + ".EntityBasedConditionRecord");
 
-        winConditionClasses.put("SurviveForTime", surviveForTimeClass);
-        winConditionClasses.put("EntityBased", entityBasedClass);
+        winConditionClasses.put(WIN_CONDITION_SURVIVE_FOR_TIME, surviveForTimeClass);
+        winConditionClasses.put(WIN_CONDITION_ENTITY_BASED, entityBasedClass);
       }
 
       if (loseConditionClasses.isEmpty()) {
         LoggingManager.LOGGER.warn("No lose condition classes found via reflection. Using hardcoded defaults.");
         Class<?> livesBasedClass = Class.forName(LOSE_CONDITION_PACKAGE + ".LivesBasedConditionRecord");
-        loseConditionClasses.put("LivesBased", livesBasedClass);
+        loseConditionClasses.put(LOSE_CONDITION_LIVES_BASED, livesBasedClass);
       }
 
       LoggingManager.LOGGER.info("Loaded {} win condition classes and {} lose condition classes",
@@ -125,9 +125,9 @@ public class GameSettingsView {
         Class<?> entityBasedClass = Class.forName(WIN_CONDITION_PACKAGE + ".EntityBasedConditionRecord");
         Class<?> livesBasedClass = Class.forName(LOSE_CONDITION_PACKAGE + ".LivesBasedConditionRecord");
 
-        winConditionClasses.put("SurviveForTime", surviveForTimeClass);
-        winConditionClasses.put("EntityBased", entityBasedClass);
-        loseConditionClasses.put("LivesBased", livesBasedClass);
+        winConditionClasses.put(WIN_CONDITION_SURVIVE_FOR_TIME, surviveForTimeClass);
+        winConditionClasses.put(WIN_CONDITION_ENTITY_BASED, entityBasedClass);
+        loseConditionClasses.put(LOSE_CONDITION_LIVES_BASED, livesBasedClass);
       } catch (ClassNotFoundException ex) {
         LoggingManager.LOGGER.error("Critical error: Could not load default condition classes", ex);
       }
