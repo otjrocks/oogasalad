@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.IOException;
 import oogasalad.engine.records.config.model.SaveConfigRecord;
 
+/**
+ * Manages Save Files
+ * @author Luke Fu
+ */
 public class SaveManager {
 
   private static final ObjectMapper MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
