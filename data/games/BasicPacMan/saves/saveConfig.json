@@ -22,6 +22,9 @@
       "items": {
         "type": "integer"
       }
+    },
+    "highScore": {
+      "type": "integer"
     }
   },
   "required": [
