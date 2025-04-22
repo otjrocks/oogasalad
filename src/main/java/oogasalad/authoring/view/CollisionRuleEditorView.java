@@ -275,35 +275,43 @@ public class CollisionRuleEditorView {
       CollisionRule rule, boolean isA) {
     rule.setEntityA(a);
     rule.setEntityB(b);
-    CollisionEventInterface eventA;
-    CollisionEventInterface eventB;
-    try {
-      eventA = myRuleViewA.getCollisionEvent();
-      eventB = myRuleViewB.getCollisionEvent();
-    } catch (IllegalArgumentException e) {
-      showError(e.getMessage());
-      throw e;
-    }
-    List<CollisionEventInterface> eventsA = rule.getEventsA();
-    if (eventsA == null) {
-      eventsA = new ArrayList<>();
-      rule.setEventsA(eventsA);
-    }
-    List<CollisionEventInterface> eventsB = rule.getEventsB();
-    if (eventsB == null) {
-      eventsB = new ArrayList<>();
-      rule.setEventsB(eventsB);
-    }
-    if (isA) {
-      eventsA.add(eventA);
-      rule.setEventsA(eventsA);
-    } else {
-      eventsB.add(eventB);
-      rule.setEventsB(eventsB);
-    }
     rule.setModeA(aMode);
     rule.setModeB(bMode);
+    if (rule.getEventsA() != null) {
+      rule.setEventsA(rule.getEventsA());
+    }
+    else {
+      rule.setEventsA(new ArrayList<>());
+    }
+
+    if (rule.getEventsB() != null) {
+      rule.setEventsB(rule.getEventsB());
+    }
+    else {
+      rule.setEventsB(new ArrayList<>());
+    }
+
+    if (isA) {
+      try {
+        CollisionEventInterface eventA = myRuleViewA.getCollisionEvent();
+        if (!containsDuplicateEvent(rule.getEventsA(), eventA)) {
+          rule.getEventsA().add(eventA);
+        }
+      } catch (IllegalArgumentException e) {
+        showError("Invalid A-side event: " + e.getMessage());
+      }
+    } else {
+      try {
+        CollisionEventInterface eventB = myRuleViewB.getCollisionEvent();
+        if (!containsDuplicateEvent(rule.getEventsB(), eventB)) {
+          rule.getEventsB().add(eventB);
+        }
+      } catch (IllegalArgumentException e) {
+        showError("Invalid B-side event: " + e.getMessage());
+      }
+    }
   }
+
 
   /**
    * Displays an error alert dialog with the given message.
@@ -324,5 +332,15 @@ public class CollisionRuleEditorView {
   public Node getNode() {
     return root;
   }
+
+
+  private boolean containsDuplicateEvent(List<CollisionEventInterface> existingEvents,
+      CollisionEventInterface newEvent) {
+    return existingEvents != null && existingEvents.stream().anyMatch(existing ->
+        existing.getClass().equals(newEvent.getClass()) &&
+            existing.equals(newEvent)
+    );
+  }
+
 
 }
