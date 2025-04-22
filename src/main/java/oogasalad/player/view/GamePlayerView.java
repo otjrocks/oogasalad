@@ -28,7 +28,7 @@ public class GamePlayerView {
   private final MainController myMainController;
   private final GameStateInterface myGameState;
   private final boolean isRandomized;
-  private String gameFolderBasePath = "data/games/";
+  private String gameFolderBasePath;
   private GameView myGameView;
   private ConfigModelRecord myConfigModel = null;
   private SaveConfigRecord mySaveConfig;
@@ -41,17 +41,7 @@ public class GamePlayerView {
    */
   public GamePlayerView(MainController controller, GameStateInterface gameState,
       String gameFolderName, boolean randomized) {
-    myPane = new StackPane();
-    myMainController = controller;
-    myGameState = gameState;
-    isRandomized = randomized;
-
-    this.gameFolderName = gameFolderName;
-
-    myPane.setPrefWidth(WIDTH);
-    myPane.getStyleClass().add("game-player-view");
-
-    createMap();
+    this(controller, gameState, gameFolderName, randomized, "data/games/");
   }
 
   /**

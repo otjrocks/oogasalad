@@ -34,36 +34,8 @@ public class GameScreenView {
    * @param randomized     if levels should be randomized
    */
   public GameScreenView(MainController controller, GameStateInterface gameState,
-      String gameFolderName, boolean randomized) {
-    super();
-    myRoot = new VBox();
-    this.gameState = gameState;
-    this.mainController = controller;
-
-    GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState, gameFolderName,
-        randomized);
-    GameView gameView = gamePlayerView.getGameView();
-
-    hudView = new HudView(
-        gameState,
-        gameView,
-        this::handleReturnToMainMenu
-    );
-
-    myRoot.getChildren().addAll(hudView, gamePlayerView.getPane());
-    myRoot.getStyleClass().add("game-screen-view");
-    myRoot.setPrefSize(WIDTH, HEIGHT);
-
-    // Store initial values
-    lastScore = gameState.getScore();
-    lastLives = gameState.getLives();
-
-    // Timeline to check for changes every 100ms
-    Timeline hudUpdater = new Timeline(
-        new KeyFrame(Duration.millis(100), event -> checkAndUpdateHud())
-    );
-    hudUpdater.setCycleCount(Timeline.INDEFINITE);
-    hudUpdater.play();
+                        String gameFolderName, boolean randomized) {
+    this(controller, gameState, gameFolderName, randomized, null);
   }
 
   /**
@@ -82,8 +54,9 @@ public class GameScreenView {
     this.gameState = gameState;
     this.mainController = controller;
 
-    GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState, gameFolderName,
-        randomized, baseFolderPath);
+    GamePlayerView gamePlayerView = (baseFolderPath == null)
+        ? new GamePlayerView(controller, gameState, gameFolderName, randomized)
+        : new GamePlayerView(controller, gameState, gameFolderName, randomized, baseFolderPath);
     GameView gameView = gamePlayerView.getGameView();
 
     hudView = new HudView(

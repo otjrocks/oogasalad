@@ -101,7 +101,7 @@ public class GameSelectorViewTest extends DukeApplicationTest {
 
     Button randomizeButton = lookup("Randomize Levels").queryButton();
     clickOn(randomizeButton);
-    
+
     // Even though gameNameToFolder is empty, we expect this to be called
     verify(mockController, atLeastOnce()).hideGameSelectorView();
   }
