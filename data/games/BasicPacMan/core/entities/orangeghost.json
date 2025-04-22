@@ -1,17 +1,6 @@
 {
   "entityType": {
-    "name": "OrangeGhost",
-    "controlConfig": {
-      "controlStrategy": "Conditional",
-      "radius": 8,
-      "pathFindingStrategyInRadius": "Euclidean",
-      "pathFindingStrategyOutRadius": "Random",
-      "targetCalculationConfig": {
-        "targetCalculationStrategy": "TargetEntity",
-        "targetType": "Pacman"
-      }
-    },
-    "movementSpeed": 1
+    "name": "OrangeGhost"
   },
   "modes": [
     {
@@ -22,8 +11,20 @@
         "tileHeight": 28,
         "tilesToCycle": 4,
         "animationSpeed": 1.0
-      }
-    }, {
+      },
+      "controlConfig": {
+        "controlStrategy": "Conditional",
+        "radius": 8,
+        "pathFindingStrategyInRadius": "Euclidean",
+        "pathFindingStrategyOutRadius": "Random",
+        "targetCalculationConfig": {
+          "targetCalculationStrategy": "TargetEntity",
+          "targetType": "Pacman"
+        }
+      },
+      "movementSpeed": 1.0
+    },
+    {
       "name": "Frightened",
       "image": {
         "imagePath": "assets/frightenedghost.png",
@@ -40,7 +41,8 @@
           "targetX": 14,
           "targetY": 14
         }
-      }
+      },
+      "movementSpeed": 1.0
     },
     {
       "name": "Dead",
@@ -59,8 +61,10 @@
           "targetX": 14,
           "targetY": 14
         }
-      }
-    }, {
+      },
+      "movementSpeed": 1.0
+    },
+    {
       "name": "Flashing",
       "image": {
         "imagePath": "assets/flashingghost.png",
@@ -77,7 +81,8 @@
           "targetX": 14,
           "targetY": 14
         }
-      }
+      },
+      "movementSpeed": 1.0
     }
   ]
 }

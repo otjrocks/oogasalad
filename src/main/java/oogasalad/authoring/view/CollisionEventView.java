@@ -76,7 +76,7 @@ public class CollisionEventView {
       int index = 0;
       for (Class<?> paramType : requiredFields.values()) {
         String userInput = myParameterFields.get(index).getText();
-        constructorArgs[index] = parseInput(userInput, paramType);
+        constructorArgs[index] = FileUtility.castInputToCorrectType(userInput, paramType);
         index++;
       }
 
@@ -90,29 +90,6 @@ public class CollisionEventView {
     } catch (Exception e) {
       LoggingManager.LOGGER.warn("Error getting collision event", e);
       throw new RuntimeException("Failed to create CollisionEvent: " + e.getMessage());
-    }
-  }
-
-  private static final Map<Class<?>, Function<String, Object>> PARSERS = Map.of(
-      int.class, Integer::parseInt,
-      Integer.class, Integer::parseInt,
-      double.class, Double::parseDouble,
-      Double.class, Double::parseDouble,
-      boolean.class, Boolean::parseBoolean,
-      Boolean.class, Boolean::parseBoolean
-  );
-
-
-  private Object parseInput(String input, Class<?> targetType) {
-    Function<String, Object> parser = PARSERS.get(targetType);
-    if (parser == null) { // Fall back to just returning the string for unknown types (optional)
-      return input;
-    }
-    try {
-      return parser.apply(input);
-    } catch (Exception e) {
-      LoggingManager.LOGGER.warn("Unable to parse input into correct parameter format", e);
-      throw new IllegalArgumentException("Unable to parse input into correct parameter format");
     }
   }
 

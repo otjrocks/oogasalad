@@ -43,17 +43,9 @@ public class TargetStrategyFactory {
 
     String mode = placement.getMode();
     ModeConfigRecord modeConfig = placement.getType().modes().get(mode);
-    ControlConfigInterface config = modeConfig.entityProperties().controlConfig();
-    TargetCalculationConfigInterface targetCalculationConfig;
-
-    if (config instanceof TargetControlConfigRecord targetConfig) {
-      targetCalculationConfig = targetConfig.targetCalculationConfig();
-    } else if (config instanceof ConditionalControlConfigRecord conditionalConfig) {
-      targetCalculationConfig = conditionalConfig.targetCalculationConfig();
-    } else {
-      throw new TargetStrategyException(
-          "No TargetStrategy available for control config: " + config.getClass());
-    }
+    ControlConfigInterface config = modeConfig.controlConfig();
+    TargetCalculationConfigInterface targetCalculationConfig = getTargetCalculationConfigInterface(
+        config);
 
     String className =
         STRATEGY_PACKAGE + targetCalculationConfig.getClass().getSimpleName()
@@ -69,6 +61,21 @@ public class TargetStrategyFactory {
           "Failed to instantiate strategy for config: " + config.getClass(), e);
     }
 
+  }
+
+  private static TargetCalculationConfigInterface getTargetCalculationConfigInterface(
+      ControlConfigInterface config) {
+    TargetCalculationConfigInterface targetCalculationConfig;
+
+    if (config instanceof TargetControlConfigRecord targetConfig) {
+      targetCalculationConfig = targetConfig.targetCalculationConfig();
+    } else if (config instanceof ConditionalControlConfigRecord conditionalConfig) {
+      targetCalculationConfig = conditionalConfig.targetCalculationConfig();
+    } else {
+      throw new TargetStrategyException(
+          "No TargetStrategy available for control config: " + config.getClass());
+    }
+    return targetCalculationConfig;
   }
 
   private static TargetStrategyInterface instantiateStrategy(Class<?> strategyClass,

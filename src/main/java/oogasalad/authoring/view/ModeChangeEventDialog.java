@@ -146,10 +146,8 @@ public class ModeChangeEventDialog extends Stage {
     ModeChangeEventRecord event = new ModeChangeEventRecord(
         new EntityTypeRecord(
             entityType.type(),
-            null,
             Collections.emptyMap(),
-            Collections.emptyList(),
-            0.0
+            Collections.emptyList()
         ),
         currentMode,
         nextMode,

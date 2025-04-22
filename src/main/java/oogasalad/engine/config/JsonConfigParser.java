@@ -43,8 +43,8 @@ import oogasalad.engine.utility.LoggingManager;
 
 /**
  * The {@code JsonConfigParser} class is responsible for parsing game configuration files in JSON
- * format and converting them into {@link GameConfigRecord} objects. It uses the Jackson library to handle
- * JSON parsing and mapping.
+ * format and converting them into {@link GameConfigRecord} objects. It uses the Jackson library to
+ * handle JSON parsing and mapping.
  *
  * <p>
  * This class implements the {@link ConfigParserInterface} interface and provides methods to load
@@ -115,7 +115,8 @@ public class JsonConfigParser implements ConfigParserInterface {
     }
 
     for (LevelRecord level : gameConfig.levels()) {
-      ParsedLevelRecord parsed = loadLevelConfig(levelFolderPath + level.levelMap() + JSON_IDENTIFIER);
+      ParsedLevelRecord parsed = loadLevelConfig(
+          levelFolderPath + level.levelMap() + JSON_IDENTIFIER);
       levels.add(parsed);
       mapInfos.add(parsed.mapInfo());
     }
@@ -140,7 +141,8 @@ public class JsonConfigParser implements ConfigParserInterface {
       JsonNode root = mapper.readTree(new File(filepath));
       MapInfoRecord mapInfo = mapper.treeToValue(root.get("mapInfo"), MapInfoRecord.class);
 
-      Map<Integer, EntityTypeRecord> idToEntityType = buildEntityMappings(root.get("entityMappings"));
+      Map<Integer, EntityTypeRecord> idToEntityType = buildEntityMappings(
+          root.get("entityMappings"));
       Map<Integer, String> idToEntityName = buildEntityNames(root.get("entityMappings"));
 
       List<EntityPlacement> placements = parseLayout(root.get("layout"), idToEntityType,
@@ -247,15 +249,21 @@ public class JsonConfigParser implements ConfigParserInterface {
   }
 
   private Object parseValue(JsonNode valueNode) {
-    if (valueNode.isInt()) return valueNode.asInt();
-    if (valueNode.isDouble()) return valueNode.asDouble();
-    if (valueNode.isBoolean()) return valueNode.asBoolean();
+    if (valueNode.isInt()) {
+      return valueNode.asInt();
+    }
+    if (valueNode.isDouble()) {
+      return valueNode.asDouble();
+    }
+    if (valueNode.isBoolean()) {
+      return valueNode.asBoolean();
+    }
     return valueNode.asText();
   }
 
 
-
-  private Map<Integer, EntityTypeRecord> buildEntityMappings(JsonNode mappings) throws ConfigException {
+  private Map<Integer, EntityTypeRecord> buildEntityMappings(JsonNode mappings)
+      throws ConfigException {
     Map<Integer, EntityTypeRecord> idToType = new HashMap<>();
     for (JsonNode node : mappings) {
       int id = node.get("id").asInt();
@@ -386,7 +394,9 @@ public class JsonConfigParser implements ConfigParserInterface {
 
       // create modes
       for (ModeConfigRecord mode : entity.modes()) {
-        ModeConfigRecord modeConfig = new ModeConfigRecord(mode.name(), mode.entityProperties(), mode.image());
+        ModeConfigRecord modeConfig = new ModeConfigRecord(mode.name(), mode.entityProperties(),
+            mode.controlConfig(),
+            mode.image(), mode.movementSpeed());
         modes.put(mode.name(), modeConfig);
       }
 
@@ -399,15 +409,13 @@ public class JsonConfigParser implements ConfigParserInterface {
   }
 
 
-  private static EntityTypeRecord getEntityType(EntityConfigRecord entity, Map<String, ModeConfigRecord> modes) {
-    ControlConfigInterface control = entity.entityProperties().controlConfig();
+  private static EntityTypeRecord getEntityType(EntityConfigRecord entity,
+      Map<String, ModeConfigRecord> modes) {
 
     return new EntityTypeRecord(
         entity.name(),
-        control,
         modes,
-        entity.entityProperties().blocks(),
-        entity.entityProperties().movementSpeed()
+        entity.entityProperties().blocks()
     );
 
   }
@@ -431,7 +439,8 @@ public class JsonConfigParser implements ConfigParserInterface {
       List<CollisionConfigRecord> collisions = parseCollisions(root);
       JsonNode currentLevelNode = root.get("currentLevelIndex");
       int currentLevelIndex = currentLevelNode != null ? currentLevelNode.asInt() : 0;
-      return new GameConfigRecord(metadata, defaultSettings, levels, collisions, getFolderPath(filepath), currentLevelIndex);
+      return new GameConfigRecord(metadata, defaultSettings, levels, collisions,
+          getFolderPath(filepath), currentLevelIndex);
 
     } catch (IOException e) {
       throw new ConfigException("Failed to parse config file: " + filepath, e);
@@ -455,7 +464,8 @@ public class JsonConfigParser implements ConfigParserInterface {
     return levels;
   }
 
-  private List<CollisionConfigRecord> parseCollisions(JsonNode root) throws JsonProcessingException {
+  private List<CollisionConfigRecord> parseCollisions(JsonNode root)
+      throws JsonProcessingException {
     List<CollisionConfigRecord> collisions = new ArrayList<>();
     JsonNode collisionsNode = root.get("collisions");
     if (collisionsNode != null && collisionsNode.isArray()) {
@@ -497,7 +507,8 @@ public class JsonConfigParser implements ConfigParserInterface {
 
   // ---- Methods for loading Entities ----
 
-  private Map<String, EntityConfigRecord> constructEntities(String folderPath) throws ConfigException {
+  private Map<String, EntityConfigRecord> constructEntities(String folderPath)
+      throws ConfigException {
     String entityFolderPath;
 
     try {
@@ -510,7 +521,8 @@ public class JsonConfigParser implements ConfigParserInterface {
     Map<String, EntityConfigRecord> entitiesMap = new HashMap<>();
 
     for (String entity : entities) {
-      EntityConfigRecord entityConfig = loadEntityConfig(entityFolderPath + entity + JSON_IDENTIFIER);
+      EntityConfigRecord entityConfig = loadEntityConfig(
+          entityFolderPath + entity + JSON_IDENTIFIER);
       entitiesMap.put(entity, entityConfig); // map the entity file name to the entityConfig
     }
 
@@ -556,8 +568,12 @@ public class JsonConfigParser implements ConfigParserInterface {
       for (JsonNode modeNode : modesNode) {
         String name = modeNode.get("name").asText();
         EntityPropertiesRecord overrideProps = mergeProperties(name, defaultProps, modeNode);
-        ImageConfigRecord image = mapper.treeToValue(modeNode.get("image"), ImageConfigRecord.class);
-        modes.add(new ModeConfigRecord(name, overrideProps, image));
+        ImageConfigRecord image = mapper.treeToValue(modeNode.get("image"),
+            ImageConfigRecord.class);
+        ControlConfigInterface controlConfig = mapper.treeToValue(modeNode.get("controlConfig"),
+            ControlConfigInterface.class);
+        Double speed = modeNode.get("movementSpeed").asDouble();
+        modes.add(new ModeConfigRecord(name, overrideProps, controlConfig, image, speed));
       }
       return modes;
     } catch (JsonProcessingException e) {
@@ -565,19 +581,10 @@ public class JsonConfigParser implements ConfigParserInterface {
     }
   }
 
-  private EntityPropertiesRecord mergeProperties(String modeName, EntityPropertiesRecord defaultProps,
+  private EntityPropertiesRecord mergeProperties(String modeName,
+      EntityPropertiesRecord defaultProps,
       JsonNode modeNode) throws JsonProcessingException {
-    final String CONTROL_CONFIG = "controlConfig";
-    final String MOVEMENT_SPEED = "movementSpeed";
     final String BLOCKS = "blocks";
-
-    ControlConfigInterface controlConfig = modeNode.has(CONTROL_CONFIG)
-        ? mapper.treeToValue(modeNode.get(CONTROL_CONFIG), ControlConfigInterface.class)
-        : defaultProps.controlConfig();
-
-    double movementSpeed = modeNode.has(MOVEMENT_SPEED)
-        ? modeNode.get(MOVEMENT_SPEED).asDouble()
-        : defaultProps.movementSpeed();
 
     List<String> blocks = modeNode.has(BLOCKS)
         ? mapper.convertValue(modeNode.get(BLOCKS),
@@ -586,8 +593,6 @@ public class JsonConfigParser implements ConfigParserInterface {
 
     return new EntityPropertiesRecord(
         modeName,
-        controlConfig,
-        movementSpeed,
         blocks
     );
   }

@@ -15,8 +15,6 @@ import oogasalad.engine.config.util.ConditionSerializer;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
-import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
-import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
 
@@ -33,9 +31,7 @@ import oogasalad.engine.records.model.ModeChangeEventRecord;
  */
 public class JsonConfigBuilder {
 
-  private static final String TYPE = "type";
   private static final String ENTITY_TYPE = "entityType";
-
 
   /**
    * Builds the top-level game configuration (gameConfig.json) from the model. Includes metadata,
@@ -46,16 +42,11 @@ public class JsonConfigBuilder {
    * @return a JSON ObjectNode representing the game configuration
    */
   public ObjectNode buildGameConfig(AuthoringModel model, ObjectMapper mapper) {
-    final String WIN_CONDITION_SURVIVE_FOR_TIME = "SurviveForTime";
-    final String WIN_CONDITION_ENTITY_BASED = "EntityBased";
 
     ObjectNode root = mapper.createObjectNode();
 
     // === metadata ===
-    ObjectNode metadata = root.putObject("metadata");
-    metadata.put("gameTitle", model.getGameTitle());
-    metadata.put("author", model.getAuthor());
-    metadata.put("gameDescription", model.getGameDescription());
+    writeMetaData(model, root);
 
     // === defaultSettings ===
     ObjectNode defaultSettings = root.putObject("defaultSettings");
@@ -65,9 +56,9 @@ public class JsonConfigBuilder {
 
     // === win conditions ===
     defaultSettings.set("winCondition",
-        ConditionSerializer.serialize(model.getDefaultSettings().winCondition(), mapper));
+        ConditionSerializer.serializeFlat(model.getDefaultSettings().winCondition(), mapper));
     defaultSettings.set("loseCondition",
-        ConditionSerializer.serialize(model.getDefaultSettings().loseCondition(), mapper));
+        ConditionSerializer.serializeFlat(model.getDefaultSettings().loseCondition(), mapper));
 
     // === levels ===
     ArrayNode levels = root.putArray("levels");
@@ -83,6 +74,14 @@ public class JsonConfigBuilder {
       collisionRules.add(mapper.valueToTree(collisionRule));
     }
     return root;
+  }
+
+  private static void writeMetaData(AuthoringModel model, ObjectNode root) {
+    ObjectNode metadata = root.putObject("metadata");
+    metadata.put("gameTitle", model.getGameTitle() == null ? "" : model.getGameTitle());
+    metadata.put("author", model.getAuthor() == null ? "" : model.getAuthor());
+    metadata.put("gameDescription",
+        model.getGameDescription() == null ? "" : model.getGameDescription());
   }
 
   /**
@@ -151,10 +150,10 @@ public class JsonConfigBuilder {
       event.put("y", record.y());
       event.put("mode", record.mode());
 
-      event.set("spawnCondition", ConditionSerializer.serialize(record.spawnCondition(), mapper));
+      event.set("spawnCondition", safeSerializeCondition(record.spawnCondition(), mapper));
       if (record.despawnCondition() != null) {
         event.set("despawnCondition",
-            ConditionSerializer.serialize(record.despawnCondition(), mapper));
+            safeSerializeCondition(record.despawnCondition(), mapper));
       }
 
       array.add(event);
@@ -169,7 +168,7 @@ public class JsonConfigBuilder {
       event.put("currentMode", record.currentMode());
       event.put("nextMode", record.nextMode());
 
-      event.set("changeCondition", ConditionSerializer.serialize(record.changeCondition(), mapper));
+      event.set("changeCondition", safeSerializeCondition(record.changeCondition(), mapper));
       array.add(event);
     }
   }
@@ -201,9 +200,8 @@ public class JsonConfigBuilder {
     ObjectNode entityTypeNode = root.putObject(ENTITY_TYPE);
 
     addEntityBasics(type, entityTypeNode);
-    addControlConfig(type.controlConfig(), entityTypeNode, mapper);
-    addMovementSpeed(type, entityTypeNode);
-    addModesArray(type, root);
+    addEntityBlocks(type, entityTypeNode);
+    addModesArray(type, root, mapper);
 
     return root;
   }
@@ -212,20 +210,21 @@ public class JsonConfigBuilder {
     entityTypeNode.put("name", type.type());
   }
 
+  private void addEntityBlocks(EntityTypeRecord type, ObjectNode entityTypeNode) {
+    ArrayNode blocksArray = entityTypeNode.putArray("blocks");
+    for (String block : type.blocks()) {
+      blocksArray.add(block);
+    }
+  }
+
+
   private void addControlConfig(ControlConfigInterface config, ObjectNode entityTypeNode,
       ObjectMapper mapper) {
     JsonNode serialized = mapper.valueToTree(config);
     entityTypeNode.set("controlConfig", serialized);
   }
 
-  private void addMovementSpeed(EntityTypeRecord type, ObjectNode entityTypeNode) {
-    ModeConfigRecord defaultMode = type.modes().get("Default");
-    if (defaultMode != null) {
-      entityTypeNode.put("movementSpeed", defaultMode.entityProperties().movementSpeed());
-    }
-  }
-
-  private void addModesArray(EntityTypeRecord type, ObjectNode root) {
+  private void addModesArray(EntityTypeRecord type, ObjectNode root, ObjectMapper mapper) {
     ArrayNode modesArray = root.putArray("modes");
 
     for (ModeConfigRecord mode : type.modes().values()) {
@@ -239,6 +238,10 @@ public class JsonConfigBuilder {
       imageNode.put("tileHeight", mode.image().tileHeight());
       imageNode.put("tilesToCycle", mode.image().tilesToCycle());
       imageNode.put("animationSpeed", mode.image().animationSpeed());
+
+      addControlConfig(mode.controlConfig(), modeNode, mapper);
+
+      modeNode.put("movementSpeed", mode.movementSpeed());
     }
   }
 
@@ -265,6 +268,18 @@ public class JsonConfigBuilder {
     // Extract just the file name from the full path
     String fileName = fullPath.substring(fullPath.lastIndexOf('/') + 1);
     return "assets/" + fileName;
+  }
+
+  private JsonNode safeSerializeCondition(Object condition, ObjectMapper mapper) {
+    JsonNode serialized = ConditionSerializer.serialize(condition, mapper);
+    JsonNode maybeDoubleSerialized = serialized.get("parameters");
+
+    // check if "parameters" itself contains a nested "type"
+    if (maybeDoubleSerialized != null && maybeDoubleSerialized.has("type")) {
+      // This was already serialized – unwrap it
+      return maybeDoubleSerialized;
+    }
+    return serialized;
   }
 
 }

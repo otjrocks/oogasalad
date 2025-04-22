@@ -1,10 +1,6 @@
 {
   "entityType": {
-    "name": "Cherry",
-    "controlConfig": {
-      "controlStrategy": "None"
-    },
-    "movementSpeed": 0
+    "name": "Cherry"
   },
   "modes": [
     {
@@ -15,7 +11,11 @@
         "tileHeight": 28,
         "tilesToCycle": 1,
         "animationSpeed": 1.0
-      }
+      },
+      "controlConfig": {
+        "controlStrategy": "None"
+      },
+      "movementSpeed": 0.0
     }
   ]
 }
