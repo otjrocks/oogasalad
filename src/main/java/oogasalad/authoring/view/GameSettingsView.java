@@ -531,8 +531,8 @@ public class GameSettingsView {
    */
   private Class<?>[] getParameterTypesForType(String typeName) {
     return switch (typeName) {
-      case "SurviveForTime" -> new Class<?>[] { int.class };
-      case "EntityBased" -> new Class<?>[] { String.class };
+      case WIN_CONDITION_SURVIVE_FOR_TIME -> new Class<?>[] { int.class };
+      case WIN_CONDITION_ENTITY_BASED -> new Class<?>[] { String.class };
       default -> new Class<?>[0];
     };
   }
@@ -546,8 +546,8 @@ public class GameSettingsView {
    */
   private Object[] getConstructorArgsForType(String typeName, String value) {
     return switch (typeName) {
-      case "SurviveForTime" -> new Object[] { parseIntWithDefault(value, 5) };
-      case "EntityBased" -> new Object[] { value.isEmpty() ? "dot" : value };
+      case WIN_CONDITION_SURVIVE_FOR_TIME -> new Object[] { parseIntWithDefault(value, 5) };
+      case WIN_CONDITION_ENTITY_BASED -> new Object[] { value.isEmpty() ? "dot" : value };
       default -> new Object[0];
     };
   }
