@@ -209,6 +209,14 @@ public class JsonConfigBuilder {
     entityTypeNode.put("name", type.type());
   }
 
+  private void addEntityBlocks(EntityTypeRecord type, ObjectNode entityTypeNode) {
+    ArrayNode blocksArray = entityTypeNode.putArray("blocks");
+    for (String block : type.blocks()) {
+      blocksArray.add(block);
+    }
+  }
+
+
   private void addControlConfig(ControlConfigInterface config, ObjectNode entityTypeNode,
       ObjectMapper mapper) {
     JsonNode serialized = mapper.valueToTree(config);

@@ -67,7 +67,7 @@ public class AuthoringController {
 
     EntityTypeRecord newType = new EntityTypeRecord(newTypeName,
         defaultModeMap(),
-        null); // Update this to use no hardcoded speed value.
+        new ArrayList<>(), 1.0); // Update this to use no hardcoded speed value.
     model.addEntityType(newType);
     updateEntitySelector();
     selectEntityType(newTypeName);

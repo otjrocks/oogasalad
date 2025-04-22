@@ -12,6 +12,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.records.config.model.SettingsRecord;
+import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
+import oogasalad.engine.records.config.model.losecondition.LoseConditionInterface;
 import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
@@ -30,6 +32,9 @@ public class GameSettingsView {
   private static final String WIN_CONDITION_SURVIVE_FOR_TIME = "SurviveForTime";
   private static final String WIN_CONDITION_ENTITY_BASED = "EntityBased";
 
+  // Constants for lose condition types
+  private static final String LOSE_CONDITION_LIVES_BASED = "LivesBased";
+
   private final AuthoringController controller;
   private SettingsRecord gameSettings;
 
@@ -46,6 +51,9 @@ public class GameSettingsView {
   private ComboBox<String> winConditionTypeComboBox;
   private TextField winConditionValueField;
   private Label winConditionValueLabel;
+  private ComboBox<String> loseConditionTypeComboBox;
+  private TextField loseConditionValueField;
+  private Label loseConditionValueLabel;
 
   /**
    * Constructor initializes the view with the given controller
@@ -131,19 +139,11 @@ public class GameSettingsView {
     startingLivesSpinner = createIntegerSpinner(1, 10, 1, gameSettings.startingLives());
     initialScoreSpinner = createIntegerSpinner(0, 1000, 50, gameSettings.initialScore());
 
-    // Create win condition type dropdown
-    winConditionTypeComboBox = new ComboBox<>(FXCollections.observableArrayList(
-        WIN_CONDITION_SURVIVE_FOR_TIME, WIN_CONDITION_ENTITY_BASED));
-    winConditionTypeComboBox.setValue(getWinConditionType());
-    winConditionTypeComboBox.setPrefWidth(150);
+    // Create win condition UI components
+    createWinConditionComponents();
 
-    // Create win condition value field
-    winConditionValueLabel = new Label(LanguageManager.getMessage("WIN_CONDITION_VALUE"));
-    winConditionValueField = new TextField(getWinConditionValue());
-    winConditionValueField.setPrefWidth(80);
-
-    // Add change listener to update the label based on selected win condition type
-    winConditionTypeComboBox.setOnAction(e -> updateWinConditionValueLabel());
+    // Create lose condition UI components
+    createLoseConditionComponents();
 
     // Add metadata fields
     settingsGrid.add(new Label(LanguageManager.getMessage("GAME_TITLE")), 0, 0);
@@ -170,6 +170,11 @@ public class GameSettingsView {
     settingsGrid.add(winConditionTypeComboBox, 1, 4);
     settingsGrid.add(winConditionValueLabel, 2, 4);
     settingsGrid.add(winConditionValueField, 3, 4);
+
+    settingsGrid.add(new Label(LanguageManager.getMessage("LOSE_CONDITION_TYPE")), 0, 5);
+    settingsGrid.add(loseConditionTypeComboBox, 1, 5);
+    settingsGrid.add(loseConditionValueLabel, 2, 5);
+    settingsGrid.add(loseConditionValueField, 3, 5);
 
     // Add buttons
     HBox buttonBox = getHBox();
@@ -312,13 +317,15 @@ public class GameSettingsView {
     controller.getModel().setGameDescription(descriptionField.getText());
     // Create new win condition based on current UI values
     WinConditionInterface newWinCondition = createWinConditionFromUI();
+    // Create new lose condition based on current UI values
+    LoseConditionInterface newLoseCondition = createLoseConditionFromUI();
     // Create new settings record with updated values
     SettingsRecord updatedSettings = new SettingsRecord(
         gameSpeedSpinner.getValue(),
         startingLivesSpinner.getValue(),
         initialScoreSpinner.getValue(),
         newWinCondition,
-        gameSettings.loseCondition() // Keep the existing lose condition
+        newLoseCondition
     );
     // Update the model with the current settings
     controller.getModel().setDefaultSettings(updatedSettings);
@@ -331,6 +338,76 @@ public class GameSettingsView {
     alert.showAndWait();
   }
 
+  /**
+   * Creates UI components for win condition selection
+   */
+  private void createWinConditionComponents() {
+    // Create win condition type dropdown
+    winConditionTypeComboBox = new ComboBox<>(FXCollections.observableArrayList(
+            WIN_CONDITION_SURVIVE_FOR_TIME, WIN_CONDITION_ENTITY_BASED));
+    winConditionTypeComboBox.setValue(getWinConditionType());
+    winConditionTypeComboBox.setPrefWidth(150);
+
+    // Create win condition value field
+    winConditionValueLabel = new Label(LanguageManager.getMessage("WIN_CONDITION_VALUE"));
+    winConditionValueField = new TextField(getWinConditionValue());
+    winConditionValueField.setPrefWidth(80);
+
+    // Add change listener to update the label based on selected win condition type
+    winConditionTypeComboBox.setOnAction(e -> updateWinConditionValueLabel());
+  }
+
+  /**
+   * Creates UI components for lose condition selection
+   */
+  private void createLoseConditionComponents() {
+    // Create lose condition type dropdown
+    loseConditionTypeComboBox = new ComboBox<>(FXCollections.observableArrayList(
+            LOSE_CONDITION_LIVES_BASED));
+    loseConditionTypeComboBox.setValue(getLoseConditionType());
+    loseConditionTypeComboBox.setPrefWidth(150);
+
+    // Create lose condition value field
+    loseConditionValueLabel = new Label(LanguageManager.getMessage("LOSE_CONDITION_VALUE"));
+    loseConditionValueField = new TextField(getLoseConditionValue());
+    loseConditionValueField.setPrefWidth(80);
+
+    // Add change listener to update the label based on selected lose condition type
+    loseConditionTypeComboBox.setOnAction(e -> updateLoseConditionValueLabel());
+  }
+
+  private String getLoseConditionType() {
+    LoseConditionInterface condition = gameSettings.loseCondition();
+    if (condition instanceof LivesBasedConditionRecord) {
+      return LOSE_CONDITION_LIVES_BASED;
+    }
+    return LOSE_CONDITION_LIVES_BASED; // Default
+  }
+
+  private String getLoseConditionValue() {
+    return String.valueOf(gameSettings.startingLives());
+  }
+
+  private void updateLoseConditionValueLabel() {
+    String selectedType = loseConditionTypeComboBox.getValue();
+    if (LOSE_CONDITION_LIVES_BASED.equals(selectedType)) {
+      loseConditionValueLabel.setText(LanguageManager.getMessage("LIVES_REMAINING"));
+    }
+  }
+
+  private LoseConditionInterface createLoseConditionFromUI() {
+    String type = loseConditionTypeComboBox.getValue();
+    // Currently we only have LivesBasedConditionRecord which doesn't take parameters
+
+    if (LOSE_CONDITION_LIVES_BASED.equals(type)) {
+      return new LivesBasedConditionRecord();
+    }
+
+    // Default to lives-based condition
+    return new LivesBasedConditionRecord();
+  }
+
+  // TODO: This should not be hardcoded
   private WinConditionInterface createWinConditionFromUI() {
     String type = winConditionTypeComboBox.getValue();
     String value = winConditionValueField.getText();
