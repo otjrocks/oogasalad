@@ -157,7 +157,7 @@ public class GameSelectorView {
     return topBar;
   }
 
-  private VBox createGameCard(String gameName) {
+  VBox createGameCard(String gameName) {
     VBox card = new VBox(10);
     card.setAlignment(Pos.CENTER);
     card.getStyleClass().add("game-card");
