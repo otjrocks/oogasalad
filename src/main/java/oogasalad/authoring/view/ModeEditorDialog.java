@@ -141,7 +141,7 @@ public class ModeEditorDialog {
 
     if (existingConfig != null) {
       nameField.setText(existingConfig.name());
-      speedField.setText(String.valueOf(existingConfig.entityProperties().movementSpeed()));
+      speedField.setText(String.valueOf(existingConfig.movementSpeed()));
 
       selectedImageFile = new File(URI.create(existingConfig.image().imagePath()));
       imagePathField.setText(selectedImageFile.getName());
@@ -202,11 +202,10 @@ public class ModeEditorDialog {
 
       EntityPropertiesRecord entityProps = new EntityPropertiesRecord(
           name,
-          speed,
           List.of()
       );
 
-      preparedResult = new ModeConfigRecord(name, entityProps, controlConfig, imageConfig);
+      preparedResult = new ModeConfigRecord(name, entityProps, controlConfig, imageConfig, speed);
       return true;
 
     } catch (NumberFormatException ex) {

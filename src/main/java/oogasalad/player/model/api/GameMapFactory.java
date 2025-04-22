@@ -31,7 +31,7 @@ public class GameMapFactory {
     int height = configModel.levels().get(levelIndex).mapInfo().height();
     GameMap gameMap = new GameMap(width, height); // Hardcoded for now
     for (EntityPlacement entityPlacement : configModel.levels().get(levelIndex).placements()) {
-      Entity entity = EntityFactory.createEntity(input, entityPlacement, gameMap);
+      Entity entity = EntityFactory.createEntity(input, entityPlacement, gameMap, configModel);
       gameMap.addEntity(entity);
     }
     return gameMap;

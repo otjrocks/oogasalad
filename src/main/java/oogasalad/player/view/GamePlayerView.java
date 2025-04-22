@@ -8,6 +8,7 @@ import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.records.config.model.SaveConfigRecord;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.controller.LevelController;
 import oogasalad.player.model.GameStateInterface;
@@ -30,6 +31,7 @@ public class GamePlayerView {
   private String gameFolderBasePath = "data/games/";
   private GameView myGameView;
   private ConfigModelRecord myConfigModel = null;
+  private SaveConfigRecord mySaveConfig;
 
   /**
    * Create the Game Player View.
