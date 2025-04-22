@@ -113,24 +113,25 @@ public class JsonConfigBuilder {
 
     // === layout ===
     ArrayNode layout = root.putArray("layout");
-    double tileSize = 40.0;
-    double threshold = 1.0;
 
-    for (int row = 0; row < draft.getHeight(); row++) {
-      List<String> rowTiles = new ArrayList<>();
-      for (int col = 0; col < draft.getWidth(); col++) {
-        double x = col * tileSize;
-        double y = row * tileSize;
-        Optional<EntityPlacement> opt = draft.findEntityPlacementAt(x, y, threshold);
-        if (opt.isPresent()) {
-          EntityPlacement placement = opt.get();
-          int entityId = entityToIdMap.getOrDefault(placement.getTypeString(), 0);
-          int modeIndex = getModeIndex(placement);
-          rowTiles.add(entityId + "." + modeIndex);
-        } else {
-          rowTiles.add("0");
-        }
+    // initialize 2D grid
+    String[][] tileGrid = new String[draft.getHeight()][draft.getWidth()];
+    for (int r = 0; r < draft.getHeight(); r++) {
+      for (int c = 0; c < draft.getWidth(); c++) {
+        tileGrid[r][c] = "0"; // default to empty
       }
+    }
+
+    // fill grid with entity placements
+    for (EntityPlacement placement : draft.getEntityPlacements()) {
+      int row = placement.getInitialTileY();
+      int col = placement.getInitialTileX();
+      int entityId = entityToIdMap.getOrDefault(placement.getTypeString(), 0);
+      int modeIndex = getModeIndex(placement);
+      tileGrid[row][col] = entityId + "." + modeIndex;
+    }
+
+    for (String[] rowTiles : tileGrid) {
       layout.add(String.join(" ", rowTiles));
     }
 
@@ -140,6 +141,7 @@ public class JsonConfigBuilder {
 
     return root;
   }
+
 
   private void serializeSpawnEvents(LevelDraft draft, Map<String, Integer> idMap,
       ObjectMapper mapper, ArrayNode array) {

@@ -20,6 +20,8 @@ public class EntityPlacement {
   private double y;
   private double initialX;
   private double initialY;
+  private int initialTileX; // For authoring purposes
+  private int initialTileY; // For authoring purposes
   private String mode;
   private int currentFrame;
   private int deathFrame = 0;
@@ -219,6 +221,22 @@ public class EntityPlacement {
   public void moveTo(double x, double y) {
     this.x = x;
     this.y = y;
+  }
+
+  public int getInitialTileX() {
+    return initialTileX;
+  }
+
+  public void setInitialTileX(int initialTileX) {
+    this.initialTileX = initialTileX;
+  }
+
+  public int getInitialTileY() {
+    return initialTileY;
+  }
+
+  public void setInitialTileY(int initialTileY) {
+    this.initialTileY = initialTileY;
   }
 
   /**
