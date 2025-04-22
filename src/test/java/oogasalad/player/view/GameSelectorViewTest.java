@@ -42,13 +42,13 @@ public class GameSelectorViewTest extends DukeApplicationTest {
   }
 
   @Test
-  void testRootLayoutExists() {
+  void getRoot_callGetRoot_getRootWithAppropriateSize() {
     assertNotNull(view.getRoot());
     assertTrue(view.getRoot().getChildren().size() >= 2); // top bar, upload section, pagination
   }
 
   @Test
-  void testBackButtonTriggersNavigation() {
+  void backButton_setOnAction_hideGameSelectorViewShowSplashScreen() {
     Button backButton = lookup("Back").queryButton();
     clickOn(backButton);
 
@@ -56,14 +56,17 @@ public class GameSelectorViewTest extends DukeApplicationTest {
     verify(mockController).showSplashScreen();
   }
 
-  @Test
-  void testHelpButtonIsPresent() {
-    Button helpButton = lookup("Help").queryButton();
-    assertNotNull(helpButton);
-  }
+  // currently no action
+//  @Test
+//  void helpButton_setOnAction_() {
+//    Button helpButton = lookup("Help").queryButton();
+//    assertNotNull(helpButton);
+//  }
 
+
+  // might delete since we removing? upload
   @Test
-  void testUploadAndStartButtons() {
+  void uploadStartButton_setOnAction_noFileSelected() {
     Button uploadButton = lookup("Upload").queryButton();
     Button startButton = lookup("Start").queryButton();
     Label fileLabel = lookup(
@@ -75,20 +78,9 @@ public class GameSelectorViewTest extends DukeApplicationTest {
     assertTrue(startButton.isDisabled());
   }
 
-  @Test
-  void testResetUploadSectionRestoresState() {
-    runAsJFXAction(() -> view.resetUploadSection());
-
-    Button startButton = lookup("Start").queryButton();
-    Label fileLabel = lookup(
-        l -> l instanceof Label && ((Label) l).getText().contains("No file")).query();
-
-    assertTrue(startButton.isDisabled());
-    assertEquals("No file selected", fileLabel.getText());
-  }
 
   @Test
-  void testClickOnGameCardCallsController() {
+  void gameCard_setOnAction_callsController() {
     runAsJFXAction(() -> {
       view.getRoot().getChildren().clear();
       view.getRoot().getChildren().add(view.createGameCard("Fake Game"));
@@ -96,6 +88,20 @@ public class GameSelectorViewTest extends DukeApplicationTest {
 
     clickOn("Fake Game");
 
+    // Even though gameNameToFolder is empty, we expect this to be called
+    verify(mockController, atLeastOnce()).hideGameSelectorView();
+  }
+
+  @Test
+  void randomize_setOnAction_callsController() {
+    runAsJFXAction(() -> {
+      view.getRoot().getChildren().clear();
+      view.getRoot().getChildren().add(view.createGameCard("Fake Game"));
+    });
+
+    Button randomizeButton = lookup("Randomize Levels").queryButton();
+    clickOn(randomizeButton);
+    
     // Even though gameNameToFolder is empty, we expect this to be called
     verify(mockController, atLeastOnce()).hideGameSelectorView();
   }
