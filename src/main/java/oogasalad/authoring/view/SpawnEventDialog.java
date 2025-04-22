@@ -129,6 +129,7 @@ public class SpawnEventDialog extends Stage {
     }
   }
 
+  // TODO: render by reflection, rather than hard code
   private void renderConditionUI(ComboBox<String> typeDropdown, VBox paramBox) {
     paramBox.getChildren().clear();
     String type = typeDropdown.getValue();
@@ -144,7 +145,7 @@ public class SpawnEventDialog extends Stage {
     Map<String, Object> map = new HashMap<>();
     for (Node node : paramBox.getChildren()) {
       if (node instanceof TextField field && PARAM_AMOUNT.equals(field.getUserData())) {
-        map.put(PARAM_AMOUNT, Double.parseDouble(field.getText()));
+        map.put(PARAM_AMOUNT, Integer.parseInt(field.getText()));
       }
     }
     return map;
