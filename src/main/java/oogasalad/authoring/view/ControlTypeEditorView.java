@@ -3,10 +3,12 @@ package oogasalad.authoring.view;
 import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -21,6 +23,7 @@ import javafx.scene.text.Text;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
+import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.model.strategies.control.ControlManager;
@@ -94,44 +97,54 @@ public class ControlTypeEditorView {
     String controlType = controlTypeBox.getValue();
     Map<String, Class<?>> requiredFieldTypes = ControlManager.getControlRequiredFields(controlType);
     List<String> requiredFieldOrder = ControlManager.getControlRequiredFieldsOrder(controlType);
-
+    List<Object> constructorArgs = new ArrayList<>();
     try {
-      List<Object> constructorArgs = new ArrayList<>();
-      int textFieldIndex = 0;
-
-      for (String param : requiredFieldOrder) {
-        Class<?> type = requiredFieldTypes.get(param);
-
-        if (param.startsWith(PATH_FINDING_STRATEGY)) {
-          constructorArgs.add(controlTypeComboBoxes.get(param).getValue());
-
-        } else if (param.startsWith(TARGET_CALCULATION_CONFIG)) {
-          constructorArgs.add(buildTargetStrategyFromUI());
-
-        } else {
-          String input = controlTypeParameterFields.get(textFieldIndex++).getText();
-          try {
-            constructorArgs.add(castToRequiredType(input, type));
-          } catch (ViewException e) {
-            showError("Unable to cast " + input + " to " + type);
-            LoggingManager.LOGGER.warn(
-                "Unable to cast control type parameter: {} to required type {}", input, type);
-          }
-        }
-      }
-
-      String fullClassName =
-          "oogasalad.engine.records.config.model.controlConfig." + controlType
-              + "ControlConfigRecord";
-      Class<?> configClass = Class.forName(fullClassName);
-      Constructor<?> constructor = configClass.getDeclaredConstructors()[0];
-
-      return (ControlConfigInterface) constructor.newInstance(constructorArgs.toArray());
+      getContructorArguments(requiredFieldOrder, requiredFieldTypes, constructorArgs);
+      return getControlConfigInterface(controlType, constructorArgs);
 
     } catch (Exception e) {
       showError("Error building control config: " + e.getMessage());
       throw new ViewException("Error building control config: ", e);
     }
+  }
+
+  private void getContructorArguments(List<String> requiredFieldOrder,
+      Map<String, Class<?>> requiredFieldTypes,
+      List<Object> constructorArgs) {
+    int textFieldIndex = 0;
+
+    for (String param : requiredFieldOrder) {
+      Class<?> type = requiredFieldTypes.get(param);
+
+      if (param.startsWith(PATH_FINDING_STRATEGY)) {
+        constructorArgs.add(controlTypeComboBoxes.get(param).getValue());
+
+      } else if (param.startsWith(TARGET_CALCULATION_CONFIG)) {
+        constructorArgs.add(buildTargetStrategyFromUI());
+
+      } else {
+        String input = controlTypeParameterFields.get(textFieldIndex++).getText();
+        try {
+          constructorArgs.add(FileUtility.castInputToCorrectType(input, type));
+        } catch (ViewException e) {
+          showError("Unable to cast " + input + " to " + type);
+          LoggingManager.LOGGER.warn(
+              "Unable to cast control type parameter: {} to required type {}", input, type);
+        }
+      }
+    }
+  }
+
+  private static ControlConfigInterface getControlConfigInterface(String controlType,
+      List<Object> constructorArgs)
+      throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    String fullClassName =
+        "oogasalad.engine.records.config.model.controlConfig." + controlType
+            + "ControlConfigRecord";
+    Class<?> configClass = Class.forName(fullClassName);
+    Constructor<?> constructor = configClass.getDeclaredConstructors()[0];
+
+    return (ControlConfigInterface) constructor.newInstance(constructorArgs.toArray());
   }
 
   /**
@@ -256,6 +269,12 @@ public class ControlTypeEditorView {
 
     targetStrategyParameterFields.clear();
 
+    generateTargetParameterTextFields(targetParameterBox, config, targetParams);
+  }
+
+  private void generateTargetParameterTextFields(VBox targetParameterBox,
+      TargetCalculationConfigInterface config,
+      List<String> targetParams) {
     if (!targetParams.isEmpty()) {
       for (String targetParam : targetParams) {
         Label targetParamLabel = new Label(targetParam + ": ");
@@ -351,7 +370,7 @@ public class ControlTypeEditorView {
       for (String param : fieldOrder) {
         String input = targetStrategyParameterFields.get(index++).getText();
         try {
-          paramValues.add(castToRequiredType(input, requiredTypes.get(param)));
+          paramValues.add(FileUtility.castInputToCorrectType(input, requiredTypes.get(param)));
         } catch (ViewException e) {
           showError(
               String.format("Unable to cast target calculation parameter: %s to required type %s",
@@ -377,23 +396,6 @@ public class ControlTypeEditorView {
       throw new ViewException("Error building target strategy: ", e);
     }
   }
-
-
-  private Object castToRequiredType(String value, Class<?> type) {
-    try {
-      if (type == int.class || type == Integer.class) {
-        return Integer.parseInt(value);
-      } else if (type == double.class || type == Double.class) {
-        return Double.parseDouble(value);
-      } else if (type == String.class) {
-        return value;
-      }
-    } catch (ClassCastException | NumberFormatException e) {
-      throw new ViewException("Unsupported parameter type: " + type);
-    }
-    return null;
-  }
-
 
   private void showError(String msg) {
     Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
