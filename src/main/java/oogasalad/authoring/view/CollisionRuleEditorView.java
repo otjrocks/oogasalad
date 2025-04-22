@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -128,13 +130,31 @@ public class CollisionRuleEditorView {
 
   private HBox createCollisionRuleHBox() {
     HBox addRule = new HBox(15);
+
+    Supplier<List<String>> typeSupplier = () ->
+        controller.getModel().getEntityTypeMap().keySet().stream().toList();
+
+    Function<String, List<String>> modeSupplier = (typeName) -> {
+      var record = controller.getModel().getEntityTypeMap().get(typeName);
+      return record != null ? new ArrayList<>(record.modes().keySet()) : List.of();
+    };
+
     myRuleViewA = new CollisionEventView(
-        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "A"));
+        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "A"),
+        typeSupplier,
+        modeSupplier
+    );
+
     myRuleViewB = new CollisionEventView(
-        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "B"));
+        String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "B"),
+        typeSupplier,
+        modeSupplier
+    );
+
     addRule.getChildren().addAll(myRuleViewA.getRoot(), myRuleViewB.getRoot());
     return addRule;
   }
+
 
   /**
    * Shows the dialog and waits for user input.
