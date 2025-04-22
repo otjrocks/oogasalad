@@ -17,7 +17,15 @@ import oogasalad.engine.records.config.model.losecondition.LoseConditionInterfac
 import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
+import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.LoggingManager;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -27,6 +35,18 @@ import oogasalad.engine.utility.LanguageManager;
  * @author Angela Predolac, Ishan Madan
  */
 public class GameSettingsView {
+
+  // Package path constants
+  private static final String WIN_CONDITION_PACKAGE = "oogasalad.engine.records.config.model.wincondition";
+  private static final String LOSE_CONDITION_PACKAGE = "oogasalad.engine.records.config.model.losecondition";
+
+  // Record suffix
+  private static final String RECORD_SUFFIX = "Record";
+
+  // Map to store win condition class information
+  private final Map<String, Class<?>> winConditionClasses = new HashMap<>();
+  private final Map<String, Class<?>> loseConditionClasses = new HashMap<>();
+
 
   // Constants for win condition types
   private static final String WIN_CONDITION_SURVIVE_FOR_TIME = "SurviveForTime";
@@ -60,12 +80,58 @@ public class GameSettingsView {
    */
   public GameSettingsView(AuthoringController controller) {
     this.controller = controller;
-
     this.gameSettings = controller.getModel().getDefaultSettings();
-
     this.rootNode = new HBox();
+
+    loadConditionClasses();
     setupUI();
     bindToModel();
+  }
+
+  /**
+   * Load available win and lose condition classes using reflection
+   */
+  private void loadConditionClasses() {
+    try {
+      Class<?> winConditionInterface = Class.forName(WIN_CONDITION_PACKAGE + ".WinConditionInterface");
+      winConditionClasses.putAll(findConditionClasses(WIN_CONDITION_PACKAGE, winConditionInterface));
+
+      Class<?> loseConditionInterface = Class.forName(LOSE_CONDITION_PACKAGE + ".LoseConditionInterface");
+      loseConditionClasses.putAll(findConditionClasses(LOSE_CONDITION_PACKAGE, loseConditionInterface));
+
+      if (winConditionClasses.isEmpty()) {
+        LoggingManager.LOGGER.warn("No win condition classes found via reflection. Using hardcoded defaults.");
+        Class<?> surviveForTimeClass = Class.forName(WIN_CONDITION_PACKAGE + ".SurviveForTimeConditionRecord");
+        Class<?> entityBasedClass = Class.forName(WIN_CONDITION_PACKAGE + ".EntityBasedConditionRecord");
+
+        winConditionClasses.put("SurviveForTime", surviveForTimeClass);
+        winConditionClasses.put("EntityBased", entityBasedClass);
+      }
+
+      if (loseConditionClasses.isEmpty()) {
+        LoggingManager.LOGGER.warn("No lose condition classes found via reflection. Using hardcoded defaults.");
+        Class<?> livesBasedClass = Class.forName(LOSE_CONDITION_PACKAGE + ".LivesBasedConditionRecord");
+        loseConditionClasses.put("LivesBased", livesBasedClass);
+      }
+
+      LoggingManager.LOGGER.info("Loaded {} win condition classes and {} lose condition classes",
+              winConditionClasses.size(), loseConditionClasses.size());
+
+    } catch (ClassNotFoundException e) {
+      LoggingManager.LOGGER.error("Error loading condition interfaces", e);
+
+      try {
+        Class<?> surviveForTimeClass = Class.forName(WIN_CONDITION_PACKAGE + ".SurviveForTimeConditionRecord");
+        Class<?> entityBasedClass = Class.forName(WIN_CONDITION_PACKAGE + ".EntityBasedConditionRecord");
+        Class<?> livesBasedClass = Class.forName(LOSE_CONDITION_PACKAGE + ".LivesBasedConditionRecord");
+
+        winConditionClasses.put("SurviveForTime", surviveForTimeClass);
+        winConditionClasses.put("EntityBased", entityBasedClass);
+        loseConditionClasses.put("LivesBased", livesBasedClass);
+      } catch (ClassNotFoundException ex) {
+        LoggingManager.LOGGER.error("Critical error: Could not load default condition classes", ex);
+      }
+    }
   }
 
   /**
@@ -378,10 +444,15 @@ public class GameSettingsView {
 
   private String getLoseConditionType() {
     LoseConditionInterface condition = gameSettings.loseCondition();
-    if (condition instanceof LivesBasedConditionRecord) {
-      return LOSE_CONDITION_LIVES_BASED;
+
+    // Use reflection to determine the condition type
+    String className = condition.getClass().getSimpleName();
+    // Remove "Record" suffix if present
+    if (className.endsWith(RECORD_SUFFIX)) {
+      className = className.substring(0, className.length() - RECORD_SUFFIX.length());
     }
-    return LOSE_CONDITION_LIVES_BASED; // Default
+
+    return className;
   }
 
   private String getLoseConditionValue() {
@@ -396,32 +467,48 @@ public class GameSettingsView {
   }
 
   private LoseConditionInterface createLoseConditionFromUI() {
-    String type = loseConditionTypeComboBox.getValue();
-    // Currently we only have LivesBasedConditionRecord which doesn't take parameters
+    String typeName = loseConditionTypeComboBox.getValue();
+    Class<?> conditionClass = loseConditionClasses.get(typeName);
 
-    if (LOSE_CONDITION_LIVES_BASED.equals(type)) {
-      return new LivesBasedConditionRecord();
+    if (conditionClass != null) {
+      try {
+        // For LivesBasedConditionRecord, create a new instance using no-arg constructor
+        return (LoseConditionInterface) conditionClass.getDeclaredConstructor().newInstance();
+      } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+        LoggingManager.LOGGER.error("Error creating lose condition instance", e);
+      }
     }
 
     // Default to lives-based condition
     return new LivesBasedConditionRecord();
   }
 
-  // TODO: This should not be hardcoded
   private WinConditionInterface createWinConditionFromUI() {
-    String type = winConditionTypeComboBox.getValue();
+    String typeName = winConditionTypeComboBox.getValue();
     String value = winConditionValueField.getText();
+    Class<?> conditionClass = winConditionClasses.get(typeName);
 
-    if (WIN_CONDITION_SURVIVE_FOR_TIME.equals(type)) {
+    if (conditionClass != null) {
       try {
-        int seconds = Integer.parseInt(value);
-        return new SurviveForTimeConditionRecord(seconds);
-      } catch (NumberFormatException e) {
-        // Default to 5 seconds if invalid input
-        return new SurviveForTimeConditionRecord(5);
+        if ("SurviveForTime".equals(typeName)) {
+          // For SurviveForTimeConditionRecord, we need an int parameter
+          try {
+            int seconds = Integer.parseInt(value);
+            Constructor<?> constructor = conditionClass.getDeclaredConstructor(int.class);
+            return (WinConditionInterface) constructor.newInstance(seconds);
+          } catch (NumberFormatException e) {
+            // Default to 5 seconds if invalid input
+            Constructor<?> constructor = conditionClass.getDeclaredConstructor(int.class);
+            return (WinConditionInterface) constructor.newInstance(5);
+          }
+        } else if ("EntityBased".equals(typeName)) {
+          // For EntityBasedConditionRecord, we need a String parameter
+          Constructor<?> constructor = conditionClass.getDeclaredConstructor(String.class);
+          return (WinConditionInterface) constructor.newInstance(value.isEmpty() ? "dot" : value);
+        }
+      } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+        LoggingManager.LOGGER.error("Error creating win condition instance", e);
       }
-    } else if (WIN_CONDITION_ENTITY_BASED.equals(type)) {
-      return new EntityBasedConditionRecord(value.isEmpty() ? "dot" : value);
     }
 
     // Default to survive for 5 seconds
@@ -482,5 +569,67 @@ public class GameSettingsView {
     } catch (NumberFormatException e) {
       spinner.getValueFactory().setValue(defaultValue);
     }
+  }
+
+  /**
+   * Utility method to scan a package for condition classes using reflection
+   * This scans a directory for .class files, loads them, and checks if they implement
+   * the specified interface type
+   *
+   * @param packagePath The full package path (e.g., "oogasalad.engine.records.config.model.wincondition")
+   * @param interfaceType The interface class that the discovered classes should implement
+   * @return A map of simplified class names to their Class objects
+   */
+  private Map<String, Class<?>> findConditionClasses(String packagePath, Class<?> interfaceType) {
+    Map<String, Class<?>> classMap = new HashMap<>();
+
+    try {
+      // Convert package path to directory path for file system access
+      // First determine the classpath root directory
+      String classpathRoot = System.getProperty("user.dir") + "/target/classes/";
+      // Then convert package dots to directory separators
+      String directoryPath = classpathRoot + packagePath.replace('.', '/');
+
+      // Use FileUtility to get all class files in the directory
+      List<String> classNames = FileUtility.getFileNamesInDirectory(directoryPath, ".class");
+
+      // Process each class file
+      for (String className : classNames) {
+        try {
+          // Load the class using reflection
+          Class<?> clazz = Class.forName(packagePath + "." + className);
+
+          // Check if the class implements the required interface
+          // and is not the interface itself or an abstract class
+          if (interfaceType.isAssignableFrom(clazz) &&
+                  !clazz.isInterface() &&
+                  !java.lang.reflect.Modifier.isAbstract(clazz.getModifiers())) {
+
+            // Extract the simple name for display purposes
+            String simpleName = clazz.getSimpleName();
+            if (simpleName.endsWith(RECORD_SUFFIX)) {
+              simpleName = simpleName.substring(0, simpleName.length() - RECORD_SUFFIX.length());
+            }
+
+            // Add to our map
+            classMap.put(simpleName, clazz);
+            LoggingManager.LOGGER.info("Found condition class: {}", simpleName);
+          }
+        } catch (ClassNotFoundException e) {
+          LoggingManager.LOGGER.error("Error loading class: " + className, e);
+        } catch (Exception e) {
+          LoggingManager.LOGGER.error("Unexpected error processing class: " + className, e);
+        }
+      }
+    } catch (Exception e) {
+      LoggingManager.LOGGER.error("Error scanning directory for condition classes", e);
+    }
+
+    // If no classes found, log a warning
+    if (classMap.isEmpty()) {
+      LoggingManager.LOGGER.warn("No condition classes found in package: {}", packagePath);
+    }
+
+    return classMap;
   }
 }
