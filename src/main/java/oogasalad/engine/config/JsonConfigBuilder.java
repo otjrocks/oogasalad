@@ -215,13 +215,6 @@ public class JsonConfigBuilder {
     entityTypeNode.set("controlConfig", serialized);
   }
 
-  private void addMovementSpeed(EntityTypeRecord type, ObjectNode entityTypeNode) {
-    ModeConfigRecord defaultMode = type.modes().get("Default");
-    if (defaultMode != null) {
-      entityTypeNode.put("movementSpeed", defaultMode.movementSpeed());
-    }
-  }
-
   private void addModesArray(EntityTypeRecord type, ObjectNode root, ObjectMapper mapper) {
     ArrayNode modesArray = root.putArray("modes");
 
@@ -238,6 +231,8 @@ public class JsonConfigBuilder {
       imageNode.put("animationSpeed", mode.image().animationSpeed());
 
       addControlConfig(mode.controlConfig(), modeNode, mapper);
+
+      modeNode.put("movementSpeed", mode.movementSpeed());
     }
   }
 
