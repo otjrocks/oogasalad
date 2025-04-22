@@ -643,54 +643,116 @@ public class GameSettingsView {
    */
   private Map<String, Class<?>> findConditionClasses(String packagePath, Class<?> interfaceType) {
     Map<String, Class<?>> classMap = new HashMap<>();
-
     try {
-      // Convert package path to directory path for file system access
-      // First determine the classpath root directory
-      String classpathRoot = System.getProperty("user.dir") + "/target/classes/";
-      // Then convert package dots to directory separators
-      String directoryPath = classpathRoot + packagePath.replace('.', '/');
+      // Get the directory path from the package name
+      String directoryPath = getDirectoryPathForPackage(packagePath);
 
-      // Use FileUtility to get all class files in the directory
-      List<String> classNames = FileUtility.getFileNamesInDirectory(directoryPath, ".class");
+      // Get all class files in the directory
+      List<String> classNames = getClassNamesInDirectory(directoryPath);
 
       // Process each class file
-      for (String className : classNames) {
-        try {
-          // Load the class using reflection
-          Class<?> clazz = Class.forName(packagePath + "." + className);
+      processClassNames(packagePath, interfaceType, classNames, classMap);
 
-          // Check if the class implements the required interface
-          // and is not the interface itself or an abstract class
-          if (interfaceType.isAssignableFrom(clazz) &&
-                  !clazz.isInterface() &&
-                  !java.lang.reflect.Modifier.isAbstract(clazz.getModifiers())) {
-
-            // Extract the simple name for display purposes
-            String simpleName = clazz.getSimpleName();
-            if (simpleName.endsWith(RECORD_SUFFIX)) {
-              simpleName = simpleName.substring(0, simpleName.length() - RECORD_SUFFIX.length());
-            }
-
-            // Add to our map
-            classMap.put(simpleName, clazz);
-            LoggingManager.LOGGER.info("Found condition class: {}", simpleName);
-          }
-        } catch (ClassNotFoundException e) {
-          LoggingManager.LOGGER.error("Error loading class: " + className, e);
-        } catch (Exception e) {
-          LoggingManager.LOGGER.error("Unexpected error processing class: " + className, e);
-        }
+      // Log warning if no classes found
+      if (classMap.isEmpty()) {
+        LoggingManager.LOGGER.warn("No condition classes found in package: {}", packagePath);
       }
     } catch (Exception e) {
       LoggingManager.LOGGER.error("Error scanning directory for condition classes", e);
     }
-
-    // If no classes found, log a warning
-    if (classMap.isEmpty()) {
-      LoggingManager.LOGGER.warn("No condition classes found in package: {}", packagePath);
-    }
-
     return classMap;
+  }
+
+  /**
+   * Gets the directory path corresponding to a package path
+   *
+   * @param packagePath The package path to convert
+   * @return The corresponding directory path
+   */
+  private String getDirectoryPathForPackage(String packagePath) {
+    // Convert package path to directory path for file system access
+    String classpathRoot = System.getProperty("user.dir") + "/target/classes/";
+    // Convert package dots to directory separators
+    return classpathRoot + packagePath.replace('.', '/');
+  }
+
+  /**
+   * Gets all class files in a directory
+   *
+   * @param directoryPath The directory to scan
+   * @return A list of class names without the .class extension
+   */
+  private List<String> getClassNamesInDirectory(String directoryPath) {
+    return FileUtility.getFileNamesInDirectory(directoryPath, ".class");
+  }
+
+  /**
+   * Processes a list of class names, loading each class and checking if it's valid
+   *
+   * @param packagePath The base package path
+   * @param interfaceType The interface that classes should implement
+   * @param classNames The names of classes to process
+   * @param classMap The map to populate with valid classes
+   */
+  private void processClassNames(
+          String packagePath,
+          Class<?> interfaceType,
+          List<String> classNames,
+          Map<String, Class<?>> classMap) {
+
+    for (String className : classNames) {
+      try {
+        Class<?> clazz = loadClass(packagePath, className);
+
+        if (isValidConditionClass(clazz, interfaceType)) {
+          String simpleName = getSimplifiedClassName(clazz);
+          classMap.put(simpleName, clazz);
+          LoggingManager.LOGGER.info("Found condition class: {}", simpleName);
+        }
+      } catch (ClassNotFoundException e) {
+        LoggingManager.LOGGER.error("Error loading class: " + className, e);
+      } catch (Exception e) {
+        LoggingManager.LOGGER.error("Unexpected error processing class: " + className, e);
+      }
+    }
+  }
+
+  /**
+   * Loads a class by name
+   *
+   * @param packagePath The package path
+   * @param className The class name to load
+   * @return The loaded class
+   * @throws ClassNotFoundException If the class cannot be found
+   */
+  private Class<?> loadClass(String packagePath, String className) throws ClassNotFoundException {
+    return Class.forName(packagePath + "." + className);
+  }
+
+  /**
+   * Checks if a class is a valid condition class
+   *
+   * @param clazz The class to check
+   * @param interfaceType The interface the class should implement
+   * @return true if the class is valid, false otherwise
+   */
+  private boolean isValidConditionClass(Class<?> clazz, Class<?> interfaceType) {
+    return interfaceType.isAssignableFrom(clazz) &&
+            !clazz.isInterface() &&
+            !java.lang.reflect.Modifier.isAbstract(clazz.getModifiers());
+  }
+
+  /**
+   * Gets a simplified class name for display
+   *
+   * @param clazz The class to get the name from
+   * @return The simplified class name
+   */
+  private String getSimplifiedClassName(Class<?> clazz) {
+    String simpleName = clazz.getSimpleName();
+    if (simpleName.endsWith(RECORD_SUFFIX)) {
+      simpleName = simpleName.substring(0, simpleName.length() - RECORD_SUFFIX.length());
+    }
+    return simpleName;
   }
 }
