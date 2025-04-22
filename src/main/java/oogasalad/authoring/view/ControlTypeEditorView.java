@@ -17,10 +17,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.model.strategies.control.ControlManager;
 
 /**
@@ -108,7 +110,13 @@ public class ControlTypeEditorView {
 
         } else {
           String input = controlTypeParameterFields.get(textFieldIndex++).getText();
-          constructorArgs.add(castToRequiredType(input, type));
+          try {
+            constructorArgs.add(castToRequiredType(input, type));
+          } catch (ViewException e) {
+            showError("Unable to cast " + input + " to " + type);
+            LoggingManager.LOGGER.warn(
+                "Unable to cast control type parameter: {} to required type {}", input, type);
+          }
         }
       }
 
@@ -151,7 +159,7 @@ public class ControlTypeEditorView {
         ComboBox<String> combo = new ComboBox<>();
         combo.setItems(
             FXCollections.observableArrayList(ControlManager.getPathFindingStrategies()));
-        combo.setValue(getStrategyValueFromConfig(config, field));
+        combo.setValue(getFieldValueFromConfig(config, field));
         controlTypeComboBoxes.put(field, combo);
         controlTypeParameters.getChildren().add(new VBox(label, combo));
 
@@ -164,7 +172,11 @@ public class ControlTypeEditorView {
         controlTypeComboBoxes.put(field, targetCombo);
 
         VBox targetParamsBox = new VBox(5);
-        updateTargetParameterFields(targetCombo, targetParamsBox);
+
+        TargetCalculationConfigInterface strategyConfig = getTargetStrategyFromConfig(config,
+            field);
+        updateTargetParameterFields(targetCombo, targetParamsBox, strategyConfig);
+
         targetCombo.setOnAction(e -> updateTargetParameterFields(targetCombo, targetParamsBox));
 
         controlTypeParameters.getChildren().add(new VBox(label, targetCombo, targetParamsBox));
@@ -235,9 +247,41 @@ public class ControlTypeEditorView {
     return container;
   }
 
+  private void updateTargetParameterFields(ComboBox<String> dropdown, VBox targetParameterBox,
+      TargetCalculationConfigInterface config) {
+    // ChatGPT generated this method.
+    targetParameterBox.getChildren().clear();
+    String selectedStrategy = dropdown.getValue();
+    List<String> targetParams = ControlManager.getTargetRequiredFieldsOrder(selectedStrategy);
+
+    targetStrategyParameterFields.clear();
+
+    if (!targetParams.isEmpty()) {
+      for (String targetParam : targetParams) {
+        Label targetParamLabel = new Label(targetParam + ": ");
+        TextField targetParamField = new TextField();
+
+        if (config != null) {
+          try {
+            var field = config.getClass().getDeclaredField(targetParam);
+            field.setAccessible(true);
+            Object value = field.get(config);
+            targetParamField.setText(value != null ? value.toString() : "");
+          } catch (Exception ignored) {
+          }
+        }
+
+        targetStrategyParameterFields.add(targetParamField);
+        targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
+      }
+    }
+  }
+
+
   private void updateTargetParameterFields(ComboBox<String> dropdown, VBox targetParameterBox) {
     targetParameterBox.getChildren().clear();
     String selectedStrategy = dropdown.getValue();
+    targetStrategyParameterFields.clear();
     List<String> targetParams = ControlManager.getTargetRequiredFieldsOrder(selectedStrategy);
 
     if (!targetParams.isEmpty()) {
@@ -283,6 +327,18 @@ public class ControlTypeEditorView {
     }
   }
 
+  private TargetCalculationConfigInterface getTargetStrategyFromConfig(
+      ControlConfigInterface config, String fieldName) {
+    try {
+      var field = config.getClass().getDeclaredField(fieldName);
+      field.setAccessible(true);
+      return (TargetCalculationConfigInterface) field.get(config);
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+
   private TargetCalculationConfigInterface buildTargetStrategyFromUI() throws ViewException {
     try {
       String selectedStrategy = controlTypeComboBoxes.get(TARGET_CALCULATION_CONFIG).getValue();
@@ -294,7 +350,17 @@ public class ControlTypeEditorView {
       int index = 0;
       for (String param : fieldOrder) {
         String input = targetStrategyParameterFields.get(index++).getText();
-        paramValues.add(castToRequiredType(input, requiredTypes.get(param)));
+        try {
+          paramValues.add(castToRequiredType(input, requiredTypes.get(param)));
+        } catch (ViewException e) {
+          showError(
+              String.format("Unable to cast target calculation parameter: %s to required type %s",
+                  input,
+                  requiredTypes.get(param)));
+          LoggingManager.LOGGER.warn(
+              "Unable to cast target calculation parameter: {} to required type {}", input,
+              requiredTypes.get(param));
+        }
       }
 
       String fullClassName =
@@ -304,6 +370,8 @@ public class ControlTypeEditorView {
       Constructor<?> constructor = strategyClass.getDeclaredConstructors()[0];
 
       return (TargetCalculationConfigInterface) constructor.newInstance(paramValues.toArray());
+    } catch (ViewException e) {
+      throw e; // Don't show error duplicate error in ui.
     } catch (Exception e) {
       showError("Error building target strategy: " + e.getMessage());
       throw new ViewException("Error building target strategy: ", e);
@@ -312,15 +380,18 @@ public class ControlTypeEditorView {
 
 
   private Object castToRequiredType(String value, Class<?> type) {
-    if (type == int.class || type == Integer.class) {
-      return Integer.parseInt(value);
-    } else if (type == double.class || type == Double.class) {
-      return Double.parseDouble(value);
-    } else if (type == String.class) {
-      return value;
+    try {
+      if (type == int.class || type == Integer.class) {
+        return Integer.parseInt(value);
+      } else if (type == double.class || type == Double.class) {
+        return Double.parseDouble(value);
+      } else if (type == String.class) {
+        return value;
+      }
+    } catch (ClassCastException | NumberFormatException e) {
+      throw new ViewException("Unsupported parameter type: " + type);
     }
-
-    throw new ViewException("Unsupported parameter type: " + type);
+    return null;
   }
 
 
