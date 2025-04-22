@@ -42,6 +42,17 @@ public class ConditionSerializer {
     return root;
   }
 
+  public static JsonNode serializeFlat(Object condition, ObjectMapper mapper) {
+    ObjectNode root = mapper.createObjectNode();
+    root.put(TYPE, resolveTypeName(condition));
+
+    ObjectNode parameters = extractParameters(condition, mapper);
+    parameters.fields().forEachRemaining(entry -> root.set(entry.getKey(), entry.getValue()));
+
+    return root;
+  }
+
+
   private static String resolveTypeName(Object condition) {
     JsonSubTypes.Type annotation = condition.getClass().getAnnotation(JsonSubTypes.Type.class);
     return annotation != null
