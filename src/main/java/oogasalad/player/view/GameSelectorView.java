@@ -202,7 +202,14 @@ public class GameSelectorView {
       myMainController.showGamePlayerView(gameNameToFolder.get(gameName), true);
     });
 
-    card.getChildren().addAll(image, nameLabel, randomizeButton);
+    Button infoButton = new Button("i");
+    infoButton.getStyleClass().add("icon-button");
+    infoButton.setOnAction(e -> showMetadataPopup(gameName));
+
+    HBox buttonBox = new HBox(5, randomizeButton, infoButton);
+    buttonBox.setAlignment(Pos.CENTER);
+
+    card.getChildren().addAll(image, nameLabel, buttonBox);
     card.setOnMouseClicked(e -> {
       myMainController.hideGameSelectorView();
       myMainController.showGamePlayerView(gameNameToFolder.get(gameName), false);
@@ -210,6 +217,30 @@ public class GameSelectorView {
 
     return card;
   }
+
+  private void showMetadataPopup(String gameName) {
+    GameConfigRecord config = gameConfigRecords.stream()
+        .filter(g -> g.metadata().gameTitle().equals(gameName))
+        .findFirst()
+        .orElse(null);
+
+    if (config == null) {
+      showErrorDialog("Error", "Game configuration not found.");
+      return;
+    }
+
+    Alert infoDialog = new Alert(AlertType.INFORMATION);
+    infoDialog.setTitle("Game Info");
+    infoDialog.setHeaderText(gameName);
+    infoDialog.setContentText(String.format(
+        "Author: %s%nDescription: %s",
+        config.metadata().author(),
+        config.metadata().gameDescription()
+    ));
+    infoDialog.showAndWait();
+  }
+
+
 
   private List<GameConfigRecord> loadGameConfigs() {
     List<String> folderNames = FileUtility.getFolderNamesInDirectory(GAMES_FOLDER_PATH);

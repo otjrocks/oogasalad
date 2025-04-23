@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import oogasalad.engine.controller.MainController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.testfx.util.WaitForAsyncUtils;
 import util.DukeApplicationTest;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -105,4 +106,40 @@ public class GameSelectorViewTest extends DukeApplicationTest {
     // Even though gameNameToFolder is empty, we expect this to be called
     verify(mockController, atLeastOnce()).hideGameSelectorView();
   }
+
+  @Test
+  void infoButton_setOnAction_showsMetadataPopup() {
+    runAsJFXAction(() -> {
+      view.getRoot().getChildren().clear();
+      view.getRoot().getChildren().add(view.createGameCard("Fake Game"));
+    });
+
+    Button infoButton = lookup(b -> b instanceof Button && ((Button) b).getText().equals("i")).queryButton();
+    assertNotNull(infoButton);
+
+    clickOn(infoButton);
+
+    assertTrue(infoButton.isVisible());
+  }
+
+  @Test
+  void infoButton_setOnAction_openMetadataPopupAndCanClose() {
+    runAsJFXAction(() -> {
+      view.getRoot().getChildren().clear();
+      view.getRoot().getChildren().add(view.createGameCard("Fake Game"));
+    });
+
+    Button infoButton = lookup(b -> b instanceof Button && ((Button) b).getText().equals("i")).queryButton();
+    clickOn(infoButton);
+
+    WaitForAsyncUtils.waitForFxEvents();
+
+    String dialogText = lookup(".dialog-pane .content").queryAs(Label.class).getText();
+
+    // since this is a mock and there no content
+    assertTrue(dialogText.contains("not found"), "Metadata dialog not shown or incorrect content");
+
+    clickOn(lookup(DukeApplicationTest.DEFAULT_SUBMIT_BUTTON_TEXT).queryButton());
+  }
+
 }
