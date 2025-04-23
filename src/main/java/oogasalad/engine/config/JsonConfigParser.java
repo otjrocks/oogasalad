@@ -476,24 +476,6 @@ public class JsonConfigParser implements ConfigParserInterface {
     return collisions;
   }
 
-  private SettingsRecord mergeSettings(SettingsRecord defaults, SettingsRecord override) {
-    if (override == null) {
-      return defaults;
-    }
-
-    return new SettingsRecord(
-        pick(override.gameSpeed(), defaults.gameSpeed()),
-        pick(override.startingLives(), defaults.startingLives()),
-        pick(override.initialScore(), defaults.initialScore()),
-        pick(override.winCondition(), defaults.winCondition()),
-        pick(override.loseCondition(), defaults.loseCondition())
-    );
-  }
-
-  private <T> T pick(T overrideValue, T defaultValue) {
-    return overrideValue != null ? overrideValue : defaultValue;
-  }
-
   private String getFolderPath(String filepath) throws ConfigException {
     Pattern pattern = Pattern.compile("^(.*[\\\\/])");
     Matcher matcher = pattern.matcher(filepath);
