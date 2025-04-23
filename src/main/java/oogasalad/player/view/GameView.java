@@ -65,14 +65,17 @@ public class GameView {
   }
 
   private void setUpEndMessage() {
+    endLabel.setId("endLabel");
     configureEndNode(endLabel, "end-label", null);
     StackPane.setAlignment(endLabel, Pos.CENTER);
 
-    configureEndNode(nextLevelButton, END_BUTTON_STYLE,
-        LanguageManager.getMessage("NEXT_LEVEL"));
-    configureEndNode(resetButton, END_BUTTON_STYLE,
-        LanguageManager.getMessage("RESET_GAME"));
+    nextLevelButton.setId("nextLevelButton");
+    configureEndNode(nextLevelButton, END_BUTTON_STYLE, LanguageManager.getMessage("NEXT_LEVEL"));
+
+    resetButton.setId("resetButton");
+    configureEndNode(resetButton, END_BUTTON_STYLE, LanguageManager.getMessage("RESET_GAME"));
   }
+
 
   private void configureEndNode(Node node, String styleClass, String text) {
     node.setVisible(false);

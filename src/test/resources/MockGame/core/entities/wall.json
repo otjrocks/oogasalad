@@ -1,9 +1,6 @@
 {
   "entityType": {
-    "name": "Wall",
-    "blocks": [
-    ],
-    "movementSpeed": 1.0
+    "name": "Wall"
   },
   "modes": [
     {
@@ -17,7 +14,8 @@
       },
       "controlConfig": {
         "controlStrategy": "None"
-      }
+      },
+      "movementSpeed": 0
     }
   ]
 }

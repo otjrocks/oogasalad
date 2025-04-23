@@ -20,9 +20,6 @@
   "levels": [
     {
       "levelMap": "level1"
-    },
-    {
-      "levelMap": "level2"
     }
   ],
   "currentLevelIndex": 0
