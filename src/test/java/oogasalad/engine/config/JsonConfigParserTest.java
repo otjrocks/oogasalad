@@ -316,4 +316,10 @@ class JsonConfigParserTest {
     assertDoesNotThrow(() -> parser.loadFromFile(resourceUrl.getPath().toString()));
   }
 
+  @Test
+  void loadGameConfig_invalidFilePath_ThrowConfigException() {
+    JsonConfigParser parser = new JsonConfigParser();
+    assertThrows(ConfigException.class, () -> parser.loadFromFile("invalid.json"));
+  }
+
 }
