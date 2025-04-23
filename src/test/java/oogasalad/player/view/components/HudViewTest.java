@@ -9,6 +9,7 @@ import oogasalad.player.model.GameStateInterface;
 import oogasalad.player.view.GameView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.testfx.util.WaitForAsyncUtils;
 import util.DukeApplicationTest;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,9 +46,10 @@ public class HudViewTest extends DukeApplicationTest {
 
   @Test
   void hudView_initialize_initializeScoreAndLives() {
-    // Ensure the labels are present and initialized with the default values
-    Label scoreLabel = lookup("Score: 0").query();
-    Label livesLabel = lookup("Lives: 0").query();
+    WaitForAsyncUtils.waitForFxEvents();
+
+    Label scoreLabel = lookup("#scoreLabel").query();
+    Label livesLabel = lookup("#livesLabel").query();
 
     assertNotNull(scoreLabel);
     assertNotNull(livesLabel);
@@ -56,53 +58,57 @@ public class HudViewTest extends DukeApplicationTest {
   }
 
 
+
   @Test
   void update_updateLivesAndScore_displayUpdatedScoreAndLives() {
     when(mockGameState.getScore()).thenReturn(10);
     when(mockGameState.getLives()).thenReturn(2);
 
     runAsJFXAction(() -> hudView.update(mockGameState));
+    WaitForAsyncUtils.waitForFxEvents();
 
-    Label scoreLabel = lookup("Score: 10").query();
-    Label livesLabel = lookup("Lives: 2").query();
+    Label scoreLabel = lookup("#scoreLabel").query();
+    Label livesLabel = lookup("#livesLabel").query();
 
     assertEquals("Score: 10", scoreLabel.getText());
     assertEquals("Lives: 2", livesLabel.getText());
   }
 
+
   @Test
   void playButton_setOnAction_resumesGame() {
     StackPane mockRoot = mock(StackPane.class);
-
     when(mockGameView.getRoot()).thenReturn(mockRoot);
 
-    Button playButton = lookup("▶").queryButton();
+    Button playButton = lookup("#playButton").queryButton();
 
     clickOn(playButton);
     verify(mockGameView).resumeGame();
     verify(mockRoot).requestFocus();
   }
 
+
   @Test
   void pauseButton_setOnAction_pauseGame() {
     StackPane mockRoot = mock(StackPane.class);
-
     when(mockGameView.getRoot()).thenReturn(mockRoot);
 
-    Button pauseButton = lookup("⏸").queryButton();
+    Button pauseButton = lookup("#pauseButton").queryButton();
 
     clickOn(pauseButton);
     verify(mockGameView).pauseGame();
     verify(mockRoot).requestFocus();
   }
 
+
   @Test
   void returnToMenuButton_setOnAction_returnToMenu() {
-    Button returnButton = lookup("RETURN TO MENU").queryButton();
+    Button returnButton = lookup("#returnToMenuButton").queryButton();
 
     clickOn(returnButton);
     verify(mockReturnToMenu).run();
   }
+
 
 
 }
