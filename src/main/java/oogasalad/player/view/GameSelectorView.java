@@ -38,65 +38,115 @@ import oogasalad.engine.utility.constants.GameConfig;
  */
 public class GameSelectorView {
 
-  private final String gamesFolderPath = "data/games/";
-  private final String smallButtonString = "small-button";
+  private static final String GAMES_FOLDER_PATH = "data/games/";
+  private static final String SMALL_BUTTON_STYLE = "small-button";
 
   private final VBox myRoot;
   private final MainController myMainController;
-  private final List<GameConfigRecord> gameConfigRecords;
   private final Map<String, String> gameNameToFolder = new HashMap<>();
-  private JsonConfigParser configParser = new JsonConfigParser();
-  private Label titleLabel;
+  private final List<GameConfigRecord> gameConfigRecords;
+
+  private final JsonConfigParser configParser = new JsonConfigParser();
+  private final FileChooser fileChooser = new FileChooser();
+
   private Label fileLabel;
-  private Button backButton;
-  private Button helpButton;
-  private Button uploadButton;
   private Button startButton;
-  private FileChooser fileChooser;
 
   /**
-   * Create a game selector splash screen view.
+   * The GameSelectorView class is responsible for displaying the game selection interface
+   * in the application. It initializes the layout, loads game configurations, and creates
+   * a user interface for selecting and uploading game files.
    *
-   * @param mainController The main controller of the program.
+   * @param mainController the main controller of the application, used to manage
+   *                       interactions and retrieve the primary stage for theming
    */
   public GameSelectorView(MainController mainController) {
-    super();
-    myRoot = new VBox();
+    this.myMainController = mainController;
+    this.myRoot = new VBox(20);
     new ThemeManager(mainController.getStage());
-    myMainController = mainController;
-    setupLayout();
+    initializeLayout();
 
-    gameConfigRecords = getAllGameConfigs();
+    gameConfigRecords = loadGameConfigs();
 
-    fileChooser = new FileChooser();
-    HBox topBar = createTopBar();
+    List<String> gameNames = gameConfigRecords.stream()
+        .map(config -> config.metadata().gameTitle())
+        .toList();
 
-    List<String> gameNames = new ArrayList<>();
-    for (GameConfigRecord gameConfigRecord : gameConfigRecords) {
-      gameNames.add(gameConfigRecord.metadata().gameTitle());
-    }
-    Pagination gameGrid = createGameGrid(gameNames);
+    Pagination gameGrid = createGamePagination(gameNames);
 
-    myRoot.getChildren().addAll(topBar, createFileUploadSection(), gameGrid);
+    myRoot.getChildren().addAll(createTopBar(), createFileUploadSection(), gameGrid);
   }
 
   /**
-   * Return the root JavaFX element for this view.
+   * Retrieves the root VBox of the GameSelectorView.
    *
-   * @return A VBox which is used to display this view.
+   * @return the root VBox containing the UI elements of the GameSelectorView.
    */
   public VBox getRoot() {
     return myRoot;
   }
 
-  private void setupLayout() {
+  /**
+   * Resets the upload section of the game selector view.
+   * This method updates the file label to indicate that no file is selected
+   * and disables the start button to prevent further actions until a file is uploaded.
+   */
+  public void resetUploadSection() {
+    fileLabel.setText("No file selected");
+    startButton.setDisable(true);
+  }
+
+  private void initializeLayout() {
     myRoot.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
-    myRoot.setSpacing(20);
     myRoot.setAlignment(Pos.CENTER);
     myRoot.getStyleClass().add("game-selector-view");
   }
 
-  private Pagination createGameGrid(List<String> gameNames) {
+  private HBox createTopBar() {
+    Label titleLabel = new Label(LanguageManager.getMessage("GAME_PLAYER"));
+    titleLabel.getStyleClass().add("title");
+    titleLabel.setMaxWidth(Double.MAX_VALUE);
+    titleLabel.setAlignment(Pos.TOP_CENTER);
+
+    Button backButton = new Button("Back");
+    backButton.getStyleClass().add(SMALL_BUTTON_STYLE);
+    backButton.setOnAction(e -> {
+      myMainController.hideGameSelectorView();
+      myMainController.showSplashScreen();
+    });
+
+    Button helpButton = new Button("Help");
+    helpButton.getStyleClass().add(SMALL_BUTTON_STYLE);
+
+    HBox topBar = new HBox(10, backButton, titleLabel, helpButton);
+    topBar.setAlignment(Pos.CENTER);
+    HBox.setHgrow(titleLabel, Priority.ALWAYS);
+    return topBar;
+  }
+
+  private VBox createFileUploadSection() {
+    Button uploadButton = new Button("Upload");
+    uploadButton.getStyleClass().add(SMALL_BUTTON_STYLE);
+
+    startButton = new Button("Start");
+    startButton.getStyleClass().add(SMALL_BUTTON_STYLE);
+    startButton.setDisable(true);
+
+    fileLabel = new Label("No file selected");
+
+    fileChooser.setTitle("Open File");
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
+
+    uploadButton.setOnAction(e -> handleFileUpload());
+    startButton.setOnAction(e -> startGameFromUpload());
+
+    VBox section = new VBox(10, uploadButton, fileLabel, startButton);
+    section.setAlignment(Pos.CENTER);
+    VBox.setMargin(section, new Insets(30, 0, 0, 0));
+    return section;
+  }
+
+  private Pagination createGamePagination(List<String> gameNames) {
     int itemsPerPage = 4;
     int totalPages = (int) Math.ceil((double) gameNames.size() / itemsPerPage);
 
@@ -130,31 +180,7 @@ public class GameSelectorView {
         return pageBox;
       }
     });
-
     return pagination;
-  }
-
-  private HBox createTopBar() {
-    titleLabel = new Label(LanguageManager.getMessage("GAME_PLAYER"));
-    titleLabel.getStyleClass().add("title");
-    HBox topBar = new HBox(10);
-    topBar.setAlignment(Pos.CENTER);
-
-    backButton = new Button("Back");
-    backButton.getStyleClass().add(smallButtonString);
-    backButton.setOnAction(e -> {
-      myMainController.hideGameSelectorView();
-      myMainController.showSplashScreen();
-    });
-
-    helpButton = new Button("Help");
-    helpButton.getStyleClass().add(smallButtonString);
-
-    topBar.getChildren().addAll(backButton, titleLabel, helpButton);
-    HBox.setHgrow(titleLabel, Priority.ALWAYS);
-    titleLabel.setMaxWidth(Double.MAX_VALUE);
-    titleLabel.setAlignment(Pos.TOP_CENTER);
-    return topBar;
   }
 
   VBox createGameCard(String gameName) {
@@ -162,21 +188,28 @@ public class GameSelectorView {
     card.setAlignment(Pos.CENTER);
     card.getStyleClass().add("game-card");
 
-    ImageView image = new ImageView(getImage(gameName)); // Replace with actual path
+    ImageView image = new ImageView(getGameImage(gameName));
     image.setFitWidth(200);
     image.setFitHeight(300);
 
-    Label name = new Label(gameName);
-    name.getStyleClass().add("game-name");
+    Label nameLabel = new Label(gameName);
+    nameLabel.getStyleClass().add("game-name");
 
     Button randomizeButton = new Button("Randomize Levels");
-    randomizeButton.getStyleClass().add(smallButtonString);
+    randomizeButton.getStyleClass().add(SMALL_BUTTON_STYLE);
     randomizeButton.setOnAction(e -> {
       myMainController.hideGameSelectorView();
       myMainController.showGamePlayerView(gameNameToFolder.get(gameName), true);
     });
 
-    card.getChildren().addAll(image, name, randomizeButton);
+    Button infoButton = new Button("i");
+    infoButton.getStyleClass().add("icon-button");
+    infoButton.setOnAction(e -> showMetadataPopup(gameName));
+
+    HBox buttonBox = new HBox(5, randomizeButton, infoButton);
+    buttonBox.setAlignment(Pos.CENTER);
+
+    card.getChildren().addAll(image, nameLabel, buttonBox);
     card.setOnMouseClicked(e -> {
       myMainController.hideGameSelectorView();
       myMainController.showGamePlayerView(gameNameToFolder.get(gameName), false);
@@ -185,100 +218,92 @@ public class GameSelectorView {
     return card;
   }
 
-  private Image getImage(String gameName) {
+  private void showMetadataPopup(String gameName) {
     GameConfigRecord config = gameConfigRecords.stream()
         .filter(g -> g.metadata().gameTitle().equals(gameName))
         .findFirst()
         .orElse(null);
-    String folderName = gameNameToFolder.get(gameName);
 
-    Image image;
-    if (config != null && config.metadata().image() != null) {
-      try {
-        image = new Image(
-            new FileInputStream(gamesFolderPath + folderName + "/" + config.metadata().image()));
-
-      } catch (Exception e) {
-        LoggingManager.LOGGER.warn(
-            "Could not load image for " + gameName + ", using placeholder.");
-        image = new Image(Objects.requireNonNull(
-            getClass().getResourceAsStream("/assets/images/placeholder.png")));
-      }
-    } else {
-      image = new Image(
-          Objects.requireNonNull(getClass().getResourceAsStream("/assets/images/placeholder.png")));
+    if (config == null) {
+      showErrorDialog("Error", "Game configuration not found.");
+      return;
     }
 
-    return image;
+    Alert infoDialog = new Alert(AlertType.INFORMATION);
+    infoDialog.setTitle("Game Info");
+    infoDialog.setHeaderText(gameName);
+    infoDialog.setContentText(String.format(
+        "Author: %s%nDescription: %s",
+        config.metadata().author(),
+        config.metadata().gameDescription()
+    ));
+    infoDialog.showAndWait();
   }
 
-  private List<GameConfigRecord> getAllGameConfigs() {
-    List<String> folderNames = FileUtility.getFolderNamesInDirectory(gamesFolderPath);
-    List<GameConfigRecord> gameConfigs = new ArrayList<>();
-    for (String folderName : folderNames) {
+
+
+  private List<GameConfigRecord> loadGameConfigs() {
+    List<String> folderNames = FileUtility.getFolderNamesInDirectory(GAMES_FOLDER_PATH);
+    List<GameConfigRecord> configs = new ArrayList<>();
+
+    for (String folder : folderNames) {
       try {
         GameConfigRecord config = configParser.loadGameConfig(
-            gamesFolderPath + folderName + "/gameConfig.json");
-        gameConfigs.add(config);
-        gameNameToFolder.put(config.metadata().gameTitle(), folderName);
+            GAMES_FOLDER_PATH + folder + "/gameConfig.json");
+        configs.add(config);
+        gameNameToFolder.put(config.metadata().gameTitle(), folder);
       } catch (ConfigException e) {
-        LoggingManager.LOGGER.warn("Could not load config file " + folderName, e);
-        // this one is just a warning since if it don't have a valid game config we just don't load
+        LoggingManager.LOGGER.warn("Could not load config: " + folder, e);
       }
     }
-
-    return gameConfigs;
+    return configs;
   }
 
-  private VBox createFileUploadSection() {
-    // This method is adapted from file upload code by Will He in the Cell Society project.
-    uploadButton = new Button("Upload");
-    uploadButton.getStyleClass().add(smallButtonString);
-    startButton = new Button("Start");
-    startButton.getStyleClass().add(smallButtonString);
-    startButton.setDisable(true);
-    fileLabel = new Label("No file selected");
+  private Image getGameImage(String gameName) {
+    GameConfigRecord config = gameConfigRecords.stream()
+        .filter(g -> g.metadata().gameTitle().equals(gameName))
+        .findFirst()
+        .orElse(null);
 
-    uploadButton.setOnAction(e -> handleFileUpload(fileChooser, fileLabel, startButton));
-    startButton.setOnAction(e -> {
-      String filePath = fileLabel.getText();
-      try {
-        GameConfigRecord config = configParser.loadGameConfig(filePath);
-        String gameName = config.metadata().gameTitle();
-        myMainController.hideGameSelectorView();
-        myMainController.showGamePlayerView(gameNameToFolder.get(gameName), false);
-      } catch (Exception ex) {
-        LoggingManager.LOGGER.error("Exception: {}", ex.getMessage());
-        showErrorDialog("Exception", ex.getMessage()); // use languageController later
+    String folderName = gameNameToFolder.get(gameName);
+    try {
+      if (config != null && config.metadata().image() != null) {
+        return new Image(
+            new FileInputStream(GAMES_FOLDER_PATH + folderName + "/" + config.metadata().image()));
       }
-    });
-
-    VBox fileUploadSection = new VBox(10, uploadButton, fileLabel, startButton);
-    fileUploadSection.setAlignment(Pos.CENTER);
-    VBox.setMargin(fileUploadSection, new Insets(30, 0, 0, 0));
-    return fileUploadSection;
+    } catch (Exception e) {
+      LoggingManager.LOGGER.warn("Failed to load image for: " + gameName);
+    }
+    return new Image(
+        Objects.requireNonNull(getClass().getResourceAsStream("/assets/images/placeholder.png")));
   }
 
-  private void handleFileUpload(FileChooser fileChooser, Label label, Button startButton) {
-    // This method is adapted from file upload code by Will He in the Cell Society project.
-    fileChooser.setTitle("Open File"); // use languageController later
-    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
-
+  private void handleFileUpload() {
     File selectedFile = fileChooser.showOpenDialog(null);
     if (selectedFile != null) {
       String relativePath = getRelativePath(selectedFile, "data");
       if (relativePath != null) {
         fileLabel.setText(relativePath);
         startButton.setDisable(false);
-      }
-      else {
-        fileLabel.setText("Invalid file"); // use languageController later
+      } else {
+        fileLabel.setText("Invalid file");
       }
     }
   }
 
+  private void startGameFromUpload() {
+    try {
+      GameConfigRecord config = configParser.loadGameConfig(fileLabel.getText());
+      String gameName = config.metadata().gameTitle();
+      myMainController.hideGameSelectorView();
+      myMainController.showGamePlayerView(gameNameToFolder.get(gameName), false);
+    } catch (Exception e) {
+      LoggingManager.LOGGER.error("Exception: {}", e.getMessage());
+      showErrorDialog("Error", e.getMessage());
+    }
+  }
+
   private String getRelativePath(File file, String baseFolder) {
-    // This method is adapted from file upload code by Will He in the Cell Society project.
     File baseDir = new File(System.getProperty("user.dir"), baseFolder);
     String absolutePath = file.getAbsolutePath();
     String basePath = baseDir.getAbsolutePath();
@@ -290,19 +315,11 @@ public class GameSelectorView {
   }
 
   private void showErrorDialog(String title, String message) {
-    // This method is adapted from file upload code by Will He in the Cell Society project.
     Alert alert = new Alert(AlertType.ERROR);
     alert.setTitle(title);
     alert.setHeaderText(null);
     alert.setContentText(message);
     alert.showAndWait();
   }
-
-  /**
-   * Resets file label and disables start button.
-   */
-  public void resetUploadSection() {
-    fileLabel.setText("No file selected");
-    startButton.setDisable(true);
-  }
 }
+
