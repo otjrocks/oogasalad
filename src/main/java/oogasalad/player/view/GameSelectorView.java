@@ -183,7 +183,7 @@ public class GameSelectorView {
     return pagination;
   }
 
-  private VBox createGameCard(String gameName) {
+  VBox createGameCard(String gameName) {
     VBox card = new VBox(10);
     card.setAlignment(Pos.CENTER);
     card.getStyleClass().add("game-card");
