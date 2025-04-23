@@ -9,6 +9,7 @@ import oogasalad.engine.controller.MainController;
 import oogasalad.player.controller.GameLoopController;
 import oogasalad.player.model.GameStateInterface;
 import org.junit.jupiter.api.Test;
+import org.testfx.util.WaitForAsyncUtils;
 import util.DukeApplicationTest;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -65,11 +66,15 @@ public class GameViewTest extends DukeApplicationTest {
       simulateEndGameState(gameView, true, false);
     });
 
-    Button nextButton = lookup(b -> b instanceof Button && ((Button) b).getText().contains("Next")).queryButton();
+    WaitForAsyncUtils.waitForFxEvents();
+
+    Button nextButton = lookup("#nextLevelButton").queryButton();
     assertTrue(nextButton.isVisible());
+
     clickOn(nextButton);
     verify(mockAction).run();
   }
+
 
   @Test
   void setResetLevel_setOnAction_setResetLevel() {
@@ -79,25 +84,32 @@ public class GameViewTest extends DukeApplicationTest {
       simulateEndGameState(gameView, false, true);
     });
 
-    Button resetButton = lookup(b -> b instanceof Button && ((Button) b).getText().contains("Reset")).queryButton();
+    WaitForAsyncUtils.waitForFxEvents();
+
+    Button resetButton = lookup("#resetButton").queryButton();
     assertTrue(resetButton.isVisible());
+
     clickOn(resetButton);
     verify(mockAction).run();
   }
+
 
   @Test
   void simulateEndGameState_setOnAction_simulateEndGameState() {
     runAsJFXAction(() -> simulateEndGameState(gameView, true, false));
 
-    Label label = lookup(l -> l instanceof Label && !((Label) l).getText().isEmpty()).query();
+    WaitForAsyncUtils.waitForFxEvents();
+
+    Label label = lookup("#endLabel").query();
     assertTrue(label.isVisible());
 
-    Button nextButton = lookup(b -> b instanceof Button && ((Button) b).getText().contains("Next Level")).queryButton();
+    Button nextButton = lookup("#nextLevelButton").queryButton();
     assertTrue(nextButton.isVisible());
 
-    Button resetButton = lookup(b -> b instanceof Button && ((Button) b).getText().contains("Reset Game")).queryButton();
+    Button resetButton = lookup("#resetButton").queryButton();
     assertFalse(resetButton.isVisible());
   }
+
 
   // with help from chatGPT
   @Test
