@@ -23,7 +23,6 @@ import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigReco
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
 import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LanguageManager;
-import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.model.strategies.control.ControlManager;
 
 /**

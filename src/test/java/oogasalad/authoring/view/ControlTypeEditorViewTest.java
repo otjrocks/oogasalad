@@ -4,9 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
 import java.util.concurrent.TimeoutException;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.TextInputControl;
 import javafx.stage.Stage;
+import oogasalad.engine.records.config.model.controlConfig.ConditionalControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
@@ -20,7 +22,6 @@ class ControlTypeEditorViewTest extends DukeApplicationTest {
 
   private ControlTypeEditorView controlTypeEditorView;
   private ControlConfigInterface controlType;
-
 
   public void start(Stage stage) {
     controlTypeEditorView = new ControlTypeEditorView();
@@ -85,6 +86,27 @@ class ControlTypeEditorViewTest extends DukeApplicationTest {
 
     // Assert throw error due to invalid input
     assertThrows(IllegalStateException.class, () -> controlTypeEditorView.getControlConfig());
+  }
+
+  @Test
+  void populateControlConfig_PopulateViewFromConfigRecord_Success() {
+    controlType = new TargetControlConfigRecord("Bfs", new TargetEntityConfigRecord("test"));
+    // Use Platform.runLater to ensure the UI manipulation happens on the FX application thread
+    // Asked ChatGPT for debugging this.
+    Platform.runLater(() -> controlTypeEditorView.populateControlConfigUI(controlType));
+    waitForFxEvents();
+    assertEquals(controlType, controlTypeEditorView.getControlConfig());
+  }
+
+  @Test
+  void populateControlConfig_PopulateViewFromConditionalConfigRecord_Success() {
+    controlType = new ConditionalControlConfigRecord(5, "Bfs", "Random",
+        new TargetEntityConfigRecord("test"));
+    // Use Platform.runLater to ensure the UI manipulation happens on the FX application thread
+    // Asked ChatGPT for debugging this.
+    Platform.runLater(() -> controlTypeEditorView.populateControlConfigUI(controlType));
+    waitForFxEvents();
+    assertEquals(controlType, controlTypeEditorView.getControlConfig());
   }
 
 }
