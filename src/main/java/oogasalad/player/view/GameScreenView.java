@@ -34,14 +34,29 @@ public class GameScreenView {
    * @param randomized     if levels should be randomized
    */
   public GameScreenView(MainController controller, GameStateInterface gameState,
-      String gameFolderName, boolean randomized) {
+                        String gameFolderName, boolean randomized) {
+    this(controller, gameState, gameFolderName, randomized, null);
+  }
+
+  /**
+   * Create a game screen view.
+   *
+   * @param controller     The main controller for the player view.
+   * @param gameState      The game state object for this current game.
+   * @param gameFolderName name of game folder to create
+   * @param randomized     if levels should be randomized
+   * @param baseFolderPath  The base folder path for the game resources, overrides the default path useful for tests
+   */
+  public GameScreenView(MainController controller, GameStateInterface gameState,
+      String gameFolderName, boolean randomized, String baseFolderPath) {
     super();
     myRoot = new VBox();
     this.gameState = gameState;
     this.mainController = controller;
 
-    GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState, gameFolderName,
-        randomized);
+    GamePlayerView gamePlayerView = (baseFolderPath == null)
+        ? new GamePlayerView(controller, gameState, gameFolderName, randomized)
+        : new GamePlayerView(controller, gameState, gameFolderName, randomized, baseFolderPath);
     GameView gameView = gamePlayerView.getGameView();
 
     hudView = new HudView(
@@ -65,6 +80,8 @@ public class GameScreenView {
     hudUpdater.setCycleCount(Timeline.INDEFINITE);
     hudUpdater.play();
   }
+
+
 
   /**
    * Get the root VBox for this view.

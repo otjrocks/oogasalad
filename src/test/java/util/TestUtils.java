@@ -2,7 +2,12 @@ package util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.InputStream;
 import javafx.scene.text.Text;
+import oogasalad.engine.config.JsonConfigParser;
+import oogasalad.engine.records.config.ConfigModelRecord;
+import org.apache.logging.log4j.core.config.json.JsonConfiguration;
 
 /**
  * Static helper methods for common testing tasks
@@ -20,6 +25,12 @@ public class TestUtils extends DukeApplicationTest {
   public void verifyText(String fxId, String message) {
     Text textNode = lookup(fxId).queryAs(Text.class);
     assertEquals(message, textNode.getText());
+  }
+
+  public static ConfigModelRecord loadMockConfig(String pathToJson) throws Exception {
+    String actualPath = TestUtils.class.getClassLoader().getResource(pathToJson).getPath();
+    JsonConfigParser configParser = new JsonConfigParser();
+    return configParser.loadFromFile(actualPath);
   }
 
 }
