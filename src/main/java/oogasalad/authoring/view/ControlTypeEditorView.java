@@ -55,6 +55,7 @@ public class ControlTypeEditorView {
     controlTypeBox.getItems().addAll(ControlManager.getControlStrategies());
     controlTypeBox.setValue("None");
     controlTypeBox.setOnAction(e -> updateControlParameterFields());
+    controlTypeBox.setId("control-type-selector");
 
     controlTypeParameters = new VBox(ELEMENT_SPACING);
     controlTypeParameters.setPrefSize(400, 200);
@@ -136,13 +137,7 @@ public class ControlTypeEditorView {
   private int extractConstructorArgument(List<Object> constructorArgs, int textFieldIndex,
       Class<?> type) {
     String input = controlTypeParameterFields.get(textFieldIndex++).getText();
-    try {
-      constructorArgs.add(FileUtility.castInputToCorrectType(input, type));
-    } catch (ViewException e) {
-      showError("Unable to cast " + input + " to " + type);
-      LoggingManager.LOGGER.warn(
-          "Unable to cast control type parameter: {} to required type {}", input, type);
-    }
+    constructorArgs.add(FileUtility.castInputToCorrectType(input, type));
     return textFieldIndex;
   }
 
@@ -248,6 +243,7 @@ public class ControlTypeEditorView {
   private Node createPathFindingStrategyNode(Label parameterLabel, String parameter) {
     ComboBox<String> pathStrategyBox = new ComboBox<>();
     pathStrategyBox.getItems().addAll(ControlManager.getPathFindingStrategies());
+    pathStrategyBox.setId("path-finding-combo");
     controlTypeComboBoxes.put(parameter, pathStrategyBox);
 
     VBox container = new VBox(ELEMENT_SPACING);
@@ -259,6 +255,7 @@ public class ControlTypeEditorView {
   private Node createTargetCalculationConfigNode(Label parameterLabel, String parameter) {
     ComboBox<String> targetStrategyDropdown = new ComboBox<>();
     targetStrategyDropdown.getItems().addAll(ControlManager.getTargetCalculationStrategies());
+    targetStrategyDropdown.setId("target-calculation-combo");
     controlTypeComboBoxes.put(parameter, targetStrategyDropdown);
 
     VBox targetParameterBox = new VBox(5);
@@ -334,6 +331,7 @@ public class ControlTypeEditorView {
       for (String targetParam : targetParams) {
         Label targetParamLabel = new Label(targetParam + ": ");
         TextField targetParamField = new TextField();
+        targetParamField.setId("field-" + targetParam);
         targetStrategyParameterFields.add(targetParamField);
         targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
       }
