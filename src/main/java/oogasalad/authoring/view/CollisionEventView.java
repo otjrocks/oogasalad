@@ -104,14 +104,12 @@ public class CollisionEventView {
     for (String parameter : getCollisionRequiredFields(mySelector.getValue()).keySet()) {
       Label parameterLabel = new Label(parameter + ": ");
       TextField parameterField = new TextField();
-
+      parameterField.setId("parameter-" + parameter);
       VBox fieldGroup = new VBox(4); // small gap between label and text field
       fieldGroup.getChildren().addAll(parameterLabel, parameterField);
-
       parameterBox.getChildren().add(fieldGroup);
       myParameterFields.add(parameterField);
     }
-
     myParameters.getChildren().add(parameterBox);
   }
 
