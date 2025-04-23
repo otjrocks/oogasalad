@@ -2,6 +2,7 @@ package oogasalad.player.view;
 
 import static oogasalad.engine.utility.constants.GameConfig.WIDTH;
 
+import java.io.IOException;
 import javafx.scene.layout.StackPane;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
@@ -12,6 +13,7 @@ import oogasalad.engine.records.config.model.SaveConfigRecord;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.controller.LevelController;
 import oogasalad.player.model.GameStateInterface;
+import oogasalad.player.model.save.GameSessionManager;
 
 /**
  * The view that displays only the game grid.
@@ -29,9 +31,10 @@ public class GamePlayerView {
   private final MainController myMainController;
   private final GameStateInterface myGameState;
   private final boolean isRandomized;
+
   private GameView myGameView;
   private ConfigModelRecord myConfigModel = null;
-  private SaveConfigRecord mySaveConfig;
+  private GameSessionManager sessionManager;
 
   /**
    * Create the Game Player View.
@@ -45,8 +48,9 @@ public class GamePlayerView {
     myMainController = controller;
     myGameState = gameState;
     isRandomized = randomized;
-
     this.gameFolderName = gameFolderName;
+
+    this.sessionManager = new GameSessionManager(gameFolderName, gameFolderName);
 
     myPane.setPrefWidth(WIDTH);
     myPane.getStyleClass().add("game-player-view");
@@ -63,11 +67,44 @@ public class GamePlayerView {
     return myPane;
   }
 
+  private void initializeGame() {
+    loadConfigFromFile();
+    loadOrCreateSession();
+    updateGameStateFromSession();
+    loadGameViewFromSession();
+  }
+
+  private void loadOrCreateSession() {
+    try {
+      sessionManager.loadExistingSession();
+    } catch (IOException e) {
+      sessionManager.startNewSession(myConfigModel);
+    }
+  }
+
+  private void updateGameStateFromSession() {
+    myGameState.resetState();
+    myGameState.updateLives(sessionManager.getLives());
+    myGameState.updateScore(sessionManager.getCurrentScore());
+  }
+
+
   private void createMap() {
     loadConfigFromFile();
-    loadGameViewFromConfig();
-    myPane.getChildren().add(myGameView.getRoot());
-    updateGameStateFromConfigurationFile();
+    try {
+      sessionManager.loadExistingSession();
+    } catch (IOException e) {
+      sessionManager.startNewSession(myConfigModel);
+    }
+    loadGameViewFromSession();
+    updateGameStateFromSave();
+  }
+
+
+  private void updateGameStateFromSave() {
+    myGameState.resetState();
+    myGameState.updateLives(sessionManager.getLives());
+    myGameState.updateScore(sessionManager.getCurrentScore());
   }
 
   private void updateGameStateFromConfigurationFile() {
@@ -79,46 +116,57 @@ public class GamePlayerView {
   private void loadConfigFromFile() {
     JsonConfigParser configParser = new JsonConfigParser();
     try {
-      myConfigModel = configParser.loadFromFile(
-          GAME_FOLDER + gameFolderName + "/" + GAME_CONFIG_JSON);
+      myConfigModel = configParser.loadFromFile(GAME_FOLDER + gameFolderName + "/" + GAME_CONFIG_JSON);
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to reload updated config", e);
     }
   }
 
-  private void loadGameViewFromConfig() {
+  private void loadGameViewFromSession() {
     LevelController levelController = new LevelController(myMainController, myConfigModel,
-        isRandomized);
+        isRandomized, sessionManager);
+
     if (levelController.getCurrentLevelMap() != null) {
       myGameView = new GameView(
           new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
-          myConfigModel, levelController.getCurrentLevelIndex());
+          myConfigModel, levelController.getCurrentLevelIndex()
+      );
 
-      myGameView.setNextLevelAction(() -> loadNextLevel(levelController));
-      myGameView.setResetAction(() -> resetGame(levelController));
-    }
-  }
+      myGameView.setNextLevelAction(() -> handleNextLevel(levelController));
+      myGameView.setResetAction(() -> handleResetGame(levelController));
 
-  private void resetGame(LevelController levelController) {
-    myPane.getChildren().clear();
-    myGameState.resetTimeElapsed();
-    levelController.resetAndUpdateConfig();
-    loadConfigFromFile();
-    updateGameStateFromConfigurationFile();
-    loadGameViewFromConfig();
-    myPane.getChildren().add(myGameView.getRoot());
-  }
-
-  private void loadNextLevel(LevelController levelController) {
-    if (levelController.hasNextLevel()) {
-      levelController.incrementAndUpdateConfig();
-      myPane.getChildren().clear();
-      loadConfigFromFile();
-      loadGameViewFromConfig();
       myPane.getChildren().add(myGameView.getRoot());
-    } else {
-      LoggingManager.LOGGER.info("No more levels to load.");
     }
+  }
+
+  private void handleNextLevel(LevelController levelController) {
+    if (levelController.hasNextLevel()) {
+      sessionManager.advanceLevel(myGameState.getScore());
+
+      try {
+        sessionManager.loadExistingSession();
+      } catch (IOException e) {
+        LoggingManager.LOGGER.warn("Failed to reload session after level advance", e);
+      }
+
+      refreshGame(levelController);
+    } else {
+      LoggingManager.LOGGER.info("All levels complete — cannot advance further.");
+    }
+  }
+
+
+  private void handleResetGame(LevelController levelController) {
+    myGameState.resetTimeElapsed();
+    sessionManager.resetSession(myConfigModel);
+    refreshGame(levelController);
+  }
+
+  private void refreshGame(LevelController levelController) {
+    myPane.getChildren().clear();
+    loadConfigFromFile(); // optionally reload fresh config
+    updateGameStateFromSession();
+    loadGameViewFromSession();
   }
 
   /**

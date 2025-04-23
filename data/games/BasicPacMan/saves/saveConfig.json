@@ -17,6 +17,9 @@
     "lives": {
       "type": "integer"
     },
+    "totalScore": {
+      "type": "integer"
+    },
     "highScore": {
       "type": "integer"
     },
@@ -30,6 +33,7 @@
   "required": [
     "saveName",
     "currentLevel",
+    "totalScore",
     "lives",
     "highScore"
   ]

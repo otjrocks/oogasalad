@@ -9,8 +9,8 @@ import oogasalad.engine.records.config.model.SaveConfigRecord;
 import oogasalad.engine.records.model.GameSettingsRecord;
 
 /**
- * Implementation of the GameState interface. This class manages the player's score, lives, and HUD
- * components. It also provides functionality for saving and loading game states.
+ * Implementation of the GameState interface. This class manages the player's score, lives,
+ * and HUD components. It also provides functionality for saving and loading game states.
  *
  * @author Troy Ludwig
  */
@@ -22,22 +22,16 @@ public class GameState implements GameStateInterface {
   private final int initialScore;
   private double timeElapsed = 0;
   private int currentLevel;
-  private List<Double> scoresPerLevel;
+  private List<Integer> levelOrder;
   private final static String SAVE_FOLDER = "data/saves/";
 
-  /**
-   * Creates game state representation (for HUD elements) based on a number of initial lives
-   *
-   * @param gameSettings: Values from game settings in the game config file
-   */
   public GameState(GameSettingsRecord gameSettings) {
     this.startingLives = gameSettings.startingLives();
     this.initialScore = gameSettings.initialScore();
     this.score = initialScore;
     this.lives = startingLives;
-    this.timeElapsed = 0;
     this.currentLevel = 0;
-    this.scoresPerLevel = new ArrayList<>();
+    this.levelOrder = generateDefaultLevelOrder(); // You may want to replace this
   }
 
   @Override
@@ -62,8 +56,9 @@ public class GameState implements GameStateInterface {
 
   @Override
   public void resetState() {
-    this.score = 0;
-    this.lives = 0;
+    this.score = initialScore;
+    this.lives = startingLives;
+    this.timeElapsed = 0;
   }
 
   @Override
@@ -86,10 +81,10 @@ public class GameState implements GameStateInterface {
     SaveConfigRecord saveConfig = new SaveConfigRecord(
         saveName,
         currentLevel,
-        scoresPerLevel,
-        lives,
         score,
-        generateDefaultLevelOrder() // if you want
+        lives,
+        score, // highScore = totalScore
+        levelOrder
     );
 
     try {
@@ -111,9 +106,9 @@ public class GameState implements GameStateInterface {
       );
 
       this.currentLevel = saveConfig.currentLevel();
-      this.scoresPerLevel = saveConfig.scores();
+      this.score = saveConfig.totalScore();
       this.lives = saveConfig.lives();
-      this.score = saveConfig.highScore();
+      this.levelOrder = saveConfig.levelOrder();
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -123,13 +118,13 @@ public class GameState implements GameStateInterface {
   @Override
   public void resetGameProgress() {
     this.currentLevel = 0;
-    this.score = 0;
-    this.lives = 3;
-    this.scoresPerLevel = new ArrayList<>();
+    this.score = initialScore;
+    this.lives = startingLives;
+    this.timeElapsed = 0;
+    this.levelOrder = generateDefaultLevelOrder();
   }
 
   private List<Integer> generateDefaultLevelOrder() {
-    // placeholder, you can improve this
     List<Integer> levels = new ArrayList<>();
     for (int i = 0; i < 10; i++) {
       levels.add(i);
@@ -137,4 +132,3 @@ public class GameState implements GameStateInterface {
     return levels;
   }
 }
-

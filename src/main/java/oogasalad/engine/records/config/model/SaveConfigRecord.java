@@ -8,7 +8,7 @@ import java.util.List;
 public record SaveConfigRecord(
     String saveName,
     int currentLevel,
-    List<Double> scores,
+    int totalScore,
     int lives,
     int highScore,
     List<Integer> levelOrder) {}
