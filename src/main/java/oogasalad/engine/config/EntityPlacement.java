@@ -187,7 +187,7 @@ public class EntityPlacement {
   }
 
   /**
-   * Get tile x coord
+   * Get tile x coordinate.
    *
    * @return x coord
    */
@@ -196,27 +196,27 @@ public class EntityPlacement {
   }
 
   /**
-   * Set tile x coord
+   * Set tile x coordinate.
    *
-   * @param initialTileX x coord
+   * @param initialTileX x coord.
    */
   public void setInitialTileX(int initialTileX) {
     this.initialTileX = initialTileX;
   }
 
   /**
-   * Get tile y coord
+   * Get tile y coord.
    *
-   * @return y coord
+   * @return y coord.
    */
   public int getInitialTileY() {
     return initialTileY;
   }
 
   /**
-   * Set tile y coord
+   * Set tile y coord.
    *
-   * @param initialTileY y coord
+   * @param initialTileY y coord.
    */
   public void setInitialTileY(int initialTileY) {
     this.initialTileY = initialTileY;
@@ -251,7 +251,7 @@ public class EntityPlacement {
   }
 
   /**
-   * Returns the width of the entity's associated image in pixels
+   * Returns the width of the entity's associated image in pixels.
    */
   public int getEntityImageWidth() {
     return this.getType()
