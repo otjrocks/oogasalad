@@ -61,4 +61,24 @@ public interface GameStateInterface {
    * HUD.
    */
   void resetState();
+
+  /**
+   * Saves the current game progress to a file.
+   *
+   * @param saveName the name of the save file.
+   */
+  void saveGameProgress(String saveName);
+
+  /**
+   * Loads game progress from a save file.
+   *
+   * @param saveName the name of the save file.
+   */
+  void loadGameProgress(String saveName);
+
+  /**
+   * Resets game progress to the default initial state.
+   */
+  void resetGameProgress();
+
 }
