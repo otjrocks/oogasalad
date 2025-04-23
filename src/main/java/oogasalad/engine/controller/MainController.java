@@ -9,6 +9,7 @@ import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.view.SplashScreenView;
 import oogasalad.player.controller.GameInputManager;
 import oogasalad.player.model.GameState;
+import oogasalad.player.model.api.GameStateFactory;
 import oogasalad.player.view.GameScreenView;
 import oogasalad.player.view.GameSelectorView;
 
@@ -96,8 +97,8 @@ public class MainController {
    * @param randomized     if levels should be randomized
    */
   public void showGamePlayerView(String gameFolderName, boolean randomized) {
-    GameScreenView myGameScreenView = new GameScreenView(this, new GameState(3), gameFolderName,
-        randomized);
+    GameState myGameState = GameStateFactory.createFromConfig("data/games/" + gameFolderName);
+    GameScreenView myGameScreenView = new GameScreenView(this, myGameState, gameFolderName, randomized);
     myInputManager.getRoot().getChildren().add(myGameScreenView.getRoot());
   }
 

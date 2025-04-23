@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import oogasalad.engine.records.config.model.SaveConfigRecord;
+import oogasalad.engine.records.model.GameSettingsRecord;
 
 /**
  * Implementation of the GameState interface. This class manages the player's score, lives, and HUD
@@ -17,6 +18,8 @@ public class GameState implements GameStateInterface {
 
   private int score;
   private int lives;
+  private final int startingLives;
+  private final int initialScore;
   private double timeElapsed = 0;
   private int currentLevel;
   private List<Double> scoresPerLevel;
@@ -25,11 +28,14 @@ public class GameState implements GameStateInterface {
   /**
    * Creates game state representation (for HUD elements) based on a number of initial lives
    *
-   * @param initialLives: Number of lives we want the player to start with
+   * @param gameSettings: Values from game settings in the game config file
    */
-  public GameState(int initialLives) {
-    this.score = 0;
-    this.lives = initialLives;
+  public GameState(GameSettingsRecord gameSettings) {
+    this.startingLives = gameSettings.startingLives();
+    this.initialScore = gameSettings.initialScore();
+    this.score = initialScore;
+    this.lives = startingLives;
+    this.timeElapsed = 0;
     this.currentLevel = 0;
     this.scoresPerLevel = new ArrayList<>();
   }
