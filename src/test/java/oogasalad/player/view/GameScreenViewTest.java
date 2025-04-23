@@ -1,77 +1,128 @@
-//package oogasalad.player.view;
-//
-//import javafx.application.Platform;
-//import javafx.embed.swing.JFXPanel;
-//import javafx.scene.layout.VBox;
-//import oogasalad.engine.controller.MainController;
-//import oogasalad.player.model.GameStateInterface;
-//import oogasalad.player.view.GameScreenView;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.Mockito.*;
-//
-//class GameScreenViewTest {
-//
-//  private MainController mockMainController;
-//  private GameStateInterface mockGameState;
-//
-//  private GameScreenView gameScreenView;
-//
-//  // JavaFX init
-//  static {
-//    new JFXPanel(); // Initializes JavaFX Toolkit
-//  }
-//
-//  @BeforeEach
-//  void setup() {
-//    mockMainController = mock(MainController.class);
-//    mockGameState = mock(GameStateInterface.class);
-//
-//    when(mockGameState.getScore()).thenReturn(100);
-//    when(mockGameState.getLives()).thenReturn(3);
-//
-//    // UI creation must run on JavaFX thread
-//    Platform.runLater(() -> {
-//      gameScreenView = new GameScreenView(mockMainController, mockGameState, "MockGame", false,
-//          "src/test/resources/");
-//    });
-//
-//    try {
-//      Thread.sleep(100); // Allow JavaFX thread to finish init
-//    } catch (InterruptedException e) {
-//      Thread.currentThread().interrupt();
-//    }
-//  }
-//
-//  @Test
-//  void testRootIsNotNullAndHasChildren() {
-//    VBox root = gameScreenView.getRoot();
-//    assertNotNull(root, "Root VBox should not be null");
-//    assertTrue(root.getChildren().size() >= 2, "Root VBox should contain HUD and GamePane");
-//  }
-//
-//  @Test
-//  void testHudUpdatesWhenScoreChanges() {
-//    Platform.runLater(() -> {
-//      // Simulate a score change
-//      when(mockGameState.getScore()).thenReturn(200);
-//
-//      // Manually trigger HUD update check
-//      gameScreenView.getRoot().requestLayout(); // optional for visuals
-//    });
-//
-//    // Wait a bit for the JavaFX thread to process
-//    try {
-//      Thread.sleep(150);
-//    } catch (InterruptedException e) {
-//      Thread.currentThread().interrupt();
-//    }
-//
-//    // No direct HUD assertion unless you expose the HudView or use a spy
-//    // To properly test `hudView.update()`, you may need to spy on HudView or expose it for testing
-//    // This test is mostly structural unless internals are refactored
-//  }
-//}
-//
+package oogasalad.player.view;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.layout.VBox;
+import oogasalad.engine.controller.MainController;
+import oogasalad.player.controller.GameInputManager;
+import oogasalad.player.model.GameStateInterface;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class GameScreenViewTest {
+
+  private MainController mockMainController;
+  private GameStateInterface mockGameState;
+  private GameScreenView gameScreenView;
+
+  // Static init for JavaFX
+  static {
+    new JFXPanel(); // Initializes JavaFX Toolkit
+  }
+
+  // wrote latch with chatGPT help
+  @BeforeEach
+  void setup() throws Exception {
+    mockMainController = mock(MainController.class);
+    mockGameState = mock(GameStateInterface.class);
+
+    when(mockGameState.getScore()).thenReturn(100);
+    when(mockGameState.getLives()).thenReturn(3);
+
+    CountDownLatch latch = new CountDownLatch(1);
+
+    Platform.runLater(() -> {
+      gameScreenView = new GameScreenView(
+          mockMainController,
+          mockGameState,
+          "MockGame",
+          false,
+          "src/test/resources/"
+      );
+      latch.countDown(); // signal that init is complete
+    });
+
+    // Wait up to 2 seconds for JavaFX thread to finish setup
+    if (!latch.await(2, TimeUnit.SECONDS)) {
+      fail("Timed out waiting for JavaFX thread");
+    }
+  }
+
+  @Test
+  void testRootIsNotNullAndHasExpectedStyle() {
+    VBox root = gameScreenView.getRoot();
+    assertNotNull(root, "Root VBox should not be null");
+    assertTrue(root.getStyleClass().contains("game-screen-view"),
+        "Root should have correct CSS class");
+    assertTrue(root.getChildren().size() >= 2, "Root should contain HudView and GamePane");
+  }
+
+  // chatGpt'd
+  @Test
+  void checkAndUpdateHud_callbackInHub_updateScoreAndLives() {
+    Platform.runLater(() -> {
+      when(mockGameState.getScore()).thenReturn(150);
+      when(mockGameState.getLives()).thenReturn(2);
+    });
+
+    try {
+      Thread.sleep(300);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
+  }
+
+  @Test
+  void handleReturnToMainMenu_callbackInHub_showsSplashScreen() throws Exception {
+    Group mockRoot = mock(Group.class);
+    ObservableList<Node> mockChildren = FXCollections.observableArrayList();
+    when(mockRoot.getChildren()).thenReturn(mockChildren);
+
+    GameInputManager mockInputManager = mock(GameInputManager.class);
+    when(mockInputManager.getRoot()).thenReturn(mockRoot);
+
+    MainController mockMainController = mock(MainController.class);
+    when(mockMainController.getInputManager()).thenReturn(mockInputManager);
+
+    CountDownLatch latch = new CountDownLatch(1);
+
+    Platform.runLater(() -> {
+      gameScreenView = new GameScreenView(
+          mockMainController,
+          mockGameState,
+          "MockGame",
+          false,
+          "src/test/resources/"
+      );
+
+      // Reflectively call the private method
+      try {
+        var method = GameScreenView.class.getDeclaredMethod("handleReturnToMainMenu");
+        method.setAccessible(true);
+        method.invoke(gameScreenView);
+      } catch (Exception e) {
+        fail("Reflection failed: " + e.getMessage());
+      }
+
+      latch.countDown();
+    });
+
+    if (!latch.await(2, TimeUnit.SECONDS)) {
+      fail("Timeout waiting for JavaFX to process");
+    }
+
+    verify(mockMainController).showSplashScreen();
+    assertFalse(mockRoot.getChildren().contains(gameScreenView.getRoot()));
+  }
+
+
+}
