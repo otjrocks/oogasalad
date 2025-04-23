@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "saveName": {
+      "type": "string"
+    },
+    "currentLevel": {
+      "type": "integer"
+    },
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "lives": {
+      "type": "integer"
+    },
+    "levelOrder": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "highScore": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "saveName",
+    "currentLevel",
+    "lives"
+  ]
+}

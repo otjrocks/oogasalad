@@ -1,11 +1,13 @@
 package oogasalad.engine.config;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -305,6 +307,19 @@ class JsonConfigParserTest {
     JsonConfigParser parser = new JsonConfigParser();
     assertThrows(ConfigException.class,
         () -> parser.loadEntityConfig(entityFile.getAbsolutePath()));
+  }
+
+  @Test
+  void loadGameConfig_validConfigModelRecord_assertDoesNotThrow() {
+    URL resourceUrl = getClass().getClassLoader().getResource("BasicPacMan/gameConfig.json");
+    JsonConfigParser parser = new JsonConfigParser();
+    assertDoesNotThrow(() -> parser.loadFromFile(resourceUrl.getPath().toString()));
+  }
+
+  @Test
+  void loadGameConfig_invalidFilePath_ThrowConfigException() {
+    JsonConfigParser parser = new JsonConfigParser();
+    assertThrows(ConfigException.class, () -> parser.loadFromFile("invalid.json"));
   }
 
 }
