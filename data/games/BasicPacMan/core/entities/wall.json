@@ -7,8 +7,7 @@
       "BlueGhost",
       "PinkGhost",
       "OrangeGhost"
-    ],
-    "movementSpeed": 1.0
+    ]
   },
   "modes": [
     {
@@ -22,7 +21,8 @@
       },
       "controlConfig": {
         "controlStrategy": "None"
-      }
+      },
+      "movementSpeed": 0
     }
   ]
 }

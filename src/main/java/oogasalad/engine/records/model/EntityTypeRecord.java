@@ -14,8 +14,7 @@ import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterfac
 public record EntityTypeRecord(
     String type,
     Map<String, ModeConfigRecord> modes,
-    List<String> blocks,
-    double speed
+    List<String> blocks
 ) {
 
 }

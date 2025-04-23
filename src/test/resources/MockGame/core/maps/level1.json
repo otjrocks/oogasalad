@@ -1,0 +1,38 @@
+{
+  "entityMappings": [
+    {
+      "entity": "wall",
+      "id": 1
+    }
+  ],
+  "mapInfo": {
+    "width": 3,
+    "height": 3
+  },
+  "layout": [
+    "1 1 1",
+    "1 1 1",
+    "1 1 1"
+  ],
+  "spawnEvents": [
+    {
+      "entityType": "1",
+      "spawnCondition": {
+        "type": "ScoreBased",
+        "parameters": {
+          "amount": 700
+        }
+      },
+      "x": 13.5,
+      "y": 17,
+      "mode": "Default",
+      "despawnCondition": {
+        "type": "ScoreBased",
+        "parameters": {
+          "amount": 1500
+        }
+      }
+    }
+  ],
+  "modeChangeEvents": []
+}

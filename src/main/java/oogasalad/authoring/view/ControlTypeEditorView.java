@@ -3,6 +3,7 @@ package oogasalad.authoring.view;
 import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import javafx.scene.layout.VBox;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
+import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.player.model.strategies.control.ControlManager;
 
@@ -52,6 +54,7 @@ public class ControlTypeEditorView {
     controlTypeBox.getItems().addAll(ControlManager.getControlStrategies());
     controlTypeBox.setValue("None");
     controlTypeBox.setOnAction(e -> updateControlParameterFields());
+    controlTypeBox.setId("control-type-selector");
 
     controlTypeParameters = new VBox(ELEMENT_SPACING);
     controlTypeParameters.setPrefSize(400, 200);
@@ -92,38 +95,61 @@ public class ControlTypeEditorView {
     String controlType = controlTypeBox.getValue();
     Map<String, Class<?>> requiredFieldTypes = ControlManager.getControlRequiredFields(controlType);
     List<String> requiredFieldOrder = ControlManager.getControlRequiredFieldsOrder(controlType);
-
+    List<Object> constructorArgs = new ArrayList<>();
     try {
-      List<Object> constructorArgs = new ArrayList<>();
-      int textFieldIndex = 0;
-
-      for (String param : requiredFieldOrder) {
-        Class<?> type = requiredFieldTypes.get(param);
-
-        if (param.startsWith(PATH_FINDING_STRATEGY)) {
-          constructorArgs.add(controlTypeComboBoxes.get(param).getValue());
-
-        } else if (param.startsWith(TARGET_CALCULATION_CONFIG)) {
-          constructorArgs.add(buildTargetStrategyFromUI());
-
-        } else {
-          String input = controlTypeParameterFields.get(textFieldIndex++).getText();
-          constructorArgs.add(castToRequiredType(input, type));
-        }
-      }
-
-      String fullClassName =
-          "oogasalad.engine.records.config.model.controlConfig." + controlType
-              + "ControlConfigRecord";
-      Class<?> configClass = Class.forName(fullClassName);
-      Constructor<?> constructor = configClass.getDeclaredConstructors()[0];
-
-      return (ControlConfigInterface) constructor.newInstance(constructorArgs.toArray());
+      getConstructorArguments(requiredFieldOrder, requiredFieldTypes, constructorArgs);
+      return getControlConfigInterface(controlType, constructorArgs);
 
     } catch (Exception e) {
       showError("Error building control config: " + e.getMessage());
       throw new ViewException("Error building control config: ", e);
     }
+  }
+
+  private void getConstructorArguments(List<String> requiredFieldOrder,
+      Map<String, Class<?>> requiredFieldTypes,
+      List<Object> constructorArgs) {
+    int textFieldIndex = 0;
+
+    for (String param : requiredFieldOrder) {
+      textFieldIndex = extractAllConstructorArguments(requiredFieldTypes, constructorArgs, param,
+          textFieldIndex);
+    }
+  }
+
+  private int extractAllConstructorArguments(Map<String, Class<?>> requiredFieldTypes,
+      List<Object> constructorArgs, String param, int textFieldIndex) {
+    Class<?> type = requiredFieldTypes.get(param);
+
+    if (param.startsWith(PATH_FINDING_STRATEGY)) {
+      constructorArgs.add(controlTypeComboBoxes.get(param).getValue());
+
+    } else if (param.startsWith(TARGET_CALCULATION_CONFIG)) {
+      constructorArgs.add(buildTargetStrategyFromUI());
+
+    } else {
+      textFieldIndex = extractConstructorArgument(constructorArgs, textFieldIndex, type);
+    }
+    return textFieldIndex;
+  }
+
+  private int extractConstructorArgument(List<Object> constructorArgs, int textFieldIndex,
+      Class<?> type) {
+    String input = controlTypeParameterFields.get(textFieldIndex++).getText();
+    constructorArgs.add(FileUtility.castInputToCorrectType(input, type));
+    return textFieldIndex;
+  }
+
+  private static ControlConfigInterface getControlConfigInterface(String controlType,
+      List<Object> constructorArgs)
+      throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    String fullClassName =
+        "oogasalad.engine.records.config.model.controlConfig." + controlType
+            + "ControlConfigRecord";
+    Class<?> configClass = Class.forName(fullClassName);
+    Constructor<?> constructor = configClass.getDeclaredConstructors()[0];
+
+    return (ControlConfigInterface) constructor.newInstance(constructorArgs.toArray());
   }
 
   /**
@@ -151,7 +177,7 @@ public class ControlTypeEditorView {
         ComboBox<String> combo = new ComboBox<>();
         combo.setItems(
             FXCollections.observableArrayList(ControlManager.getPathFindingStrategies()));
-        combo.setValue(getStrategyValueFromConfig(config, field));
+        combo.setValue(getFieldValueFromConfig(config, field));
         controlTypeComboBoxes.put(field, combo);
         controlTypeParameters.getChildren().add(new VBox(label, combo));
 
@@ -164,7 +190,11 @@ public class ControlTypeEditorView {
         controlTypeComboBoxes.put(field, targetCombo);
 
         VBox targetParamsBox = new VBox(5);
-        updateTargetParameterFields(targetCombo, targetParamsBox);
+
+        TargetCalculationConfigInterface strategyConfig = getTargetStrategyFromConfig(config,
+            field);
+        updateTargetParameterFields(targetCombo, targetParamsBox, strategyConfig);
+
         targetCombo.setOnAction(e -> updateTargetParameterFields(targetCombo, targetParamsBox));
 
         controlTypeParameters.getChildren().add(new VBox(label, targetCombo, targetParamsBox));
@@ -212,6 +242,7 @@ public class ControlTypeEditorView {
   private Node createPathFindingStrategyNode(Label parameterLabel, String parameter) {
     ComboBox<String> pathStrategyBox = new ComboBox<>();
     pathStrategyBox.getItems().addAll(ControlManager.getPathFindingStrategies());
+    pathStrategyBox.setId("path-finding-combo");
     controlTypeComboBoxes.put(parameter, pathStrategyBox);
 
     VBox container = new VBox(ELEMENT_SPACING);
@@ -223,6 +254,7 @@ public class ControlTypeEditorView {
   private Node createTargetCalculationConfigNode(Label parameterLabel, String parameter) {
     ComboBox<String> targetStrategyDropdown = new ComboBox<>();
     targetStrategyDropdown.getItems().addAll(ControlManager.getTargetCalculationStrategies());
+    targetStrategyDropdown.setId("target-calculation-combo");
     controlTypeComboBoxes.put(parameter, targetStrategyDropdown);
 
     VBox targetParameterBox = new VBox(5);
@@ -235,15 +267,70 @@ public class ControlTypeEditorView {
     return container;
   }
 
+  private void updateTargetParameterFields(ComboBox<String> dropdown, VBox targetParameterBox,
+      TargetCalculationConfigInterface config) {
+    // ChatGPT generated this method.
+    targetParameterBox.getChildren().clear();
+    String selectedStrategy = dropdown.getValue();
+    List<String> targetParams = ControlManager.getTargetRequiredFieldsOrder(selectedStrategy);
+
+    targetStrategyParameterFields.clear();
+
+    generateTargetParameterTextFields(targetParameterBox, config, targetParams);
+  }
+
+  private void generateTargetParameterTextFields(VBox targetParameterBox,
+      TargetCalculationConfigInterface config,
+      List<String> targetParams) {
+    createAllTargetParameterFieldsFromConfig(targetParameterBox, config, targetParams);
+  }
+
+  private void createAllTargetParameterFieldsFromConfig(VBox targetParameterBox,
+      TargetCalculationConfigInterface config,
+      List<String> targetParams) {
+    if (!targetParams.isEmpty()) {
+      for (String targetParam : targetParams) {
+        createTextFieldForCurrentParameter(targetParameterBox, config, targetParam);
+      }
+    }
+  }
+
+  private void createTextFieldForCurrentParameter(VBox targetParameterBox,
+      TargetCalculationConfigInterface config,
+      String targetParam) {
+    Label targetParamLabel = new Label(targetParam + ": ");
+    TextField targetParamField = new TextField();
+    attemptSettingTargetParameterFieldValue(config, targetParam, targetParamField);
+    targetStrategyParameterFields.add(targetParamField);
+    targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
+  }
+
+  private static void attemptSettingTargetParameterFieldValue(
+      TargetCalculationConfigInterface config, String targetParam,
+      TextField targetParamField) {
+    if (config != null) {
+      try {
+        var field = config.getClass().getDeclaredField(targetParam);
+        field.setAccessible(true);
+        Object value = field.get(config);
+        targetParamField.setText(value != null ? value.toString() : "");
+      } catch (Exception ignored) {
+      }
+    }
+  }
+
+
   private void updateTargetParameterFields(ComboBox<String> dropdown, VBox targetParameterBox) {
     targetParameterBox.getChildren().clear();
     String selectedStrategy = dropdown.getValue();
+    targetStrategyParameterFields.clear();
     List<String> targetParams = ControlManager.getTargetRequiredFieldsOrder(selectedStrategy);
 
     if (!targetParams.isEmpty()) {
       for (String targetParam : targetParams) {
         Label targetParamLabel = new Label(targetParam + ": ");
         TextField targetParamField = new TextField();
+        targetParamField.setId("field-" + targetParam);
         targetStrategyParameterFields.add(targetParamField);
         targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
       }
@@ -283,6 +370,18 @@ public class ControlTypeEditorView {
     }
   }
 
+  private TargetCalculationConfigInterface getTargetStrategyFromConfig(
+      ControlConfigInterface config, String fieldName) {
+    try {
+      var field = config.getClass().getDeclaredField(fieldName);
+      field.setAccessible(true);
+      return (TargetCalculationConfigInterface) field.get(config);
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+
   private TargetCalculationConfigInterface buildTargetStrategyFromUI() throws ViewException {
     try {
       String selectedStrategy = controlTypeComboBoxes.get(TARGET_CALCULATION_CONFIG).getValue();
@@ -294,7 +393,7 @@ public class ControlTypeEditorView {
       int index = 0;
       for (String param : fieldOrder) {
         String input = targetStrategyParameterFields.get(index++).getText();
-        paramValues.add(castToRequiredType(input, requiredTypes.get(param)));
+        paramValues.add(FileUtility.castInputToCorrectType(input, requiredTypes.get(param)));
       }
 
       String fullClassName =
@@ -304,25 +403,13 @@ public class ControlTypeEditorView {
       Constructor<?> constructor = strategyClass.getDeclaredConstructors()[0];
 
       return (TargetCalculationConfigInterface) constructor.newInstance(paramValues.toArray());
+    } catch (ViewException e) {
+      throw e; // Don't show error duplicate error in ui.
     } catch (Exception e) {
       showError("Error building target strategy: " + e.getMessage());
       throw new ViewException("Error building target strategy: ", e);
     }
   }
-
-
-  private Object castToRequiredType(String value, Class<?> type) {
-    if (type == int.class || type == Integer.class) {
-      return Integer.parseInt(value);
-    } else if (type == double.class || type == Double.class) {
-      return Double.parseDouble(value);
-    } else if (type == String.class) {
-      return value;
-    }
-
-    throw new ViewException("Unsupported parameter type: " + type);
-  }
-
 
   private void showError(String msg) {
     Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);

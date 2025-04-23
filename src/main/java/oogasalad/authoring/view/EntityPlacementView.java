@@ -84,8 +84,8 @@ public class EntityPlacementView {
     // Update UI fields with values from the placement
     entityTypeLabel.setText(placement.getTypeString());
     positionValueLabel.setText(
-        String.format(LanguageManager.getMessage("COORDINATE"), placement.getX(),
-            placement.getY()));
+        String.format(LanguageManager.getMessage("COORDINATE"), placement.getInitialTileX(),
+            placement.getInitialTileY()));
 
     updateModeSelector();
 
@@ -199,7 +199,7 @@ public class EntityPlacementView {
       controller.updateCanvas();
       showStatusMessage(String.format(LanguageManager.getMessage("MODE_UPDATE"), newMode));
 
-      controller.moveEntity(currentPlacement, currentPlacement.getX(), currentPlacement.getY());
+      controller.moveEntity(currentPlacement, currentPlacement.getInitialTileX(), currentPlacement.getInitialY());
     } else {
       showStatusMessage(LanguageManager.getMessage("NO_CHANGES"));
     }
@@ -261,18 +261,8 @@ public class EntityPlacementView {
   public void updatePositionDisplay() {
     if (currentPlacement != null) {
       positionValueLabel.setText(String.format(LanguageManager.getMessage("COORDINATE"),
-          currentPlacement.getX(), currentPlacement.getY()));
+          currentPlacement.getInitialTileX(), currentPlacement.getInitialTileY()));
     }
-  }
-
-  /**
-   * Checks if this view is currently showing the specified entity placement.
-   *
-   * @param placement the entity placement to check
-   * @return true if this is the currently displayed entity
-   */
-  public boolean isShowingPlacement(EntityPlacement placement) {
-    return currentPlacement == placement;
   }
 
   /**
@@ -282,14 +272,5 @@ public class EntityPlacementView {
    */
   public void setVisible(boolean visible) {
     rootNode.setVisible(visible);
-  }
-
-  /**
-   * Gets whether this view is currently visible.
-   *
-   * @return true if the view is visible
-   */
-  public boolean isVisible() {
-    return rootNode.isVisible();
   }
 }

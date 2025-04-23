@@ -1,13 +1,16 @@
 package oogasalad.authoring.view;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -28,6 +31,8 @@ public class EntityTypeEditorView {
   private final VBox modeList;
   private final AuthoringController controller;
   private EntityTypeRecord current;
+  private final VBox blocksList;
+
 
   /**
    * Edit parameters for an entityType
@@ -44,9 +49,6 @@ public class EntityTypeEditorView {
 
     typeField = new TextField();
 
-    Button saveCollisionButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
-    saveCollisionButton.setOnAction(e -> commitChanges());
-
     modeList = new VBox(5);
 
     Button addModeButton = new Button(LanguageManager.getMessage("ADD_MODE"));
@@ -57,8 +59,22 @@ public class EntityTypeEditorView {
     deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
     deleteButton.setOnAction(e -> deleteEntityType());
 
+    blocksList = new VBox(5);
+    blocksList.setPadding(new Insets(5));
+
+    ScrollPane blocksScrollPane = new ScrollPane(blocksList);
+    blocksScrollPane.setFitToWidth(true);
+    blocksScrollPane.setMinHeight(100);
+
+    VBox blocksSection = new VBox(5,
+        new Label(LanguageManager.getMessage("BLOCKS_OTHER_ENTITIES")),
+        blocksScrollPane
+    );
+
+
     root.getChildren().addAll(
-        new Label(LanguageManager.getMessage("ENTITY_TYPE")), typeField, saveCollisionButton,
+        new Label(LanguageManager.getMessage("ENTITY_TYPE")), typeField,
+        blocksSection,
         new Label(LanguageManager.getMessage("MODES")), modeList,
         addModeButton,
         new Separator(), deleteButton
@@ -84,6 +100,9 @@ public class EntityTypeEditorView {
       }
     });
 
+    populateBlocksList(this.current);
+
+
     // Refresh mode list UI
     modeList.getChildren().clear();
     for (Map.Entry<String, ModeConfigRecord> entry : type.modes().entrySet()) {
@@ -95,6 +114,26 @@ public class EntityTypeEditorView {
       modeList.getChildren().addAll(label, editButton);
     }
   }
+
+  private void populateBlocksList(EntityTypeRecord type) {
+    blocksList.getChildren().clear();
+
+    String currentName = type.type();
+    Map<String, EntityTypeRecord> allTypes = controller.getModel().getEntityTypeMap();
+
+    for (String otherType : allTypes.keySet()) {
+      if (otherType.equals(currentName)) continue;
+
+      CheckBox box = new CheckBox(otherType);
+      box.setSelected(type.blocks() != null && type.blocks().contains(otherType));
+      box.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+        commitChanges();
+      });
+
+      blocksList.getChildren().add(box);
+    }
+  }
+
 
 
   /**
@@ -111,12 +150,19 @@ public class EntityTypeEditorView {
       return;
     }
 
+    List<String> selectedBlocks = blocksList.getChildren().stream()
+        .filter(node -> node instanceof CheckBox)
+        .map(node -> (CheckBox) node)
+        .filter(CheckBox::isSelected)
+        .map(CheckBox::getText)
+        .toList();
+
     EntityTypeRecord newEntity = new EntityTypeRecord(
         typeField.getText(),
         current.modes(),
-        current.blocks(),
-        current.speed()
+        selectedBlocks
     );
+
 
     controller.getModel().updateEntityType(current.type(), newEntity);
     controller.updateEntitySelector(); // update visuals if needed
@@ -141,8 +187,7 @@ public class EntityTypeEditorView {
       current = new EntityTypeRecord(
           current.type(),
           newModes,
-          current.blocks(),
-          current.speed()
+          current.blocks()
       );
 
       setEntityType(current); // this pushes it wherever it needs to go
@@ -168,8 +213,7 @@ public class EntityTypeEditorView {
       EntityTypeRecord updated = new EntityTypeRecord(
           current.type(),
           newModes,
-          current.blocks(),
-          current.speed()
+          current.blocks()
       );
 
       // 2. Replace in model

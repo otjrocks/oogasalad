@@ -56,9 +56,9 @@ public class JsonConfigBuilder {
 
     // === win conditions ===
     defaultSettings.set("winCondition",
-        ConditionSerializer.serialize(model.getDefaultSettings().winCondition(), mapper));
+        ConditionSerializer.serializeFlat(model.getDefaultSettings().winCondition(), mapper));
     defaultSettings.set("loseCondition",
-        ConditionSerializer.serialize(model.getDefaultSettings().loseCondition(), mapper));
+        ConditionSerializer.serializeFlat(model.getDefaultSettings().loseCondition(), mapper));
 
     // === levels ===
     ArrayNode levels = root.putArray("levels");
@@ -113,24 +113,25 @@ public class JsonConfigBuilder {
 
     // === layout ===
     ArrayNode layout = root.putArray("layout");
-    double tileSize = 40.0;
-    double threshold = 1.0;
 
-    for (int row = 0; row < draft.getHeight(); row++) {
-      List<String> rowTiles = new ArrayList<>();
-      for (int col = 0; col < draft.getWidth(); col++) {
-        double x = col * tileSize;
-        double y = row * tileSize;
-        Optional<EntityPlacement> opt = draft.findEntityPlacementAt(x, y, threshold);
-        if (opt.isPresent()) {
-          EntityPlacement placement = opt.get();
-          int entityId = entityToIdMap.getOrDefault(placement.getTypeString(), 0);
-          int modeIndex = getModeIndex(placement);
-          rowTiles.add(entityId + "." + modeIndex);
-        } else {
-          rowTiles.add("0");
-        }
+    // initialize 2D grid
+    String[][] tileGrid = new String[draft.getHeight()][draft.getWidth()];
+    for (int r = 0; r < draft.getHeight(); r++) {
+      for (int c = 0; c < draft.getWidth(); c++) {
+        tileGrid[r][c] = "0"; // default to empty
       }
+    }
+
+    // fill grid with entity placements
+    for (EntityPlacement placement : draft.getEntityPlacements()) {
+      int row = placement.getInitialTileY();
+      int col = placement.getInitialTileX();
+      int entityId = entityToIdMap.getOrDefault(placement.getTypeString(), 0);
+      int modeIndex = getModeIndex(placement);
+      tileGrid[row][col] = entityId + "." + modeIndex;
+    }
+
+    for (String[] rowTiles : tileGrid) {
       layout.add(String.join(" ", rowTiles));
     }
 
@@ -141,6 +142,7 @@ public class JsonConfigBuilder {
     return root;
   }
 
+
   private void serializeSpawnEvents(LevelDraft draft, Map<String, Integer> idMap,
       ObjectMapper mapper, ArrayNode array) {
     for (SpawnEventRecord record : draft.getSpawnEvents()) {
@@ -150,10 +152,10 @@ public class JsonConfigBuilder {
       event.put("y", record.y());
       event.put("mode", record.mode());
 
-      event.set("spawnCondition", ConditionSerializer.serialize(record.spawnCondition(), mapper));
+      event.set("spawnCondition", safeSerializeCondition(record.spawnCondition(), mapper));
       if (record.despawnCondition() != null) {
         event.set("despawnCondition",
-            ConditionSerializer.serialize(record.despawnCondition(), mapper));
+            safeSerializeCondition(record.despawnCondition(), mapper));
       }
 
       array.add(event);
@@ -168,7 +170,7 @@ public class JsonConfigBuilder {
       event.put("currentMode", record.currentMode());
       event.put("nextMode", record.nextMode());
 
-      event.set("changeCondition", ConditionSerializer.serialize(record.changeCondition(), mapper));
+      event.set("changeCondition", safeSerializeCondition(record.changeCondition(), mapper));
       array.add(event);
     }
   }
@@ -200,7 +202,7 @@ public class JsonConfigBuilder {
     ObjectNode entityTypeNode = root.putObject(ENTITY_TYPE);
 
     addEntityBasics(type, entityTypeNode);
-    addMovementSpeed(type, entityTypeNode);
+    addEntityBlocks(type, entityTypeNode);
     addModesArray(type, root, mapper);
 
     return root;
@@ -210,17 +212,18 @@ public class JsonConfigBuilder {
     entityTypeNode.put("name", type.type());
   }
 
+  private void addEntityBlocks(EntityTypeRecord type, ObjectNode entityTypeNode) {
+    ArrayNode blocksArray = entityTypeNode.putArray("blocks");
+    for (String block : type.blocks()) {
+      blocksArray.add(block);
+    }
+  }
+
+
   private void addControlConfig(ControlConfigInterface config, ObjectNode entityTypeNode,
       ObjectMapper mapper) {
     JsonNode serialized = mapper.valueToTree(config);
     entityTypeNode.set("controlConfig", serialized);
-  }
-
-  private void addMovementSpeed(EntityTypeRecord type, ObjectNode entityTypeNode) {
-    ModeConfigRecord defaultMode = type.modes().get("Default");
-    if (defaultMode != null) {
-      entityTypeNode.put("movementSpeed", defaultMode.entityProperties().movementSpeed());
-    }
   }
 
   private void addModesArray(EntityTypeRecord type, ObjectNode root, ObjectMapper mapper) {
@@ -239,6 +242,8 @@ public class JsonConfigBuilder {
       imageNode.put("animationSpeed", mode.image().animationSpeed());
 
       addControlConfig(mode.controlConfig(), modeNode, mapper);
+
+      modeNode.put("movementSpeed", mode.movementSpeed());
     }
   }
 
@@ -265,6 +270,18 @@ public class JsonConfigBuilder {
     // Extract just the file name from the full path
     String fileName = fullPath.substring(fullPath.lastIndexOf('/') + 1);
     return "assets/" + fileName;
+  }
+
+  private JsonNode safeSerializeCondition(Object condition, ObjectMapper mapper) {
+    JsonNode serialized = ConditionSerializer.serialize(condition, mapper);
+    JsonNode maybeDoubleSerialized = serialized.get("parameters");
+
+    // check if "parameters" itself contains a nested "type"
+    if (maybeDoubleSerialized != null && maybeDoubleSerialized.has("type")) {
+      // This was already serialized – unwrap it
+      return maybeDoubleSerialized;
+    }
+    return serialized;
   }
 
 }

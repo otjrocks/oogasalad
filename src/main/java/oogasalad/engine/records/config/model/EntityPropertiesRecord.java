@@ -5,6 +5,5 @@ import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterfac
 
 public record EntityPropertiesRecord(
     String name,
-    Double movementSpeed,
     List<String> blocks
 ) { }
