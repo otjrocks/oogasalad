@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -50,8 +48,8 @@ public class CollisionRuleEditorView {
   private final List<CollisionRule> workingRules = new ArrayList<>();
   private final VBox root;
   private final AuthoringController controller;
-  private CollisionEventView myRuleViewA;
-  private CollisionEventView myRuleViewB;
+  private CollisionEventView myEventViewA;
+  private CollisionEventView myEventViewB;
 
 
   /**
@@ -96,6 +94,7 @@ public class CollisionRuleEditorView {
 
     HBox buttonBox = getHBox();
 
+    ruleListView.setId("rule-list-view");
     ruleListView.setItems(FXCollections.observableArrayList(workingRules));
     ruleListView.setPrefHeight(300);
     ScrollPane ruleScrollPane = new ScrollPane(ruleListView);
@@ -131,15 +130,15 @@ public class CollisionRuleEditorView {
   private HBox createCollisionRuleHBox() {
     HBox addRule = new HBox(15);
 
-    myRuleViewA = new CollisionEventView(
+    myEventViewA = new CollisionEventView(
         String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "A")
     );
 
-    myRuleViewB = new CollisionEventView(
+    myEventViewB = new CollisionEventView(
         String.format(LanguageManager.getMessage("RULE_VIEW_LABEL"), "B")
     );
 
-    addRule.getChildren().addAll(myRuleViewA.getRoot(), myRuleViewB.getRoot());
+    addRule.getChildren().addAll(myEventViewA.getRoot(), myEventViewB.getRoot());
     return addRule;
   }
 
@@ -165,12 +164,15 @@ public class CollisionRuleEditorView {
 
   private HBox getHBox() {
     Button addRuleButtonA = new Button(LanguageManager.getMessage("ADD_ACTION") + " A");
+    addRuleButtonA.setId("add-action-A");
     addRuleButtonA.setOnAction(e -> handleAddRuleA());
 
     Button addRuleButtonB = new Button(LanguageManager.getMessage("ADD_ACTION") + " B");
     addRuleButtonB.setOnAction(e -> handleAddRuleB());
+    addRuleButtonB.setId("add-action-B");
 
     Button deleteRuleButton = new Button(LanguageManager.getMessage("DELETE_RULE"));
+    deleteRuleButton.setId("delete-rule-button");
     deleteRuleButton.setOnAction(e -> {
       CollisionRule selected = ruleListView.getSelectionModel().getSelectedItem();
       if (selected != null) {
@@ -189,6 +191,8 @@ public class CollisionRuleEditorView {
   private void setupEntityAndModeSelectors() {
     List<String> entities = new ArrayList<>(entityToModes.keySet());
 
+    entityASelector.setId("entity-A-selector");
+    entityBSelector.setId("entity-B-selector");
     entityASelector.setItems(FXCollections.observableArrayList(entities));
     entityBSelector.setItems(FXCollections.observableArrayList(entities));
 
@@ -281,15 +285,19 @@ public class CollisionRuleEditorView {
     initializeEventListsIfNull(rule);
 
     if (isA) {
-      addEventSafely(rule.getEventsA(), myRuleViewA, "A-side event");
+      addEventSafely(rule.getEventsA(), myEventViewA, "A-side event");
     } else {
-      addEventSafely(rule.getEventsB(), myRuleViewB, "B-side event");
+      addEventSafely(rule.getEventsB(), myEventViewB, "B-side event");
     }
   }
 
   private void initializeEventListsIfNull(CollisionRule rule) {
-    if (rule.getEventsA() == null) rule.setEventsA(new ArrayList<>());
-    if (rule.getEventsB() == null) rule.setEventsB(new ArrayList<>());
+    if (rule.getEventsA() == null) {
+      rule.setEventsA(new ArrayList<>());
+    }
+    if (rule.getEventsB() == null) {
+      rule.setEventsB(new ArrayList<>());
+    }
   }
 
   private void addEventSafely(List<CollisionEventInterface> targetList,
