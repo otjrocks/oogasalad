@@ -394,17 +394,7 @@ public class ControlTypeEditorView {
       int index = 0;
       for (String param : fieldOrder) {
         String input = targetStrategyParameterFields.get(index++).getText();
-        try {
-          paramValues.add(FileUtility.castInputToCorrectType(input, requiredTypes.get(param)));
-        } catch (ViewException e) {
-          showError(
-              String.format("Unable to cast target calculation parameter: %s to required type %s",
-                  input,
-                  requiredTypes.get(param)));
-          LoggingManager.LOGGER.warn(
-              "Unable to cast target calculation parameter: {} to required type {}", input,
-              requiredTypes.get(param));
-        }
+        paramValues.add(FileUtility.castInputToCorrectType(input, requiredTypes.get(param)));
       }
 
       String fullClassName =
