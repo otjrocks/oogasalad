@@ -3,8 +3,8 @@ package oogasalad.engine.config;
 import oogasalad.engine.records.model.EntityTypeRecord;
 
 /**
- * Represents a specific instance of an {@link EntityTypeRecord} placed at a location on the map. Each
- * placement includes an (x, y) coordinate and a mode (e.g., "Default", "PoweredUp"). Used to
+ * Represents a specific instance of an {@link EntityTypeRecord} placed at a location on the map.
+ * Each placement includes an (x, y) coordinate and a mode (e.g., "Default", "PoweredUp"). Used to
  * instantiate and track the position and state of individual entities.
  * <p>
  * The `type` field is used during deserialization, while `resolvedEntityType` is populated later
@@ -24,8 +24,6 @@ public class EntityPlacement {
   private int initialTileY; // For authoring purposes
   private String mode;
   private int currentFrame;
-  private int deathFrame = 0;
-  private boolean inDeathAnimation = false;
 
   /**
    * A default constructor is required for the file parsing API.
@@ -171,41 +169,6 @@ public class EntityPlacement {
   }
 
   /**
-   * Gets the current frame for the death animation
-   */
-  public int getDeathFrame() {
-    return deathFrame;
-  }
-
-  /**
-   * Used for resetting the death animation
-   */
-  public void setDeathFrame(int deathFrame) {
-    this.deathFrame = deathFrame;
-  }
-
-  /**
-   * Checks if entity is in the process of a death animation
-   */
-  public boolean isInDeathAnimation() {
-    return inDeathAnimation;
-  }
-
-  /**
-   * Allows user to set in death animation boolean
-   */
-  public void setInDeathAnimation(boolean inDeathAnimation) {
-    this.inDeathAnimation = inDeathAnimation;
-  }
-
-  /**
-   * Increases the current death frame by one
-   */
-  public void incrementDeathFrame() {
-    this.deathFrame++;
-  }
-
-  /**
    * Increments the current frame of the animation by 1
    */
   public void increaseCurrentFrame() {
@@ -225,6 +188,7 @@ public class EntityPlacement {
 
   /**
    * Get tile x coord
+   *
    * @return x coord
    */
   public int getInitialTileX() {
@@ -233,6 +197,7 @@ public class EntityPlacement {
 
   /**
    * Set tile x coord
+   *
    * @param initialTileX x coord
    */
   public void setInitialTileX(int initialTileX) {
@@ -241,6 +206,7 @@ public class EntityPlacement {
 
   /**
    * Get tile y coord
+   *
    * @return y coord
    */
   public int getInitialTileY() {
@@ -249,6 +215,7 @@ public class EntityPlacement {
 
   /**
    * Set tile y coord
+   *
    * @param initialTileY y coord
    */
   public void setInitialTileY(int initialTileY) {
@@ -288,9 +255,9 @@ public class EntityPlacement {
    */
   public int getEntityImageWidth() {
     return this.getType()
-            .modes()
-            .get(this.getMode())
-            .image().tileWidth();
+        .modes()
+        .get(this.getMode())
+        .image().tileWidth();
   }
 
   /**
@@ -298,9 +265,9 @@ public class EntityPlacement {
    */
   public int getEntityImageHeight() {
     return this.getType()
-            .modes()
-            .get(this.getMode())
-            .image().tileHeight();
+        .modes()
+        .get(this.getMode())
+        .image().tileHeight();
   }
 
   /**
@@ -308,8 +275,8 @@ public class EntityPlacement {
    */
   public int getEntityFrameNumber() {
     return this.getType()
-            .modes()
-            .get(this.getMode())
-            .image().tilesToCycle();
+        .modes()
+        .get(this.getMode())
+        .image().tilesToCycle();
   }
 }
