@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import oogasalad.engine.utility.LanguageManager;
 import oogasalad.player.model.GameStateInterface;
 import oogasalad.player.view.GameView;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,8 @@ public class HudViewTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) {
+    LanguageManager.setLanguage("English");
+
     mockGameState = mock(GameStateInterface.class);
     mockGameView = mock(GameView.class);
     mockReturnToMenu = mock(Runnable.class);
