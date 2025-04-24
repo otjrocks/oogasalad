@@ -64,7 +64,7 @@ public class ControlStrategyFactory {
 
     String mode = entityPlacement.getMode();
     ModeConfigRecord modeConfig = entityPlacement.getType().modes().get(mode);
-    ControlConfigInterface controlConfig = modeConfig.entityProperties().controlConfig();
+    ControlConfigInterface controlConfig = modeConfig.controlConfig();
 
     String className =
         STRATEGY_PACKAGE + controlConfig.getClass().getSimpleName()

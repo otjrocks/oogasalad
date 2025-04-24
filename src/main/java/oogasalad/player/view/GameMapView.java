@@ -28,14 +28,18 @@ public class GameMapView {
   private GameLoopController myGameLoopController;
   private Consumer<Boolean> endGameCallback;
   private final Canvas myCanvas;
+  private final String gameFolder;
 
   /**
    * Initialize a game map view.
    *
    * @param gameContext The game context object for this view.
    * @param configModel The config model for this view.
+   * @param gameFolder  The complete path to the game folder
    */
-  public GameMapView(GameContextRecord gameContext, ConfigModelRecord configModel) {
+  public GameMapView(GameContextRecord gameContext, ConfigModelRecord configModel,
+      String gameFolder) {
+    this.gameFolder = gameFolder;
     myCanvas = new Canvas(GameView.GAME_VIEW_WIDTH, GameView.GAME_VIEW_HEIGHT);
     myGameContext = gameContext;
     myGameMapController = new GameMapController(myGameContext, configModel);
@@ -60,7 +64,7 @@ public class GameMapView {
   private void initializeEntityViews() {
     entityViews.clear();
     for (Entity entity : myGameContext.gameMap()) {
-      entityViews.add(new EntityView(entity));
+      entityViews.add(new EntityView(entity, gameFolder));
     }
   }
 

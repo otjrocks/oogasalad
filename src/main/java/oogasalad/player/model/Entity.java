@@ -1,6 +1,8 @@
 package oogasalad.player.model;
 
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.controller.GameInputManager;
@@ -21,6 +23,7 @@ public class Entity {
   private double dy;
   private final double speed;
   private Direction currentDirection;
+  private final ConfigModelRecord myConfig;
   public static final double ENTITY_SPEED_MULTIPLIER = 0.12;
   public static final double MIN_SPEED = 0;
   public static final double MAX_SPEED = 0.5;
@@ -32,10 +35,11 @@ public class Entity {
    * @
    */
   public Entity(GameInputManager input, EntityPlacement entityPlacement,
-      GameMapInterface gameMap) {
+      GameMapInterface gameMap, ConfigModelRecord config) {
     myEntityPlacement = entityPlacement;
     this.inputManager = input;
     this.gameMap = gameMap;
+    myConfig = config;
     speed = setSpeedFromConfig(entityPlacement);
   }
 
@@ -49,10 +53,27 @@ public class Entity {
     return speed;
   }
 
-  private static double getTransformedSpeed(EntityPlacement entityPlacement) {
+  private double getTransformedSpeed(EntityPlacement entityPlacement) {
     // Enforce speed is in range [0, 0.5] and multiply by a constant to transform to a reasonable amount
-    return Math.max(MIN_SPEED,
-        Math.min(ENTITY_SPEED_MULTIPLIER * entityPlacement.getType().speed(), MAX_SPEED));
+    if (getModeConfig(entityPlacement) == null) {
+      return ENTITY_SPEED_MULTIPLIER;
+    } else {
+      return Math.max(MIN_SPEED,
+          Math.min(ENTITY_SPEED_MULTIPLIER * getModeConfig(entityPlacement).movementSpeed(),
+              MAX_SPEED));
+    }
+  }
+
+  private ModeConfigRecord getModeConfig(EntityPlacement entityPlacement) {
+    if (myConfig == null) {
+      return null;
+    }
+    for (EntityTypeRecord typeRecord : myConfig.entityTypes()) {
+      if (typeRecord == entityPlacement.getType()) {
+        return typeRecord.modes().get(entityPlacement.getMode());
+      }
+    }
+    return null;
   }
 
   /**

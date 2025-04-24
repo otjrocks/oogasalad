@@ -89,6 +89,9 @@ public class EntityManager {
     int row = grid.getRowFromY(placement.getY());
     int col = grid.getColFromX(placement.getX());
 
+    placement.setInitialTileX(col);
+    placement.setInitialTileY(row);
+
     double x = grid.getXFromCol(col);
     double y = grid.getYFromRow(row);
 
@@ -125,6 +128,9 @@ public class EntityManager {
 
     gridEntities[oldRow][oldCol] = null;
     gridEntities[newRow][newCol] = placement;
+
+    placement.setInitialTileX(newCol);
+    placement.setInitialTileY(newRow);
 
     double newX = grid.getXFromCol(newCol);
     double newY = grid.getYFromRow(newRow);

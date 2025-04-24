@@ -1,5 +1,6 @@
 package oogasalad.engine.records.config.model.wincondition;
 
+import java.util.Optional;
 import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
 import oogasalad.player.model.strategies.gameoutcome.ScoreBasedOutcomeStrategy;
 
@@ -18,5 +19,15 @@ public record SurviveForTimeConditionRecord(int amount) implements WinConditionI
   @Override
   public GameOutcomeStrategyInterface toStrategy() {
     return new ScoreBasedOutcomeStrategy(amount);
+  }
+
+  @Override
+  public String getConditionType() {
+    return "SurviveForTime";
+  }
+
+  @Override
+  public Optional<String> getConditionValue() {
+    return Optional.of(String.valueOf(amount));
   }
 }

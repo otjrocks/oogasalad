@@ -22,7 +22,6 @@ public class LevelDraft {
   private String outputFileName;
   private int width;
   private int height;
-  private String edgePolicy;
 
   private final List<EntityPlacement> entityPlacements;
   private List<ModeChangeEventRecord> modeChangeEvents;

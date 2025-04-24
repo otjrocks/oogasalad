@@ -4,7 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -18,14 +18,13 @@ import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
-import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
 import oogasalad.engine.utility.LanguageManager;
 
 /**
  * Dialog for creating a new ModeConfig with a user-uploaded image. Returns a ModeConfig object via
  * showAndWait().ifPresent(...)
  *
- * @author Will He, Ishan Madan
+ * @author Will He, Ishan Madan, Owen Jennings
  */
 public class ModeEditorDialog {
 
@@ -36,6 +35,7 @@ public class ModeEditorDialog {
   private final TextField tileHeightField;
   private final TextField tilesToCycleField;
   private final TextField animationSpeedField;
+  private ControlTypeEditorView controlTypeEditorView;
 
   private File selectedImageFile;
   private ModeConfigRecord preparedResult;
@@ -54,7 +54,8 @@ public class ModeEditorDialog {
     GridPane grid = new GridPane();
     grid.setHgap(10);
     grid.setVgap(10);
-    grid.setPadding(new Insets(20, 150, 10, 10));
+    grid.setPrefSize(800, 600);
+    grid.setAlignment(Pos.CENTER);
 
     nameField = new TextField();
     imagePathField = new TextField();
@@ -64,6 +65,8 @@ public class ModeEditorDialog {
     tileHeightField = new TextField("28");
     tilesToCycleField = new TextField("4");
     animationSpeedField = new TextField("1.0");
+
+    controlTypeEditorView = new ControlTypeEditorView();
 
     speedField = new TextField();
 
@@ -85,7 +88,8 @@ public class ModeEditorDialog {
     grid.add(tilesToCycleField, 1, 5);
     grid.add(new Label("Animation Speed:"), 0, 6);
     grid.add(animationSpeedField, 1, 6);
-
+    grid.add(new Label("Control Type:"), 0, 7);
+    grid.add(controlTypeEditorView.getRoot(), 1, 7);
 
     ButtonType okButtonType = ButtonType.OK;
 
@@ -136,7 +140,7 @@ public class ModeEditorDialog {
 
     if (existingConfig != null) {
       nameField.setText(existingConfig.name());
-      speedField.setText(String.valueOf(existingConfig.entityProperties().movementSpeed()));
+      speedField.setText(String.valueOf(existingConfig.movementSpeed()));
 
       selectedImageFile = new File(URI.create(existingConfig.image().imagePath()));
       imagePathField.setText(selectedImageFile.getName());
@@ -146,6 +150,8 @@ public class ModeEditorDialog {
       tileHeightField.setText(String.valueOf(existingConfig.image().tileHeight()));
       tilesToCycleField.setText(String.valueOf(existingConfig.image().tilesToCycle()));
       animationSpeedField.setText(String.valueOf(existingConfig.image().animationSpeed()));
+      controlTypeEditorView.populateControlConfigUI(existingConfig.controlConfig());
+
     }
   }
 
@@ -191,16 +197,14 @@ public class ModeEditorDialog {
       double speed = Double.parseDouble(speedField.getText());
       ImageConfigRecord imageConfig = getImageConfig();
 
-      ControlConfigInterface controlConfig = new KeyboardControlConfigRecord(); // temp fallback
+      ControlConfigInterface controlConfig = controlTypeEditorView.getControlConfig();
 
       EntityPropertiesRecord entityProps = new EntityPropertiesRecord(
           name,
-          controlConfig,
-          speed,
           List.of()
       );
 
-      preparedResult = new ModeConfigRecord(name, entityProps, imageConfig);
+      preparedResult = new ModeConfigRecord(name, entityProps, controlConfig, imageConfig, speed);
       return true;
 
     } catch (NumberFormatException ex) {

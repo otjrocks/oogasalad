@@ -124,7 +124,6 @@ Label, Text {
 .entity-selector-view .button {
   -fx-font-size: 14px;
   -fx-padding: 10px 20px;
-  -fx-min-width: 400px;
   -fx-background-color: -fx-primary;
   -fx-text-fill: -fx-secondary;
   -fx-border-color: -fx-secondary;
@@ -193,6 +192,27 @@ Label, Text {
 .small-button:hover {
   -fx-background-color: -fx-highlight;
 }
+
+.icon-button {
+  -fx-font-size: 12px;
+  -fx-padding: 10px;
+  -fx-min-width: 30px;
+  -fx-min-height: 30px;
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+  -fx-background-radius: 50%;
+  -fx-border-radius: 50%;
+  -fx-font-family: "Press Start 2P";
+  -fx-alignment: center;
+}
+
+.icon-button:hover {
+  -fx-background-color: -fx-highlight;
+  -fx-cursor: hand;
+}
+
 
 .game-name {
   -fx-font-size: 16px;

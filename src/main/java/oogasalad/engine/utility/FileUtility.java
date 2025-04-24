@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * A class containing utility methods pertaining to files. From Cell Society project.
@@ -107,5 +108,35 @@ public class FileUtility {
       LoggingManager.LOGGER.warn("Class not found: {}", recordPath);
     }
     return fields;
+  }
+
+  private static final Map<Class<?>, Function<String, Object>> PARSERS = Map.of(
+      int.class, Integer::parseInt,
+      Integer.class, Integer::parseInt,
+      double.class, Double::parseDouble,
+      Double.class, Double::parseDouble,
+      boolean.class, Boolean::parseBoolean,
+      Boolean.class, Boolean::parseBoolean
+  );
+
+
+  /**
+   * Cast a string object to the correct object type.
+   *
+   * @param input      The string input
+   * @param targetType The type you want to cast the string to.
+   * @return The correctly object from the parsed/cast string.
+   */
+  public static Object castInputToCorrectType(String input, Class<?> targetType) {
+    Function<String, Object> parser = PARSERS.get(targetType);
+    if (parser == null) { // Fall back to just returning the string for unknown types (optional)
+      return input;
+    }
+    try {
+      return parser.apply(input);
+    } catch (Exception e) {
+      LoggingManager.LOGGER.warn("Unable to parse input into correct parameter format", e);
+      throw new IllegalArgumentException("Unable to parse input into correct parameter format");
+    }
   }
 }

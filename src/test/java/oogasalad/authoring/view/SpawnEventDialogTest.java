@@ -36,10 +36,8 @@ public class SpawnEventDialogTest extends DukeApplicationTest {
 
     EntityTypeRecord entity = new EntityTypeRecord(
         "Cherry",
-        new KeyboardControlConfigRecord(),
         modes,
-        Collections.emptyList(),
-        1.0
+        Collections.emptyList()
     );
 
     Map<String, EntityTypeRecord> entityTypes = new HashMap<>();
@@ -91,15 +89,17 @@ public class SpawnEventDialogTest extends DukeApplicationTest {
     assertEquals(12.5, event.x());
     assertEquals(8, event.y());
     assertEquals("ScoreBased", event.spawnCondition().type());
-    assertEquals(700.0, event.spawnCondition().parameters().get("amount"));
+    assertEquals(700, event.spawnCondition().parameters().get("amount"));
     assertNull(event.despawnCondition());
   }
 
   private ModeConfigRecord dummyMode(String name) {
     return new ModeConfigRecord(
         name,
-        new EntityPropertiesRecord(name, new KeyboardControlConfigRecord(), 1.0, Collections.emptyList()),
-        new ImageConfigRecord("file:test.png", 32, 32, 4, 1.0)
+        new EntityPropertiesRecord(name, Collections.emptyList()),
+        new KeyboardControlConfigRecord(),
+        new ImageConfigRecord("file:test.png", 32, 32, 4, 1.0),
+        1.0
     );
   }
 }

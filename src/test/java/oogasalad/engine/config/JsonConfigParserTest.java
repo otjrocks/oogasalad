@@ -1,11 +1,13 @@
 package oogasalad.engine.config;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -237,16 +239,7 @@ class JsonConfigParserTest {
     String json = """
         {
              "entityType": {
-               "name": "RedGhost",
-               "controlConfig": {
-                 "controlStrategy": "Target",
-                 "pathFindingStrategy": "Euclidean",
-                 "targetCalculationConfig": {
-                   "targetCalculationStrategy": "TargetEntity",
-                   "targetType": "Pacman"
-                 }
-               },
-               "movementSpeed": 90
+               "name": "RedGhost"
              },
              "modes": [
                {
@@ -257,6 +250,10 @@ class JsonConfigParserTest {
                    "tileHeight": 14,
                    "tilesToCycle": 1,
                    "animationSpeed": 1.0
+                 },
+                 "movementSpeed": 90,
+                 "controlConfig": {
+                  "controlStrategy": "None"
                  }
                }
              ]
@@ -275,11 +272,11 @@ class JsonConfigParserTest {
     // Default properties
     EntityPropertiesRecord baseProps = config.entityProperties();
     assertEquals("RedGhost", baseProps.name());
-    assertEquals(90.0, baseProps.movementSpeed());
 
     // Modes
     List<ModeConfigRecord> modes = config.modes();
     assertEquals(1, modes.size());
+    assertEquals(90.0, modes.getFirst().movementSpeed());
 
     ModeConfigRecord defaultMode = modes.getFirst();
     assertEquals("Default", defaultMode.name());
@@ -310,6 +307,19 @@ class JsonConfigParserTest {
     JsonConfigParser parser = new JsonConfigParser();
     assertThrows(ConfigException.class,
         () -> parser.loadEntityConfig(entityFile.getAbsolutePath()));
+  }
+
+  @Test
+  void loadGameConfig_validConfigModelRecord_assertDoesNotThrow() {
+    URL resourceUrl = getClass().getClassLoader().getResource("BasicPacMan/gameConfig.json");
+    JsonConfigParser parser = new JsonConfigParser();
+    assertDoesNotThrow(() -> parser.loadFromFile(resourceUrl.getPath().toString()));
+  }
+
+  @Test
+  void loadGameConfig_invalidFilePath_ThrowConfigException() {
+    JsonConfigParser parser = new JsonConfigParser();
+    assertThrows(ConfigException.class, () -> parser.loadFromFile("invalid.json"));
   }
 
 }

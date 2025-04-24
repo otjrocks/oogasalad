@@ -58,12 +58,17 @@ public class EntitySelectorView {
     tileGrid.getStyleClass().add("flow-pane");
     tileGrid.setHgap(10);
     tileGrid.setVgap(10);
-    tileGrid.setPrefWrapLength(1000);
+    tileGrid.prefWrapLengthProperty().bind(root.widthProperty());
 
     // Scrollable container for grid
     ScrollPane scrollPane = new ScrollPane(tileGrid);
     scrollPane.setFitToWidth(true);
+    scrollPane.setFitToHeight(true);
+    scrollPane.setMaxWidth(Double.MAX_VALUE);
+    scrollPane.prefViewportHeightProperty().bind(root.heightProperty().multiply(0.4));
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
+
+
 
     root.getChildren().addAll(addButton, scrollPane);
   }

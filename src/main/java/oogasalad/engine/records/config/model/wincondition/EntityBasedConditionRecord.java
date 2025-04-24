@@ -1,5 +1,6 @@
 package oogasalad.engine.records.config.model.wincondition;
 
+import java.util.Optional;
 import oogasalad.player.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
 
@@ -18,5 +19,15 @@ public record EntityBasedConditionRecord(String entityType) implements WinCondit
   @Override
   public GameOutcomeStrategyInterface toStrategy() {
     return new EntityBasedOutcomeStrategy(entityType);
+  }
+
+  @Override
+  public String getConditionType() {
+    return "EntityBased";
+  }
+
+  @Override
+  public Optional<String> getConditionValue() {
+    return Optional.of(entityType);
   }
 }

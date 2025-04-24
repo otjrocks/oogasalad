@@ -36,10 +36,8 @@ public class ModeChangeEventDialogTest extends DukeApplicationTest {
 
     EntityTypeRecord entity = new EntityTypeRecord(
         "Ghost",
-        new KeyboardControlConfigRecord(),
         modes,
-        Collections.emptyList(),
-        1.0
+        Collections.emptyList()
     );
 
     Map<String, EntityTypeRecord> map = new HashMap<>();
@@ -90,8 +88,10 @@ public class ModeChangeEventDialogTest extends DukeApplicationTest {
   private ModeConfigRecord dummyMode(String name) {
     return new ModeConfigRecord(
         name,
-        new EntityPropertiesRecord(name, new KeyboardControlConfigRecord(), 1.0, Collections.emptyList()),
-        new ImageConfigRecord("file:test.png", 32, 32, 4, 1.0)
+        new EntityPropertiesRecord(name, Collections.emptyList()),
+        new KeyboardControlConfigRecord(),
+        new ImageConfigRecord("file:test.png", 32, 32, 4, 1.0),
+        1.0
     );
   }
 }
