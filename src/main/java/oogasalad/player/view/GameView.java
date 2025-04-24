@@ -35,10 +35,12 @@ public class GameView {
    * @param gameContext The game context for this view.
    * @param configModel The config model for this view.
    * @param levelIndex  The index of the level that is displayed on this view.
+   * @param gameFolder  The full path to the game folder
    */
-  public GameView(GameContextRecord gameContext, ConfigModelRecord configModel, int levelIndex) {
+  public GameView(GameContextRecord gameContext, ConfigModelRecord configModel, int levelIndex,
+      String gameFolder) {
     myRoot = new StackPane();
-    GameMapView myGameMapView = new GameMapView(gameContext, configModel);
+    GameMapView myGameMapView = new GameMapView(gameContext, configModel, gameFolder);
     myRoot.setPrefSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
     myRoot.setMinSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
     myRoot.setMaxSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);

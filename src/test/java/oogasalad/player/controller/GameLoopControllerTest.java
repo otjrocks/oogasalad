@@ -45,7 +45,7 @@ class GameLoopControllerTest extends DukeApplicationTest {
     when(mockConfigModel.loseCondition()).thenReturn(new LivesBasedConditionRecord());
     when(mockConfigModel.settings()).thenReturn(new GameSettingsRecord(1.0, 1, 1));
 
-    gameMapView = Mockito.spy(new GameMapView(gameContext, mockConfigModel));
+    gameMapView = Mockito.spy(new GameMapView(gameContext, mockConfigModel, "data/games/BasicPacMan/"));
     gameLoopController = Mockito.spy(
         new GameLoopController(mockConfigModel, gameContext, gameMapView, mock(
             ParsedLevelRecord.class)));
