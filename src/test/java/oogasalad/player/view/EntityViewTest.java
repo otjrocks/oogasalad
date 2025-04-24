@@ -80,7 +80,7 @@ class EntityViewTest extends DukeApplicationTest {
       dirOffset = 84;
     }
 
-    EntityView view = new EntityView(mockEntity);
+    EntityView view = new EntityView(mockEntity, "data/games/BasicPacMan/");
     view.draw(mockGC, 20, 20);
 
     verify(mockGC).drawImage(
