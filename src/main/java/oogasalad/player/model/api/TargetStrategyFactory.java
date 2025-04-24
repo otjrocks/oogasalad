@@ -66,15 +66,30 @@ public class TargetStrategyFactory {
   private static TargetCalculationConfigInterface getTargetCalculationConfigInterface(
       ControlConfigInterface config) {
 
-    for (RecordComponent component : config.getClass().getRecordComponents()) {
+    RecordComponent[] components = config.getClass().getRecordComponents();
+
+    checkIfValidConfig(components, config);
+
+    for (RecordComponent component : components) {
       if (isTargetCalculationComponent(component)) {
-        return getComponentValue(config, component);
+        TargetCalculationConfigInterface value = getComponentValue(config, component);
+        if (value != null) {
+          return value;
+        }
       }
     }
 
     throw new TargetStrategyException(
         "No field of type TargetCalculationConfigInterface found in config: "
             + config.getClass().getSimpleName());
+  }
+
+  private static void checkIfValidConfig(RecordComponent[] components,
+      ControlConfigInterface config) {
+    if (components == null) {
+      throw new TargetStrategyException(
+          "Config class " + config.getClass().getSimpleName() + " is not a valid record");
+    }
   }
 
   private static boolean isTargetCalculationComponent(RecordComponent component) {
@@ -95,7 +110,6 @@ public class TargetStrategyFactory {
     }
     return null;
   }
-
 
 
   private static TargetStrategyInterface instantiateStrategy(Class<?> strategyClass,
