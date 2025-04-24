@@ -73,10 +73,10 @@ public class TargetStrategyHelperMethods {
 
   static int validateAndGetKeyInt(Map<String, Object> strategyConfig, String key) {
     if (strategyConfig.containsKey(key) && strategyConfig.get(key) != null) {
-      Object value = strategyConfig.get(key);
-      if (value instanceof Number num) {
-        return num.intValue();
-      } else {
+      try {
+        Number number = (Number) strategyConfig.get(key);
+        return number.intValue();
+      } catch (ClassCastException e) {
         throw new TargetStrategyException(key + " must be a number convertible to int");
       }
     }
