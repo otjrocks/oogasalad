@@ -78,12 +78,11 @@ public class GameView {
           BackgroundRepeat.NO_REPEAT,
           BackgroundPosition.CENTER,
           new BackgroundSize(
-              1.0, 1.0,      // width, height
+              1.0, 1.0,      // width, height as 100%
               true, true,    // treat width and height as percentages
               true,          // preserve aspect ratio
-              true           // cover area
+              false          // DO NOT cover area (contain instead)
           )
-
       );
       myRoot.setBackground(new Background(bgImage));
     }

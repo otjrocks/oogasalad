@@ -110,7 +110,6 @@ Label, Text {
   -fx-border-style: solid;
   -fx-background-color: white;
   -fx-background-size: contain;
-  -fx-background-repeat: no-repeat;
   -fx-background-position: center center;
 }
 

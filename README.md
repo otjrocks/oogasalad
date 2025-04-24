@@ -24,7 +24,7 @@ Pac-Man.
       Press Start 2P.
     * Various sprites from the original game were used. Additionally, this source was used for game
       sprites: https://www.spriters-resource.com/arcade/pacman/
-    * 
+    * Additional game sprites for other games were modified from https://www.spriters-resource.com/
 
 ### Running the Program
 
