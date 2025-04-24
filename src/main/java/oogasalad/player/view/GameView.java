@@ -1,14 +1,23 @@
 package oogasalad.player.view;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.StackPane;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.utility.constants.GameConfig;
 import oogasalad.player.controller.GameLoopController;
 
@@ -45,8 +54,8 @@ public class GameView {
     myRoot.setMinSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
     myRoot.setMaxSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
     myRoot.getChildren().add(myGameMapView.getCanvas());
-    myRoot.getStyleClass().add("game-view");
     myRoot.setFocusTraversable(true);
+    setBackgroundImage(configModel, levelIndex, gameFolder);
     boolean isFinalLevel = levelIndex >= configModel.levels().size() - 1;
 
     myGameLoopController = new GameLoopController(configModel, gameContext,
@@ -55,6 +64,38 @@ public class GameView {
     myGameMapView.setGameLoopController(myGameLoopController);
     setUpEndMessage();
     myGameMapView.setEndGameCallback(won -> showEndMessage(won, isFinalLevel));
+  }
+
+  private void setBackgroundImage(ConfigModelRecord configModel, int levelIndex, String gameFolder) {
+    Image backgroundImage = getBackgroundImage(configModel, levelIndex, gameFolder);
+    BackgroundImage bgImage = new BackgroundImage(
+        backgroundImage,
+        BackgroundRepeat.NO_REPEAT,
+        BackgroundRepeat.NO_REPEAT,
+        BackgroundPosition.CENTER,
+        new BackgroundSize(
+            BackgroundSize.AUTO,
+            BackgroundSize.AUTO,
+            false,
+            false,
+            false,
+            true
+        )
+    );
+    myRoot.setBackground(new Background(bgImage));
+  }
+
+  private Image getBackgroundImage(ConfigModelRecord configModel, int levelIndex,
+      String gameFolder) {
+    final Image backgroundImage;
+    String imagePath = gameFolder + configModel.levels().get(levelIndex).imagePath();
+    try {
+      backgroundImage = new Image(new FileInputStream(imagePath));
+    } catch (FileNotFoundException e) {
+      LoggingManager.LOGGER.warn("Unable to load background image for level {}", imagePath);
+      throw new RuntimeException("Failed to load image from path: " + imagePath, e);
+    }
+    return backgroundImage;
   }
 
   /**

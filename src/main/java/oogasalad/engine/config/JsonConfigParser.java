@@ -151,7 +151,8 @@ public class JsonConfigParser implements ConfigParserInterface {
       List<SpawnEventRecord> spawnEvents = parseSpawnEvents(root, idToEntityType);
       List<ModeChangeEventRecord> modeChangeEvents = parseModeChangeEvents(root, idToEntityType);
 
-      return new ParsedLevelRecord(placements, mapInfo, spawnEvents, modeChangeEvents);
+      return new ParsedLevelRecord("assets/background.png", placements, mapInfo, spawnEvents, modeChangeEvents);
+      // TODO: remove hardcoded
 
     } catch (IOException e) {
       throw new ConfigException("Error in loading level config", e);

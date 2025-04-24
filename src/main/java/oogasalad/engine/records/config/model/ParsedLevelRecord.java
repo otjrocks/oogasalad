@@ -5,8 +5,10 @@ import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.records.model.MapInfoRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
 
-public record ParsedLevelRecord(List<EntityPlacement> placements, MapInfoRecord mapInfo,
-                                List<SpawnEventRecord> spawnEvents, List<ModeChangeEventRecord> modeChangeEvents) {
+public record ParsedLevelRecord(String imagePath, List<EntityPlacement> placements,
+                                MapInfoRecord mapInfo,
+                                List<SpawnEventRecord> spawnEvents,
+                                List<ModeChangeEventRecord> modeChangeEvents) {
 
 }
 
