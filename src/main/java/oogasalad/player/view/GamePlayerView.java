@@ -55,7 +55,7 @@ public class GamePlayerView {
     myPane.setPrefWidth(WIDTH);
     myPane.getStyleClass().add("game-player-view");
 
-    createMap();
+    initializeGame();
   }
 
   /**
@@ -71,14 +71,18 @@ public class GamePlayerView {
     loadConfigFromFile();
     loadOrCreateSession();
     updateGameStateFromSession();
-    loadGameViewFromSession();
+
+    LevelController levelController = new LevelController(myMainController, myConfigModel, isRandomized, sessionManager);
+    loadGameViewFromSession(levelController);
   }
 
   private void loadOrCreateSession() {
     try {
       sessionManager.loadExistingSession();
+      LoggingManager.LOGGER.info("✅ Loaded existing save file for '{}'", gameFolderName);
     } catch (IOException e) {
       sessionManager.startNewSession(myConfigModel);
+      LoggingManager.LOGGER.info("📁 No save found, created new session for '{}'", gameFolderName);
     }
   }
 
@@ -88,86 +92,71 @@ public class GamePlayerView {
     myGameState.updateScore(sessionManager.getCurrentScore());
   }
 
-
-  private void createMap() {
-    loadConfigFromFile();
-    try {
-      sessionManager.loadExistingSession();
-    } catch (IOException e) {
-      sessionManager.startNewSession(myConfigModel);
-    }
-    loadGameViewFromSession();
-    updateGameStateFromSave();
-  }
-
-
-  private void updateGameStateFromSave() {
-    myGameState.resetState();
-    myGameState.updateLives(sessionManager.getLives());
-    myGameState.updateScore(sessionManager.getCurrentScore());
-  }
-
-  private void updateGameStateFromConfigurationFile() {
-    myGameState.resetState();
-    myGameState.updateLives(myConfigModel.settings().startingLives());
-    myGameState.updateScore(myConfigModel.settings().initialScore());
-  }
-
   private void loadConfigFromFile() {
     JsonConfigParser configParser = new JsonConfigParser();
     try {
       myConfigModel = configParser.loadFromFile(GAME_FOLDER + gameFolderName + "/" + GAME_CONFIG_JSON);
     } catch (ConfigException e) {
-      LoggingManager.LOGGER.warn("Failed to reload updated config", e);
+      LoggingManager.LOGGER.warn("Failed to load config file: {}", GAME_CONFIG_JSON, e);
     }
   }
 
-  private void loadGameViewFromSession() {
-    LevelController levelController = new LevelController(myMainController, myConfigModel,
-        isRandomized, sessionManager);
+  private void loadGameViewFromSession(LevelController levelController) {
+    myPane.getChildren().removeIf(node -> node == myGameView.getRoot()); // Clear old GameView
 
     if (levelController.getCurrentLevelMap() != null) {
+      int logicalIndex = sessionManager.getCurrentLevel();
+      int actualMappedIndex = sessionManager.getLevelOrder().get(logicalIndex);
+
+      LoggingManager.LOGGER.info("🧭 Loading mapped level {} (logical index {})", actualMappedIndex, logicalIndex);
+
       myGameView = new GameView(
           new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
-          myConfigModel, levelController.getCurrentLevelIndex()
+          myConfigModel,
+          logicalIndex,
+          sessionManager
       );
 
-      myGameView.setNextLevelAction(() -> handleNextLevel(levelController));
-      myGameView.setResetAction(() -> handleResetGame(levelController));
+      myGameView.setNextLevelAction(this::handleNextLevel);
+      myGameView.setResetAction(this::handleResetGame);
 
       myPane.getChildren().add(myGameView.getRoot());
     }
   }
 
-  private void handleNextLevel(LevelController levelController) {
-    if (levelController.hasNextLevel()) {
+  private void handleNextLevel() {
+    if (sessionManager.getCurrentLevel() + 1 < sessionManager.getLevelOrder().size()) {
       sessionManager.advanceLevel(myGameState.getScore());
 
       try {
         sessionManager.loadExistingSession();
+        LoggingManager.LOGGER.info("📂 Reloaded session after advancing to level {}", sessionManager.getCurrentLevel());
       } catch (IOException e) {
         LoggingManager.LOGGER.warn("Failed to reload session after level advance", e);
       }
 
-      refreshGame(levelController);
+      refreshGame();
     } else {
-      LoggingManager.LOGGER.info("All levels complete — cannot advance further.");
+      LoggingManager.LOGGER.info("🎉 All levels complete — cannot advance further.");
     }
   }
 
 
-  private void handleResetGame(LevelController levelController) {
+  private void handleResetGame() {
     myGameState.resetTimeElapsed();
     sessionManager.resetSession(myConfigModel);
-    refreshGame(levelController);
+    refreshGame();
   }
 
-  private void refreshGame(LevelController levelController) {
+  private void refreshGame() {
     myPane.getChildren().clear();
-    loadConfigFromFile(); // optionally reload fresh config
+
     updateGameStateFromSession();
-    loadGameViewFromSession();
+
+    LevelController newLevelController = new LevelController(myMainController, myConfigModel, isRandomized, sessionManager);
+    loadGameViewFromSession(newLevelController);
   }
+
 
   /**
    * Returns privately stored GameView.

@@ -65,9 +65,8 @@ public class LevelController {
     }
     GameMapInterface gameMap = null;
     try {
-      gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(),
-          myConfigModel,
-          myLevelOrder.get(myLevelIndex));
+      int mappedIndex = sessionManager.getLevelOrder().get(myLevelIndex);
+      gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel, mappedIndex);
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn("Failed to create or populate GameMap: ", e);
     }
@@ -105,7 +104,12 @@ public class LevelController {
    *
    * @return The int representing the current level loaded 0-indexed.
    */
-  public int getCurrentLevel() { return myLevelOrder.get(myLevelIndex); }
+  public int getCurrentLevel() {
+    int mappedIndex = sessionManager.getLevelOrder().get(myLevelIndex);
+    LoggingManager.LOGGER.info("Loading level index " + myLevelIndex + " mapped to actual index " + mappedIndex);
+    return mappedIndex;
+  }
+
 
   /**
    * Gets if there are any levels remaining

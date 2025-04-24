@@ -11,6 +11,7 @@ import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.constants.GameConfig;
 import oogasalad.player.controller.GameLoopController;
+import oogasalad.player.model.save.GameSessionManager;
 
 /**
  * The main game view of the player. Primarily encapsulates the game map view.
@@ -28,6 +29,7 @@ public class GameView {
   private final Button nextLevelButton = new Button();
   private final Button resetButton = new Button();
   private static final String END_BUTTON_STYLE = "end-button";
+  private final GameSessionManager sessionManager;
 
   /**
    * Create the game view.
@@ -36,7 +38,8 @@ public class GameView {
    * @param configModel The config model for this view.
    * @param levelIndex  The index of the level that is displayed on this view.
    */
-  public GameView(GameContextRecord gameContext, ConfigModelRecord configModel, int levelIndex) {
+  public GameView(GameContextRecord gameContext, ConfigModelRecord configModel, int levelIndex,
+      GameSessionManager sessionManager) {
     myRoot = new StackPane();
     GameMapView myGameMapView = new GameMapView(gameContext, configModel);
     myRoot.setPrefSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
@@ -46,10 +49,11 @@ public class GameView {
     myRoot.getStyleClass().add("game-view");
     myRoot.setFocusTraversable(true);
     boolean isFinalLevel = levelIndex >= configModel.levels().size() - 1;
+    this.sessionManager = sessionManager;
 
     myGameLoopController = new GameLoopController(configModel, gameContext,
         myGameMapView,
-        configModel.levels().get(levelIndex));
+        configModel.levels().get(sessionManager.getLevelOrder().get(levelIndex)));
     myGameMapView.setGameLoopController(myGameLoopController);
     setUpEndMessage();
     myGameMapView.setEndGameCallback(won -> showEndMessage(won, isFinalLevel));

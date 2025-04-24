@@ -21,18 +21,20 @@ public class SaveManager {
   /**
    * Saves the provided saveConfig object to a JSON file named after its saveName.
    */
-  public static void saveGame(SaveConfigRecord saveConfig, String gameFolderName) throws IOException {
-    File folder = new File("data/games/" + gameFolderName + "/saves/");
+  public static void saveGame(SaveConfigRecord saveConfig, String gameFolder) throws IOException {
+    File folder = new File("data/games/" + gameFolder + "/saves");
     if (!folder.exists()) {
       folder.mkdirs();
     }
-    MAPPER.writeValue(getSaveFile(gameFolderName, saveConfig.saveName()), saveConfig);
+    File saveFile = new File(folder, saveConfig.saveName() + ".json");
+    MAPPER.writeValue(saveFile, saveConfig);
   }
 
   /**
    * Loads a SaveConfig from a save name.
    */
-  public static SaveConfigRecord loadGame(String gameFolderName, String saveName) throws IOException {
-    return MAPPER.readValue(getSaveFile(gameFolderName, saveName), SaveConfigRecord.class);
+  public static SaveConfigRecord loadGame(String gameFolder, String saveName) throws IOException {
+    File saveFile = new File("data/games/" + gameFolder + "/saves", saveName + ".json");
+    return MAPPER.readValue(saveFile, SaveConfigRecord.class);
   }
 }

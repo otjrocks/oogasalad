@@ -49,7 +49,9 @@ public class GameSessionManager {
    */
   public void loadExistingSession() throws IOException {
     saveConfig = SaveManager.loadGame(gameFolderName, saveName);
+    System.out.println("📂 Loaded session file for '" + saveName + "'");
   }
+
 
   /**
    * Saves the current session state to a file.
@@ -57,10 +59,13 @@ public class GameSessionManager {
   public void save() {
     try {
       SaveManager.saveGame(saveConfig, gameFolderName);
+      System.out.println("💾 Saved game state to: data/games/" + gameFolderName + "/saves/" + saveConfig.saveName() + ".json");
     } catch (IOException e) {
+      System.err.println("❌ Failed to save game.");
       e.printStackTrace();
     }
   }
+
 
 
   /**
