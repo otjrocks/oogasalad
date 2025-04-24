@@ -47,11 +47,11 @@ public class GamePlayerView {
   /**
    * Constructs a GamePlayerView object that represents the visual interface for the game player.
    *
-   * @param controller       the main controller that manages the game logic and interactions
-   * @param gameState        the current state of the game, providing access to game data
-   * @param gameFolderName   the name of the folder containing game-specific resources
-   * @param randomized       a flag indicating whether the game is randomized
-   * @param customBasePath   the custom base path for game resources
+   * @param controller     the main controller that manages the game logic and interactions
+   * @param gameState      the current state of the game, providing access to game data
+   * @param gameFolderName the name of the folder containing game-specific resources
+   * @param randomized     a flag indicating whether the game is randomized
+   * @param customBasePath the custom base path for game resources
    */
   public GamePlayerView(MainController controller, GameStateInterface gameState,
       String gameFolderName, boolean randomized, String customBasePath) {
@@ -106,7 +106,8 @@ public class GamePlayerView {
     if (levelController.getCurrentLevelMap() != null) {
       myGameView = new GameView(
           new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
-          myConfigModel, levelController.getCurrentLevelIndex());
+          myConfigModel, levelController.getCurrentLevelIndex(),
+          (gameFolderBasePath + gameFolderName + "/"));
 
       myGameView.setNextLevelAction(() -> loadNextLevel(levelController));
       myGameView.setResetAction(() -> resetGame(levelController));
