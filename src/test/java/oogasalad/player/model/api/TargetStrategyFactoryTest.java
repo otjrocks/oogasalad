@@ -45,13 +45,10 @@ public class TargetStrategyFactoryTest {
   }
 
   private void mockControlConfig(ControlConfigInterface controlConfig) {
-    EntityPropertiesRecord mockProps = mock(EntityPropertiesRecord.class);
+    ModeConfigRecord mockProps = mock(ModeConfigRecord.class);
     when(mockProps.controlConfig()).thenReturn(controlConfig);
 
-    ModeConfigRecord mockModeConfig = mock(ModeConfigRecord.class);
-    when(mockModeConfig.entityProperties()).thenReturn(mockProps);
-
-    when(mockType.modes()).thenReturn(Map.of(mockMode, mockModeConfig));
+    when(mockType.modes()).thenReturn(Map.of(mockMode, mockProps));
   }
 
   private void mockTargetControlConfig(TargetCalculationConfigInterface targetConfig) {
@@ -65,28 +62,32 @@ public class TargetStrategyFactoryTest {
   @Test
   void createTargetStrategy_targetLocationStrategy_createdSuccessfully() {
     mockTargetControlConfig(new TargetLocationConfigRecord(10.0, 20.0));
-    TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
+    TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement,
+        mockMap);
     assertInstanceOf(TargetLocationStrategy.class, strategy);
   }
 
   @Test
   void createTargetStrategy_targetEntityStrategy_createdSuccessfully() {
     mockTargetControlConfig(new TargetEntityConfigRecord("Enemy"));
-    TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
+    TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement,
+        mockMap);
     assertInstanceOf(TargetEntityStrategy.class, strategy);
   }
 
   @Test
   void createTargetStrategy_targetAheadOfEntityStrategy_createdSuccessfully() {
     mockTargetControlConfig(new TargetAheadOfEntityConfigRecord("Ally", 2));
-    TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
+    TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement,
+        mockMap);
     assertInstanceOf(TargetAheadOfEntityStrategy.class, strategy);
   }
 
   @Test
   void createTargetStrategy_targetEntityWithTrapStrategy_createdSuccessfully() {
     mockConditionalControlConfig(new TargetEntityWithTrapConfigRecord("Enemy", 1, "Trap"));
-    TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap);
+    TargetStrategyInterface strategy = TargetStrategyFactory.createTargetStrategy(mockPlacement,
+        mockMap);
     assertInstanceOf(TargetEntityWithTrapStrategy.class, strategy);
   }
 
@@ -114,10 +115,15 @@ public class TargetStrategyFactoryTest {
   }
 
   // Dummy config and strategy with no valid constructor
-  record TargetNoConstructorConfig(String key) implements TargetCalculationConfigInterface {}
+  record TargetNoConstructorConfig(String key) implements TargetCalculationConfigInterface {
+
+  }
 
   static class TargetNoConstructorStrategy implements TargetStrategyInterface {
-    private TargetNoConstructorStrategy() {}
+
+    private TargetNoConstructorStrategy() {
+    }
+
     @Override
     public int[] getTargetPosition() {
       return new int[0];

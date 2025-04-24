@@ -31,6 +31,7 @@ public class GameLoopController {
   private final GameMapView myGameMapView;
   private final ParsedLevelRecord myLevel;
   private final Map<SpawnEventRecord, Entity> activeSpawnedEntities = new HashMap<>();
+  private final ConfigModelRecord myConfig;
   private final double myGameSpeedMultiplier;
   private double myTotalElapsedTime = 0;
 
@@ -51,6 +52,7 @@ public class GameLoopController {
     myGameMapView = gameMapView;
     myLevel = level;
     myGameSpeedMultiplier = gameConfig.settings().gameSpeed();
+    myConfig = gameConfig;
     initializeGameLoop();
   }
   // this and following methods are written by ChatGPT
@@ -153,7 +155,7 @@ public class GameLoopController {
       Entity newEntity = new Entity(null,
           new EntityPlacement(spawnEvent.entityType(), spawnEvent.x(), spawnEvent.y(),
               spawnEvent.mode()),
-          myGameContext.gameMap());
+          myGameContext.gameMap(), myConfig);
       try {
         myGameContext.gameMap().addEntity(newEntity);
         activeSpawnedEntities.put(spawnEvent, newEntity);

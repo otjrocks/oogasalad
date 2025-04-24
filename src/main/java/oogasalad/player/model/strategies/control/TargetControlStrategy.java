@@ -56,12 +56,9 @@ public class TargetControlStrategy implements ControlStrategyInterface {
   }
 
   private PathFindingStrategyInterface getPathFindingStrategy(ControlConfigInterface config) {
-    if (config instanceof TargetControlConfigRecord targetConfig) {
-      return PathFindingStrategyFactory.createPathFindingStrategy(
-          targetConfig.pathFindingStrategy());
-    } else {
-      throw new ControlStrategyException("Config is not a TargetControlConfig");
-    }
+    return PathFindingStrategyFactory.createPathFindingStrategy(
+        config.getPathFindingStrategy()
+            .orElseThrow(() -> new ControlStrategyException("Config is not a TargetControlConfig")));
   }
 
 
