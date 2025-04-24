@@ -14,8 +14,8 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.config.EntityPlacement;
 
 /**
- * Visual canvas where entity instances are placed via drag and drop.
- * Supports highlighting, selection, and repositioning of entities on a tile grid.
+ * Visual canvas where entity instances are placed via drag and drop. Supports highlighting,
+ * selection, and repositioning of entities on a tile grid.
  *
  * @author Will He, Angela Predolac, Ishan Madan
  */
@@ -40,7 +40,8 @@ public class CanvasView {
   private ImageView selectedImageView;
 
   /**
-   * Constructs the canvas view with default dimensions and connects it to the authoring controller.
+   * Constructs the canvas view with default dimensions and connects it to the authoring
+   * controller.
    *
    * @param controller the AuthoringController managing entity placement
    */
@@ -52,6 +53,7 @@ public class CanvasView {
     root.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
     root.getStyleClass().add("canvas-view");
+    setBackgroundImage(controller);
 
     this.canvasGrid = new CanvasGrid(DEFAULT_ROWS, DEFAULT_COLS);
     this.entityManager = new EntityManager(
@@ -68,6 +70,19 @@ public class CanvasView {
       resizeGrid(DEFAULT_COLS, DEFAULT_ROWS);
     });
     setupDragAndDropHandlers();
+  }
+
+  private void setBackgroundImage(AuthoringController controller) {
+    if (controller.getLevelController().getCurrentLevel().getBackgroundImage() != null) {
+      root.setStyle(
+          "-fx-background-image: url('" +
+              controller.getLevelController().getCurrentLevel().getBackgroundImage().toURI()
+              +
+              "');"
+      );
+    } else {
+      root.setStyle("-fx-background-color: transparent;");
+    }
   }
 
   /**
@@ -90,7 +105,9 @@ public class CanvasView {
     root.getChildren().clear();
     entityManager.clear();
     tileHighlighter.resizeTo(canvasGrid.getTileWidth(), canvasGrid.getTileHeight());
-    root.getChildren().addAll(tileHighlighter.getHoverRectangle(), tileHighlighter.getSelectionRectangle());
+    root.getChildren()
+        .addAll(tileHighlighter.getHoverRectangle(), tileHighlighter.getSelectionRectangle());
+    setBackgroundImage(controller);
     setupDragAndDropHandlers();
     reloadFromPlacements(controller.getModel().getCurrentLevel().getEntityPlacements());
   }
@@ -104,6 +121,7 @@ public class CanvasView {
     entityManager.reloadEntities(placements);
     tileHighlighter.hideSelection();
     tileHighlighter.hideHover();
+    setBackgroundImage(controller);
   }
 
   /**
@@ -112,7 +130,9 @@ public class CanvasView {
    * @param e the mouse event
    */
   public void handleEntityMousePressed(MouseEvent e) {
-    if (!(e.getSource() instanceof ImageView imageView)) return;
+    if (!(e.getSource() instanceof ImageView imageView)) {
+      return;
+    }
 
     Map<ImageView, EntityPlacement> entityViews = entityManager.getEntityViews();
     selectedImageView = imageView;
@@ -141,7 +161,9 @@ public class CanvasView {
    * @param e the mouse drag event
    */
   public void handleEntityMouseDragged(MouseEvent e) {
-    if (selectedImageView == null || selectedEntity == null) return;
+    if (selectedImageView == null || selectedEntity == null) {
+      return;
+    }
 
     if (!hasMoved && exceededDragThreshold(e)) {
       hasMoved = true;
@@ -239,7 +261,6 @@ public class CanvasView {
   }
 
 
-
   /**
    * Returns the tile highlighter used for hover and selection visuals.
    *
@@ -265,7 +286,9 @@ public class CanvasView {
   }
 
   private void handleDragOver(DragEvent e) {
-    if (!e.getDragboard().hasString()) return;
+    if (!e.getDragboard().hasString()) {
+      return;
+    }
     e.acceptTransferModes(TransferMode.COPY);
 
     if (isDragging) {
@@ -284,7 +307,9 @@ public class CanvasView {
 
   private void handleDragDropped(DragEvent e) {
     Dragboard db = e.getDragboard();
-    if (!db.hasString()) return;
+    if (!db.hasString()) {
+      return;
+    }
 
     int col = canvasGrid.getColFromX(e.getX());
     int row = canvasGrid.getRowFromY(e.getY());

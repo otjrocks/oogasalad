@@ -354,9 +354,9 @@ public class AuthoringModel {
     // Levels
     for (int i = 0; i < levels.size(); i++) {
       ObjectNode levelJson = builder.buildLevelConfig(levels.get(i), entityToId, mapper);
-      if (levels.get(i).getBackgroundImagePath() != null) {
+      if (levels.get(i).getBackgroundImage() != null) {
         saver.writeAsset(
-            Paths.get(levels.get(i).getBackgroundImagePath().getPath()).toUri().toString(),
+            Paths.get(levels.get(i).getBackgroundImage().getPath()).toUri().toString(),
             outputFolder);
       }
       saver.saveLevel("level" + (i + 1), levelJson, outputFolder);

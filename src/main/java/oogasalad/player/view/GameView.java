@@ -69,28 +69,24 @@ public class GameView {
 
   private void setBackgroundImage(ConfigModelRecord configModel, int levelIndex,
       String gameFolder) {
+    // ChatGPT generated this code.
     Image backgroundImage = getBackgroundImage(configModel, levelIndex, gameFolder);
     if (backgroundImage != null) {
-      setBackgroundFromImage(backgroundImage);
-    }
-  }
+      BackgroundImage bgImage = new BackgroundImage(
+          backgroundImage,
+          BackgroundRepeat.NO_REPEAT,
+          BackgroundRepeat.NO_REPEAT,
+          BackgroundPosition.CENTER,
+          new BackgroundSize(
+              1.0, 1.0,      // width, height
+              true, true,    // treat width and height as percentages
+              true,          // preserve aspect ratio
+              true           // cover area
+          )
 
-  private void setBackgroundFromImage(Image backgroundImage) {
-    BackgroundImage bgImage = new BackgroundImage(
-        backgroundImage,
-        BackgroundRepeat.NO_REPEAT,
-        BackgroundRepeat.NO_REPEAT,
-        BackgroundPosition.CENTER,
-        new BackgroundSize(
-            BackgroundSize.AUTO,
-            BackgroundSize.AUTO,
-            false,
-            false,
-            false,
-            true
-        )
-    );
-    myRoot.setBackground(new Background(bgImage));
+      );
+      myRoot.setBackground(new Background(bgImage));
+    }
   }
 
   private Image getBackgroundImage(ConfigModelRecord configModel, int levelIndex,

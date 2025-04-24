@@ -255,7 +255,7 @@ public class LevelDraft {
    *
    * @return A file representing the background image.
    */
-  public File getBackgroundImagePath() {
+  public File getBackgroundImage() {
     return backgroundImage;
   }
 

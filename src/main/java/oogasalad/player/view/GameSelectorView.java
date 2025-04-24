@@ -151,34 +151,31 @@ public class GameSelectorView {
     int totalPages = (int) Math.ceil((double) gameNames.size() / itemsPerPage);
 
     Pagination pagination = new Pagination(totalPages, 0);
-    pagination.setPageFactory(new Callback<>() {
-      @Override
-      public VBox call(Integer pageIndex) {
-        VBox pageBox = new VBox(10);
-        pageBox.setAlignment(Pos.CENTER);
+    pagination.setPageFactory(pageIndex -> {
+      VBox pageBox = new VBox(10);
+      pageBox.setAlignment(Pos.CENTER);
 
-        if (gameNames.isEmpty()) {
-          Label emptyLabel = new Label("No games available.");
-          pageBox.getChildren().add(emptyLabel);
-          return pageBox;
-        }
-
-        int start = pageIndex * itemsPerPage;
-        int end = Math.min(start + itemsPerPage, gameNames.size());
-        List<String> pageGames = gameNames.subList(start, end);
-
-        HBox gameGrid = new HBox(30);
-        gameGrid.setAlignment(Pos.CENTER);
-        gameGrid.getStyleClass().add("game-grid");
-
-        for (String name : pageGames) {
-          VBox gameCard = createGameCard(name);
-          gameGrid.getChildren().add(gameCard);
-        }
-
-        pageBox.getChildren().add(gameGrid);
+      if (gameNames.isEmpty()) {
+        Label emptyLabel = new Label("No games available.");
+        pageBox.getChildren().add(emptyLabel);
         return pageBox;
       }
+
+      int start = pageIndex * itemsPerPage;
+      int end = Math.min(start + itemsPerPage, gameNames.size());
+      List<String> pageGames = gameNames.subList(start, end);
+
+      HBox gameGrid = new HBox(30);
+      gameGrid.setAlignment(Pos.CENTER);
+      gameGrid.getStyleClass().add("game-grid");
+
+      for (String name : pageGames) {
+        VBox gameCard = createGameCard(name);
+        gameGrid.getChildren().add(gameCard);
+      }
+
+      pageBox.getChildren().add(gameGrid);
+      return pageBox;
     });
     return pagination;
   }

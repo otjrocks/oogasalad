@@ -109,9 +109,9 @@ public class JsonConfigBuilder {
     ObjectNode settings = root.putObject("mapInfo");
     settings.put("width", draft.getWidth());
     settings.put("height", draft.getHeight());
-    if (draft.getBackgroundImagePath() != null) {
+    if (draft.getBackgroundImage() != null) {
       settings.put("backgroundImagePath",
-          getImagePath(draft.getBackgroundImagePath().getAbsolutePath()));
+          getImagePath(draft.getBackgroundImage().getAbsolutePath()));
     }
 
     // === layout ===

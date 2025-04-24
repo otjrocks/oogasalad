@@ -9,7 +9,6 @@ import javafx.scene.control.Spinner;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.LevelDraft;
 import oogasalad.engine.utility.LanguageManager;
@@ -59,12 +58,14 @@ public class LevelSettingsView {
     Label titleLabel = new Label("Level Settings");
     titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
-    Button saveButton = new Button("Apply Size");
+    Button saveButton = new Button("Apply Size and Background Image");
     saveButton.setOnAction(e -> applyChanges());
 
     Button chooseImageButton = new Button("Choose Background Image");
     chooseImageButton.setOnAction(e -> {
       mySelectedFile = myFileChooser.showOpenDialog(root.getScene().getWindow());
+      LevelDraft level = controller.getCurrentLevel();
+      level.setBackgroundImage(mySelectedFile);
     });
 
     Button editModeEventsButton = new Button("Edit Mode Change Events");
@@ -108,7 +109,6 @@ public class LevelSettingsView {
     int newHeight = heightSpinner.getValue();
     level.setWidth(newWidth);
     level.setHeight(newHeight);
-    level.setBackgroundImage(mySelectedFile);
     controller.updateCanvasSize(newWidth, newHeight);
   }
 
