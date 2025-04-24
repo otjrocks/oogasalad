@@ -2,6 +2,7 @@ package oogasalad.player.view;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Objects;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -66,8 +67,15 @@ public class GameView {
     myGameMapView.setEndGameCallback(won -> showEndMessage(won, isFinalLevel));
   }
 
-  private void setBackgroundImage(ConfigModelRecord configModel, int levelIndex, String gameFolder) {
+  private void setBackgroundImage(ConfigModelRecord configModel, int levelIndex,
+      String gameFolder) {
     Image backgroundImage = getBackgroundImage(configModel, levelIndex, gameFolder);
+    if (backgroundImage != null) {
+      setBackgroundFromImage(backgroundImage);
+    }
+  }
+
+  private void setBackgroundFromImage(Image backgroundImage) {
     BackgroundImage bgImage = new BackgroundImage(
         backgroundImage,
         BackgroundRepeat.NO_REPEAT,
@@ -88,7 +96,12 @@ public class GameView {
   private Image getBackgroundImage(ConfigModelRecord configModel, int levelIndex,
       String gameFolder) {
     final Image backgroundImage;
-    String imagePath = gameFolder + configModel.levels().get(levelIndex).imagePath();
+    String backgroundImagePath = configModel.levels().get(levelIndex).mapInfo()
+        .backgroundImagePath();
+    if (backgroundImagePath == null) {
+      return null;
+    }
+    String imagePath = gameFolder + backgroundImagePath;
     try {
       backgroundImage = new Image(new FileInputStream(imagePath));
     } catch (FileNotFoundException e) {

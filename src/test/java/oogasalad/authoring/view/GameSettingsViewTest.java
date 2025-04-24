@@ -36,7 +36,8 @@ public class GameSettingsViewTest extends DukeApplicationTest {
     mockController = mock(AuthoringController.class);
     mockModel = mock(AuthoringModel.class);
 
-    defaultSettings = new SettingsRecord(1.0, 3, 100,  new SurviveForTimeConditionRecord(5), new LivesBasedConditionRecord());
+    defaultSettings = new SettingsRecord(1.0, 3, 100, new SurviveForTimeConditionRecord(5),
+        new LivesBasedConditionRecord());
     when(mockController.getModel()).thenReturn(mockModel);
     when(mockModel.getDefaultSettings()).thenReturn(defaultSettings);
 

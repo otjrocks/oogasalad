@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,14 +55,13 @@ public class AuthoringModel {
     this.collisionRules = new ArrayList<>();
     // Create default settings with appropriate win condition and score strategy
     this.defaultSettings = new SettingsRecord(
-            1.0,                                    // Default game speed
-            3,                                      // Default starting lives
-            0,                                      // Default initial score
-            new SurviveForTimeConditionRecord(5),   // Default win condition - survive for 5 seconds
-            new LivesBasedConditionRecord()         // Default lose condition
+        1.0,                                    // Default game speed
+        3,                                      // Default starting lives
+        0,                                      // Default initial score
+        new SurviveForTimeConditionRecord(5),   // Default win condition - survive for 5 seconds
+        new LivesBasedConditionRecord()         // Default lose condition
     );
   }
-
 
 
   /**
@@ -354,6 +354,11 @@ public class AuthoringModel {
     // Levels
     for (int i = 0; i < levels.size(); i++) {
       ObjectNode levelJson = builder.buildLevelConfig(levels.get(i), entityToId, mapper);
+      if (levels.get(i).getBackgroundImagePath() != null) {
+        saver.writeAsset(
+            Paths.get(levels.get(i).getBackgroundImagePath().getPath()).toUri().toString(),
+            outputFolder);
+      }
       saver.saveLevel("level" + (i + 1), levelJson, outputFolder);
     }
 
@@ -365,7 +370,8 @@ public class AuthoringModel {
     }
   }
 
-  private static void copyImagesToAssetFolder(Path outputFolder, EntityTypeRecord e, JsonConfigSaver saver)
+  private static void copyImagesToAssetFolder(Path outputFolder, EntityTypeRecord e,
+      JsonConfigSaver saver)
       throws ConfigException {
     for (ModeConfigRecord modeConfig : e.modes().values()) {
       saver.writeAsset(modeConfig.image().imagePath(), outputFolder);

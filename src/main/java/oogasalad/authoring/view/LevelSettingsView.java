@@ -1,5 +1,6 @@
 package oogasalad.authoring.view;
 
+import java.io.File;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -7,12 +8,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.LevelDraft;
+import oogasalad.engine.utility.LanguageManager;
 
 /**
- * View component that allows users to edit level settings such as width and height.
- * Provides a simple interface with spinners and a button to apply changes.
+ * View component that allows users to edit level settings such as width and height. Provides a
+ * simple interface with spinners and a button to apply changes.
  *
  * @author Will He
  */
@@ -22,6 +26,8 @@ public class LevelSettingsView {
   private final Spinner<Integer> widthSpinner;
   private final Spinner<Integer> heightSpinner;
   private final LevelController controller;
+  private final FileChooser myFileChooser;
+  private File mySelectedFile;
 
   /**
    * Constructs a LevelSettingsView for the given level controller.
@@ -33,14 +39,33 @@ public class LevelSettingsView {
     this.root = new VBox(10);
     this.root.setPadding(new Insets(10));
 
-    Label titleLabel = new Label("Level Settings");
-    titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-
+    myFileChooser = new FileChooser();
     widthSpinner = new Spinner<>(5, 100, controller.getCurrentLevel().getWidth());
     heightSpinner = new Spinner<>(5, 100, controller.getCurrentLevel().getHeight());
 
+    initializeFileChooser();
+    initializeView(controller);
+  }
+
+  private void initializeFileChooser() {
+    myFileChooser.setTitle(LanguageManager.getMessage("CHOOSE_BACKGROUND_IMAGE"));
+    myFileChooser.getExtensionFilters().add(
+        new FileChooser.ExtensionFilter(LanguageManager.getMessage("IMAGE_FILES"), "*.png", "*.jpg",
+            "*.jpeg", "*.gif")
+    );
+  }
+
+  private void initializeView(LevelController controller) {
+    Label titleLabel = new Label("Level Settings");
+    titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+
     Button saveButton = new Button("Apply Size");
     saveButton.setOnAction(e -> applyChanges());
+
+    Button chooseImageButton = new Button("Choose Background Image");
+    chooseImageButton.setOnAction(e -> {
+      mySelectedFile = myFileChooser.showOpenDialog(root.getScene().getWindow());
+    });
 
     Button editModeEventsButton = new Button("Edit Mode Change Events");
     editModeEventsButton.setOnAction(e -> {
@@ -68,7 +93,10 @@ public class LevelSettingsView {
     grid.add(new Label("Height:"), 0, 1);
     grid.add(heightSpinner, 1, 1);
 
-    root.getChildren().addAll(titleLabel, grid, saveButton, editModeEventsButton, editSpawnEventsButton);
+    root.getChildren()
+        .addAll(titleLabel, grid, chooseImageButton, saveButton,
+            editModeEventsButton,
+            editSpawnEventsButton);
   }
 
   /**
@@ -80,6 +108,7 @@ public class LevelSettingsView {
     int newHeight = heightSpinner.getValue();
     level.setWidth(newWidth);
     level.setHeight(newHeight);
+    level.setBackgroundImage(mySelectedFile);
     controller.updateCanvasSize(newWidth, newHeight);
   }
 
