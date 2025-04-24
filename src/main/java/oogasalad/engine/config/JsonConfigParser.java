@@ -183,15 +183,12 @@ public class JsonConfigParser implements ConfigParserInterface {
     List<ModeChangeEventRecord> modeChangeEvents = new ArrayList<>();
     JsonNode eventsNode = rootNode.get("modeChangeEvents");
 
-    System.out.println(eventsNode.size());
     for (JsonNode eventNode : eventsNode) {
       int id = Integer.parseInt(eventNode.get(ENTITY_TYPE).asText());
       EntityTypeRecord type = idToEntityType.get(id);
       if (type == null) {
         throw new ConfigException("Unknown entity ID in modeChangeEvents: " + id);
       }
-
-      System.out.println(eventNode.get("modeChangeInfo").get("originalMode").asText());
       ModeChangeInfo changeInfo = new ModeChangeInfo(eventNode.get("modeChangeInfo").get("originalMode").asText(),
                                                       eventNode.get("modeChangeInfo").get("transitionMode").asText(),
                                                       eventNode.get("modeChangeInfo").get("revertTime").asInt(),
