@@ -7,6 +7,7 @@ public record TargetControlConfigRecord(
     String pathFindingStrategy,
     TargetCalculationConfigInterface targetCalculationConfig
 ) implements ControlConfigInterface {
+  @Override
   public Optional<String> getPathFindingStrategy() {
     return Optional.of(pathFindingStrategy);
   }
