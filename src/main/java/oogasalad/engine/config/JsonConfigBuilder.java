@@ -166,8 +166,12 @@ public class JsonConfigBuilder {
     for (ModeChangeEventRecord record : draft.getModeChangeEvents()) {
       ObjectNode event = mapper.createObjectNode();
       event.put(ENTITY_TYPE, String.valueOf(idMap.get(record.entityType().type())));
-      event.put("currentMode", record.currentMode());
-      event.put("nextMode", record.nextMode());
+
+      ObjectNode modeChangeInfo = event.putObject("modeChangeInfo");
+      modeChangeInfo.put("originalMode", record.modeChangeInfo().originalMode());
+      modeChangeInfo.put("transitionMode", record.modeChangeInfo().transitionMode());
+      modeChangeInfo.put("revertTime", record.modeChangeInfo().revertTime());
+      modeChangeInfo.put("transitionTime", record.modeChangeInfo().transitionTime());
 
       event.set("changeCondition", safeSerializeCondition(record.changeCondition(), mapper));
       array.add(event);
