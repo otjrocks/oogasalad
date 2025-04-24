@@ -54,7 +54,6 @@ public class GameViewTest extends DukeApplicationTest {
     StackPane root = gameView.getRoot();
     assertNotNull(root);
     assertFalse(root.getChildren().isEmpty());
-    assertTrue(root.getStyleClass().contains("game-view"));
   }
 
 

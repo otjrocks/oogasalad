@@ -73,7 +73,8 @@ public class CanvasView {
   }
 
   private void setBackgroundImage(AuthoringController controller) {
-    if (controller.getLevelController().getCurrentLevel().getBackgroundImage() != null) {
+    if (controller.getLevelController() != null
+        && controller.getLevelController().getCurrentLevel().getBackgroundImage() != null) {
       root.setStyle(
           "-fx-background-image: url('" +
               controller.getLevelController().getCurrentLevel().getBackgroundImage().toURI()

@@ -90,7 +90,7 @@ public class GameSelectorViewTest extends DukeApplicationTest {
     clickOn("Fake Game");
 
     // Even though gameNameToFolder is empty, we expect this to be called
-    verify(mockController, atLeastOnce()).hideGameSelectorView();
+    verify(mockController, atLeastOnce()).showGamePlayerView(null, false);
   }
 
   @Test
@@ -104,7 +104,7 @@ public class GameSelectorViewTest extends DukeApplicationTest {
     clickOn(randomizeButton);
 
     // Even though gameNameToFolder is empty, we expect this to be called
-    verify(mockController, atLeastOnce()).hideGameSelectorView();
+    verify(mockController, atLeastOnce()).showGamePlayerView(null, true);
   }
 
   @Test
@@ -114,7 +114,8 @@ public class GameSelectorViewTest extends DukeApplicationTest {
       view.getRoot().getChildren().add(view.createGameCard("Fake Game"));
     });
 
-    Button infoButton = lookup(b -> b instanceof Button && ((Button) b).getText().equals("i")).queryButton();
+    Button infoButton = lookup(
+        b -> b instanceof Button && ((Button) b).getText().equals("i")).queryButton();
     assertNotNull(infoButton);
 
     clickOn(infoButton);
@@ -129,7 +130,8 @@ public class GameSelectorViewTest extends DukeApplicationTest {
       view.getRoot().getChildren().add(view.createGameCard("Fake Game"));
     });
 
-    Button infoButton = lookup(b -> b instanceof Button && ((Button) b).getText().equals("i")).queryButton();
+    Button infoButton = lookup(
+        b -> b instanceof Button && ((Button) b).getText().equals("i")).queryButton();
     clickOn(infoButton);
 
     WaitForAsyncUtils.waitForFxEvents();
