@@ -10,19 +10,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.config.JsonConfigParser;
-import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
@@ -30,7 +26,6 @@ import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
-import oogasalad.engine.records.model.ModeChangeEventRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -49,11 +44,6 @@ class AuthoringModelTest {
             new ConditionRecord("spawn", Map.of()), 1.0, 1.0,
             "testMode", new ConditionRecord("despawn", Map.of())));
     model.addLevel(level);
-    model.getLevels().getFirst().getModeChangeEvents().add(
-        new ModeChangeEventRecord(new EntityTypeRecord("testEntity", null, null), "Default",
-            "NextMode",
-            new ConditionRecord("Default", null)));
-
     mockTemplate1 = mock(EntityTypeRecord.class);
     when(mockTemplate1.type()).thenReturn("Player");
 
