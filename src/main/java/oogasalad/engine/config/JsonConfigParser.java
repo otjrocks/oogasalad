@@ -22,12 +22,7 @@ import oogasalad.engine.records.config.EntityConfigRecord;
 import oogasalad.engine.records.config.GameConfigRecord;
 import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
-import oogasalad.engine.records.config.model.EntityPropertiesRecord;
-import oogasalad.engine.records.config.model.LevelRecord;
-import oogasalad.engine.records.config.model.MetadataRecord;
-import oogasalad.engine.records.config.model.ParsedLevelRecord;
-import oogasalad.engine.records.config.model.SettingsRecord;
-import oogasalad.engine.records.config.model.SpawnEventRecord;
+import oogasalad.engine.records.config.model.*;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.losecondition.LoseConditionInterface;
 import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
@@ -188,6 +183,7 @@ public class JsonConfigParser implements ConfigParserInterface {
     List<ModeChangeEventRecord> modeChangeEvents = new ArrayList<>();
     JsonNode eventsNode = rootNode.get("modeChangeEvents");
 
+    System.out.println(eventsNode.size());
     for (JsonNode eventNode : eventsNode) {
       int id = Integer.parseInt(eventNode.get(ENTITY_TYPE).asText());
       EntityTypeRecord type = idToEntityType.get(id);
@@ -195,11 +191,15 @@ public class JsonConfigParser implements ConfigParserInterface {
         throw new ConfigException("Unknown entity ID in modeChangeEvents: " + id);
       }
 
-      String currentMode = eventNode.get("currentMode").asText();
-      String nextMode = eventNode.get("nextMode").asText();
+      System.out.println(eventNode.get("modeChangeInfo").get("originalMode").asText());
+      ModeChangeInfo changeInfo = new ModeChangeInfo(eventNode.get("modeChangeInfo").get("originalMode").asText(),
+                                                      eventNode.get("modeChangeInfo").get("transitionMode").asText(),
+                                                      eventNode.get("modeChangeInfo").get("revertTime").asInt(),
+                                                      eventNode.get("modeChangeInfo").get("transitionTime").asInt());
+
       ConditionRecord changeCondition = parseCondition(eventNode.get("changeCondition"));
 
-      modeChangeEvents.add(new ModeChangeEventRecord(type, currentMode, nextMode, changeCondition));
+      modeChangeEvents.add(new ModeChangeEventRecord(type, changeInfo, changeCondition));
     }
 
     return modeChangeEvents;

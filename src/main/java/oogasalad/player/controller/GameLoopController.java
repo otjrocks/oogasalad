@@ -12,9 +12,12 @@ import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.model.ModeChangeInfo;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
+import oogasalad.engine.records.model.ModeChangeEventRecord;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.model.Entity;
+import oogasalad.player.model.api.ModeChangeEventStrategyFactory;
 import oogasalad.player.model.api.SpawnEventStrategyFactory;
+import oogasalad.player.model.strategies.modechangeevent.ModeChangeEventStrategyInterface;
 import oogasalad.player.model.strategies.spawnevent.SpawnEventStrategyInterface;
 import oogasalad.player.view.GameMapView;
 
@@ -109,28 +112,8 @@ public class GameLoopController {
     //Updates the game map and entity positions
     myGameContext.gameMap().update();
     myGameMapView.update();
-    handleModeChanges();
+    handleModeChangeEvents();
     handleSpawnEvents();
-  }
-
-  private void handleModeChanges() {
-
-    double currentTime = myGameContext.gameState().getTimeElapsed();
-    Iterator<Map.Entry<Entity, ModeChangeInfo>> iterator =
-            myGameContext.gameMap().getActiveModeChanges().entrySet().iterator();
-
-    while (iterator.hasNext()) {
-      Map.Entry<Entity, ModeChangeInfo> entry = iterator.next();
-      Entity entity = entry.getKey();
-      ModeChangeInfo info = entry.getValue();
-      if(currentTime >= info.transitionTime() && currentTime < info.revertTime()){
-        entity.getEntityPlacement().setMode(info.transitionMode());
-      }
-      if (currentTime >= info.revertTime()) {
-        entity.getEntityPlacement().setMode(info.originalMode());
-        iterator.remove();
-      }
-    }
   }
 
   private void handleSpawnEvents() {
@@ -186,6 +169,53 @@ public class GameLoopController {
     attemptRemovingEntity(entityToRemove);
     activeSpawnedEntities.remove(spawnEvent);
 
+  }
+
+  private void handleModeChangeEvents(){
+    handleModeReversion();
+    for(ModeChangeEventRecord modeChangeEvent: myLevel.modeChangeEvents()){
+      handleModeChangeEvent(modeChangeEvent);
+    }
+  }
+
+  private void handleModeChangeEvent(ModeChangeEventRecord modeChangeEvent) {
+    ModeChangeEventStrategyInterface modeChangeEventStrategy = ModeChangeEventStrategyFactory.createSpawnEventStrategy(
+            modeChangeEvent.changeCondition().type());
+    if (modeChangeEventStrategy.shouldChange(modeChangeEvent, myGameContext
+    )) {
+      performModeChange(modeChangeEvent);
+    }
+  }
+
+  private void performModeChange(ModeChangeEventRecord modeChangeEvent) {
+    for (Entity entity: myGameContext.gameMap()){
+      if(!myGameContext.gameMap().getActiveModeChanges().containsKey(entity)) {
+        if (entity.getEntityPlacement().getTypeString().equals(modeChangeEvent.entityType().type())) {
+          myGameContext.gameMap().getActiveModeChanges().put(entity, modeChangeEvent.modeChangeInfo());
+          entity.getEntityPlacement().setMode(modeChangeEvent.modeChangeInfo().transitionMode());
+        }
+      }
+    }
+  }
+
+  private void handleModeReversion() {
+
+    double currentTime = myGameContext.gameState().getTimeElapsed();
+    Iterator<Map.Entry<Entity, ModeChangeInfo>> iterator =
+            myGameContext.gameMap().getActiveModeChanges().entrySet().iterator();
+
+    while (iterator.hasNext()) {
+      Map.Entry<Entity, ModeChangeInfo> entry = iterator.next();
+      Entity entity = entry.getKey();
+      ModeChangeInfo info = entry.getValue();
+      if(currentTime >= info.transitionTime() && currentTime < info.revertTime()){
+        entity.getEntityPlacement().setMode(info.transitionMode());
+      }
+      if (currentTime >= info.revertTime()) {
+        entity.getEntityPlacement().setMode(info.originalMode());
+        iterator.remove();
+      }
+    }
   }
 
   /**

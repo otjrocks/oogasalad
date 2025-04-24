@@ -228,35 +228,59 @@
   ],
   "modeChangeEvents": [
     {
-      "entityType": "9",
-      "currentMode": "chase",
-      "nextMode": "scatter",
+      "entityType": "2",
+      "modeChangeInfo": {
+        "originalMode": "Default",
+        "transitionMode": "Frightened",
+        "revertTime" : 999999999,
+        "transitionTime" : 1
+      },
       "changeCondition": {
-        "type": "time",
+        "type": "TimeElapsed",
         "parameters": {
           "amount": 10
         }
       }
-    },
-    {
-      "entityType": "9",
-      "currentMode": "scatter",
-      "nextMode": "chase",
+    }, {
+      "entityType": "3",
+      "modeChangeInfo": {
+        "originalMode": "Default",
+        "transitionMode": "Frightened",
+        "revertTime" : 999999999,
+        "transitionTime" : 1
+      },
       "changeCondition": {
-        "type": "time",
+        "type": "TimeElapsed",
         "parameters": {
-          "amount": 20
+          "amount": 10
         }
       }
-    },
-    {
-      "entityType": "9",
-      "currentMode": "frightened",
-      "nextMode": "chase",
+    }, {
+      "entityType": "11",
+      "modeChangeInfo": {
+        "originalMode": "Default",
+        "transitionMode": "Frightened",
+        "revertTime" : 999999999,
+        "transitionTime" : 1
+      },
       "changeCondition": {
-        "type": "time",
+        "type": "TimeElapsed",
         "parameters": {
-          "amount": 20
+          "amount": 10
+        }
+      }
+    }, {
+      "entityType": "12",
+      "modeChangeInfo": {
+        "originalMode": "Default",
+        "transitionMode": "Frightened",
+        "revertTime" : 999999999,
+        "transitionTime" : 1
+      },
+      "changeCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 10
         }
       }
     }
