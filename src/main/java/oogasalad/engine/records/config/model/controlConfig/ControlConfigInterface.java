@@ -36,8 +36,8 @@ public interface ControlConfigInterface {
   /**
    * Retrieves the pathfinding strategy within a certain radius, if available.
    * This method provides an optional string representing the strategy.
-   * 
-   * @return an {@code Optional<String>} containing the pathfinding strategy 
+   *
+   * @return an {@code Optional<String>} containing the pathfinding strategy
    *         within a radius, or {@code Optional.empty()} if no strategy is defined.
    */
   default Optional<String> getPathFindingStrategyInRadius() {
@@ -49,7 +49,7 @@ public interface ControlConfigInterface {
    * This method provides an optional string representation of the strategy.
    * By default, it returns an empty {@link Optional}.
    *
-   * @return an {@link Optional} containing the pathfinding strategy for out-of-radius scenarios, 
+   * @return an {@link Optional} containing the pathfinding strategy for out-of-radius scenarios,
    *         or an empty {@link Optional} if no strategy is defined.
    */
   default Optional<String> getPathFindingStrategyOutRadius() {
