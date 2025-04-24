@@ -37,6 +37,7 @@ public class CollisionStrategyFactory {
           .map(component -> extractFieldValue(component, collisionEvent))
           .toArray();
 
+
       Constructor<?> constructor = Arrays.stream(strategyClass.getConstructors())
           .filter(c -> c.getParameterCount() == args.length)
           .findFirst()
