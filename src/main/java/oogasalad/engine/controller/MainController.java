@@ -94,11 +94,20 @@ public class MainController {
    *
    * @param gameFolderName name of game folder to create
    * @param randomized     if levels should be randomized
+   *
+   * @return true if the game player was successfully loaded and false if the view could not be loaded
    */
-  public void showGamePlayerView(String gameFolderName, boolean randomized) {
-    GameScreenView myGameScreenView = new GameScreenView(this, new GameState(3), gameFolderName,
-        randomized);
-    myInputManager.getRoot().getChildren().add(myGameScreenView.getRoot());
+  public boolean showGamePlayerView(String gameFolderName, boolean randomized) {
+    try {
+      GameScreenView myGameScreenView = new GameScreenView(this, new GameState(3), gameFolderName,
+          randomized);
+      myInputManager.getRoot().getChildren().add(myGameScreenView.getRoot());
+    } catch (Exception e) {
+      LoggingManager.LOGGER.warn("Unable to load game player view for folder: {}", gameFolderName);
+      LoggingManager.LOGGER.warn(e.getMessage());
+      return false;
+    }
+    return true;
   }
 
   /**

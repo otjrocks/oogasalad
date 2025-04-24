@@ -159,12 +159,16 @@ public class AuthoringView {
    * Sets up the help system for the authoring environment.
    */
   private void setupHelpSystem() {
-    Stage stage = (Stage) root.getScene().getWindow();
+    Stage stage = getStage();
     this.helpSystem = new SimpleHelpSystem(controller, this, stage);
 
     addHelpMenu();
     addHelpButton();
     setupHelpKeyboardShortcuts();
+  }
+
+  private Stage getStage() {
+    return (Stage) root.getScene().getWindow();
   }
 
   /**

@@ -74,12 +74,6 @@ Label, Text {
   -fx-background-color: -fx-highlight;
 }
 
-/* Game player views */
-.game-view {
-  -fx-background-color: rgb(19, 19, 19);
-  /* Force background color to be dark to ensure enough contrast with image sprites */
-}
-
 .game-screen-view {
   -fx-background-color: -fx-primary;
 }
@@ -115,6 +109,9 @@ Label, Text {
   -fx-border-width: 2px;
   -fx-border-style: solid;
   -fx-background-color: white;
+  -fx-background-size: contain;
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center center;
 }
 
 .selected-tile {
@@ -247,7 +244,7 @@ Label, Text {
 }
 
 .pagination > .pagination-control > .control-box > .number-button:selected,
-.pagination > .pagination-control > .control-box > .bullet-button:selected{
+.pagination > .pagination-control > .control-box > .bullet-button:selected {
   -fx-background-color: -fx-highlight;
 }
 

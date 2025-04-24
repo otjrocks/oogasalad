@@ -30,6 +30,7 @@ import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
+import oogasalad.engine.records.model.ModeChangeEventRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -48,6 +49,10 @@ class AuthoringModelTest {
             new ConditionRecord("spawn", Map.of()), 1.0, 1.0,
             "testMode", new ConditionRecord("despawn", Map.of())));
     model.addLevel(level);
+    model.getLevels().getFirst().getModeChangeEvents().add(
+        new ModeChangeEventRecord(new EntityTypeRecord("testEntity", null, null), "Default",
+            "NextMode",
+            new ConditionRecord("Default", null)));
 
     mockTemplate1 = mock(EntityTypeRecord.class);
     when(mockTemplate1.type()).thenReturn("Player");

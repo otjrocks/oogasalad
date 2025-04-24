@@ -62,7 +62,7 @@ public class GameMapFactoryTest {
     List<ParsedLevelRecord> levels = new ArrayList<>();
     levels.add(
         new ParsedLevelRecord(List.of(entityPlacement1, entityPlacement2),
-            new MapInfoRecord("wrap", 10, 10),
+            new MapInfoRecord("test", 10, 10),
             null, null));
     when(configModel.levels()).thenReturn(levels);
 
