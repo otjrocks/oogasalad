@@ -265,24 +265,15 @@ public class GameSettingsView {
   }
 
   private String getWinConditionType() {
-    WinConditionInterface condition = gameSettings.winCondition();
-    if (condition instanceof SurviveForTimeConditionRecord) {
-      return WIN_CONDITION_SURVIVE_FOR_TIME;
-    } else if (condition instanceof EntityBasedConditionRecord) {
-      return WIN_CONDITION_ENTITY_BASED;
-    }
-    return WIN_CONDITION_SURVIVE_FOR_TIME; // Default
+    return gameSettings.winCondition().getConditionType();
   }
 
   private String getWinConditionValue() {
-    WinConditionInterface condition = gameSettings.winCondition();
-    if (condition instanceof SurviveForTimeConditionRecord(int amount)) {
-      return String.valueOf(amount);
-    } else if (condition instanceof EntityBasedConditionRecord(String entityType)) {
-      return entityType;
-    }
-    return "5"; // Default time
+    return gameSettings.winCondition()
+        .getConditionValue()
+        .orElse("5"); // fallback to default time
   }
+
 
   private HBox getHBox() {
     Button saveButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));
