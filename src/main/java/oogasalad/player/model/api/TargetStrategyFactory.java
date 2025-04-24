@@ -67,17 +67,8 @@ public class TargetStrategyFactory {
       ControlConfigInterface config) {
 
     for (RecordComponent component : config.getClass().getRecordComponents()) {
-      if (TargetCalculationConfigInterface.class.isAssignableFrom(component.getType())) {
-        try {
-          Object value = component.getAccessor().invoke(config);
-          if (value != null) {
-            return (TargetCalculationConfigInterface) value;
-          }
-        } catch (Exception e) {
-          throw new TargetStrategyException(
-              "Failed to access field " + component.getName() + " in " + config.getClass()
-                  .getSimpleName(), e);
-        }
+      if (isTargetCalculationComponent(component)) {
+        return getComponentValue(config, component);
       }
     }
 
@@ -85,6 +76,26 @@ public class TargetStrategyFactory {
         "No field of type TargetCalculationConfigInterface found in config: "
             + config.getClass().getSimpleName());
   }
+
+  private static boolean isTargetCalculationComponent(RecordComponent component) {
+    return TargetCalculationConfigInterface.class.isAssignableFrom(component.getType());
+  }
+
+  private static TargetCalculationConfigInterface getComponentValue(
+      ControlConfigInterface config, RecordComponent component) {
+    try {
+      Object value = component.getAccessor().invoke(config);
+      if (value != null) {
+        return (TargetCalculationConfigInterface) value;
+      }
+    } catch (Exception e) {
+      throw new TargetStrategyException(
+          "Failed to access field " + component.getName() + " in "
+              + config.getClass().getSimpleName(), e);
+    }
+    return null;
+  }
+
 
 
   private static TargetStrategyInterface instantiateStrategy(Class<?> strategyClass,
