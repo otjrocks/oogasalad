@@ -1,5 +1,7 @@
 package oogasalad.player.view;
 
+import static oogasalad.engine.utility.LanguageManager.getMessage;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -20,13 +22,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.util.Callback;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.GameConfigRecord;
 import oogasalad.engine.utility.FileUtility;
-import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.utility.constants.GameConfig;
@@ -53,12 +53,12 @@ public class GameSelectorView {
   private Button startButton;
 
   /**
-   * The GameSelectorView class is responsible for displaying the game selection interface
-   * in the application. It initializes the layout, loads game configurations, and creates
-   * a user interface for selecting and uploading game files.
+   * The GameSelectorView class is responsible for displaying the game selection interface in the
+   * application. It initializes the layout, loads game configurations, and creates a user interface
+   * for selecting and uploading game files.
    *
-   * @param mainController the main controller of the application, used to manage
-   *                       interactions and retrieve the primary stage for theming
+   * @param mainController the main controller of the application, used to manage interactions and
+   *                       retrieve the primary stage for theming
    */
   public GameSelectorView(MainController mainController) {
     this.myMainController = mainController;
@@ -87,9 +87,9 @@ public class GameSelectorView {
   }
 
   /**
-   * Resets the upload section of the game selector view.
-   * This method updates the file label to indicate that no file is selected
-   * and disables the start button to prevent further actions until a file is uploaded.
+   * Resets the upload section of the game selector view. This method updates the file label to
+   * indicate that no file is selected and disables the start button to prevent further actions
+   * until a file is uploaded.
    */
   public void resetUploadSection() {
     fileLabel.setText("No file selected");
@@ -103,7 +103,7 @@ public class GameSelectorView {
   }
 
   private HBox createTopBar() {
-    Label titleLabel = new Label(LanguageManager.getMessage("GAME_PLAYER"));
+    Label titleLabel = new Label(getMessage("GAME_PLAYER"));
     titleLabel.getStyleClass().add("title");
     titleLabel.setMaxWidth(Double.MAX_VALUE);
     titleLabel.setAlignment(Pos.TOP_CENTER);
@@ -196,7 +196,7 @@ public class GameSelectorView {
     randomizeButton.getStyleClass().add(SMALL_BUTTON_STYLE);
     randomizeButton.setOnAction(e -> {
       myMainController.hideGameSelectorView();
-      myMainController.showGamePlayerView(gameNameToFolder.get(gameName), true);
+      attemptShowingGamePlayerView(gameName, true);
     });
 
     Button infoButton = new Button("i");
@@ -209,10 +209,16 @@ public class GameSelectorView {
     card.getChildren().addAll(image, nameLabel, buttonBox);
     card.setOnMouseClicked(e -> {
       myMainController.hideGameSelectorView();
-      myMainController.showGamePlayerView(gameNameToFolder.get(gameName), false);
+      attemptShowingGamePlayerView(gameName, false);
     });
 
     return card;
+  }
+
+  private void attemptShowingGamePlayerView(String gameName, boolean randomize) {
+    if (!myMainController.showGamePlayerView(gameNameToFolder.get(gameName), randomize)) {
+      showErrorDialog(getMessage("ERROR"), getMessage("CANNOT_LOAD_GAME"));
+    }
   }
 
   private void showMetadataPopup(String gameName) {
@@ -238,7 +244,6 @@ public class GameSelectorView {
   }
 
 
-
   private List<GameConfigRecord> loadGameConfigs() {
     List<String> folderNames = FileUtility.getFolderNamesInDirectory(GAMES_FOLDER_PATH);
     List<GameConfigRecord> configs = new ArrayList<>();
@@ -250,7 +255,7 @@ public class GameSelectorView {
         configs.add(config);
         gameNameToFolder.put(config.metadata().gameTitle(), folder);
       } catch (ConfigException e) {
-        LoggingManager.LOGGER.warn("Could not load config: " + folder, e);
+        LoggingManager.LOGGER.warn("Could not load config: {}", folder, e);
       }
     }
     return configs;
@@ -269,7 +274,7 @@ public class GameSelectorView {
             new FileInputStream(GAMES_FOLDER_PATH + folderName + "/" + config.metadata().image()));
       }
     } catch (Exception e) {
-      LoggingManager.LOGGER.warn("Failed to load image for: " + gameName);
+      LoggingManager.LOGGER.warn("Failed to load image for: {}", gameName);
     }
     return new Image(
         Objects.requireNonNull(getClass().getResourceAsStream("/assets/images/placeholder.png")));
@@ -278,7 +283,7 @@ public class GameSelectorView {
   private void handleFileUpload() {
     File selectedFile = fileChooser.showOpenDialog(null);
     if (selectedFile != null) {
-      String relativePath = getRelativePath(selectedFile, "data");
+      String relativePath = getRelativePath(selectedFile);
       if (relativePath != null) {
         fileLabel.setText(relativePath);
         startButton.setDisable(false);
@@ -293,15 +298,15 @@ public class GameSelectorView {
       GameConfigRecord config = configParser.loadGameConfig(fileLabel.getText());
       String gameName = config.metadata().gameTitle();
       myMainController.hideGameSelectorView();
-      myMainController.showGamePlayerView(gameNameToFolder.get(gameName), false);
+      attemptShowingGamePlayerView(gameName, false);
     } catch (Exception e) {
       LoggingManager.LOGGER.error("Exception: {}", e.getMessage());
       showErrorDialog("Error", e.getMessage());
     }
   }
 
-  private String getRelativePath(File file, String baseFolder) {
-    File baseDir = new File(System.getProperty("user.dir"), baseFolder);
+  private String getRelativePath(File file) {
+    File baseDir = new File(System.getProperty("user.dir"), "data");
     String absolutePath = file.getAbsolutePath();
     String basePath = baseDir.getAbsolutePath();
 
