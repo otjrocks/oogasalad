@@ -98,11 +98,10 @@ public class TargetStrategyFactoryTest {
     ControlConfigInterface unknownConfig = mock(ControlConfigInterface.class);
     mockControlConfig(unknownConfig);
 
-    TargetStrategyException exception = assertThrows(
+    assertThrows(
         TargetStrategyException.class,
         () -> TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap)
     );
-    assertTrue(exception.getMessage().contains("No TargetStrategy available"));
   }
 
   @Test

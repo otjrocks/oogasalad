@@ -266,9 +266,9 @@ public class GameSettingsView {
 
   private String getWinConditionType() {
     WinConditionInterface condition = gameSettings.winCondition();
-    if (condition instanceof SurviveForTimeConditionRecord) {
+    if (condition.getTimeAmount().isPresent()) {
       return WIN_CONDITION_SURVIVE_FOR_TIME;
-    } else if (condition instanceof EntityBasedConditionRecord) {
+    } else if (condition.getEntityType().isPresent()) {
       return WIN_CONDITION_ENTITY_BASED;
     }
     return WIN_CONDITION_SURVIVE_FOR_TIME; // Default
@@ -276,13 +276,12 @@ public class GameSettingsView {
 
   private String getWinConditionValue() {
     WinConditionInterface condition = gameSettings.winCondition();
-    if (condition instanceof SurviveForTimeConditionRecord(int amount)) {
-      return String.valueOf(amount);
-    } else if (condition instanceof EntityBasedConditionRecord(String entityType)) {
-      return entityType;
-    }
-    return "5"; // Default time
+    return condition.getTimeAmount()
+        .map(String::valueOf)
+        .or(condition::getEntityType)
+        .orElse("5"); // Default fallback value
   }
+
 
   private HBox getHBox() {
     Button saveButton = new Button(LanguageManager.getMessage("SAVE_SETTINGS"));

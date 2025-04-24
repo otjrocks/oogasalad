@@ -65,18 +65,52 @@ public class TargetStrategyFactory {
 
   private static TargetCalculationConfigInterface getTargetCalculationConfigInterface(
       ControlConfigInterface config) {
-    TargetCalculationConfigInterface targetCalculationConfig;
 
-    if (config instanceof TargetControlConfigRecord targetConfig) {
-      targetCalculationConfig = targetConfig.targetCalculationConfig();
-    } else if (config instanceof ConditionalControlConfigRecord conditionalConfig) {
-      targetCalculationConfig = conditionalConfig.targetCalculationConfig();
-    } else {
-      throw new TargetStrategyException(
-          "No TargetStrategy available for control config: " + config.getClass());
+    RecordComponent[] components = config.getClass().getRecordComponents();
+
+    checkIfValidConfig(components, config);
+
+    for (RecordComponent component : components) {
+      if (isTargetCalculationComponent(component)) {
+        TargetCalculationConfigInterface value = getComponentValue(config, component);
+        if (value != null) {
+          return value;
+        }
+      }
     }
-    return targetCalculationConfig;
+
+    throw new TargetStrategyException(
+        "No field of type TargetCalculationConfigInterface found in config: "
+            + config.getClass().getSimpleName());
   }
+
+  private static void checkIfValidConfig(RecordComponent[] components,
+      ControlConfigInterface config) {
+    if (components == null) {
+      throw new TargetStrategyException(
+          "Config class " + config.getClass().getSimpleName() + " is not a valid record");
+    }
+  }
+
+  private static boolean isTargetCalculationComponent(RecordComponent component) {
+    return TargetCalculationConfigInterface.class.isAssignableFrom(component.getType());
+  }
+
+  private static TargetCalculationConfigInterface getComponentValue(
+      ControlConfigInterface config, RecordComponent component) {
+    try {
+      Object value = component.getAccessor().invoke(config);
+      if (value != null) {
+        return (TargetCalculationConfigInterface) value;
+      }
+    } catch (Exception e) {
+      throw new TargetStrategyException(
+          "Failed to access field " + component.getName() + " in "
+              + config.getClass().getSimpleName(), e);
+    }
+    return null;
+  }
+
 
   private static TargetStrategyInterface instantiateStrategy(Class<?> strategyClass,
       Map<String, Object> targetCalculationConfig,
