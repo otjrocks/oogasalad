@@ -4,8 +4,16 @@ import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
 import oogasalad.engine.utility.LoggingManager;
 
+/**
+ * Strategy for changing entity type after a certain amount of time has passed
+ */
 public class TimeElapsedModeChangeEventStrategy implements ModeChangeEventStrategyInterface{
 
+    /**
+     * Determines if a certain modeChangeEvent should be enacted
+     * @param modeChangeEvent: event containing what to change the mode to and when to change it
+     * @param gameContextRecord: The game context information to use in your determination
+     */
     public boolean shouldChange(ModeChangeEventRecord modeChangeEvent, GameContextRecord gameContextRecord){
         Object amountObj = modeChangeEvent.changeCondition().parameters().get("amount");
         if (amountObj == null) {
