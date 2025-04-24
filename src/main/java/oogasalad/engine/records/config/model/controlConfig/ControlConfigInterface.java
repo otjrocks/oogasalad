@@ -2,6 +2,7 @@ package oogasalad.engine.records.config.model.controlConfig;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import java.util.Optional;
 
 /**
  * An interface that defines how to convert JSON objects into the correct corresponding java
@@ -17,5 +18,17 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = ConditionalControlConfigRecord.class, name = "Conditional")
 })
 public interface ControlConfigInterface {
+
+  default Optional<String> getPathFindingStrategyInRadius() {
+    return Optional.empty();
+  }
+
+  default Optional<String> getPathFindingStrategyOutRadius() {
+    return Optional.empty();
+  }
+
+  default Optional<Integer> getRadius() {
+    return Optional.empty();
+  }
 
 }

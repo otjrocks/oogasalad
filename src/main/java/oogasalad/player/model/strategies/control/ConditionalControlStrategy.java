@@ -50,29 +50,20 @@ public class ConditionalControlStrategy implements ControlStrategyInterface {
   }
 
   private PathFindingStrategyInterface getPathFindingStrategy1(ControlConfigInterface config) {
-    if (config instanceof ConditionalControlConfigRecord conditionalConfig) {
-      return PathFindingStrategyFactory.createPathFindingStrategy(
-          conditionalConfig.pathFindingStrategyInRadius());
-    } else {
-      throw new ControlStrategyException(NOT_CONDITIONAL_CONFIG_EXCEPTION);
-    }
+    return PathFindingStrategyFactory.createPathFindingStrategy(
+        config.getPathFindingStrategyInRadius()
+            .orElseThrow(() -> new ControlStrategyException(NOT_CONDITIONAL_CONFIG_EXCEPTION)));
   }
 
   private PathFindingStrategyInterface getPathFindingStrategy2(ControlConfigInterface config) {
-    if (config instanceof ConditionalControlConfigRecord conditionalConfig) {
-      return PathFindingStrategyFactory.createPathFindingStrategy(
-          conditionalConfig.pathFindingStrategyOutRadius());
-    } else {
-      throw new ControlStrategyException(NOT_CONDITIONAL_CONFIG_EXCEPTION);
-    }
+    return PathFindingStrategyFactory.createPathFindingStrategy(
+        config.getPathFindingStrategyOutRadius()
+            .orElseThrow(() -> new ControlStrategyException(NOT_CONDITIONAL_CONFIG_EXCEPTION)));
   }
 
   private int getRadius(ControlConfigInterface config) {
-    if (config instanceof ConditionalControlConfigRecord conditionalConfig) {
-      return conditionalConfig.radius();
-    } else {
-      throw new ControlStrategyException(NOT_CONDITIONAL_CONFIG_EXCEPTION);
-    }
+    return config.getRadius()
+        .orElseThrow(() -> new ControlStrategyException(NOT_CONDITIONAL_CONFIG_EXCEPTION));
   }
 
 
