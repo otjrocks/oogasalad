@@ -1,8 +1,10 @@
 package oogasalad.player.model.api;
 
 import oogasalad.player.model.strategies.modechangeevent.ModeChangeEventStrategyInterface;
-import oogasalad.player.model.strategies.spawnevent.SpawnEventStrategyInterface;
 
+/**
+ * Factory for creating strategies related to mode changes
+ */
 public class ModeChangeEventStrategyFactory {
     private static final String STRATEGY_PACKAGE = "oogasalad.player.model.strategies.modechangeevent";
 
