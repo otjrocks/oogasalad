@@ -67,7 +67,6 @@ class AuthoringModelTest {
     // This test will first write a config file from the authoring environment model
     // Then it will attempt to load the same file from its temporary file location and ensure that the config parser does not throw
     String outputPath = saveSampleGameFromAuthoringEnvironment();
-
     JsonConfigParser parser = new JsonConfigParser();
     assertDoesNotThrow(() -> parser.loadFromFile(outputPath + "/gameConfig.json"));
   }

@@ -1,6 +1,5 @@
 package oogasalad.engine.records.config.model.wincondition;
 
-import java.util.Optional;
 import oogasalad.player.model.strategies.gameoutcome.EntityBasedOutcomeStrategy;
 import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
 
@@ -10,11 +9,6 @@ import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterfac
  * @param entityType The type of entity to track (e.g., "dot")
  */
 public record EntityBasedConditionRecord(String entityType) implements WinConditionInterface {
-
-  @Override
-  public Optional<String> getEntityType() {
-    return Optional.of(entityType);
-  }
 
   /**
    * Converts winCondition to EntityBasedOutcome strategy.
