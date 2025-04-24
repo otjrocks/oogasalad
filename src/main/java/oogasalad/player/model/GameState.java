@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import oogasalad.engine.records.config.model.SaveConfigRecord;
 import oogasalad.engine.records.model.GameSettingsRecord;
+import oogasalad.player.model.exceptions.SaveFileException;
 
 /**
  * Implementation of the GameState interface. This class manages the player's score, lives,
@@ -77,7 +78,7 @@ public class GameState implements GameStateInterface {
   }
 
   @Override
-  public void saveGameProgress(String saveName) {
+  public void saveGameProgress(String saveName) throws SaveFileException {
     SaveConfigRecord saveConfig = new SaveConfigRecord(
         saveName,
         currentLevel,
@@ -92,12 +93,12 @@ public class GameState implements GameStateInterface {
       File saveFile = new File(SAVE_FOLDER + saveName + ".json");
       mapper.writerWithDefaultPrettyPrinter().writeValue(saveFile, saveConfig);
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new SaveFileException(e.getMessage());
     }
   }
 
   @Override
-  public void loadGameProgress(String saveName) {
+  public void loadGameProgress(String saveName) throws SaveFileException {
     try {
       ObjectMapper mapper = new ObjectMapper();
       SaveConfigRecord saveConfig = mapper.readValue(
@@ -111,7 +112,7 @@ public class GameState implements GameStateInterface {
       this.levelOrder = saveConfig.levelOrder();
 
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new SaveFileException("Unable to load save file");
     }
   }
 

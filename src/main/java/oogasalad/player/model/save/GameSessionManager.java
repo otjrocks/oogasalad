@@ -6,6 +6,7 @@ import oogasalad.engine.records.config.model.SaveConfigRecord;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import oogasalad.player.model.exceptions.SaveFileException;
 
 /**
  * Handles saving and loading game progress within a session.
@@ -40,7 +41,6 @@ public class GameSessionManager {
         configModel.settings().initialScore(),
         defaultOrder
     );
-    System.out.println(saveConfig.currentLevel());
     save();
   }
 
@@ -49,20 +49,17 @@ public class GameSessionManager {
    */
   public void loadExistingSession() throws IOException {
     saveConfig = SaveManager.loadGame(gameFolderName, saveName);
-    System.out.println("📂 Loaded session file for '" + saveName + "'");
   }
 
 
   /**
    * Saves the current session state to a file.
    */
-  public void save() {
+  public void save() throws SaveFileException {
     try {
       SaveManager.saveGame(saveConfig, gameFolderName);
-      System.out.println("💾 Saved game state to: data/games/" + gameFolderName + "/saves/" + saveConfig.saveName() + ".json");
     } catch (IOException e) {
-      System.err.println("❌ Failed to save game.");
-      e.printStackTrace();
+      throw new SaveFileException(e.getMessage());
     }
   }
 
@@ -110,7 +107,6 @@ public class GameSessionManager {
   public void advanceLevel(int levelScore) {
     int nextLevel = saveConfig.currentLevel() + 1;
     if (nextLevel >= saveConfig.levelOrder().size()) {
-      System.out.println("All levels complete — cannot advance further.");
       return;  // Prevent saving invalid level
     }
 
@@ -122,7 +118,6 @@ public class GameSessionManager {
         Math.max(levelScore, saveConfig.highScore()),
         saveConfig.levelOrder()
     );
-    System.out.println("Advancing to Level " + saveConfig.currentLevel());
     save();
   }
 
