@@ -81,8 +81,8 @@ public class ModeChangeEventDialogTest extends DukeApplicationTest {
 
     ModeChangeEventRecord event = table.getItems().get(0);
     assertEquals("Ghost", event.entityType().type());
-    assertEquals("chase", event.currentMode());
-    assertEquals("scatter", event.nextMode());
+    assertEquals("chase", event.modeChangeInfo().originalMode());
+    assertEquals("scatter", event.modeChangeInfo().transitionMode());
     assertEquals("time", event.changeCondition().type());
     assertEquals(10, event.changeCondition().parameters().get("amount"));
   }
