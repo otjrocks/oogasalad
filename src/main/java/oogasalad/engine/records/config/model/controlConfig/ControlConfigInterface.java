@@ -21,6 +21,19 @@ import java.util.Optional;
 public interface ControlConfigInterface {
 
   /**
+   * Retrieves the pathfinding strategy associated with the control configuration.
+   * By default, this method returns an empty {@link Optional}, indicating that no
+   * specific pathfinding strategy is defined.
+   *
+   * @return an {@link Optional} containing the pathfinding strategy as a {@link String},
+   *         or an empty {@link Optional} if no strategy is specified.
+   */
+  @JsonIgnore
+  default Optional<String> getPathFindingStrategy() {
+    return Optional.empty();
+  }
+
+  /**
    * Retrieves the pathfinding strategy within a certain radius, if available.
    * This method provides an optional string representing the strategy.
    * 
