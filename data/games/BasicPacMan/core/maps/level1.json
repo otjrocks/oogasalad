@@ -44,7 +44,7 @@
   "mapInfo": {
     "width": 28,
     "height": 31,
-    "backgroundImagePath": "assets/backgroun.jpg"
+    "backgroundImagePath": "assets/background.png"
   },
   "layout": [
     "5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5",

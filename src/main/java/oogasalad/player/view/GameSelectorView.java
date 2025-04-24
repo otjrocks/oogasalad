@@ -194,10 +194,7 @@ public class GameSelectorView {
 
     Button randomizeButton = new Button("Randomize Levels");
     randomizeButton.getStyleClass().add(SMALL_BUTTON_STYLE);
-    randomizeButton.setOnAction(e -> {
-      myMainController.hideGameSelectorView();
-      attemptShowingGamePlayerView(gameName, true);
-    });
+    randomizeButton.setOnAction(e -> attemptShowingGamePlayerView(gameName, true));
 
     Button infoButton = new Button("i");
     infoButton.getStyleClass().add("icon-button");
@@ -207,10 +204,7 @@ public class GameSelectorView {
     buttonBox.setAlignment(Pos.CENTER);
 
     card.getChildren().addAll(image, nameLabel, buttonBox);
-    card.setOnMouseClicked(e -> {
-      myMainController.hideGameSelectorView();
-      attemptShowingGamePlayerView(gameName, false);
-    });
+    card.setOnMouseClicked(e -> attemptShowingGamePlayerView(gameName, false));
 
     return card;
   }
@@ -218,6 +212,8 @@ public class GameSelectorView {
   private void attemptShowingGamePlayerView(String gameName, boolean randomize) {
     if (!myMainController.showGamePlayerView(gameNameToFolder.get(gameName), randomize)) {
       showErrorDialog(getMessage("ERROR"), getMessage("CANNOT_LOAD_GAME"));
+    } else {
+      myMainController.hideGameSelectorView();
     }
   }
 
@@ -297,7 +293,6 @@ public class GameSelectorView {
     try {
       GameConfigRecord config = configParser.loadGameConfig(fileLabel.getText());
       String gameName = config.metadata().gameTitle();
-      myMainController.hideGameSelectorView();
       attemptShowingGamePlayerView(gameName, false);
     } catch (Exception e) {
       LoggingManager.LOGGER.error("Exception: {}", e.getMessage());
