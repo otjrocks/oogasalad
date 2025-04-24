@@ -18,11 +18,22 @@ import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterfac
 })
 public interface WinConditionInterface {
 
+  /**
+   * Retrieves the amount of time associated with the win condition, if applicable.
+   * By default, this method returns an empty {@link Optional}, indicating that no time amount is specified.
+   *
+   * @return an {@link Optional} containing the time amount if specified, or an empty {@link Optional} otherwise.
+   */
   @JsonIgnore
   default Optional<Integer> getTimeAmount() {
     return Optional.empty();
   }
 
+  /**
+   * Retrieves the type of entity associated with the win condition, if applicable.
+   * 
+   * @return an {@link Optional} containing the entity type as a {@link String}, or an empty {@link Optional} if no entity type is specified.
+   */
   @JsonIgnore
   default Optional<String> getEntityType() {
     return Optional.empty();
