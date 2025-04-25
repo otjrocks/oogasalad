@@ -31,7 +31,6 @@ import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterfac
 public class GameMapController {
 
   // TODO: This should be removed when hardcoded methods are refactored
-  private static final int SPRITE_ANIMATION_SPEED = 6;
   private final GameMapInterface gameMap;
   private final GameStateInterface gameState;
   private final GameContextRecord gameContext;
@@ -65,7 +64,7 @@ public class GameMapController {
     for (Entity entity : gameMap) {
       entity.getEntityPlacement().setX(entity.getEntityPlacement().getX() + entity.getDx());
       entity.getEntityPlacement().setY(entity.getEntityPlacement().getY() + entity.getDy());
-      if (frameCount % SPRITE_ANIMATION_SPEED == 0) {
+      if (frameCount % entity.getEntityPlacement().getAnimationSpeed() == 0) {
         entity.getEntityPlacement().increaseCurrentFrame();
       }
     }

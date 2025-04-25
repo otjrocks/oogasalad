@@ -279,4 +279,14 @@ public class EntityPlacement {
         .get(this.getMode())
         .image().tilesToCycle();
   }
+
+  /**
+   * Gets the animation speed for the current entity
+   */
+  public double getAnimationSpeed(){
+    return this.getType()
+            .modes()
+            .get(this.getMode())
+            .image().animationSpeed();
+  }
 }
