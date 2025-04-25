@@ -16,7 +16,8 @@ import oogasalad.engine.records.config.model.SettingsRecord;
  * @param gameFolderPath The file path to the folder containing game resources.
  * @author Jessica Chen
  */
-public record GameConfigRecord(MetadataRecord metadata, SettingsRecord settings, List<LevelRecord> levels,
+public record GameConfigRecord(MetadataRecord metadata, SettingsRecord settings,
+                               List<LevelRecord> levels,
                                List<CollisionConfigRecord> collisions,
                                String gameFolderPath,
                                int currentLevelIndex) {

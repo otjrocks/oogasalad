@@ -8,8 +8,8 @@ import oogasalad.player.model.GameMapInterface;
 
 /**
  * The KeyboardControlStrategy class implements the ControlStrategy interface and provides
- * functionality for controlling an entity's movement based on keyboard input. It uses a 
- * GameInputManager to detect keyboard actions, a GameMap to check for obstacles, and an 
+ * functionality for controlling an entity's movement based on keyboard input. It uses a
+ * GameInputManager to detect keyboard actions, a GameMap to check for obstacles, and an
  * EntityPlacement to determine the entity's current position.
  *
  * <p>This class updates the direction of an entity based on the current keyboard input, ensuring
@@ -24,8 +24,8 @@ public class KeyboardControlStrategy implements ControlStrategyInterface {
   private final GameInputManager myInputManager;
 
   /**
-   * Constructs a KeyboardControlStrategy with the specified input manager, game map, and
-   * entity placement.
+   * Constructs a KeyboardControlStrategy with the specified input manager, game map, and entity
+   * placement.
    *
    * @param input           the GameInputManager that handles keyboard input
    * @param gameMap         the GameMap representing the current game state
@@ -58,7 +58,8 @@ public class KeyboardControlStrategy implements ControlStrategyInterface {
   }
 
   private void setRightDirection(int myX, int myY, Entity entity) {
-    if (entity.canMove(Direction.R) && myInputManager.isMovingRight() && checkNoWall(myX + 1, myY)) {
+    if (entity.canMove(Direction.R) && myInputManager.isMovingRight() && checkNoWall(myX + 1,
+        myY)) {
       entity.setEntityDirection(Direction.R);
     }
   }

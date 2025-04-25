@@ -3,13 +3,12 @@ package oogasalad.player.model.strategies.collision;
 import oogasalad.engine.records.CollisionContextRecord;
 
 /**
- * The {@code UpdateLivesStrategy} class implements the {@link CollisionStrategyInterface} interface to
- * update the player's lives when a collision occurs.
+ * The {@code UpdateLivesStrategy} class implements the {@link CollisionStrategyInterface} interface
+ * to update the player's lives when a collision occurs.
  *
  * <p>When two entities collide, this strategy modifies the number of lives in the
- * {@code GameState}
- * by a specified amount. The increment value can be positive (to add lives) or negative (to
- * decrease lives).</p>
+ * {@code GameState} by a specified amount. The increment value can be positive (to add lives) or
+ * negative (to decrease lives).</p>
  *
  * <p>Example usage:</p>
  * <pre>

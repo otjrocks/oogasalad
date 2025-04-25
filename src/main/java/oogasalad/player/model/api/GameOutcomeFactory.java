@@ -12,11 +12,9 @@ import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterfac
 public class GameOutcomeFactory {
 
   /**
-   * Creates the appropriate GameOutcomeStrategy based on the winCondition string.
-   * Examples:
-   * - "LivesBased()" → LivesBasedOutcome
-   * - "EntityBased(dot)" → EntityBasedOutcomeStrategy("dot")
-   * - "ScoreBased(1000)" → ScoreBasedOutcomeStrategy(1000)
+   * Creates the appropriate GameOutcomeStrategy based on the winCondition string. Examples: -
+   * "LivesBased()" → LivesBasedOutcome - "EntityBased(dot)" → EntityBasedOutcomeStrategy("dot") -
+   * "ScoreBased(1000)" → ScoreBasedOutcomeStrategy(1000)
    *
    * @param winCondition the WinCondition object
    * @return corresponding GameOutcomeStrategy
@@ -35,7 +33,8 @@ public class GameOutcomeFactory {
    * @param loseCondition the loseCondition object
    * @return corresponding GameOutcomeStrategy
    */
-  public static GameOutcomeStrategyInterface createLoseStrategy(LoseConditionInterface loseCondition) {
+  public static GameOutcomeStrategyInterface createLoseStrategy(
+      LoseConditionInterface loseCondition) {
     if (loseCondition == null) {
       throw new IllegalArgumentException("Lose condition cannot be null");
     }

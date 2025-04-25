@@ -11,4 +11,6 @@ public record SaveConfigRecord(
     List<Integer> scores,
     int lives,
     int highScore,
-    List<Integer> levelOrder) {}
+    List<Integer> levelOrder) {
+
+}

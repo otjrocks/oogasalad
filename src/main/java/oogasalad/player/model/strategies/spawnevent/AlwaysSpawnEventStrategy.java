@@ -9,6 +9,7 @@ import oogasalad.engine.records.config.model.SpawnEventRecord;
  * @author Owen Jennings
  */
 public class AlwaysSpawnEventStrategy implements SpawnEventStrategyInterface {
+
   // Always return false spawn event strategy.
   @Override
   public boolean shouldSpawn(SpawnEventRecord spawnEvent, GameContextRecord gameContextRecord) {

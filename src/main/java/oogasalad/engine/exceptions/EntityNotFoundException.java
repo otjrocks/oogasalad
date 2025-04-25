@@ -22,8 +22,8 @@ public class EntityNotFoundException extends Exception {
    * underlying exception.
    *
    * @param message the detail message providing additional context about the error.
-   * @param cause the underlying cause of the exception, which can be another exception that
-   *              triggered this one.
+   * @param cause   the underlying cause of the exception, which can be another exception that
+   *                triggered this one.
    */
   public EntityNotFoundException(String message, Throwable cause) {
     super(message, cause);

@@ -2,13 +2,11 @@ package oogasalad.authoring.view;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.api.FxAssert.verifyThat;
-import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
 import java.util.List;
-import java.util.Optional;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
@@ -88,7 +86,7 @@ public class ModeEditorDialogTest extends DukeApplicationTest {
     });
 
     clickOn(lookup("Cancel").query());
-    assertTrue(dialog.getDialog().getResult() == null);
+    assertNull(dialog.getDialog().getResult());
   }
 
   @Test

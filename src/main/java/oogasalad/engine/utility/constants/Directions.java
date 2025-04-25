@@ -1,9 +1,9 @@
 package oogasalad.engine.utility.constants;
 
 /**
- * The Directions class contains an enumeration of possible directions (U, R, D, L, NONE)
- * with associated properties such as x and y deltas and angles. It provides utility methods
- * to retrieve these properties and to determine a direction from a given angle.
+ * The Directions class contains an enumeration of possible directions (U, R, D, L, NONE) with
+ * associated properties such as x and y deltas and angles. It provides utility methods to retrieve
+ * these properties and to determine a direction from a given angle.
  */
 public class Directions {
 
@@ -71,8 +71,8 @@ public class Directions {
     }
 
     /**
-     * Determines the direction corresponding to a given angle.
-     * If no matching direction is found, returns NONE.
+     * Determines the direction corresponding to a given angle. If no matching direction is found,
+     * returns NONE.
      *
      * @param angle the angle to match, normalized to 0–359 degrees
      * @return the corresponding Direction, or NONE if no match is found

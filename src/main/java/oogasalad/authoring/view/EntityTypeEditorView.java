@@ -71,7 +71,6 @@ public class EntityTypeEditorView {
         blocksScrollPane
     );
 
-
     root.getChildren().addAll(
         new Label(LanguageManager.getMessage("ENTITY_TYPE")), typeField,
         blocksSection,
@@ -102,7 +101,6 @@ public class EntityTypeEditorView {
 
     populateBlocksList(this.current);
 
-
     // Refresh mode list UI
     modeList.getChildren().clear();
     for (Map.Entry<String, ModeConfigRecord> entry : type.modes().entrySet()) {
@@ -122,18 +120,17 @@ public class EntityTypeEditorView {
     Map<String, EntityTypeRecord> allTypes = controller.getModel().getEntityTypeMap();
 
     for (String otherType : allTypes.keySet()) {
-      if (otherType.equals(currentName)) continue;
+      if (otherType.equals(currentName)) {
+        continue;
+      }
 
       CheckBox box = new CheckBox(otherType);
       box.setSelected(type.blocks() != null && type.blocks().contains(otherType));
-      box.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-        commitChanges();
-      });
+      box.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> commitChanges());
 
       blocksList.getChildren().add(box);
     }
   }
-
 
 
   /**
@@ -162,7 +159,6 @@ public class EntityTypeEditorView {
         current.modes(),
         selectedBlocks
     );
-
 
     controller.getModel().updateEntityType(current.type(), newEntity);
     controller.updateEntitySelector(); // update visuals if needed

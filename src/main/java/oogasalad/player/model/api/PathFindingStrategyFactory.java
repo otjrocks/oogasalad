@@ -7,10 +7,11 @@ import oogasalad.player.model.exceptions.PathFindingStrategyException;
 import oogasalad.player.model.strategies.control.pathfinding.PathFindingStrategyInterface;
 
 /**
- * Factory class for creating instances of {@link PathFindingStrategyInterface}. This class dynamically loads
- * and instantiates pathfinding strategy classes based on their names. The strategy classes must be
- * located in the package {@code oogasalad.player.model.control.pathfinding} and follow the naming
- * convention of appending "PathFindingStrategy" to the strategy name.
+ * Factory class for creating instances of {@link PathFindingStrategyInterface}. This class
+ * dynamically loads and instantiates pathfinding strategy classes based on their names. The
+ * strategy classes must be located in the package
+ * {@code oogasalad.player.model.control.pathfinding} and follow the naming convention of appending
+ * "PathFindingStrategy" to the strategy name.
  */
 public class PathFindingStrategyFactory {
 

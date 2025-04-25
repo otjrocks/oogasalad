@@ -37,7 +37,6 @@ public class CollisionStrategyFactory {
           .map(component -> extractFieldValue(component, collisionEvent))
           .toArray();
 
-
       Constructor<?> constructor = Arrays.stream(strategyClass.getConstructors())
           .filter(c -> c.getParameterCount() == args.length)
           .findFirst()
@@ -51,7 +50,8 @@ public class CollisionStrategyFactory {
     }
   }
 
-  private static Object extractFieldValue(RecordComponent component, CollisionEventInterface event) {
+  private static Object extractFieldValue(RecordComponent component,
+      CollisionEventInterface event) {
     try {
       return component.getAccessor().invoke(event);
     } catch (Exception e) {

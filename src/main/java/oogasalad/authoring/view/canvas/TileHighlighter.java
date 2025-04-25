@@ -5,8 +5,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
- * Handles the hover and selection highlighting of tiles on the canvas grid.
- * Provides visual feedback during entity placement and movement.
+ * Handles the hover and selection highlighting of tiles on the canvas grid. Provides visual
+ * feedback during entity placement and movement.
  *
  * @author Will He
  */

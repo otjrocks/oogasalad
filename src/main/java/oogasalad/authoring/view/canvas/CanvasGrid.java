@@ -1,9 +1,9 @@
 package oogasalad.authoring.view.canvas;
 
 /**
- * Represents a grid layout for a canvas, handling conversion between pixel coordinates
- * and grid positions. Responsible for tracking the number of rows and columns and calculating
- * tile dimensions to fit the canvas size.
+ * Represents a grid layout for a canvas, handling conversion between pixel coordinates and grid
+ * positions. Responsible for tracking the number of rows and columns and calculating tile
+ * dimensions to fit the canvas size.
  *
  * @author Will He
  */
@@ -28,10 +28,10 @@ public class CanvasGrid {
   /**
    * Resizes the grid to fit new canvas dimensions and updates the number of rows and columns.
    *
-   * @param canvasWidth the new canvas width in pixels
+   * @param canvasWidth  the new canvas width in pixels
    * @param canvasHeight the new canvas height in pixels
-   * @param newCols the new number of columns
-   * @param newRows the new number of rows
+   * @param newCols      the new number of columns
+   * @param newRows      the new number of rows
    */
   public void resizeGrid(double canvasWidth, double canvasHeight, int newCols, int newRows) {
     this.cols = newCols;

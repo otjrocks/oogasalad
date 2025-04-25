@@ -2,12 +2,9 @@ package util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.InputStream;
 import javafx.scene.text.Text;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.records.config.ConfigModelRecord;
-import org.apache.logging.log4j.core.config.json.JsonConfiguration;
 
 /**
  * Static helper methods for common testing tasks

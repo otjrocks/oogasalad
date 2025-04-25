@@ -5,10 +5,9 @@ import java.util.Map;
 import oogasalad.engine.utility.FileUtility;
 
 /**
- * The ControlManager class provides utility methods for retrieving and managing
- * control strategies, target calculation strategies, and pathfinding strategies.
- * It also facilitates access to configuration details such as required fields
- * and their order for these strategies.
+ * The ControlManager class provides utility methods for retrieving and managing control strategies,
+ * target calculation strategies, and pathfinding strategies. It also facilitates access to
+ * configuration details such as required fields and their order for these strategies.
  *
  * <p>This class interacts with the file system to locate strategy files and uses
  * reflection to determine the required fields for configuration classes.
@@ -47,9 +46,9 @@ public class ControlManager {
 
 
   /**
-   * Retrieves a list of control strategy file names from the specified directory.
-   * This method searches for files with the suffix "ControlStrategy.java" in the
-   * directory defined by the CONTROL_PATH constant.
+   * Retrieves a list of control strategy file names from the specified directory. This method
+   * searches for files with the suffix "ControlStrategy.java" in the directory defined by the
+   * CONTROL_PATH constant.
    *
    * @return a list of file names representing control strategies.
    */
@@ -58,8 +57,8 @@ public class ControlManager {
   }
 
   /**
-   * Retrieves a list of target calculation strategy class names from the specified directory.
-   * The method searches for files ending with "Strategy.java" within the "targetcalculation" 
+   * Retrieves a list of target calculation strategy class names from the specified directory. The
+   * method searches for files ending with "Strategy.java" within the "targetcalculation"
    * subdirectory of the control path.
    *
    * @return a list of strings representing the names of target calculation strategy files.
@@ -70,9 +69,9 @@ public class ControlManager {
   }
 
   /**
-   * Retrieves a list of pathfinding strategy file names from the specified directory.
-   * The method searches for files with the extension "PathFindingStrategy.java" 
-   * within the "pathfinding" subdirectory of the control path.
+   * Retrieves a list of pathfinding strategy file names from the specified directory. The method
+   * searches for files with the extension "PathFindingStrategy.java" within the "pathfinding"
+   * subdirectory of the control path.
    *
    * @return a list of file names representing available pathfinding strategies.
    */
@@ -83,11 +82,13 @@ public class ControlManager {
 
   /**
    * Retrieves a map of required fields and their corresponding types for a given control strategy.
-   * This method uses the control strategy name to locate the associated configuration class
-   * and determines the required fields for that class.
+   * This method uses the control strategy name to locate the associated configuration class and
+   * determines the required fields for that class.
    *
-   * @param controlStrategyName the name of the control strategy whose required fields are to be retrieved
-   * @return a map where the keys are the names of the required fields and the values are their respective types
+   * @param controlStrategyName the name of the control strategy whose required fields are to be
+   *                            retrieved
+   * @return a map where the keys are the names of the required fields and the values are their
+   * respective types
    */
   public static Map<String, Class<?>> getControlRequiredFields(String controlStrategyName) {
     return FileUtility.getRequiredFieldsForRecord(
@@ -95,10 +96,13 @@ public class ControlManager {
   }
 
   /**
-   * Retrieves a map of required fields and their corresponding types for a given target strategy configuration.
+   * Retrieves a map of required fields and their corresponding types for a given target strategy
+   * configuration.
    *
-   * @param targetStrategyName the name of the target strategy whose required fields are to be retrieved
-   * @return a map where the keys are the names of the required fields and the values are their respective types
+   * @param targetStrategyName the name of the target strategy whose required fields are to be
+   *                           retrieved
+   * @return a map where the keys are the names of the required fields and the values are their
+   * respective types
    */
   public static Map<String, Class<?>> getTargetRequiredFields(String targetStrategyName) {
     return FileUtility.getRequiredFieldsForRecord(
@@ -106,10 +110,13 @@ public class ControlManager {
   }
 
   /**
-   * Retrieves the list of required field names in the specified order for a given control strategy's configuration.
+   * Retrieves the list of required field names in the specified order for a given control
+   * strategy's configuration.
    *
-   * @param controlStrategyName the name of the control strategy whose configuration fields are to be retrieved
-   * @return a list of field names in the required order for the specified control strategy's configuration
+   * @param controlStrategyName the name of the control strategy whose configuration fields are to
+   *                            be retrieved
+   * @return a list of field names in the required order for the specified control strategy's
+   * configuration
    */
   public static List<String> getControlRequiredFieldsOrder(String controlStrategyName) {
     return FileUtility.getRequiredFieldsForRecordOrder(
@@ -119,8 +126,10 @@ public class ControlManager {
   /**
    * Retrieves the required fields in the specified order for a target strategy configuration.
    *
-   * @param targetStrategyName the name of the target strategy whose configuration fields are to be retrieved
-   * @return a list of strings representing the required fields in the specified order for the target strategy configuration
+   * @param targetStrategyName the name of the target strategy whose configuration fields are to be
+   *                           retrieved
+   * @return a list of strings representing the required fields in the specified order for the
+   * target strategy configuration
    */
   public static List<String> getTargetRequiredFieldsOrder(String targetStrategyName) {
     return FileUtility.getRequiredFieldsForRecordOrder(

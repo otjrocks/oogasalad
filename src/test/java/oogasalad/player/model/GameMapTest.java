@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import javafx.scene.Group;
@@ -100,9 +99,7 @@ class GameMapTest extends DukeApplicationTest {
     EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
     Entity secondEntity = EntityFactory.createEntity(myInput, placement, myGameMap, mock(ConfigModelRecord.class));
     assertDoesNotThrow(() -> myGameMap.addEntity(secondEntity));
-    Iterator<Entity> iterator = myGameMap.iterator();
-    while (iterator.hasNext()) {
-      Entity next = iterator.next();
+    for (Entity next : myGameMap) {
       assertTrue(next.equals(secondEntity) || next.equals(myEntity));
     }
   }

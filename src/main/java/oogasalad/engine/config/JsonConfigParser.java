@@ -191,10 +191,11 @@ public class JsonConfigParser implements ConfigParserInterface {
       if (type == null) {
         throw new ConfigException("Unknown entity ID in modeChangeEvents: " + id);
       }
-      ModeChangeInfo changeInfo = new ModeChangeInfo(eventNode.get(MODE_CHANGE).get("originalMode").asText(),
-                                                      eventNode.get(MODE_CHANGE).get("transitionMode").asText(),
-                                                      eventNode.get(MODE_CHANGE).get("revertTime").asInt(),
-                                                      eventNode.get(MODE_CHANGE).get("transitionTime").asInt());
+      ModeChangeInfo changeInfo = new ModeChangeInfo(
+          eventNode.get(MODE_CHANGE).get("originalMode").asText(),
+          eventNode.get(MODE_CHANGE).get("transitionMode").asText(),
+          eventNode.get(MODE_CHANGE).get("revertTime").asInt(),
+          eventNode.get(MODE_CHANGE).get("transitionTime").asInt());
 
       ConditionRecord changeCondition = parseCondition(eventNode.get("changeCondition"));
 

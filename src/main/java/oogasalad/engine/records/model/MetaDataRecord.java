@@ -7,4 +7,5 @@ package oogasalad.engine.records.model;
  * @author Will He, Owen Jennings
  */
 public record MetaDataRecord(String title, String author, String description) {
+
 }

@@ -6,4 +6,5 @@ public record TargetControlConfigRecord(
     String pathFindingStrategy,
     TargetCalculationConfigInterface targetCalculationConfig
 ) implements ControlConfigInterface {
+
 }

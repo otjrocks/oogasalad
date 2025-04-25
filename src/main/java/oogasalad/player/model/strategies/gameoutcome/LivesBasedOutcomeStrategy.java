@@ -3,8 +3,8 @@ package oogasalad.player.model.strategies.gameoutcome;
 import oogasalad.engine.records.GameContextRecord;
 
 /**
- * The {@code LivesBasedOutcome} class implements the {@link GameOutcomeStrategyInterface}
- * interface to determine whether the game has ended based on the player's remaining lives.
+ * The {@code LivesBasedOutcome} class implements the {@link GameOutcomeStrategyInterface} interface
+ * to determine whether the game has ended based on the player's remaining lives.
  * <p>
  * If the player's lives reach zero or below, the game is considered over.
  * </p>
@@ -17,8 +17,7 @@ public class LivesBasedOutcomeStrategy implements GameOutcomeStrategyInterface {
    * Determines if the game has ended based on the player's remaining lives.
    *
    * @param gameContext contains gameScore and gameMap
-   * @return {@code true} if the player's lives are zero or below, {@code false}
-   *                           otherwise
+   * @return {@code true} if the player's lives are zero or below, {@code false} otherwise
    */
   @Override
   public boolean hasGameEnded(GameContextRecord gameContext) {

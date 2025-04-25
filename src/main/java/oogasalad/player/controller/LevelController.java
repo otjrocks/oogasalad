@@ -114,7 +114,9 @@ public class LevelController {
    *
    * @return The int representing the current level loaded 0-indexed.
    */
-  public int getCurrentLevel() { return myLevelOrder.get(myLevelIndex); }
+  public int getCurrentLevel() {
+    return myLevelOrder.get(myLevelIndex);
+  }
 
   /**
    * Gets if there are any levels remaining

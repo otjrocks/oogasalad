@@ -220,8 +220,6 @@ class AuthoringModelTest {
     level.createAndAddEntityPlacement(mockTemplate1, 10, 20);
     List<EntityPlacement> placements = level.getEntityPlacements();
 
-    assertThrows(UnsupportedOperationException.class, () -> {
-      placements.add(new EntityPlacement(mockTemplate1, 0, 0, "Default"));
-    });
+    assertThrows(UnsupportedOperationException.class, () -> placements.add(new EntityPlacement(mockTemplate1, 0, 0, "Default")));
   }
 }

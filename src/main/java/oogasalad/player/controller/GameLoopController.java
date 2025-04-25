@@ -173,16 +173,16 @@ public class GameLoopController {
 
   }
 
-  private void handleModeChangeEvents(){
+  private void handleModeChangeEvents() {
     handleModeReversion();
-    for(ModeChangeEventRecord modeChangeEvent: myLevel.modeChangeEvents()){
+    for (ModeChangeEventRecord modeChangeEvent : myLevel.modeChangeEvents()) {
       handleModeChangeEvent(modeChangeEvent);
     }
   }
 
   private void handleModeChangeEvent(ModeChangeEventRecord modeChangeEvent) {
     ModeChangeEventStrategyInterface modeChangeEventStrategy = ModeChangeEventStrategyFactory.createSpawnEventStrategy(
-            modeChangeEvent.changeCondition().type());
+        modeChangeEvent.changeCondition().type());
     if (modeChangeEventStrategy.shouldChange(modeChangeEvent, myGameContext
     )) {
       performModeChange(modeChangeEvent);
@@ -190,10 +190,12 @@ public class GameLoopController {
   }
 
   private void performModeChange(ModeChangeEventRecord modeChangeEvent) {
-    for (Entity entity: myGameContext.gameMap()){
-      if(!myGameContext.gameMap().getActiveModeChanges().containsKey(entity)) {
-        if (entity.getEntityPlacement().getTypeString().equals(modeChangeEvent.entityType().type())) {
-          myGameContext.gameMap().getActiveModeChanges().put(entity, modeChangeEvent.modeChangeInfo());
+    for (Entity entity : myGameContext.gameMap()) {
+      if (!myGameContext.gameMap().getActiveModeChanges().containsKey(entity)) {
+        if (entity.getEntityPlacement().getTypeString()
+            .equals(modeChangeEvent.entityType().type())) {
+          myGameContext.gameMap().getActiveModeChanges()
+              .put(entity, modeChangeEvent.modeChangeInfo());
           entity.getEntityPlacement().setMode(modeChangeEvent.modeChangeInfo().transitionMode());
         }
       }
@@ -204,13 +206,13 @@ public class GameLoopController {
 
     double currentTime = myGameContext.gameState().getTimeElapsed();
     Iterator<Map.Entry<Entity, ModeChangeInfo>> iterator =
-            myGameContext.gameMap().getActiveModeChanges().entrySet().iterator();
+        myGameContext.gameMap().getActiveModeChanges().entrySet().iterator();
 
     while (iterator.hasNext()) {
       Map.Entry<Entity, ModeChangeInfo> entry = iterator.next();
       Entity entity = entry.getKey();
       ModeChangeInfo info = entry.getValue();
-      if(currentTime >= info.transitionTime() && currentTime < info.revertTime()){
+      if (currentTime >= info.transitionTime() && currentTime < info.revertTime()) {
         entity.getEntityPlacement().setMode(info.transitionMode());
       }
       if (currentTime >= info.revertTime()) {
