@@ -19,6 +19,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.help.SimpleHelpSystem;
@@ -48,7 +49,6 @@ public class AuthoringView {
   private LevelSelectorView levelSelectorView;
   private LevelSettingsView levelSettingsView;
   private GameSettingsView gameSettingsView;
-  private CollisionRuleEditorView collisionEditorView;
   private EntityPlacementView entityPlacementView;
   private SimpleHelpSystem helpSystem;
 
@@ -264,8 +264,24 @@ public class AuthoringView {
     MenuBar menuBar = new MenuBar();
     Menu fileMenu = new Menu(LanguageManager.getMessage("FILE"));
     MenuItem saveItem = new MenuItem(LanguageManager.getMessage("SAVE_GAME"));
+    MenuItem loadGameItem = new MenuItem(LanguageManager.getMessage("LOAD_GAME"));
     saveItem.setOnAction(e -> openSaveDialog());
+    loadGameItem.setOnAction(e -> {
+      FileChooser fileChooser = new FileChooser();
+      File selected = fileChooser.showOpenDialog(getNode().getScene().getWindow());
+      if (selected != null) {
+        try {
+          controller.loadProject(selected);
+        }
+        catch (ConfigException ex) {
+          showAlert(LanguageManager.getMessage("LOAD_FAIL"),
+              LanguageManager.getMessage("LOAD_FAIL_MESSAGE"), AlertType.ERROR);
+        }
+      }
+    });
     fileMenu.getItems().add(saveItem);
+    fileMenu.getItems().add(loadGameItem);
+
     menuBar.getMenus().add(fileMenu);
     return menuBar;
   }
@@ -450,4 +466,23 @@ public class AuthoringView {
   public LevelSettingsView getLevelSettingsView() {
     return levelSettingsView;
   }
+
+  /**
+   * Refresh the UI to update a new model
+   */
+  public void refreshUI() {
+    controller.getLevelController().updateLevelDropdown();
+    controller.getLevelController().switchToLevel(controller.getModel().getCurrentLevelIndex());
+
+    canvasView.loadLevel(controller.getModel().getCurrentLevel());
+
+    selectorView.updateEntities(controller.getModel().getEntityTypes().stream().toList());
+
+    entityTypeEditorView.getRoot().setVisible(false);
+    entityPlacementView.setVisible(false);
+
+    gameSettingsView.updateFromModel();
+  }
+
+
 }

@@ -165,9 +165,15 @@ public class AuthoringModel {
    * Clears all entity types and levels from the model. Use with caution — this is a full reset.
    */
   public void clearAll() {
+    gameTitle = null;
+    author = null;
+    gameDescription = null;
     entityTypeMap.clear();
     levels.clear();
+    collisionRules.clear();
+    currentLevelIndex = 0;
   }
+
 
   /**
    * Set current level index

@@ -127,8 +127,8 @@ public class JsonConfigBuilder {
 
     // fill grid with entity placements
     for (EntityPlacement placement : draft.getEntityPlacements()) {
-      int row = placement.getInitialTileY();
-      int col = placement.getInitialTileX();
+      int row = (int) placement.getY();
+      int col = (int) placement.getX();
       int entityId = entityToIdMap.getOrDefault(placement.getTypeString(), 0);
       int modeIndex = getModeIndex(placement);
       tileGrid[row][col] = entityId + "." + modeIndex;
@@ -274,10 +274,11 @@ public class JsonConfigBuilder {
   }
 
   private String getImagePath(String fullPath) {
-    // Extract just the file name from the full path
-    String fileName = fullPath.substring(fullPath.lastIndexOf('/') + 1);
+    String normalized = fullPath.replace("\\", "/"); // convert Windows \ to /
+    String fileName = normalized.substring(normalized.lastIndexOf('/') + 1);
     return "assets/" + fileName;
   }
+
 
   private JsonNode safeSerializeCondition(Object condition, ObjectMapper mapper) {
     JsonNode serialized = ConditionSerializer.serialize(condition, mapper);

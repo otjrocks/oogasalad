@@ -71,8 +71,8 @@ public class EntityManager {
     clear();
 
     for (EntityPlacement placement : placements) {
-      int row = grid.getRowFromY(placement.getY());
-      int col = grid.getColFromX(placement.getX());
+      int row = (int) placement.getY();
+      int col = (int) placement.getX();
 
       if (grid.isValidCell(row, col)) {
         addEntityVisual(placement);
@@ -86,11 +86,8 @@ public class EntityManager {
    * @param placement the entity to visualize and track
    */
   public void addEntityVisual(EntityPlacement placement) {
-    int row = grid.getRowFromY(placement.getY());
-    int col = grid.getColFromX(placement.getX());
-
-    placement.setInitialTileX(col);
-    placement.setInitialTileY(row);
+    int row = (int) placement.getY();
+    int col = (int) placement.getX();
 
     double x = grid.getXFromCol(col);
     double y = grid.getYFromRow(row);
@@ -115,6 +112,7 @@ public class EntityManager {
   }
 
 
+
   /**
    * Updates an entity's position in the grid and notifies the controller.
    *
@@ -128,9 +126,6 @@ public class EntityManager {
 
     gridEntities[oldRow][oldCol] = null;
     gridEntities[newRow][newCol] = placement;
-
-    placement.setInitialTileX(newCol);
-    placement.setInitialTileY(newRow);
 
     double newX = grid.getXFromCol(newCol);
     double newY = grid.getYFromRow(newRow);
@@ -176,8 +171,8 @@ public class EntityManager {
       root.getChildren().remove(toRemove);
       entityViews.remove(toRemove);
 
-      int row = grid.getRowFromY(placement.getY());
-      int col = grid.getColFromX(placement.getX());
+      int row = (int) placement.getY();
+      int col = (int) placement.getX();
       if (grid.isValidCell(row, col)) {
         gridEntities[row][col] = null;
       }

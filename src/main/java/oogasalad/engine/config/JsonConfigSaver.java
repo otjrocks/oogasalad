@@ -144,7 +144,14 @@ public class JsonConfigSaver implements ConfigSaverInterface {
     Path assetsFolder = folder.resolve("assets");
     try {
       Files.createDirectories(assetsFolder);
-      Path source = Paths.get(new URI(currentAssetPath));
+
+      Path source;
+      if (currentAssetPath.startsWith("file:/")) {
+        source = Paths.get(new URI(currentAssetPath)); // If it's a URI
+      } else {
+        source = Paths.get(currentAssetPath); // If it's a regular file path
+      }
+
       String fileName = source.getFileName().toString();
       Path destination = assetsFolder.resolve(fileName);
       Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
@@ -152,10 +159,10 @@ public class JsonConfigSaver implements ConfigSaverInterface {
       LoggingManager.LOGGER.warn("Failed to write asset: {}", currentAssetPath, e);
       throw new ConfigException("Failed to copy assets when creating game file", e);
     } catch (URISyntaxException e) {
-      LoggingManager.LOGGER.warn("Failed to write asset due to URI syntax error: {}",
-          currentAssetPath, e);
+      LoggingManager.LOGGER.warn("Failed to write asset due to URI syntax error: {}", currentAssetPath, e);
       throw new ConfigException("Failed to copy assets when creating game file", e);
     }
   }
+
 
 }

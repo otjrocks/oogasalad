@@ -1,5 +1,6 @@
 package oogasalad.authoring.view.util;
 
+import java.io.File;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import oogasalad.engine.records.config.ModeConfigRecord;
@@ -31,8 +32,15 @@ public class SpriteSheetUtil {
     int tileWidth = config.image().tileWidth();
     int tileHeight = config.image().tileHeight();
 
-    Image fullImage = new Image(imagePath, false);
+    // Attempt to resolve to absolute file path
+    File imageFile = new File(imagePath);
+    if (!imageFile.exists()) {
+      return new WritableImage(tileWidth, tileHeight); // fallback: blank tile
+    }
+
+    Image fullImage = new Image(imageFile.toURI().toString(), false);
     return new WritableImage(fullImage.getPixelReader(), 0, 0, tileWidth, tileHeight);
   }
+
 
 }
