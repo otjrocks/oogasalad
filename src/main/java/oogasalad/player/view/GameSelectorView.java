@@ -1,6 +1,9 @@
 package oogasalad.player.view;
 
 import static oogasalad.engine.utility.LanguageManager.getMessage;
+import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
+import static oogasalad.engine.utility.constants.GameConfig.HEIGHT;
+import static oogasalad.engine.utility.constants.GameConfig.WIDTH;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -40,6 +44,7 @@ public class GameSelectorView {
 
   private static final String GAMES_FOLDER_PATH = "data/games/";
   private static final String SMALL_BUTTON_STYLE = "small-button";
+  public static final int GAME_CARD_WIDTH = 200;
 
   private final VBox myRoot;
   private final MainController myMainController;
@@ -63,6 +68,9 @@ public class GameSelectorView {
   public GameSelectorView(MainController mainController) {
     this.myMainController = mainController;
     this.myRoot = new VBox(20);
+    myRoot.setPrefSize(WIDTH, HEIGHT);
+    myRoot.setPadding(new Insets(ELEMENT_SPACING * 2, ELEMENT_SPACING * 4, ELEMENT_SPACING * 2,
+        ELEMENT_SPACING * 4));
     new ThemeManager(mainController.getStage());
     initializeLayout();
 
@@ -165,18 +173,22 @@ public class GameSelectorView {
       int end = Math.min(start + itemsPerPage, gameNames.size());
       List<String> pageGames = gameNames.subList(start, end);
 
-      HBox gameGrid = new HBox(30);
+      FlowPane gameGrid = new FlowPane();
+      gameGrid.setHgap(20);
+      gameGrid.setVgap(20);
+      gameGrid.setPrefWrapLength(WIDTH - 4 * ELEMENT_SPACING); // Allow wrapping
       gameGrid.setAlignment(Pos.CENTER);
-      gameGrid.getStyleClass().add("game-grid");
 
       for (String name : pageGames) {
         VBox gameCard = createGameCard(name);
+        gameCard.setPrefWidth(GAME_CARD_WIDTH);
         gameGrid.getChildren().add(gameCard);
       }
 
       pageBox.getChildren().add(gameGrid);
       return pageBox;
     });
+
     return pagination;
   }
 
@@ -186,13 +198,17 @@ public class GameSelectorView {
     card.getStyleClass().add("game-card");
 
     ImageView image = new ImageView(getGameImage(gameName));
-    image.setFitWidth(200);
+    image.setFitWidth(GAME_CARD_WIDTH);
     image.setFitHeight(300);
 
     Label nameLabel = new Label(gameName);
+    nameLabel.setWrapText(true);
+    nameLabel.setMaxWidth(GAME_CARD_WIDTH);
     nameLabel.getStyleClass().add("game-name");
 
     Button randomizeButton = new Button("Randomize Levels");
+    randomizeButton.setWrapText(true);
+    randomizeButton.setMaxWidth(GAME_CARD_WIDTH);
     randomizeButton.getStyleClass().add(SMALL_BUTTON_STYLE);
     randomizeButton.setOnAction(e -> attemptShowingGamePlayerView(gameName, true));
 

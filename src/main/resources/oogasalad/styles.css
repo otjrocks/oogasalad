@@ -183,6 +183,7 @@ Label, Text {
   -fx-background-radius: 5px;
   -fx-border-radius: 5px;
   -fx-font-family: "Press Start 2P";
+  -fx-text-alignment: center;
 }
 
 .small-button:hover {
@@ -192,8 +193,8 @@ Label, Text {
 .icon-button {
   -fx-font-size: 12px;
   -fx-padding: 10px;
-  -fx-min-width: 30px;
-  -fx-min-height: 30px;
+  -fx-min-width: 40px;
+  -fx-min-height: 40px;
   -fx-background-color: -fx-primary;
   -fx-text-fill: -fx-secondary;
   -fx-border-color: -fx-secondary;
@@ -202,6 +203,12 @@ Label, Text {
   -fx-border-radius: 50%;
   -fx-font-family: "Press Start 2P";
   -fx-alignment: center;
+}
+
+.pagination-page-box {
+  -fx-alignment: center;
+  -fx-spacing: 10px;
+  -fx-padding: 20px;
 }
 
 .icon-button:hover {
@@ -213,6 +220,7 @@ Label, Text {
 .game-name {
   -fx-font-size: 16px;
   -fx-font-family: "Press Start 2P";
+  -fx-text-alignment: center;
 }
 
 .pagination {
@@ -259,4 +267,33 @@ Label, Text {
   -fx-spacing: 30px;
   -fx-padding: 20px;
   -fx-alignment: center;
+}
+
+/* Container that holds the navigation buttons */
+.pagination > .pagination-control > .control-box {
+  -fx-spacing: 10px;
+  -fx-padding: 30px;
+  -fx-alignment: center;
+}
+
+/* Style for the page number buttons */
+.pagination .number-button {
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+  -fx-font-family: "Press Start 2P";
+  -fx-font-size: 14px;
+  -fx-padding: 5px 10px;
+}
+
+/* Arrow buttons (left/right) */
+.pagination .left-arrow,
+.pagination .right-arrow {
+  -fx-background-color: transparent;
+  -fx-shape: "M 0 0 L 4 4 L 0 8 Z"; /* Simple triangle */
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+  -fx-min-width: 20px;
+  -fx-min-height: 20px;
 }
