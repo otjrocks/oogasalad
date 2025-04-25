@@ -148,7 +148,6 @@ public class JsonConfigParser implements ConfigParserInterface {
       List<ModeChangeEventRecord> modeChangeEvents = parseModeChangeEvents(root, idToEntityType);
 
       return new ParsedLevelRecord(placements, mapInfo, spawnEvents, modeChangeEvents);
-
     } catch (IOException e) {
       throw new ConfigException("Error in loading level config", e);
     }

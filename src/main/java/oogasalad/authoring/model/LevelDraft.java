@@ -1,5 +1,6 @@
 package oogasalad.authoring.model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,7 @@ public class LevelDraft {
 
   private String name;
   private String outputFileName;
+  private File backgroundImage;
   private int width;
   private int height;
 
@@ -39,6 +41,7 @@ public class LevelDraft {
     this.entityPlacements = new ArrayList<>();
     this.modeChangeEvents = new ArrayList<>();
     this.spawnEvents = new ArrayList<>();
+    this.backgroundImage = null;
 
     // Default init values
     this.width = 20;
@@ -244,5 +247,24 @@ public class LevelDraft {
    */
   public List<SpawnEventRecord> getSpawnEvents() {
     return spawnEvents;
+  }
+
+
+  /**
+   * Get the background image for this level.
+   *
+   * @return A file representing the background image.
+   */
+  public File getBackgroundImage() {
+    return backgroundImage;
+  }
+
+  /**
+   * Set the background image for this level draft.
+   *
+   * @param backgroundImage The background image you wish to set.
+   */
+  public void setBackgroundImage(File backgroundImage) {
+    this.backgroundImage = backgroundImage;
   }
 }

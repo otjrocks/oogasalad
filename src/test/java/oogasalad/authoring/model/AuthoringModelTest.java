@@ -10,19 +10,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.config.JsonConfigParser;
-import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
@@ -48,7 +44,6 @@ class AuthoringModelTest {
             new ConditionRecord("spawn", Map.of()), 1.0, 1.0,
             "testMode", new ConditionRecord("despawn", Map.of())));
     model.addLevel(level);
-
     mockTemplate1 = mock(EntityTypeRecord.class);
     when(mockTemplate1.type()).thenReturn("Player");
 
