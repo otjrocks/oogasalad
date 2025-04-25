@@ -6,4 +6,6 @@ public record ModeChangeEventRecord(
     EntityTypeRecord entityType,
     ModeChangeInfo modeChangeInfo,
     ConditionRecord changeCondition
-) { }
+) {
+
+}

@@ -1,4 +1,4 @@
-package oogasalad.engine.model.strategies.collision;
+package oogasalad.player.model.strategies.collision;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import oogasalad.engine.records.CollisionContextRecord;
 import oogasalad.player.model.GameStateInterface;
-import oogasalad.player.model.strategies.collision.UpdateScoreStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

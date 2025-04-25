@@ -1,6 +1,7 @@
 package oogasalad.authoring.view;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -88,7 +89,7 @@ public class EntitySelectorViewTest extends DukeApplicationTest {
     FlowPane tileGrid = lookup(".flow-pane").query();
     assertEquals(1, tileGrid.getChildren().size());
     VBox tile = (VBox) tileGrid.getChildren().get(0);
-    assertTrue(tile.getChildren().get(0) instanceof ImageView);
+    assertInstanceOf(ImageView.class, tile.getChildren().get(0));
   }
 
 

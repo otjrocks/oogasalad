@@ -24,7 +24,7 @@ import oogasalad.player.model.GameStateInterface;
  *     CollisionStrategy strategy = new UpdateScoreStrategy(100);
  *     strategy.handleCollision(entity1, entity2, gameMap, gameState);
  * </pre>
- *
+ * <p>
  *  @see CollisionContextRecord
  *  @see Entity
  *  @see GameMapInterface
@@ -41,10 +41,10 @@ public interface CollisionStrategyInterface {
    * <p>This method is called whenever two entities collide, allowing for different
    * collision outcomes depending on the strategy implementation.</p>
    *
-   * @param collisionContext the context of the collision, containing both entities,
-   *                         the game map, and the current game state
-   * @throws EntityNotFoundException if an entity involved in the collision cannot
-   *                                  be found in the game map during processing
+   * @param collisionContext the context of the collision, containing both entities, the game map,
+   *                         and the current game state
+   * @throws EntityNotFoundException if an entity involved in the collision cannot be found in the
+   *                                 game map during processing
    */
   void handleCollision(CollisionContextRecord collisionContext) throws EntityNotFoundException;
 }

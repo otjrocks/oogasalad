@@ -95,8 +95,8 @@ public class MainController {
    *
    * @param gameFolderName name of game folder to create
    * @param randomized     if levels should be randomized
-   *
-   * @return true if the game player was successfully loaded and false if the view could not be loaded
+   * @return true if the game player was successfully loaded and false if the view could not be
+   * loaded
    */
   public boolean showGamePlayerView(String gameFolderName, boolean randomized) {
     try {

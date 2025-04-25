@@ -4,9 +4,9 @@ import oogasalad.engine.records.GameContextRecord;
 import oogasalad.player.model.GameStateInterface;
 
 /**
- * The {@code EntityBasedOutcomeStrategy} class implements the {@link GameOutcomeStrategyInterface} interface
- * to determine whether the game has ended based on the entities present in the game state, such as
- * remaining pellets.
+ * The {@code EntityBasedOutcomeStrategy} class implements the {@link GameOutcomeStrategyInterface}
+ * interface to determine whether the game has ended based on the entities present in the game
+ * state, such as remaining pellets.
  * <p>
  * This strategy typically checks if all necessary entities (e.g., pellets) have been consumed to
  * declare a victory.
@@ -17,6 +17,7 @@ import oogasalad.player.model.GameStateInterface;
 public class EntityBasedOutcomeStrategy implements GameOutcomeStrategyInterface {
 
   private final String entityType;
+
   /**
    * Constructs an {@code EntityBasedOutcomeStrategy} that determines the end of the game based on
    * the remaining count of a specific entity type in the game map.
@@ -29,8 +30,8 @@ public class EntityBasedOutcomeStrategy implements GameOutcomeStrategyInterface 
   }
 
   /**
-   * Determines if the game has ended based on the current {@link GameStateInterface}. Check conditions such
-   * as whether all pellets have been consumed.
+   * Determines if the game has ended based on the current {@link GameStateInterface}. Check
+   * conditions such as whether all pellets have been consumed.
    *
    * @param context contains gameScore and gameMap
    * @return {@code true} if the game has ended, {@code false} otherwise

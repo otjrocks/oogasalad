@@ -4,7 +4,6 @@ import static oogasalad.engine.records.CollisionContextRecord.StrategyAppliesTo.
 
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContextRecord;
-import oogasalad.engine.records.CollisionContextRecord.StrategyAppliesTo;
 import oogasalad.player.model.GameMapInterface;
 
 /**
@@ -12,8 +11,8 @@ import oogasalad.player.model.GameMapInterface;
  * handle collisions where one entity "consumes" another.
  *
  * <p>When a collision occurs, this strategy removes the second entity from the
- * {@link GameMapInterface}.
- * If the entity is not found, an {@link EntityNotFoundException} is thrown.</p>
+ * {@link GameMapInterface}. If the entity is not found, an {@link EntityNotFoundException} is
+ * thrown.</p>
  *
  * <p>Example usage:</p>
  * <pre>
@@ -29,8 +28,7 @@ public class ConsumeStrategy implements CollisionStrategyInterface {
    * Handles a collision event where {@code entity2} is removed from the game map.
    *
    * <p>If {@code entity2} is not found in the {@link GameMapInterface}, an
-   * {@link EntityNotFoundException}
-   * is thrown.</p>
+   * {@link EntityNotFoundException} is thrown.</p>
    *
    * @param collisionContext the context of the collision, containing both entities, the game map,
    *                         and the current game state

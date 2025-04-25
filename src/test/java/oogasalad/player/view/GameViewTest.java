@@ -21,13 +21,11 @@ import static org.mockito.Mockito.*;
 public class GameViewTest extends DukeApplicationTest {
 
   private GameView gameView;
-  private MainController mockMainController;
-  private GameStateInterface mockGameState;
 
   @Override
   public void start(Stage stage) {
-    mockMainController = mock(MainController.class);
-    mockGameState = mock(GameStateInterface.class);
+    MainController mockMainController = mock(MainController.class);
+    GameStateInterface mockGameState = mock(GameStateInterface.class);
 
     GamePlayerView gamePlayerView = new GamePlayerView(
         mockMainController,

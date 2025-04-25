@@ -58,11 +58,6 @@ public class GameSelectorViewTest extends DukeApplicationTest {
   }
 
   // currently no action
-//  @Test
-//  void helpButton_setOnAction_() {
-//    Button helpButton = lookup("Help").queryButton();
-//    assertNotNull(helpButton);
-//  }
 
 
   // might delete since we removing? upload

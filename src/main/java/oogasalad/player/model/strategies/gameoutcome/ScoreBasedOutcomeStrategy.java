@@ -12,6 +12,7 @@ import oogasalad.engine.records.GameContextRecord;
  * @author Austin Huang
  */
 public class ScoreBasedOutcomeStrategy implements GameOutcomeStrategyInterface {
+
   private final int winningScore;
 
   /**
@@ -27,8 +28,8 @@ public class ScoreBasedOutcomeStrategy implements GameOutcomeStrategyInterface {
    * Determines if the game has ended based on the player's score.
    *
    * @param gameContext contains gameScore and gameMap
-   * @return {@code true} if the player's score is greater than or equal to the
-   *                           winning score, {@code false} otherwise
+   * @return {@code true} if the player's score is greater than or equal to the winning score,
+   * {@code false} otherwise
    */
   @Override
   public boolean hasGameEnded(GameContextRecord gameContext) {

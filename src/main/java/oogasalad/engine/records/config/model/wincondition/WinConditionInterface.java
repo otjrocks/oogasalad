@@ -21,9 +21,9 @@ public interface WinConditionInterface {
 
 
   /**
-   * Retrieves the type of the win condition.
-   * This method provides a default implementation that returns "SurviveForTime".
-   * 
+   * Retrieves the type of the win condition. This method provides a default implementation that
+   * returns "SurviveForTime".
+   *
    * @return a string representing the type of the win condition
    */
   default String getConditionType() {
@@ -32,8 +32,9 @@ public interface WinConditionInterface {
 
   /**
    * Retrieves the value associated with the win condition, if any.
-   * 
-   * @return an {@code Optional} containing the condition value if present, or an empty {@code Optional} if no value is set.
+   *
+   * @return an {@code Optional} containing the condition value if present, or an empty
+   * {@code Optional} if no value is set.
    */
   default Optional<String> getConditionValue() {
     return Optional.empty();
@@ -47,5 +48,6 @@ public interface WinConditionInterface {
   default GameOutcomeStrategyInterface toStrategy() {
     throw new UnsupportedOperationException("toStrategy not implemented for: "
         + this.getClass().getSimpleName());
-  };
+  }
+
 }

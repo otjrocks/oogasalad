@@ -19,4 +19,5 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = ConditionalControlConfigRecord.class, name = "Conditional")
 })
 public interface ControlConfigInterface {
+
 }

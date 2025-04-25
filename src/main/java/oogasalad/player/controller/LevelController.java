@@ -81,7 +81,6 @@ public class LevelController {
     sessionManager.advanceLevel(currentScore); // Save score + index + highscore
   }
 
-
   /**
    * Resets the current level back to 0 and updates the config file.
    */

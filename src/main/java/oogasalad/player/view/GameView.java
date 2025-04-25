@@ -2,7 +2,6 @@ package oogasalad.player.view;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Objects;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;

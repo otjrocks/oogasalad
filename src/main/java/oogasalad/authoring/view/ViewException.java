@@ -18,13 +18,13 @@ public class ViewException extends RuntimeException {
   }
 
   /**
-   * Constructs a new {@code ViewException} with the specified detail message and cause.
-   * This allows the chaining of exceptions, which can help preserve the original stack trace of an
-   * underlying exception.
+   * Constructs a new {@code ViewException} with the specified detail message and cause. This allows
+   * the chaining of exceptions, which can help preserve the original stack trace of an underlying
+   * exception.
    *
    * @param message the detail message providing additional context about the error.
-   * @param cause the underlying cause of the exception, which can be another exception that
-   *              triggered this one.
+   * @param cause   the underlying cause of the exception, which can be another exception that
+   *                triggered this one.
    */
   public ViewException(String message, Throwable cause) {
     super(message, cause);

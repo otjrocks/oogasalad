@@ -1,13 +1,11 @@
 package oogasalad.player.model;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.config.model.ModeChangeInfo;
-import oogasalad.player.model.strategies.collision.TemporaryModeChangeStrategy;
 
 /**
  * The {@code GameMap} interface provides methods for managing the game's map, which consists of

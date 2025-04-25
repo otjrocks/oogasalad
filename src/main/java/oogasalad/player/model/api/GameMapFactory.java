@@ -24,7 +24,8 @@ public class GameMapFactory {
    * @throws InvalidPositionException Whenever the map cannot be created because an entity with an
    *                                  invalid position was added.
    */
-  public static GameMapInterface createGameMap(GameInputManager input, ConfigModelRecord configModel,
+  public static GameMapInterface createGameMap(GameInputManager input,
+      ConfigModelRecord configModel,
       int levelIndex)
       throws InvalidPositionException {
     int width = configModel.levels().get(levelIndex).mapInfo().width();

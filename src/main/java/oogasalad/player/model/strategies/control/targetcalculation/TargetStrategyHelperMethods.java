@@ -1,6 +1,5 @@
 package oogasalad.player.model.strategies.control.targetcalculation;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.utility.constants.Directions.Direction;
@@ -41,9 +40,7 @@ public class TargetStrategyHelperMethods {
    * empty {@code Optional} if no such entity exists
    */
   static Optional<Entity> findFirstEntityOfType(GameMapInterface gameMap, String targetType) {
-    Iterator<Entity> iterator = gameMap.iterator();
-    while (iterator.hasNext()) {
-      Entity entity = iterator.next();
+    for (Entity entity : gameMap) {
       if (entity.getEntityPlacement().getTypeString()
           .equalsIgnoreCase(targetType)) {
         return Optional.of(entity);
@@ -85,7 +82,8 @@ public class TargetStrategyHelperMethods {
   }
 
 
-  static int[] calcTargetPosition(GameMapInterface map, Entity entity, String type, int tilesAhead) {
+  static int[] calcTargetPosition(GameMapInterface map, Entity entity, String type,
+      int tilesAhead) {
     int[] potentialTarget = potentialTargetPosition(
         entity.getEntityDirection(),
         (int) entity.getEntityPlacement().getX(),

@@ -283,10 +283,10 @@ public class EntityPlacement {
   /**
    * Gets the animation speed for the current entity
    */
-  public double getAnimationSpeed(){
+  public double getAnimationSpeed() {
     return this.getType()
-            .modes()
-            .get(this.getMode())
-            .image().animationSpeed();
+        .modes()
+        .get(this.getMode())
+        .image().animationSpeed();
   }
 }

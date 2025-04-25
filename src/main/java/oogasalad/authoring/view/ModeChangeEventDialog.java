@@ -15,8 +15,8 @@ import oogasalad.engine.records.model.ModeChangeEventRecord;
 import java.util.*;
 
 /**
- * A dialog window that allows the user to configure mode change events for entities.
- * These events specify transitions between behavior modes based on certain conditions (e.g., time).
+ * A dialog window that allows the user to configure mode change events for entities. These events
+ * specify transitions between behavior modes based on certain conditions (e.g., time).
  */
 public class ModeChangeEventDialog extends Stage {
 
@@ -80,7 +80,8 @@ public class ModeChangeEventDialog extends Stage {
         makeColumn("Entity", r -> r.entityType().type()),
         makeColumn("From", r -> r.modeChangeInfo().originalMode()),
         makeColumn("To", r -> r.modeChangeInfo().transitionMode()),
-        makeColumn("Condition", r -> r.changeCondition().type() + ": " + r.changeCondition().parameters())
+        makeColumn("Condition",
+            r -> r.changeCondition().type() + ": " + r.changeCondition().parameters())
     );
 
     root.getChildren().addAll(
@@ -151,10 +152,10 @@ public class ModeChangeEventDialog extends Stage {
             Collections.emptyList()
         ),
         new ModeChangeInfo(
-                currentMode,
-                nextMode,
-                999999999,
-                1),
+            currentMode,
+            nextMode,
+            999999999,
+            1),
         condition
     );
 
@@ -166,9 +167,11 @@ public class ModeChangeEventDialog extends Stage {
     table.getItems().setAll(level.getModeChangeEvents());
   }
 
-  private TableColumn<ModeChangeEventRecord, String> makeColumn(String title, java.util.function.Function<ModeChangeEventRecord, String> mapper) {
+  private TableColumn<ModeChangeEventRecord, String> makeColumn(String title,
+      java.util.function.Function<ModeChangeEventRecord, String> mapper) {
     TableColumn<ModeChangeEventRecord, String> col = new TableColumn<>(title);
-    col.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(mapper.apply(data.getValue())));
+    col.setCellValueFactory(
+        data -> new javafx.beans.property.SimpleStringProperty(mapper.apply(data.getValue())));
     return col;
   }
 

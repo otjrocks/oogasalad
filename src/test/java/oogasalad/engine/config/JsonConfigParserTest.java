@@ -313,7 +313,7 @@ class JsonConfigParserTest {
   void loadGameConfig_validConfigModelRecord_assertDoesNotThrow() {
     URL resourceUrl = getClass().getClassLoader().getResource("BasicPacMan/gameConfig.json");
     JsonConfigParser parser = new JsonConfigParser();
-    assertDoesNotThrow(() -> parser.loadFromFile(resourceUrl.getPath().toString()));
+    assertDoesNotThrow(() -> parser.loadFromFile(resourceUrl.getPath()));
   }
 
   @Test

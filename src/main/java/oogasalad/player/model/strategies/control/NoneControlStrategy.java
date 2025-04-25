@@ -3,11 +3,11 @@ package oogasalad.player.model.strategies.control;
 import oogasalad.player.model.Entity;
 
 /**
- * A control strategy that performs no actions. This class is used when no control behavior
- * is required for an entity. The {@code update} method is intentionally left empty.
- * 
+ * A control strategy that performs no actions. This class is used when no control behavior is
+ * required for an entity. The {@code update} method is intentionally left empty.
+ *
  * <p>Implements the {@link ControlStrategyInterface} interface.</p>
- * 
+ *
  * @author Jessica Chen
  */
 public class NoneControlStrategy implements ControlStrategyInterface {

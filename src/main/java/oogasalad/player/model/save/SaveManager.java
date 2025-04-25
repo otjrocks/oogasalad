@@ -1,4 +1,5 @@
 package oogasalad.player.model.save;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.File;
@@ -7,6 +8,7 @@ import oogasalad.engine.records.config.model.SaveConfigRecord;
 
 /**
  * Manages Save Files
+ *
  * @author Luke Fu
  */
 public class SaveManager {

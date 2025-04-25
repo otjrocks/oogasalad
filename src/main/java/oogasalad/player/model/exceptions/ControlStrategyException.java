@@ -1,8 +1,8 @@
 package oogasalad.player.model.exceptions;
 
 /**
- * An exception thrown by the ControlStrategy or ControlStrategyFactory when a user
- * an invalid ControlStrategy
+ * An exception thrown by the ControlStrategy or ControlStrategyFactory when a user an invalid
+ * ControlStrategy
  *
  * @author Jessica Chen
  */
@@ -23,8 +23,8 @@ public class ControlStrategyException extends RuntimeException {
    * underlying exception.
    *
    * @param message the detail message providing additional context about the error.
-   * @param cause the underlying cause of the exception, which can be another exception that
-   *              triggered this one.
+   * @param cause   the underlying cause of the exception, which can be another exception that
+   *                triggered this one.
    */
   public ControlStrategyException(String message, Throwable cause) {
     super(message, cause);

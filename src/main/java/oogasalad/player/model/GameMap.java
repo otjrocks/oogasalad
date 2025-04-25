@@ -11,7 +11,6 @@ import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.config.model.ModeChangeInfo;
 import oogasalad.engine.utility.LoggingManager;
-import oogasalad.player.model.strategies.collision.TemporaryModeChangeStrategy;
 
 /**
  * A simple implementation of a {@code GameMap}.

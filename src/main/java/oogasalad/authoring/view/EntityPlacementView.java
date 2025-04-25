@@ -199,7 +199,8 @@ public class EntityPlacementView {
       controller.updateCanvas();
       showStatusMessage(String.format(LanguageManager.getMessage("MODE_UPDATE"), newMode));
 
-      controller.moveEntity(currentPlacement, currentPlacement.getInitialTileX(), currentPlacement.getInitialY());
+      controller.moveEntity(currentPlacement, currentPlacement.getInitialTileX(),
+          currentPlacement.getInitialY());
     } else {
       showStatusMessage(LanguageManager.getMessage("NO_CHANGES"));
     }
@@ -226,7 +227,6 @@ public class EntityPlacementView {
       // Update canvas view
       controller.getCanvasView().removeEntityVisual(currentPlacement);
 
-
       // Clear the view
       setEntityPlacement(null);
     }
@@ -246,9 +246,7 @@ public class EntityPlacementView {
         new java.util.TimerTask() {
           @Override
           public void run() {
-            javafx.application.Platform.runLater(() -> {
-              statusLabel.setVisible(false);
-            });
+            javafx.application.Platform.runLater(() -> statusLabel.setVisible(false));
           }
         },
         3000 // 3 seconds

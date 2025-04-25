@@ -34,7 +34,7 @@ public class GameScreenView {
    * @param randomized     if levels should be randomized
    */
   public GameScreenView(MainController controller, GameStateInterface gameState,
-                        String gameFolderName, boolean randomized) {
+      String gameFolderName, boolean randomized) {
     this(controller, gameState, gameFolderName, randomized, null);
   }
 
@@ -45,7 +45,8 @@ public class GameScreenView {
    * @param gameState      The game state object for this current game.
    * @param gameFolderName name of game folder to create
    * @param randomized     if levels should be randomized
-   * @param baseFolderPath  The base folder path for the game resources, overrides the default path useful for tests
+   * @param baseFolderPath The base folder path for the game resources, overrides the default path
+   *                       useful for tests
    */
   public GameScreenView(MainController controller, GameStateInterface gameState,
       String gameFolderName, boolean randomized, String baseFolderPath) {
@@ -80,7 +81,6 @@ public class GameScreenView {
     hudUpdater.setCycleCount(Timeline.INDEFINITE);
     hudUpdater.play();
   }
-
 
 
   /**
