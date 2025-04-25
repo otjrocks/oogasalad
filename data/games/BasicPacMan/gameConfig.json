@@ -7,7 +7,7 @@
   },
   "defaultSettings" : {
     "gameSpeed" : 1,
-    "startingLives" : 6,
+    "startingLives" : 10,
     "initialScore" : 0,
     "winCondition" : {
       "type" : "EntityBased",
