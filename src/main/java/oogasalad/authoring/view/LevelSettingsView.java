@@ -55,20 +55,20 @@ public class LevelSettingsView {
   }
 
   private void initializeView(LevelController controller) {
-    Label titleLabel = new Label("Level Settings");
+    Label titleLabel = new Label(LanguageManager.getMessage("LEVEL_SETTINGS"));
     titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
-    Button saveButton = new Button("Apply Size and Background Image");
+    Button saveButton = new Button(LanguageManager.getMessage("APPLY_LEVEL_SETTINGS"));
     saveButton.setOnAction(e -> applyChanges());
 
-    Button chooseImageButton = new Button("Choose Background Image");
+    Button chooseImageButton = new Button(LanguageManager.getMessage("CHOOSE_BACKGROUND_IMAGE"));
     chooseImageButton.setOnAction(e -> {
       mySelectedFile = myFileChooser.showOpenDialog(root.getScene().getWindow());
       LevelDraft level = controller.getCurrentLevel();
       level.setBackgroundImage(mySelectedFile);
     });
 
-    Button editModeEventsButton = new Button("Edit Mode Change Events");
+    Button editModeEventsButton = new Button(LanguageManager.getMessage("EDIT_MODE_CHANGE_EVENTS"));
     editModeEventsButton.setOnAction(e -> {
       ModeChangeEventDialog dialog = new ModeChangeEventDialog(
           controller.getAvailableEntityTypes(),
@@ -77,7 +77,7 @@ public class LevelSettingsView {
       dialog.showAndWait();
     });
 
-    Button editSpawnEventsButton = new Button("Edit Spawn Events");
+    Button editSpawnEventsButton = new Button(LanguageManager.getMessage("EDIT_SPAWN_EVENTS"));
     editSpawnEventsButton.setOnAction(e -> {
       SpawnEventDialog dialog = new SpawnEventDialog(
           controller.getAvailableEntityTypes(),
@@ -89,9 +89,9 @@ public class LevelSettingsView {
     GridPane grid = new GridPane();
     grid.setHgap(10);
     grid.setVgap(10);
-    grid.add(new Label("Width:"), 0, 0);
+    grid.add(new Label(LanguageManager.getMessage("WIDTH")), 0, 0);
     grid.add(widthSpinner, 1, 0);
-    grid.add(new Label("Height:"), 0, 1);
+    grid.add(new Label(LanguageManager.getMessage("HEIGHT")), 0, 1);
     grid.add(heightSpinner, 1, 1);
 
     root.getChildren()

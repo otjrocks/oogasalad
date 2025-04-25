@@ -31,6 +31,9 @@ import oogasalad.engine.utility.LanguageManager;
 
 public class EntityPlacementView {
 
+  private static final String COORDINATE = "COORDINATE";
+
+
   private final AuthoringController controller;
   private EntityPlacement currentPlacement;
   private final VBox rootNode;
@@ -84,7 +87,7 @@ public class EntityPlacementView {
     // Update UI fields with values from the placement
     entityTypeLabel.setText(placement.getTypeString());
     positionValueLabel.setText(
-        String.format(LanguageManager.getMessage("COORDINATE"), placement.getInitialTileX(),
+        String.format(LanguageManager.getMessage(COORDINATE), placement.getInitialTileX(),
             placement.getInitialTileY()));
 
     updateModeSelector();
@@ -115,7 +118,8 @@ public class EntityPlacementView {
 
     // Position display (non-editable)
     Label positionLabel = new Label(LanguageManager.getMessage("POSITION"));
-    positionValueLabel = new Label("X: 0.0, Y: 0.0");
+    positionValueLabel = new Label(String.format(LanguageManager.getMessage(COORDINATE), 0,
+        0));
     positionValueLabel.getStyleClass().add("info-value");
     positionValueLabel.setStyle("-fx-font-weight: bold;");
 
@@ -258,7 +262,7 @@ public class EntityPlacementView {
    */
   public void updatePositionDisplay() {
     if (currentPlacement != null) {
-      positionValueLabel.setText(String.format(LanguageManager.getMessage("COORDINATE"),
+      positionValueLabel.setText(String.format(LanguageManager.getMessage(COORDINATE),
           currentPlacement.getInitialTileX(), currentPlacement.getInitialTileY()));
     }
   }

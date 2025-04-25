@@ -38,6 +38,8 @@ import oogasalad.engine.utility.constants.GameConfig;
  */
 public class AuthoringView {
 
+  private static final String HELP = "HELP";
+
   private final BorderPane root;
   private EntitySelectorView selectorView;
   private CanvasView canvasView;
@@ -171,7 +173,7 @@ public class AuthoringView {
         "-fx-background-color: #3498db; -fx-text-fill: white; " +
         "-fx-background-radius: 50%; -fx-min-width: 30px; " +
         "-fx-min-height: 30px; -fx-max-width: 30px; -fx-max-height: 30px;");
-    helpButton.setTooltip(new Tooltip("Show Help"));
+    helpButton.setTooltip(new Tooltip(LanguageManager.getMessage(HELP)));
     helpButton.setOnAction(e -> helpSystem.showHelpDialog());
 
     // Get the BorderPane that contains the canvas
@@ -196,13 +198,13 @@ public class AuthoringView {
 
     // Check if Help menu already exists
     for (Menu menu : menuBar.getMenus()) {
-      if (menu.getText().equals(LanguageManager.getMessage("HELP"))) {
+      if (menu.getText().equals(LanguageManager.getMessage(HELP))) {
         return; // Help menu already exists
       }
     }
 
     // Create Help menu
-    Menu helpMenu = new Menu(LanguageManager.getMessage("HELP"));
+    Menu helpMenu = new Menu(LanguageManager.getMessage(HELP));
     MenuItem helpContentsItem = new MenuItem(LanguageManager.getMessage("HELP_CONTENTS"));
     helpContentsItem.setOnAction(e -> helpSystem.showHelpDialog());
 
@@ -219,14 +221,8 @@ public class AuthoringView {
   private void showAboutDialog() {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setTitle(LanguageManager.getMessage("ABOUT"));
-    alert.setHeaderText("Game Authoring Environment");
-    alert.setContentText(
-        """
-            Version: 1.0
-            A powerful tool for creating 2D games without writing code.
-            
-            Part of the OOGASalad project."""
-    );
+    alert.setHeaderText(LanguageManager.getMessage("GAME_AUTHORING_ENVIRONMENT"));
+    alert.setContentText(LanguageManager.getMessage("GAME_AUTHORING_CONTENT"));
 
     alert.showAndWait();
   }
@@ -422,7 +418,7 @@ public class AuthoringView {
 
   private void openSaveDialog() {
     DirectoryChooser chooser = new DirectoryChooser();
-    chooser.setTitle("Choose Save Location");
+    chooser.setTitle(LanguageManager.getMessage("CHOOSE_SAVE_LOCATION"));
 
     File selectedDirectory = chooser.showDialog(root.getScene().getWindow());
     if (selectedDirectory != null) {
