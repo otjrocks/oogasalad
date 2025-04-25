@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
-import oogasalad.authoring.view.AuthoringView;
+import oogasalad.authoring.view.mainView.AuthoringView;
 import oogasalad.engine.records.model.EntityTypeRecord;
 
 /**

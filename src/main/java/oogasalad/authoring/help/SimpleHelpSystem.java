@@ -12,7 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.authoring.view.AuthoringView;
+import oogasalad.authoring.view.mainView.AuthoringView;
 
 import java.util.Arrays;
 import java.util.List;

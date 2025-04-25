@@ -17,19 +17,24 @@
     "lives": {
       "type": "integer"
     },
+    "totalScore": {
+      "type": "integer"
+    },
+    "highScore": {
+      "type": "integer"
+    },
     "levelOrder": {
       "type": "array",
       "items": {
         "type": "integer"
       }
-    },
-    "highScore": {
-      "type": "integer"
     }
   },
   "required": [
     "saveName",
     "currentLevel",
-    "lives"
+    "totalScore",
+    "lives",
+    "highScore"
   ]
 }
