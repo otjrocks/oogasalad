@@ -100,7 +100,7 @@ public class MainController {
    */
   public boolean showGamePlayerView(String gameFolderName, boolean randomized) {
     try {
-      GameState myGameState = GameStateFactory.createFromConfig("data/games/" + gameFolderName);
+      GameState myGameState = GameStateFactory.createFromConfig(gameFolderName);
       GameScreenView myGameScreenView = new GameScreenView(this, myGameState, gameFolderName,
           randomized);
       myInputManager.getRoot().getChildren().add(myGameScreenView.getRoot());

@@ -44,9 +44,8 @@ class GameScreenViewTest {
       gameScreenView = new GameScreenView(
           mockMainController,
           mockGameState,
-          "MockGame",
-          false,
-          "src/test/resources/"
+          "src/test/resources/MockGame",
+          false
       );
       latch.countDown(); // signal that init is complete
     });
@@ -99,9 +98,8 @@ class GameScreenViewTest {
       gameScreenView = new GameScreenView(
           mockMainController,
           mockGameState,
-          "MockGame",
-          false,
-          "src/test/resources/"
+          "src/test/resources/MockGame",
+          false
       );
 
       // Reflectively call the private method

@@ -1,8 +1,8 @@
 {
   "saveName" : "BasicPacMan",
-  "currentLevel" : 0,
-  "totalScore" : 0,
-  "lives" : 6,
-  "highScore" : 0,
+  "currentLevel" : 1,
+  "totalScore" : 3540,
+  "lives" : 10,
+  "highScore" : 3540,
   "levelOrder" : [ 0, 1 ]
 }
