@@ -54,7 +54,7 @@ public class EntityTypeEditorView {
     Button addModeButton = new Button(LanguageManager.getMessage("ADD_MODE"));
     addModeButton.setOnAction(e -> openAddModeDialog());
 
-    Button deleteButton = new Button("Delete Entity Type");
+    Button deleteButton = new Button(LanguageManager.getMessage("DELETE_ENTITY_TYPE"));
     deleteButton.getStyleClass().add("delete-button");
     deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
     deleteButton.setOnAction(e -> deleteEntityType());

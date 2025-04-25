@@ -16,6 +16,7 @@ import oogasalad.authoring.view.AuthoringView;
 
 import java.util.Arrays;
 import java.util.List;
+import oogasalad.engine.utility.LanguageManager;
 
 /**
  * A simple help system that displays documentation slides explaining how the authoring environment
@@ -54,7 +55,7 @@ public class SimpleHelpSystem {
     helpStage = new Stage();
     helpStage.initOwner(primaryStage);
     helpStage.initModality(Modality.NONE);
-    helpStage.setTitle("Game Authoring Help");
+    helpStage.setTitle(LanguageManager.getMessage("GAME_AUTHORING_HELP"));
 
     BorderPane root = new BorderPane();
     root.setPadding(new Insets(20));
@@ -66,14 +67,14 @@ public class SimpleHelpSystem {
     root.setCenter(slideContent);
 
     // Navigation buttons
-    Button prevButton = new Button("Previous");
+    Button prevButton = new Button(LanguageManager.getMessage("PREVIOUS"));
     prevButton.setOnAction(e -> showPreviousSlide());
     prevButton.setDisable(true);
 
-    Button nextButton = new Button("Next");
+    Button nextButton = new Button(LanguageManager.getMessage("NEXT"));
     nextButton.setOnAction(e -> showNextSlide());
 
-    Button closeButton = new Button("Close");
+    Button closeButton = new Button(LanguageManager.getMessage("CLOSE"));
     closeButton.setOnAction(e -> helpStage.close());
 
     HBox navigationButtons = new HBox(10, prevButton, nextButton, closeButton);
@@ -82,7 +83,12 @@ public class SimpleHelpSystem {
     root.setBottom(navigationButtons);
 
     // Add slide numbers indicator
-    Label slideNumberLabel = new Label("Slide 1 of " + helpSlides.size());
+    // Show the first slide
+    currentSlideIndex = 0;
+
+    Label slideNumberLabel = new Label(
+        String.format(LanguageManager.getMessage("SLIDE_NUMBER"), currentSlideIndex + 1,
+            helpSlides.size()));
     HBox slideNumberBox = new HBox(slideNumberLabel);
     slideNumberBox.setAlignment(Pos.CENTER_LEFT);
     navigationButtons.getChildren().add(0, slideNumberBox);
@@ -96,9 +102,6 @@ public class SimpleHelpSystem {
     helpStage.getProperties().put("prevButton", prevButton);
     helpStage.getProperties().put("nextButton", nextButton);
     helpStage.getProperties().put("slideNumberLabel", slideNumberLabel);
-
-    // Show the first slide
-    currentSlideIndex = 0;
 
     // Show the stage first, then update the slide content
     helpStage.show();
@@ -133,10 +136,12 @@ public class SimpleHelpSystem {
     // Update navigation buttons
     prevButton.setDisable(currentSlideIndex == 0);
     nextButton.setDisable(currentSlideIndex == helpSlides.size() - 1);
-    nextButton.setText(currentSlideIndex == helpSlides.size() - 1 ? "Finish" : "Next");
+    nextButton.setText(currentSlideIndex == helpSlides.size() - 1 ? LanguageManager.getMessage("CLOSE") : LanguageManager.getMessage("NEXT"));
 
     // Update slide number
-    slideNumberLabel.setText("Slide " + (currentSlideIndex + 1) + " of " + helpSlides.size());
+
+    slideNumberLabel.setText(String.format(LanguageManager.getMessage("SLIDE_NUMBER"), currentSlideIndex + 1,
+        helpSlides.size()));
   }
 
   private void showPreviousSlide() {
