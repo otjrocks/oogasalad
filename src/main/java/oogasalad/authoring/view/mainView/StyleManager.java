@@ -30,22 +30,13 @@ public class StyleManager {
     BorderPane mainContent = (BorderPane) fullLayout.getChildren().get(1);
     VBox rightPanel = (VBox) mainContent.getRight();
 
-    rightPanel.setPrefWidth(300);
-    view.getLevelSelectorView().getRoot().setPrefWidth(200);
+    fullLayout.getStyleClass().add("authoring-layout");
+    mainContent.getStyleClass().add("main-content");
+    rightPanel.getStyleClass().add("right-panel");
+    view.getLevelSelectorView().getRoot().getStyleClass().add("left-panel");
+    view.getGameSettingsView().getNode().getStyleClass().add("game-settings-view");
 
-    AnchorPane editorContainer = (AnchorPane) rightPanel.getChildren().get(1);
-    VBox.setVgrow(editorContainer, Priority.ALWAYS);
-
-    view.getGameSettingsView().setPreferredHeight(200);
-    view.getGameSettingsView().setMinimumHeight(180);
-
-    VBox.setMargin(view.getGameSettingsView().getNode(), new Insets(0, 0, 20, 0));
-    view.getGameSettingsView().getNode().setStyle(
-        "-fx-background-color: #f4f4f4; " +
-            "-fx-border-color: #cccccc; " +
-            "-fx-border-width: 1px 0 0 0; " +
-            "-fx-padding: 10px;");
-
-    fullLayout.setSpacing(10);
+    VBox.setVgrow(rightPanel, Priority.ALWAYS);
+    VBox.setVgrow(view.getGameSettingsView().getNode(), Priority.NEVER);
   }
 }

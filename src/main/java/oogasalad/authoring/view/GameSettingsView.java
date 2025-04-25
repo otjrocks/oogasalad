@@ -1,5 +1,6 @@
 package oogasalad.authoring.view;
 
+import java.util.Objects;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.losecondition.LoseConditionInterface;
@@ -25,6 +27,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import oogasalad.engine.utility.ThemeManager;
+import oogasalad.engine.view.components.FormattingUtil;
 
 
 /**
@@ -254,6 +258,13 @@ public class GameSettingsView {
     settingsGrid.add(loseConditionValueLabel, 2, 5);
     settingsGrid.add(loseConditionValueField, 3, 5);
 
+    gameTitleField.getStyleClass().add("text-input");
+    authorField.getStyleClass().add("text-input");
+    descriptionField.getStyleClass().add("text-input");
+    winConditionValueField.getStyleClass().add("text-input");
+    loseConditionValueField.getStyleClass().add("text-input");
+
+
     // Add buttons
     HBox buttonBox = getHBox();
 
@@ -405,6 +416,7 @@ public class GameSettingsView {
     alert.setTitle(LanguageManager.getMessage("SAVED"));
     alert.setHeaderText(null);
     alert.setContentText(LanguageManager.getMessage("GAME_SETTINGS_SAVED"));
+    FormattingUtil.applyStandardDialogStyle(alert);
     alert.showAndWait();
   }
 

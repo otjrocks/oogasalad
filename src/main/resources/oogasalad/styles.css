@@ -14,6 +14,7 @@
 .title {
   -fx-font-family: "Press Start 2P";
   -fx-font-size: 30px;
+  -fx-alignment: center;
 }
 
 Label, Text {
@@ -360,4 +361,87 @@ Label, Text {
 
 .context-menu .menu-item:hover .label {
   -fx-text-fill: -fx-secondary;
+}
+
+.authoring-layout {
+  -fx-spacing: 10px;
+}
+
+.game-settings-view {
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 1px 0 0 0;
+  -fx-padding: 10px;
+  -fx-min-height: 180px;
+  -fx-pref-height: 200px;
+  -fx-text-fill: -fx-secondary;
+}
+
+.right-panel {
+  -fx-pref-width: 300px;
+  -fx-spacing: 10px;
+  -fx-fill-width: true;
+}
+
+.left-panel {
+  -fx-pref-width: 200px;
+  -fx-spacing: 10px;
+}
+
+.help-slide {
+  -fx-alignment: top-center;
+  -fx-background-color: -fx-primary;
+}
+.scroll-pane {
+  -fx-background-color: transparent;
+}
+.scroll-pane > .viewport {
+  -fx-background-color: transparent;
+}
+
+.alert {
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-font-size: 16px;
+}
+
+.alert .content.label {
+  -fx-text-fill: -fx-secondary;
+  -fx-font-size: 16px;
+}
+
+.alert .header-panel {
+  -fx-background-color: -fx-highlight;
+}
+
+.alert .header-panel .label {
+  -fx-text-fill: -fx-secondary;
+  -fx-font-family: "Press Start 2P";
+  -fx-font-size: 24px;
+}
+
+.alert .button-bar .button {
+  -fx-font-family: "Press Start 2P";
+  -fx-font-size: 14px;
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+  -fx-background-radius: 5px;
+  -fx-border-radius: 5px;
+  -fx-padding: 8px 20px;
+  -fx-cursor: hand;
+}
+
+.alert .button-bar .button:hover {
+  -fx-background-color: -fx-highlight;
+}
+
+.text-input {
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+  -fx-padding: 5px 10px;
+  -fx-font-size: 14px;
 }

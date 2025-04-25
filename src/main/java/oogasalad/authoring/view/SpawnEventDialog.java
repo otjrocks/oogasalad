@@ -8,12 +8,15 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.model.LevelDraft;
+import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 
 import java.util.*;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.ThemeManager;
+import oogasalad.engine.view.components.FormattingUtil;
 
 /**
  * A dialog window for editing spawn events within a level. Allows the user to configure entities
@@ -181,7 +184,9 @@ public class SpawnEventDialog extends Stage {
       level.getSpawnEvents().add(event);
       refreshTable();
     } catch (Exception e) {
-      new Alert(Alert.AlertType.ERROR, "Invalid input: " + e.getMessage()).showAndWait();
+      Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid input: " + e.getMessage());
+      FormattingUtil.applyStandardDialogStyle(alert);
+      alert.showAndWait();
     }
   }
 

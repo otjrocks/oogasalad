@@ -20,6 +20,9 @@ import oogasalad.engine.utility.LanguageManager;
  * @author Angela Predolac
  */
 public class HelpSlide {
+  private static final double SLIDE_WIDTH = 760;
+  private static final double SLIDE_HEIGHT = 540;
+  private static final double MAX_IMAGE_WIDTH = 600;
 
   private final String title;
   private final String description;
@@ -46,17 +49,24 @@ public class HelpSlide {
   public Node createSlideNode() {
     VBox slide = new VBox(20);
     slide.setAlignment(Pos.TOP_CENTER);
+    slide.setPrefWidth(SLIDE_WIDTH);
+    slide.setMaxWidth(SLIDE_WIDTH);
+    slide.setMinHeight(SLIDE_HEIGHT);
     slide.setPadding(new Insets(10));
-    slide.setStyle("-fx-background-color: white; -fx-border-color: #dddddd; -fx-border-radius: 5;");
+    slide.getStyleClass().add("help-slide");
 
     // Title
     Label titleLabel = new Label(title);
-    titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+    titleLabel.getStyleClass().add("title");
+    titleLabel.setWrapText(true);
+    titleLabel.setMaxWidth(SLIDE_WIDTH);
+
 
     // Content
     Label contentLabel = new Label(description);
+    contentLabel.getStyleClass().add("game-name");
     contentLabel.setWrapText(true);
-    contentLabel.setStyle("-fx-font-size: 16px;");
+    contentLabel.setMaxWidth(SLIDE_WIDTH);
 
     slide.getChildren().addAll(titleLabel, contentLabel);
 
@@ -66,7 +76,7 @@ public class HelpSlide {
         ImageView imageView = new ImageView(new Image(
             Objects.requireNonNull(getClass().getResourceAsStream("/images/help/" + imagePath))));
         imageView.setPreserveRatio(true);
-        imageView.setFitWidth(600);
+        imageView.setFitWidth(MAX_IMAGE_WIDTH);
 
         // Add some padding around the image
         VBox imageBox = new VBox(imageView);
@@ -76,7 +86,7 @@ public class HelpSlide {
         slide.getChildren().add(imageBox);
       } catch (Exception e) {
         // If image loading fails, add a placeholder
-        Rectangle placeholder = new Rectangle(600, 300);
+        Rectangle placeholder = new Rectangle(MAX_IMAGE_WIDTH, 300);
         placeholder.setFill(Color.LIGHTGRAY);
         placeholder.setStroke(Color.GRAY);
 
@@ -85,12 +95,19 @@ public class HelpSlide {
         placeholderBox.setAlignment(Pos.CENTER);
 
         Label placeholderLabel = new Label(LanguageManager.getMessage("IMAGE") + imagePath);
+        placeholderLabel.getStyleClass().add("game-name");
         placeholderBox.getChildren().add(placeholderLabel);
 
         slide.getChildren().add(placeholderBox);
       }
     }
 
-    return new ScrollPane(slide);
+    ScrollPane scrollPane = new ScrollPane(slide);
+    scrollPane.setFitToWidth(true);
+    scrollPane.setPrefViewportWidth(SLIDE_WIDTH);
+    scrollPane.setPrefViewportHeight(SLIDE_HEIGHT);
+    scrollPane.setStyle("-fx-background-color: transparent;");
+
+    return scrollPane;
   }
 }

@@ -17,6 +17,7 @@ import oogasalad.authoring.view.mainView.AuthoringView;
 import java.util.Arrays;
 import java.util.List;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.ThemeManager;
 
 /**
  * A simple help system that displays documentation slides explaining how the authoring environment
@@ -59,22 +60,25 @@ public class SimpleHelpSystem {
 
     BorderPane root = new BorderPane();
     root.setPadding(new Insets(20));
+    root.getStyleClass().add("main-content");
 
     // Content area for slides
     StackPane slideContent = new StackPane();
+    slideContent.getStyleClass().add("canvas-view");
     slideContent.setPrefSize(800, 500);
     slideContent.setPadding(new Insets(10));
     root.setCenter(slideContent);
 
     // Navigation buttons
-    Button prevButton = new Button(LanguageManager.getMessage("PREVIOUS"));
+    Button prevButton = createNavigationButton(LanguageManager.getMessage("PREVIOUS"));
+    Button nextButton = createNavigationButton(LanguageManager.getMessage("NEXT"));
+    Button closeButton = createNavigationButton(LanguageManager.getMessage("CLOSE"));
+
     prevButton.setOnAction(e -> showPreviousSlide());
     prevButton.setDisable(true);
 
-    Button nextButton = new Button(LanguageManager.getMessage("NEXT"));
     nextButton.setOnAction(e -> showNextSlide());
 
-    Button closeButton = new Button(LanguageManager.getMessage("CLOSE"));
     closeButton.setOnAction(e -> helpStage.close());
 
     HBox navigationButtons = new HBox(10, prevButton, nextButton, closeButton);
@@ -89,6 +93,7 @@ public class SimpleHelpSystem {
     Label slideNumberLabel = new Label(
         String.format(LanguageManager.getMessage("SLIDE_NUMBER"), currentSlideIndex + 1,
             helpSlides.size()));
+    slideNumberLabel.getStyleClass().add("game-name");
     HBox slideNumberBox = new HBox(slideNumberLabel);
     slideNumberBox.setAlignment(Pos.CENTER_LEFT);
     navigationButtons.getChildren().add(0, slideNumberBox);
@@ -96,6 +101,7 @@ public class SimpleHelpSystem {
 
     Scene scene = new Scene(root, 800, 600);
     helpStage.setScene(scene);
+    ThemeManager.getInstance().registerScene(scene);
 
     // Store references for updating
     helpStage.getProperties().put("slideContent", slideContent);
@@ -320,5 +326,11 @@ public class SimpleHelpSystem {
             null
         )
     );
+  }
+
+  private Button createNavigationButton(String text) {
+    Button button = new Button(text);
+    button.getStyleClass().add("small-button");
+    return button;
   }
 }

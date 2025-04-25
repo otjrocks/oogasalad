@@ -17,6 +17,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.image.Image;
@@ -26,6 +27,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
@@ -34,6 +36,7 @@ import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.utility.constants.GameConfig;
+import oogasalad.engine.view.components.FormattingUtil;
 
 /**
  * The game selector splash screen after game player button on splash screen is clicked.
@@ -71,7 +74,9 @@ public class GameSelectorView {
     myRoot.setPrefSize(WIDTH, HEIGHT);
     myRoot.setPadding(new Insets(ELEMENT_SPACING * 2, ELEMENT_SPACING * 4, ELEMENT_SPACING * 2,
         ELEMENT_SPACING * 4));
-    new ThemeManager(mainController.getStage());
+
+    ThemeManager.getInstance().registerScene(mainController.getStage().getScene());
+
     initializeLayout();
 
     gameConfigRecords = loadGameConfigs();
@@ -84,6 +89,7 @@ public class GameSelectorView {
 
     myRoot.getChildren().addAll(createTopBar(), createFileUploadSection(), gameGrid);
   }
+
 
   /**
    * Retrieves the root VBox of the GameSelectorView.
@@ -252,6 +258,9 @@ public class GameSelectorView {
         config.metadata().author(),
         config.metadata().gameDescription()
     ));
+
+    FormattingUtil.applyStandardDialogStyle(infoDialog);
+
     infoDialog.showAndWait();
   }
 
@@ -318,6 +327,7 @@ public class GameSelectorView {
     alert.setTitle(title);
     alert.setHeaderText(null);
     alert.setContentText(message);
+    FormattingUtil.applyStandardDialogStyle(alert);
     alert.showAndWait();
   }
 }

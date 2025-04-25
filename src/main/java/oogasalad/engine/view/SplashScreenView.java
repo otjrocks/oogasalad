@@ -1,6 +1,5 @@
 package oogasalad.engine.view;
 
-
 import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
 
 import java.util.List;
@@ -23,7 +22,6 @@ import oogasalad.engine.view.components.VMenu;
 public class SplashScreenView {
 
   private Selector myLanguageSelector;
-  private final ThemeManager myThemeManager;
   private Selector myThemeSelector;
   private final MainController myMainController;
   private final VBox myConfigurationBox;
@@ -36,12 +34,15 @@ public class SplashScreenView {
    */
   public SplashScreenView(MainController mainController) {
     myRoot = new VBox();
-    myThemeManager = new ThemeManager(mainController.getStage());
     myMainController = mainController;
     myConfigurationBox = new VBox(ELEMENT_SPACING);
     myConfigurationBox.setId("splash-configuration-box");
     myRoot.getStyleClass().add("splash-screen-view");
     myRoot.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
+
+    // Register the scene to the singleton ThemeManager
+    ThemeManager.getInstance().registerScene(mainController.getStage().getScene());
+
     initializeSplashScreen();
   }
 
@@ -80,7 +81,6 @@ public class SplashScreenView {
   }
 
   private void toggleConfigurationMenu() {
-    // if configuration settings are being shown toggle off, otherwise toggle on
     myConfigurationBox.setVisible(!myConfigurationBox.isVisible());
   }
 
@@ -94,9 +94,8 @@ public class SplashScreenView {
     myMainController.showAuthoringView();
   }
 
-
   private void initializeThemeSelector() {
-    myThemeSelector = new Selector(myThemeManager.getAvailableThemes(),
+    myThemeSelector = new Selector(ThemeManager.getInstance().getAvailableThemes(),
         ThemeManager.DEFAULT_THEME, "themeSelector",
         LanguageManager.getMessage("THEME_SELECTOR_TITLE"), e -> switchTheme());
     myConfigurationBox.getChildren().add(myThemeSelector.getRoot());
@@ -123,9 +122,8 @@ public class SplashScreenView {
   }
 
   private void switchTheme() {
-    myThemeManager.setTheme(myThemeSelector.getValue());
+    ThemeManager.getInstance().setTheme(myThemeSelector.getValue());
   }
-
 
   private void refresh() {
     myRoot.getChildren().clear();
