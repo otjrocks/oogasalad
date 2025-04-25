@@ -66,15 +66,14 @@ public class EntityView {
     int dirOffset = 0;
 
     if (entity.getEntityDirection() == Direction.L) {
-      dirOffset = (int) tileHeight;
+      dirOffset = height;
     }
     if (entity.getEntityDirection() == Direction.U) {
-      dirOffset = (int) (2 * tileHeight);
+      dirOffset = 2 * height;
     }
     if (entity.getEntityDirection() == Direction.D) {
-      dirOffset = (int) (3 * tileHeight);
+      dirOffset = 3 * height;
     }
-
     double destX = entity.getEntityPlacement().getX() * tileWidth;
     double destY = entity.getEntityPlacement().getY() * tileHeight;
 
