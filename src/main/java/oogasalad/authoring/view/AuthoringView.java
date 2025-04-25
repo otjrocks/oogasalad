@@ -466,6 +466,7 @@ public class AuthoringView {
   }
 
   public void refreshUI() {
+    controller.getLevelController().updateLevelDropdown();
     controller.getLevelController().switchToLevel(controller.getModel().getCurrentLevelIndex());
 
     canvasView.loadLevel(controller.getModel().getCurrentLevel());
@@ -476,7 +477,7 @@ public class AuthoringView {
     entityPlacementView.setVisible(false);
 
     gameSettingsView.updateFromModel();
-
-    controller.getLevelController().updateLevelDropdown();
   }
+
+
 }
