@@ -314,6 +314,7 @@ public class AuthoringController {
 
   /**
    * Loads an existing project in from a gameConfig file
+   *
    * @param gameConfigFile file to read
    * @throws ConfigException Config parsing error
    */
@@ -337,11 +338,11 @@ public class AuthoringController {
         config.currentLevelIndex()
     );
 
-    populateModelFromConfig(fixedConfig);
+    populateModelFromConfig(fixedConfig, projectFolder);
   }
 
 
-  private void populateModelFromConfig(ConfigModelRecord config) {
+  private void populateModelFromConfig(ConfigModelRecord config, String projectFolder) {
     model.clearAll();
 
     // Set metadata
@@ -362,11 +363,7 @@ public class AuthoringController {
     List<LevelDraft> levelDrafts = new ArrayList<>();
     int levelIndex = 1;
     for (ParsedLevelRecord parsed : config.levels()) {
-      LevelDraft draft = new LevelDraft("Level " + levelIndex, "level" + levelIndex + ".json");
-
-      draft.setEntityPlacements(parsed.placements());
-      draft.setWidth(parsed.mapInfo().width());
-      draft.setHeight(parsed.mapInfo().height());
+      LevelDraft draft = getLevelDraft(projectFolder, parsed, levelIndex);
       draft.getSpawnEvents().addAll(parsed.spawnEvents());
       draft.getModeChangeEvents().addAll(parsed.modeChangeEvents());
 
@@ -382,6 +379,24 @@ public class AuthoringController {
     // Set collision rules
     model.setCollisionRules(config.collisionRules());
     view.refreshUI();
+  }
+
+  private static LevelDraft getLevelDraft(String projectFolder, ParsedLevelRecord parsed,
+      int levelIndex) {
+    LevelDraft draft = new LevelDraft("Level " + levelIndex, "level" + levelIndex + ".json");
+
+    String backgroundImagePath = parsed.mapInfo().backgroundImagePath();
+    if (backgroundImagePath != null) {
+      File resolvedFile = new File(backgroundImagePath).isAbsolute()
+          ? new File(backgroundImagePath)
+          : new File(projectFolder, backgroundImagePath);
+      draft.setBackgroundImage(resolvedFile);
+
+    }
+    draft.setEntityPlacements(parsed.placements());
+    draft.setWidth(parsed.mapInfo().width());
+    draft.setHeight(parsed.mapInfo().height());
+    return draft;
   }
 
 
