@@ -45,7 +45,7 @@ import oogasalad.player.model.strategies.control.ControlStrategyInterface;
  */
 public class ControlStrategyFactory {
 
-  private static final String STRATEGY_PACKAGE = "oogasalad.player.model.strategies.control."; // Keep field as global and non-final for testing purposes.
+  private static String STRATEGY_PACKAGE = "oogasalad.player.model.strategies.control."; // Keep field as global and non-final for testing purposes.
 
   /**
    * Creates a {@link ControlStrategyInterface} instance based on the control type of the given
