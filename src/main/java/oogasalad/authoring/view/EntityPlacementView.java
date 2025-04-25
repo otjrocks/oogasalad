@@ -246,9 +246,7 @@ public class EntityPlacementView {
         new java.util.TimerTask() {
           @Override
           public void run() {
-            javafx.application.Platform.runLater(() -> {
-              statusLabel.setVisible(false);
-            });
+            javafx.application.Platform.runLater(() -> statusLabel.setVisible(false));
           }
         },
         3000 // 3 seconds

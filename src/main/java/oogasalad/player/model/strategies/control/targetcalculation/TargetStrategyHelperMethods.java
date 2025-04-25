@@ -41,9 +41,7 @@ public class TargetStrategyHelperMethods {
    * empty {@code Optional} if no such entity exists
    */
   static Optional<Entity> findFirstEntityOfType(GameMapInterface gameMap, String targetType) {
-    Iterator<Entity> iterator = gameMap.iterator();
-    while (iterator.hasNext()) {
-      Entity entity = iterator.next();
+    for (Entity entity : gameMap) {
       if (entity.getEntityPlacement().getTypeString()
           .equalsIgnoreCase(targetType)) {
         return Optional.of(entity);

@@ -5,7 +5,6 @@ import static oogasalad.engine.records.CollisionContextRecord.StrategyAppliesTo.
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContextRecord;
-import oogasalad.engine.records.CollisionContextRecord.StrategyAppliesTo;
 
 /**
  * When the collision between the two provided entities occurs, teleport the first entity provided

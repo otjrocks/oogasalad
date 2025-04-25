@@ -25,7 +25,6 @@ import util.DukeApplicationTest;
 public class SpawnEventDialogTest extends DukeApplicationTest {
 
   private LevelDraft level;
-  private SpawnEventDialog dialog;
 
   @Override
   public void start(Stage stage) {
@@ -43,7 +42,7 @@ public class SpawnEventDialogTest extends DukeApplicationTest {
     Map<String, EntityTypeRecord> entityTypes = new HashMap<>();
     entityTypes.put("Cherry", entity);
 
-    dialog = new SpawnEventDialog(entityTypes, level);
+    SpawnEventDialog dialog = new SpawnEventDialog(entityTypes, level);
     dialog.initOwner(stage);
     dialog.show();
   }

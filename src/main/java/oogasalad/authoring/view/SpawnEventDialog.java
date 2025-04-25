@@ -13,7 +13,6 @@ import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * A dialog window for editing spawn events within a level. Allows the user to configure entities

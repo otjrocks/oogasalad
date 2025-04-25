@@ -4,7 +4,6 @@ import static oogasalad.engine.records.CollisionContextRecord.StrategyAppliesTo.
 
 import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContextRecord;
-import oogasalad.engine.records.CollisionContextRecord.StrategyAppliesTo;
 import oogasalad.player.model.GameMapInterface;
 
 /**

@@ -1,5 +1,6 @@
 package oogasalad.player.model.api;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,14 +16,14 @@ class SpawnEventStrategyFactoryTest {
   void createSpawnEventStrategy_scoreBased_returnsScoreBasedSpawnEventStrategy() {
     SpawnEventStrategyInterface strategy = SpawnEventStrategyFactory.createSpawnEventStrategy("ScoreBased");
     assertNotNull(strategy);
-    assertTrue(strategy instanceof ScoreBasedSpawnEventStrategy);
+    assertInstanceOf(ScoreBasedSpawnEventStrategy.class, strategy);
   }
 
   @Test
   void createSpawnEventStrategy_timeElapsed_returnsTimeElapsedSpawnEventStrategy() {
     SpawnEventStrategyInterface strategy = SpawnEventStrategyFactory.createSpawnEventStrategy("TimeElapsed");
     assertNotNull(strategy);
-    assertTrue(strategy instanceof TimeElapsedSpawnEventStrategy);
+    assertInstanceOf(TimeElapsedSpawnEventStrategy.class, strategy);
   }
 
   @Test

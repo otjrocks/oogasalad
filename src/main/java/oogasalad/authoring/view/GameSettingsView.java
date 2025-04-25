@@ -8,14 +8,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.losecondition.LoseConditionInterface;
-import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
 import oogasalad.engine.utility.FileUtility;
@@ -718,9 +716,9 @@ public class GameSettingsView {
           LoggingManager.LOGGER.info("Found condition class: {}", simpleName);
         }
       } catch (ClassNotFoundException e) {
-        LoggingManager.LOGGER.error("Error loading class: " + className, e);
+        LoggingManager.LOGGER.error("Error loading class: {}", className, e);
       } catch (Exception e) {
-        LoggingManager.LOGGER.error("Unexpected error processing class: " + className, e);
+        LoggingManager.LOGGER.error("Unexpected error processing class: {}", className, e);
       }
     }
   }

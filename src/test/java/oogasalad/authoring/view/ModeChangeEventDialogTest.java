@@ -23,7 +23,6 @@ import util.DukeApplicationTest;
 public class ModeChangeEventDialogTest extends DukeApplicationTest {
 
   private LevelDraft level;
-  private ModeChangeEventDialog dialog;
 
   @Override
   public void start(Stage stage) {
@@ -43,7 +42,7 @@ public class ModeChangeEventDialogTest extends DukeApplicationTest {
     Map<String, EntityTypeRecord> map = new HashMap<>();
     map.put("Ghost", entity);
 
-    dialog = new ModeChangeEventDialog(map, level);
+    ModeChangeEventDialog dialog = new ModeChangeEventDialog(map, level);
     dialog.initOwner(stage);
     dialog.show();
   }

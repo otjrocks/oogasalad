@@ -66,9 +66,7 @@ public class CanvasView {
     );
     this.tileHighlighter = new TileHighlighter(root);
 
-    Platform.runLater(() -> {
-      resizeGrid(DEFAULT_COLS, DEFAULT_ROWS);
-    });
+    Platform.runLater(() -> resizeGrid(DEFAULT_COLS, DEFAULT_ROWS));
     setupDragAndDropHandlers();
   }
 

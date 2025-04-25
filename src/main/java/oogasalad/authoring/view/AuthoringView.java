@@ -16,16 +16,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
@@ -231,9 +221,11 @@ public class AuthoringView {
     alert.setTitle(LanguageManager.getMessage("ABOUT"));
     alert.setHeaderText("Game Authoring Environment");
     alert.setContentText(
-        "Version: 1.0\n" +
-            "A powerful tool for creating 2D games without writing code.\n\n" +
-            "Part of the OOGASalad project."
+        """
+            Version: 1.0
+            A powerful tool for creating 2D games without writing code.
+            
+            Part of the OOGASalad project."""
     );
 
     alert.showAndWait();
@@ -405,11 +397,6 @@ public class AuthoringView {
 
     fullLayout.setSpacing(10);
   }
-
-  /**
-   * Sets up window maximization on startup.
-   */
-
 
   /**
    * Get level selector view

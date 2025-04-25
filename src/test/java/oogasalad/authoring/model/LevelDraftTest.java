@@ -115,9 +115,7 @@ public class LevelDraftTest {
     level.createAndAddEntityPlacement(mockType, 10, 10);
     List<EntityPlacement> placements = level.getEntityPlacements();
 
-    assertThrows(UnsupportedOperationException.class, () -> {
-      placements.add(new EntityPlacement(mockType, 0, 0, "Default"));
-    });
+    assertThrows(UnsupportedOperationException.class, () -> placements.add(new EntityPlacement(mockType, 0, 0, "Default")));
   }
 
   @Test

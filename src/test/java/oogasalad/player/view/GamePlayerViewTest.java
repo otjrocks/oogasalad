@@ -55,7 +55,7 @@ class GamePlayerViewTest extends DukeApplicationTest {
   void getGameView_paneWithProperValues_returnsNotNullGameView() {
     GameView gv = gamePlayerView.getGameView();
     assertNotNull(gv);
-    assertTrue(gv instanceof GameView, "Returned object should be instance of GameView");
+    assertInstanceOf(GameView.class, gv, "Returned object should be instance of GameView");
   }
 
   @Test

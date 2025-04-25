@@ -66,7 +66,7 @@ public class DukeApplicationTest extends ApplicationTest {
    * Simulate a click on any kind of button
    */
   protected void clickOn(ButtonBase b) {
-    simulateAction(b, () -> b.fire());
+    simulateAction(b, b::fire);
   }
 
   /**

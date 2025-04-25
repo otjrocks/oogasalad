@@ -126,9 +126,7 @@ public class EntityTypeEditorView {
 
       CheckBox box = new CheckBox(otherType);
       box.setSelected(type.blocks() != null && type.blocks().contains(otherType));
-      box.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-        commitChanges();
-      });
+      box.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> commitChanges());
 
       blocksList.getChildren().add(box);
     }

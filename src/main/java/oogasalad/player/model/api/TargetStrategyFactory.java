@@ -25,7 +25,7 @@ import oogasalad.player.model.strategies.control.targetcalculation.TargetStrateg
  */
 public class TargetStrategyFactory {
 
-  private static String STRATEGY_PACKAGE = "oogasalad.player.model.strategies.control.targetcalculation."; // Keep field as global and non-final for testing purposes.
+  private static final String STRATEGY_PACKAGE = "oogasalad.player.model.strategies.control.targetcalculation."; // Keep field as global and non-final for testing purposes.
 
   /**
    * Factory method to create a TargetStrategy based on the control type of the given

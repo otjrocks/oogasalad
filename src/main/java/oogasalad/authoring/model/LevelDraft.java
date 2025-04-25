@@ -26,8 +26,8 @@ public class LevelDraft {
   private int height;
 
   private final List<EntityPlacement> entityPlacements;
-  private List<ModeChangeEventRecord> modeChangeEvents;
-  private List<SpawnEventRecord> spawnEvents;
+  private final List<ModeChangeEventRecord> modeChangeEvents;
+  private final List<SpawnEventRecord> spawnEvents;
 
   /**
    * Constructs a new LevelDraft with the given name and output file name.

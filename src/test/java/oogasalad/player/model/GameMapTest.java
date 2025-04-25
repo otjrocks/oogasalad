@@ -100,9 +100,7 @@ class GameMapTest extends DukeApplicationTest {
     EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
     Entity secondEntity = EntityFactory.createEntity(myInput, placement, myGameMap, mock(ConfigModelRecord.class));
     assertDoesNotThrow(() -> myGameMap.addEntity(secondEntity));
-    Iterator<Entity> iterator = myGameMap.iterator();
-    while (iterator.hasNext()) {
-      Entity next = iterator.next();
+    for (Entity next : myGameMap) {
       assertTrue(next.equals(secondEntity) || next.equals(myEntity));
     }
   }

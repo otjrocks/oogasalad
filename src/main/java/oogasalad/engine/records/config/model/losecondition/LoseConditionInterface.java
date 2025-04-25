@@ -25,5 +25,4 @@ public interface LoseConditionInterface {
         + this.getClass().getSimpleName());
   }
 
-  ;
 }

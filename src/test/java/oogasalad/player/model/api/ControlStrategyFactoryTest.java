@@ -10,7 +10,6 @@ import java.util.Map;
 
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.records.config.ModeConfigRecord;
-import oogasalad.engine.records.config.model.EntityPropertiesRecord;
 import oogasalad.engine.records.config.model.controlConfig.*;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.player.controller.GameInputManager;

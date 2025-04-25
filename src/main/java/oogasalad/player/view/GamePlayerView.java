@@ -28,7 +28,7 @@ public class GamePlayerView {
   private final MainController myMainController;
   private final GameStateInterface myGameState;
   private final boolean isRandomized;
-  private String gameFolderBasePath;
+  private final String gameFolderBasePath;
   private GameView myGameView;
   private ConfigModelRecord myConfigModel = null;
   private SaveConfigRecord mySaveConfig;
