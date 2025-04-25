@@ -16,6 +16,7 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
+import oogasalad.authoring.view.mainView.AuthoringView;
 import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;

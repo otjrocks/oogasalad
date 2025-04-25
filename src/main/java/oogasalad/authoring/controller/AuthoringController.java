@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.UUID;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
-import oogasalad.authoring.view.AuthoringView;
+import oogasalad.authoring.view.mainView.AuthoringView;
 import oogasalad.authoring.view.EntityPlacementView;
 import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.engine.config.EntityPlacement;

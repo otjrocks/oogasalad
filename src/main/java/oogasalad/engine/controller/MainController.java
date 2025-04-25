@@ -4,7 +4,7 @@ import javafx.scene.Group;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
-import oogasalad.authoring.view.AuthoringView;
+import oogasalad.authoring.view.mainView.AuthoringView;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.view.SplashScreenView;
 import oogasalad.player.controller.GameInputManager;
