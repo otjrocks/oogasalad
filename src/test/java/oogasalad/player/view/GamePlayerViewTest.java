@@ -33,9 +33,8 @@ class GamePlayerViewTest extends DukeApplicationTest {
     runAsJFXAction(() -> gamePlayerView = new GamePlayerView(
         mockMainController,
         mockGameState,
-        "MockGame",
-        false,
-        "src/test/resources/" // Testing directory
+        "src/test/resources/MockGame",
+        false
     ));
   }
 
