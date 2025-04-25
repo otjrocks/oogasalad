@@ -74,7 +74,7 @@ public class GameView {
     if (backgroundImage != null) {
       BackgroundImage bgImage = new BackgroundImage(
           backgroundImage,
-          BackgroundRepeat.NO_REPEAT,
+          BackgroundRepeat.REPEAT,
           BackgroundRepeat.NO_REPEAT,
           BackgroundPosition.CENTER,
           new BackgroundSize(
