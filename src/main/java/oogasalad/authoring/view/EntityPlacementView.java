@@ -118,8 +118,8 @@ public class EntityPlacementView {
 
     // Position display (non-editable)
     Label positionLabel = new Label(LanguageManager.getMessage("POSITION"));
-    positionValueLabel = new Label(String.format(LanguageManager.getMessage(COORDINATE), 0,
-        0));
+    positionValueLabel = new Label(String.format(LanguageManager.getMessage(COORDINATE), 0.0,
+        0.0));
     positionValueLabel.getStyleClass().add("info-value");
     positionValueLabel.setStyle("-fx-font-weight: bold;");
 
