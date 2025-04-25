@@ -210,7 +210,8 @@ public class GameSelectorView {
     randomizeButton.setWrapText(true);
     randomizeButton.setMaxWidth(GAME_CARD_WIDTH);
     randomizeButton.getStyleClass().add(SMALL_BUTTON_STYLE);
-    randomizeButton.setOnAction(e -> attemptShowingGamePlayerView(gameName, true));
+    randomizeButton.setOnAction(
+        e -> attemptShowingGamePlayerView(gameNameToFolder.get(gameName), true));
 
     Button infoButton = new Button("i");
     infoButton.getStyleClass().add("icon-button");
@@ -220,13 +221,14 @@ public class GameSelectorView {
     buttonBox.setAlignment(Pos.CENTER);
 
     card.getChildren().addAll(image, nameLabel, buttonBox);
-    card.setOnMouseClicked(e -> attemptShowingGamePlayerView(gameName, false));
+    card.setOnMouseClicked(
+        e -> attemptShowingGamePlayerView(gameNameToFolder.get(gameName), false));
 
     return card;
   }
 
-  private void attemptShowingGamePlayerView(String gameName, boolean randomize) {
-    if (!myMainController.showGamePlayerView(gameNameToFolder.get(gameName), randomize)) {
+  private void attemptShowingGamePlayerView(String path, boolean randomize) {
+    if (!myMainController.showGamePlayerView(path, randomize)) {
       showErrorDialog(getMessage("ERROR"), getMessage("CANNOT_LOAD_GAME"));
     } else {
       myMainController.hideGameSelectorView();
@@ -259,13 +261,15 @@ public class GameSelectorView {
   private List<GameConfigRecord> loadGameConfigs() {
     List<String> folderNames = FileUtility.getFolderNamesInDirectory(GAMES_FOLDER_PATH);
     List<GameConfigRecord> configs = new ArrayList<>();
+    String currentPath = System.getProperty("user.dir");
 
     for (String folder : folderNames) {
       try {
+        String filePath = currentPath + "/" + GAMES_FOLDER_PATH + folder;
         GameConfigRecord config = configParser.loadGameConfig(
-            GAMES_FOLDER_PATH + folder + "/gameConfig.json");
+            filePath + "/gameConfig.json");
         configs.add(config);
-        gameNameToFolder.put(config.metadata().gameTitle(), folder);
+        gameNameToFolder.put(config.metadata().gameTitle(), filePath);
       } catch (ConfigException e) {
         LoggingManager.LOGGER.warn("Could not load config: {}", folder, e);
       }
@@ -283,7 +287,7 @@ public class GameSelectorView {
     try {
       if (config != null && config.metadata().image() != null) {
         return new Image(
-            new FileInputStream(GAMES_FOLDER_PATH + folderName + "/" + config.metadata().image()));
+            new FileInputStream(folderName + "/" + config.metadata().image()));
       }
     } catch (Exception e) {
       LoggingManager.LOGGER.warn("Failed to load image for: {}", gameName);
@@ -295,17 +299,20 @@ public class GameSelectorView {
   private void handleFileUpload() {
     File selectedFile = fileChooser.showOpenDialog(null);
     if (selectedFile != null) {
-      String path = selectedFile.getAbsolutePath();
-      fileLabel.setText(path);
+      String strippedPath = getConvertedFilePathFromFile(selectedFile);
+      fileLabel.setText(strippedPath);
       startButton.setDisable(false);
     }
   }
 
+  private static String getConvertedFilePathFromFile(File selectedFile) {
+    String path = selectedFile.getAbsolutePath();
+    return path.substring(0, path.lastIndexOf("/gameConfig.json"));
+  }
+
   private void startGameFromUpload() {
     try {
-      GameConfigRecord config = configParser.loadGameConfig(fileLabel.getText());
-      String gameName = config.metadata().gameTitle();
-      attemptShowingGamePlayerView(gameName, false);
+      attemptShowingGamePlayerView(fileLabel.getText(), false);
     } catch (Exception e) {
       LoggingManager.LOGGER.error("Exception: {}", e.getMessage());
       showErrorDialog("Error", e.getMessage());

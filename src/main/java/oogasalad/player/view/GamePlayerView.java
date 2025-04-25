@@ -9,7 +9,6 @@ import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
-import oogasalad.engine.records.config.model.SaveConfigRecord;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.controller.LevelController;
 import oogasalad.player.model.GameStateInterface;
@@ -22,50 +21,33 @@ import oogasalad.player.model.save.GameSessionManager;
  */
 public class GamePlayerView {
 
-
-  public static final String GAME_FOLDER = "data/games/";
   public static final String GAME_CONFIG_JSON = "gameConfig.json";
 
-  private final String gameFolderName;
+  private final String gameFolderPath;
   private final StackPane myPane;
   private final MainController myMainController;
   private final GameStateInterface myGameState;
-  private final String gameFolderBasePath;
   private final boolean isRandomized;
   private GameView myGameView;
   private ConfigModelRecord myConfigModel = null;
-  private GameSessionManager sessionManager;
-
-  /**
-   * Create the Game Player View.
-   *
-   * @param gameFolderName name of game folder to create
-   * @param randomized     if levels should be randomized
-   */
-  public GamePlayerView(MainController controller, GameStateInterface gameState,
-      String gameFolderName, boolean randomized) {
-    this(controller, gameState, gameFolderName, randomized, "data/games/");
-  }
+  private final GameSessionManager sessionManager;
 
   /**
    * Constructs a GamePlayerView object that represents the visual interface for the game player.
    *
    * @param controller     the main controller that manages the game logic and interactions
    * @param gameState      the current state of the game, providing access to game data
-   * @param gameFolderName the name of the folder containing game-specific resources
+   * @param gameFolderPath the name of the folder containing game-specific resources
    * @param randomized     a flag indicating whether the game is randomized
-   * @param customBasePath the custom base path for game resources
    */
   public GamePlayerView(MainController controller, GameStateInterface gameState,
-      String gameFolderName, boolean randomized, String customBasePath) {
+      String gameFolderPath, boolean randomized) {
     myPane = new StackPane();
     myMainController = controller;
     myGameState = gameState;
     this.isRandomized = randomized;
-    this.gameFolderName = gameFolderName;
-    this.gameFolderBasePath = customBasePath;
-
-    this.sessionManager = new GameSessionManager(gameFolderName, gameFolderName);
+    this.gameFolderPath = gameFolderPath;
+    this.sessionManager = new GameSessionManager(this.gameFolderPath, "saveConfig");
 
     myPane.setPrefWidth(WIDTH);
     myPane.getStyleClass().add("game-player-view");
@@ -87,17 +69,18 @@ public class GamePlayerView {
     loadOrCreateSession();
     updateGameStateFromSession();
 
-    LevelController levelController = new LevelController(myMainController, myConfigModel, isRandomized, sessionManager);
+    LevelController levelController = new LevelController(myMainController, myConfigModel,
+        isRandomized, sessionManager);
     loadGameViewFromSession(levelController);
   }
 
   private void loadOrCreateSession() {
     try {
       sessionManager.loadExistingSession();
-      LoggingManager.LOGGER.info("✅ Loaded existing save file for '{}'", gameFolderName);
+      LoggingManager.LOGGER.info("✅ Loaded existing save file for '{}'", gameFolderPath);
     } catch (IOException e) {
       sessionManager.startNewSession(myConfigModel);
-      LoggingManager.LOGGER.info("📁 No save found, created new session for '{}'", gameFolderName);
+      LoggingManager.LOGGER.info("📁 No save found, created new session for '{}'", gameFolderPath);
     }
   }
 
@@ -110,7 +93,7 @@ public class GamePlayerView {
   private void loadConfigFromFile() {
     JsonConfigParser configParser = new JsonConfigParser();
     try {
-      myConfigModel = configParser.loadFromFile(GAME_FOLDER + gameFolderName + "/" + GAME_CONFIG_JSON);
+      myConfigModel = configParser.loadFromFile(gameFolderPath + "/gameConfig.json");
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to load config file: {}", GAME_CONFIG_JSON, e);
     }
@@ -123,14 +106,15 @@ public class GamePlayerView {
       int logicalIndex = sessionManager.getCurrentLevel();
       int actualMappedIndex = sessionManager.getLevelOrder().get(logicalIndex);
 
-      LoggingManager.LOGGER.info("🧭 Loading mapped level {} (logical index {})", actualMappedIndex, logicalIndex);
+      LoggingManager.LOGGER.info("🧭 Loading mapped level {} (logical index {})", actualMappedIndex,
+          logicalIndex);
 
       myGameView = new GameView(
           new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
           myConfigModel,
           logicalIndex,
           sessionManager,
-          (gameFolderBasePath + gameFolderName + "/")
+          (gameFolderPath + "/")
       );
 
       myGameView.setNextLevelAction(this::handleNextLevel);
@@ -146,7 +130,8 @@ public class GamePlayerView {
 
       try {
         sessionManager.loadExistingSession();
-        LoggingManager.LOGGER.info("📂 Reloaded session after advancing to level {}", sessionManager.getCurrentLevel());
+        LoggingManager.LOGGER.info("📂 Reloaded session after advancing to level {}",
+            sessionManager.getCurrentLevel());
       } catch (IOException e) {
         LoggingManager.LOGGER.warn("Failed to reload session after level advance", e);
       }
@@ -169,7 +154,8 @@ public class GamePlayerView {
 
     updateGameStateFromSession();
 
-    LevelController newLevelController = new LevelController(myMainController, myConfigModel, isRandomized, sessionManager);
+    LevelController newLevelController = new LevelController(myMainController, myConfigModel,
+        isRandomized, sessionManager);
     loadGameViewFromSession(newLevelController);
   }
 
