@@ -337,11 +337,11 @@ public class AuthoringController {
         config.currentLevelIndex()
     );
 
-    populateModelFromConfig(fixedConfig);
+    populateModelFromConfig(fixedConfig, projectFolder);
   }
 
 
-  private void populateModelFromConfig(ConfigModelRecord config) {
+  private void populateModelFromConfig(ConfigModelRecord config, String projectFolder) {
     model.clearAll();
 
     // Set metadata
@@ -364,6 +364,11 @@ public class AuthoringController {
     for (ParsedLevelRecord parsed : config.levels()) {
       LevelDraft draft = new LevelDraft("Level " + levelIndex, "level" + levelIndex + ".json");
 
+      String backgroundImagePath = parsed.mapInfo().backgroundImagePath();
+      File resolvedFile = new File(backgroundImagePath).isAbsolute()
+          ? new File(backgroundImagePath)
+          : new File(projectFolder, backgroundImagePath);
+      draft.setBackgroundImage(resolvedFile);
       draft.setEntityPlacements(parsed.placements());
       draft.setWidth(parsed.mapInfo().width());
       draft.setHeight(parsed.mapInfo().height());
