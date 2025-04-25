@@ -274,10 +274,11 @@ public class JsonConfigBuilder {
   }
 
   private String getImagePath(String fullPath) {
-    // Extract just the file name from the full path
-    String fileName = fullPath.substring(fullPath.lastIndexOf('/') + 1);
+    String normalized = fullPath.replace("\\", "/"); // convert Windows \ to /
+    String fileName = normalized.substring(normalized.lastIndexOf('/') + 1);
     return "assets/" + fileName;
   }
+
 
   private JsonNode safeSerializeCondition(Object condition, ObjectMapper mapper) {
     JsonNode serialized = ConditionSerializer.serialize(condition, mapper);

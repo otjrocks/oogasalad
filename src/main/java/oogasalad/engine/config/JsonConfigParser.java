@@ -322,7 +322,10 @@ public class JsonConfigParser implements ConfigParserInterface {
     String entityName = idToName.get(entityId);
     String modeName = resolveMode(entityMap.get(entityName), List.of(modeIndex));
 
-    return new EntityPlacement(type, x, y, modeName);
+    EntityPlacement entityPlacement = new EntityPlacement(type, x, y, modeName);
+    entityPlacement.setInitialTileX(x);
+    entityPlacement.setInitialTileY(y);
+    return entityPlacement;
   }
 
   // Methods to convert from multiple config files to a singular config model
