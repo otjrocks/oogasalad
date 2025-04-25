@@ -1,6 +1,6 @@
 {
   "entityType" : {
-    "name" : "NewEntity7a86",
+    "name" : "NewEntitya183",
     "blocks" : [ ]
   },
   "modes" : [ {
@@ -13,7 +13,9 @@
       "animationSpeed" : 1.0
     },
     "controlConfig" : {
-      "controlStrategy" : "None"
+      "controlStrategy" : "ConstantDirection",
+      "dx" : -1,
+      "dy" : 0
     },
     "movementSpeed" : 1.0
   } ]
