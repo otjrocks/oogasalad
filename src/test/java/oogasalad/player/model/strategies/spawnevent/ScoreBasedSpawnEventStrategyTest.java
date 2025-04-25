@@ -7,6 +7,7 @@ import java.util.Map;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.model.ConditionRecord;
+import oogasalad.engine.records.model.GameSettingsRecord;
 import oogasalad.player.model.GameMap;
 import oogasalad.player.model.GameState;
 import oogasalad.player.model.GameStateInterface;
@@ -18,7 +19,8 @@ class ScoreBasedSpawnEventStrategyTest {
   private ScoreBasedSpawnEventStrategy strategy;
 
   private GameContextRecord contextWithScore(int score) {
-    GameStateInterface state = new GameState(0);
+    GameSettingsRecord gameSettings = new GameSettingsRecord(1.0, 1, 0);
+    GameStateInterface state = new GameState(gameSettings);
     state.updateScore(score);
     return new GameContextRecord(new GameMap(10, 10), state);
   }

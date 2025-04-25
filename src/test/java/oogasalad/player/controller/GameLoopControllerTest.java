@@ -19,6 +19,7 @@ import oogasalad.player.model.GameMap;
 import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.GameState;
 import oogasalad.player.view.GameMapView;
+import oogasalad.player.view.GameScreenView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +38,8 @@ class GameLoopControllerTest extends DukeApplicationTest {
   @BeforeEach
   void setUp() {
     gameMap = Mockito.spy(new GameMap(10, 10));
-    GameState gameState = new GameState(5);
+    GameSettingsRecord gameSettings = new GameSettingsRecord(1.0, 1, 1);
+    GameState gameState = new GameState(gameSettings);
     GameContextRecord gameContext = new GameContextRecord(gameMap, gameState);
 
     ConfigModelRecord mockConfigModel = mock(ConfigModelRecord.class);
