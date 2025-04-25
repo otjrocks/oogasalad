@@ -70,18 +70,18 @@ class EntityViewTest extends DukeApplicationTest {
     double offsetX = mockEntity.getEntityPlacement().getCurrentFrame() * entity_width;
     double dirOffset = 0;
 
-    if (direction == Direction.L){
-      dirOffset = 28;
+    if (direction == Direction.L) {
+      dirOffset = (int)entity_height;
     }
-    if (direction == Direction.U){
-      dirOffset = 56;
+    if (direction == Direction.U) {
+      dirOffset = (int)(2*entity_height);
     }
-    if(direction == Direction.D){
-      dirOffset = 84;
+    if (direction == Direction.D) {
+      dirOffset = (int)(3*entity_height);
     }
 
     EntityView view = new EntityView(mockEntity, "data/games/BasicPacMan/");
-    view.draw(mockGC, 20, 20);
+    view.draw(mockGC, 28, 28);
 
     verify(mockGC).drawImage(
         any(),                             // image
@@ -89,10 +89,10 @@ class EntityViewTest extends DukeApplicationTest {
         eq(dirOffset),                       // sourceY
         eq(entity_width),                           // sourceWidth
         eq(entity_height),                           // sourceHeight
-        eq(3.0 * 20),                      // destX
-        eq(4.0 * 20),                      // destY
-        eq(20.0),                          // destWidth
-        eq(20.0)                           // destHeight
+        eq(3.0 * 28),                      // destX
+        eq(4.0 * 28),                      // destY
+        eq(28.0),                          // destWidth
+        eq(28.0)                           // destHeight
     );
   }
 }
