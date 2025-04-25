@@ -1,6 +1,7 @@
 package oogasalad.authoring.controller;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -177,18 +178,22 @@ public class AuthoringController {
 
 
   private Map<String, ModeConfigRecord> defaultModeMap() {
-    String imagePath = Objects.requireNonNull(getClass().getResource("/assets/images/pacman.png"))
-        .toExternalForm();
+    try {
+      File fallbackFile = new File(
+          Objects.requireNonNull(getClass().getResource("/assets/images/pacman.png")).toURI());
 
-    ImageConfigRecord imageConfig = new ImageConfigRecord(
-        imagePath,
-        28,
-        28,
-        6, // Default animation frames
-        1.0
-    );
+      ImageConfigRecord imageConfig = new ImageConfigRecord(
+          fallbackFile.getAbsolutePath(),
+          28,
+          28,
+          6,
+          1.0
+      );
 
-    return Map.of(DEFAULT_MODE, createDefaultMode(imageConfig));
+      return Map.of(DEFAULT_MODE, createDefaultMode(imageConfig));
+    } catch (URISyntaxException e) {
+      throw new RuntimeException("Failed to resolve internal default image", e);
+    }
   }
 
   private static ModeConfigRecord createDefaultMode(ImageConfigRecord imageConfig) {
