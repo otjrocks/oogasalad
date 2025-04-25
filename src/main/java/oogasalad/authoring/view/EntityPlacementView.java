@@ -199,7 +199,8 @@ public class EntityPlacementView {
       controller.updateCanvas();
       showStatusMessage(String.format(LanguageManager.getMessage("MODE_UPDATE"), newMode));
 
-      controller.moveEntity(currentPlacement, currentPlacement.getInitialTileX(), currentPlacement.getInitialY());
+      controller.moveEntity(currentPlacement, currentPlacement.getInitialTileX(),
+          currentPlacement.getInitialY());
     } else {
       showStatusMessage(LanguageManager.getMessage("NO_CHANGES"));
     }
@@ -225,7 +226,6 @@ public class EntityPlacementView {
 
       // Update canvas view
       controller.getCanvasView().removeEntityVisual(currentPlacement);
-
 
       // Clear the view
       setEntityPlacement(null);

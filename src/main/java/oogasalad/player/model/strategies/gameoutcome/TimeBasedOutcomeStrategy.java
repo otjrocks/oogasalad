@@ -29,7 +29,7 @@ public class TimeBasedOutcomeStrategy implements GameOutcomeStrategyInterface {
    *
    * @param gameContext contains gameScore and gameMap
    * @return {@code true} if the elapsed time is at least the specified time limit, {@code false}
-   *                           otherwise
+   * otherwise
    */
   @Override
   public boolean hasGameEnded(GameContextRecord gameContext) {

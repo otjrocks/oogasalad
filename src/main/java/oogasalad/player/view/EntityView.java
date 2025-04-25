@@ -23,7 +23,7 @@ import oogasalad.player.model.Entity;
  * @author Troy Ludwig
  */
 public class EntityView {
-  
+
   private static final Map<String, Image> SPRITE_CACHE = new HashMap<>();
   private final Entity entity;
   private final int totalFrames;
@@ -66,13 +66,13 @@ public class EntityView {
     int dirOffset = 0;
 
     if (entity.getEntityDirection() == Direction.L) {
-      dirOffset = (int)tileHeight;
+      dirOffset = (int) tileHeight;
     }
     if (entity.getEntityDirection() == Direction.U) {
-      dirOffset = (int)(2*tileHeight);
+      dirOffset = (int) (2 * tileHeight);
     }
     if (entity.getEntityDirection() == Direction.D) {
-      dirOffset = (int)(3*tileHeight);
+      dirOffset = (int) (3 * tileHeight);
     }
 
     double destX = entity.getEntityPlacement().getX() * tileWidth;

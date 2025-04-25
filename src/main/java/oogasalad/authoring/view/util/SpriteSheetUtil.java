@@ -5,19 +5,22 @@ import javafx.scene.image.WritableImage;
 import oogasalad.engine.records.config.ModeConfigRecord;
 
 /**
- * Utility class for extracting a single preview tile from a sprite sheet image defined by a {@link ModeConfigRecord}.
+ * Utility class for extracting a single preview tile from a sprite sheet image defined by a
+ * {@link ModeConfigRecord}.
  * <p>
- * This is used in the Authoring Environment to visually represent the default frame (first tile)
- * of an entity's sprite sheet, typically for thumbnail or tile display purposes.
+ * This is used in the Authoring Environment to visually represent the default frame (first tile) of
+ * an entity's sprite sheet, typically for thumbnail or tile display purposes.
  * </p>
  */
 public class SpriteSheetUtil {
 
   /**
-   * Extracts the first tile (frame 0, direction row 0) from a sprite sheet defined in the given {@link ModeConfigRecord}.
+   * Extracts the first tile (frame 0, direction row 0) from a sprite sheet defined in the given
+   * {@link ModeConfigRecord}.
    * <p>
-   * The method loads the full sprite sheet and extracts a subimage starting at (0, 0) with width and height
-   * specified by the tile dimensions in the {@code ImageConfig} of the {@code ModeConfig}.
+   * The method loads the full sprite sheet and extracts a subimage starting at (0, 0) with width
+   * and height specified by the tile dimensions in the {@code ImageConfig} of the
+   * {@code ModeConfig}.
    * </p>
    *
    * @param config the {@link ModeConfigRecord} containing image configuration metadata

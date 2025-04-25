@@ -80,14 +80,16 @@ public class ConditionalControlStrategy implements ControlStrategyInterface {
   public void update(Entity entity) {
     int[] target = ControlStrategyHelperMethods.validateAndGetTargetPosition(myTargetStrategy);
 
-    PathFindingStrategyInterface pathFindingStrategy = getPathFindingStrategy(myEntityPlacement.getX(),
+    PathFindingStrategyInterface pathFindingStrategy = getPathFindingStrategy(
+        myEntityPlacement.getX(),
         myEntityPlacement.getY(), target[0], target[1]);
 
     ControlStrategyHelperMethods.getDirectionFromTargetAndPath(myGameMap, entity, myEntityPlacement,
         myTargetStrategy, pathFindingStrategy);
   }
 
-  private PathFindingStrategyInterface getPathFindingStrategy(double currentX, double currentY, int targetX,
+  private PathFindingStrategyInterface getPathFindingStrategy(double currentX, double currentY,
+      int targetX,
       int targetY) {
 
     double distance = Math.sqrt(

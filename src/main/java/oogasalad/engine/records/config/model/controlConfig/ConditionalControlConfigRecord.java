@@ -7,4 +7,6 @@ public record ConditionalControlConfigRecord(
     String pathFindingStrategyInRadius,
     String pathFindingStrategyOutRadius,
     TargetCalculationConfigInterface targetCalculationConfig
-) implements ControlConfigInterface { }
+) implements ControlConfigInterface {
+
+}

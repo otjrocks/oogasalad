@@ -15,4 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = TargetEntityWithTrapConfigRecord.class, name = "TargetEntityWithTrap"),
     @JsonSubTypes.Type(value = TargetLocationConfigRecord.class, name = "TargetLocation")
 })
-public interface TargetCalculationConfigInterface { }
+public interface TargetCalculationConfigInterface {
+
+}

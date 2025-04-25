@@ -68,8 +68,6 @@ public class EntitySelectorView {
     scrollPane.prefViewportHeightProperty().bind(root.heightProperty().multiply(0.4));
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
 
-
-
     root.getChildren().addAll(addButton, scrollPane);
   }
 

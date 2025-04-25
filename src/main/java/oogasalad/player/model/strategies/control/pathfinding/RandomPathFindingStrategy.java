@@ -7,23 +7,23 @@ import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.model.GameMapInterface;
 
 /**
- * The RandomPathFindingStrategy class implements the PathFindingStrategy interface
- * and provides a random pathfinding mechanism for entities in a game map. It selects
- * a random valid direction for the entity to move towards the target.
- * 
+ * The RandomPathFindingStrategy class implements the PathFindingStrategy interface and provides a
+ * random pathfinding mechanism for entities in a game map. It selects a random valid direction for
+ * the entity to move towards the target.
+ *
  * <p>This strategy is useful for scenarios where unpredictable or non-deterministic
  * movement is desired for entities.</p>
- * 
+ *
  * <p>Note: If no valid directions are available, the strategy will return a movement
  * of {0, 0}, indicating no movement.</p>
- * 
+ *
  * <p>Dependencies:
  * <ul>
  *   <li>PathFindingStrategyHelperMethods - Used to determine valid directions for movement.</li>
  *   <li>Random - Used to randomly select a valid direction.</li>
  * </ul>
  * </p>
- * 
+ *
  * @author Jessica Chen
  */
 public class RandomPathFindingStrategy implements PathFindingStrategyInterface {
@@ -34,7 +34,8 @@ public class RandomPathFindingStrategy implements PathFindingStrategyInterface {
   public int[] getPath(GameMapInterface map, int startX, int startY, int targetX, int targetY,
       EntityPlacement thisEntity, Direction thisDirection) {
 
-    List<int[]> possibleDirections = PathFindingStrategyHelperMethods.getValidDirections(map, startX, startY, thisEntity,
+    List<int[]> possibleDirections = PathFindingStrategyHelperMethods.getValidDirections(map,
+        startX, startY, thisEntity,
         thisDirection);
 
     if (possibleDirections.isEmpty()) {

@@ -1,8 +1,8 @@
 package oogasalad.player.model.exceptions;
 
 /**
- * An exception thrown by the TargetStrategy or TargetStrategyFactory when a user
- * an invalid TargetStrategy
+ * An exception thrown by the TargetStrategy or TargetStrategyFactory when a user an invalid
+ * TargetStrategy
  *
  * @author Jessica Chen
  */
@@ -24,8 +24,8 @@ public class TargetStrategyException extends RuntimeException {
    * underlying exception.
    *
    * @param message the detail message providing additional context about the error.
-   * @param cause the underlying cause of the exception, which can be another exception that
-   *              triggered this one.
+   * @param cause   the underlying cause of the exception, which can be another exception that
+   *                triggered this one.
    */
   public TargetStrategyException(String message, Throwable cause) {
     super(message, cause);

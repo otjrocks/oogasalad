@@ -15,8 +15,8 @@ import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.utility.LoggingManager;
 
 /**
- * Implementation of {@link ConfigSaverInterface} that writes configuration data as JSON files using the
- * Jackson library.
+ * Implementation of {@link ConfigSaverInterface} that writes configuration data as JSON files using
+ * the Jackson library.
  * <p>
  * This class supports saving:
  * <ul>

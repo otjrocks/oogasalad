@@ -4,4 +4,5 @@ import oogasalad.engine.records.config.model.CollisionEventInterface;
 
 public record ChangeModeForTypeCollisionEventRecord(String entityType, String newMode) implements
     CollisionEventInterface {
+
 }

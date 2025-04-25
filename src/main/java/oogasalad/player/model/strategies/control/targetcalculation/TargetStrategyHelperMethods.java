@@ -85,7 +85,8 @@ public class TargetStrategyHelperMethods {
   }
 
 
-  static int[] calcTargetPosition(GameMapInterface map, Entity entity, String type, int tilesAhead) {
+  static int[] calcTargetPosition(GameMapInterface map, Entity entity, String type,
+      int tilesAhead) {
     int[] potentialTarget = potentialTargetPosition(
         entity.getEntityDirection(),
         (int) entity.getEntityPlacement().getX(),

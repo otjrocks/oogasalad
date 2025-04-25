@@ -16,6 +16,7 @@ import oogasalad.player.model.Entity;
  * @author Austin Huang
  */
 public class ChangeModeForTypeStrategy implements CollisionStrategyInterface {
+
   private final String entityType;
   private final String newMode;
 
@@ -23,7 +24,7 @@ public class ChangeModeForTypeStrategy implements CollisionStrategyInterface {
    * Constructs a new {@code ChangeModeForTypeStrategy} with the specified target type and newMode.
    *
    * @param entityType the type of entities whose newMode should be changed
-   * @param newMode       the new newMode to assign to matching entities
+   * @param newMode    the new newMode to assign to matching entities
    */
   public ChangeModeForTypeStrategy(String entityType, String newMode) {
     this.entityType = entityType;

@@ -8,9 +8,9 @@ import oogasalad.authoring.view.AuthoringView;
 import oogasalad.engine.records.model.EntityTypeRecord;
 
 /**
- * Handles creation, selection, and organization of levels.
- * Interacts with both the AuthoringModel and AuthoringView to manage level logic.
- * Should be used by AuthoringController to delegate level-related tasks.
+ * Handles creation, selection, and organization of levels. Interacts with both the AuthoringModel
+ * and AuthoringView to manage level logic. Should be used by AuthoringController to delegate
+ * level-related tasks.
  *
  * @author Will He
  */
@@ -23,11 +23,12 @@ public class LevelController {
   /**
    * Constructs a LevelController to manage levels within the authoring environment.
    *
-   * @param model           the underlying model
-   * @param view            the view to update
-   * @param mainController  reference to the main controller for canvas/entity syncing
+   * @param model          the underlying model
+   * @param view           the view to update
+   * @param mainController reference to the main controller for canvas/entity syncing
    */
-  public LevelController(AuthoringModel model, AuthoringView view, AuthoringController mainController) {
+  public LevelController(AuthoringModel model, AuthoringView view,
+      AuthoringController mainController) {
     this.model = model;
     this.view = view;
     this.mainController = mainController;
@@ -83,6 +84,7 @@ public class LevelController {
 
   /**
    * Get current level
+   *
    * @return current LevelDraft
    */
   public LevelDraft getCurrentLevel() {
@@ -91,7 +93,8 @@ public class LevelController {
 
   /**
    * Update size of canvas for this level
-   * @param width Width of this level
+   *
+   * @param width  Width of this level
    * @param height Height of this level
    */
   public void updateCanvasSize(int width, int height) {
@@ -100,6 +103,7 @@ public class LevelController {
 
   /**
    * Get all entity types from the model
+   *
    * @return Map of entityType names to Record
    */
   public Map<String, EntityTypeRecord> getAvailableEntityTypes() {

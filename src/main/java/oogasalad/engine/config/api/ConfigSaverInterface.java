@@ -7,20 +7,23 @@ import oogasalad.engine.exceptions.ConfigException;
 /**
  * Interface for saving various parts of a game configuration into separate JSON files.
  * <p>
- * This interface supports saving the top-level game metadata, individual level configurations,
- * and entity type definitions using Jackson {@link ObjectNode}s. Implementing classes are responsible
- * for writing these JSON objects to a specified folder in the desired format (e.g., pretty-printed JSON).
+ * This interface supports saving the top-level game metadata, individual level configurations, and
+ * entity type definitions using Jackson {@link ObjectNode}s. Implementing classes are responsible
+ * for writing these JSON objects to a specified folder in the desired format (e.g., pretty-printed
+ * JSON).
  * </p>
  *
  * <p>Typical usage involves calling {@code saveGameConfig} to write the root configuration file,
- * {@code saveLevel} for each level layout, and {@code saveEntityType} for each entity's behavior and visual data.</p>
+ * {@code saveLevel} for each level layout, and {@code saveEntityType} for each entity's behavior
+ * and visual data.</p>
  *
  * @author Will He
  */
 public interface ConfigSaverInterface {
 
   /**
-   * Saves the overall game metadata and high-level structure to a JSON file in the specified folder.
+   * Saves the overall game metadata and high-level structure to a JSON file in the specified
+   * folder.
    * <p>
    * This includes game title, author, description, default settings, and level references.
    * </p>
@@ -31,9 +34,11 @@ public interface ConfigSaverInterface {
   void saveGameConfig(ObjectNode gameConfigJson, Path gameFolder) throws ConfigException;
 
   /**
-   * Saves the configuration for a single game level to a separate JSON file in the specified folder.
+   * Saves the configuration for a single game level to a separate JSON file in the specified
+   * folder.
    * <p>
-   * The level file typically contains the grid layout, entity ID mappings, and settings like grid size or edge policy.
+   * The level file typically contains the grid layout, entity ID mappings, and settings like grid
+   * size or edge policy.
    * </p>
    *
    * @param levelName  the name of the level file to create (without ".json" extension)

@@ -23,5 +23,7 @@ public interface LoseConditionInterface {
   default GameOutcomeStrategyInterface toStrategy() {
     throw new UnsupportedOperationException("toStrategy not implemented for: "
         + this.getClass().getSimpleName());
-  };
+  }
+
+  ;
 }

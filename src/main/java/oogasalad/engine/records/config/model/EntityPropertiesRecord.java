@@ -6,4 +6,6 @@ import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterfac
 public record EntityPropertiesRecord(
     String name,
     List<String> blocks
-) { }
+) {
+
+}

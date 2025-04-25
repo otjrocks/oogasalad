@@ -16,9 +16,8 @@ import java.util.*;
 import java.util.function.Consumer;
 
 /**
- * A dialog window for editing spawn events within a level.
- * Allows the user to configure entities that spawn under specific conditions,
- * along with optional despawn conditions.
+ * A dialog window for editing spawn events within a level. Allows the user to configure entities
+ * that spawn under specific conditions, along with optional despawn conditions.
  */
 public class SpawnEventDialog extends Stage {
 
@@ -72,12 +71,14 @@ public class SpawnEventDialog extends Stage {
 
     spawnConditionTypeDropdown.getItems().addAll(CONDITION_TIME_ELAPSED, CONDITION_SCORE_BASED);
     spawnConditionTypeDropdown.setValue(CONDITION_TIME_ELAPSED);
-    spawnConditionTypeDropdown.setOnAction(e -> renderConditionUI(spawnConditionTypeDropdown, spawnConditionParamsBox));
+    spawnConditionTypeDropdown.setOnAction(
+        e -> renderConditionUI(spawnConditionTypeDropdown, spawnConditionParamsBox));
     renderConditionUI(spawnConditionTypeDropdown, spawnConditionParamsBox);
 
     hasDespawnCondition.setOnAction(e -> toggleDespawnControls());
     despawnConditionTypeDropdown.getItems().addAll(CONDITION_TIME_ELAPSED, CONDITION_SCORE_BASED);
-    despawnConditionTypeDropdown.setOnAction(e -> renderConditionUI(despawnConditionTypeDropdown, despawnConditionParamsBox));
+    despawnConditionTypeDropdown.setOnAction(
+        e -> renderConditionUI(despawnConditionTypeDropdown, despawnConditionParamsBox));
     toggleDespawnControls();
 
     Button addButton = new Button("Add Spawn Event");
@@ -98,7 +99,8 @@ public class SpawnEventDialog extends Stage {
         makeColumn("Entity", r -> r.entityType().type()),
         makeColumn("Mode", SpawnEventRecord::mode),
         makeColumn("Spawn Cond", r -> r.spawnCondition().type()),
-        makeColumn("Despawn Cond", r -> Optional.ofNullable(r.despawnCondition()).map(ConditionRecord::type).orElse(""))
+        makeColumn("Despawn Cond",
+            r -> Optional.ofNullable(r.despawnCondition()).map(ConditionRecord::type).orElse(""))
     );
 
     root.getChildren().addAll(
@@ -169,7 +171,8 @@ public class SpawnEventDialog extends Stage {
       }
 
       EntityTypeRecord entity = entityTypes.get(entityKey);
-      SpawnEventRecord event = new SpawnEventRecord(entity, spawnCondition, x, y, mode, despawnCondition);
+      SpawnEventRecord event = new SpawnEventRecord(entity, spawnCondition, x, y, mode,
+          despawnCondition);
       level.getSpawnEvents().add(event);
       refreshTable();
     } catch (Exception e) {
@@ -181,9 +184,11 @@ public class SpawnEventDialog extends Stage {
     table.getItems().setAll(level.getSpawnEvents());
   }
 
-  private TableColumn<SpawnEventRecord, String> makeColumn(String title, java.util.function.Function<SpawnEventRecord, String> mapper) {
+  private TableColumn<SpawnEventRecord, String> makeColumn(String title,
+      java.util.function.Function<SpawnEventRecord, String> mapper) {
     TableColumn<SpawnEventRecord, String> col = new TableColumn<>(title);
-    col.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(mapper.apply(data.getValue())));
+    col.setCellValueFactory(
+        data -> new javafx.beans.property.SimpleStringProperty(mapper.apply(data.getValue())));
     return col;
   }
 }

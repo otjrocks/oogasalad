@@ -4,9 +4,9 @@ import oogasalad.engine.records.CollisionContextRecord;
 import oogasalad.player.model.GameStateInterface;
 
 /**
- * The {@code UpdateScore} class implements the {@link CollisionStrategyInterface} interface to update the
- * game score when a collision occurs. When two entities collide, this strategy increments the score
- * by a specified amount.
+ * The {@code UpdateScore} class implements the {@link CollisionStrategyInterface} interface to
+ * update the game score when a collision occurs. When two entities collide, this strategy
+ * increments the score by a specified amount.
  *
  * @author Austin Huang
  */
