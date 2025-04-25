@@ -5,10 +5,15 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.records.config.ImageConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
@@ -41,7 +46,11 @@ public class GameMapControllerTest {
 
   @Test
   public void updateEntityModels_setVelocityForEntity_entityPositionUpdates() throws Exception {
-    EntityTypeRecord type = new EntityTypeRecord("SomeEntity", null, null);
+    Map<String, ModeConfigRecord> map = new HashMap<>();
+    map.put("Default", new ModeConfigRecord(null, null, null,
+            new ImageConfigRecord(null, null, null, null,
+                    2.0), null));
+    EntityTypeRecord type = new EntityTypeRecord("SomeEntity", map, null);
     EntityPlacement placement = new EntityPlacement(type, 5, 5, "Default");
     GameInputManager mockInputManager = mock(GameInputManager.class);
     Entity entity = new Entity(mockInputManager, placement, mockGameMap, mock(ConfigModelRecord.class));
