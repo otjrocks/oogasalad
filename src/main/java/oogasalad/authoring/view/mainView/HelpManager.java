@@ -9,17 +9,37 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.help.SimpleHelpSystem;
 import oogasalad.engine.utility.LanguageManager;
 
-class HelpManager {
+/**
+ * Manages the setup and display of the help system within the Authoring Environment.
+ *
+ * <p>Handles adding a help button, help menu, and setting up keyboard shortcuts
+ * that trigger context-sensitive help dialogs.</p>
+ *
+ * <p>Separates help functionality from the core AuthoringView for better modularity and clarity.</p>
+ *
+ * @author William He
+ */
+public class HelpManager {
 
   private final AuthoringView view;
   private final AuthoringController controller;
   private SimpleHelpSystem helpSystem;
 
+  /**
+   * Constructs a HelpManager for the given AuthoringView and controller.
+   *
+   * @param view the AuthoringView where the help components will be integrated
+   * @param controller the controller coordinating the model and view
+   */
   public HelpManager(AuthoringView view, AuthoringController controller) {
     this.view = view;
     this.controller = controller;
   }
 
+  /**
+   * Sets up the entire help system, including creating the help button,
+   * help menu, and registering keyboard shortcuts.
+   */
   public void setupHelpSystem() {
     Platform.runLater(() -> {
       helpSystem = new SimpleHelpSystem(controller, view, getStage());
@@ -29,17 +49,25 @@ class HelpManager {
     });
   }
 
+  /**
+   * Retrieves the primary stage for the AuthoringView.
+   *
+   * @return the Stage containing the authoring UI
+   */
   private Stage getStage() {
     return (Stage) view.getNode().getScene().getWindow();
   }
 
+  /**
+   * Adds a floating help button to the canvas area, aligned to the top right.
+   * Clicking the button opens the help dialog.
+   */
   private void addHelpButton() {
     Button helpButton = new Button("?");
     helpButton.setId("helpButton");
     helpButton.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; " +
         "-fx-background-color: #3498db; -fx-text-fill: white; " +
-        "-fx-background-radius: 50%; -fx-min-width: 30px; " +
-        "-fx-min-height: 30px;");
+        "-fx-background-radius: 50%; -fx-min-width: 30px; -fx-min-height: 30px;");
     helpButton.setTooltip(new Tooltip(LanguageManager.getMessage("HELP")));
     helpButton.setOnAction(e -> helpSystem.showHelpDialog());
 
@@ -52,6 +80,10 @@ class HelpManager {
     StackPane.setMargin(helpButton, new Insets(10));
   }
 
+  /**
+   * Adds a "Help" menu to the existing menu bar, including options for
+   * viewing help contents and an "About" dialog.
+   */
   private void addHelpMenu() {
     MenuBar menuBar = (MenuBar) ((VBox) ((BorderPane) view.getNode()).getCenter()).getChildren().get(0);
     Menu helpMenu = new Menu(LanguageManager.getMessage("HELP"));
@@ -65,6 +97,9 @@ class HelpManager {
     menuBar.getMenus().add(helpMenu);
   }
 
+  /**
+   * Sets up the F1 key as a keyboard shortcut to open the help dialog.
+   */
   private void setupHelpShortcuts() {
     view.getNode().getScene().getAccelerators().put(
         new javafx.scene.input.KeyCodeCombination(javafx.scene.input.KeyCode.F1),
@@ -72,6 +107,9 @@ class HelpManager {
     );
   }
 
+  /**
+   * Displays the "About" dialog with information about the authoring environment.
+   */
   private void showAboutDialog() {
     AlertUtil.showAlert(getStage(),
         LanguageManager.getMessage("ABOUT"),
