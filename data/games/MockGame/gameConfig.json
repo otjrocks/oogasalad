@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "gameTitle": "Mock",
+    "author": "CS308 Team",
+    "gameDescription": "Mock",
+    "image": "mock.png"
+  },
+  "defaultSettings": {
+    "gameSpeed": 1,
+    "startingLives": 10,
+    "initialScore": 0,
+    "winCondition": {
+      "type": "EntityBased",
+      "entityType": "wall"
+    },
+    "loseCondition": {
+      "type": "LivesBased"
+    }
+  },
+  "levels": [
+    {
+      "levelMap": "level1"
+    }
+  ],
+  "currentLevelIndex": 0
+}
