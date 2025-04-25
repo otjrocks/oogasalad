@@ -266,7 +266,6 @@ public class GameSelectorView {
     for (String folder : folderNames) {
       try {
         String filePath = currentPath + "/" + GAMES_FOLDER_PATH + folder;
-        System.out.println(filePath);
         GameConfigRecord config = configParser.loadGameConfig(
             filePath + "/gameConfig.json");
         configs.add(config);
