@@ -10,6 +10,7 @@ import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
+import oogasalad.player.model.Entity;
 
 /**
  * Represents a draft of a single level in the authoring environment. Stores metadata such as name,
@@ -25,7 +26,7 @@ public class LevelDraft {
   private int width;
   private int height;
 
-  private final List<EntityPlacement> entityPlacements;
+  private List<EntityPlacement> entityPlacements;
   private final List<ModeChangeEventRecord> modeChangeEvents;
   private final List<SpawnEventRecord> spawnEvents;
 
@@ -122,6 +123,10 @@ public class LevelDraft {
    */
   public List<EntityPlacement> getEntityPlacements() {
     return Collections.unmodifiableList(entityPlacements);
+  }
+
+  public void setEntityPlacements(List<EntityPlacement> placements) {
+    entityPlacements = placements;
   }
 
   /**

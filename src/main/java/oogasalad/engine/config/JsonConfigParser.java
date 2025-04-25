@@ -28,7 +28,6 @@ import oogasalad.engine.records.config.model.losecondition.LoseConditionInterfac
 import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
-import oogasalad.engine.records.model.GameSettingsRecord;
 import oogasalad.engine.records.model.MapInfoRecord;
 import oogasalad.engine.records.model.MetaDataRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
@@ -118,7 +117,7 @@ public class JsonConfigParser implements ConfigParserInterface {
     }
 
     // Step 6: Create game settings with merged defaults and level-specific map info
-    GameSettingsRecord settings = createGameSettings(gameConfig);
+    SettingsRecord settings = createGameSettings(gameConfig);
 
     // Step 7: Parse collision rules and win condition
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
@@ -330,13 +329,15 @@ public class JsonConfigParser implements ConfigParserInterface {
         gameConfig.metadata().gameDescription());
   }
 
-  private GameSettingsRecord createGameSettings(GameConfigRecord gameConfig) {
+  private SettingsRecord createGameSettings(GameConfigRecord gameConfig) {
     SettingsRecord baseSettings = gameConfig.settings();
 
-    return new GameSettingsRecord(
+    return new SettingsRecord(
         baseSettings.gameSpeed(),
         baseSettings.startingLives(),
-        baseSettings.initialScore()
+        baseSettings.initialScore(),
+        baseSettings.winCondition(),
+        baseSettings.loseCondition()
     );
   }
 

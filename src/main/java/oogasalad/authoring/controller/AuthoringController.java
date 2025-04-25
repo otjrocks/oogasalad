@@ -1,18 +1,25 @@
 package oogasalad.authoring.controller;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import oogasalad.authoring.model.AuthoringModel;
+import oogasalad.authoring.model.LevelDraft;
 import oogasalad.authoring.view.AuthoringView;
 import oogasalad.authoring.view.EntityPlacementView;
 import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.config.JsonConfigParser;
+import oogasalad.engine.exceptions.ConfigException;
+import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
+import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
@@ -296,5 +303,57 @@ public class AuthoringController {
       view.getEntityPlacementView().setVisible(false);
     }
   }
+
+  public void loadProject(File gameConfigFile) {
+    try {
+      JsonConfigParser parser = new JsonConfigParser();
+      ConfigModelRecord config = parser.loadFromFile(gameConfigFile.getAbsolutePath());
+      populateModelFromConfig(config);
+    } catch (ConfigException e) {
+        System.out.println(e.getMessage());
+    }
+  }
+
+  private void populateModelFromConfig(ConfigModelRecord config) {
+    model.clearAll();
+
+    // Set metadata
+    model.setGameTitle(config.metadata().title());
+    model.setAuthor(config.metadata().author());
+    model.setGameDescription(config.metadata().description());
+
+    // Set default game settings
+    model.setDefaultSettings(config.settings());
+
+    // Set entity types
+    Map<String, EntityTypeRecord> entityMap = new LinkedHashMap<>();
+    for (EntityTypeRecord entity : config.entityTypes()) {
+      entityMap.put(entity.type(), entity);
+    }
+    model.setEntityTypeMap(entityMap);
+
+    List<LevelDraft> levelDrafts = new ArrayList<>();
+    int levelIndex = 1;
+    for (ParsedLevelRecord parsed : config.levels()) {
+      LevelDraft draft = new LevelDraft("Level " + levelIndex, "level" + levelIndex + ".json");
+
+      draft.setEntityPlacements(parsed.placements());
+      draft.setWidth(parsed.mapInfo().width());
+      draft.setHeight(parsed.mapInfo().height());
+      draft.getSpawnEvents().addAll(parsed.spawnEvents());
+      draft.getModeChangeEvents().addAll(parsed.modeChangeEvents());
+
+      levelDrafts.add(draft);
+      levelIndex++;
+    }
+    model.setLevels(levelDrafts);
+    model.setCurrentLevelIndex(config.currentLevelIndex());
+
+
+    // Set collision rules
+    model.setCollisionRules(config.collisionRules());
+  }
+
+
 
 }

@@ -19,6 +19,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.help.SimpleHelpSystem;
@@ -46,7 +47,6 @@ public class AuthoringView {
   private LevelSelectorView levelSelectorView;
   private LevelSettingsView levelSettingsView;
   private GameSettingsView gameSettingsView;
-  private CollisionRuleEditorView collisionEditorView;
   private EntityPlacementView entityPlacementView;
   private SimpleHelpSystem helpSystem;
 
@@ -268,8 +268,18 @@ public class AuthoringView {
     MenuBar menuBar = new MenuBar();
     Menu fileMenu = new Menu(LanguageManager.getMessage("FILE"));
     MenuItem saveItem = new MenuItem(LanguageManager.getMessage("SAVE_GAME"));
+    MenuItem loadGameItem = new MenuItem(LanguageManager.getMessage("LOAD_GAME"));
     saveItem.setOnAction(e -> openSaveDialog());
+    loadGameItem.setOnAction(e -> {
+      FileChooser fileChooser = new FileChooser();
+      File selected = fileChooser.showOpenDialog(getNode().getScene().getWindow());
+      if (selected != null) {
+        controller.loadProject(selected);
+      }
+    });
     fileMenu.getItems().add(saveItem);
+    fileMenu.getItems().add(loadGameItem);
+
     menuBar.getMenus().add(fileMenu);
     return menuBar;
   }
