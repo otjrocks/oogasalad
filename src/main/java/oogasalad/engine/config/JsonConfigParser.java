@@ -435,7 +435,7 @@ public class JsonConfigParser implements ConfigParserInterface {
    */
   public GameConfigRecord loadGameConfig(String filepath) throws ConfigException {
     try {
-      JsonNode root = mapper.readTree(new File(filepath));
+      JsonNode root = mapper.readTree(new File(filepath).toURI().toURL());
 
       MetadataRecord metadata = parseMetadata(root);
       SettingsRecord defaultSettings = parseDefaultSettings(root);

@@ -295,13 +295,9 @@ public class GameSelectorView {
   private void handleFileUpload() {
     File selectedFile = fileChooser.showOpenDialog(null);
     if (selectedFile != null) {
-      String relativePath = getRelativePath(selectedFile);
-      if (relativePath != null) {
-        fileLabel.setText(relativePath);
-        startButton.setDisable(false);
-      } else {
-        fileLabel.setText("Invalid file");
-      }
+      String path = selectedFile.getAbsolutePath();
+      fileLabel.setText(path);
+      startButton.setDisable(false);
     }
   }
 
@@ -316,16 +312,6 @@ public class GameSelectorView {
     }
   }
 
-  private String getRelativePath(File file) {
-    File baseDir = new File(System.getProperty("user.dir"), "data");
-    String absolutePath = file.getAbsolutePath();
-    String basePath = baseDir.getAbsolutePath();
-
-    if (absolutePath.startsWith(basePath)) {
-      return "data/" + absolutePath.substring(basePath.length() + 1).replace("\\", "/");
-    }
-    return null;
-  }
 
   private void showErrorDialog(String title, String message) {
     Alert alert = new Alert(AlertType.ERROR);
