@@ -30,6 +30,7 @@ public class GamePlayerView {
   private final StackPane myPane;
   private final MainController myMainController;
   private final GameStateInterface myGameState;
+  private final String gameFolderBasePath;
   private final boolean isRandomized;
   private GameView myGameView;
   private ConfigModelRecord myConfigModel = null;
@@ -128,7 +129,8 @@ public class GamePlayerView {
           new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
           myConfigModel,
           logicalIndex,
-          sessionManager
+          sessionManager,
+          (gameFolderBasePath + gameFolderName + "/")
       );
 
       myGameView.setNextLevelAction(this::handleNextLevel);
