@@ -125,6 +125,10 @@ public class LevelDraft {
     return Collections.unmodifiableList(entityPlacements);
   }
 
+  /**
+   * Set entity placements
+   * @param placements new placements
+   */
   public void setEntityPlacements(List<EntityPlacement> placements) {
     entityPlacements = placements;
   }

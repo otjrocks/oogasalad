@@ -312,30 +312,32 @@ public class AuthoringController {
     }
   }
 
-  public void loadProject(File gameConfigFile) {
-    try {
-      String projectFolder = gameConfigFile.getParent();
-      JsonConfigParser parser = new JsonConfigParser();
-      ConfigModelRecord config = parser.loadFromFile(gameConfigFile.getAbsolutePath());
+  /**
+   * Loads an existing project in from a gameConfig file
+   * @param gameConfigFile file to read
+   * @throws ConfigException Config parsing error
+   */
+  public void loadProject(File gameConfigFile) throws ConfigException {
 
-      List<EntityTypeRecord> fixedEntityTypes = fixEntityTypesWithAbsolutePaths(projectFolder,
-          config.entityTypes());
+    String projectFolder = gameConfigFile.getParent();
+    JsonConfigParser parser = new JsonConfigParser();
+    ConfigModelRecord config = parser.loadFromFile(gameConfigFile.getAbsolutePath());
 
-      ConfigModelRecord fixedConfig = new ConfigModelRecord(
-          config.metadata(),
-          config.settings(),
-          fixedEntityTypes,
-          config.levels(),
-          config.collisionRules(),
-          config.winCondition(),
-          config.loseCondition(),
-          config.currentLevelIndex()
-      );
+    List<EntityTypeRecord> fixedEntityTypes = fixEntityTypesWithAbsolutePaths(projectFolder,
+        config.entityTypes());
 
-      populateModelFromConfig(fixedConfig);
-    } catch (ConfigException e) {
-      System.err.println("Error loading config file: " + gameConfigFile.getAbsolutePath());
-    }
+    ConfigModelRecord fixedConfig = new ConfigModelRecord(
+        config.metadata(),
+        config.settings(),
+        fixedEntityTypes,
+        config.levels(),
+        config.collisionRules(),
+        config.winCondition(),
+        config.loseCondition(),
+        config.currentLevelIndex()
+    );
+
+    populateModelFromConfig(fixedConfig);
   }
 
 

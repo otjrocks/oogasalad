@@ -274,7 +274,13 @@ public class AuthoringView {
       FileChooser fileChooser = new FileChooser();
       File selected = fileChooser.showOpenDialog(getNode().getScene().getWindow());
       if (selected != null) {
-        controller.loadProject(selected);
+        try {
+          controller.loadProject(selected);
+        }
+        catch (ConfigException ex) {
+          showAlert(LanguageManager.getMessage("LOAD_FAIL"),
+              LanguageManager.getMessage("LOAD_FAIL_MESSAGE"), AlertType.ERROR);
+        }
       }
     });
     fileMenu.getItems().add(saveItem);
@@ -465,6 +471,9 @@ public class AuthoringView {
     return levelSettingsView;
   }
 
+  /**
+   * Refresh the UI to update a new model
+   */
   public void refreshUI() {
     controller.getLevelController().updateLevelDropdown();
     controller.getLevelController().switchToLevel(controller.getModel().getCurrentLevelIndex());

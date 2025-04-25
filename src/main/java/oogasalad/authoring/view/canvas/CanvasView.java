@@ -343,6 +343,10 @@ public class CanvasView {
     return new int[]{canvasGrid.getRowFromY(newY), canvasGrid.getColFromX(newX)};
   }
 
+  /**
+   * Load in a canvas for a specific level
+   * @param level level to load
+   */
   public void loadLevel(LevelDraft level) {
     resizeGrid(level.getWidth(), level.getHeight());
     reloadFromPlacements(level.getEntityPlacements());
