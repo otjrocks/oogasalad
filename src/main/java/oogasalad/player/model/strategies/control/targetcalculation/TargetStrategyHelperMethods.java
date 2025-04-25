@@ -1,6 +1,5 @@
 package oogasalad.player.model.strategies.control.targetcalculation;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import oogasalad.engine.utility.constants.Directions.Direction;
