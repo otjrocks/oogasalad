@@ -221,8 +221,10 @@ public class JsonConfigBuilder {
 
   private void addEntityBlocks(EntityTypeRecord type, ObjectNode entityTypeNode) {
     ArrayNode blocksArray = entityTypeNode.putArray("blocks");
-    for (String block : type.blocks()) {
-      blocksArray.add(block);
+    if (type.blocks() != null) {
+      for (String block : type.blocks()) {
+        blocksArray.add(block);
+      }
     }
   }
 
