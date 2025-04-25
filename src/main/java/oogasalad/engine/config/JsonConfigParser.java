@@ -28,7 +28,6 @@ import oogasalad.engine.records.config.model.losecondition.LoseConditionInterfac
 import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
-import oogasalad.engine.records.model.GameSettingsRecord;
 import oogasalad.engine.records.model.MapInfoRecord;
 import oogasalad.engine.records.model.MetaDataRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
@@ -62,6 +61,8 @@ public class JsonConfigParser implements ConfigParserInterface {
   private final ObjectMapper mapper;
   private Map<String, EntityConfigRecord> entityMap;
   private final Map<String, EntityTypeRecord> entityTypeMap = new HashMap<>();
+  private String gameFolderBasePath;
+
 
   private static final String JSON_IDENTIFIER = ".json";
 
@@ -86,6 +87,9 @@ public class JsonConfigParser implements ConfigParserInterface {
    * @throws ConfigException if the file is missing or cannot be parsed correctly
    */
   public ConfigModelRecord loadFromFile(String filepath) throws ConfigException {
+
+    this.gameFolderBasePath = new File(filepath).getParent();
+
     // Step 1: Load primary game config JSON (e.g., gameConfig.json)
     GameConfigRecord gameConfig = loadGameConfig(filepath);
 
@@ -118,7 +122,7 @@ public class JsonConfigParser implements ConfigParserInterface {
     }
 
     // Step 6: Create game settings with merged defaults and level-specific map info
-    GameSettingsRecord settings = createGameSettings(gameConfig);
+    SettingsRecord settings = createGameSettings(gameConfig);
 
     // Step 7: Parse collision rules and win condition
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
@@ -330,13 +334,15 @@ public class JsonConfigParser implements ConfigParserInterface {
         gameConfig.metadata().gameDescription());
   }
 
-  private GameSettingsRecord createGameSettings(GameConfigRecord gameConfig) {
+  private SettingsRecord createGameSettings(GameConfigRecord gameConfig) {
     SettingsRecord baseSettings = gameConfig.settings();
 
-    return new GameSettingsRecord(
+    return new SettingsRecord(
         baseSettings.gameSpeed(),
         baseSettings.startingLives(),
-        baseSettings.initialScore()
+        baseSettings.initialScore(),
+        baseSettings.winCondition(),
+        baseSettings.loseCondition()
     );
   }
 
@@ -429,7 +435,7 @@ public class JsonConfigParser implements ConfigParserInterface {
    */
   public GameConfigRecord loadGameConfig(String filepath) throws ConfigException {
     try {
-      JsonNode root = mapper.readTree(new File(filepath));
+      JsonNode root = mapper.readTree(new File(filepath).toURI().toURL());
 
       MetadataRecord metadata = parseMetadata(root);
       SettingsRecord defaultSettings = parseDefaultSettings(root);

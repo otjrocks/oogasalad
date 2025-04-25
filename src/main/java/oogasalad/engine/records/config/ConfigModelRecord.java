@@ -3,10 +3,10 @@ package oogasalad.engine.records.config;
 import java.util.List;
 import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
+import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.losecondition.LoseConditionInterface;
 import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
 import oogasalad.engine.records.model.EntityTypeRecord;
-import oogasalad.engine.records.model.GameSettingsRecord;
 import oogasalad.engine.records.model.MetaDataRecord;
 
 /**
@@ -27,7 +27,7 @@ import oogasalad.engine.records.model.MetaDataRecord;
  * @author Will He, Owen Jennings
  */
 public record ConfigModelRecord(MetaDataRecord metadata,
-                                GameSettingsRecord settings,
+                                SettingsRecord settings,
                                 List<EntityTypeRecord> entityTypes,
                                 List<ParsedLevelRecord> levels,
                                 List<CollisionRule> collisionRules,

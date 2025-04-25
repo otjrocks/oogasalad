@@ -1,18 +1,29 @@
 package oogasalad.authoring.controller;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.UUID;
 import oogasalad.authoring.model.AuthoringModel;
+import oogasalad.authoring.model.LevelDraft;
 import oogasalad.authoring.view.AuthoringView;
 import oogasalad.authoring.view.EntityPlacementView;
 import oogasalad.authoring.view.canvas.CanvasView;
 import oogasalad.engine.config.EntityPlacement;
+import oogasalad.engine.config.JsonConfigParser;
+import oogasalad.engine.exceptions.ConfigException;
+import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
+import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
@@ -167,18 +178,22 @@ public class AuthoringController {
 
 
   private Map<String, ModeConfigRecord> defaultModeMap() {
-    String imagePath = Objects.requireNonNull(getClass().getResource("/assets/images/pacman.png"))
-        .toExternalForm();
+    try {
+      File fallbackFile = new File(
+          Objects.requireNonNull(getClass().getResource("/assets/images/pacman.png")).toURI());
 
-    ImageConfigRecord imageConfig = new ImageConfigRecord(
-        imagePath,
-        28,
-        28,
-        6, // Default animation frames
-        1.0
-    );
+      ImageConfigRecord imageConfig = new ImageConfigRecord(
+          fallbackFile.getAbsolutePath(),
+          28,
+          28,
+          6,
+          1.0
+      );
 
-    return Map.of(DEFAULT_MODE, createDefaultMode(imageConfig));
+      return Map.of(DEFAULT_MODE, createDefaultMode(imageConfig));
+    } catch (URISyntaxException e) {
+      throw new RuntimeException("Failed to resolve internal default image", e);
+    }
   }
 
   private static ModeConfigRecord createDefaultMode(ImageConfigRecord imageConfig) {
@@ -296,5 +311,126 @@ public class AuthoringController {
       view.getEntityPlacementView().setVisible(false);
     }
   }
+
+  /**
+   * Loads an existing project in from a gameConfig file
+   * @param gameConfigFile file to read
+   * @throws ConfigException Config parsing error
+   */
+  public void loadProject(File gameConfigFile) throws ConfigException {
+
+    String projectFolder = gameConfigFile.getParent();
+    JsonConfigParser parser = new JsonConfigParser();
+    ConfigModelRecord config = parser.loadFromFile(gameConfigFile.getAbsolutePath());
+
+    List<EntityTypeRecord> fixedEntityTypes = fixEntityTypesWithAbsolutePaths(projectFolder,
+        config.entityTypes());
+
+    ConfigModelRecord fixedConfig = new ConfigModelRecord(
+        config.metadata(),
+        config.settings(),
+        fixedEntityTypes,
+        config.levels(),
+        config.collisionRules(),
+        config.winCondition(),
+        config.loseCondition(),
+        config.currentLevelIndex()
+    );
+
+    populateModelFromConfig(fixedConfig);
+  }
+
+
+  private void populateModelFromConfig(ConfigModelRecord config) {
+    model.clearAll();
+
+    // Set metadata
+    model.setGameTitle(config.metadata().title());
+    model.setAuthor(config.metadata().author());
+    model.setGameDescription(config.metadata().description());
+
+    // Set default game settings
+    model.setDefaultSettings(config.settings());
+
+    // Set entity types
+    Map<String, EntityTypeRecord> entityMap = new LinkedHashMap<>();
+    for (EntityTypeRecord entity : config.entityTypes()) {
+      entityMap.put(entity.type(), entity);
+    }
+    model.setEntityTypeMap(entityMap);
+
+    List<LevelDraft> levelDrafts = new ArrayList<>();
+    int levelIndex = 1;
+    for (ParsedLevelRecord parsed : config.levels()) {
+      LevelDraft draft = new LevelDraft("Level " + levelIndex, "level" + levelIndex + ".json");
+
+      draft.setEntityPlacements(parsed.placements());
+      draft.setWidth(parsed.mapInfo().width());
+      draft.setHeight(parsed.mapInfo().height());
+      draft.getSpawnEvents().addAll(parsed.spawnEvents());
+      draft.getModeChangeEvents().addAll(parsed.modeChangeEvents());
+
+      levelDrafts.add(draft);
+      levelIndex++;
+    }
+    model.setLevels(levelDrafts);
+    model.setCurrentLevelIndex(config.currentLevelIndex());
+    for (LevelDraft draft : model.getLevels()) {
+      draft.refreshEntityTypes(model.getEntityTypeMap());
+    }
+
+    // Set collision rules
+    model.setCollisionRules(config.collisionRules());
+    view.refreshUI();
+  }
+
+
+  private List<EntityTypeRecord> fixEntityTypesWithAbsolutePaths(String basePath,
+      Collection<EntityTypeRecord> originalEntityTypes) {
+    List<EntityTypeRecord> result = new ArrayList<>();
+
+    for (EntityTypeRecord entity : originalEntityTypes) {
+      Map<String, ModeConfigRecord> fixedModes = new HashMap<>();
+
+      for (Map.Entry<String, ModeConfigRecord> entry : entity.modes().entrySet()) {
+        ModeConfigRecord fixedMode = getModeConfigRecord(basePath, entry);
+
+        fixedModes.put(entry.getKey(), fixedMode);
+      }
+
+      EntityTypeRecord fixedEntity = new EntityTypeRecord(entity.type(), fixedModes,
+          entity.blocks());
+      result.add(fixedEntity);
+    }
+
+    return result;
+  }
+
+  private static ModeConfigRecord getModeConfigRecord(String basePath,
+      Entry<String, ModeConfigRecord> entry) {
+    ModeConfigRecord mode = entry.getValue();
+    String path = mode.image().imagePath();
+
+    File resolvedFile = new File(path).isAbsolute()
+        ? new File(path)
+        : new File(basePath, path);
+
+    ImageConfigRecord fixedImage = new ImageConfigRecord(
+        resolvedFile.getAbsolutePath(),
+        mode.image().tileWidth(),
+        mode.image().tileHeight(),
+        mode.image().tilesToCycle(),
+        mode.image().animationSpeed()
+    );
+
+    return new ModeConfigRecord(
+        mode.name(),
+        mode.entityProperties(),
+        mode.controlConfig(),
+        fixedImage,
+        mode.movementSpeed()
+    );
+  }
+
 
 }

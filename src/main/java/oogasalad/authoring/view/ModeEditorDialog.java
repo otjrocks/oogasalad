@@ -80,15 +80,15 @@ public class ModeEditorDialog {
     grid.add(uploadButton, 2, 1);
     grid.add(new Label(LanguageManager.getMessage("MOVEMENT_SPEED")), 0, 2);
     grid.add(speedField, 1, 2);
-    grid.add(new Label("Tile Width:"), 0, 3);
+    grid.add(new Label(LanguageManager.getMessage("WIDTH")), 0, 3);
     grid.add(tileWidthField, 1, 3);
-    grid.add(new Label("Tile Height:"), 0, 4);
+    grid.add(new Label(LanguageManager.getMessage("HEIGHT")), 0, 4);
     grid.add(tileHeightField, 1, 4);
-    grid.add(new Label("Tiles to Cycle:"), 0, 5);
+    grid.add(new Label(LanguageManager.getMessage("TILES_TO_CYCLE")), 0, 5);
     grid.add(tilesToCycleField, 1, 5);
-    grid.add(new Label("Animation Speed:"), 0, 6);
+    grid.add(new Label(LanguageManager.getMessage("ANIMATION_SPEED")), 0, 6);
     grid.add(animationSpeedField, 1, 6);
-    grid.add(new Label("Control Type:"), 0, 7);
+    grid.add(new Label(LanguageManager.getMessage("CONTROL_TYPE")), 0, 7);
     grid.add(controlTypeEditorView.getRoot(), 1, 7);
 
     ButtonType okButtonType = ButtonType.OK;
@@ -142,7 +142,17 @@ public class ModeEditorDialog {
       nameField.setText(existingConfig.name());
       speedField.setText(String.valueOf(existingConfig.movementSpeed()));
 
-      selectedImageFile = new File(URI.create(existingConfig.image().imagePath()));
+      String imagePath = existingConfig.image().imagePath();
+      try {
+        if (imagePath.startsWith("file:/")) {
+          selectedImageFile = new File(new File(new URI(imagePath)).getAbsolutePath());
+        } else {
+          selectedImageFile = new File(imagePath);  // Assume it's already a file path
+        }
+      } catch (Exception e) {
+        showError(LanguageManager.getMessage("CANNOT_LOAD_IMAGE"));
+        selectedImageFile = new File("");  // fallback
+      }
       imagePathField.setText(selectedImageFile.getName());
 
       // Pre-fill new image config fields
@@ -160,16 +170,16 @@ public class ModeEditorDialog {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle(LanguageManager.getMessage("CHOOSE_IMAGE"));
     fileChooser.getExtensionFilters().add(
-        new FileChooser.ExtensionFilter(LanguageManager.getMessage("IMAGE_FILES"), "*.png", "*.jpg",
-            "*.jpeg", "*.gif")
+        new FileChooser.ExtensionFilter(LanguageManager.getMessage("IMAGE_FILES"), "*.png", "*.jpg", "*.jpeg", "*.gif")
     );
 
     File file = fileChooser.showOpenDialog(getOwnerWindow());
     if (file != null) {
       selectedImageFile = file;
-      imagePathField.setText(file.getName()); // display filename only (or full path if you prefer)
+      imagePathField.setText(file.getPath());
     }
   }
+
 
   private Stage getOwnerWindow() {
     return (Stage) dialog.getDialogPane().getScene().getWindow();
@@ -219,7 +229,8 @@ public class ModeEditorDialog {
     int tilesToCycle = Integer.parseInt(tilesToCycleField.getText());
     double animationSpeed = Double.parseDouble(animationSpeedField.getText());
 
-    String imagePath = selectedImageFile.toURI().toString();
+    String imagePath = selectedImageFile.getAbsolutePath();
+
     return new ImageConfigRecord(
         imagePath,
         tileWidth,
@@ -228,6 +239,7 @@ public class ModeEditorDialog {
         animationSpeed
     );
   }
+
 
 
 }

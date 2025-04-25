@@ -11,6 +11,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.authoring.model.LevelDraft;
 import oogasalad.engine.config.EntityPlacement;
 
 /**
@@ -294,6 +295,7 @@ public class CanvasView {
       int col = canvasGrid.getColFromX(e.getX());
       int row = canvasGrid.getRowFromY(e.getY());
 
+
       if (canvasGrid.isValidCell(row, col)) {
         tileHighlighter.moveHoverTo(canvasGrid.getXFromCol(col), canvasGrid.getYFromRow(row));
         tileHighlighter.showHover();
@@ -313,12 +315,11 @@ public class CanvasView {
     int col = canvasGrid.getColFromX(e.getX());
     int row = canvasGrid.getRowFromY(e.getY());
 
+
     if (canvasGrid.isValidCell(row, col) &&
         entityManager.isCellAvailable(row, col, null)) {
 
-      double snappedX = canvasGrid.getXFromCol(col);
-      double snappedY = canvasGrid.getYFromRow(row);
-      controller.placeEntity(db.getString(), snappedX, snappedY);
+      controller.placeEntity(db.getString(), col, row);
       e.setDropCompleted(true);
     } else {
       e.setDropCompleted(false);
@@ -341,4 +342,21 @@ public class CanvasView {
     double newY = startImageY + dy;
     return new int[]{canvasGrid.getRowFromY(newY), canvasGrid.getColFromX(newX)};
   }
+
+  /**
+   * Load in a canvas for a specific level
+   * @param level level to load
+   */
+  public void loadLevel(LevelDraft level) {
+    resizeGrid(level.getWidth(), level.getHeight());
+    reloadFromPlacements(level.getEntityPlacements());
+
+    if (level.getBackgroundImage() != null) {
+      root.setStyle("-fx-background-image: url('" + level.getBackgroundImage().toURI() + "');");
+    } else {
+      root.setStyle("-fx-background-color: transparent;");
+    }
+  }
+
+
 }

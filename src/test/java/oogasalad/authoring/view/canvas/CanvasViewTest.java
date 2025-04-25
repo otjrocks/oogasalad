@@ -54,7 +54,7 @@ public class CanvasViewTest extends DukeApplicationTest {
 
   @Test
   public void testRemoveEntityVisualClearsSelection() {
-    EntityPlacement placement = mockPlacement(100, 100);
+    EntityPlacement placement = mockPlacement(4, 4);
     interact(() -> canvasView.placeEntity(placement));
 
     ImageView imageView = (ImageView) canvasView.getNode().getChildren().stream()
@@ -79,7 +79,7 @@ public class CanvasViewTest extends DukeApplicationTest {
 
   @Test
   public void testSelectionHighlightAppearsOnClick() {
-    EntityPlacement placement = mockPlacement(80, 80);
+    EntityPlacement placement = mockPlacement(4, 4);
     interact(() -> canvasView.placeEntity(placement));
 
     ImageView image = (ImageView) canvasView.getNode().getChildren().stream()
@@ -94,8 +94,8 @@ public class CanvasViewTest extends DukeApplicationTest {
 
     assertTrue(canvasView.getTileHighlighter().isSelectionVisible(),
         "Selection should be shown after click");
-    assertEquals(80.0, canvasView.getTileHighlighter().getSelectionX(), 0.1);
-    assertEquals(80.0, canvasView.getTileHighlighter().getSelectionY(), 0.1);
+    assertEquals( 160.0, canvasView.getTileHighlighter().getSelectionX(), 0.1);
+    assertEquals(160.0, canvasView.getTileHighlighter().getSelectionY(), 0.1);
   }
 
 

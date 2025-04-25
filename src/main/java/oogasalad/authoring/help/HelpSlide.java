@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.util.Objects;
+import oogasalad.engine.utility.LanguageManager;
 
 /**
  * A class representing a single help slide with title, content, and optional image.
@@ -83,7 +84,7 @@ public class HelpSlide {
         placeholderBox.setPadding(new Insets(10));
         placeholderBox.setAlignment(Pos.CENTER);
 
-        Label placeholderLabel = new Label("Image: " + imagePath);
+        Label placeholderLabel = new Label(LanguageManager.getMessage("IMAGE") + imagePath);
         placeholderBox.getChildren().add(placeholderLabel);
 
         slide.getChildren().add(placeholderBox);

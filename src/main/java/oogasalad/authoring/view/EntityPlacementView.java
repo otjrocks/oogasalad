@@ -31,6 +31,9 @@ import oogasalad.engine.utility.LanguageManager;
 
 public class EntityPlacementView {
 
+  private static final String COORDINATE = "COORDINATE";
+
+
   private final AuthoringController controller;
   private EntityPlacement currentPlacement;
   private final VBox rootNode;
@@ -84,8 +87,8 @@ public class EntityPlacementView {
     // Update UI fields with values from the placement
     entityTypeLabel.setText(placement.getTypeString());
     positionValueLabel.setText(
-        String.format(LanguageManager.getMessage("COORDINATE"), placement.getInitialTileX(),
-            placement.getInitialTileY()));
+        String.format(LanguageManager.getMessage(COORDINATE), placement.getX(),
+            placement.getY()));
 
     updateModeSelector();
 
@@ -115,7 +118,8 @@ public class EntityPlacementView {
 
     // Position display (non-editable)
     Label positionLabel = new Label(LanguageManager.getMessage("POSITION"));
-    positionValueLabel = new Label("X: 0.0, Y: 0.0");
+    positionValueLabel = new Label(String.format(LanguageManager.getMessage(COORDINATE), 0.0,
+        0.0));
     positionValueLabel.getStyleClass().add("info-value");
     positionValueLabel.setStyle("-fx-font-weight: bold;");
 
@@ -199,8 +203,8 @@ public class EntityPlacementView {
       controller.updateCanvas();
       showStatusMessage(String.format(LanguageManager.getMessage("MODE_UPDATE"), newMode));
 
-      controller.moveEntity(currentPlacement, currentPlacement.getInitialTileX(),
-          currentPlacement.getInitialY());
+      controller.moveEntity(currentPlacement, currentPlacement.getX(),
+          currentPlacement.getY());
     } else {
       showStatusMessage(LanguageManager.getMessage("NO_CHANGES"));
     }
@@ -258,8 +262,8 @@ public class EntityPlacementView {
    */
   public void updatePositionDisplay() {
     if (currentPlacement != null) {
-      positionValueLabel.setText(String.format(LanguageManager.getMessage("COORDINATE"),
-          currentPlacement.getInitialTileX(), currentPlacement.getInitialTileY()));
+      positionValueLabel.setText(String.format(LanguageManager.getMessage(COORDINATE),
+          currentPlacement.getX(), currentPlacement.getY()));
     }
   }
 

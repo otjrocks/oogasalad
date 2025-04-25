@@ -52,7 +52,7 @@ public class ControlTypeEditorView {
 
     controlTypeBox = new ComboBox<>();
     controlTypeBox.getItems().addAll(ControlManager.getControlStrategies());
-    controlTypeBox.setValue("None");
+    controlTypeBox.setValue(LanguageManager.getMessage("NONE"));
     controlTypeBox.setOnAction(e -> updateControlParameterFields());
     controlTypeBox.setId("control-type-selector");
 

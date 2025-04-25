@@ -16,7 +16,7 @@ import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
-import oogasalad.engine.records.model.GameSettingsRecord;
+import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.model.MapInfoRecord;
 import oogasalad.player.controller.GameInputManager;
 import oogasalad.player.model.Entity;
@@ -33,7 +33,7 @@ public class GameMapFactoryTest {
   private EntityPlacement entityPlacement2;
   private Entity entity1;
   private Entity entity2;
-  private GameSettingsRecord settings;
+  private SettingsRecord settings;
 
   @BeforeEach
   void setUp() {
@@ -43,7 +43,7 @@ public class GameMapFactoryTest {
     entityPlacement2 = mock(EntityPlacement.class);
     entity1 = mock(Entity.class);
     entity2 = mock(Entity.class);
-    settings = mock(GameSettingsRecord.class);
+    settings = mock(SettingsRecord.class);
   }
 
   @Test

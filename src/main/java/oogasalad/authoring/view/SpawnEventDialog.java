@@ -13,6 +13,7 @@ import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 
 import java.util.*;
+import oogasalad.engine.utility.LanguageManager;
 
 /**
  * A dialog window for editing spawn events within a level. Allows the user to configure entities
@@ -35,7 +36,8 @@ public class SpawnEventDialog extends Stage {
   private final ComboBox<String> spawnConditionTypeDropdown = new ComboBox<>();
   private final VBox spawnConditionParamsBox = new VBox(5);
 
-  private final CheckBox hasDespawnCondition = new CheckBox("Enable Despawn Condition");
+  private final CheckBox hasDespawnCondition = new CheckBox(
+      LanguageManager.getMessage("ENABLE_DESPAWN_CONDITION"));
   private final ComboBox<String> despawnConditionTypeDropdown = new ComboBox<>();
   private final VBox despawnConditionParamsBox = new VBox(5);
 
@@ -51,19 +53,23 @@ public class SpawnEventDialog extends Stage {
     this.entityTypes = entityTypes;
     this.level = level;
 
-    setTitle("Edit Spawn Events");
+    setTitle(LanguageManager.getMessage("EDIT_SPAWN_EVENTS"));
     initModality(Modality.APPLICATION_MODAL);
     setResizable(false);
 
     VBox root = new VBox(10);
     root.setPadding(new Insets(10));
 
-    HBox row1 = new HBox(10, new Label("Entity Type:"), entityTypeDropdown);
-    HBox row2 = new HBox(10, new Label("Mode:"), modeDropdown);
-    HBox row3 = new HBox(10, new Label("X:"), xField, new Label("Y:"), yField);
-    HBox row4 = new HBox(10, new Label("Spawn Condition Type:"), spawnConditionTypeDropdown);
+    HBox row1 = new HBox(10, new Label(LanguageManager.getMessage("ENTITY_TYPE")),
+        entityTypeDropdown);
+    HBox row2 = new HBox(10, new Label(LanguageManager.getMessage("MODE")), modeDropdown);
+    HBox row3 = new HBox(10, new Label(LanguageManager.getMessage("X")), xField,
+        new Label(LanguageManager.getMessage("Y")), yField);
+    HBox row4 = new HBox(10, new Label(LanguageManager.getMessage("SPAWN_CONDITION_TYPE")),
+        spawnConditionTypeDropdown);
     HBox row5 = new HBox(10, hasDespawnCondition);
-    HBox row6 = new HBox(10, new Label("Despawn Condition Type:"), despawnConditionTypeDropdown);
+    HBox row6 = new HBox(10, new Label(LanguageManager.getMessage("DESPAWN_CONDITION_TYPE")),
+        despawnConditionTypeDropdown);
 
     entityTypeDropdown.getItems().addAll(entityTypes.keySet());
     entityTypeDropdown.setOnAction(e -> updateModes());
@@ -80,10 +86,10 @@ public class SpawnEventDialog extends Stage {
         e -> renderConditionUI(despawnConditionTypeDropdown, despawnConditionParamsBox));
     toggleDespawnControls();
 
-    Button addButton = new Button("Add Spawn Event");
+    Button addButton = new Button(LanguageManager.getMessage("ADD_SPAWN_EVENT"));
     addButton.setOnAction(e -> addSpawnEvent());
 
-    Button deleteButton = new Button("Delete Selected");
+    Button deleteButton = new Button(LanguageManager.getMessage("DELETE_SELECTED"));
     deleteButton.setOnAction(e -> {
       SpawnEventRecord selected = table.getSelectionModel().getSelectedItem();
       if (selected != null) {
@@ -95,10 +101,10 @@ public class SpawnEventDialog extends Stage {
     table.setPrefHeight(200);
     table.getItems().addAll(level.getSpawnEvents());
     table.getColumns().addAll(
-        makeColumn("Entity", r -> r.entityType().type()),
-        makeColumn("Mode", SpawnEventRecord::mode),
-        makeColumn("Spawn Cond", r -> r.spawnCondition().type()),
-        makeColumn("Despawn Cond",
+        makeColumn(LanguageManager.getMessage("ENTITY"), r -> r.entityType().type()),
+        makeColumn(LanguageManager.getMessage("MODE_LABEL"), SpawnEventRecord::mode),
+        makeColumn(LanguageManager.getMessage("SPAWN_CONDITION"), r -> r.spawnCondition().type()),
+        makeColumn(LanguageManager.getMessage("DESPAWN_CONDITION"),
             r -> Optional.ofNullable(r.despawnCondition()).map(ConditionRecord::type).orElse(""))
     );
 
@@ -107,7 +113,7 @@ public class SpawnEventDialog extends Stage {
         row4, spawnConditionParamsBox,
         row5, row6, despawnConditionParamsBox,
         new HBox(10, addButton, deleteButton),
-        new Label("Current Spawn Events:"), table
+        new Label(LanguageManager.getMessage("CURRENT_SPAWN_EVENTS")), table
     );
 
     setScene(new Scene(root));
@@ -135,7 +141,7 @@ public class SpawnEventDialog extends Stage {
     paramBox.getChildren().clear();
     String type = typeDropdown.getValue();
     if (CONDITION_TIME_ELAPSED.equals(type) || CONDITION_SCORE_BASED.equals(type)) {
-      Label label = new Label("Amount:");
+      Label label = new Label(LanguageManager.getMessage("AMOUNT"));
       TextField field = new TextField();
       field.setUserData(PARAM_AMOUNT);
       paramBox.getChildren().addAll(label, field);
