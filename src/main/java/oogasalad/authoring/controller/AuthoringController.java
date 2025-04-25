@@ -314,6 +314,7 @@ public class AuthoringController {
 
   /**
    * Loads an existing project in from a gameConfig file
+   *
    * @param gameConfigFile file to read
    * @throws ConfigException Config parsing error
    */
@@ -365,10 +366,13 @@ public class AuthoringController {
       LevelDraft draft = new LevelDraft("Level " + levelIndex, "level" + levelIndex + ".json");
 
       String backgroundImagePath = parsed.mapInfo().backgroundImagePath();
-      File resolvedFile = new File(backgroundImagePath).isAbsolute()
-          ? new File(backgroundImagePath)
-          : new File(projectFolder, backgroundImagePath);
-      draft.setBackgroundImage(resolvedFile);
+      if (backgroundImagePath != null) {
+        File resolvedFile = new File(backgroundImagePath).isAbsolute()
+            ? new File(backgroundImagePath)
+            : new File(projectFolder, backgroundImagePath);
+        draft.setBackgroundImage(resolvedFile);
+
+      }
       draft.setEntityPlacements(parsed.placements());
       draft.setWidth(parsed.mapInfo().width());
       draft.setHeight(parsed.mapInfo().height());
