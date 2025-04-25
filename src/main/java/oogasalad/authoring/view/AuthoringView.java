@@ -2,6 +2,7 @@ package oogasalad.authoring.view;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Objects;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -10,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -137,6 +139,7 @@ public class AuthoringView {
 
     // Create a VBox for the main layout
     VBox fullLayout = new VBox(10);
+    fullLayout.getStyleClass().add("root");
     fullLayout.getChildren().addAll(menuBar, mainContent, gameSettingsView.getNode());
     VBox.setVgrow(mainContent, Priority.ALWAYS);
 
@@ -169,10 +172,7 @@ public class AuthoringView {
   private void addHelpButton() {
     Button helpButton = new Button("?");
     helpButton.setId("helpButton");
-    helpButton.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; " +
-        "-fx-background-color: #3498db; -fx-text-fill: white; " +
-        "-fx-background-radius: 50%; -fx-min-width: 30px; " +
-        "-fx-min-height: 30px; -fx-max-width: 30px; -fx-max-height: 30px;");
+    helpButton.getStyleClass().add("help-button");
     helpButton.setTooltip(new Tooltip(LanguageManager.getMessage(HELP)));
     helpButton.setOnAction(e -> helpSystem.showHelpDialog());
 
@@ -183,6 +183,7 @@ public class AuthoringView {
     // Create a StackPane to overlay the help button on the canvas
     StackPane canvasWithHelp = new StackPane();
     canvasWithHelp.getChildren().addAll(canvasView.getNode(), helpButton);
+
     mainContent.setCenter(canvasWithHelp);
 
     // Position the help button in the top-right corner
@@ -195,6 +196,7 @@ public class AuthoringView {
    */
   private void addHelpMenu() {
     MenuBar menuBar = (MenuBar) ((VBox) root.getCenter()).getChildren().get(0);
+    menuBar.getStyleClass().add("menu-bar");
 
     // Check if Help menu already exists
     for (Menu menu : menuBar.getMenus()) {
@@ -272,8 +274,7 @@ public class AuthoringView {
       if (selected != null) {
         try {
           controller.loadProject(selected);
-        }
-        catch (ConfigException ex) {
+        } catch (ConfigException ex) {
           showAlert(LanguageManager.getMessage("LOAD_FAIL"),
               LanguageManager.getMessage("LOAD_FAIL_MESSAGE"), AlertType.ERROR);
         }
@@ -297,6 +298,7 @@ public class AuthoringView {
     // === LEFT PANEL ===
     VBox left = new VBox(10);
     left.getChildren().addAll(levelSelectorView.getRoot(), levelSettingsView.getNode());
+    left.getStyleClass().add("main-content");
     mainContent.setLeft(left);
 
     // === CENTER CANVAS VIEW ===
@@ -309,6 +311,7 @@ public class AuthoringView {
 
     // === RIGHT PANEL ===
     VBox rightPanel = new VBox(10);
+    rightPanel.getStyleClass().add("main-content");
 
     // Create editor container once
     AnchorPane editorContainer = createEditorContainer();
@@ -335,8 +338,7 @@ public class AuthoringView {
     AnchorPane editorContainer = new AnchorPane();
     editorContainer.setMaxHeight(400);
 
-    editorContainer.setBorder(new Border(
-        new BorderStroke(Color.BLUE, BorderStrokeStyle.DASHED, null, new BorderWidths(1))));
+    editorContainer.getStyleClass().add("editor-container");
 
     addEntityTypeEditor(editorContainer);
     addEntityPlacementView(editorContainer);
@@ -389,6 +391,8 @@ public class AuthoringView {
   private void applyStyles() {
     VBox fullLayout = (VBox) root.getCenter();
     BorderPane mainContent = (BorderPane) fullLayout.getChildren().get(1);
+    mainContent.getStyleClass().add("main-content");
+
     VBox rightPanel = (VBox) mainContent.getRight();
 
     rightPanel.setPrefWidth(300);

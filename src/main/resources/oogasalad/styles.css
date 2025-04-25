@@ -297,3 +297,67 @@ Label, Text {
   -fx-min-width: 20px;
   -fx-min-height: 20px;
 }
+
+.help-button {
+  -fx-font-size: 14px;
+  -fx-font-weight: bold;
+  -fx-background-color: -fx-highlight;
+  -fx-text-fill: white;
+  -fx-background-radius: 50%;
+  -fx-min-width: 30px;
+  -fx-min-height: 30px;
+  -fx-max-width: 30px;
+  -fx-max-height: 30px;
+  -fx-cursor: hand;
+}
+
+.editor-container {
+  -fx-border-color: -fx-secondary;
+  -fx-border-style: dashed;
+  -fx-border-width: 1px;
+  -fx-background-color: -fx-primary;
+}
+
+.main-content {
+  -fx-padding: 10px;
+  -fx-spacing: 10px;
+  -fx-background-color: -fx-primary;
+}
+
+.menu-bar {
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 0 0 2px 0;
+}
+
+.menu-bar .label {
+  -fx-text-fill: -fx-secondary;
+}
+
+.menu-bar .menu:hover {
+  -fx-background-color: -fx-highlight;
+}
+
+.context-menu {
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+}
+
+.context-menu .menu-item {
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+}
+
+.context-menu .menu-item:hover {
+  -fx-background-color: -fx-highlight;
+  -fx-text-fill: -fx-secondary;
+}
+
+.context-menu .menu-item .label {
+  -fx-text-fill: -fx-secondary;
+}
+
+.context-menu .menu-item:hover .label {
+  -fx-text-fill: -fx-secondary;
+}
