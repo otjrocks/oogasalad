@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Map;
 import oogasalad.engine.records.GameContextRecord;
+import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
+import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
+import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
 import oogasalad.engine.records.model.ConditionRecord;
-import oogasalad.engine.records.model.GameSettingsRecord;
 import oogasalad.player.model.GameMap;
 import oogasalad.player.model.GameState;
 import oogasalad.player.model.GameStateInterface;
@@ -19,7 +21,8 @@ class ScoreBasedSpawnEventStrategyTest {
   private ScoreBasedSpawnEventStrategy strategy;
 
   private GameContextRecord contextWithScore(int score) {
-    GameSettingsRecord gameSettings = new GameSettingsRecord(1.0, 1, 0);
+    SettingsRecord gameSettings = new SettingsRecord(1.0, 5, 5,
+        new EntityBasedConditionRecord("dot"), new LivesBasedConditionRecord());
     GameStateInterface state = new GameState(gameSettings);
     state.updateScore(score);
     return new GameContextRecord(new GameMap(10, 10), state);

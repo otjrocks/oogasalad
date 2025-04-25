@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import oogasalad.engine.records.config.model.SaveConfigRecord;
-import oogasalad.engine.records.model.GameSettingsRecord;
+import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.player.model.exceptions.SaveFileException;
 
 /**
@@ -30,7 +30,7 @@ public class GameState implements GameStateInterface {
    * Loads in game settings given the game setting record.
    * @param gameSettings contains default settings for given game.
    */
-  public GameState(GameSettingsRecord gameSettings) {
+  public GameState(SettingsRecord gameSettings) {
     this.startingLives = gameSettings.startingLives();
     this.initialScore = gameSettings.initialScore();
     this.score = initialScore;

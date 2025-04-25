@@ -37,7 +37,8 @@ class GameLoopControllerTest extends DukeApplicationTest {
   @BeforeEach
   void setUp() {
     gameMap = Mockito.spy(new GameMap(10, 10));
-    GameSettingsRecord gameSettings = new GameSettingsRecord(1.0, 1, 1);
+    SettingsRecord gameSettings = new SettingsRecord(1.0, 5, 5,
+        new EntityBasedConditionRecord("dot"), new LivesBasedConditionRecord());
     GameState gameState = new GameState(gameSettings);
     GameContextRecord gameContext = new GameContextRecord(gameMap, gameState);
 
@@ -60,22 +61,20 @@ class GameLoopControllerTest extends DukeApplicationTest {
 
   @Test
   void pauseGame_EnsureNoUpdateCallsAfterPause_Success() throws InterruptedException {
-    // Let the loop run for a bit to ensure it's actively updating
-    Thread.sleep(100);
+    // Pause the game FIRST
+    runAsJFXAction(() -> gameLoopController.pauseGame());
 
-    // Pause the game
-    gameLoopController.pauseGame();
-
-    // Clear previous invocations to start fresh
+    // Clear invocations AFTER ensuring pause
     clearInvocations(gameMap, gameMapView);
 
-    // Wait to ensure loop would've had time to run again if not paused
-    Thread.sleep(100);
+    // Wait to ensure no updates happen after pause
+    Thread.sleep(150);
 
-    // Verify no further updates happened after pause
+    // Now verify that no updates happened after pausing
     verify(gameMap, times(0)).update();
     verify(gameMapView, times(0)).update();
   }
+
 
   @Test
   void resumeGame_AfterPause_DoesNotThrowException() {
