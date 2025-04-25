@@ -26,6 +26,10 @@ public class GameState implements GameStateInterface {
   private List<Integer> levelOrder;
   private final static String SAVE_FOLDER = "data/saves/";
 
+  /**
+   * Loads in game settings given the game setting record.
+   * @param gameSettings contains default settings for given game.
+   */
   public GameState(GameSettingsRecord gameSettings) {
     this.startingLives = gameSettings.startingLives();
     this.initialScore = gameSettings.initialScore();

@@ -63,8 +63,6 @@ public class GameSessionManager {
     }
   }
 
-
-
   /**
    * Resets the session to a new one using the default configuration.
    */
@@ -72,14 +70,23 @@ public class GameSessionManager {
     startNewSession(configModel);
   }
 
+  /**
+   * Returns the current level in the save config.
+   */
   public int getCurrentLevel() {
     return saveConfig.currentLevel();
   }
 
+  /**
+   * Returns the current lives of the save config.
+   */
   public int getLives() {
     return saveConfig.lives();
   }
 
+  /**
+   * Returns the high score in the saveConfig
+   */
   public int getHighScore() {
     return saveConfig.highScore();
   }
@@ -88,6 +95,9 @@ public class GameSessionManager {
     return saveConfig.levelOrder();
   }
 
+  /**
+   * Sets lives in safe config to one less.
+   */
   public void loseLife() {
     saveConfig = new SaveConfigRecord(
         saveConfig.saveName(),
@@ -100,14 +110,20 @@ public class GameSessionManager {
     save();
   }
 
+  /**
+   * Returns the current score in the save config.
+   */
   public int getCurrentScore() {
     return saveConfig.totalScore();
   }
 
+  /**
+   * Moves to the next level.
+   */
   public void advanceLevel(int levelScore) {
     int nextLevel = saveConfig.currentLevel() + 1;
     if (nextLevel >= saveConfig.levelOrder().size()) {
-      return;  // Prevent saving invalid level
+      return;
     }
 
     saveConfig = new SaveConfigRecord(
@@ -121,8 +137,9 @@ public class GameSessionManager {
     save();
   }
 
-
-
+  /**
+   * Sets lives to an int in save config.
+   */
   public void setLives(int newLives) {
     saveConfig = new SaveConfigRecord(
         saveConfig.saveName(),
