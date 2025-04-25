@@ -1,5 +1,6 @@
 package oogasalad.engine.records.config.model.controlConfig;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  *
  * @author Owen Jennings
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "controlStrategy")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = NoneControlConfigRecord.class, name = "None"),
@@ -17,5 +19,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = ConditionalControlConfigRecord.class, name = "Conditional")
 })
 public interface ControlConfigInterface {
-
 }

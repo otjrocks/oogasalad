@@ -1,8 +1,9 @@
 package oogasalad.engine.records.model;
 
+import oogasalad.engine.records.config.model.ModeChangeInfo;
+
 public record ModeChangeEventRecord(
     EntityTypeRecord entityType,
-    String currentMode,
-    String nextMode,
+    ModeChangeInfo modeChangeInfo,
     ConditionRecord changeCondition
 ) { }

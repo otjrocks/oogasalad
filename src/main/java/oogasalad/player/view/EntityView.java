@@ -23,9 +23,7 @@ import oogasalad.player.model.Entity;
  * @author Troy Ludwig
  */
 public class EntityView {
-
-  public static final String CURRENT_GAME_CONFIG_PATH = "data/games/BasicPacMan/";
-
+  
   private static final Map<String, Image> SPRITE_CACHE = new HashMap<>();
   private final Entity entity;
   private final int totalFrames;
@@ -36,14 +34,15 @@ public class EntityView {
   /**
    * Initialize an Entity view.
    *
-   * @param entity The Entity model used to represent this view.
+   * @param entity     The Entity model used to represent this view.
+   * @param gameFolder Full path to the game folder
    */
-  public EntityView(Entity entity) {
+  public EntityView(Entity entity, String gameFolder) {
     this.entity = entity;
     this.totalFrames = entity.getEntityPlacement().getEntityFrameNumber();
     this.height = entity.getEntityPlacement().getEntityImageHeight();
     this.width = entity.getEntityPlacement().getEntityImageWidth();
-    String imagePath = CURRENT_GAME_CONFIG_PATH + entity.getEntityPlacement().getEntityImagePath();
+    String imagePath = gameFolder + entity.getEntityPlacement().getEntityImagePath();
     this.sprite = SPRITE_CACHE.computeIfAbsent(imagePath, path -> {
       try {
         return new Image(new FileInputStream(imagePath)); // Load from file path
@@ -67,13 +66,13 @@ public class EntityView {
     int dirOffset = 0;
 
     if (entity.getEntityDirection() == Direction.L) {
-      dirOffset = 28;
+      dirOffset = (int)tileHeight;
     }
     if (entity.getEntityDirection() == Direction.U) {
-      dirOffset = 56;
+      dirOffset = (int)(2*tileHeight);
     }
     if (entity.getEntityDirection() == Direction.D) {
-      dirOffset = 84;
+      dirOffset = (int)(3*tileHeight);
     }
 
     double destX = entity.getEntityPlacement().getX() * tileWidth;

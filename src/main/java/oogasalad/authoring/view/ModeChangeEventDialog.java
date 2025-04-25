@@ -7,6 +7,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.model.LevelDraft;
+import oogasalad.engine.records.config.model.ModeChangeInfo;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
@@ -77,8 +78,8 @@ public class ModeChangeEventDialog extends Stage {
     table.getItems().addAll(level.getModeChangeEvents());
     table.getColumns().addAll(
         makeColumn("Entity", r -> r.entityType().type()),
-        makeColumn("From", ModeChangeEventRecord::currentMode),
-        makeColumn("To", ModeChangeEventRecord::nextMode),
+        makeColumn("From", r -> r.modeChangeInfo().originalMode()),
+        makeColumn("To", r -> r.modeChangeInfo().transitionMode()),
         makeColumn("Condition", r -> r.changeCondition().type() + ": " + r.changeCondition().parameters())
     );
 
@@ -149,8 +150,11 @@ public class ModeChangeEventDialog extends Stage {
             Collections.emptyMap(),
             Collections.emptyList()
         ),
-        currentMode,
-        nextMode,
+        new ModeChangeInfo(
+                currentMode,
+                nextMode,
+                999999999,
+                1),
         condition
     );
 

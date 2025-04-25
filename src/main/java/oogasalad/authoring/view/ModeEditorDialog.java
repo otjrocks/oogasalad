@@ -18,7 +18,6 @@ import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
-import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.utility.LanguageManager;
 
 /**
@@ -36,7 +35,7 @@ public class ModeEditorDialog {
   private final TextField tileHeightField;
   private final TextField tilesToCycleField;
   private final TextField animationSpeedField;
-  private ControlTypeEditorView controlTypeEditorView;
+  private final ControlTypeEditorView controlTypeEditorView;
 
   private File selectedImageFile;
   private ModeConfigRecord preparedResult;

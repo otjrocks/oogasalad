@@ -16,7 +16,7 @@ public class ChangeModeForEntityStrategy implements CollisionStrategyInterface{
      * @param newMode: The mode you want to change the entity to
      * @param duration: How long the entity should remain changed
      */
-    public ChangeModeForEntityStrategy(String newMode, int duration) {
+    public ChangeModeForEntityStrategy(int duration, String newMode) {
         this.newMode = newMode;
         this.duration = duration;
     }

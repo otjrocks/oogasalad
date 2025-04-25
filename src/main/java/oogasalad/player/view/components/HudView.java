@@ -54,6 +54,14 @@ public class HudView extends VBox {
 
     returnButton.setOnAction(e -> onReturnToMenu.run());
 
+    scoreLabel.setId("scoreLabel");
+    livesLabel.setId("livesLabel");
+
+    playButton.setId("playButton");
+    pauseButton.setId("pauseButton");
+    returnButton.setId("returnToMenuButton");
+
+
     HBox controlRow = new HBox(ELEMENT_SPACING, playButton, pauseButton, returnButton);
     controlRow.getStyleClass().add(style);
 

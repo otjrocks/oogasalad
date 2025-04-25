@@ -3,12 +3,20 @@ package oogasalad.authoring.view;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.testfx.api.FxAssert.verifyThat;
+import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
 import java.util.List;
+import java.util.Optional;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import oogasalad.engine.records.config.ImageConfigRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.config.model.EntityPropertiesRecord;
+import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
 
@@ -33,9 +41,11 @@ public class ModeEditorDialogTest extends DukeApplicationTest {
       dialog.showAndWait();
     });
 
-    List<TextField> fields = lookup(".dialog-pane .text-field").queryAllAs(TextField.class).stream().toList();
+    List<TextField> fields = lookup(".dialog-pane .text-field").queryAllAs(TextField.class).stream()
+        .toList();
 
-    assertEquals(7, fields.size(), "Should have 7 text fields (name, image, speed, tileW, tileH, tilesToCycle, animationSpeed)");
+    assertEquals(7, fields.size(),
+        "Should have 7 text fields (name, image, speed, tileW, tileH, tilesToCycle, animationSpeed)");
 
     TextField nameField = fields.get(0);
     TextField imageField = fields.get(1);
@@ -69,7 +79,6 @@ public class ModeEditorDialogTest extends DukeApplicationTest {
   }
 
 
-
   @Test
   void clickCancel_ClosesDialogWithoutException() {
     runAsJFXAction(() -> {
@@ -93,4 +102,46 @@ public class ModeEditorDialogTest extends DukeApplicationTest {
     // Since required fields are empty and image isn't set, dialog should not close
     assertTrue(dialog.getDialog().isShowing()); // Still open
   }
+
+  @Test
+  void constructor_CreateModeEditorDialogWithExistingConfig_CorrectFieldValues() {
+    // ChatGPT generated this test
+    String expectedName = "test";
+    double expectedSpeed = 1.0;
+    int expectedTileWidth = 10;
+    int expectedTileHeight = 15;
+    int expectedTilesToCycle = 4;
+    double expectedAnimationSpeed = 1.0;
+    String imageFileName = "mock.png";
+
+    ModeConfigRecord existingConfig = new ModeConfigRecord(expectedName,
+        new EntityPropertiesRecord(expectedName, List.of()), new KeyboardControlConfigRecord(),
+        new ImageConfigRecord(
+            getClass().getClassLoader().getResource(imageFileName).toExternalForm(),
+            expectedTileWidth, expectedTileHeight, expectedTilesToCycle, expectedAnimationSpeed),
+        expectedSpeed);
+
+    runAsJFXAction(() -> {
+      dialog = new ModeEditorDialog(existingConfig);
+      dialog.getDialog().initOwner(Stage.getWindows().stream().findFirst().get());
+      dialog.showAndWait();
+    });
+
+    // Assert all fields are correctly populated
+    verifyThat(lookup(".text-field").nth(0),
+        (TextField tf) -> tf.getText().equals(expectedName)); // nameField
+    verifyThat(lookup(".text-field").nth(1),
+        (TextField tf) -> tf.getText().equals(imageFileName)); // imagePathField
+    verifyThat(lookup(".text-field").nth(2),
+        (TextField tf) -> tf.getText().equals(String.valueOf(expectedSpeed))); // speedField
+    verifyThat(lookup(".text-field").nth(3),
+        (TextField tf) -> tf.getText().equals(String.valueOf(expectedTileWidth))); // tileWidthField
+    verifyThat(lookup(".text-field").nth(4), (TextField tf) -> tf.getText()
+        .equals(String.valueOf(expectedTileHeight))); // tileHeightField
+    verifyThat(lookup(".text-field").nth(5), (TextField tf) -> tf.getText()
+        .equals(String.valueOf(expectedTilesToCycle))); // tilesToCycleField
+    verifyThat(lookup(".text-field").nth(6), (TextField tf) -> tf.getText()
+        .equals(String.valueOf(expectedAnimationSpeed))); // animationSpeedField
+  }
+
 }

@@ -5,4 +5,5 @@ import oogasalad.engine.records.config.model.controlConfig.targetStrategy.Target
 public record TargetControlConfigRecord(
     String pathFindingStrategy,
     TargetCalculationConfigInterface targetCalculationConfig
-) implements ControlConfigInterface { }
+) implements ControlConfigInterface {
+}

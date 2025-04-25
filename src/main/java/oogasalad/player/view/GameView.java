@@ -1,14 +1,24 @@
 package oogasalad.player.view;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Objects;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.StackPane;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.utility.constants.GameConfig;
 import oogasalad.player.controller.GameLoopController;
 import oogasalad.player.model.save.GameSessionManager;
@@ -37,17 +47,18 @@ public class GameView {
    * @param gameContext The game context for this view.
    * @param configModel The config model for this view.
    * @param levelIndex  The index of the level that is displayed on this view.
+   * @param gameFolder  The full path to the game folder
    */
   public GameView(GameContextRecord gameContext, ConfigModelRecord configModel, int levelIndex,
-      GameSessionManager sessionManager) {
+      GameSessionManager sessionManager, String gameFolder) {
     myRoot = new StackPane();
-    GameMapView myGameMapView = new GameMapView(gameContext, configModel);
+    GameMapView myGameMapView = new GameMapView(gameContext, configModel, gameFolder);
     myRoot.setPrefSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
     myRoot.setMinSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
     myRoot.setMaxSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
     myRoot.getChildren().add(myGameMapView.getCanvas());
-    myRoot.getStyleClass().add("game-view");
     myRoot.setFocusTraversable(true);
+    setBackgroundImage(configModel, levelIndex, gameFolder);
     boolean isFinalLevel = levelIndex >= configModel.levels().size() - 1;
     this.sessionManager = sessionManager;
 
@@ -57,6 +68,45 @@ public class GameView {
     myGameMapView.setGameLoopController(myGameLoopController);
     setUpEndMessage();
     myGameMapView.setEndGameCallback(won -> showEndMessage(won, isFinalLevel));
+  }
+
+  private void setBackgroundImage(ConfigModelRecord configModel, int levelIndex,
+      String gameFolder) {
+    // ChatGPT generated this code.
+    Image backgroundImage = getBackgroundImage(configModel, levelIndex, gameFolder);
+    if (backgroundImage != null) {
+      BackgroundImage bgImage = new BackgroundImage(
+          backgroundImage,
+          BackgroundRepeat.REPEAT,
+          BackgroundRepeat.NO_REPEAT,
+          BackgroundPosition.CENTER,
+          new BackgroundSize(
+              1.0, 1.0,      // width, height as 100%
+              true, true,    // treat width and height as percentages
+              true,          // preserve aspect ratio
+              false          // DO NOT cover area (contain instead)
+          )
+      );
+      myRoot.setBackground(new Background(bgImage));
+    }
+  }
+
+  private Image getBackgroundImage(ConfigModelRecord configModel, int levelIndex,
+      String gameFolder) {
+    final Image backgroundImage;
+    String backgroundImagePath = configModel.levels().get(levelIndex).mapInfo()
+        .backgroundImagePath();
+    if (backgroundImagePath == null) {
+      return null;
+    }
+    String imagePath = gameFolder + backgroundImagePath;
+    try {
+      backgroundImage = new Image(new FileInputStream(imagePath));
+    } catch (FileNotFoundException e) {
+      LoggingManager.LOGGER.warn("Unable to load background image for level {}", imagePath);
+      throw new RuntimeException("Failed to load image from path: " + imagePath, e);
+    }
+    return backgroundImage;
   }
 
   /**
@@ -69,13 +119,15 @@ public class GameView {
   }
 
   private void setUpEndMessage() {
+    endLabel.setId("endLabel");
     configureEndNode(endLabel, "end-label", null);
     StackPane.setAlignment(endLabel, Pos.CENTER);
 
-    configureEndNode(nextLevelButton, END_BUTTON_STYLE,
-        LanguageManager.getMessage("NEXT_LEVEL"));
-    configureEndNode(resetButton, END_BUTTON_STYLE,
-        LanguageManager.getMessage("RESET_GAME"));
+    nextLevelButton.setId("nextLevelButton");
+    configureEndNode(nextLevelButton, END_BUTTON_STYLE, LanguageManager.getMessage("NEXT_LEVEL"));
+
+    resetButton.setId("resetButton");
+    configureEndNode(resetButton, END_BUTTON_STYLE, LanguageManager.getMessage("RESET_GAME"));
   }
 
   private void configureEndNode(Node node, String styleClass, String text) {
