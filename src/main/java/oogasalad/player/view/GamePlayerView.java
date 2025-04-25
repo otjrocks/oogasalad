@@ -32,7 +32,6 @@ public class GamePlayerView {
   private final GameStateInterface myGameState;
   private final String gameFolderBasePath;
   private final boolean isRandomized;
-  private final String gameFolderBasePath;
   private GameView myGameView;
   private ConfigModelRecord myConfigModel = null;
   private GameSessionManager sessionManager;
