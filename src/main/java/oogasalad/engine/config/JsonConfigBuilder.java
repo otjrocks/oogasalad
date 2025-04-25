@@ -127,8 +127,8 @@ public class JsonConfigBuilder {
 
     // fill grid with entity placements
     for (EntityPlacement placement : draft.getEntityPlacements()) {
-      int row = placement.getInitialTileY();
-      int col = placement.getInitialTileX();
+      int row = (int) placement.getY();
+      int col = (int) placement.getX();
       int entityId = entityToIdMap.getOrDefault(placement.getTypeString(), 0);
       int modeIndex = getModeIndex(placement);
       tileGrid[row][col] = entityId + "." + modeIndex;

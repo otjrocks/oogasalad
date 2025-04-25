@@ -466,25 +466,17 @@ public class AuthoringView {
   }
 
   public void refreshUI() {
-    // Reload the canvas with the current level
+    controller.getLevelController().switchToLevel(controller.getModel().getCurrentLevelIndex());
+
     canvasView.loadLevel(controller.getModel().getCurrentLevel());
 
-    // Refresh entity selector view
     selectorView.updateEntities(controller.getModel().getEntityTypes().stream().toList());
 
-    // Hide editor views by default
     entityTypeEditorView.getRoot().setVisible(false);
     entityPlacementView.setVisible(false);
 
-    // Update game and level settings
-    gameSettingsView.updateFromModel();  // assumes method exists
-//    levelSettingsView.updateFromLevel(controller.getModel().getCurrentLevel());  // assumes method exists
+    gameSettingsView.updateFromModel();
 
-    // Refresh level selector dropdown
     controller.getLevelController().updateLevelDropdown();
-
-    // Set canvas to current level
-    controller.getLevelController().switchToLevel(controller.getModel().getCurrentLevelIndex());
   }
-
 }

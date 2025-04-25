@@ -373,6 +373,9 @@ public class AuthoringController {
     }
     model.setLevels(levelDrafts);
     model.setCurrentLevelIndex(config.currentLevelIndex());
+    for (LevelDraft draft : model.getLevels()) {
+      draft.refreshEntityTypes(model.getEntityTypeMap());
+    }
 
     // Set collision rules
     model.setCollisionRules(config.collisionRules());

@@ -295,6 +295,7 @@ public class CanvasView {
       int col = canvasGrid.getColFromX(e.getX());
       int row = canvasGrid.getRowFromY(e.getY());
 
+
       if (canvasGrid.isValidCell(row, col)) {
         tileHighlighter.moveHoverTo(canvasGrid.getXFromCol(col), canvasGrid.getYFromRow(row));
         tileHighlighter.showHover();
@@ -314,12 +315,11 @@ public class CanvasView {
     int col = canvasGrid.getColFromX(e.getX());
     int row = canvasGrid.getRowFromY(e.getY());
 
+
     if (canvasGrid.isValidCell(row, col) &&
         entityManager.isCellAvailable(row, col, null)) {
 
-      double snappedX = canvasGrid.getXFromCol(col);
-      double snappedY = canvasGrid.getYFromRow(row);
-      controller.placeEntity(db.getString(), snappedX, snappedY);
+      controller.placeEntity(db.getString(), col, row);
       e.setDropCompleted(true);
     } else {
       e.setDropCompleted(false);

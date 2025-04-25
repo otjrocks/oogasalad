@@ -84,8 +84,8 @@ public class EntityPlacementView {
     // Update UI fields with values from the placement
     entityTypeLabel.setText(placement.getTypeString());
     positionValueLabel.setText(
-        String.format(LanguageManager.getMessage("COORDINATE"), placement.getInitialTileX(),
-            placement.getInitialTileY()));
+        String.format(LanguageManager.getMessage("COORDINATE"), placement.getX(),
+            placement.getY()));
 
     updateModeSelector();
 
@@ -199,8 +199,8 @@ public class EntityPlacementView {
       controller.updateCanvas();
       showStatusMessage(String.format(LanguageManager.getMessage("MODE_UPDATE"), newMode));
 
-      controller.moveEntity(currentPlacement, currentPlacement.getInitialTileX(),
-          currentPlacement.getInitialY());
+      controller.moveEntity(currentPlacement, currentPlacement.getX(),
+          currentPlacement.getY());
     } else {
       showStatusMessage(LanguageManager.getMessage("NO_CHANGES"));
     }
@@ -259,7 +259,7 @@ public class EntityPlacementView {
   public void updatePositionDisplay() {
     if (currentPlacement != null) {
       positionValueLabel.setText(String.format(LanguageManager.getMessage("COORDINATE"),
-          currentPlacement.getInitialTileX(), currentPlacement.getInitialTileY()));
+          currentPlacement.getX(), currentPlacement.getY()));
     }
   }
 
