@@ -17,6 +17,9 @@ public class GameSessionManager {
   private SaveConfigRecord saveConfig;
   private final String saveName;
 
+  /**
+   * Creates new Game Session Manager with a save config record
+   */
   public GameSessionManager(String gameFolderName, String saveName) {
     this.saveName = saveName;
     this.gameFolderName = gameFolderName;
@@ -91,6 +94,9 @@ public class GameSessionManager {
     return saveConfig.highScore();
   }
 
+  /**
+   * Returns the saved level order in the save config
+   */
   public List<Integer> getLevelOrder() {
     return saveConfig.levelOrder();
   }
