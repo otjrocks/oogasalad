@@ -12,6 +12,7 @@ import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.api.GameMapFactory;
+import oogasalad.player.model.save.GameSessionManager;
 
 /**
  * A controller that is used to progress through levels of the game.
@@ -24,6 +25,8 @@ public class LevelController {
   private final ConfigModelRecord myConfigModel;
   private final MainController myMainController;
   private final List<Integer> myLevelOrder;
+  private final GameSessionManager sessionManager;
+
 
   /**
    * Create a level controller with the current config model.
@@ -33,10 +36,11 @@ public class LevelController {
    * @param randomized     If it's randomized, shuffle the order of the levels
    */
   public LevelController(MainController mainController, ConfigModelRecord configModel,
-      boolean randomized) {
+      boolean randomized, GameSessionManager sessionManager) {
     myMainController = mainController;
     myConfigModel = configModel;
     myLevelIndex = configModel.currentLevelIndex();
+    this.sessionManager = sessionManager;
 
     myLevelOrder = new ArrayList<>();
     for (int i = 0; i < myConfigModel.levels().size(); i++) {
@@ -61,9 +65,8 @@ public class LevelController {
     }
     GameMapInterface gameMap = null;
     try {
-      gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(),
-          myConfigModel,
-          myLevelOrder.get(myLevelIndex));
+      int mappedIndex = sessionManager.getLevelOrder().get(myLevelIndex);
+      gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel, mappedIndex);
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn("Failed to create or populate GameMap: ", e);
     }
@@ -73,16 +76,9 @@ public class LevelController {
   /**
    * Increment the current level.
    */
-  public void incrementAndUpdateConfig() {
+  public void incrementAndUpdateConfig(int currentScore) {
     myLevelIndex++;
-    try {
-      JsonConfigSaver saver = new JsonConfigSaver();
-      saver.saveUpdatedLevelIndex(myLevelIndex,
-          Paths.get("data/games/BasicPacMan"));
-      LoggingManager.LOGGER.info("Level index updated and saved to gameConfig.json");
-    } catch (ConfigException e) {
-      LoggingManager.LOGGER.warn("Failed to save updated level index", e);
-    }
+    sessionManager.advanceLevel(currentScore); // Save score + index + highscore
   }
 
   /**
@@ -90,14 +86,7 @@ public class LevelController {
    */
   public void resetAndUpdateConfig() {
     myLevelIndex = 0;
-    try {
-      JsonConfigSaver saver = new JsonConfigSaver();
-      saver.saveUpdatedLevelIndex(myLevelOrder.get(myLevelIndex),
-          Paths.get("data/games/BasicPacMan"));
-      LoggingManager.LOGGER.info("Level index reset and saved to gameConfig.json");
-    } catch (ConfigException e) {
-      LoggingManager.LOGGER.warn("Failed to reset and save level index", e);
-    }
+    sessionManager.resetSession(myConfigModel);
   }
 
   /**
@@ -115,8 +104,11 @@ public class LevelController {
    * @return The int representing the current level loaded 0-indexed.
    */
   public int getCurrentLevel() {
-    return myLevelOrder.get(myLevelIndex);
+    int mappedIndex = sessionManager.getLevelOrder().get(myLevelIndex);
+    LoggingManager.LOGGER.info("Loading level index " + myLevelIndex + " mapped to actual index " + mappedIndex);
+    return mappedIndex;
   }
+
 
   /**
    * Gets if there are any levels remaining

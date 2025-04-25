@@ -20,6 +20,7 @@ import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.utility.constants.GameConfig;
 import oogasalad.player.controller.GameLoopController;
+import oogasalad.player.model.save.GameSessionManager;
 
 /**
  * The main game view of the player. Primarily encapsulates the game map view.
@@ -37,6 +38,7 @@ public class GameView {
   private final Button nextLevelButton = new Button();
   private final Button resetButton = new Button();
   private static final String END_BUTTON_STYLE = "end-button";
+  private final GameSessionManager sessionManager;
 
   /**
    * Create the game view.
@@ -47,7 +49,7 @@ public class GameView {
    * @param gameFolder  The full path to the game folder
    */
   public GameView(GameContextRecord gameContext, ConfigModelRecord configModel, int levelIndex,
-      String gameFolder) {
+      GameSessionManager sessionManager, String gameFolder) {
     myRoot = new StackPane();
     GameMapView myGameMapView = new GameMapView(gameContext, configModel, gameFolder);
     myRoot.setPrefSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
@@ -57,10 +59,11 @@ public class GameView {
     myRoot.setFocusTraversable(true);
     setBackgroundImage(configModel, levelIndex, gameFolder);
     boolean isFinalLevel = levelIndex >= configModel.levels().size() - 1;
+    this.sessionManager = sessionManager;
 
     myGameLoopController = new GameLoopController(configModel, gameContext,
         myGameMapView,
-        configModel.levels().get(levelIndex));
+        configModel.levels().get(sessionManager.getLevelOrder().get(levelIndex)));
     myGameMapView.setGameLoopController(myGameLoopController);
     setUpEndMessage();
     myGameMapView.setEndGameCallback(won -> showEndMessage(won, isFinalLevel));
@@ -125,7 +128,6 @@ public class GameView {
     resetButton.setId("resetButton");
     configureEndNode(resetButton, END_BUTTON_STYLE, LanguageManager.getMessage("RESET_GAME"));
   }
-
 
   private void configureEndNode(Node node, String styleClass, String text) {
     node.setVisible(false);
