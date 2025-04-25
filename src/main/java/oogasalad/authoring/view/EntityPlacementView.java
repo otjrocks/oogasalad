@@ -87,7 +87,7 @@ public class EntityPlacementView {
     // Update UI fields with values from the placement
     entityTypeLabel.setText(placement.getTypeString());
     positionValueLabel.setText(
-        String.format(LanguageManager.getMessage("COORDINATE"), placement.getX(),
+        String.format(LanguageManager.getMessage(COORDINATE), placement.getX(),
             placement.getY()));
 
     updateModeSelector();
@@ -262,7 +262,7 @@ public class EntityPlacementView {
    */
   public void updatePositionDisplay() {
     if (currentPlacement != null) {
-      positionValueLabel.setText(String.format(LanguageManager.getMessage("COORDINATE"),
+      positionValueLabel.setText(String.format(LanguageManager.getMessage(COORDINATE),
           currentPlacement.getX(), currentPlacement.getY()));
     }
   }
