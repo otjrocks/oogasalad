@@ -309,6 +309,7 @@ Label, Text {
 .scroll-pane {
   -fx-background-color: transparent;
 }
+
 .scroll-pane > .viewport {
   -fx-background-color: transparent;
 }
@@ -420,4 +421,103 @@ Label, Text {
   -fx-border-radius: 5px;
   -fx-font-family: "Press Start 2P";
   -fx-translate-y: 80px;
+}
+
+
+/* Scroll bar */
+
+.scroll-bar {
+  -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+  -fx-background-color: -fx-highlight;
+  -fx-background-radius: 5px;
+  -fx-pref-width: 7px;
+  -fx-pref-height: 7px;
+}
+
+.scroll-bar .thumb:hover {
+  -fx-background-color: derive(-fx-highlight, -10%);
+}
+
+.scroll-bar .thumb:pressed {
+  -fx-background-color: derive(-fx-highlight, -20%);
+}
+
+.scroll-bar .track {
+  -fx-background-color: -fx-primary;
+  -fx-background-radius: 10px;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+  -fx-background-color: -fx-highlight;
+  -fx-background-radius: 10px;
+  -fx-padding: 7px;
+}
+
+.scroll-bar .increment-button .arrow,
+.scroll-bar .decrement-button .arrow {
+  -fx-background-color: -fx-secondary;
+}
+
+
+/* Game settings view */
+.game-settings-view {
+  -fx-spacing: 20px;
+  -fx-alignment: center;
+  -fx-text-alignment: center;
+  -fx-min-width: 1100px;
+  -fx-max-height: 250px;
+}
+
+.game-settings-scroll-pane {
+  -fx-pref-width: 1100px;
+  -fx-min-width: 1100px;
+}
+
+.settings-grid {
+  -fx-hgap: 10px;
+  -fx-vgap: 20px;
+  -fx-pref-width: 1000px;
+  -fx-min-width: 1000px;
+}
+
+.settings-title {
+  -fx-font-size: 20px;
+  -fx-font-weight: bold;
+  -fx-text-fill: -fx-secondary;
+  -fx-font-family: "Press Start 2P";
+  -fx-padding: 0 0 8px 0;
+}
+
+/* Spinner */
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px 2px 2px 0;
+  -fx-background-radius: 0 5px 5px 0;
+  -fx-min-width: 30px;
+  -fx-padding: 12px;
+}
+
+.spinner .decrement-arrow-button {
+  -fx-border-width: 0 2px 2px 0;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+  -fx-background-color: derive(-fx-highlight, -20%);
+}
+
+.spinner .increment-arrow,
+.spinner .decrement-arrow {
+  -fx-background-color: -fx-secondary;
+}
+
+.spinner .increment-arrow:hover,
+.spinner .decrement-arrow:hover {
+  -fx-background-color: -fx-highlight;
 }
