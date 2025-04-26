@@ -247,15 +247,25 @@ public class GameLoopController {
   }
 
   private void checkCheatKeys() {
-    for (CheatType cheat : myConfig.settings().cheatTypes()) {
-      cheat.execute(myGameInputManager, myGameContext, this);
+    if (myConfig.settings().cheatTypes() != null) {
+      for (CheatType cheat : myConfig.settings().cheatTypes()) {
+        cheat.execute(myGameInputManager, myGameContext, this);
+      }
     }
   }
 
+  /**
+   * Return multiplier
+   * @return multiplier
+   */
   public double getMyGameSpeedMultiplier() {
     return myGameSpeedMultiplier;
   }
 
+  /**
+   * Set multiplier
+   * @param myGameSpeedMultiplier multiplier
+   */
   public void setMyGameSpeedMultiplier(double myGameSpeedMultiplier) {
     this.myGameSpeedMultiplier = myGameSpeedMultiplier;
   }
