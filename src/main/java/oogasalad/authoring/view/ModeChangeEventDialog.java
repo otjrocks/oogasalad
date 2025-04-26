@@ -12,7 +12,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.model.LevelDraft;
-import oogasalad.authoring.view.util.ModeChangeStrategyLoader;
+import oogasalad.authoring.view.util.StrategyLoader;
 import oogasalad.engine.records.config.model.ModeChangeInfo;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
@@ -31,7 +31,7 @@ public class ModeChangeEventDialog extends Stage {
 
 
   private static final Map<String, Set<String>> STRATEGY_PARAMETERS = Map.of(
-      "TimeElapsedModeChangeEvent", Set.of("amount")
+      "TimeElapsed", Set.of("amount")
       // Add more here if you create new strategies
   );
 
@@ -76,7 +76,7 @@ public class ModeChangeEventDialog extends Stage {
 
     populateEntityTypeDropdown();
 
-    this.modeChangeStrategies = ModeChangeStrategyLoader.loadModeChangeStrategies(
+    this.modeChangeStrategies = StrategyLoader.loadStrategies(
         "oogasalad.player.model.strategies.modechangeevent",
         ModeChangeEventStrategyInterface.class // assuming this interface exists
     );
@@ -189,18 +189,6 @@ public class ModeChangeEventDialog extends Stage {
     refreshTable();
   }
 
-
-
-  private Object parseParameter(String raw, Class<?> type) {
-    if (type == int.class || type == Integer.class) {
-      return Integer.parseInt(raw);
-    } else if (type == double.class || type == Double.class) {
-      return Double.parseDouble(raw);
-    } else if (type == boolean.class || type == Boolean.class) {
-      return Boolean.parseBoolean(raw);
-    }
-    return raw; // fallback: String
-  }
 
 
 
