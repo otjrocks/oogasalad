@@ -1,0 +1,25 @@
+{
+  "entityType" : {
+    "name" : "Virus",
+    "blocks" : [ ]
+  },
+  "modes" : [ {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "assets/virus-modified (1).jpg",
+      "tileWidth" : 300,
+      "tileHeight" : 300,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "Target",
+      "pathFindingStrategy" : "Bfs",
+      "targetCalculationConfig" : {
+        "targetCalculationStrategy" : "TargetEntity",
+        "targetType" : "Pacman"
+      }
+    },
+    "movementSpeed" : 1.0
+  } ]
+}
