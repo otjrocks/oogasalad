@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "gameTitle": "Dino Game",
+    "author": "CS308 Team",
+    "gameDescription": "Create a dinasour game"
+  },
+  "defaultSettings": {
+    "gameSpeed": 1,
+    "startingLives": 10,
+    "initialScore": 0,
+    "winCondition": {
+      "type": "SurviveForTime",
+      "amount": 100
+    },
+    "loseCondition": {
+      "type": "LivesBased"
+    }
+  },
+  "levels": [
+    {
+      "levelMap": "level1"
+    }
+  ],
+  "collisions": [
+    {
+      "entityA": "dino",
+      "modeA": "Default",
+      "entityB": "ground",
+      "eventsA": [
+        {
+          "type": "Stop"
+        }
+      ],
+      "modeB": "Default",
+      "eventsB": []
+    }
+  ],
+  "currentLevelIndex": 0
+}
