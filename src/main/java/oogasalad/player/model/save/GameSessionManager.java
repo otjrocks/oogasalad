@@ -44,7 +44,7 @@ public class GameSessionManager {
         0,
         configModel.settings().initialScore(),
         configModel.settings().startingLives(),
-        configModel.settings().initialScore(),
+        saveConfig == null ? 0 : saveConfig.highScore(),
         defaultOrder
     );
     save();
