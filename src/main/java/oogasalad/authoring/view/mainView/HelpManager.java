@@ -65,9 +65,7 @@ public class HelpManager {
   private void addHelpButton() {
     Button helpButton = new Button("?");
     helpButton.setId("helpButton");
-    helpButton.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; " +
-        "-fx-background-color: #3498db; -fx-text-fill: white; " +
-        "-fx-background-radius: 50%; -fx-min-width: 30px; -fx-min-height: 30px;");
+    helpButton.getStyleClass().add("icon-button");
     helpButton.setTooltip(new Tooltip(LanguageManager.getMessage("HELP")));
     helpButton.setOnAction(e -> helpSystem.showHelpDialog());
 

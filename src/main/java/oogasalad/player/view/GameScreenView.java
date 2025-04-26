@@ -51,7 +51,7 @@ public class GameScreenView {
     );
 
     myRoot.getChildren().addAll(hudView, gamePlayerView.getPane());
-    myRoot.getStyleClass().add("game-screen-view");
+    myRoot.getStyleClass().add("root");
     myRoot.setPrefSize(WIDTH, HEIGHT);
 
     // Store initial values

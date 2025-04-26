@@ -8,21 +8,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.targetStrategy.TargetCalculationConfigInterface;
 import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.ThemeManager;
+import oogasalad.engine.view.components.FormattingUtil;
 import oogasalad.player.model.strategies.control.ControlManager;
 
 /**
@@ -201,7 +206,7 @@ public class ControlTypeEditorView {
 
       } else {
         String value = getFieldValueFromConfig(config, field);
-        TextField tf = new TextField(value);
+        TextField tf = FormattingUtil.createTextField(value);
         controlTypeParameterFields.add(tf);
         controlTypeParameters.getChildren().add(new VBox(label, tf));
       }
@@ -299,7 +304,7 @@ public class ControlTypeEditorView {
       TargetCalculationConfigInterface config,
       String targetParam) {
     Label targetParamLabel = new Label(targetParam + ": ");
-    TextField targetParamField = new TextField();
+    TextField targetParamField = FormattingUtil.createTextField();
     attemptSettingTargetParameterFieldValue(config, targetParam, targetParamField);
     targetStrategyParameterFields.add(targetParamField);
     targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
@@ -329,7 +334,7 @@ public class ControlTypeEditorView {
     if (!targetParams.isEmpty()) {
       for (String targetParam : targetParams) {
         Label targetParamLabel = new Label(targetParam + ": ");
-        TextField targetParamField = new TextField();
+        TextField targetParamField = FormattingUtil.createTextField();
         targetParamField.setId("field-" + targetParam);
         targetStrategyParameterFields.add(targetParamField);
         targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
@@ -338,7 +343,7 @@ public class ControlTypeEditorView {
   }
 
   private Node createGenericParameterNode(Label parameterLabel) {
-    TextField parameterField = new TextField();
+    TextField parameterField = FormattingUtil.createTextField();
     controlTypeParameterFields.add(parameterField);
 
     VBox container = new VBox(ELEMENT_SPACING);
@@ -413,6 +418,7 @@ public class ControlTypeEditorView {
 
   private void showError(String msg) {
     Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
+    FormattingUtil.applyStandardDialogStyle(alert);
     alert.showAndWait();
   }
 

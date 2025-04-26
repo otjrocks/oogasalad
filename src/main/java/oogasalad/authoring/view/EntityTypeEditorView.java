@@ -3,21 +3,26 @@ package oogasalad.authoring.view;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.ThemeManager;
+import oogasalad.engine.view.components.FormattingUtil;
 
 /**
  * View for editing a selected EntityType.
@@ -47,7 +52,7 @@ public class EntityTypeEditorView {
     root.setPadding(new Insets(10));
     root.getStyleClass().add("entity-editor-view");
 
-    typeField = new TextField();
+    typeField = FormattingUtil.createTextField();
 
     modeList = new VBox(5);
 
@@ -196,6 +201,8 @@ public class EntityTypeEditorView {
 
   private void openEditModeDialog(String oldName, ModeConfigRecord oldConfig) {
     ModeEditorDialog dialog = new ModeEditorDialog(oldConfig);
+
+
     dialog.showAndWait().ifPresent(newConfig -> {
       Map<String, ModeConfigRecord> newModes = new HashMap<>(current.modes());
 
@@ -236,6 +243,8 @@ public class EntityTypeEditorView {
 
   private void showError(String msg) {
     Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
+    FormattingUtil.applyStandardDialogStyle(alert);
+
     alert.showAndWait();
   }
 
@@ -248,6 +257,8 @@ public class EntityTypeEditorView {
     confirm.setTitle(LanguageManager.getMessage("CONFIRM_DELETE"));
     confirm.setHeaderText(LanguageManager.getMessage("DELETE_ENTITY_TYPE"));
     confirm.setContentText(LanguageManager.getMessage("CONFIRM_DELETE_ENTITY_TYPE_MESSAGE"));
+
+    FormattingUtil.applyStandardDialogStyle(confirm);
 
     if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
       controller.deleteEntityType(current.type());

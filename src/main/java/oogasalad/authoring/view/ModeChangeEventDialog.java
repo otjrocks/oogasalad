@@ -7,6 +7,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.model.LevelDraft;
+import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.records.config.model.ModeChangeInfo;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
@@ -14,6 +15,8 @@ import oogasalad.engine.records.model.ModeChangeEventRecord;
 
 import java.util.*;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.ThemeManager;
+import oogasalad.engine.view.components.FormattingUtil;
 
 /**
  * A dialog window that allows the user to configure mode change events for entities. These events
@@ -118,7 +121,7 @@ public class ModeChangeEventDialog extends Stage {
 
     if (TIME_CONDITION_TYPE.equals(conditionTypeDropdown.getValue())) {
       Label label = new Label(LanguageManager.getMessage("AMOUNT"));
-      TextField amountField = new TextField();
+      TextField amountField = FormattingUtil.createTextField();
       amountField.setId("amountField");
       conditionParamsBox.getChildren().addAll(label, amountField);
     }
@@ -185,6 +188,9 @@ public class ModeChangeEventDialog extends Stage {
     alert.setTitle(LanguageManager.getMessage("WARNING"));
     alert.setHeaderText(null);
     alert.setContentText(msg);
+
+    FormattingUtil.applyStandardDialogStyle(alert);
+
     alert.showAndWait();
   }
 }

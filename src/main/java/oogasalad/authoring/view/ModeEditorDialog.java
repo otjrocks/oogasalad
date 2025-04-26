@@ -3,22 +3,27 @@ package oogasalad.authoring.view;
 import java.io.File;
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.ThemeManager;
+import oogasalad.engine.view.components.FormattingUtil;
 
 /**
  * Dialog for creating a new ModeConfig with a user-uploaded image. Returns a ModeConfig object via
@@ -57,18 +62,18 @@ public class ModeEditorDialog {
     grid.setPrefSize(800, 600);
     grid.setAlignment(Pos.CENTER);
 
-    nameField = new TextField();
-    imagePathField = new TextField();
+    nameField = FormattingUtil.createTextField();
+    imagePathField = FormattingUtil.createTextField();
     imagePathField.setEditable(false);
 
-    tileWidthField = new TextField("28");
-    tileHeightField = new TextField("28");
-    tilesToCycleField = new TextField("4");
-    animationSpeedField = new TextField("1.0");
+    tileWidthField = FormattingUtil.createTextField("28");
+    tileHeightField = FormattingUtil.createTextField("28");
+    tilesToCycleField = FormattingUtil.createTextField("4");
+    animationSpeedField = FormattingUtil.createTextField("1.0");
 
     controlTypeEditorView = new ControlTypeEditorView();
 
-    speedField = new TextField();
+    speedField = FormattingUtil.createTextField();
 
     Button uploadButton = new Button(LanguageManager.getMessage("CHOOSE_IMAGE"));
     uploadButton.setOnAction(e -> handleImageUpload());
@@ -109,6 +114,7 @@ public class ModeEditorDialog {
       }
       return null;
     });
+    ThemeManager.getInstance().registerScene(dialog.getDialogPane().getScene());
   }
 
   /**
@@ -188,6 +194,7 @@ public class ModeEditorDialog {
   private void showError(String msg) {
     Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
     alert.initOwner(getOwnerWindow());
+    FormattingUtil.applyStandardDialogStyle(alert);
     alert.showAndWait();
   }
 
