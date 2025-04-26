@@ -62,18 +62,18 @@ public class ModeEditorDialog {
     grid.setPrefSize(800, 600);
     grid.setAlignment(Pos.CENTER);
 
-    nameField = new TextField();
-    imagePathField = new TextField();
+    nameField = FormattingUtil.createTextField();
+    imagePathField = FormattingUtil.createTextField();
     imagePathField.setEditable(false);
 
-    tileWidthField = new TextField("28");
-    tileHeightField = new TextField("28");
-    tilesToCycleField = new TextField("4");
-    animationSpeedField = new TextField("1.0");
+    tileWidthField = FormattingUtil.createTextField("28");
+    tileHeightField = FormattingUtil.createTextField("28");
+    tilesToCycleField = FormattingUtil.createTextField("4");
+    animationSpeedField = FormattingUtil.createTextField("1.0");
 
     controlTypeEditorView = new ControlTypeEditorView();
 
-    speedField = new TextField();
+    speedField = FormattingUtil.createTextField();
 
     Button uploadButton = new Button(LanguageManager.getMessage("CHOOSE_IMAGE"));
     uploadButton.setOnAction(e -> handleImageUpload());
@@ -114,6 +114,7 @@ public class ModeEditorDialog {
       }
       return null;
     });
+    ThemeManager.getInstance().registerScene(dialog.getDialogPane().getScene());
   }
 
   /**

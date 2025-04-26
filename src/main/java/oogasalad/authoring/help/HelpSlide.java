@@ -13,6 +13,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.Objects;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.view.components.FormattingUtil;
 
 /**
  * A class representing a single help slide with title, content, and optional image.
@@ -53,18 +54,16 @@ public class HelpSlide {
     slide.setMaxWidth(SLIDE_WIDTH);
     slide.setMinHeight(SLIDE_HEIGHT);
     slide.setPadding(new Insets(10));
-    slide.getStyleClass().add("help-slide");
+    slide.getStyleClass().add("root");
 
     // Title
-    Label titleLabel = new Label(title);
-    titleLabel.getStyleClass().add("title");
+    Label titleLabel = FormattingUtil.createTitle(title);
     titleLabel.setWrapText(true);
     titleLabel.setMaxWidth(SLIDE_WIDTH);
 
 
     // Content
-    Label contentLabel = new Label(description);
-    contentLabel.getStyleClass().add("game-name");
+    Label contentLabel =  FormattingUtil.createHeading(description);
     contentLabel.setWrapText(true);
     contentLabel.setMaxWidth(SLIDE_WIDTH);
 
@@ -94,8 +93,7 @@ public class HelpSlide {
         placeholderBox.setPadding(new Insets(10));
         placeholderBox.setAlignment(Pos.CENTER);
 
-        Label placeholderLabel = new Label(LanguageManager.getMessage("IMAGE") + imagePath);
-        placeholderLabel.getStyleClass().add("game-name");
+        Label placeholderLabel =  FormattingUtil.createHeading(LanguageManager.getMessage("IMAGE") + imagePath);
         placeholderBox.getChildren().add(placeholderLabel);
 
         slide.getChildren().add(placeholderBox);

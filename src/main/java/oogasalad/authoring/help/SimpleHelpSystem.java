@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.ThemeManager;
+import oogasalad.engine.view.components.FormattingUtil;
 
 /**
  * A simple help system that displays documentation slides explaining how the authoring environment
@@ -70,9 +71,9 @@ public class SimpleHelpSystem {
     root.setCenter(slideContent);
 
     // Navigation buttons
-    Button prevButton = createNavigationButton(LanguageManager.getMessage("PREVIOUS"));
-    Button nextButton = createNavigationButton(LanguageManager.getMessage("NEXT"));
-    Button closeButton = createNavigationButton(LanguageManager.getMessage("CLOSE"));
+    Button prevButton = FormattingUtil.createSmallButton(LanguageManager.getMessage("PREVIOUS"));
+    Button nextButton = FormattingUtil.createSmallButton(LanguageManager.getMessage("NEXT"));
+    Button closeButton = FormattingUtil.createSmallButton(LanguageManager.getMessage("CLOSE"));
 
     prevButton.setOnAction(e -> showPreviousSlide());
     prevButton.setDisable(true);
@@ -90,10 +91,9 @@ public class SimpleHelpSystem {
     // Show the first slide
     currentSlideIndex = 0;
 
-    Label slideNumberLabel = new Label(
+    Label slideNumberLabel = FormattingUtil.createHeading(
         String.format(LanguageManager.getMessage("SLIDE_NUMBER"), currentSlideIndex + 1,
             helpSlides.size()));
-    slideNumberLabel.getStyleClass().add("game-name");
     HBox slideNumberBox = new HBox(slideNumberLabel);
     slideNumberBox.setAlignment(Pos.CENTER_LEFT);
     navigationButtons.getChildren().add(0, slideNumberBox);
@@ -326,11 +326,5 @@ public class SimpleHelpSystem {
             null
         )
     );
-  }
-
-  private Button createNavigationButton(String text) {
-    Button button = new Button(text);
-    button.getStyleClass().add("small-button");
-    return button;
   }
 }

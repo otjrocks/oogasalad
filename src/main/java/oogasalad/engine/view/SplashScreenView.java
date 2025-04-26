@@ -5,12 +5,14 @@ import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.utility.constants.GameConfig;
+import oogasalad.engine.view.components.FormattingUtil;
 import oogasalad.engine.view.components.Selector;
 import oogasalad.engine.view.components.VMenu;
 
@@ -37,7 +39,7 @@ public class SplashScreenView {
     myMainController = mainController;
     myConfigurationBox = new VBox(ELEMENT_SPACING);
     myConfigurationBox.setId("splash-configuration-box");
-    myRoot.getStyleClass().add("splash-screen-view");
+    myRoot.getStyleClass().add("center-root");
     myRoot.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
 
     // Register the scene to the singleton ThemeManager
@@ -110,9 +112,8 @@ public class SplashScreenView {
   }
 
   private void initializeTitle() {
-    Text title = new Text(LanguageManager.getMessage("TITLE"));
+    Label title = FormattingUtil.createTitle(LanguageManager.getMessage("TITLE"));
     title.setId("splashScreenTitle");
-    title.getStyleClass().add("title");
     myRoot.getChildren().add(title);
   }
 

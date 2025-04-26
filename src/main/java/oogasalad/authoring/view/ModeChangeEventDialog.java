@@ -121,7 +121,7 @@ public class ModeChangeEventDialog extends Stage {
 
     if (TIME_CONDITION_TYPE.equals(conditionTypeDropdown.getValue())) {
       Label label = new Label(LanguageManager.getMessage("AMOUNT"));
-      TextField amountField = new TextField();
+      TextField amountField = FormattingUtil.createTextField();
       amountField.setId("amountField");
       conditionParamsBox.getChildren().addAll(label, amountField);
     }

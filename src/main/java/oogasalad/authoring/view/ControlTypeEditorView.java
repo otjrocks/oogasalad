@@ -206,7 +206,7 @@ public class ControlTypeEditorView {
 
       } else {
         String value = getFieldValueFromConfig(config, field);
-        TextField tf = new TextField(value);
+        TextField tf = FormattingUtil.createTextField(value);
         controlTypeParameterFields.add(tf);
         controlTypeParameters.getChildren().add(new VBox(label, tf));
       }
@@ -304,7 +304,7 @@ public class ControlTypeEditorView {
       TargetCalculationConfigInterface config,
       String targetParam) {
     Label targetParamLabel = new Label(targetParam + ": ");
-    TextField targetParamField = new TextField();
+    TextField targetParamField = FormattingUtil.createTextField();
     attemptSettingTargetParameterFieldValue(config, targetParam, targetParamField);
     targetStrategyParameterFields.add(targetParamField);
     targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
@@ -334,7 +334,7 @@ public class ControlTypeEditorView {
     if (!targetParams.isEmpty()) {
       for (String targetParam : targetParams) {
         Label targetParamLabel = new Label(targetParam + ": ");
-        TextField targetParamField = new TextField();
+        TextField targetParamField = FormattingUtil.createTextField();
         targetParamField.setId("field-" + targetParam);
         targetStrategyParameterFields.add(targetParamField);
         targetParameterBox.getChildren().addAll(targetParamLabel, targetParamField);
@@ -343,7 +343,7 @@ public class ControlTypeEditorView {
   }
 
   private Node createGenericParameterNode(Label parameterLabel) {
-    TextField parameterField = new TextField();
+    TextField parameterField = FormattingUtil.createTextField();
     controlTypeParameterFields.add(parameterField);
 
     VBox container = new VBox(ELEMENT_SPACING);

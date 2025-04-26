@@ -30,11 +30,11 @@ public class StyleManager {
     BorderPane mainContent = (BorderPane) fullLayout.getChildren().get(1);
     VBox rightPanel = (VBox) mainContent.getRight();
 
-    fullLayout.getStyleClass().add("authoring-layout");
-    mainContent.getStyleClass().add("main-content");
-    rightPanel.getStyleClass().add("right-panel");
-    view.getLevelSelectorView().getRoot().getStyleClass().add("left-panel");
-    view.getGameSettingsView().getNode().getStyleClass().add("game-settings-view");
+    fullLayout.getStyleClass().add("root");
+    mainContent.getStyleClass().add("root");
+    rightPanel.getStyleClass().add("side-panel");
+    view.getLevelSelectorView().getRoot().getStyleClass().add("side-panel");
+    view.getGameSettingsView().getNode().getStyleClass().add("root");
 
     VBox.setVgrow(rightPanel, Priority.ALWAYS);
     VBox.setVgrow(view.getGameSettingsView().getNode(), Priority.NEVER);

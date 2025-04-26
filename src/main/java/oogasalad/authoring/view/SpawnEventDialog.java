@@ -33,8 +33,8 @@ public class SpawnEventDialog extends Stage {
 
   private final ComboBox<String> entityTypeDropdown = new ComboBox<>();
   private final ComboBox<String> modeDropdown = new ComboBox<>();
-  private final TextField xField = new TextField();
-  private final TextField yField = new TextField();
+  private final TextField xField = FormattingUtil.createTextField();
+  private final TextField yField = FormattingUtil.createTextField();
 
   private final ComboBox<String> spawnConditionTypeDropdown = new ComboBox<>();
   private final VBox spawnConditionParamsBox = new VBox(5);
@@ -145,7 +145,7 @@ public class SpawnEventDialog extends Stage {
     String type = typeDropdown.getValue();
     if (CONDITION_TIME_ELAPSED.equals(type) || CONDITION_SCORE_BASED.equals(type)) {
       Label label = new Label(LanguageManager.getMessage("AMOUNT"));
-      TextField field = new TextField();
+      TextField field = FormattingUtil.createTextField();
       field.setUserData(PARAM_AMOUNT);
       paramBox.getChildren().addAll(label, field);
     }

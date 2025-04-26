@@ -65,7 +65,7 @@ public class HelpManager {
   private void addHelpButton() {
     Button helpButton = new Button("?");
     helpButton.setId("helpButton");
-    helpButton.getStyleClass().add("help-button");
+    helpButton.getStyleClass().add("icon-button");
     helpButton.setTooltip(new Tooltip(LanguageManager.getMessage("HELP")));
     helpButton.setOnAction(e -> helpSystem.showHelpDialog());
 

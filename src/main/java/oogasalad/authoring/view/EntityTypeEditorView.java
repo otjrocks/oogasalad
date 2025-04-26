@@ -52,7 +52,7 @@ public class EntityTypeEditorView {
     root.setPadding(new Insets(10));
     root.getStyleClass().add("entity-editor-view");
 
-    typeField = new TextField();
+    typeField = FormattingUtil.createTextField();
 
     modeList = new VBox(5);
 
@@ -201,6 +201,8 @@ public class EntityTypeEditorView {
 
   private void openEditModeDialog(String oldName, ModeConfigRecord oldConfig) {
     ModeEditorDialog dialog = new ModeEditorDialog(oldConfig);
+
+
     dialog.showAndWait().ifPresent(newConfig -> {
       Map<String, ModeConfigRecord> newModes = new HashMap<>(current.modes());
 
