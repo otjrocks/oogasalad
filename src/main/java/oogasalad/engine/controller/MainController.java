@@ -127,6 +127,9 @@ public class MainController {
     }
   }
 
+  /**
+   * Hide the authoring view if it is currently being displayed.
+   */
   public void hideAuthoringView() {
     if (myRoot.getChildren().contains(myAuthoringView.getNode())) {
       myRoot.getChildren().remove(myAuthoringView.getNode());
