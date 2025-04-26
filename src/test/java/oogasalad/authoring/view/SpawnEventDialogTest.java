@@ -88,7 +88,7 @@ public class SpawnEventDialogTest extends DukeApplicationTest {
     assertEquals(12.5, event.x());
     assertEquals(8, event.y());
     assertEquals("ScoreBased", event.spawnCondition().type());
-    assertEquals(700.0, event.spawnCondition().parameters().get("amount"));
+    assertEquals(700, event.spawnCondition().parameters().get("amount"));
     assertNull(event.despawnCondition());
   }
 
