@@ -132,6 +132,15 @@ public class ControlStrategyFactory {
         );
       }
 
+      if (matchesFourArgConstructor(constructor)) {
+        return (ControlStrategyInterface) constructor.newInstance(
+            input,
+            gameMap,
+            placement,
+            controlConfig
+        );
+      }
+
       return null;
     } catch (Exception e) {
       throw new ControlStrategyException("Failed to instantiate strategy", e);
@@ -158,6 +167,15 @@ public class ControlStrategyFactory {
         paramTypes[0].equals(GameInputManager.class) &&
         paramTypes[1].equals(GameMapInterface.class) &&
         paramTypes[2].equals(EntityPlacement.class);
+  }
+
+  private static boolean matchesFourArgConstructor(Constructor<?> constructor) {
+    Class<?>[] paramTypes = constructor.getParameterTypes();
+    return paramTypes.length == 4 &&
+        paramTypes[0].equals(GameInputManager.class) &&
+        paramTypes[1].equals(GameMapInterface.class) &&
+        paramTypes[2].equals(EntityPlacement.class) &&
+        paramTypes[3].equals(ControlConfigInterface.class);
   }
 
   private static boolean isPublicConstructor(Constructor<?> constructor) {

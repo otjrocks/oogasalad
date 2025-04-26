@@ -1,0 +1,8 @@
+{
+  "saveName" : "DinoGame_Save",
+  "currentLevel" : 0,
+  "totalScore" : 0,
+  "lives" : 1,
+  "highScore" : 5400,
+  "levelOrder" : [ 0 ]
+}

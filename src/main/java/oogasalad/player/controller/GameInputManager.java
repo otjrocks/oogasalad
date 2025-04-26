@@ -137,5 +137,12 @@ public class GameInputManager {
     return gameScreenView;
   }
 
+
+  /**
+   * Remove up key to allow for non constant direction
+   */
+  public void removeUpKey() {
+    activeKeys.remove(KeyCode.UP);
+  }
 }
 
