@@ -21,7 +21,7 @@ public class TimeElapsedSpawnEventStrategy implements SpawnEventStrategyInterfac
       return false;
     }
     try {
-      int amount = Integer.parseInt(amountObj.toString());
+      double amount = Double.parseDouble(amountObj.toString());
       return gameContextRecord.gameState().getTimeElapsed() >= amount;
     } catch (NumberFormatException e) {
       LoggingManager.LOGGER.warn(
@@ -36,15 +36,15 @@ public class TimeElapsedSpawnEventStrategy implements SpawnEventStrategyInterfac
     Object amountObj = spawnEvent.despawnCondition().parameters().get("amount");
     if (amountObj == null) {
       LoggingManager.LOGGER.warn(
-          "TimeElapsedSpawnEventStrategy despawnCondition requires amount parameter, but it was not provided in the config, defaulting to never despawning entity.");
+          "TimeElapsedSpawnEventStrategy despawnCondition requires amount parameter (double), but it was not provided in the config, defaulting to never despawning entity.");
       return false;
     }
     try {
-      int amount = Integer.parseInt(amountObj.toString());
+      double amount = Double.parseDouble(amountObj.toString());
       return gameContextRecord.gameState().getTimeElapsed() >= amount;
     } catch (NumberFormatException e) {
       LoggingManager.LOGGER.warn(
-          "TimeElapsedSpawnEventStrategy despawnCondition parameter 'amount' must be an integer, but received: {}",
+          "TimeElapsedSpawnEventStrategy despawnCondition parameter 'amount' must be an double, but received: {}",
           amountObj);
       return false;
     }

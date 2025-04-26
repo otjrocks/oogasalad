@@ -1,8 +1,8 @@
 {
   "saveName" : "saveConfig",
-  "currentLevel" : 1,
-  "totalScore" : 3640,
+  "currentLevel" : 0,
+  "totalScore" : 0,
   "lives" : 10,
-  "highScore" : 3640,
+  "highScore" : 0,
   "levelOrder" : [ 0, 1 ]
 }
