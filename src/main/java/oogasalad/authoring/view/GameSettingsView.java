@@ -1,6 +1,5 @@
 package oogasalad.authoring.view;
 
-import java.util.Objects;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,7 +11,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
@@ -87,6 +85,7 @@ public class GameSettingsView {
     this.controller = controller;
     this.gameSettings = controller.getModel().getDefaultSettings();
     this.rootNode = new HBox();
+    this.rootNode.getStyleClass().add("game-settings-view");
 
     loadConditionClasses();
     setupUI();
@@ -152,24 +151,6 @@ public class GameSettingsView {
   }
 
   /**
-   * Set a specific preferred height for the view
-   *
-   * @param height the preferred height in pixels
-   */
-  public void setPreferredHeight(double height) {
-    rootNode.setPrefHeight(height);
-  }
-
-  /**
-   * Set a specific minimum height for the view
-   *
-   * @param height the minimum height in pixels
-   */
-  public void setMinimumHeight(double height) {
-    rootNode.setMinHeight(height);
-  }
-
-  /**
    * Returns the JavaFX node that represents this view
    */
   public Node getNode() {
@@ -188,7 +169,7 @@ public class GameSettingsView {
     // Create scrollable container for all content
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setFitToWidth(true);
-    scrollPane.setPrefHeight(150); // Smaller preferred height to fit the container
+    scrollPane.getStyleClass().add("game-settings-scroll-pane");
     scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
@@ -198,23 +179,17 @@ public class GameSettingsView {
     // Create "Game Settings" label
     Label titleLabel = new Label(LanguageManager.getMessage("GAME_SETTINGS"));
     titleLabel.getStyleClass().add("settings-title");
-    titleLabel.setPrefWidth(120);
 
     // Create compact grid layout for settings
     GridPane settingsGrid = new GridPane();
-    settingsGrid.setHgap(10);
-    settingsGrid.setVgap(8); // Increase vertical gap
-    settingsGrid.setPadding(new Insets(0));
+    settingsGrid.getStyleClass().add("settings-grid");
 
     // Create text fields for game metadata
     gameTitleField = FormattingUtil.createTextField(controller.getModel().getGameTitle());
-    gameTitleField.setPrefWidth(150);
 
     authorField = FormattingUtil.createTextField(controller.getModel().getAuthor());
-    authorField.setPrefWidth(150);
 
     descriptionField = FormattingUtil.createTextField(controller.getModel().getGameDescription());
-    descriptionField.setPrefWidth(250);
 
     // Create compact spinners and combo boxes
     gameSpeedSpinner = createDoubleSpinner(0.5, 3.0, 0.1, gameSettings.gameSpeed());
@@ -239,25 +214,28 @@ public class GameSettingsView {
     // Add game settings fields
     settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("GAME_SPEED")), 0, 2);
     settingsGrid.add(gameSpeedSpinner, 1, 2);
-    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("STARTING_LIVES")), 2, 2);
+    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("STARTING_LIVES")), 2,
+        2);
     settingsGrid.add(startingLivesSpinner, 3, 2);
 
     // Add more game settings
     settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("INITIAL_SCORE")), 0, 3);
     settingsGrid.add(initialScoreSpinner, 1, 3);
-    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("SCORE_STRATEGY")), 2, 3);
+    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("SCORE_STRATEGY")), 2,
+        3);
 
     // Add win condition fields
-    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("WIN_CONDITION_TYPE")), 0, 4);
+    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("WIN_CONDITION_TYPE")),
+        0, 4);
     settingsGrid.add(winConditionTypeComboBox, 1, 4);
     settingsGrid.add(winConditionValueLabel, 2, 4);
     settingsGrid.add(winConditionValueField, 3, 4);
 
-    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("LOSE_CONDITION_TYPE")), 0, 5);
+    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("LOSE_CONDITION_TYPE")),
+        0, 5);
     settingsGrid.add(loseConditionTypeComboBox, 1, 5);
     settingsGrid.add(loseConditionValueLabel, 2, 5);
     settingsGrid.add(loseConditionValueField, 3, 5);
-
 
     // Add buttons
     HBox buttonBox = getHBox();
@@ -315,7 +293,6 @@ public class GameSettingsView {
 
     Spinner<Double> spinner = new Spinner<>(factory);
     spinner.setEditable(true);
-    spinner.setPrefWidth(80);
     spinner.getStyleClass().add("compact-spinner");
 
     return spinner;
@@ -330,7 +307,6 @@ public class GameSettingsView {
 
     Spinner<Integer> spinner = new Spinner<>(factory);
     spinner.setEditable(true);
-    spinner.setPrefWidth(80);
     spinner.getStyleClass().add("compact-spinner");
 
     return spinner;
@@ -428,12 +404,10 @@ public class GameSettingsView {
     winConditionTypeComboBox = new ComboBox<>(FXCollections.observableArrayList(
         WIN_CONDITION_SURVIVE_FOR_TIME, WIN_CONDITION_ENTITY_BASED));
     winConditionTypeComboBox.setValue(getWinConditionType());
-    winConditionTypeComboBox.setPrefWidth(150);
 
     // Create win condition value field
     winConditionValueLabel = new Label(LanguageManager.getMessage("WIN_CONDITION_VALUE"));
     winConditionValueField = FormattingUtil.createTextField(getWinConditionValue());
-    winConditionValueField.setPrefWidth(80);
 
     // Add change listener to update the label based on selected win condition type
     winConditionTypeComboBox.setOnAction(e -> updateWinConditionValueLabel());
@@ -447,12 +421,10 @@ public class GameSettingsView {
     loseConditionTypeComboBox = new ComboBox<>(FXCollections.observableArrayList(
         LOSE_CONDITION_LIVES_BASED));
     loseConditionTypeComboBox.setValue(getLoseConditionType());
-    loseConditionTypeComboBox.setPrefWidth(150);
 
     // Create lose condition value field
     loseConditionValueLabel = new Label(LanguageManager.getMessage("LOSE_CONDITION_VALUE"));
     loseConditionValueField = FormattingUtil.createTextField(getLoseConditionValue());
-    loseConditionValueField.setPrefWidth(80);
 
     // Add change listener to update the label based on selected lose condition type
     loseConditionTypeComboBox.setOnAction(e -> updateLoseConditionValueLabel());
