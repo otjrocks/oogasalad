@@ -1,8 +1,8 @@
 {
-  "saveName" : "PacmanWall_Save",
+  "saveName" : "CatAndMouse_Save",
   "currentLevel" : 0,
   "totalScore" : 0,
   "lives" : 10,
-  "highScore" : 3540,
+  "highScore" : 2860,
   "levelOrder" : [ 0, 1 ]
 }

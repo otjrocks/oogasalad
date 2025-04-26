@@ -50,7 +50,8 @@ public class GamePlayerView {
     myGameState = gameState;
     this.isRandomized = randomized;
     this.gameFolderPath = gameFolderPath;
-    this.sessionManager = new GameSessionManager(this.gameFolderPath, extractFolderName(gameFolderPath) + "_Save");
+    this.sessionManager = new GameSessionManager(this.gameFolderPath,
+        extractFolderName(gameFolderPath) + "_Save");
 
     myPane.setPrefWidth(WIDTH);
     myPane.getStyleClass().add("game-player-view");
@@ -72,7 +73,8 @@ public class GamePlayerView {
     loadOrCreateSession();
     updateGameStateFromSession();
 
-    levelController = new LevelController(myMainController, myConfigModel, isRandomized, sessionManager);
+    levelController = new LevelController(myMainController, myConfigModel, isRandomized,
+        sessionManager);
     loadGameViewFromSession();
   }
 
@@ -90,6 +92,7 @@ public class GamePlayerView {
     myGameState.resetState();
     myGameState.setLives(sessionManager.getLives());
     myGameState.updateScore(sessionManager.getCurrentScore());
+    myGameState.updateHighScore(sessionManager.getHighScore());
   }
 
   private void loadConfigFromFile() {
@@ -150,6 +153,7 @@ public class GamePlayerView {
         sessionManager.advanceLevel(myGameState.getScore());
         LoggingManager.LOGGER.info("🚀 Level won: saving with next level progress!");
       }
+      sessionManager.updateHighScore(myGameState.getHighScore());
       sessionManager.save();
       LoggingManager.LOGGER.info("💾 Game saved successfully!");
     } catch (SaveFileException e) {
@@ -173,6 +177,7 @@ public class GamePlayerView {
     if (levelController.hasNextLevel()) {
       levelController.incrementLevel();
       sessionManager.advanceLevel(myGameState.getScore());
+      sessionManager.updateHighScore(myGameState.getHighScore());
 
       refreshGame();
     } else {
@@ -191,7 +196,8 @@ public class GamePlayerView {
 
     updateGameStateFromSession();
 
-    levelController = new LevelController(myMainController, myConfigModel, isRandomized, sessionManager);
+    levelController = new LevelController(myMainController, myConfigModel, isRandomized,
+        sessionManager);
     loadGameViewFromSession();
   }
 

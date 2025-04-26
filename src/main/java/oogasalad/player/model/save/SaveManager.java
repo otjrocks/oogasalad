@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.File;
 import java.io.IOException;
 import oogasalad.engine.records.config.model.SaveConfigRecord;
+import oogasalad.engine.utility.LoggingManager;
 
 /**
  * Manages Save Files
@@ -13,7 +14,8 @@ import oogasalad.engine.records.config.model.SaveConfigRecord;
  */
 public class SaveManager {
 
-  private static final ObjectMapper MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+  private static final ObjectMapper MAPPER = new ObjectMapper().enable(
+      SerializationFeature.INDENT_OUTPUT);
   private static final String SAVE_FILE_EXTENSION = ".json";
 
   /**
@@ -26,6 +28,7 @@ public class SaveManager {
     }
     File saveFile = new File(folder, saveConfig.saveName() + SAVE_FILE_EXTENSION);
     MAPPER.writeValue(saveFile, saveConfig);
+    LoggingManager.LOGGER.info("Saved game to {}", saveFile.getAbsolutePath());
   }
 
   /**

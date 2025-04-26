@@ -18,7 +18,10 @@ public class GameSessionManager {
   private final String saveName;
 
   /**
-   * Creates new Game Session Manager with a save config record
+   * Creates a new Game Session Manager with a save config record.
+   *
+   * @param gameFolderName The game of the folder to save the game session to.
+   * @param saveName       The save name of this session.
    */
   public GameSessionManager(String gameFolderName, String saveName) {
     this.saveName = saveName;
@@ -92,6 +95,26 @@ public class GameSessionManager {
    */
   public int getHighScore() {
     return saveConfig.highScore();
+  }
+
+  /**
+   * Set a new high score to the game save file, if the new high score is greater than the current
+   * high score.
+   *
+   * @param newHighScore The new potential high score.
+   */
+  public void updateHighScore(int newHighScore) {
+    if (newHighScore > saveConfig.highScore()) {
+      saveConfig = new SaveConfigRecord(
+          saveConfig.saveName(),
+          saveConfig.currentLevel(),
+          saveConfig.totalScore(),
+          saveConfig.lives(),
+          newHighScore,
+          saveConfig.levelOrder()
+      );
+      save();
+    }
   }
 
   /**
