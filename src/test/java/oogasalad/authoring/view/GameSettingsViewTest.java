@@ -16,6 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.model.AuthoringModel;
+import oogasalad.authoring.view.gameSettings.GameSettingsView;
 import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.SurviveForTimeConditionRecord;
