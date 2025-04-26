@@ -39,6 +39,7 @@ public class GameView {
   private final Button resetButton = new Button();
   private final Button saveButton = new Button();
   private static final String END_BUTTON_STYLE = "end-button";
+  private boolean pendingLevelAdvance = false;
   private final GameSessionManager sessionManager;
 
   /**
@@ -149,7 +150,12 @@ public class GameView {
     endLabel.setText(LanguageManager.getMessage(messageKey));
 
     configureButtonVisibility(gameWon, isFinalLevel);
+
+    if (gameWon && !isFinalLevel) {
+      pendingLevelAdvance = true;
+    }
   }
+
 
   private String determineEndMessageKey(boolean gameWon, boolean isFinalLevel) {
     if (!gameWon) {
@@ -183,6 +189,12 @@ public class GameView {
     saveButton.setOnAction(e -> action.run());
   }
 
+  /**
+   * Returns if the level is pending advance
+   */
+  public boolean isPendingLevelAdvance() {
+    return pendingLevelAdvance;
+  }
 
   /**
    * Sets the action to be executed when the reset button is clicked.

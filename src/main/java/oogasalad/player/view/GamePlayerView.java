@@ -124,12 +124,17 @@ public class GamePlayerView {
       myGameView.setResetAction(this::handleResetGame);
       myGameView.setSaveAction(() -> {
         try {
+          if (myGameView.isPendingLevelAdvance()) {
+            sessionManager.advanceLevel(myGameState.getScore());
+            LoggingManager.LOGGER.info("🚀 Level won: saving with next level progress!");
+          }
           sessionManager.save();
           LoggingManager.LOGGER.info("💾 Game saved successfully!");
         } catch (SaveFileException e) {
           LoggingManager.LOGGER.warn("Failed to save game progress: {}", e.getMessage());
         }
       });
+
 
       myPane.getChildren().add(buildFullView(myGameView.getRoot()));
     }
