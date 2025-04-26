@@ -17,6 +17,7 @@ import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.model.Entity;
 import oogasalad.player.model.api.ModeChangeEventStrategyFactory;
 import oogasalad.player.model.api.SpawnEventStrategyFactory;
+import oogasalad.player.model.enums.CheatType;
 import oogasalad.player.model.strategies.modechangeevent.ModeChangeEventStrategyInterface;
 import oogasalad.player.model.strategies.spawnevent.SpawnEventStrategyInterface;
 import oogasalad.player.view.GameMapView;
@@ -245,26 +246,18 @@ public class GameLoopController {
     }
   }
 
-  private void checkCheatKeys(){
-    if(myGameInputManager.shouldAddLife()){
-      myGameContext.gameState().setLives(myGameContext.gameState().getLives() + 1);
+  private void checkCheatKeys() {
+    for (CheatType cheat : myConfig.settings().cheatTypes()) {
+      cheat.execute(myGameInputManager, myGameContext, this);
     }
+  }
 
-    if(myGameInputManager.shouldPauseGame()){
-      pauseGame();
-    }
+  public double getMyGameSpeedMultiplier() {
+    return myGameSpeedMultiplier;
+  }
 
-    if(myGameInputManager.shouldGoToNextLevel()){
-      myGameContext.inputManager().getGameScreenView().getGamePlayerView().handleNextLevel();
-    }
-
-    if(myGameInputManager.shouldResetGame()){
-      myGameContext.inputManager().getGameScreenView().getGamePlayerView().handleResetGame();
-    }
-
-    if(myGameInputManager.shouldSpeedUpGame()){
-      myGameSpeedMultiplier *= 1.1;
-    }
+  public void setMyGameSpeedMultiplier(double myGameSpeedMultiplier) {
+    this.myGameSpeedMultiplier = myGameSpeedMultiplier;
   }
 
 }

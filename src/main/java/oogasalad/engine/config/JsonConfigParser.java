@@ -6,11 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import oogasalad.engine.config.api.ConfigParserInterface;
@@ -34,6 +37,7 @@ import oogasalad.engine.records.model.ModeChangeEventRecord;
 import oogasalad.engine.utility.ConstantsManager;
 import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LoggingManager;
+import oogasalad.player.model.enums.CheatType;
 
 /**
  * The {@code JsonConfigParser} class is responsible for parsing game configuration files in JSON
@@ -342,7 +346,8 @@ public class JsonConfigParser implements ConfigParserInterface {
         baseSettings.startingLives(),
         baseSettings.initialScore(),
         baseSettings.winCondition(),
-        baseSettings.loseCondition()
+        baseSettings.loseCondition(),
+        baseSettings.cheatTypes()
     );
   }
 

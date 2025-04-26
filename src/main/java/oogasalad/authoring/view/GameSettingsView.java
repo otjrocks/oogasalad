@@ -1,5 +1,6 @@
 package oogasalad.authoring.view;
 
+import java.util.HashSet;
 import java.util.Objects;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -406,7 +407,10 @@ public class GameSettingsView {
         startingLivesSpinner.getValue(),
         initialScoreSpinner.getValue(),
         newWinCondition,
-        newLoseCondition
+        newLoseCondition,
+
+        //TODO
+        new HashSet<>()
     );
     // Update the model with the current settings
     controller.getModel().setDefaultSettings(updatedSettings);
