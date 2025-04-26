@@ -6,9 +6,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Map;
+
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.model.ConditionRecord;
+import oogasalad.player.controller.GameInputManager;
 import oogasalad.player.model.GameMap;
 import oogasalad.player.model.GameStateInterface;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +26,7 @@ class TimeElapsedSpawnEventStrategyTest {
   private GameContextRecord contextWithTime(double timeElapsed) {
     GameStateInterface mockState = mock(GameStateInterface.class);
     when(mockState.getTimeElapsed()).thenReturn(timeElapsed);
-    return new GameContextRecord(new GameMap(10, 10), mockState);
+    return new GameContextRecord(new GameInputManager(new Scene(new Pane()), new Group()), new GameMap(10, 10), mockState);
   }
 
   private SpawnEventRecord spawnEventWithParams(String amountValue, boolean forSpawn) {

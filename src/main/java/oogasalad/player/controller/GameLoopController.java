@@ -116,7 +116,9 @@ public class GameLoopController {
     //Updates the game map and entity positions
     myGameContext.gameMap().update();
     myGameMapView.update();
-    checkCheatKeys();
+    if(myGameInputManager != null) {
+      checkCheatKeys();
+    }
     handleModeChangeEvents();
     handleSpawnEvents();
   }
