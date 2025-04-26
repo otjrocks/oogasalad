@@ -1,23 +1,21 @@
 package oogasalad.authoring.view.mainView;
 
+import java.util.Objects;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.Scene;
+import javafx.scene.control.DialogPane;
 import javafx.stage.Stage;
+import oogasalad.engine.utility.ThemeManager;
+import oogasalad.engine.view.components.FormattingUtil;
 
 /**
- * Utility class for displaying standardized alert dialogs in the Authoring Environment.
- *
- * <p>Provides a simple static method to show an alert with a specified title, message,
- * and alert type, attached to a given window owner.</p>
- *
- * <p>This class promotes consistent alert handling across different parts of the system.</p>
- *
- * @author William He
+ * Utility class for displaying standardized, themed alert dialogs in the Authoring Environment.
  */
 public class AlertUtil {
 
   /**
-   * Displays an alert dialog with the given parameters.
+   * Displays an alert dialog with the given parameters, styled consistently with the application theme.
    *
    * @param owner the stage or window that owns the alert
    * @param title the title of the alert window
@@ -28,6 +26,9 @@ public class AlertUtil {
     Alert alert = new Alert(type, message, ButtonType.OK);
     alert.setTitle(title);
     alert.initOwner(owner);
+
+    FormattingUtil.applyStandardDialogStyle(alert);
+
     alert.showAndWait();
   }
 }

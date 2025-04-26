@@ -1,11 +1,13 @@
 package oogasalad.authoring.view;
 
+import java.util.Objects;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.Background;
@@ -18,8 +20,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.ThemeManager;
+import oogasalad.engine.view.components.FormattingUtil;
 
 /**
  * View component for displaying and editing properties of a selected entity placement. This
@@ -223,6 +228,8 @@ public class EntityPlacementView {
     confirm.setTitle(LanguageManager.getMessage("CONFIRM_DELETE"));
     confirm.setHeaderText(LanguageManager.getMessage("DELETE_ENTITY"));
     confirm.setContentText(LanguageManager.getMessage("CONFIRM_DELETE_MESSAGE"));
+
+    FormattingUtil.applyStandardDialogStyle(confirm);
 
     if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
       // Remove from the current level

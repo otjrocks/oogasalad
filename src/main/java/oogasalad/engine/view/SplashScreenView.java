@@ -1,17 +1,18 @@
 package oogasalad.engine.view;
 
-
 import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
 
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.utility.constants.GameConfig;
+import oogasalad.engine.view.components.FormattingUtil;
 import oogasalad.engine.view.components.Selector;
 import oogasalad.engine.view.components.VMenu;
 
@@ -23,7 +24,6 @@ import oogasalad.engine.view.components.VMenu;
 public class SplashScreenView {
 
   private Selector myLanguageSelector;
-  private final ThemeManager myThemeManager;
   private Selector myThemeSelector;
   private final MainController myMainController;
   private final VBox myConfigurationBox;
@@ -36,12 +36,15 @@ public class SplashScreenView {
    */
   public SplashScreenView(MainController mainController) {
     myRoot = new VBox();
-    myThemeManager = new ThemeManager(mainController.getStage());
     myMainController = mainController;
     myConfigurationBox = new VBox(ELEMENT_SPACING);
     myConfigurationBox.setId("splash-configuration-box");
-    myRoot.getStyleClass().add("splash-screen-view");
+    myRoot.getStyleClass().add("center-root");
     myRoot.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
+
+    // Register the scene to the singleton ThemeManager
+    ThemeManager.getInstance().registerScene(mainController.getStage().getScene());
+
     initializeSplashScreen();
   }
 
@@ -80,7 +83,6 @@ public class SplashScreenView {
   }
 
   private void toggleConfigurationMenu() {
-    // if configuration settings are being shown toggle off, otherwise toggle on
     myConfigurationBox.setVisible(!myConfigurationBox.isVisible());
   }
 
@@ -94,9 +96,8 @@ public class SplashScreenView {
     myMainController.showAuthoringView();
   }
 
-
   private void initializeThemeSelector() {
-    myThemeSelector = new Selector(myThemeManager.getAvailableThemes(),
+    myThemeSelector = new Selector(ThemeManager.getInstance().getAvailableThemes(),
         ThemeManager.DEFAULT_THEME, "themeSelector",
         LanguageManager.getMessage("THEME_SELECTOR_TITLE"), e -> switchTheme());
     myConfigurationBox.getChildren().add(myThemeSelector.getRoot());
@@ -111,9 +112,8 @@ public class SplashScreenView {
   }
 
   private void initializeTitle() {
-    Text title = new Text(LanguageManager.getMessage("TITLE"));
+    Label title = FormattingUtil.createTitle(LanguageManager.getMessage("TITLE"));
     title.setId("splashScreenTitle");
-    title.getStyleClass().add("title");
     myRoot.getChildren().add(title);
   }
 
@@ -123,9 +123,8 @@ public class SplashScreenView {
   }
 
   private void switchTheme() {
-    myThemeManager.setTheme(myThemeSelector.getValue());
+    ThemeManager.getInstance().setTheme(myThemeSelector.getValue());
   }
-
 
   private void refresh() {
     myRoot.getChildren().clear();

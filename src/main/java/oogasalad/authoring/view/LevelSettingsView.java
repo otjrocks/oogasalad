@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import oogasalad.authoring.controller.LevelController;
 import oogasalad.authoring.model.LevelDraft;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.ThemeManager;
 
 /**
  * View component that allows users to edit level settings such as width and height. Provides a
@@ -74,6 +75,7 @@ public class LevelSettingsView {
           controller.getAvailableEntityTypes(),
           controller.getCurrentLevel()
       );
+      ThemeManager.getInstance().registerScene(dialog.getScene());
       dialog.showAndWait();
     });
 
@@ -83,6 +85,9 @@ public class LevelSettingsView {
           controller.getAvailableEntityTypes(),
           controller.getCurrentLevel()
       );
+
+      ThemeManager.getInstance().registerScene(dialog.getScene());
+
       dialog.showAndWait();
     });
 
