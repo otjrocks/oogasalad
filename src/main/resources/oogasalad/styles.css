@@ -521,3 +521,33 @@ Label, Text {
 .spinner .decrement-arrow:hover {
   -fx-background-color: -fx-highlight;
 }
+
+.check-box {
+  -fx-font-family: "Inter";
+  -fx-font-size: 14px;
+  -fx-text-fill: -fx-secondary;
+  -fx-background-color: -fx-primary;
+  -fx-padding: 5px;
+}
+
+.check-box > .box {
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+  -fx-border-radius: 3px;
+  -fx-background-radius: 3px;
+  -fx-padding: 3px;
+}
+
+.check-box:selected .box {
+  -fx-background-color: -fx-highlight;
+  -fx-border-color: -fx-secondary;
+}
+
+.check-box .mark {
+  -fx-mark-color: transparent;
+}
+
+.check-box:selected .mark {
+  -fx-mark-color: -fx-secondary;
+}
