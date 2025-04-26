@@ -102,41 +102,51 @@ public class GamePlayerView {
   }
 
   private void loadGameViewFromSession() {
+    clearPreviousGameView();
+    if (levelController.getCurrentLevelMap() != null) {
+      initializeGameView();
+      addGameViewActions();
+      myPane.getChildren().add(buildFullView(myGameView.getRoot()));
+    }
+  }
+
+  private void clearPreviousGameView() {
     if (myGameView != null) {
       myPane.getChildren().remove(myGameView.getRoot());
     }
+  }
 
-    if (levelController.getCurrentLevelMap() != null) {
-      int logicalIndex = levelController.getCurrentLevelIndex();
-      int actualMappedIndex = sessionManager.getLevelOrder().get(logicalIndex);
+  private void initializeGameView() {
+    int logicalIndex = levelController.getCurrentLevelIndex();
+    int actualMappedIndex = sessionManager.getLevelOrder().get(logicalIndex);
 
-      LoggingManager.LOGGER.info("🧭 Loading mapped level {} (logical index {})", actualMappedIndex, logicalIndex);
+    LoggingManager.LOGGER.info("🧭 Loading mapped level {} (logical index {})", actualMappedIndex, logicalIndex);
 
-      myGameView = new GameView(
-          new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
-          myConfigModel,
-          logicalIndex,
-          sessionManager,
-          (gameFolderBasePath + gameFolderName + "/")
-      );
+    myGameView = new GameView(
+        new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
+        myConfigModel,
+        logicalIndex,
+        sessionManager,
+        (gameFolderBasePath + gameFolderName + "/")
+    );
+  }
 
-      myGameView.setNextLevelAction(this::handleNextLevel);
-      myGameView.setResetAction(this::handleResetGame);
-      myGameView.setSaveAction(() -> {
-        try {
-          if (myGameView.isPendingLevelAdvance()) {
-            sessionManager.advanceLevel(myGameState.getScore());
-            LoggingManager.LOGGER.info("🚀 Level won: saving with next level progress!");
-          }
-          sessionManager.save();
-          LoggingManager.LOGGER.info("💾 Game saved successfully!");
-        } catch (SaveFileException e) {
-          LoggingManager.LOGGER.warn("Failed to save game progress: {}", e.getMessage());
-        }
-      });
+  private void addGameViewActions() {
+    myGameView.setNextLevelAction(this::handleNextLevel);
+    myGameView.setResetAction(this::handleResetGame);
+    myGameView.setSaveAction(this::handleSaveGame);
+  }
 
-
-      myPane.getChildren().add(buildFullView(myGameView.getRoot()));
+  private void handleSaveGame() {
+    try {
+      if (myGameView.isPendingLevelAdvance()) {
+        sessionManager.advanceLevel(myGameState.getScore());
+        LoggingManager.LOGGER.info("🚀 Level won: saving with next level progress!");
+      }
+      sessionManager.save();
+      LoggingManager.LOGGER.info("💾 Game saved successfully!");
+    } catch (SaveFileException e) {
+      LoggingManager.LOGGER.warn("Failed to save game progress: {}", e.getMessage());
     }
   }
 
