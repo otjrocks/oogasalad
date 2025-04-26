@@ -23,15 +23,13 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * GameSettingsView manages the interface for editing game metadata, settings,
- * win/lose conditions, and cheat codes. It provides functionality to
- * update the view from the model, save user changes back to the model,
- * and open the collision rules editor popup.
- *
+ * GameSettingsView manages the interface for editing game metadata, settings, win/lose conditions,
+ * and cheat codes. It provides functionality to update the view from the model, save user changes
+ * back to the model, and open the collision rules editor popup.
+ * <p>
  * Organized using a ScrollPane containing a VBox layout inside an HBox root.
  *
- * @author
- * William He, Angela Predolac
+ * @author William He, Angela Predolac
  */
 public class GameSettingsView {
 
@@ -134,18 +132,18 @@ public class GameSettingsView {
         controller.getModel().getDefaultSettings().startingLives(),
         controller.getModel().getDefaultSettings().initialScore()
     );
-    conditionEditor.update(
+    conditionEditor.update(new ConditionState(
         controller.getModel().getDefaultSettings().winCondition().getConditionType(),
         controller.getModel().getDefaultSettings().winCondition().getConditionValue().orElse(""),
         controller.getModel().getDefaultSettings().loseCondition().getConditionType(),
-        String.valueOf(controller.getModel().getDefaultSettings().startingLives())
+        String.valueOf(controller.getModel().getDefaultSettings().startingLives()))
     );
     cheatCodeEditor.update(controller.getModel().getDefaultSettings().cheatTypes());
   }
 
   /**
-   * Saves the current UI values into the model. Displays a confirmation
-   * alert upon successful save, or an error alert if saving fails.
+   * Saves the current UI values into the model. Displays a confirmation alert upon successful save,
+   * or an error alert if saving fails.
    */
   public void saveSettings() {
     controller.getModel().setGameTitle(metadataEditor.getTitle());
@@ -161,8 +159,7 @@ public class GameSettingsView {
           cheatCodeEditor.getSelectedCheats()
       );
       controller.getModel().setDefaultSettings(updatedSettings);
-    }
-    catch (ViewException ex) {
+    } catch (ViewException ex) {
       Alert errorAlert = new Alert(AlertType.ERROR);
       errorAlert.setTitle(LanguageManager.getMessage("SAVE_ERROR"));
       FormattingUtil.applyStandardDialogStyle(errorAlert);

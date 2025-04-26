@@ -65,21 +65,26 @@ public class ConditionLoader {
   private static Map<String, Class<?>> loadValidConditionClasses(String packagePath, List<String> classNames, Class<?> interfaceType) {
     Map<String, Class<?>> validClasses = new HashMap<>();
     for (String className : classNames) {
-      try {
-        Class<?> clazz = Class.forName(packagePath + "." + className);
-        if (isValidConditionClass(clazz, interfaceType)) {
-          String simpleName = clazz.getSimpleName();
-          if (simpleName.endsWith(RECORD_SUFFIX)) {
-            simpleName = simpleName.substring(0, simpleName.length() - RECORD_SUFFIX.length());
-          }
-          validClasses.put(simpleName, clazz);
-        }
-      } catch (Exception e) {
-        LoggingManager.LOGGER.error("Failed to load class: {}", className, e);
-      }
+      addValidConditionClass(packagePath, className, interfaceType, validClasses);
     }
     return validClasses;
   }
+
+  private static void addValidConditionClass(String packagePath, String className, Class<?> interfaceType, Map<String, Class<?>> validClasses) {
+    try {
+      Class<?> clazz = Class.forName(packagePath + "." + className);
+      if (isValidConditionClass(clazz, interfaceType)) {
+        String simpleName = clazz.getSimpleName();
+        if (simpleName.endsWith(RECORD_SUFFIX)) {
+          simpleName = simpleName.substring(0, simpleName.length() - RECORD_SUFFIX.length());
+        }
+        validClasses.put(simpleName, clazz);
+      }
+    } catch (Exception e) {
+      LoggingManager.LOGGER.error("Failed to load class: {}", className, e);
+    }
+  }
+
 
   /**
    * Checks if a class is a non-abstract implementation of the given interface.

@@ -118,16 +118,13 @@ public class ConditionEditor {
   /**
    * Updates the selected condition types and associated values.
    *
-   * @param winType  the new win condition type
-   * @param winValue the new win condition value
-   * @param loseType the new lose condition type
-   * @param loseValue the new lose condition value
+   * @param conditionState Condition state with all values
    */
-  public void update(String winType, String winValue, String loseType, String loseValue) {
-    winConditionDropdown.setValue(winType);
-    winValueField.setText(winValue);
-    loseConditionDropdown.setValue(loseType);
-    loseValueField.setText(loseValue);
+  public void update(ConditionState conditionState) throws ViewException {
+    winConditionDropdown.setValue(conditionState.winType());
+    winValueField.setText(conditionState.winValue());
+    loseConditionDropdown.setValue(conditionState.loseType());
+    loseValueField.setText(conditionState.loseValue());
   }
 
   /**
