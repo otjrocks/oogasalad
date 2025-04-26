@@ -1,5 +1,6 @@
 package oogasalad.authoring.view;
 
+import java.util.Objects;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,6 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.controller.AuthoringController;
+import oogasalad.authoring.view.mainView.AlertUtil;
+import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.losecondition.LoseConditionInterface;
@@ -25,6 +28,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import oogasalad.engine.utility.ThemeManager;
+import oogasalad.engine.view.components.FormattingUtil;
 
 
 /**
@@ -179,7 +184,6 @@ public class GameSettingsView {
     rootNode.setSpacing(15);
     rootNode.setPadding(new Insets(15)); // Increase padding
     rootNode.setAlignment(Pos.CENTER_LEFT);
-    rootNode.getStyleClass().add("game-settings-view");
 
     // Create scrollable container for all content
     ScrollPane scrollPane = new ScrollPane();
@@ -203,13 +207,13 @@ public class GameSettingsView {
     settingsGrid.setPadding(new Insets(0));
 
     // Create text fields for game metadata
-    gameTitleField = new TextField(controller.getModel().getGameTitle());
+    gameTitleField = FormattingUtil.createTextField(controller.getModel().getGameTitle());
     gameTitleField.setPrefWidth(150);
 
-    authorField = new TextField(controller.getModel().getAuthor());
+    authorField = FormattingUtil.createTextField(controller.getModel().getAuthor());
     authorField.setPrefWidth(150);
 
-    descriptionField = new TextField(controller.getModel().getGameDescription());
+    descriptionField = FormattingUtil.createTextField(controller.getModel().getGameDescription());
     descriptionField.setPrefWidth(250);
 
     // Create compact spinners and combo boxes
@@ -224,35 +228,36 @@ public class GameSettingsView {
     createLoseConditionComponents();
 
     // Add metadata fields
-    settingsGrid.add(new Label(LanguageManager.getMessage("GAME_TITLE")), 0, 0);
+    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("GAME_TITLE")), 0, 0);
     settingsGrid.add(gameTitleField, 1, 0);
-    settingsGrid.add(new Label(LanguageManager.getMessage("AUTHOR")), 2, 0);
+    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("AUTHOR")), 2, 0);
     settingsGrid.add(authorField, 3, 0);
 
-    settingsGrid.add(new Label(LanguageManager.getMessage("DESCRIPTION")), 0, 1);
+    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("DESCRIPTION")), 0, 1);
     settingsGrid.add(descriptionField, 1, 1, 3, 1); // Span across multiple columns
 
     // Add game settings fields
-    settingsGrid.add(new Label(LanguageManager.getMessage("GAME_SPEED")), 0, 2);
+    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("GAME_SPEED")), 0, 2);
     settingsGrid.add(gameSpeedSpinner, 1, 2);
-    settingsGrid.add(new Label(LanguageManager.getMessage("STARTING_LIVES")), 2, 2);
+    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("STARTING_LIVES")), 2, 2);
     settingsGrid.add(startingLivesSpinner, 3, 2);
 
     // Add more game settings
-    settingsGrid.add(new Label(LanguageManager.getMessage("INITIAL_SCORE")), 0, 3);
+    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("INITIAL_SCORE")), 0, 3);
     settingsGrid.add(initialScoreSpinner, 1, 3);
-    settingsGrid.add(new Label(LanguageManager.getMessage("SCORE_STRATEGY")), 2, 3);
+    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("SCORE_STRATEGY")), 2, 3);
 
     // Add win condition fields
-    settingsGrid.add(new Label(LanguageManager.getMessage("WIN_CONDITION_TYPE")), 0, 4);
+    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("WIN_CONDITION_TYPE")), 0, 4);
     settingsGrid.add(winConditionTypeComboBox, 1, 4);
     settingsGrid.add(winConditionValueLabel, 2, 4);
     settingsGrid.add(winConditionValueField, 3, 4);
 
-    settingsGrid.add(new Label(LanguageManager.getMessage("LOSE_CONDITION_TYPE")), 0, 5);
+    settingsGrid.add(FormattingUtil.createLabel(LanguageManager.getMessage("LOSE_CONDITION_TYPE")), 0, 5);
     settingsGrid.add(loseConditionTypeComboBox, 1, 5);
     settingsGrid.add(loseConditionValueLabel, 2, 5);
     settingsGrid.add(loseConditionValueField, 3, 5);
+
 
     // Add buttons
     HBox buttonBox = getHBox();
@@ -265,6 +270,7 @@ public class GameSettingsView {
 
     // Add scroll pane to root
     rootNode.getChildren().add(scrollPane);
+
   }
 
   private void updateWinConditionValueLabel() {
@@ -339,11 +345,16 @@ public class GameSettingsView {
     popupStage.setTitle(LanguageManager.getMessage("COLLISION_RULES_EDITOR"));
     popupStage.initModality(Modality.APPLICATION_MODAL);
 
-    // Create a new CollisionRuleEditorView
     CollisionRuleEditorView collisionEditor = new CollisionRuleEditorView(controller);
+
+    Dialog<List<CollisionRule>> dialog = collisionEditor.getDialog();
+    ThemeManager.getInstance().registerScene(dialog.getDialogPane().getScene());
+
+    // Show and update model if confirmed
     collisionEditor.showAndWait()
         .ifPresent(updatedRules -> controller.getModel().setCollisionRules(updatedRules));
   }
+
 
   /**
    * Update the view based on the current model
@@ -405,6 +416,7 @@ public class GameSettingsView {
     alert.setTitle(LanguageManager.getMessage("SAVED"));
     alert.setHeaderText(null);
     alert.setContentText(LanguageManager.getMessage("GAME_SETTINGS_SAVED"));
+    FormattingUtil.applyStandardDialogStyle(alert);
     alert.showAndWait();
   }
 
@@ -420,7 +432,7 @@ public class GameSettingsView {
 
     // Create win condition value field
     winConditionValueLabel = new Label(LanguageManager.getMessage("WIN_CONDITION_VALUE"));
-    winConditionValueField = new TextField(getWinConditionValue());
+    winConditionValueField = FormattingUtil.createTextField(getWinConditionValue());
     winConditionValueField.setPrefWidth(80);
 
     // Add change listener to update the label based on selected win condition type
@@ -439,7 +451,7 @@ public class GameSettingsView {
 
     // Create lose condition value field
     loseConditionValueLabel = new Label(LanguageManager.getMessage("LOSE_CONDITION_VALUE"));
-    loseConditionValueField = new TextField(getLoseConditionValue());
+    loseConditionValueField = FormattingUtil.createTextField(getLoseConditionValue());
     loseConditionValueField.setPrefWidth(80);
 
     // Add change listener to update the label based on selected lose condition type

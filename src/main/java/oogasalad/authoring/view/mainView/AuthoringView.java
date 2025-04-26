@@ -48,6 +48,7 @@ public class AuthoringView {
    */
   public AuthoringView() {
     root = new BorderPane();
+    root.getStyleClass().add("root");
     root.setPrefWidth(GameConfig.WIDTH);
     root.setPrefHeight(GameConfig.HEIGHT);
   }

@@ -60,7 +60,7 @@ class GameScreenViewTest {
   void testRootIsNotNullAndHasExpectedStyle() {
     VBox root = gameScreenView.getRoot();
     assertNotNull(root, "Root VBox should not be null");
-    assertTrue(root.getStyleClass().contains("game-screen-view"),
+    assertTrue(root.getStyleClass().contains("root"),
         "Root should have correct CSS class");
     assertTrue(root.getChildren().size() >= 2, "Root should contain HudView and GamePane");
   }

@@ -49,6 +49,7 @@ public class MenuBarFactory {
    */
   public MenuBar createMenuBar() {
     MenuBar menuBar = new MenuBar();
+    menuBar.getStyleClass().add("menu-bar");
     Menu fileMenu = new Menu(LanguageManager.getMessage("FILE"));
 
     MenuItem saveItem = new MenuItem(LanguageManager.getMessage("SAVE_GAME"));
