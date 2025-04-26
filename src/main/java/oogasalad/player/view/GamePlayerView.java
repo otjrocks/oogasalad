@@ -169,6 +169,9 @@ public class GamePlayerView {
     LoggingManager.LOGGER.info("💾 Manual Save triggered by player");
   }
 
+  /**
+   * Moves to next level if there is a next level
+   */
   public void handleNextLevel() {
     if (levelController.hasNextLevel()) {
       levelController.incrementLevel();
@@ -180,6 +183,9 @@ public class GamePlayerView {
     }
   }
 
+  /**
+   * Resets current game to its starting position including Game State
+   */
   public void handleResetGame() {
     myGameState.resetTimeElapsed();
     sessionManager.resetSession(myConfigModel);

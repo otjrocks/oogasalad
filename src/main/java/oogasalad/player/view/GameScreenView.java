@@ -94,6 +94,9 @@ public class GameScreenView {
     }
   }
 
+  /**
+   * Gets GamePlayerView for purposes of updating level and resetting game
+   */
   public GamePlayerView getGamePlayerView() {
     return myGamePlayerView;
   }

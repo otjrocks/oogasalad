@@ -123,10 +123,16 @@ public class GameInputManager {
     return false;
   }
 
+  /**
+   * Sets GameScreenView object so necessary visual elements can be stored and updated
+   */
   public void setGameScreenView(GameScreenView view) {
     gameScreenView = view;
   }
 
+  /**
+   * Gets GameScreenView object for purposes of updating levels and resetting game
+   */
   public GameScreenView getGameScreenView() {
     return gameScreenView;
   }
