@@ -19,25 +19,36 @@ public class StrategyLoader {
       List<String> classNames = FileUtility.getFileNamesInDirectory(directoryPath, ".class");
 
       for (String className : classNames) {
-        try {
-          Class<?> clazz = Class.forName(packagePath + "." + className);
-          if (interfaceType.isAssignableFrom(clazz)
-              && !clazz.isInterface()
-              && !clazz.isAnnotation()
-              && !java.lang.reflect.Modifier.isAbstract(clazz.getModifiers())) {
-
-            String simpleName = cleanSimpleName(clazz);
-            classMap.put(simpleName, clazz);
-          }
-        } catch (Exception e) {
-          LoggingManager.LOGGER.error("Failed to load strategy class: {}", className, e);
-        }
+        tryLoadStrategyClass(packagePath, className, interfaceType, classMap);
       }
     } catch (Exception e) {
       LoggingManager.LOGGER.error("Error scanning directory for strategy classes", e);
     }
     return classMap;
   }
+
+
+  private static void tryLoadStrategyClass(
+      String packagePath,
+      String className,
+      Class<?> interfaceType,
+      Map<String, Class<?>> classMap
+  ) {
+    try {
+      Class<?> clazz = Class.forName(packagePath + "." + className);
+      if (interfaceType.isAssignableFrom(clazz)
+          && !clazz.isInterface()
+          && !clazz.isAnnotation()
+          && !java.lang.reflect.Modifier.isAbstract(clazz.getModifiers())) {
+
+        String simpleName = cleanSimpleName(clazz);
+        classMap.put(simpleName, clazz);
+      }
+    } catch (Exception e) {
+      LoggingManager.LOGGER.error("Failed to load strategy class: {}", className, e);
+    }
+  }
+
 
   private static String cleanSimpleName(Class<?> clazz) {
     String simpleName = clazz.getSimpleName();
