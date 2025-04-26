@@ -1,5 +1,8 @@
 package oogasalad.authoring.view;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -8,14 +11,11 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.model.LevelDraft;
-import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 
-import java.util.*;
 import oogasalad.engine.utility.LanguageManager;
-import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.view.components.FormattingUtil;
 
 /**
@@ -101,7 +101,7 @@ public class SpawnEventDialog extends Stage {
       }
     });
 
-    table.setPrefHeight(200);
+    table.getStyleClass().add("spawn-event-table");
     table.getItems().addAll(level.getSpawnEvents());
     table.getColumns().addAll(
         makeColumn(LanguageManager.getMessage("ENTITY"), r -> r.entityType().type()),

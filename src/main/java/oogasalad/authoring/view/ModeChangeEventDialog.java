@@ -1,5 +1,9 @@
 package oogasalad.authoring.view;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -7,15 +11,12 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.model.LevelDraft;
-import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.records.config.model.ModeChangeInfo;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
 
-import java.util.*;
 import oogasalad.engine.utility.LanguageManager;
-import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.view.components.FormattingUtil;
 
 /**
@@ -82,7 +83,7 @@ public class ModeChangeEventDialog extends Stage {
       }
     });
 
-    table.setPrefHeight(200);
+    table.getStyleClass().add("mode-change-event-table");
     table.getItems().addAll(level.getModeChangeEvents());
     table.getColumns().addAll(
         makeColumn(LanguageManager.getMessage("ENTITY"), r -> r.entityType().type()),

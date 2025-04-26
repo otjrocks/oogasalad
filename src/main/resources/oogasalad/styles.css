@@ -551,3 +551,53 @@ Label, Text {
 .check-box:selected .mark {
   -fx-mark-color: -fx-secondary;
 }
+
+
+.spawn-event-table, .mode-change-event-table {
+  -fx-min-width: 700px;
+  -fx-pref-width: 700px;
+}
+
+/* Table view */
+.table-view {
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+  -fx-font-family: "Inter";
+  -fx-font-size: 14px;
+  -fx-text-fill: -fx-secondary;
+}
+
+.table-view .column-header-background {
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 0 0 2px 0; /* Only bottom border */
+}
+
+.table-view .column-header,
+.table-view .filler {
+  -fx-background-color: -fx-primary;
+}
+
+.table-view .column-header .label {
+  -fx-text-fill: -fx-secondary;
+  -fx-font-size: 12px;
+  -fx-alignment: center;
+}
+
+.table-view .table-cell {
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 0 1px 0 0;
+  -fx-text-fill: -fx-secondary;
+  -fx-alignment: center;
+  -fx-padding: 10px;
+  -fx-font-size: 14px;
+}
+
+.table-row-cell {
+  -fx-background-color: -fx-primary;
+}
+
+.table-row-cell:hover, .table-row-cell:selected {
+  -fx-background-color: -fx-highlight;
+}
