@@ -17,6 +17,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.image.Image;
@@ -26,14 +27,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.GameConfigRecord;
 import oogasalad.engine.utility.FileUtility;
+import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.utility.constants.GameConfig;
+import oogasalad.engine.view.components.FormattingUtil;
 
 /**
  * The game selector splash screen after game player button on splash screen is clicked.
@@ -43,7 +47,6 @@ import oogasalad.engine.utility.constants.GameConfig;
 public class GameSelectorView {
 
   private static final String GAMES_FOLDER_PATH = "data/games/";
-  private static final String SMALL_BUTTON_STYLE = "small-button";
   public static final int GAME_CARD_WIDTH = 200;
 
   private final VBox myRoot;
@@ -71,7 +74,9 @@ public class GameSelectorView {
     myRoot.setPrefSize(WIDTH, HEIGHT);
     myRoot.setPadding(new Insets(ELEMENT_SPACING * 2, ELEMENT_SPACING * 4, ELEMENT_SPACING * 2,
         ELEMENT_SPACING * 4));
-    new ThemeManager(mainController.getStage());
+
+    ThemeManager.getInstance().registerScene(mainController.getStage().getScene());
+
     initializeLayout();
 
     gameConfigRecords = loadGameConfigs();
@@ -84,6 +89,7 @@ public class GameSelectorView {
 
     myRoot.getChildren().addAll(createTopBar(), createFileUploadSection(), gameGrid);
   }
+
 
   /**
    * Retrieves the root VBox of the GameSelectorView.
@@ -107,24 +113,20 @@ public class GameSelectorView {
   private void initializeLayout() {
     myRoot.setPrefSize(GameConfig.WIDTH, GameConfig.HEIGHT);
     myRoot.setAlignment(Pos.CENTER);
-    myRoot.getStyleClass().add("game-selector-view");
   }
 
   private HBox createTopBar() {
-    Label titleLabel = new Label(getMessage("GAME_PLAYER"));
-    titleLabel.getStyleClass().add("title");
+    Label titleLabel = FormattingUtil.createTitle(getMessage("GAME_PLAYER"));
     titleLabel.setMaxWidth(Double.MAX_VALUE);
     titleLabel.setAlignment(Pos.TOP_CENTER);
 
-    Button backButton = new Button("Back");
-    backButton.getStyleClass().add(SMALL_BUTTON_STYLE);
+    Button backButton = FormattingUtil.createSmallButton("Back");
     backButton.setOnAction(e -> {
       myMainController.hideGameSelectorView();
       myMainController.showSplashScreen();
     });
 
-    Button helpButton = new Button("Help");
-    helpButton.getStyleClass().add(SMALL_BUTTON_STYLE);
+    Button helpButton = FormattingUtil.createSmallButton("Help");
 
     HBox topBar = new HBox(10, backButton, titleLabel, helpButton);
     topBar.setAlignment(Pos.CENTER);
@@ -133,11 +135,9 @@ public class GameSelectorView {
   }
 
   private VBox createFileUploadSection() {
-    Button uploadButton = new Button("Upload");
-    uploadButton.getStyleClass().add(SMALL_BUTTON_STYLE);
+    Button uploadButton = FormattingUtil.createSmallButton("Upload");
 
-    startButton = new Button("Start");
-    startButton.getStyleClass().add(SMALL_BUTTON_STYLE);
+    startButton = FormattingUtil.createSmallButton("Start");
     startButton.setDisable(true);
 
     fileLabel = new Label("No file selected");
@@ -201,16 +201,15 @@ public class GameSelectorView {
     image.setFitWidth(GAME_CARD_WIDTH);
     image.setFitHeight(300);
 
-    Label nameLabel = new Label(gameName);
+    Label nameLabel =  FormattingUtil.createHeading(gameName);
     nameLabel.setWrapText(true);
     nameLabel.setMaxWidth(GAME_CARD_WIDTH);
-    nameLabel.getStyleClass().add("game-name");
 
-    Button randomizeButton = new Button("Randomize Levels");
+    Button randomizeButton = FormattingUtil.createSmallButton("Randomize Levels");
     randomizeButton.setWrapText(true);
     randomizeButton.setMaxWidth(GAME_CARD_WIDTH);
-    randomizeButton.getStyleClass().add(SMALL_BUTTON_STYLE);
-    randomizeButton.setOnAction(e -> attemptShowingGamePlayerView(gameName, true));
+    randomizeButton.setOnAction(
+        e -> attemptShowingGamePlayerView(gameNameToFolder.get(gameName), true));
 
     Button infoButton = new Button("i");
     infoButton.getStyleClass().add("icon-button");
@@ -220,13 +219,14 @@ public class GameSelectorView {
     buttonBox.setAlignment(Pos.CENTER);
 
     card.getChildren().addAll(image, nameLabel, buttonBox);
-    card.setOnMouseClicked(e -> attemptShowingGamePlayerView(gameName, false));
+    card.setOnMouseClicked(
+        e -> attemptShowingGamePlayerView(gameNameToFolder.get(gameName), false));
 
     return card;
   }
 
-  private void attemptShowingGamePlayerView(String gameName, boolean randomize) {
-    if (!myMainController.showGamePlayerView(gameNameToFolder.get(gameName), randomize)) {
+  private void attemptShowingGamePlayerView(String path, boolean randomize) {
+    if (!myMainController.showGamePlayerView(path, randomize)) {
       showErrorDialog(getMessage("ERROR"), getMessage("CANNOT_LOAD_GAME"));
     } else {
       myMainController.hideGameSelectorView();
@@ -252,6 +252,9 @@ public class GameSelectorView {
         config.metadata().author(),
         config.metadata().gameDescription()
     ));
+
+    FormattingUtil.applyStandardDialogStyle(infoDialog);
+
     infoDialog.showAndWait();
   }
 
@@ -259,13 +262,15 @@ public class GameSelectorView {
   private List<GameConfigRecord> loadGameConfigs() {
     List<String> folderNames = FileUtility.getFolderNamesInDirectory(GAMES_FOLDER_PATH);
     List<GameConfigRecord> configs = new ArrayList<>();
+    String currentPath = System.getProperty("user.dir");
 
     for (String folder : folderNames) {
       try {
+        String filePath = currentPath + "/" + GAMES_FOLDER_PATH + folder;
         GameConfigRecord config = configParser.loadGameConfig(
-            GAMES_FOLDER_PATH + folder + "/gameConfig.json");
+            filePath + "/gameConfig.json");
         configs.add(config);
-        gameNameToFolder.put(config.metadata().gameTitle(), folder);
+        gameNameToFolder.put(config.metadata().gameTitle(), filePath);
       } catch (ConfigException e) {
         LoggingManager.LOGGER.warn("Could not load config: {}", folder, e);
       }
@@ -283,7 +288,7 @@ public class GameSelectorView {
     try {
       if (config != null && config.metadata().image() != null) {
         return new Image(
-            new FileInputStream(GAMES_FOLDER_PATH + folderName + "/" + config.metadata().image()));
+            new FileInputStream(folderName + "/" + config.metadata().image()));
       }
     } catch (Exception e) {
       LoggingManager.LOGGER.warn("Failed to load image for: {}", gameName);
@@ -295,17 +300,20 @@ public class GameSelectorView {
   private void handleFileUpload() {
     File selectedFile = fileChooser.showOpenDialog(null);
     if (selectedFile != null) {
-      String path = selectedFile.getAbsolutePath();
-      fileLabel.setText(path);
+      String strippedPath = getConvertedFilePathFromFile(selectedFile);
+      fileLabel.setText(strippedPath);
       startButton.setDisable(false);
     }
   }
 
+  private static String getConvertedFilePathFromFile(File selectedFile) {
+    String path = selectedFile.getAbsolutePath();
+    return path.substring(0, path.lastIndexOf("/gameConfig.json"));
+  }
+
   private void startGameFromUpload() {
     try {
-      GameConfigRecord config = configParser.loadGameConfig(fileLabel.getText());
-      String gameName = config.metadata().gameTitle();
-      attemptShowingGamePlayerView(gameName, false);
+      attemptShowingGamePlayerView(fileLabel.getText(), false);
     } catch (Exception e) {
       LoggingManager.LOGGER.error("Exception: {}", e.getMessage());
       showErrorDialog("Error", e.getMessage());
@@ -318,6 +326,7 @@ public class GameSelectorView {
     alert.setTitle(title);
     alert.setHeaderText(null);
     alert.setContentText(message);
+    FormattingUtil.applyStandardDialogStyle(alert);
     alert.showAndWait();
   }
 }

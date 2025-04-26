@@ -30,9 +30,8 @@ public class GameViewTest extends DukeApplicationTest {
     GamePlayerView gamePlayerView = new GamePlayerView(
         mockMainController,
         mockGameState,
-        "MockGame",
-        false,
-        "src/test/resources/"
+        "src/test/resources/MockGame",
+        false
     );
     gameView = gamePlayerView.getGameView();
 

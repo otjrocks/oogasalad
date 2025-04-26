@@ -13,6 +13,7 @@ import oogasalad.engine.records.config.model.CollisionEventInterface;
 import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.LoggingManager;
+import oogasalad.engine.view.components.FormattingUtil;
 import oogasalad.engine.view.components.Selector;
 
 /**
@@ -101,7 +102,7 @@ public class CollisionEventView {
 
     for (String parameter : getCollisionRequiredFields(mySelector.getValue()).keySet()) {
       Label parameterLabel = new Label(parameter + ": ");
-      TextField parameterField = new TextField();
+      TextField parameterField = FormattingUtil.createTextField();
       parameterField.setId("parameter-" + parameter);
       VBox fieldGroup = new VBox(4); // small gap between label and text field
       fieldGroup.getChildren().addAll(parameterLabel, parameterField);

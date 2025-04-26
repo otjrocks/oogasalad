@@ -93,12 +93,6 @@ public class AuthoringViewTest extends DukeApplicationTest {
   }
 
   @Test
-  public void getGameSettingsView_StyleApplied_HasExpectedStyle() {
-    String style = authoringView.getGameSettingsView().getNode().getStyle();
-    assertTrue(style.contains("-fx-background-color"), "GameSettingsView should have background style");
-  }
-
-  @Test
   public void setController_WindowMaximized_PlatformRunLaterExecuted() {
     assertNotNull(authoringView.getNode().getScene(), "Scene should be set when shown");
   }

@@ -3,11 +3,8 @@ package oogasalad.player.view;
 import static oogasalad.engine.utility.constants.GameConfig.WIDTH;
 
 import java.io.IOException;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
@@ -26,53 +23,34 @@ import oogasalad.player.model.save.GameSessionManager;
  */
 public class GamePlayerView {
 
-  public static final String GAME_FOLDER = "data/games/";
   public static final String GAME_CONFIG_JSON = "gameConfig.json";
 
-  private final String gameFolderName;
+  private final String gameFolderPath;
   private final StackPane myPane;
   private final MainController myMainController;
   private final GameStateInterface myGameState;
-  private final String gameFolderBasePath;
   private final boolean isRandomized;
-
   private GameView myGameView;
   private ConfigModelRecord myConfigModel = null;
-  private GameSessionManager sessionManager;
+  private final GameSessionManager sessionManager;
   private LevelController levelController;
 
   /**
-   * Constructor for GamePlayerView that contains
+   * Constructs a GamePlayerView object that represents the visual interface for the game player.
    *
-   * @param controller represents the main controller object
-   * @param gameState holds information on information that may be updated
-   * @param gameFolderName name of file
-   * @param randomized demonstrates whether the order of the levels is randomized
+   * @param controller     the main controller that manages the game logic and interactions
+   * @param gameState      the current state of the game, providing access to game data
+   * @param gameFolderPath the name of the folder containing game-specific resources
+   * @param randomized     a flag indicating whether the game is randomized
    */
   public GamePlayerView(MainController controller, GameStateInterface gameState,
-      String gameFolderName, boolean randomized) {
-    this(controller, gameState, gameFolderName, randomized, "data/games/");
-  }
-
-  /**
-   * Constructor for GamePlayerView that contains
-   *
-   * @param controller represents the main controller object
-   * @param gameState holds information on information that may be updated
-   * @param gameFolderName name of file
-   * @param randomized demonstrates whether the order of the levels is randomized
-   * @param customBasePath gives a base path for the other extensions to follow
-   */
-  public GamePlayerView(MainController controller, GameStateInterface gameState,
-      String gameFolderName, boolean randomized, String customBasePath) {
+      String gameFolderPath, boolean randomized) {
     myPane = new StackPane();
     myMainController = controller;
     myGameState = gameState;
     this.isRandomized = randomized;
-    this.gameFolderName = gameFolderName;
-    this.gameFolderBasePath = customBasePath;
-
-    this.sessionManager = new GameSessionManager(gameFolderName, gameFolderName);
+    this.gameFolderPath = gameFolderPath;
+    this.sessionManager = new GameSessionManager(this.gameFolderPath, "saveConfig");
 
     myPane.setPrefWidth(WIDTH);
     myPane.getStyleClass().add("game-player-view");
@@ -81,7 +59,9 @@ public class GamePlayerView {
   }
 
   /**
-   * Returns pane javafx object.
+   * Get the root stack pane that is used to display elements in the view.
+   *
+   * @return A StackPane JavaFX object that is added to for this view.
    */
   public StackPane getPane() {
     return myPane;
@@ -99,10 +79,10 @@ public class GamePlayerView {
   private void loadOrCreateSession() {
     try {
       sessionManager.loadExistingSession();
-      LoggingManager.LOGGER.info("✅ Loaded existing save file for '{}'", gameFolderName);
+      LoggingManager.LOGGER.info("✅ Loaded existing save file for '{}'", gameFolderPath);
     } catch (IOException e) {
       sessionManager.startNewSession(myConfigModel);
-      LoggingManager.LOGGER.info("📁 No save found, created new session for '{}'", gameFolderName);
+      LoggingManager.LOGGER.info("📁 No save found, created new session for '{}'", gameFolderPath);
     }
   }
 
@@ -115,7 +95,7 @@ public class GamePlayerView {
   private void loadConfigFromFile() {
     JsonConfigParser configParser = new JsonConfigParser();
     try {
-      myConfigModel = configParser.loadFromFile(GAME_FOLDER + gameFolderName + "/" + GAME_CONFIG_JSON);
+      myConfigModel = configParser.loadFromFile(gameFolderPath + "/gameConfig.json");
     } catch (ConfigException e) {
       LoggingManager.LOGGER.warn("Failed to load config file: {}", GAME_CONFIG_JSON, e);
     }
@@ -140,15 +120,16 @@ public class GamePlayerView {
     int logicalIndex = levelController.getCurrentLevelIndex();
     int actualMappedIndex = sessionManager.getLevelOrder().get(logicalIndex);
 
-    LoggingManager.LOGGER.info("🧭 Loading mapped level {} (logical index {})", actualMappedIndex, logicalIndex);
+      LoggingManager.LOGGER.info("🧭 Loading mapped level {} (logical index {})", actualMappedIndex,
+          logicalIndex);
 
-    myGameView = new GameView(
-        new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
-        myConfigModel,
-        logicalIndex,
-        sessionManager,
-        (gameFolderBasePath + gameFolderName + "/")
-    );
+      myGameView = new GameView(
+          new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
+          myConfigModel,
+          logicalIndex,
+          sessionManager,
+          (gameFolderPath + "/")
+      );
   }
 
   private void addGameViewActions() {
@@ -196,7 +177,6 @@ public class GamePlayerView {
   private void handleResetGame() {
     myGameState.resetTimeElapsed();
     sessionManager.resetSession(myConfigModel);
-
     refreshGame();
   }
 
@@ -210,7 +190,7 @@ public class GamePlayerView {
   }
 
   /**
-   * Returns GameView object
+   * Returns privately stored GameView.
    */
   public GameView getGameView() {
     return myGameView;

@@ -30,34 +30,18 @@ public class GameScreenView {
    *
    * @param controller     The main controller for the player view.
    * @param gameState      The game state object for this current game.
-   * @param gameFolderName name of game folder to create
+   * @param gameFolderPath name of game folder to create game from.
    * @param randomized     if levels should be randomized
    */
   public GameScreenView(MainController controller, GameStateInterface gameState,
-      String gameFolderName, boolean randomized) {
-    this(controller, gameState, gameFolderName, randomized, null);
-  }
-
-  /**
-   * Create a game screen view.
-   *
-   * @param controller     The main controller for the player view.
-   * @param gameState      The game state object for this current game.
-   * @param gameFolderName name of game folder to create
-   * @param randomized     if levels should be randomized
-   * @param baseFolderPath The base folder path for the game resources, overrides the default path
-   *                       useful for tests
-   */
-  public GameScreenView(MainController controller, GameStateInterface gameState,
-      String gameFolderName, boolean randomized, String baseFolderPath) {
+      String gameFolderPath, boolean randomized) {
     super();
     myRoot = new VBox();
     this.gameState = gameState;
     this.mainController = controller;
 
-    GamePlayerView gamePlayerView = (baseFolderPath == null)
-        ? new GamePlayerView(controller, gameState, gameFolderName, randomized)
-        : new GamePlayerView(controller, gameState, gameFolderName, randomized, baseFolderPath);
+    GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState, gameFolderPath,
+        randomized);
     GameView gameView = gamePlayerView.getGameView();
 
     hudView = new HudView(
@@ -67,7 +51,7 @@ public class GameScreenView {
     );
 
     myRoot.getChildren().addAll(hudView, gamePlayerView.getPane());
-    myRoot.getStyleClass().add("game-screen-view");
+    myRoot.getStyleClass().add("root");
     myRoot.setPrefSize(WIDTH, HEIGHT);
 
     // Store initial values

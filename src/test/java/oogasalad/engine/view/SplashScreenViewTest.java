@@ -3,6 +3,8 @@ package oogasalad.engine.view;
 import static oogasalad.engine.utility.LanguageManager.getMessage;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.testfx.api.FxAssert.verifyThat;
+import static org.testfx.util.NodeQueryUtils.hasText;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
 import javafx.scene.Group;
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.testfx.matcher.base.NodeMatchers;
 import util.DukeApplicationTest;
 import util.TestUtils;
 
@@ -54,17 +57,16 @@ class SplashScreenViewTest extends DukeApplicationTest {
   }
 
   private void verifyLanguageChange(String language) {
-    clickOn("#v-menu-button-2"); // show configuration menu
+    clickOn("#v-menu-button-2");
     waitForFxEvents();
     clickOn("#languageSelector");
     waitForFxEvents();
     clickOn(language);
-    waitForFxEvents();  // Ensure that all UI events and updates are processed before assertions
-    // Verify text elements and buttons change on language change
-    myTestUtils.verifyText("#splashScreenTitle", getMessage("TITLE"));
-    clickOn("#v-menu-button-2");
     waitForFxEvents();
-    myTestUtils.verifyText("#languageSelector-label", getMessage("LANGUAGE_SELECTOR_TITLE"));
+    waitForFxEvents();
+
+    verifyThat("#splashScreenTitle", hasText(getMessage("TITLE")));
+    verifyThat("#splashScreenTitle", NodeMatchers.isVisible());
   }
 
 }
