@@ -152,7 +152,7 @@ public class SpawnEventDialog extends Stage {
     Map<String, Object> map = new HashMap<>();
     for (Node node : paramBox.getChildren()) {
       if (node instanceof TextField field && PARAM_AMOUNT.equals(field.getUserData())) {
-        map.put(PARAM_AMOUNT, Integer.parseInt(field.getText()));
+        map.put(PARAM_AMOUNT, Double.parseDouble(field.getText()));
       }
     }
     return map;
