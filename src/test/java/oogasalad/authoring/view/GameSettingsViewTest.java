@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.HashSet;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
@@ -37,7 +38,7 @@ public class GameSettingsViewTest extends DukeApplicationTest {
     mockModel = mock(AuthoringModel.class);
 
     defaultSettings = new SettingsRecord(1.0, 3, 100, new SurviveForTimeConditionRecord(5),
-        new LivesBasedConditionRecord());
+        new LivesBasedConditionRecord(), new HashSet<>());
     when(mockController.getModel()).thenReturn(mockModel);
     when(mockModel.getDefaultSettings()).thenReturn(defaultSettings);
 
