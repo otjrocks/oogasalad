@@ -14,11 +14,10 @@
       },
       "controlConfig": {
         "controlStrategy": "Target",
-        "pathFindingStrategy": "Greedy",
+        "pathFindingStrategy": "Bfs",
         "targetCalculationConfig": {
-          "targetCalculationStrategy": "TargetLocation",
-          "targetX": 14,
-          "targetY": 14
+          "targetCalculationStrategy": "TargetEntity",
+          "targetType": "Dot"
         }
       },
       "movementSpeed": 1.5
