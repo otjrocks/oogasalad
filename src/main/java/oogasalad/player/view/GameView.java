@@ -151,8 +151,8 @@ public class GameView {
     String messageKey = determineEndMessageKey(gameWon, isFinalLevel);
     endLabel.setText(LanguageManager.getMessage(messageKey));
 
-    configureButtonVisibility(gameWon, isFinalLevel);
     sessionManager.updateHighScore(myGameContext.gameState().getHighScore());
+    configureButtonVisibility(gameWon, isFinalLevel);
 
     if (gameWon && !isFinalLevel) {
       pendingLevelAdvance = true; // 🚀 Mark that we have won but not yet advanced
