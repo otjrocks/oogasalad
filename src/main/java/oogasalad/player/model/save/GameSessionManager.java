@@ -103,7 +103,7 @@ public class GameSessionManager {
    *
    * @param newHighScore The new potential high score.
    */
-  public void setHighScore(int newHighScore) {
+  public void updateHighScore(int newHighScore) {
     if (newHighScore > saveConfig.highScore()) {
       saveConfig = new SaveConfigRecord(
           saveConfig.saveName(),

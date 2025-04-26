@@ -141,6 +141,13 @@ public class GameState implements GameStateInterface {
   }
 
   @Override
+  public void updateHighScore(int highScore) {
+    if (this.highScore < highScore) {
+      this.highScore = highScore;
+    }
+  }
+
+  @Override
   public void setLives(int lives) {
     this.lives = lives;
   }

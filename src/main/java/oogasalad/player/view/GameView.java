@@ -41,6 +41,7 @@ public class GameView {
   private static final String END_BUTTON_STYLE = "end-button";
   private boolean pendingLevelAdvance = false;
   private final GameSessionManager sessionManager;
+  private final GameContextRecord myGameContext;
 
   /**
    * Create the game view.
@@ -53,6 +54,7 @@ public class GameView {
   public GameView(GameContextRecord gameContext, ConfigModelRecord configModel, int levelIndex,
       GameSessionManager sessionManager, String gameFolder) {
     myRoot = new StackPane();
+    myGameContext = gameContext;
     GameMapView myGameMapView = new GameMapView(gameContext, configModel, gameFolder);
     myRoot.setPrefSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
     myRoot.setMinSize(GAME_VIEW_WIDTH, GAME_VIEW_HEIGHT);
@@ -150,6 +152,7 @@ public class GameView {
     endLabel.setText(LanguageManager.getMessage(messageKey));
 
     configureButtonVisibility(gameWon, isFinalLevel);
+    sessionManager.updateHighScore(myGameContext.gameState().getHighScore());
 
     if (gameWon && !isFinalLevel) {
       pendingLevelAdvance = true; // 🚀 Mark that we have won but not yet advanced
@@ -160,7 +163,6 @@ public class GameView {
       saveFinalProgress();
     }
   }
-
 
 
   private String determineEndMessageKey(boolean gameWon, boolean isFinalLevel) {
@@ -194,8 +196,7 @@ public class GameView {
   public void setSaveAction(Runnable action) {
     try {
       saveButton.setOnAction(e -> action.run());
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       LoggingManager.LOGGER.warn("Unable to save game", e);
     }
   }
