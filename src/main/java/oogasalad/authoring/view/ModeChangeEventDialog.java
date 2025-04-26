@@ -2,6 +2,7 @@ package oogasalad.authoring.view;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javafx.geometry.Insets;
@@ -11,13 +12,16 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.model.LevelDraft;
+import oogasalad.authoring.view.util.StrategyLoader;
 import oogasalad.engine.records.config.model.ModeChangeInfo;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
 
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.view.components.FormattingUtil;
+import oogasalad.player.model.strategies.modechangeevent.ModeChangeEventStrategyInterface;
 
 /**
  * A dialog window that allows the user to configure mode change events for entities. These events
@@ -25,7 +29,12 @@ import oogasalad.engine.view.components.FormattingUtil;
  */
 public class ModeChangeEventDialog extends Stage {
 
-  private static final String TIME_CONDITION_TYPE = "time";
+
+  private static final Map<String, Set<String>> STRATEGY_PARAMETERS = Map.of(
+      "TimeElapsed", Set.of("amount")
+      // Add more here if you create new strategies
+  );
+
 
   private final LevelDraft level;
   private final Map<String, EntityTypeRecord> entityTypes;
@@ -36,6 +45,8 @@ public class ModeChangeEventDialog extends Stage {
   private final ComboBox<String> conditionTypeDropdown = new ComboBox<>();
   private final VBox conditionParamsBox = new VBox(5);
   private final TableView<ModeChangeEventRecord> table = new TableView<>();
+  private final Map<String, Class<?>> modeChangeStrategies;
+
 
   /**
    * Constructs a dialog window for editing mode change events.
@@ -65,8 +76,13 @@ public class ModeChangeEventDialog extends Stage {
 
     populateEntityTypeDropdown();
 
-    conditionTypeDropdown.getItems().add(TIME_CONDITION_TYPE);
-    conditionTypeDropdown.setValue(TIME_CONDITION_TYPE);
+    this.modeChangeStrategies = StrategyLoader.loadStrategies(
+        "oogasalad.player.model.strategies.modechangeevent",
+        ModeChangeEventStrategyInterface.class // assuming this interface exists
+    );
+
+    conditionTypeDropdown.getItems().addAll(modeChangeStrategies.keySet());
+
     conditionTypeDropdown.setOnAction(e -> renderConditionParams());
 
     renderConditionParams(); // initial
@@ -120,13 +136,23 @@ public class ModeChangeEventDialog extends Stage {
   private void renderConditionParams() {
     conditionParamsBox.getChildren().clear();
 
-    if (TIME_CONDITION_TYPE.equals(conditionTypeDropdown.getValue())) {
-      Label label = new Label(LanguageManager.getMessage("AMOUNT"));
-      TextField amountField = FormattingUtil.createTextField();
-      amountField.setId("amountField");
-      conditionParamsBox.getChildren().addAll(label, amountField);
+    String selectedStrategy = conditionTypeDropdown.getValue();
+    if (selectedStrategy == null || !STRATEGY_PARAMETERS.containsKey(selectedStrategy)) {
+      return;
+    }
+
+    Set<String> params = STRATEGY_PARAMETERS.get(selectedStrategy);
+
+    for (String param : params) {
+      Label label = new Label(param);
+      TextField field = FormattingUtil.createTextField();
+      field.setId(param);
+      conditionParamsBox.getChildren().addAll(label, field);
     }
   }
+
+
+
 
   private void addModeChangeEvent() {
     String entityTypeKey = entityTypeDropdown.getValue();
@@ -134,43 +160,37 @@ public class ModeChangeEventDialog extends Stage {
     String nextMode = nextModeDropdown.getValue();
     String conditionType = conditionTypeDropdown.getValue();
 
-    if (entityTypeKey == null || currentMode == null || nextMode == null) {
+    if (entityTypeKey == null || currentMode == null || nextMode == null || conditionType == null) {
       showAlert(LanguageManager.getMessage("MUST_FILL_OUT_FIELDS"));
       return;
     }
 
     Map<String, Object> params = new HashMap<>();
-    if (TIME_CONDITION_TYPE.equals(conditionType)) {
-      TextField amountField = (TextField) conditionParamsBox.lookup("#amountField");
-      try {
-        int amount = Integer.parseInt(amountField.getText());
-        params.put("amount", amount);
-      } catch (NumberFormatException e) {
-        showAlert(LanguageManager.getMessage("MUST_BE_A_NUMBER"));
-        return;
-      }
+    Set<String> expectedParams = STRATEGY_PARAMETERS.getOrDefault(conditionType, Set.of());
+
+    for (String paramName : expectedParams) {
+      TextField field = (TextField) conditionParamsBox.lookup("#" + paramName);
+      if (field == null) continue;
+
+      String raw = field.getText();
+      params.put(paramName, raw); // always store as string (consistent with how your strategies parse)
     }
 
     ConditionRecord condition = new ConditionRecord(conditionType, params);
     EntityTypeRecord entityType = entityTypes.get(entityTypeKey);
 
     ModeChangeEventRecord event = new ModeChangeEventRecord(
-        new EntityTypeRecord(
-            entityType.type(),
-            Collections.emptyMap(),
-            Collections.emptyList()
-        ),
-        new ModeChangeInfo(
-            currentMode,
-            nextMode,
-            999999999,
-            1),
+        new EntityTypeRecord(entityType.type(), Collections.emptyMap(), Collections.emptyList()),
+        new ModeChangeInfo(currentMode, nextMode, 999999999, 1),
         condition
     );
 
     level.getModeChangeEvents().add(event);
     refreshTable();
   }
+
+
+
 
   private void refreshTable() {
     table.getItems().setAll(level.getModeChangeEvents());

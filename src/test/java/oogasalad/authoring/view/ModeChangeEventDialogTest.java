@@ -63,7 +63,7 @@ public class ModeChangeEventDialogTest extends DukeApplicationTest {
     select(entityBox, "Ghost");
     select(currentModeBox, "chase");
     select(nextModeBox, "scatter");
-    select(conditionBox, "time");
+    select(conditionBox, "TimeElapsed");
 
     // Enter amount in first visible text field (time amount)
     TextField amountField = lookup(".text-field").query();
@@ -76,12 +76,12 @@ public class ModeChangeEventDialogTest extends DukeApplicationTest {
     TableView<ModeChangeEventRecord> table = lookup(".table-view").query();
     assertEquals(1, table.getItems().size());
 
-    ModeChangeEventRecord event = table.getItems().get(0);
+    ModeChangeEventRecord event = table.getItems().getFirst();
     assertEquals("Ghost", event.entityType().type());
     assertEquals("chase", event.modeChangeInfo().originalMode());
     assertEquals("scatter", event.modeChangeInfo().transitionMode());
-    assertEquals("time", event.changeCondition().type());
-    assertEquals(10, event.changeCondition().parameters().get("amount"));
+    assertEquals("TimeElapsed", event.changeCondition().type());
+    assertEquals("10", event.changeCondition().parameters().get("amount"));
   }
 
   private ModeConfigRecord dummyMode(String name) {
