@@ -178,7 +178,7 @@ Label, Text {
   -fx-border-color: -fx-secondary;
   -fx-border-width: 2px;
   -fx-font-family: "Press Start 2P";
-  -fx-font-size: 14px;
+  -fx-font-size: 10px;
   -fx-padding: 5px 10px;
 }
 
@@ -600,4 +600,8 @@ Label, Text {
 
 .table-row-cell:hover, .table-row-cell:selected {
   -fx-background-color: -fx-highlight;
+}
+
+.game-selector-view {
+  -fx-background-color: -fx-primary;
 }
