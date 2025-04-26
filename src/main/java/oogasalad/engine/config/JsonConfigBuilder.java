@@ -16,6 +16,7 @@ import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
+import oogasalad.player.model.enums.CheatType;
 
 /**
  * Utility class for converting the internal AuthoringModel data structures into serializable JSON
@@ -58,6 +59,14 @@ public class JsonConfigBuilder {
         ConditionSerializer.serializeFlat(model.getDefaultSettings().winCondition(), mapper));
     defaultSettings.set("loseCondition",
         ConditionSerializer.serializeFlat(model.getDefaultSettings().loseCondition(), mapper));
+
+    ArrayNode cheatTypesArray = mapper.createArrayNode();
+    for (CheatType cheatType : model.getDefaultSettings().cheatTypes()) {
+      cheatTypesArray.add(cheatType.name());
+    }
+    defaultSettings.set("cheatTypes", cheatTypesArray);
+
+
 
     // === levels ===
     ArrayNode levels = root.putArray("levels");

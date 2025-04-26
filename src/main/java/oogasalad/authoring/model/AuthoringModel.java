@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,8 @@ public class AuthoringModel {
         3,                                      // Default starting lives
         0,                                      // Default initial score
         new SurviveForTimeConditionRecord(5),   // Default win condition - survive for 5 seconds
-        new LivesBasedConditionRecord()         // Default lose condition
+        new LivesBasedConditionRecord(),         // Default lose condition
+        new HashSet<>()
     );
   }
 
