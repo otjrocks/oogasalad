@@ -76,6 +76,18 @@ Label, Text {
 }
 
 /* Button Formatting */
+.button {
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+  -fx-background-radius: 2px;
+  -fx-border-radius: 2px;
+  -fx-font-family: "Inter";
+  -fx-text-alignment: center;
+  -fx-font-size: 12px;
+  -fx-padding: 7px 9px;
+}
 
 .small-button {
   -fx-font-size: 10px;
@@ -106,6 +118,7 @@ Label, Text {
   -fx-max-width: 30px;
   -fx-max-height: 30px;
   -fx-cursor: hand;
+  -fx-border-width: 0px;
 }
 
 .icon-button:hover {
@@ -236,7 +249,7 @@ Label, Text {
 /* selector */
 .selector-container {
   -fx-alignment: center;
-  -fx-padding: 25px 5px 10px 5px;
+  -fx-padding: 7px 9px;
 }
 
 .combo-box {
