@@ -41,11 +41,28 @@ public class GamePlayerView {
   private GameSessionManager sessionManager;
   private LevelController levelController;
 
+  /**
+   * Constructor for GamePlayerView that contains
+   *
+   * @param controller represents the main controller object
+   * @param gameState holds information on information that may be updated
+   * @param gameFolderName name of file
+   * @param randomized demonstrates whether the order of the levels is randomized
+   */
   public GamePlayerView(MainController controller, GameStateInterface gameState,
       String gameFolderName, boolean randomized) {
     this(controller, gameState, gameFolderName, randomized, "data/games/");
   }
 
+  /**
+   * Constructor for GamePlayerView that contains
+   *
+   * @param controller represents the main controller object
+   * @param gameState holds information on information that may be updated
+   * @param gameFolderName name of file
+   * @param randomized demonstrates whether the order of the levels is randomized
+   * @param customBasePath gives a base path for the other extensions to follow
+   */
   public GamePlayerView(MainController controller, GameStateInterface gameState,
       String gameFolderName, boolean randomized, String customBasePath) {
     myPane = new StackPane();
@@ -63,6 +80,9 @@ public class GamePlayerView {
     initializeGame();
   }
 
+  /**
+   * Returns pane javafx object.
+   */
   public StackPane getPane() {
     return myPane;
   }
@@ -189,6 +209,9 @@ public class GamePlayerView {
     loadGameViewFromSession();
   }
 
+  /**
+   * Returns GameView object
+   */
   public GameView getGameView() {
     return myGameView;
   }

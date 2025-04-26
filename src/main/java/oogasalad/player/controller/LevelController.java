@@ -13,8 +13,9 @@ import oogasalad.player.model.save.GameSessionManager;
 
 /**
  * A controller that is used to progress through levels of the game.
- *
  * Handles level order and state independently after loading.
+ *
+ * @author Luke Fu
  */
 public class LevelController {
 
@@ -40,7 +41,9 @@ public class LevelController {
       Collections.shuffle(myLevelOrder);
     }
   }
-
+  /**
+   * Creates current game map and checks if map is out of bounds.
+   */
   public GameMapInterface getCurrentLevelMap() {
     if (myLevelIndex >= myConfigModel.levels().size()) {
       LoggingManager.LOGGER.info("Requested non-existent level.");
@@ -56,22 +59,37 @@ public class LevelController {
     }
   }
 
+  /**
+   * Moves the level up by one
+   */
   public void incrementLevel() {
     myLevelIndex++;
   }
 
+  /**
+   * Resets level count to 0
+   */
   public void resetLevels() {
     myLevelIndex = 0;
   }
 
+  /**
+   * Returns current level index
+   */
   public int getCurrentLevelIndex() {
     return myLevelIndex;
   }
 
+  /**
+   * Boolean to determine if there is a next level.
+   */
   public boolean hasNextLevel() {
     return myLevelIndex + 1 < myLevelOrder.size();
   }
 
+  /**
+   * Returns the current mapped level index.
+   */
   public int getMappedLevelIndex() {
     int mappedIndex = myLevelOrder.get(myLevelIndex);
     LoggingManager.LOGGER.info("Logical level {} mapped to actual level {}", myLevelIndex, mappedIndex);
