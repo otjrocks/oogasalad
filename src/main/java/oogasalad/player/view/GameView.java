@@ -192,7 +192,12 @@ public class GameView {
    * @param action a {@code Runnable} representing the restart behavior
    */
   public void setSaveAction(Runnable action) {
-    saveButton.setOnAction(e -> action.run());
+    try {
+      saveButton.setOnAction(e -> action.run());
+    }
+    catch (Exception e) {
+      LoggingManager.LOGGER.warn("Unable to save game", e);
+    }
   }
 
   /**
@@ -207,13 +212,12 @@ public class GameView {
    */
   private void saveFinalProgress() {
     try {
-      sessionManager.save(); // 💾 Save session (current level, final score, high score)
+      sessionManager.save(); // 💾 Save session
       LoggingManager.LOGGER.info("💾 Final progress saved after game over or game win!");
     } catch (Exception e) {
       LoggingManager.LOGGER.warn("❗ Failed to save final progress: {}", e.getMessage());
     }
   }
-
 
   /**
    * Sets the action to be executed when the reset button is clicked.
