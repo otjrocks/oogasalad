@@ -25,6 +25,17 @@ public class LevelController {
   private final List<Integer> myLevelOrder;
   private final GameSessionManager sessionManager;
 
+  /**
+   * Constructs a LevelController to manage the progression of game levels.
+   * Initializes the level order based on the provided game configuration,
+   * and sets the starting level based on the current session's saved progress.
+   * If randomization is enabled, the level order will be shuffled.
+   *
+   * @param mainController the main controller handling overall game input and management
+   * @param configModel the parsed configuration model containing level and settings data
+   * @param randomized true if the level order should be randomized, false otherwise
+   * @param sessionManager the manager responsible for tracking and saving session progress
+   */
   public LevelController(MainController mainController, ConfigModelRecord configModel,
       boolean randomized, GameSessionManager sessionManager) {
     myMainController = mainController;
