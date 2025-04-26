@@ -58,7 +58,9 @@ public class GameSettingsView {
     scrollPane.setFitToWidth(true);
     scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+    scrollPane.setPrefViewportHeight(200); // limit height to a compact size like before
     scrollPane.getStyleClass().add("game-settings-scroll-pane");
+
 
     contentBox = new VBox(10);
     contentBox.setPadding(new Insets(5));

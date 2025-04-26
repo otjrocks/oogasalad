@@ -2,7 +2,7 @@ package oogasalad.engine.records.config.model.wincondition;
 
 import java.util.Optional;
 import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
-import oogasalad.player.model.strategies.gameoutcome.ScoreBasedOutcomeStrategy;
+import oogasalad.player.model.strategies.gameoutcome.TimeBasedOutcomeStrategy;
 
 /**
  * A record that encapsulates information about the survive for time win condition.
@@ -18,7 +18,7 @@ public record SurviveForTimeConditionRecord(int amount) implements WinConditionI
    */
   @Override
   public GameOutcomeStrategyInterface toStrategy() {
-    return new ScoreBasedOutcomeStrategy(amount);
+    return new TimeBasedOutcomeStrategy(amount);
   }
 
   @Override
