@@ -3,6 +3,7 @@ package oogasalad.player.view;
 import static oogasalad.engine.utility.constants.GameConfig.WIDTH;
 
 import java.io.IOException;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
@@ -12,6 +13,7 @@ import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.controller.LevelController;
 import oogasalad.player.model.GameStateInterface;
+import oogasalad.player.model.exceptions.SaveFileException;
 import oogasalad.player.model.save.GameSessionManager;
 
 /**
@@ -31,6 +33,7 @@ public class GamePlayerView {
   private GameView myGameView;
   private ConfigModelRecord myConfigModel = null;
   private final GameSessionManager sessionManager;
+  private LevelController levelController;
 
   /**
    * Constructs a GamePlayerView object that represents the visual interface for the game player.
@@ -47,7 +50,7 @@ public class GamePlayerView {
     myGameState = gameState;
     this.isRandomized = randomized;
     this.gameFolderPath = gameFolderPath;
-    this.sessionManager = new GameSessionManager(this.gameFolderPath, "saveConfig");
+    this.sessionManager = new GameSessionManager(this.gameFolderPath, extractFolderName(gameFolderPath) + "_Save");
 
     myPane.setPrefWidth(WIDTH);
     myPane.getStyleClass().add("game-player-view");
@@ -69,9 +72,8 @@ public class GamePlayerView {
     loadOrCreateSession();
     updateGameStateFromSession();
 
-    LevelController levelController = new LevelController(myMainController, myConfigModel,
-        isRandomized, sessionManager);
-    loadGameViewFromSession(levelController);
+    levelController = new LevelController(myMainController, myConfigModel, isRandomized, sessionManager);
+    loadGameViewFromSession();
   }
 
   private void loadOrCreateSession() {
@@ -86,7 +88,7 @@ public class GamePlayerView {
 
   private void updateGameStateFromSession() {
     myGameState.resetState();
-    myGameState.updateLives(sessionManager.getLives());
+    myGameState.setLives(sessionManager.getLives());
     myGameState.updateScore(sessionManager.getCurrentScore());
   }
 
@@ -99,49 +101,84 @@ public class GamePlayerView {
     }
   }
 
-  private void loadGameViewFromSession(LevelController levelController) {
-    myPane.getChildren().removeIf(node -> node == myGameView.getRoot()); // Clear old GameView
-
+  private void loadGameViewFromSession() {
+    clearPreviousGameView();
     if (levelController.getCurrentLevelMap() != null) {
-      int logicalIndex = sessionManager.getCurrentLevel();
-      int actualMappedIndex = sessionManager.getLevelOrder().get(logicalIndex);
-
-      LoggingManager.LOGGER.info("🧭 Loading mapped level {} (logical index {})", actualMappedIndex,
-          logicalIndex);
-
-      myGameView = new GameView(
-          new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
-          myConfigModel,
-          logicalIndex,
-          sessionManager,
-          (gameFolderPath + "/")
-      );
-
-      myGameView.setNextLevelAction(this::handleNextLevel);
-      myGameView.setResetAction(this::handleResetGame);
-
-      myPane.getChildren().add(myGameView.getRoot());
+      initializeGameView();
+      addGameViewActions();
+      myPane.getChildren().add(buildFullView(myGameView.getRoot()));
     }
   }
 
-  private void handleNextLevel() {
-    if (sessionManager.getCurrentLevel() + 1 < sessionManager.getLevelOrder().size()) {
-      sessionManager.advanceLevel(myGameState.getScore());
+  private void clearPreviousGameView() {
+    if (myGameView != null) {
+      myPane.getChildren().remove(myGameView.getRoot());
+    }
+  }
 
-      try {
-        sessionManager.loadExistingSession();
-        LoggingManager.LOGGER.info("📂 Reloaded session after advancing to level {}",
-            sessionManager.getCurrentLevel());
-      } catch (IOException e) {
-        LoggingManager.LOGGER.warn("Failed to reload session after level advance", e);
+  private void initializeGameView() {
+    int logicalIndex = levelController.getCurrentLevelIndex();
+    int actualMappedIndex = sessionManager.getLevelOrder().get(logicalIndex);
+
+    LoggingManager.LOGGER.info("🧭 Loading mapped level {} (logical index {})", actualMappedIndex,
+        logicalIndex);
+
+    myGameView = new GameView(
+        new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
+        myConfigModel,
+        logicalIndex,
+        sessionManager,
+        (gameFolderPath + "/")
+    );
+  }
+
+  private void addGameViewActions() {
+    myGameView.setNextLevelAction(this::handleNextLevel);
+    myGameView.setResetAction(this::handleResetGame);
+    myGameView.setSaveAction(this::handleSaveGame);
+  }
+
+  private String extractFolderName(String path) {
+    String[] parts = path.split("/");
+    return parts[parts.length - 1];
+  }
+
+
+  private void handleSaveGame() {
+    try {
+      if (myGameView.isPendingLevelAdvance()) {
+        sessionManager.advanceLevel(myGameState.getScore());
+        LoggingManager.LOGGER.info("🚀 Level won: saving with next level progress!");
       }
+      sessionManager.save();
+      LoggingManager.LOGGER.info("💾 Game saved successfully!");
+    } catch (SaveFileException e) {
+      LoggingManager.LOGGER.warn("Failed to save game progress: {}", e.getMessage());
+    }
+  }
+
+  private BorderPane buildFullView(StackPane gameViewRoot) {
+    BorderPane container = new BorderPane();
+    container.setCenter(gameViewRoot);
+
+    return container;
+  }
+
+  private void saveProgress() {
+    sessionManager.save();
+    LoggingManager.LOGGER.info("💾 Manual Save triggered by player");
+  }
+
+  private void handleNextLevel() {
+    if (levelController.hasNextLevel()) {
+      levelController.incrementLevel();
+      sessionManager.advanceLevel(myGameState.getScore());
 
       refreshGame();
     } else {
       LoggingManager.LOGGER.info("🎉 All levels complete — cannot advance further.");
     }
   }
-
 
   private void handleResetGame() {
     myGameState.resetTimeElapsed();
@@ -154,9 +191,8 @@ public class GamePlayerView {
 
     updateGameStateFromSession();
 
-    LevelController newLevelController = new LevelController(myMainController, myConfigModel,
-        isRandomized, sessionManager);
-    loadGameViewFromSession(newLevelController);
+    levelController = new LevelController(myMainController, myConfigModel, isRandomized, sessionManager);
+    loadGameViewFromSession();
   }
 
   /**

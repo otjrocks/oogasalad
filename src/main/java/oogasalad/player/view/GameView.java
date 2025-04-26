@@ -37,7 +37,9 @@ public class GameView {
   private final Label endLabel = new Label();
   private final Button nextLevelButton = new Button();
   private final Button resetButton = new Button();
+  private final Button saveButton = new Button();
   private static final String END_BUTTON_STYLE = "end-button";
+  private boolean pendingLevelAdvance = false;
   private final GameSessionManager sessionManager;
 
   /**
@@ -127,7 +129,12 @@ public class GameView {
 
     resetButton.setId("resetButton");
     configureEndNode(resetButton, END_BUTTON_STYLE, LanguageManager.getMessage("RESET_GAME"));
+    saveButton.setFocusTraversable(Boolean.FALSE);
+    saveButton.setId("saveButton");
+    configureEndNode(saveButton, "save-button", LanguageManager.getMessage("SAVE_GAME"));
+    saveButton.setFocusTraversable(Boolean.FALSE);
   }
+
 
   private void configureEndNode(Node node, String styleClass, String text) {
     node.setVisible(false);
@@ -143,7 +150,18 @@ public class GameView {
     endLabel.setText(LanguageManager.getMessage(messageKey));
 
     configureButtonVisibility(gameWon, isFinalLevel);
+
+    if (gameWon && !isFinalLevel) {
+      pendingLevelAdvance = true; // 🚀 Mark that we have won but not yet advanced
+    }
+
+    if (!gameWon || isFinalLevel) {
+      // 🚨 Game is either over OR fully won
+      saveFinalProgress();
+    }
   }
+
+
 
   private String determineEndMessageKey(boolean gameWon, boolean isFinalLevel) {
     if (!gameWon) {
@@ -156,6 +174,7 @@ public class GameView {
     endLabel.setVisible(true);
     nextLevelButton.setVisible(gameWon && !isFinalLevel);
     resetButton.setVisible(!gameWon || isFinalLevel);
+    saveButton.setVisible(gameWon && !isFinalLevel);
   }
 
   /**
@@ -165,6 +184,39 @@ public class GameView {
    */
   public void setNextLevelAction(Runnable action) {
     nextLevelButton.setOnAction(e -> action.run());
+  }
+
+  /**
+   * Sets the action to be executed when the save button is clicked.
+   *
+   * @param action a {@code Runnable} representing the restart behavior
+   */
+  public void setSaveAction(Runnable action) {
+    try {
+      saveButton.setOnAction(e -> action.run());
+    }
+    catch (Exception e) {
+      LoggingManager.LOGGER.warn("Unable to save game", e);
+    }
+  }
+
+  /**
+   * Returns if the level is pending advance
+   */
+  public boolean isPendingLevelAdvance() {
+    return pendingLevelAdvance;
+  }
+
+  /**
+   * Saves progress whenever game ends
+   */
+  private void saveFinalProgress() {
+    try {
+      sessionManager.save(); // 💾 Save session
+      LoggingManager.LOGGER.info("💾 Final progress saved after game over or game win!");
+    } catch (Exception e) {
+      LoggingManager.LOGGER.warn("❗ Failed to save final progress: {}", e.getMessage());
+    }
   }
 
   /**

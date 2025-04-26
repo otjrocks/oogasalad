@@ -1,12 +1,9 @@
 package oogasalad.player.controller;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import oogasalad.engine.config.JsonConfigSaver;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.utility.LoggingManager;
@@ -16,8 +13,9 @@ import oogasalad.player.model.save.GameSessionManager;
 
 /**
  * A controller that is used to progress through levels of the game.
+ * Handles level order and state independently after loading.
  *
- * @author Owen Jennings
+ * @author Luke Fu
  */
 public class LevelController {
 
@@ -27,20 +25,23 @@ public class LevelController {
   private final List<Integer> myLevelOrder;
   private final GameSessionManager sessionManager;
 
-
   /**
-   * Create a level controller with the current config model.
+   * Constructs a LevelController to manage the progression of game levels.
+   * Initializes the level order based on the provided game configuration,
+   * and sets the starting level based on the current session's saved progress.
+   * If randomization is enabled, the level order will be shuffled.
    *
-   * @param mainController The main controller for this program.
-   * @param configModel    The config model for this level controller.
-   * @param randomized     If it's randomized, shuffle the order of the levels
+   * @param mainController the main controller handling overall game input and management
+   * @param configModel the parsed configuration model containing level and settings data
+   * @param randomized true if the level order should be randomized, false otherwise
+   * @param sessionManager the manager responsible for tracking and saving session progress
    */
   public LevelController(MainController mainController, ConfigModelRecord configModel,
       boolean randomized, GameSessionManager sessionManager) {
     myMainController = mainController;
     myConfigModel = configModel;
-    myLevelIndex = configModel.currentLevelIndex();
     this.sessionManager = sessionManager;
+    this.myLevelIndex = sessionManager.getCurrentLevel(); // Start from saved level, not configModel directly
 
     myLevelOrder = new ArrayList<>();
     for (int i = 0; i < myConfigModel.levels().size(); i++) {
@@ -51,72 +52,58 @@ public class LevelController {
       Collections.shuffle(myLevelOrder);
     }
   }
-
   /**
-   * Get the current level map. Returns null if the level does not exist
-   *
-   * @return The current level map or null if the level does not exist
+   * Creates current game map and checks if map is out of bounds.
    */
   public GameMapInterface getCurrentLevelMap() {
-    if (myLevelIndex > myConfigModel.levels().size() - 1) { // you have completed last level.
-      LoggingManager.LOGGER.info(
-          "You have requested to get the level map for a nonexistent level.");
+    if (myLevelIndex >= myConfigModel.levels().size()) {
+      LoggingManager.LOGGER.info("Requested non-existent level.");
       return null;
     }
-    GameMapInterface gameMap = null;
+
     try {
-      int mappedIndex = sessionManager.getLevelOrder().get(myLevelIndex);
-      gameMap = GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel, mappedIndex);
+      int mappedIndex = myLevelOrder.get(myLevelIndex);
+      return GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel, mappedIndex);
     } catch (InvalidPositionException e) {
-      LoggingManager.LOGGER.warn("Failed to create or populate GameMap: ", e);
+      LoggingManager.LOGGER.warn("Failed to create GameMap: ", e);
+      return null;
     }
-    return gameMap;
   }
 
   /**
-   * Increment the current level.
+   * Moves the level up by one
    */
-  public void incrementAndUpdateConfig(int currentScore) {
+  public void incrementLevel() {
     myLevelIndex++;
-    sessionManager.advanceLevel(currentScore); // Save score + index + highscore
   }
 
   /**
-   * Resets the current level back to 0 and updates the config file.
+   * Resets level count to 0
    */
-  public void resetAndUpdateConfig() {
+  public void resetLevels() {
     myLevelIndex = 0;
-    sessionManager.resetSession(myConfigModel);
   }
 
   /**
-   * Get the current level index.
-   *
-   * @return The int representing the current level 0-indexed.
+   * Returns current level index
    */
   public int getCurrentLevelIndex() {
     return myLevelIndex;
   }
 
   /**
-   * Get the current level loaded
-   *
-   * @return The int representing the current level loaded 0-indexed.
-   */
-  public int getCurrentLevel() {
-    int mappedIndex = sessionManager.getLevelOrder().get(myLevelIndex);
-    LoggingManager.LOGGER.info("Loading level index " + myLevelIndex + " mapped to actual index " + mappedIndex);
-    return mappedIndex;
-  }
-
-
-  /**
-   * Gets if there are any levels remaining
-   *
-   * @return Whether a next level exists
+   * Boolean to determine if there is a next level.
    */
   public boolean hasNextLevel() {
-    return myLevelIndex + 1 < myConfigModel.levels().size();
+    return myLevelIndex + 1 < myLevelOrder.size();
   }
 
+  /**
+   * Returns the current mapped level index.
+   */
+  public int getMappedLevelIndex() {
+    int mappedIndex = myLevelOrder.get(myLevelIndex);
+    LoggingManager.LOGGER.info("Logical level {} mapped to actual level {}", myLevelIndex, mappedIndex);
+    return mappedIndex;
+  }
 }

@@ -63,6 +63,11 @@ public interface GameStateInterface {
   void resetState();
 
   /**
+   * Sets the lives to a specific value
+   */
+  void setLives(int lives);
+
+  /**
    * Saves the current game progress to a file.
    *
    * @param saveName the name of the save file.
