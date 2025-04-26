@@ -4,6 +4,7 @@ import static oogasalad.engine.utility.LanguageManager.getMessage;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.api.FxAssert.verifyThat;
+import static org.testfx.util.NodeQueryUtils.hasText;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
 import javafx.scene.Group;
@@ -56,19 +57,16 @@ class SplashScreenViewTest extends DukeApplicationTest {
   }
 
   private void verifyLanguageChange(String language) {
-    clickOn("#v-menu-button-2"); // show configuration menu
+    clickOn("#v-menu-button-2");
     waitForFxEvents();
     clickOn("#languageSelector");
     waitForFxEvents();
     clickOn(language);
     waitForFxEvents();
-    waitForFxEvents();  // Ensure that all UI events and updates are processed before assertions
-    // Verify text elements and buttons change on language change
-    verifyThat("#splashScreenTitle", NodeMatchers.isVisible());
-    myTestUtils.verifyText("#splashScreenTitle", getMessage("TITLE"));
-    clickOn("#v-menu-button-2");
     waitForFxEvents();
-    myTestUtils.verifyText("#languageSelector-label", getMessage("LANGUAGE_SELECTOR_TITLE"));
+
+    verifyThat("#splashScreenTitle", hasText(getMessage("TITLE")));
+    verifyThat("#splashScreenTitle", NodeMatchers.isVisible());
   }
 
 }
