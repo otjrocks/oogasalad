@@ -133,6 +133,7 @@ public class MainController {
   public void hideAuthoringView() {
     if (myRoot.getChildren().contains(myAuthoringView.getNode())) {
       myRoot.getChildren().remove(myAuthoringView.getNode());
+      myAuthoringView = null;
     } else {
       LoggingManager.LOGGER.warn(
           "Attempted to hide the authoring environment, even though it wasn't being displayed.");
