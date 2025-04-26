@@ -104,6 +104,7 @@ public class MainController {
       GameScreenView myGameScreenView = new GameScreenView(this, myGameState, gameFolderName,
           randomized);
       myInputManager.getRoot().getChildren().add(myGameScreenView.getRoot());
+      myInputManager.setGameScreenView(myGameScreenView);
     } catch (Exception e) {
       LoggingManager.LOGGER.warn("Unable to load game player view for folder: {}", gameFolderName);
       LoggingManager.LOGGER.warn(e.getMessage());

@@ -28,11 +28,12 @@ public class GameLoopController {
 
   private AnimationTimer myGameLoop;
   private final GameContextRecord myGameContext;
+  private final GameInputManager myGameInputManager;
   private final GameMapView myGameMapView;
   private final ParsedLevelRecord myLevel;
   private final Map<SpawnEventRecord, Entity> activeSpawnedEntities = new HashMap<>();
   private final ConfigModelRecord myConfig;
-  private final double myGameSpeedMultiplier;
+  private double myGameSpeedMultiplier;
   private double myTotalElapsedTime = 0;
 
 
@@ -50,6 +51,7 @@ public class GameLoopController {
       ParsedLevelRecord level) {
     myGameContext = gameContext;
     myGameMapView = gameMapView;
+    myGameInputManager = gameContext.inputManager();
     myLevel = level;
     myGameSpeedMultiplier = gameConfig.settings().gameSpeed();
     myConfig = gameConfig;
@@ -114,6 +116,7 @@ public class GameLoopController {
     //Updates the game map and entity positions
     myGameContext.gameMap().update();
     myGameMapView.update();
+    checkCheatKeys();
     handleModeChangeEvents();
     handleSpawnEvents();
   }
@@ -237,6 +240,28 @@ public class GameLoopController {
   public void resumeGame() {
     if (myGameLoop != null) {
       myGameLoop.start();
+    }
+  }
+
+  private void checkCheatKeys(){
+    if(myGameInputManager.shouldAddLife()){
+      myGameContext.gameState().setLives(myGameContext.gameState().getLives() + 1);
+    }
+
+    if(myGameInputManager.shouldPauseGame()){
+      pauseGame();
+    }
+
+    if(myGameInputManager.shouldGoToNextLevel()){
+      myGameContext.inputManager().getGameScreenView().getGamePlayerView().handleNextLevel();
+    }
+
+    if(myGameInputManager.shouldResetGame()){
+      myGameContext.inputManager().getGameScreenView().getGamePlayerView().handleResetGame();
+    }
+
+    if(myGameInputManager.shouldSpeedUpGame()){
+      myGameSpeedMultiplier *= 1.1;
     }
   }
 
