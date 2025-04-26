@@ -88,7 +88,7 @@ public class GamePlayerView {
 
   private void updateGameStateFromSession() {
     myGameState.resetState();
-    myGameState.updateLives(sessionManager.getLives());
+    myGameState.setLives(sessionManager.getLives());
     myGameState.updateScore(sessionManager.getCurrentScore());
   }
 

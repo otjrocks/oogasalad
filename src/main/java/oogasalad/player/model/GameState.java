@@ -129,6 +129,11 @@ public class GameState implements GameStateInterface {
     this.levelOrder = generateDefaultLevelOrder();
   }
 
+  @Override
+  public void setLives(int lives) {
+    this.lives = lives;
+  }
+
   private List<Integer> generateDefaultLevelOrder() {
     List<Integer> levels = new ArrayList<>();
     for (int i = 0; i < 10; i++) {
