@@ -11,13 +11,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.UUID;
+import javafx.stage.Stage;
 import oogasalad.authoring.model.AuthoringModel;
 import oogasalad.authoring.model.LevelDraft;
 import oogasalad.authoring.view.mainView.AuthoringView;
 import oogasalad.authoring.view.EntityPlacementView;
 import oogasalad.authoring.view.canvas.CanvasView;
+import oogasalad.authoring.view.mainView.SaveLoadManager;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.config.JsonConfigParser;
+import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.ImageConfigRecord;
@@ -45,6 +48,7 @@ public class AuthoringController {
   private final AuthoringModel model;
   private final AuthoringView view;
   private final LevelController levelController;
+  private final MainController mainController;
 
 
   private EntityTypeRecord selectedType;
@@ -55,13 +59,16 @@ public class AuthoringController {
   /**
    * Constructs an AuthoringController with the given model and view.
    *
-   * @param model the backend model managing game entities and placements
-   * @param view  the visual UI components shown to the user
+   * @param model          the backend model managing game entities and placements
+   * @param view           the visual UI components shown to the user
+   * @param mainController the main controller of the program.
    */
-  public AuthoringController(AuthoringModel model, AuthoringView view) {
+  public AuthoringController(AuthoringModel model, AuthoringView view,
+      MainController mainController) {
     this.model = model;
     this.view = view;
     this.levelController = new LevelController(model, view, this);
+    this.mainController = mainController;
   }
 
   /**
@@ -448,4 +455,19 @@ public class AuthoringController {
   }
 
 
+  /**
+   * Hide the authoring environment and show the splash screen view.
+   */
+  public void hideAuthoringEnvironment() {
+    mainController.hideAuthoringView();
+    mainController.showSplashScreen();
+  }
+
+  /**
+   * Prompt the user to save their current authoring game and then return to the splash screen.
+   */
+  public void handleExitAndSave() {
+    new SaveLoadManager(this).openSaveDialog((Stage) view.getNode().getScene().getWindow());
+    hideAuthoringEnvironment();
+  }
 }

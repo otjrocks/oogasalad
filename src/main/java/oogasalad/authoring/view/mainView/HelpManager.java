@@ -83,7 +83,7 @@ public class HelpManager {
    * viewing help contents and an "About" dialog.
    */
   private void addHelpMenu() {
-    MenuBar menuBar = (MenuBar) ((VBox) ((BorderPane) view.getNode()).getCenter()).getChildren().get(0);
+    MenuBar menuBar = (MenuBar) ((VBox) ((BorderPane) view.getNode()).getCenter()).getChildren().getFirst();
     Menu helpMenu = new Menu(LanguageManager.getMessage("HELP"));
 
     MenuItem helpContents = new MenuItem(LanguageManager.getMessage("HELP_CONTENTS"));
