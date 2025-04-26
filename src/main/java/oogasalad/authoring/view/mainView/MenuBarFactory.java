@@ -15,13 +15,13 @@ import java.io.File;
  * <p>Provides a menu containing options to save and load game configurations,
  * and wires up their corresponding event handlers.</p>
  *
- * <p>Separates menu creation logic from AuthoringView for better modularity and maintainability.</p>
+ * <p>Separates menu creation logic from AuthoringView for better modularity and
+ * maintainability.</p>
  *
+ * @author William He
  * @see SaveLoadManager
  * @see AlertUtil
  * @see AuthoringLayoutBuilder
- *
- * @author William He
  */
 public class MenuBarFactory {
 
@@ -31,7 +31,7 @@ public class MenuBarFactory {
   /**
    * Constructs a MenuBarFactory associated with the given AuthoringView and controller.
    *
-   * @param view the parent AuthoringView
+   * @param view       the parent AuthoringView
    * @param controller the AuthoringController managing application logic
    */
   public MenuBarFactory(AuthoringView view, AuthoringController controller) {
@@ -50,12 +50,33 @@ public class MenuBarFactory {
   public MenuBar createMenuBar() {
     MenuBar menuBar = new MenuBar();
     menuBar.getStyleClass().add("menu-bar");
+    Menu fileMenu = createFileMenu();
+    Menu exitMenu = createExitMenu();
+    menuBar.getMenus().addAll(fileMenu, exitMenu);
+    return menuBar;
+  }
+
+  private Menu createExitMenu() {
+    MenuItem exitItem = new MenuItem(LanguageManager.getMessage("EXIT_NORMAL"));
+    MenuItem exitAndSaveItem = new MenuItem(LanguageManager.getMessage("EXIT_AND_SAVE"));
+    exitItem.setOnAction(e -> controller.hideAuthoringEnvironment());
+    exitAndSaveItem.setOnAction(e -> controller.handleExitAndSave());
+    Menu exitMenu = new Menu(LanguageManager.getMessage("EXIT"));
+    exitMenu.getItems().addAll(exitItem, exitAndSaveItem);
+    return exitMenu;
+  }
+
+  private Menu createFileMenu() {
     Menu fileMenu = new Menu(LanguageManager.getMessage("FILE"));
 
-    MenuItem saveItem = new MenuItem(LanguageManager.getMessage("SAVE_GAME"));
-    saveItem.setOnAction(e -> new SaveLoadManager(controller).openSaveDialog(
-        (Stage) view.getNode().getScene().getWindow()));
+    MenuItem saveItem = createSaveGameItem();
+    MenuItem loadItem = createLoadGameItem();
 
+    fileMenu.getItems().addAll(saveItem, loadItem);
+    return fileMenu;
+  }
+
+  private MenuItem createLoadGameItem() {
     MenuItem loadItem = new MenuItem(LanguageManager.getMessage("LOAD_GAME"));
     loadItem.setOnAction(e -> {
       FileChooser fileChooser = new FileChooser();
@@ -71,9 +92,13 @@ public class MenuBarFactory {
         }
       }
     });
+    return loadItem;
+  }
 
-    fileMenu.getItems().addAll(saveItem, loadItem);
-    menuBar.getMenus().add(fileMenu);
-    return menuBar;
+  private MenuItem createSaveGameItem() {
+    MenuItem saveItem = new MenuItem(LanguageManager.getMessage("SAVE_GAME"));
+    saveItem.setOnAction(e -> new SaveLoadManager(controller).openSaveDialog(
+        (Stage) view.getNode().getScene().getWindow()));
+    return saveItem;
   }
 }

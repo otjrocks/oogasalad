@@ -119,11 +119,20 @@ public class MainController {
     if (myAuthoringView == null) {
       AuthoringModel model = new AuthoringModel();
       myAuthoringView = new AuthoringView();
-      AuthoringController controller = new AuthoringController(model, myAuthoringView);
+      AuthoringController controller = new AuthoringController(model, myAuthoringView, this);
       myAuthoringView.setController(controller);
     }
     if (!myInputManager.getRoot().getChildren().contains(myAuthoringView.getNode())) {
       myInputManager.getRoot().getChildren().add(myAuthoringView.getNode());
+    }
+  }
+
+  public void hideAuthoringView() {
+    if (myRoot.getChildren().contains(myAuthoringView.getNode())) {
+      myRoot.getChildren().remove(myAuthoringView.getNode());
+    } else {
+      LoggingManager.LOGGER.warn(
+          "Attempted to hide the authoring environment, even though it wasn't being displayed.");
     }
   }
 
