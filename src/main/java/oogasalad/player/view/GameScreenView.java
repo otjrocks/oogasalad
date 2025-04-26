@@ -21,6 +21,7 @@ public class GameScreenView {
   private final VBox myRoot;
   private final MainController mainController;
   private final GameStateInterface gameState;
+  private final GamePlayerView myGamePlayerView;
   private final HudView hudView;
   private int lastScore;
   private int lastLives;
@@ -40,9 +41,9 @@ public class GameScreenView {
     this.gameState = gameState;
     this.mainController = controller;
 
-    GamePlayerView gamePlayerView = new GamePlayerView(controller, gameState, gameFolderPath,
+    myGamePlayerView = new GamePlayerView(controller, gameState, gameFolderPath,
         randomized);
-    GameView gameView = gamePlayerView.getGameView();
+    GameView gameView = myGamePlayerView.getGameView();
 
     hudView = new HudView(
         gameState,
@@ -50,7 +51,7 @@ public class GameScreenView {
         this::handleReturnToMainMenu
     );
 
-    myRoot.getChildren().addAll(hudView, gamePlayerView.getPane());
+    myRoot.getChildren().addAll(hudView, myGamePlayerView.getPane());
     myRoot.getStyleClass().add("root");
     myRoot.setPrefSize(WIDTH, HEIGHT);
 
@@ -91,6 +92,13 @@ public class GameScreenView {
       lastScore = gameState.getScore();
       lastLives = gameState.getLives();
     }
+  }
+
+  /**
+   * Gets GamePlayerView for purposes of updating level and resetting game
+   */
+  public GamePlayerView getGamePlayerView() {
+    return myGamePlayerView;
   }
 
 

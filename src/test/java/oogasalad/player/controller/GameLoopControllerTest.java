@@ -8,6 +8,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
@@ -37,10 +40,11 @@ class GameLoopControllerTest extends DukeApplicationTest {
   @BeforeEach
   void setUp() {
     gameMap = Mockito.spy(new GameMap(10, 10));
+
     SettingsRecord gameSettings = new SettingsRecord(1.0, 5, 5,
         new EntityBasedConditionRecord("dot"), new LivesBasedConditionRecord());
     GameState gameState = new GameState(gameSettings);
-    GameContextRecord gameContext = new GameContextRecord(gameMap, gameState);
+    GameContextRecord gameContext = new GameContextRecord(Mockito.spy(new GameInputManager(mock(Scene.class), mock(Group.class))), gameMap, gameState);
 
     ConfigModelRecord mockConfigModel = mock(ConfigModelRecord.class);
     when(mockConfigModel.winCondition()).thenReturn(new EntityBasedConditionRecord("dot"));

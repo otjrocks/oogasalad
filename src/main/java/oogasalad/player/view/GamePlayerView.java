@@ -127,7 +127,7 @@ public class GamePlayerView {
         logicalIndex);
 
     myGameView = new GameView(
-        new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
+        new GameContextRecord(myMainController.getInputManager(), levelController.getCurrentLevelMap(), myGameState),
         myConfigModel,
         logicalIndex,
         sessionManager,
@@ -173,7 +173,10 @@ public class GamePlayerView {
     LoggingManager.LOGGER.info("💾 Manual Save triggered by player");
   }
 
-  private void handleNextLevel() {
+  /**
+   * Moves to next level if there is a next level
+   */
+  public void handleNextLevel() {
     if (levelController.hasNextLevel()) {
       levelController.incrementLevel();
       sessionManager.advanceLevel(myGameState.getScore());
@@ -185,7 +188,10 @@ public class GamePlayerView {
     }
   }
 
-  private void handleResetGame() {
+  /**
+   * Resets current game to its starting position including Game State
+   */
+  public void handleResetGame() {
     myGameState.resetTimeElapsed();
     sessionManager.resetSession(myConfigModel);
     refreshGame();

@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import oogasalad.engine.controller.MainController;
+import oogasalad.player.controller.GameInputManager;
 import oogasalad.player.controller.GameLoopController;
 import oogasalad.player.model.GameStateInterface;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,7 @@ public class GameViewTest extends DukeApplicationTest {
   public void start(Stage stage) {
     MainController mockMainController = mock(MainController.class);
     GameStateInterface mockGameState = mock(GameStateInterface.class);
+    GameInputManager mockInputManager = mock(GameInputManager.class);
 
     GamePlayerView gamePlayerView = new GamePlayerView(
         mockMainController,
@@ -34,6 +36,8 @@ public class GameViewTest extends DukeApplicationTest {
         false
     );
     gameView = gamePlayerView.getGameView();
+
+    setGameInputManagerViaReflection(mockInputManager);
 
     // 🛠 Wrap gameView.getRoot() to avoid duplicate parenting
     StackPane wrapper = new StackPane();
@@ -150,6 +154,20 @@ public class GameViewTest extends DukeApplicationTest {
       field.set(gameView, controller);
     } catch (Exception e) {
       fail("Failed to set GameLoopController: " + e.getMessage());
+    }
+  }
+
+  private void setGameInputManagerViaReflection(GameInputManager inputManager) {
+    try {
+      var field = GameView.class.getDeclaredField("myGameLoopController");
+      field.setAccessible(true);
+      GameLoopController controller = (GameLoopController) field.get(gameView);
+
+      var inputManagerField = GameLoopController.class.getDeclaredField("myGameInputManager");
+      inputManagerField.setAccessible(true);
+      inputManagerField.set(controller, inputManager);
+    } catch (Exception e) {
+      fail("Failed to set GameInputManager: " + e.getMessage());
     }
   }
 
