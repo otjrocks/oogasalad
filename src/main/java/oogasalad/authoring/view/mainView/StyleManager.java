@@ -17,6 +17,8 @@ import javafx.scene.layout.*;
  */
 public class StyleManager {
 
+  private static final String ROOT = "root";
+
   /**
    * Applies styling rules to the major sections of the AuthoringView layout.
    *
@@ -30,11 +32,11 @@ public class StyleManager {
     BorderPane mainContent = (BorderPane) fullLayout.getChildren().get(1);
     VBox rightPanel = (VBox) mainContent.getRight();
 
-    fullLayout.getStyleClass().add("root");
-    mainContent.getStyleClass().add("root");
+    fullLayout.getStyleClass().add(ROOT);
+    mainContent.getStyleClass().add(ROOT);
     rightPanel.getStyleClass().add("side-panel");
     view.getLevelSelectorView().getRoot().getStyleClass().add("side-panel");
-    view.getGameSettingsView().getNode().getStyleClass().add("root");
+    view.getGameSettingsView().getNode().getStyleClass().add(ROOT);
 
     VBox.setVgrow(rightPanel, Priority.ALWAYS);
     VBox.setVgrow(view.getGameSettingsView().getNode(), Priority.NEVER);
