@@ -152,9 +152,15 @@ public class GameView {
     configureButtonVisibility(gameWon, isFinalLevel);
 
     if (gameWon && !isFinalLevel) {
-      pendingLevelAdvance = true;
+      pendingLevelAdvance = true; // 🚀 Mark that we have won but not yet advanced
+    }
+
+    if (!gameWon || isFinalLevel) {
+      // 🚨 Game is either over OR fully won
+      saveFinalProgress();
     }
   }
+
 
 
   private String determineEndMessageKey(boolean gameWon, boolean isFinalLevel) {
@@ -195,6 +201,19 @@ public class GameView {
   public boolean isPendingLevelAdvance() {
     return pendingLevelAdvance;
   }
+
+  /**
+   * Saves progress whenever game ends
+   */
+  private void saveFinalProgress() {
+    try {
+      sessionManager.save(); // 💾 Save session (current level, final score, high score)
+      LoggingManager.LOGGER.info("💾 Final progress saved after game over or game win!");
+    } catch (Exception e) {
+      LoggingManager.LOGGER.warn("❗ Failed to save final progress: {}", e.getMessage());
+    }
+  }
+
 
   /**
    * Sets the action to be executed when the reset button is clicked.
