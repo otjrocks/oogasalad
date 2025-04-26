@@ -50,7 +50,7 @@ public class GamePlayerView {
     myGameState = gameState;
     this.isRandomized = randomized;
     this.gameFolderPath = gameFolderPath;
-    this.sessionManager = new GameSessionManager(this.gameFolderPath, "saveConfig");
+    this.sessionManager = new GameSessionManager(this.gameFolderPath, extractFolderName(gameFolderPath) + "_Save");
 
     myPane.setPrefWidth(WIDTH);
     myPane.getStyleClass().add("game-player-view");
@@ -120,16 +120,16 @@ public class GamePlayerView {
     int logicalIndex = levelController.getCurrentLevelIndex();
     int actualMappedIndex = sessionManager.getLevelOrder().get(logicalIndex);
 
-      LoggingManager.LOGGER.info("🧭 Loading mapped level {} (logical index {})", actualMappedIndex,
-          logicalIndex);
+    LoggingManager.LOGGER.info("🧭 Loading mapped level {} (logical index {})", actualMappedIndex,
+        logicalIndex);
 
-      myGameView = new GameView(
-          new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
-          myConfigModel,
-          logicalIndex,
-          sessionManager,
-          (gameFolderPath + "/")
-      );
+    myGameView = new GameView(
+        new GameContextRecord(levelController.getCurrentLevelMap(), myGameState),
+        myConfigModel,
+        logicalIndex,
+        sessionManager,
+        (gameFolderPath + "/")
+    );
   }
 
   private void addGameViewActions() {
@@ -137,6 +137,12 @@ public class GamePlayerView {
     myGameView.setResetAction(this::handleResetGame);
     myGameView.setSaveAction(this::handleSaveGame);
   }
+
+  private String extractFolderName(String path) {
+    String[] parts = path.split("/");
+    return parts[parts.length - 1];
+  }
+
 
   private void handleSaveGame() {
     try {

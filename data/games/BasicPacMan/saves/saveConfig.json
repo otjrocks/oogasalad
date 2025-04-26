@@ -1,8 +1,40 @@
 {
-  "saveName" : "saveConfig",
-  "currentLevel" : 1,
-  "totalScore" : 3640,
-  "lives" : 10,
-  "highScore" : 3640,
-  "levelOrder" : [ 0, 1 ]
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "saveName": {
+      "type": "string"
+    },
+    "currentLevel": {
+      "type": "integer"
+    },
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "lives": {
+      "type": "integer"
+    },
+    "totalScore": {
+      "type": "integer"
+    },
+    "highScore": {
+      "type": "integer"
+    },
+    "levelOrder": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    }
+  },
+  "required": [
+    "saveName",
+    "currentLevel",
+    "totalScore",
+    "lives",
+    "highScore"
+  ]
 }
