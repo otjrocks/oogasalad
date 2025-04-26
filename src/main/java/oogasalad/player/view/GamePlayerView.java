@@ -3,16 +3,20 @@ package oogasalad.player.view;
 import static oogasalad.engine.utility.constants.GameConfig.WIDTH;
 
 import java.io.IOException;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
-import oogasalad.engine.records.config.model.SaveConfigRecord;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.controller.LevelController;
 import oogasalad.player.model.GameStateInterface;
+import oogasalad.player.model.exceptions.SaveFileException;
 import oogasalad.player.model.save.GameSessionManager;
 
 /**
@@ -21,7 +25,6 @@ import oogasalad.player.model.save.GameSessionManager;
  * @author Owen Jennings
  */
 public class GamePlayerView {
-
 
   public static final String GAME_FOLDER = "data/games/";
   public static final String GAME_CONFIG_JSON = "gameConfig.json";
@@ -32,30 +35,17 @@ public class GamePlayerView {
   private final GameStateInterface myGameState;
   private final String gameFolderBasePath;
   private final boolean isRandomized;
+
   private GameView myGameView;
   private ConfigModelRecord myConfigModel = null;
   private GameSessionManager sessionManager;
+  private LevelController levelController;
 
-  /**
-   * Create the Game Player View.
-   *
-   * @param gameFolderName name of game folder to create
-   * @param randomized     if levels should be randomized
-   */
   public GamePlayerView(MainController controller, GameStateInterface gameState,
       String gameFolderName, boolean randomized) {
     this(controller, gameState, gameFolderName, randomized, "data/games/");
   }
 
-  /**
-   * Constructs a GamePlayerView object that represents the visual interface for the game player.
-   *
-   * @param controller     the main controller that manages the game logic and interactions
-   * @param gameState      the current state of the game, providing access to game data
-   * @param gameFolderName the name of the folder containing game-specific resources
-   * @param randomized     a flag indicating whether the game is randomized
-   * @param customBasePath the custom base path for game resources
-   */
   public GamePlayerView(MainController controller, GameStateInterface gameState,
       String gameFolderName, boolean randomized, String customBasePath) {
     myPane = new StackPane();
@@ -73,11 +63,6 @@ public class GamePlayerView {
     initializeGame();
   }
 
-  /**
-   * Get the root stack pane that is used to display elements in the view.
-   *
-   * @return A StackPane JavaFX object that is added to for this view.
-   */
   public StackPane getPane() {
     return myPane;
   }
@@ -87,8 +72,8 @@ public class GamePlayerView {
     loadOrCreateSession();
     updateGameStateFromSession();
 
-    LevelController levelController = new LevelController(myMainController, myConfigModel, isRandomized, sessionManager);
-    loadGameViewFromSession(levelController);
+    levelController = new LevelController(myMainController, myConfigModel, isRandomized, sessionManager);
+    loadGameViewFromSession();
   }
 
   private void loadOrCreateSession() {
@@ -116,11 +101,13 @@ public class GamePlayerView {
     }
   }
 
-  private void loadGameViewFromSession(LevelController levelController) {
-    myPane.getChildren().removeIf(node -> node == myGameView.getRoot()); // Clear old GameView
+  private void loadGameViewFromSession() {
+    if (myGameView != null) {
+      myPane.getChildren().remove(myGameView.getRoot());
+    }
 
     if (levelController.getCurrentLevelMap() != null) {
-      int logicalIndex = sessionManager.getCurrentLevel();
+      int logicalIndex = levelController.getCurrentLevelIndex();
       int actualMappedIndex = sessionManager.getLevelOrder().get(logicalIndex);
 
       LoggingManager.LOGGER.info("🧭 Loading mapped level {} (logical index {})", actualMappedIndex, logicalIndex);
@@ -135,21 +122,35 @@ public class GamePlayerView {
 
       myGameView.setNextLevelAction(this::handleNextLevel);
       myGameView.setResetAction(this::handleResetGame);
+      myGameView.setSaveAction(() -> {
+        try {
+          sessionManager.save();
+          LoggingManager.LOGGER.info("💾 Game saved successfully!");
+        } catch (SaveFileException e) {
+          LoggingManager.LOGGER.warn("Failed to save game progress: {}", e.getMessage());
+        }
+      });
 
-      myPane.getChildren().add(myGameView.getRoot());
+      myPane.getChildren().add(buildFullView(myGameView.getRoot()));
     }
   }
 
-  private void handleNextLevel() {
-    if (sessionManager.getCurrentLevel() + 1 < sessionManager.getLevelOrder().size()) {
-      sessionManager.advanceLevel(myGameState.getScore());
+  private BorderPane buildFullView(StackPane gameViewRoot) {
+    BorderPane container = new BorderPane();
+    container.setCenter(gameViewRoot);
 
-      try {
-        sessionManager.loadExistingSession();
-        LoggingManager.LOGGER.info("📂 Reloaded session after advancing to level {}", sessionManager.getCurrentLevel());
-      } catch (IOException e) {
-        LoggingManager.LOGGER.warn("Failed to reload session after level advance", e);
-      }
+    return container;
+  }
+
+  private void saveProgress() {
+    sessionManager.save();
+    LoggingManager.LOGGER.info("💾 Manual Save triggered by player");
+  }
+
+  private void handleNextLevel() {
+    if (levelController.hasNextLevel()) {
+      levelController.incrementLevel();
+      sessionManager.advanceLevel(myGameState.getScore());
 
       refreshGame();
     } else {
@@ -157,10 +158,10 @@ public class GamePlayerView {
     }
   }
 
-
   private void handleResetGame() {
     myGameState.resetTimeElapsed();
     sessionManager.resetSession(myConfigModel);
+
     refreshGame();
   }
 
@@ -169,13 +170,10 @@ public class GamePlayerView {
 
     updateGameStateFromSession();
 
-    LevelController newLevelController = new LevelController(myMainController, myConfigModel, isRandomized, sessionManager);
-    loadGameViewFromSession(newLevelController);
+    levelController = new LevelController(myMainController, myConfigModel, isRandomized, sessionManager);
+    loadGameViewFromSession();
   }
 
-  /**
-   * Returns privately stored GameView.
-   */
   public GameView getGameView() {
     return myGameView;
   }
