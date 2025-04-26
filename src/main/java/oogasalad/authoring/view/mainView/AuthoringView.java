@@ -7,7 +7,7 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.view.EntityPlacementView;
 import oogasalad.authoring.view.EntitySelectorView;
 import oogasalad.authoring.view.EntityTypeEditorView;
-import oogasalad.authoring.view.GameSettingsView;
+import oogasalad.authoring.view.gameSettings.GameSettingsView;
 import oogasalad.authoring.view.LevelSelectorView;
 import oogasalad.authoring.view.LevelSettingsView;
 import oogasalad.authoring.view.canvas.CanvasView;
