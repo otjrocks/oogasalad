@@ -86,4 +86,10 @@ public interface GameStateInterface {
    */
   void resetGameProgress();
 
+  /**
+   * Get the current game's high score.
+   *
+   * @return An int representing the game's high score.
+   */
+  int getHighScore();
 }

@@ -19,6 +19,8 @@ public class HudView extends VBox {
 
   private final Label scoreLabel;
   private final Label livesLabel;
+  private final Label highScoreLabel;
+  private int currentHighScore = -1;
 
   /**
    * Constructs HUDView according to state, game view, and runnable
@@ -26,10 +28,11 @@ public class HudView extends VBox {
   public HudView(GameStateInterface gameState, GameView gameView, Runnable onReturnToMenu) {
     super(ELEMENT_SPACING);
 
-    // Row 1: Score + Lives
+    // Row 1: Score + Lives + High Score
     scoreLabel = new Label();
     livesLabel = new Label();
-    HBox statsRow = new HBox(ELEMENT_SPACING, scoreLabel, livesLabel);
+    highScoreLabel = new Label();
+    HBox statsRow = new HBox(ELEMENT_SPACING, scoreLabel, livesLabel, highScoreLabel);
     String style = "hud-container";
     statsRow.getStyleClass().add(style);
 
@@ -56,6 +59,7 @@ public class HudView extends VBox {
 
     scoreLabel.setId("scoreLabel");
     livesLabel.setId("livesLabel");
+    highScoreLabel.setId("highScoreLabel");
 
     playButton.setId("playButton");
     pauseButton.setId("pauseButton");
@@ -76,5 +80,14 @@ public class HudView extends VBox {
         String.format(LanguageManager.getMessage("SCORE_LABEL"), gameState.getScore()));
     livesLabel.setText(
         String.format(LanguageManager.getMessage("LIVES_LABEL"), gameState.getLives()));
+    updateHighScoreLabelIfNecessary(gameState);
+  }
+
+  private void updateHighScoreLabelIfNecessary(GameStateInterface gameState) {
+    if (gameState.getHighScore() > currentHighScore) {
+      highScoreLabel.setText(
+          String.format(LanguageManager.getMessage("HIGH_SCORE_LABEL"), gameState.getHighScore()));
+      currentHighScore = gameState.getHighScore();
+    }
   }
 }

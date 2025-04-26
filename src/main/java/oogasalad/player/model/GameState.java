@@ -10,14 +10,15 @@ import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.player.model.exceptions.SaveFileException;
 
 /**
- * Implementation of the GameState interface. This class manages the player's score, lives,
- * and HUD components. It also provides functionality for saving and loading game states.
+ * Implementation of the GameState interface. This class manages the player's score, lives, and HUD
+ * components. It also provides functionality for saving and loading game states.
  *
  * @author Troy Ludwig
  */
 public class GameState implements GameStateInterface {
 
   private int score;
+  private int highScore;
   private int lives;
   private final int startingLives;
   private final int initialScore;
@@ -28,6 +29,7 @@ public class GameState implements GameStateInterface {
 
   /**
    * Loads in game settings given the game setting record.
+   *
    * @param gameSettings contains default settings for given game.
    */
   public GameState(SettingsRecord gameSettings) {
@@ -37,11 +39,15 @@ public class GameState implements GameStateInterface {
     this.lives = startingLives;
     this.currentLevel = 0;
     this.levelOrder = generateDefaultLevelOrder(); // You may want to replace this
+    this.highScore = 0;
   }
 
   @Override
   public void updateScore(int delta) {
     this.score += delta;
+    if (this.score > highScore) {
+      highScore = score;
+    }
   }
 
   @Override
@@ -127,6 +133,11 @@ public class GameState implements GameStateInterface {
     this.lives = startingLives;
     this.timeElapsed = 0;
     this.levelOrder = generateDefaultLevelOrder();
+  }
+
+  @Override
+  public int getHighScore() {
+    return this.highScore;
   }
 
   @Override
