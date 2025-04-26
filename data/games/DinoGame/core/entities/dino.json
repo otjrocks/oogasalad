@@ -13,7 +13,9 @@
         "animationSpeed": 5.0
       },
       "controlConfig": {
-        "controlStrategy": "Jump"
+        "controlStrategy": "Jump",
+        "jumpforce":  2,
+        "gravity": 0.05
       },
       "movementSpeed": 1
     }
