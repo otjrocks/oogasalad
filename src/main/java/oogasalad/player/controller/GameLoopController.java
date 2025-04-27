@@ -163,8 +163,6 @@ public class GameLoopController {
               spawnEvent.mode()),
           myGameContext.gameMap(), myConfig);
       myGameContext.gameMap().incrementEntityCount(newEntity.getEntityPlacement().getTypeString());
-      System.out.println(newEntity.getEntityPlacement().getTypeString());
-      System.out.println(myGameContext.gameMap().getEntityCount(newEntity.getEntityPlacement().getTypeString()));
       try {
         myGameContext.gameMap().addEntity(newEntity);
         activeSpawnedEntities.put(spawnEvent, newEntity);
