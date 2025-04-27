@@ -2,5 +2,6 @@
   -fx-primary: rgb(0, 0, 64);
   -fx-secondary: rgb(255, 255, 255);
   -fx-highlight: rgb(45, 45, 158);
-  -fx-warning: rgb(255, 0, 0);
+  -fx-warning: rgb(251, 80, 80);
+  -fx-accent: rgb(41, 159, 255);
 }
