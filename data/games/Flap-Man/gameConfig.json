@@ -2,7 +2,8 @@
   "metadata" : {
     "gameTitle" : "Flap-Man",
     "author" : "Dong Nguyen, Owen Jennings",
-    "gameDescription" : "FlapMan is a version of the iconic flappy bird game with a special twist! Fly through endlessly generating pipes while collecting fruit score boosters as your progress. Stay in the air, avoid the pipe's edges, and survive for as long as you can. To play, use the arrow keys to move your bird!"
+    "gameDescription" : "FlapMan is a version of the iconic flappy bird game with a special twist! Fly through endlessly generating pipes while collecting fruit score boosters as you progress. Stay in the air, avoid the pipe's edges, and survive for as long as you can. To play, use the arrow keys to move the Flap-Man bird!",
+    "image" : "assets/cover.png"
   },
   "defaultSettings" : {
     "gameSpeed" : 1.0,
