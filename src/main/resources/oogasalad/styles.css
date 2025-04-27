@@ -629,3 +629,37 @@ Label, Text {
   -fx-border-width: 2px;
   -fx-border-style: dotted;
 }
+
+
+.list-view {
+  -fx-background-color: -fx-primary;
+  -fx-control-inner-background: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+}
+
+.list-cell {
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-font-family: "Inter";
+  -fx-font-size: 14px;
+  -fx-padding: 8px;
+}
+
+.list-cell:filled:selected, .list-cell:filled:selected:hover {
+  -fx-background-color: -fx-highlight;
+  -fx-text-fill: -fx-secondary;
+}
+
+.list-cell:filled:hover {
+  -fx-background-color: derive(-fx-highlight, 20%);
+  -fx-text-fill: -fx-secondary;
+}
+
+.collision-rule-dialog {
+  -fx-pref-height: 800px;
+}
+
+.rule-list-scroll-pane {
+  -fx-pref-height: 300px;
+}

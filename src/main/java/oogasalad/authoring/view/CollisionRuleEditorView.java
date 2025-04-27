@@ -70,7 +70,7 @@ public class CollisionRuleEditorView {
     // Create dialog instance
     dialog = new Dialog<>();
     dialog.setTitle(LanguageManager.getMessage("EDIT_COLLISION"));
-    dialog.getDialogPane().setPrefWidth(800);
+    dialog.getDialogPane().getStyleClass().add("collision-rule-dialog");
 
     root = new VBox(15);
     root.setPadding(new Insets(20));
@@ -97,10 +97,9 @@ public class CollisionRuleEditorView {
 
     ruleListView.setId("rule-list-view");
     ruleListView.setItems(FXCollections.observableArrayList(workingRules));
-    ruleListView.setPrefHeight(300);
     ScrollPane ruleScrollPane = new ScrollPane(ruleListView);
     ruleScrollPane.setFitToWidth(true);
-    ruleScrollPane.setPrefHeight(300);
+    ruleScrollPane.getStyleClass().add("rule-list-scroll-pane");
 
     root.getChildren().addAll(
         selectionGrid,
