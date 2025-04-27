@@ -132,12 +132,17 @@ public class JsonConfigParser implements ConfigParserInterface {
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
     WinConditionInterface winCondition = gameConfig.settings().winCondition();
     LoseConditionInterface loseCondition = gameConfig.settings().loseCondition();
+    Map<String, Double> respawnableEntities = new HashMap<>();
+    if (gameConfig.respawnableEntities() != null) {
+      respawnableEntities = gameConfig.respawnableEntities();
+    }
+
 
     // Step 8: Get current level from gameConfig
     int currentLevel = gameConfig.currentLevelIndex();
     // Step 9: Return the full config model using the first level only for now
     return new ConfigModelRecord(metaData, settings, entityTypes, levels, collisionRules,
-        winCondition, loseCondition, currentLevel);
+        winCondition, loseCondition, currentLevel, respawnableEntities);
   }
 
   private ParsedLevelRecord loadLevelConfig(String filepath) throws ConfigException {
@@ -448,13 +453,37 @@ public class JsonConfigParser implements ConfigParserInterface {
       List<CollisionConfigRecord> collisions = parseCollisions(root);
       JsonNode currentLevelNode = root.get("currentLevelIndex");
       int currentLevelIndex = currentLevelNode != null ? currentLevelNode.asInt() : 0;
-      return new GameConfigRecord(metadata, defaultSettings, levels, collisions,
-          getFolderPath(filepath), currentLevelIndex);
+
+      Map<String, Double> respawnableEntities = parseRespawnableEntities(root);
+
+      return new GameConfigRecord(
+          metadata,
+          defaultSettings,
+          levels,
+          collisions,
+          getFolderPath(filepath),
+          currentLevelIndex,
+          respawnableEntities
+      );
 
     } catch (IOException e) {
       throw new ConfigException("Failed to parse config file: " + filepath, e);
     }
   }
+
+  private Map<String, Double> parseRespawnableEntities(JsonNode root) {
+    Map<String, Double> respawnableEntities = new HashMap<>();
+    JsonNode respawnNode = root.get("respawnableEntities");
+    if (respawnNode != null && respawnNode.isObject()) {
+      Iterator<Map.Entry<String, JsonNode>> fields = respawnNode.fields();
+      while (fields.hasNext()) {
+        Map.Entry<String, JsonNode> entry = fields.next();
+        respawnableEntities.put(entry.getKey(), entry.getValue().asDouble());
+      }
+    }
+    return respawnableEntities;
+  }
+
 
   private MetadataRecord parseMetadata(JsonNode root) throws JsonProcessingException {
     return mapper.treeToValue(root.get("metadata"), MetadataRecord.class);

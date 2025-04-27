@@ -44,5 +44,8 @@
         "type" : "Consume"
       } ]
     }
-  ]
+  ],
+  "respawnableEntities": {
+    "cookie": 5.0
+  }
 }

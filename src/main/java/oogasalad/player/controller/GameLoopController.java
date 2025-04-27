@@ -1,7 +1,9 @@
 package oogasalad.player.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import javafx.animation.AnimationTimer;
 import oogasalad.engine.config.EntityPlacement;
@@ -12,6 +14,7 @@ import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.model.ModeChangeInfo;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
+import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.model.Entity;
@@ -36,7 +39,9 @@ public class GameLoopController {
   private final ConfigModelRecord myConfig;
   private double myGameSpeedMultiplier;
   private double myTotalElapsedTime = 0;
-
+  private final Map<String, Double> respawnableEntities;
+  private final Map<String, Double> entityRespawnTimers = new HashMap<>();
+  private final Map<String, Double> lastRespawnTimes = new HashMap<>();
 
   /**
    * Initialize the game loop controller and start the animation. Calling the constructor will
@@ -56,6 +61,7 @@ public class GameLoopController {
     myLevel = level;
     myGameSpeedMultiplier = gameConfig.settings().gameSpeed();
     myConfig = gameConfig;
+    this.respawnableEntities = gameConfig.respawnableEntities();
     initializeGameLoop();
   }
   // this and following methods are written by ChatGPT
@@ -122,6 +128,80 @@ public class GameLoopController {
     }
     handleModeChangeEvents();
     handleSpawnEvents();
+    updateRespawnTimers();
+    checkRespawnableEntities();
+  }
+
+  private void checkRespawnableEntities() {
+    double currentTime = myGameContext.gameState().getTimeElapsed();
+
+    for (Map.Entry<String, Double> entry : myConfig.respawnableEntities().entrySet()) {
+      String entityTypeName = entry.getKey();
+      double respawnInterval = entry.getValue();
+
+      double lastRespawnTime = lastRespawnTimes.getOrDefault(entityTypeName, -respawnInterval);
+
+      if (currentTime - lastRespawnTime >= respawnInterval) {
+        EntityTypeRecord entityType = myConfig.getEntityTypeByName(entityTypeName);
+        respawnEntity(entityType);
+        lastRespawnTimes.put(entityTypeName, currentTime);
+      }
+    }
+  }
+
+  private void updateRespawnTimers() {
+    double deltaTime = myGameContext.gameState().getTimeElapsed();
+
+    Iterator<Map.Entry<String, Double>> iterator = entityRespawnTimers.entrySet().iterator();
+    while (iterator.hasNext()) {
+      Map.Entry<String, Double> entry = iterator.next();
+      String entityTypeName = entry.getKey();
+      double currentTimer = entry.getValue() + deltaTime;
+      double requiredRespawnTime = myConfig.respawnableEntities().get(entityTypeName);
+
+      if (currentTimer >= requiredRespawnTime) {
+        EntityTypeRecord entityType = myConfig.getEntityTypeByName(entityTypeName);
+        respawnEntity(entityType);
+        iterator.remove(); // Remove after respawning
+      } else {
+        entry.setValue(currentTimer); // Update timer
+      }
+    }
+  }
+
+  private void respawnEntity(EntityTypeRecord entityType) {
+    try {
+      List<double[]> openSpots = new ArrayList<>();
+      for (int y = 0; y < myGameContext.gameMap().getHeight(); y++) {
+        for (int x = 0; x < myGameContext.gameMap().getWidth() / 2; x++) { // Only left half
+          if (myGameContext.gameMap().getEntityAt(x, y).isEmpty()) {
+            openSpots.add(new double[]{x + 0.5, y + 0.5}); // Center inside tile
+          }
+        }
+      }
+
+      if (openSpots.isEmpty()) {
+        LoggingManager.LOGGER.warn("⚠️ No available spots to respawn {}", entityType.type());
+        return;
+      }
+
+      double[] chosenSpot = openSpots.get((int) (Math.random() * openSpots.size()));
+      double spawnX = chosenSpot[0];
+      double spawnY = chosenSpot[1];
+
+      Entity newEntity = new Entity(
+          myGameContext.inputManager(),
+          new EntityPlacement(entityType, spawnX, spawnY, "Default"),
+          myGameContext.gameMap(),
+          myConfig
+      );
+
+      myGameContext.gameMap().addEntity(newEntity);
+      LoggingManager.LOGGER.info("🍪 Respawned entity '{}' at ({}, {})", entityType.type(), spawnX, spawnY);
+
+    } catch (InvalidPositionException e) {
+      LoggingManager.LOGGER.warn("⚠️ Failed to respawn entity {}", entityType.type(), e);
+    }
   }
 
   private void handleSpawnEvents() {
@@ -176,7 +256,12 @@ public class GameLoopController {
     Entity entityToRemove = activeSpawnedEntities.get(spawnEvent);
     attemptRemovingEntity(entityToRemove);
     activeSpawnedEntities.remove(spawnEvent);
-
+    if (entityToRemove != null) {
+      String entityType = entityToRemove.getEntityPlacement().getTypeString();
+      if (respawnableEntities.containsKey(entityType)) {
+        entityRespawnTimers.put(entityType, 0.0);
+      }
+    }
   }
 
   private void handleModeChangeEvents() {

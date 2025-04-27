@@ -1,6 +1,7 @@
 package oogasalad.engine.records.config;
 
 import java.util.List;
+import java.util.Map;
 import oogasalad.engine.records.config.model.LevelRecord;
 import oogasalad.engine.records.config.model.MetadataRecord;
 import oogasalad.engine.records.config.model.SettingsRecord;
@@ -20,6 +21,7 @@ public record GameConfigRecord(MetadataRecord metadata, SettingsRecord settings,
                                List<LevelRecord> levels,
                                List<CollisionConfigRecord> collisions,
                                String gameFolderPath,
-                               int currentLevelIndex) {
+                               int currentLevelIndex,
+                               Map<String, Double> respawnableEntities) {
 
 }

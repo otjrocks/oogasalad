@@ -1,6 +1,7 @@
 package oogasalad.engine.records.config;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
@@ -36,8 +37,16 @@ public record ConfigModelRecord(
     List<CollisionRule> collisionRules,
     WinConditionInterface winCondition,
     LoseConditionInterface loseCondition,
-    int currentLevelIndex
+    int currentLevelIndex,
+    Map<String, Double> respawnableEntities
 ) {
+
+  public EntityTypeRecord getEntityTypeByName(String name) {
+    return entityTypes().stream()
+        .filter(e -> e.type().equals(name))
+        .findFirst()
+        .orElseThrow(() -> new IllegalArgumentException("Entity type not found: " + name));
+  }
 
 }
 
