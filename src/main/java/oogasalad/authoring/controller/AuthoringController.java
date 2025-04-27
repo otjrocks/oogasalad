@@ -322,7 +322,8 @@ public class AuthoringController {
         config.collisionRules(),
         config.winCondition(),
         config.loseCondition(),
-        config.currentLevelIndex()
+        config.currentLevelIndex(),
+        config.respawnableEntities()
     );
 
     populateModelFromConfig(fixedConfig, projectFolder);

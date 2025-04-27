@@ -1,0 +1,51 @@
+{
+  "metadata" : {
+    "gameTitle" : "Cookie Collector",
+    "author" : "Luke Fu",
+    "gameDescription" : "Collect the cookies and buy power ups"
+  },
+  "defaultSettings" : {
+    "gameSpeed" : 1.0,
+    "startingLives" : 3,
+    "initialScore" : 0,
+    "winCondition" : {
+      "type" : "ScoreBased",
+      "amount" : 100000
+    },
+    "loseCondition" : {
+      "type" : "LivesBased"
+    },
+    "cheatTypes" : [ ]
+  },
+  "levels" : [ {
+    "levelMap" : "level1"
+  }
+  ],
+  "collisions" : [{
+    "entityA" : "player",
+    "modeA" : "Default",
+    "entityB" : "wall",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "modeB" : "Default",
+    "eventsB" : [ ]
+  },
+    {
+      "entityA" : "player",
+      "modeA" : "Default",
+      "entityB" : "cookie",
+      "eventsA" : [ {
+        "type" : "UpdateScore",
+        "amount" : 10
+      } ],
+      "modeB" : "Default",
+      "eventsB" : [ {
+        "type" : "Consume"
+      } ]
+    }
+  ],
+  "respawnableEntities": {
+    "cookie": 0.3
+  }
+}
