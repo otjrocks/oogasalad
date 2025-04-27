@@ -1,7 +1,10 @@
 package oogasalad.authoring.view.mainView;
 
 import javafx.scene.Node;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  * Responsible for building the main content area layout of the AuthoringView.
@@ -30,15 +33,16 @@ public class MainContentFactory {
   }
 
   /**
-   * Creates the full main content layout consisting of the left panel, canvas,
-   * and right panel, and returns it as a BorderPane.
+   * Creates the full main content layout consisting of the left panel, canvas, and right panel, and
+   * returns it as a BorderPane.
    *
    * @return the constructed main content pane
    */
   public BorderPane createMainContent() {
     BorderPane mainContent = new BorderPane();
 
-    VBox left = new VBox(10, view.getLevelSelectorView().getRoot(), view.getLevelSettingsView().getNode());
+    VBox left = new VBox(10, view.getLevelSelectorView().getRoot(),
+        view.getLevelSettingsView().getNode());
     mainContent.setLeft(left);
 
     Node canvasNode = view.getCanvasView().getNode();
@@ -54,16 +58,15 @@ public class MainContentFactory {
   }
 
   /**
-   * Creates and returns the container for the entity editing views (type editor and placement editor).
+   * Creates and returns the container for the entity editing views (type editor and placement
+   * editor).
    *
    * @return the configured AnchorPane containing entity editors
    */
   private AnchorPane createEditorContainer() {
     AnchorPane container = new AnchorPane();
     container.setMaxHeight(400);
-    container.setBorder(new Border(new BorderStroke(
-        javafx.scene.paint.Color.BLUE, BorderStrokeStyle.DASHED, null, new BorderWidths(1)
-    )));
+    container.getStyleClass().add("editor-container");
 
     view.addEntityTypeEditor(container);
     view.addEntityPlacementView(container);

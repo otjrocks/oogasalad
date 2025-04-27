@@ -42,6 +42,8 @@ public class GameLoopController {
   private final Map<String, Double> respawnableEntities;
   private final Map<String, Double> entityRespawnTimers = new HashMap<>();
   private final Map<String, Double> lastRespawnTimes = new HashMap<>();
+  private double lastUpdateTime = -1;
+
 
   /**
    * Initialize the game loop controller and start the animation. Calling the constructor will
@@ -71,7 +73,6 @@ public class GameLoopController {
    */
   private void initializeGameLoop() {
     myGameLoop = new AnimationTimer() {
-      private long lastUpdateTime = -1;
 
       @Override
       public void handle(long now) {
@@ -123,7 +124,7 @@ public class GameLoopController {
     //Updates the game map and entity positions
     myGameContext.gameMap().update();
     myGameMapView.update();
-    if(myGameInputManager != null) {
+    if (myGameInputManager != null) {
       checkCheatKeys();
     }
     handleModeChangeEvents();
@@ -242,6 +243,7 @@ public class GameLoopController {
           new EntityPlacement(spawnEvent.entityType(), spawnEvent.x(), spawnEvent.y(),
               spawnEvent.mode()),
           myGameContext.gameMap(), myConfig);
+      myGameContext.gameMap().incrementEntityCount(newEntity.getEntityPlacement().getTypeString());
       try {
         myGameContext.gameMap().addEntity(newEntity);
         activeSpawnedEntities.put(spawnEvent, newEntity);
@@ -327,6 +329,7 @@ public class GameLoopController {
    */
   public void resumeGame() {
     if (myGameLoop != null) {
+      lastUpdateTime = -1;
       myGameLoop.start();
     }
   }
@@ -341,6 +344,7 @@ public class GameLoopController {
 
   /**
    * Return multiplier
+   *
    * @return multiplier
    */
   public double getMyGameSpeedMultiplier() {
@@ -349,6 +353,7 @@ public class GameLoopController {
 
   /**
    * Set multiplier
+   *
    * @param myGameSpeedMultiplier multiplier
    */
   public void setMyGameSpeedMultiplier(double myGameSpeedMultiplier) {

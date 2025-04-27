@@ -9,15 +9,14 @@ import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.view.components.FormattingUtil;
 
 /**
- * MetadataEditor provides UI fields for editing game metadata:
- * title, author name, and description.
- *
+ * MetadataEditor provides UI fields for editing game metadata: title, author name, and
+ * description.
+ * <p>
  * Fields are organized in a GridPane layout and can be updated dynamically.
- *
+ * <p>
  * Designed to be a modular component within the GameSettingsView.
  *
- * @author
- * William He
+ * @author William He
  */
 public class MetadataEditor {
 

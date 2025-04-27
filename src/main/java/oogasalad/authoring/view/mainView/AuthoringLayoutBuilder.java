@@ -13,13 +13,13 @@ import oogasalad.authoring.view.LevelSettingsView;
 import oogasalad.authoring.view.canvas.CanvasView;
 
 /**
- * Responsible for building and initializing the overall layout of the AuthoringView.
- * Delegates creation of menus, main content, and applies styling.
- * Also provides functionality to refresh the view when the underlying model updates.
+ * Responsible for building and initializing the overall layout of the AuthoringView. Delegates
+ * creation of menus, main content, and applies styling. Also provides functionality to refresh the
+ * view when the underlying model updates.
  *
  * <p>
- * This class separates layout construction from the core AuthoringView logic,
- * promoting cleaner, more modular code.
+ * This class separates layout construction from the core AuthoringView logic, promoting cleaner,
+ * more modular code.
  * </p>
  *
  * @author William He
@@ -32,7 +32,7 @@ public class AuthoringLayoutBuilder {
   /**
    * Constructs a layout builder for the given AuthoringView and controller.
    *
-   * @param view the main AuthoringView to configure
+   * @param view       the main AuthoringView to configure
    * @param controller the controller coordinating model and view
    */
   public AuthoringLayoutBuilder(AuthoringView view, AuthoringController controller) {
@@ -41,8 +41,8 @@ public class AuthoringLayoutBuilder {
   }
 
   /**
-   * Builds and sets up the full authoring interface layout,
-   * including initializing subviews, creating the menu bar, and applying styles.
+   * Builds and sets up the full authoring interface layout, including initializing subviews,
+   * creating the menu bar, and applying styles.
    */
   public void buildLayout() {
     controller.getLevelController().initDefaultLevelIfEmpty();
@@ -51,7 +51,8 @@ public class AuthoringLayoutBuilder {
     controller.getLevelController().switchToLevel(0);
 
     VBox fullLayout = new VBox(10);
-    fullLayout.getChildren().addAll(createMenuBar(), createMainContent(), view.getGameSettingsView().getNode());
+    fullLayout.getChildren()
+        .addAll(createMenuBar(), createMainContent(), view.getGameSettingsView().getNode());
     VBox.setVgrow(fullLayout.getChildren().get(1), javafx.scene.layout.Priority.ALWAYS);
 
     ((BorderPane) view.getNode()).setCenter(fullLayout);
@@ -60,8 +61,8 @@ public class AuthoringLayoutBuilder {
   }
 
   /**
-   * Initializes the core subviews of the authoring environment.
-   * Instantiates components like the canvas, selector, and editors.
+   * Initializes the core subviews of the authoring environment. Instantiates components like the
+   * canvas, selector, and editors.
    */
   private void initializeViews() {
     view.setCanvasView(new CanvasView(controller));
@@ -87,8 +88,8 @@ public class AuthoringLayoutBuilder {
   }
 
   /**
-   * Creates and returns the main content area, including the left panel,
-   * canvas view, and right panel.
+   * Creates and returns the main content area, including the left panel, canvas view, and right
+   * panel.
    *
    * @return the configured main content pane
    */
@@ -98,8 +99,8 @@ public class AuthoringLayoutBuilder {
   }
 
   /**
-   * Refreshes the views to reflect the latest state of the underlying model,
-   * such as updating the entity list, level settings, and canvas content.
+   * Refreshes the views to reflect the latest state of the underlying model, such as updating the
+   * entity list, level settings, and canvas content.
    */
   public void refresh() {
     controller.getLevelController().updateLevelDropdown();

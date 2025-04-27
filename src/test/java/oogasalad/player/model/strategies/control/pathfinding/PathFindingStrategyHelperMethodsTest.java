@@ -113,7 +113,7 @@ class PathFindingStrategyHelperMethodsTest {
 
     Set<List<Integer>> expected = new HashSet<>();
     for (Direction dir : Direction.values()) {
-      if (!dir.isNone()) {
+      if (dir.isNone()) {
         expected.add(List.of(dir.getDx(), dir.getDy()));
       }
     }
@@ -129,7 +129,7 @@ class PathFindingStrategyHelperMethodsTest {
 
     Set<List<Integer>> expected = new HashSet<>();
     for (Direction dir : Direction.values()) {
-      if (!dir.isNone()) {
+      if (dir.isNone()) {
         expected.add(List.of(5 + dir.getDx(), 5 + dir.getDy()));
       }
     }
@@ -143,7 +143,7 @@ class PathFindingStrategyHelperMethodsTest {
 
     Set<List<Integer>> expected = new HashSet<>();
     for (Direction dir : Direction.values()) {
-      if (!dir.isNone()) {
+      if (dir.isNone()) {
         expected.add(List.of(5 + dir.getDx(), 5 + dir.getDy()));
       }
     }

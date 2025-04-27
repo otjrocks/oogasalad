@@ -21,6 +21,7 @@ import oogasalad.engine.view.components.FormattingUtil;
  * @author Angela Predolac
  */
 public class HelpSlide {
+
   private static final double SLIDE_WIDTH = 760;
   private static final double SLIDE_HEIGHT = 540;
   private static final double MAX_IMAGE_WIDTH = 600;
@@ -61,9 +62,8 @@ public class HelpSlide {
     titleLabel.setWrapText(true);
     titleLabel.setMaxWidth(SLIDE_WIDTH);
 
-
     // Content
-    Label contentLabel =  FormattingUtil.createHeading(description);
+    Label contentLabel = FormattingUtil.createHeading(description);
     contentLabel.setWrapText(true);
     contentLabel.setMaxWidth(SLIDE_WIDTH);
 
@@ -93,7 +93,8 @@ public class HelpSlide {
         placeholderBox.setPadding(new Insets(10));
         placeholderBox.setAlignment(Pos.CENTER);
 
-        Label placeholderLabel =  FormattingUtil.createHeading(LanguageManager.getMessage("IMAGE") + imagePath);
+        Label placeholderLabel = FormattingUtil.createHeading(
+            LanguageManager.getMessage("IMAGE") + imagePath);
         placeholderBox.getChildren().add(placeholderLabel);
 
         slide.getChildren().add(placeholderBox);

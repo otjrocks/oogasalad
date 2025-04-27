@@ -1,0 +1,52 @@
+{
+  "slides": [
+    {
+      "key": "WELCOME",
+      "image": null
+    },
+    {
+      "key": "OVERVIEW",
+      "image": "overview.png"
+    },
+    {
+      "key": "INTERFACE",
+      "image": "interface.png"
+    },
+    {
+      "key": "CANVAS",
+      "image": "canvas.png"
+    },
+    {
+      "key": "ENTITY",
+      "image": "entities.png"
+    },
+    {
+      "key": "ENTITY_EDITOR",
+      "image": "entity_editor.png"
+    },
+    {
+      "key": "LEVEL_SYSTEM",
+      "image": "levels.png"
+    },
+    {
+      "key": "COLLISION_RULES",
+      "image": "collisions.png"
+    },
+    {
+      "key": "GAME_SETTINGS",
+      "image": "settings.png"
+    },
+    {
+      "key": "FIRST_GAME",
+      "image": "first_game.png"
+    },
+    {
+      "key": "TIPS_AND_TRICKS",
+      "image": null
+    },
+    {
+      "key": "CONCLUSION",
+      "image": null
+    }
+  ]
+}

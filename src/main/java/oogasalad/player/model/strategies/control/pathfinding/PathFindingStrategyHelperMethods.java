@@ -47,7 +47,7 @@ public class PathFindingStrategyHelperMethods {
       EntityPlacement thisEntity) {
     List<Direction> allDirs = new ArrayList<>();
     for (Direction dir : Direction.values()) {
-      if (!dir.isNone()) {
+      if (dir.isNone()) {
         allDirs.add(dir);
       }
     }

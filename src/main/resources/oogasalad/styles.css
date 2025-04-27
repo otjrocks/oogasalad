@@ -17,17 +17,15 @@ Label, Text {
 }
 
 /* Text Formatting */
+.heading {
+  -fx-font-size: 15px !important;
+  -fx-font-family: "Press Start 2P";
+}
 
 .title {
   -fx-font-family: "Press Start 2P";
-  -fx-font-size: 30px;
+  -fx-font-size: 26px !important;
   -fx-alignment: center;
-}
-
-.heading {
-  -fx-font-size: 16px;
-  -fx-font-family: "Press Start 2P";
-  -fx-text-alignment: center;
 }
 
 .label {
@@ -111,7 +109,7 @@ Label, Text {
   -fx-font-size: 14px;
   -fx-font-weight: bold;
   -fx-background-color: -fx-highlight;
-  -fx-text-fill: white;
+  -fx-text-fill: -fx-secondary;
   -fx-background-radius: 50%;
   -fx-min-width: 30px;
   -fx-min-height: 30px;
@@ -321,6 +319,18 @@ Label, Text {
   -fx-spacing: 10px;
 }
 
+.tile-hover {
+  -fx-stroke: -fx-highlight;
+  -fx-stroke-width: 2px;
+  -fx-fill: transparent;
+}
+
+.tile-selection {
+  -fx-stroke: -fx-accent;
+  -fx-stroke-width: 2px;
+  -fx-fill: transparent;
+}
+
 .selected-tile {
   -fx-background-color: lightgray;
 }
@@ -341,21 +351,21 @@ Label, Text {
 }
 
 .entity-tile {
-  -fx-background-color: white;
-  -fx-border-color: #ccc;
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-highlight;
   -fx-border-width: 1;
   -fx-padding: 6;
   -fx-cursor: hand;
 }
 
 .entity-tile:hover {
-  -fx-background-color: #f9f9f9;
+  -fx-background-color: -fx-highlight;
 }
 
 .selected-tile {
-  -fx-border-color: gold;
+  -fx-border-color: derive(-fx-accent, -20%);
   -fx-border-width: 2;
-  -fx-background-color: rgba(255, 215, 0, 0.15);
+  -fx-background-color: -fx-accent;
 }
 
 /* Game Player Styles */
@@ -406,6 +416,12 @@ Label, Text {
   -fx-background-radius: 5px;
   -fx-border-radius: 5px;
   -fx-font-family: "Press Start 2P";
+}
+
+.delete-button {
+  -fx-background-color: derive(-fx-warning, -30%);
+  -fx-border-color: -fx-warning;
+  -fx-text-fill: derive(-fx-warning, 90%);
 }
 
 
@@ -604,4 +620,49 @@ Label, Text {
 
 .game-selector-view {
   -fx-background-color: -fx-primary;
+}
+
+.editor-container {
+  -fx-border-color: -fx-accent;
+  -fx-border-width: 2px;
+  -fx-border-style: dotted;
+}
+
+
+.list-view {
+  -fx-background-color: -fx-primary;
+  -fx-control-inner-background: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+}
+
+.list-cell {
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-font-family: "Inter";
+  -fx-font-size: 14px;
+  -fx-padding: 8px;
+}
+
+.list-cell:filled:selected, .list-cell:filled:selected:hover {
+  -fx-background-color: -fx-highlight;
+  -fx-text-fill: -fx-secondary;
+}
+
+.list-cell:filled:hover {
+  -fx-background-color: derive(-fx-highlight, 20%);
+  -fx-text-fill: -fx-secondary;
+}
+
+.collision-rule-dialog {
+  -fx-pref-height: 800px;
+}
+
+.rule-list-scroll-pane {
+  -fx-pref-height: 300px;
+}
+
+.game-selector-file-upload {
+  -fx-alignment: center;
+  -fx-text-alignment: center;
 }

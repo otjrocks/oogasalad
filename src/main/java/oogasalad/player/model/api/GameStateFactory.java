@@ -1,6 +1,5 @@
 package oogasalad.player.model.api;
 
-import java.io.IOException;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.ConfigModelRecord;

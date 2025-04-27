@@ -89,11 +89,4 @@ public class EntityView {
         tileHeight
     );
   }
-
-  /**
-   * returns the entity object associated with the current EntityView
-   */
-  public Entity getEntity() {
-    return entity;
-  }
 }
