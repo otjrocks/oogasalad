@@ -10,7 +10,6 @@ import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
-import oogasalad.player.model.Entity;
 
 /**
  * Represents a draft of a single level in the authoring environment. Stores metadata such as name,

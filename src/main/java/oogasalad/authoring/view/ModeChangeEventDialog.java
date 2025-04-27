@@ -2,7 +2,6 @@ package oogasalad.authoring.view;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javafx.geometry.Insets;
@@ -19,7 +18,6 @@ import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
 
 import oogasalad.engine.utility.LanguageManager;
-import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.view.components.FormattingUtil;
 import oogasalad.player.model.strategies.modechangeevent.ModeChangeEventStrategyInterface;
 

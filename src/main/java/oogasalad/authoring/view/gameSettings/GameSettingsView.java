@@ -19,7 +19,6 @@ import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.view.components.FormattingUtil;
 
-import java.util.HashSet;
 import java.util.List;
 
 /**

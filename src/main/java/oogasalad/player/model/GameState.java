@@ -88,54 +88,6 @@ public class GameState implements GameStateInterface {
   }
 
   @Override
-  public void saveGameProgress(String saveName) throws SaveFileException {
-    SaveConfigRecord saveConfig = new SaveConfigRecord(
-        saveName,
-        currentLevel,
-        score,
-        lives,
-        score, // highScore = totalScore
-        levelOrder
-    );
-
-    try {
-      ObjectMapper mapper = new ObjectMapper();
-      File saveFile = new File(SAVE_FOLDER + saveName + ".json");
-      mapper.writerWithDefaultPrettyPrinter().writeValue(saveFile, saveConfig);
-    } catch (IOException e) {
-      throw new SaveFileException(e.getMessage());
-    }
-  }
-
-  @Override
-  public void loadGameProgress(String saveName) throws SaveFileException {
-    try {
-      ObjectMapper mapper = new ObjectMapper();
-      SaveConfigRecord saveConfig = mapper.readValue(
-          new File(SAVE_FOLDER + saveName + ".json"),
-          SaveConfigRecord.class
-      );
-
-      this.currentLevel = saveConfig.currentLevel();
-      this.score = saveConfig.totalScore();
-      this.lives = saveConfig.lives();
-      this.levelOrder = saveConfig.levelOrder();
-
-    } catch (IOException e) {
-      throw new SaveFileException("Unable to load save file");
-    }
-  }
-
-  @Override
-  public void resetGameProgress() {
-    this.currentLevel = 0;
-    this.score = initialScore;
-    this.lives = startingLives;
-    this.timeElapsed = 0;
-    this.levelOrder = generateDefaultLevelOrder();
-  }
-
-  @Override
   public int getHighScore() {
     return this.highScore;
   }

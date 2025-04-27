@@ -1,7 +1,6 @@
 package oogasalad.engine.records.config;
 
 import java.util.List;
-import java.util.Set;
 import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.config.model.SettingsRecord;
@@ -9,7 +8,6 @@ import oogasalad.engine.records.config.model.losecondition.LoseConditionInterfac
 import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.MetaDataRecord;
-import oogasalad.player.model.enums.CheatType;
 
 /**
  * The ConfigModel record serves as a container for the configuration data of a game. It

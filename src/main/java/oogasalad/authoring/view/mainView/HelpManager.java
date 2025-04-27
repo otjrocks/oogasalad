@@ -42,7 +42,7 @@ public class HelpManager {
    */
   public void setupHelpSystem() {
     Platform.runLater(() -> {
-      helpSystem = new SimpleHelpSystem(controller, view, getStage());
+      helpSystem = new SimpleHelpSystem(getStage());
       addHelpButton();
       addHelpMenu();
       setupHelpShortcuts();

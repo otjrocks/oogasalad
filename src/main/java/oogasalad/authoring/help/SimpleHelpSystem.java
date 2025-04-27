@@ -11,8 +11,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.authoring.view.mainView.AuthoringView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,11 +34,9 @@ public class SimpleHelpSystem {
   /**
    * Constructs a simple help system.
    *
-   * @param controller   the authoring controller
-   * @param view         the authoring view
    * @param primaryStage the main application window
    */
-  public SimpleHelpSystem(AuthoringController controller, AuthoringView view, Stage primaryStage) {
+  public SimpleHelpSystem(Stage primaryStage) {
     this.primaryStage = primaryStage;
     initializeHelpSlides();
   }

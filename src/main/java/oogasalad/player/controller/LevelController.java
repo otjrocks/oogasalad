@@ -76,13 +76,6 @@ public class LevelController {
   }
 
   /**
-   * Resets level count to 0
-   */
-  public void resetLevels() {
-    myLevelIndex = 0;
-  }
-
-  /**
    * Returns current level index
    */
   public int getCurrentLevelIndex() {
@@ -94,14 +87,5 @@ public class LevelController {
    */
   public boolean hasNextLevel() {
     return myLevelIndex + 1 < myLevelOrder.size();
-  }
-
-  /**
-   * Returns the current mapped level index.
-   */
-  public int getMappedLevelIndex() {
-    int mappedIndex = myLevelOrder.get(myLevelIndex);
-    LoggingManager.LOGGER.info("Logical level {} mapped to actual level {}", myLevelIndex, mappedIndex);
-    return mappedIndex;
   }
 }

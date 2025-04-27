@@ -1,12 +1,8 @@
 package oogasalad.authoring.view.mainView;
 
-import java.util.Objects;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.Scene;
-import javafx.scene.control.DialogPane;
 import javafx.stage.Stage;
-import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.view.components.FormattingUtil;
 
 /**
