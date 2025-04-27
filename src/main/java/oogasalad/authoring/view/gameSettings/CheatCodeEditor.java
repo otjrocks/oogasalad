@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import oogasalad.engine.utility.LanguageManager;
 import oogasalad.player.model.enums.CheatType;
 
 /**
@@ -36,7 +37,7 @@ public class CheatCodeEditor {
     root = new VBox(10);
     root.setPadding(new Insets(10));
 
-    Label titleLabel = new Label("Available Cheat Codes");
+    Label titleLabel = new Label(LanguageManager.getMessage("CHEAT_CODES"));
     root.getChildren().add(titleLabel);
 
     cheatCheckboxes = new HashMap<>();
