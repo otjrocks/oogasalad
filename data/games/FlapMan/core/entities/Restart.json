@@ -1,0 +1,22 @@
+{
+  "entityType" : {
+    "name" : "Restart",
+    "blocks" : [ ]
+  },
+  "modes" : [ {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "assets/blank.png",
+      "tileWidth" : 1,
+      "tileHeight" : 1,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "ConstantDirection",
+      "dx" : -1,
+      "dy" : 0
+    },
+    "movementSpeed" : 1.0
+  } ]
+}

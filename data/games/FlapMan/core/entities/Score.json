@@ -1,0 +1,22 @@
+{
+  "entityType" : {
+    "name" : "Score",
+    "blocks" : [ ]
+  },
+  "modes" : [ {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "assets/pipe.png",
+      "tileWidth" : 26,
+      "tileHeight" : 26,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "ConstantDirection",
+      "dx" : -1,
+      "dy" : 0
+    },
+    "movementSpeed" : 1.0
+  } ]
+}
