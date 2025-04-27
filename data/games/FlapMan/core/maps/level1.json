@@ -1,5 +1,8 @@
 {
   "entityMappings" : [ {
+    "entity" : "Floor",
+    "id" : 5
+  }, {
     "entity" : "Score",
     "id" : 1
   }, {
@@ -17,7 +20,7 @@
     "height" : 20,
     "backgroundImagePath" : "assets/background.png"
   },
-  "layout" : [ "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 2.0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0" ],
+  "layout" : [ "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 2.0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0" ],
   "spawnEvents" : [ {
     "entityType" : "3",
     "x" : 19.0,
@@ -291,23 +294,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 0.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 3.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 8.0,
@@ -597,23 +583,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 2.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 5.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 11.0,
@@ -903,23 +872,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 4.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 7.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 5.0,
@@ -1209,23 +1161,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 6.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 9.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 8.0,
@@ -1515,23 +1450,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 8.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 11.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 10.0,
@@ -1821,23 +1739,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 10.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 13.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 5.0,
@@ -2127,23 +2028,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 12.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 15.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 8.0,
@@ -2433,23 +2317,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 14.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 17.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 9.0,
@@ -2739,23 +2606,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 16.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 19.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 5.0,
@@ -3045,23 +2895,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 18.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 21.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 8.0,
@@ -3351,23 +3184,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 20.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 23.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 11.0,
@@ -3657,23 +3473,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 22.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 25.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 5.0,
@@ -3963,23 +3762,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 24.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 27.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 6.0,
@@ -4269,23 +4051,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 26.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 29.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 9.0,
@@ -4575,23 +4340,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 28.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 31.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 5.0,
@@ -4881,23 +4629,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 30.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 33.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 8.0,
@@ -5187,23 +4918,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 32.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 35.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 10.0,
@@ -5493,23 +5207,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 34.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 37.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 5.0,
@@ -5785,23 +5482,6 @@
     "entityType" : "3",
     "x" : 19.0,
     "y" : 18.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 36.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 39.2
-      }
-    }
-  }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
     "mode" : "Default",
     "spawnCondition" : {
       "type" : "TimeElapsed",
@@ -6105,23 +5785,6 @@
       }
     }
   }, {
-    "entityType" : "3",
-    "x" : 19.0,
-    "y" : 19.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 38.0
-      }
-    },
-    "despawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 41.2
-      }
-    }
-  }, {
     "entityType" : "1",
     "x" : 19.0,
     "y" : 6.0,
@@ -6138,9 +5801,7 @@
         "amount" : 41.2
       }
     }
-  },
-
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 0.0,
@@ -6157,8 +5818,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 1.0,
@@ -6175,8 +5835,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 2.0,
@@ -6193,8 +5852,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 3.0,
@@ -6211,8 +5869,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 4.0,
@@ -6229,8 +5886,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 5.0,
@@ -6247,8 +5903,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 6.0,
@@ -6265,8 +5920,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 7.0,
@@ -6283,8 +5937,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 8.0,
@@ -6301,8 +5954,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 9.0,
@@ -6319,8 +5971,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 10.0,
@@ -6337,8 +5988,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 11.0,
@@ -6355,8 +6005,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 12.0,
@@ -6373,8 +6022,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 13.0,
@@ -6391,8 +6039,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 14.0,
@@ -6409,8 +6056,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 15.0,
@@ -6427,8 +6073,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 16.0,
@@ -6445,8 +6090,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 17.0,
@@ -6463,8 +6107,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 18.0,
@@ -6481,8 +6124,7 @@
         "amount" : 43.2
       }
     }
-  },
-  {
+  }, {
     "entityType" : "4",
     "x" : 19.0,
     "y" : 19.0,
@@ -6499,7 +6141,6 @@
         "amount" : 43.2
       }
     }
-  }
-],
+  } ],
   "modeChangeEvents" : [ ]
 }
