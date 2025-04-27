@@ -1,20 +1,20 @@
 {
   "entityType" : {
-    "name" : "Bird",
+    "name" : "Strawberry",
     "blocks" : [ ]
   },
   "modes" : [ {
     "name" : "Default",
     "image" : {
-      "imagePath" : "assets/bird.png",
-      "tileWidth" : 17,
-      "tileHeight" : 12,
+      "imagePath" : "assets/strawberry.png",
+      "tileWidth" : 28,
+      "tileHeight" : 28,
       "tilesToCycle" : 1,
       "animationSpeed" : 1.0
     },
     "controlConfig" : {
-      "controlStrategy" : "Keyboard"
+      "controlStrategy" : "None"
     },
-    "movementSpeed" : 0.75
+    "movementSpeed" : 1.0
   } ]
 }

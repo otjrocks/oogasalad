@@ -1,20 +1,20 @@
 {
   "entityType" : {
-    "name" : "Bird",
+    "name" : "Melon",
     "blocks" : [ ]
   },
   "modes" : [ {
     "name" : "Default",
     "image" : {
-      "imagePath" : "assets/bird.png",
-      "tileWidth" : 17,
-      "tileHeight" : 12,
+      "imagePath" : "assets/melon.png",
+      "tileWidth" : 112,
+      "tileHeight" : 145,
       "tilesToCycle" : 1,
       "animationSpeed" : 1.0
     },
     "controlConfig" : {
-      "controlStrategy" : "Keyboard"
+      "controlStrategy" : "None"
     },
-    "movementSpeed" : 0.75
+    "movementSpeed" : 1.0
   } ]
 }
