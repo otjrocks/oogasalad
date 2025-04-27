@@ -24,8 +24,7 @@ public class RemoveAllEntitiesOfTypeStrategy implements CollisionStrategyInterfa
   }
 
   @Override
-  public void handleCollision(CollisionContextRecord collisionContext)
-      throws EntityNotFoundException {
+  public void handleCollision(CollisionContextRecord collisionContext) {
     Iterator<Entity> iterator = collisionContext.gameMap().iterator();
     while (iterator.hasNext()) {
       Entity entity = iterator.next();

@@ -117,7 +117,7 @@ public class GameLoopController {
     //Updates the game map and entity positions
     myGameContext.gameMap().update();
     myGameMapView.update();
-    if(myGameInputManager != null) {
+    if (myGameInputManager != null) {
       checkCheatKeys();
     }
     handleModeChangeEvents();
@@ -257,6 +257,7 @@ public class GameLoopController {
 
   /**
    * Return multiplier
+   *
    * @return multiplier
    */
   public double getMyGameSpeedMultiplier() {
@@ -265,6 +266,7 @@ public class GameLoopController {
 
   /**
    * Set multiplier
+   *
    * @param myGameSpeedMultiplier multiplier
    */
   public void setMyGameSpeedMultiplier(double myGameSpeedMultiplier) {

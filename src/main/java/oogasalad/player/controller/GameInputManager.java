@@ -71,8 +71,8 @@ public class GameInputManager {
   /**
    * Checks if the user wants to skip to the next level
    */
-  public boolean shouldGoToNextLevel(){
-    if(activeKeys.contains(KeyCode.N)){
+  public boolean shouldGoToNextLevel() {
+    if (activeKeys.contains(KeyCode.N)) {
       activeKeys.remove(KeyCode.N);
       return true;
     }
@@ -82,8 +82,8 @@ public class GameInputManager {
   /**
    * Checks if the user wants to reset the game
    */
-  public boolean shouldResetGame(){
-    if(activeKeys.contains(KeyCode.R)){
+  public boolean shouldResetGame() {
+    if (activeKeys.contains(KeyCode.R)) {
       activeKeys.remove(KeyCode.R);
       return true;
     }
@@ -93,8 +93,8 @@ public class GameInputManager {
   /**
    * Checks if the user wants to add a life to their life counter
    */
-  public boolean shouldAddLife(){
-    if(activeKeys.contains(KeyCode.EQUALS)){
+  public boolean shouldAddLife() {
+    if (activeKeys.contains(KeyCode.EQUALS)) {
       activeKeys.remove(KeyCode.EQUALS);
       return true;
     }
@@ -104,8 +104,8 @@ public class GameInputManager {
   /**
    * Checks if the user wants to speed up the game
    */
-  public boolean shouldSpeedUpGame(){
-    if(activeKeys.contains(KeyCode.S)){
+  public boolean shouldSpeedUpGame() {
+    if (activeKeys.contains(KeyCode.S)) {
       activeKeys.remove(KeyCode.S);
       return true;
     }
@@ -116,7 +116,7 @@ public class GameInputManager {
    * Checks if the user wants to pause the game
    */
   public boolean shouldPauseGame() {
-    if(activeKeys.contains(KeyCode.P)){
+    if (activeKeys.contains(KeyCode.P)) {
       activeKeys.remove(KeyCode.P);
       return true;
     }

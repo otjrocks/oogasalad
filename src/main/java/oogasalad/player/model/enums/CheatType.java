@@ -5,11 +5,12 @@ import oogasalad.player.controller.GameLoopController;
 import oogasalad.player.controller.GameInputManager;
 
 /**
- * Represents different types of cheat codes available in the game.
- * Each cheat type defines an action that can be triggered via user input.
+ * Represents different types of cheat codes available in the game. Each cheat type defines an
+ * action that can be triggered via user input.
  * <p>
- * Each cheat type must implement the {@link #execute(GameInputManager, GameContextRecord, GameLoopController)} method,
- * which checks if the relevant key is pressed and applies the cheat effect accordingly.
+ * Each cheat type must implement the
+ * {@link #execute(GameInputManager, GameContextRecord, GameLoopController)} method, which checks if
+ * the relevant key is pressed and applies the cheat effect accordingly.
  * </p>
  *
  * @author Will
@@ -21,7 +22,8 @@ public enum CheatType {
    */
   ADD_LIFE {
     @Override
-    public void execute(GameInputManager inputManager, GameContextRecord context, GameLoopController loop) {
+    public void execute(GameInputManager inputManager, GameContextRecord context,
+        GameLoopController loop) {
       if (inputManager.shouldAddLife()) {
         context.gameState().setLives(context.gameState().getLives() + 1);
       }
@@ -33,7 +35,8 @@ public enum CheatType {
    */
   PAUSE_GAME {
     @Override
-    public void execute(GameInputManager inputManager, GameContextRecord context, GameLoopController loop) {
+    public void execute(GameInputManager inputManager, GameContextRecord context,
+        GameLoopController loop) {
       if (inputManager.shouldPauseGame()) {
         loop.pauseGame();
       }
@@ -45,7 +48,8 @@ public enum CheatType {
    */
   NEXT_LEVEL {
     @Override
-    public void execute(GameInputManager inputManager, GameContextRecord context, GameLoopController loop) {
+    public void execute(GameInputManager inputManager, GameContextRecord context,
+        GameLoopController loop) {
       if (inputManager.shouldGoToNextLevel()) {
         context.inputManager().getGameScreenView().getGamePlayerView().handleNextLevel();
       }
@@ -57,7 +61,8 @@ public enum CheatType {
    */
   RESET_GAME {
     @Override
-    public void execute(GameInputManager inputManager, GameContextRecord context, GameLoopController loop) {
+    public void execute(GameInputManager inputManager, GameContextRecord context,
+        GameLoopController loop) {
       if (inputManager.shouldResetGame()) {
         context.inputManager().getGameScreenView().getGamePlayerView().handleResetGame();
       }
@@ -69,7 +74,8 @@ public enum CheatType {
    */
   SPEED_UP {
     @Override
-    public void execute(GameInputManager inputManager, GameContextRecord context, GameLoopController loop) {
+    public void execute(GameInputManager inputManager, GameContextRecord context,
+        GameLoopController loop) {
       if (inputManager.shouldSpeedUpGame()) {
         loop.setMyGameSpeedMultiplier(loop.getMyGameSpeedMultiplier() * 1.1);
       }
@@ -83,5 +89,6 @@ public enum CheatType {
    * @param context      the {@link GameContextRecord} containing the game state and map
    * @param loop         the {@link GameLoopController} controlling the game loop
    */
-  public abstract void execute(GameInputManager inputManager, GameContextRecord context, GameLoopController loop);
+  public abstract void execute(GameInputManager inputManager, GameContextRecord context,
+      GameLoopController loop);
 }

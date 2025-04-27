@@ -3,7 +3,6 @@ package oogasalad.authoring.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -13,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -21,11 +19,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.records.config.model.CollisionEventInterface;
 import oogasalad.engine.utility.LanguageManager;
-import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.view.components.FormattingUtil;
 
 /**
@@ -115,7 +111,6 @@ public class CollisionRuleEditorView {
     );
 
     root.getStyleClass().add("root");
-
 
     ScrollPane scrollPane = new ScrollPane(root);
     scrollPane.setFitToWidth(true);

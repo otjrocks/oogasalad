@@ -16,16 +16,15 @@ import oogasalad.engine.utility.LanguageManager;
 import java.util.Map;
 
 /**
- * ConditionEditor provides dropdowns and input fields for configuring
- * win conditions and lose conditions dynamically using reflection.
- *
- * It loads available condition classes at runtime and allows the user
- * to select types and provide associated parameter values.
- *
+ * ConditionEditor provides dropdowns and input fields for configuring win conditions and lose
+ * conditions dynamically using reflection.
+ * <p>
+ * It loads available condition classes at runtime and allows the user to select types and provide
+ * associated parameter values.
+ * <p>
  * Designed to be used as part of the GameSettingsView.
  *
- * @author
- * William He
+ * @author William He
  */
 public class ConditionEditor {
 
@@ -44,7 +43,8 @@ public class ConditionEditor {
    * @param winConditions  map of win condition names to their Class types
    * @param loseConditions map of lose condition names to their Class types
    */
-  public ConditionEditor(Map<String, Class<?>> winConditions, Map<String, Class<?>> loseConditions) {
+  public ConditionEditor(Map<String, Class<?>> winConditions,
+      Map<String, Class<?>> loseConditions) {
     this.winConditions = winConditions;
     this.loseConditions = loseConditions;
 
@@ -53,8 +53,10 @@ public class ConditionEditor {
     root.setVgap(10);
     root.setPadding(new Insets(10));
 
-    winConditionDropdown = new ComboBox<>(FXCollections.observableArrayList(winConditions.keySet()));
-    loseConditionDropdown = new ComboBox<>(FXCollections.observableArrayList(loseConditions.keySet()));
+    winConditionDropdown = new ComboBox<>(
+        FXCollections.observableArrayList(winConditions.keySet()));
+    loseConditionDropdown = new ComboBox<>(
+        FXCollections.observableArrayList(loseConditions.keySet()));
 
     winValueField = new TextField();
     loseValueField = new TextField();
@@ -104,15 +106,6 @@ public class ConditionEditor {
    */
   public String getSelectedLoseCondition() {
     return loseConditionDropdown.getValue();
-  }
-
-  /**
-   * Returns the value entered for the selected lose condition.
-   *
-   * @return the lose condition value as a String
-   */
-  public String getLoseValue() {
-    return loseValueField.getText();
   }
 
   /**

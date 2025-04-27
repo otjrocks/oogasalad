@@ -127,7 +127,8 @@ public class GamePlayerView {
         logicalIndex);
 
     myGameView = new GameView(
-        new GameContextRecord(myMainController.getInputManager(), levelController.getCurrentLevelMap(), myGameState),
+        new GameContextRecord(myMainController.getInputManager(),
+            levelController.getCurrentLevelMap(), myGameState),
         myConfigModel,
         logicalIndex,
         sessionManager,
@@ -166,11 +167,6 @@ public class GamePlayerView {
     container.setCenter(gameViewRoot);
 
     return container;
-  }
-
-  private void saveProgress() {
-    sessionManager.save();
-    LoggingManager.LOGGER.info("💾 Manual Save triggered by player");
   }
 
   /**

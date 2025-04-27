@@ -125,21 +125,6 @@ public class GameSessionManager {
   }
 
   /**
-   * Sets lives in safe config to one less.
-   */
-  public void loseLife() {
-    saveConfig = new SaveConfigRecord(
-        saveConfig.saveName(),
-        saveConfig.currentLevel(),
-        saveConfig.totalScore(),
-        saveConfig.lives() - 1,
-        saveConfig.highScore(),
-        saveConfig.levelOrder()
-    );
-    save();
-  }
-
-  /**
    * Returns the current score in the save config.
    */
   public int getCurrentScore() {
@@ -166,18 +151,4 @@ public class GameSessionManager {
     save();
   }
 
-  /**
-   * Sets lives to an int in save config.
-   */
-  public void setLives(int newLives) {
-    saveConfig = new SaveConfigRecord(
-        saveConfig.saveName(),
-        saveConfig.currentLevel(),
-        saveConfig.totalScore(),
-        newLives,
-        saveConfig.highScore(),
-        saveConfig.levelOrder()
-    );
-    save();
-  }
 }

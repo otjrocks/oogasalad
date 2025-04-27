@@ -8,15 +8,6 @@ package oogasalad.authoring.help;
 public class HelpException extends RuntimeException {
 
   /**
-   * Create this exception with an error message.
-   *
-   * @param message The message you wish to provide.
-   */
-  public HelpException(String message) {
-    super(message);
-  }
-
-  /**
    * Constructs a new {@code HelpException} with the specified detail message and cause. This allows
    * the chaining of exceptions, which can help preserve the original stack trace of an underlying
    * exception.
