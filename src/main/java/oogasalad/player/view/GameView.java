@@ -20,6 +20,7 @@ import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.utility.constants.GameConfig;
 import oogasalad.player.controller.GameLoopController;
+import oogasalad.player.model.Entity;
 import oogasalad.player.model.save.GameSessionManager;
 
 /**
@@ -242,4 +243,21 @@ public class GameView {
   public void resumeGame() {
     myGameLoopController.resumeGame();
   }
+
+  /**
+   * Resets all player-controlled entities back to their initial spawn positions and zeroes their
+   * velocity.
+   */
+  public void resetControlledEntitiesToSpawn() {
+    for (Entity entity : myGameContext.gameMap()) {
+      entity.getEntityPlacement().moveTo(
+          entity.getEntityPlacement().getInitialX(),
+          entity.getEntityPlacement().getInitialY()
+      );
+      entity.setDx(0);
+      entity.setDy(0);
+    }
+  }
+
+
 }

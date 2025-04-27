@@ -12,6 +12,7 @@ import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.controller.LevelController;
+import oogasalad.player.model.Entity;
 import oogasalad.player.model.GameStateInterface;
 import oogasalad.player.model.exceptions.SaveFileException;
 import oogasalad.player.model.save.GameSessionManager;
@@ -127,7 +128,8 @@ public class GamePlayerView {
         logicalIndex);
 
     myGameView = new GameView(
-        new GameContextRecord(myMainController.getInputManager(), levelController.getCurrentLevelMap(), myGameState),
+        new GameContextRecord(myMainController.getInputManager(),
+            levelController.getCurrentLevelMap(), myGameState),
         myConfigModel,
         logicalIndex,
         sessionManager,
@@ -200,7 +202,11 @@ public class GamePlayerView {
     levelController = new LevelController(myMainController, myConfigModel, isRandomized,
         sessionManager);
     loadGameViewFromSession();
+
+    myGameView.resetControlledEntitiesToSpawn();
+
   }
+
 
   /**
    * Returns privately stored GameView.
