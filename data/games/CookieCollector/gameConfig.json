@@ -9,7 +9,7 @@
     "startingLives" : 3,
     "initialScore" : 0,
     "winCondition" : {
-      "type" : "ScoreReached",
+      "type" : "ScoreBased",
       "amount" : 100000
     },
     "loseCondition" : {
