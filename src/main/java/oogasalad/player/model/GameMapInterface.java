@@ -84,6 +84,13 @@ public interface GameMapInterface extends Iterable<Entity> {
   int getEntityCount(String entityType);
 
   /**
+   * Increment count of entity type.
+   *
+   * @param entityType entity type that we want to increment.
+   */
+  void incrementEntityCount(String entityType);
+
+  /**
    * Decrement count of entity type.
    *
    * @param entityType entity type that we want to decrement.
