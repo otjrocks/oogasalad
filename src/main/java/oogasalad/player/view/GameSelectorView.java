@@ -104,7 +104,7 @@ public class GameSelectorView {
    * until a file is uploaded.
    */
   public void resetUploadSection() {
-    fileLabel.setText("No file selected");
+    fileLabel.setText(getMessage("NO_FILE_SELECTED"));
     startButton.setDisable(true);
   }
 
@@ -118,7 +118,7 @@ public class GameSelectorView {
     titleLabel.setMaxWidth(Double.MAX_VALUE);
     titleLabel.setAlignment(Pos.TOP_CENTER);
 
-    Button backButton = FormattingUtil.createSmallButton("Back");
+    Button backButton = FormattingUtil.createSmallButton(getMessage("BACK_BUTTON"));
     backButton.setOnAction(e -> {
       myMainController.hideGameSelectorView();
       myMainController.showSplashScreen();
@@ -128,7 +128,7 @@ public class GameSelectorView {
     return topBar;
   }
 
-  private VBox createFileUploadSection() {
+  private HBox createFileUploadSection() {
     Button uploadButton = FormattingUtil.createSmallButton(LanguageManager.getMessage("UPLOAD"));
 
     startButton = FormattingUtil.createSmallButton(LanguageManager.getMessage("START"));
@@ -142,9 +142,8 @@ public class GameSelectorView {
     uploadButton.setOnAction(e -> handleFileUpload());
     startButton.setOnAction(e -> startGameFromUpload());
 
-    VBox section = new VBox(10, uploadButton, fileLabel, startButton);
-    section.setAlignment(Pos.CENTER);
-    VBox.setMargin(section, new Insets(30, 0, 0, 0));
+    HBox section = new HBox(10, uploadButton, startButton, fileLabel);
+    section.getStyleClass().add("game-selector-file-upload");
     return section;
   }
 
@@ -243,7 +242,7 @@ public class GameSelectorView {
     infoDialog.setTitle(LanguageManager.getMessage("GAME_INFO"));
     infoDialog.setHeaderText(gameName);
     infoDialog.setContentText(String.format(
-        "Author: %s%nDescription: %s",
+        getMessage("INFO_DIALOG_MESSAGE"),
         config.metadata().author(),
         config.metadata().gameDescription()
     ));
@@ -311,7 +310,7 @@ public class GameSelectorView {
       attemptShowingGamePlayerView(fileLabel.getText(), false);
     } catch (Exception e) {
       LoggingManager.LOGGER.error("Exception: {}", e.getMessage());
-      showErrorDialog("Error", e.getMessage());
+      showErrorDialog(getMessage("ERROR"), e.getMessage());
     }
   }
 

@@ -113,6 +113,7 @@ public class SplashScreenView {
   private void initializeTitle() {
     Label title = FormattingUtil.createTitle(LanguageManager.getMessage("TITLE"));
     title.setId("splashScreenTitle");
+    title.getStyleClass().add("title");
     myRoot.getChildren().add(title);
   }
 
