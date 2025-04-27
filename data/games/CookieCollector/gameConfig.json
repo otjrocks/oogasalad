@@ -21,5 +21,28 @@
     "levelMap" : "level1"
   }
   ],
-  "collisions" : [ ]
+  "collisions" : [{
+    "entityA" : "player",
+    "modeA" : "Default",
+    "entityB" : "wall",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "modeB" : "Default",
+    "eventsB" : [ ]
+  },
+    {
+      "entityA" : "player",
+      "modeA" : "Default",
+      "entityB" : "cookie",
+      "eventsA" : [ {
+        "type" : "UpdateScore",
+        "amount" : 10
+      } ],
+      "modeB" : "Default",
+      "eventsB" : [ {
+        "type" : "Consume"
+      } ]
+    }
+  ]
 }
