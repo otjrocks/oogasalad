@@ -17,7 +17,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.image.Image;
@@ -27,7 +26,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
@@ -72,6 +70,7 @@ public class GameSelectorView {
     this.myMainController = mainController;
     this.myRoot = new VBox(20);
     myRoot.setPrefSize(WIDTH, HEIGHT);
+    myRoot.getStyleClass().add("game-selector-view");
     myRoot.setPadding(new Insets(ELEMENT_SPACING * 2, ELEMENT_SPACING * 4, ELEMENT_SPACING * 2,
         ELEMENT_SPACING * 4));
 
@@ -135,14 +134,14 @@ public class GameSelectorView {
   }
 
   private VBox createFileUploadSection() {
-    Button uploadButton = FormattingUtil.createSmallButton("Upload");
+    Button uploadButton = FormattingUtil.createSmallButton(LanguageManager.getMessage("UPLOAD"));
 
-    startButton = FormattingUtil.createSmallButton("Start");
+    startButton = FormattingUtil.createSmallButton(LanguageManager.getMessage("START"));
     startButton.setDisable(true);
 
-    fileLabel = new Label("No file selected");
+    fileLabel = new Label(LanguageManager.getMessage("NO_FILE_SELECTED"));
 
-    fileChooser.setTitle("Open File");
+    fileChooser.setTitle(LanguageManager.getMessage("OPEN_FILE"));
     fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
 
     uploadButton.setOnAction(e -> handleFileUpload());
@@ -164,7 +163,7 @@ public class GameSelectorView {
       pageBox.setAlignment(Pos.CENTER);
 
       if (gameNames.isEmpty()) {
-        Label emptyLabel = new Label("No games available.");
+        Label emptyLabel = new Label(LanguageManager.getMessage("NO_GAMES_AVAILABLE"));
         pageBox.getChildren().add(emptyLabel);
         return pageBox;
       }
@@ -201,11 +200,12 @@ public class GameSelectorView {
     image.setFitWidth(GAME_CARD_WIDTH);
     image.setFitHeight(300);
 
-    Label nameLabel =  FormattingUtil.createHeading(gameName);
+    Label nameLabel = FormattingUtil.createHeading(gameName);
     nameLabel.setWrapText(true);
     nameLabel.setMaxWidth(GAME_CARD_WIDTH);
 
-    Button randomizeButton = FormattingUtil.createSmallButton("Randomize Levels");
+    Button randomizeButton = FormattingUtil.createSmallButton(
+        LanguageManager.getMessage("RANDOMIZE"));
     randomizeButton.setWrapText(true);
     randomizeButton.setMaxWidth(GAME_CARD_WIDTH);
     randomizeButton.setOnAction(
@@ -245,7 +245,7 @@ public class GameSelectorView {
     }
 
     Alert infoDialog = new Alert(AlertType.INFORMATION);
-    infoDialog.setTitle("Game Info");
+    infoDialog.setTitle(LanguageManager.getMessage("GAME_INFO"));
     infoDialog.setHeaderText(gameName);
     infoDialog.setContentText(String.format(
         "Author: %s%nDescription: %s",

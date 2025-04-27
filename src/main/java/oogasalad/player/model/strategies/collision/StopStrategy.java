@@ -17,8 +17,7 @@ import oogasalad.player.model.Entity;
 public class StopStrategy implements CollisionStrategyInterface {
 
   @Override
-  public void handleCollision(CollisionContextRecord collisionContext)
-      throws EntityNotFoundException {
+  public void handleCollision(CollisionContextRecord collisionContext) {
     // I used ChatGPT to refactor this method to use strategy applies to enum data.
     Entity target = collisionContext.strategyAppliesTo() == StrategyAppliesTo.ENTITY1
         ? collisionContext.entity1()

@@ -17,6 +17,7 @@ import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.model.Entity;
 import oogasalad.player.model.api.ModeChangeEventStrategyFactory;
 import oogasalad.player.model.api.SpawnEventStrategyFactory;
+import oogasalad.player.model.enums.CheatType;
 import oogasalad.player.model.strategies.modechangeevent.ModeChangeEventStrategyInterface;
 import oogasalad.player.model.strategies.spawnevent.SpawnEventStrategyInterface;
 import oogasalad.player.view.GameMapView;
@@ -28,12 +29,14 @@ public class GameLoopController {
 
   private AnimationTimer myGameLoop;
   private final GameContextRecord myGameContext;
+  private final GameInputManager myGameInputManager;
   private final GameMapView myGameMapView;
   private final ParsedLevelRecord myLevel;
   private final Map<SpawnEventRecord, Entity> activeSpawnedEntities = new HashMap<>();
   private final ConfigModelRecord myConfig;
-  private final double myGameSpeedMultiplier;
+  private double myGameSpeedMultiplier;
   private double myTotalElapsedTime = 0;
+  private double lastUpdateTime = -1;
 
 
   /**
@@ -50,6 +53,7 @@ public class GameLoopController {
       ParsedLevelRecord level) {
     myGameContext = gameContext;
     myGameMapView = gameMapView;
+    myGameInputManager = gameContext.inputManager();
     myLevel = level;
     myGameSpeedMultiplier = gameConfig.settings().gameSpeed();
     myConfig = gameConfig;
@@ -62,7 +66,6 @@ public class GameLoopController {
    */
   private void initializeGameLoop() {
     myGameLoop = new AnimationTimer() {
-      private long lastUpdateTime = -1;
 
       @Override
       public void handle(long now) {
@@ -114,6 +117,9 @@ public class GameLoopController {
     //Updates the game map and entity positions
     myGameContext.gameMap().update();
     myGameMapView.update();
+    if (myGameInputManager != null) {
+      checkCheatKeys();
+    }
     handleModeChangeEvents();
     handleSpawnEvents();
   }
@@ -156,6 +162,7 @@ public class GameLoopController {
           new EntityPlacement(spawnEvent.entityType(), spawnEvent.x(), spawnEvent.y(),
               spawnEvent.mode()),
           myGameContext.gameMap(), myConfig);
+      myGameContext.gameMap().incrementEntityCount(newEntity.getEntityPlacement().getTypeString());
       try {
         myGameContext.gameMap().addEntity(newEntity);
         activeSpawnedEntities.put(spawnEvent, newEntity);
@@ -236,8 +243,35 @@ public class GameLoopController {
    */
   public void resumeGame() {
     if (myGameLoop != null) {
+      lastUpdateTime = -1;
       myGameLoop.start();
     }
+  }
+
+  private void checkCheatKeys() {
+    if (myConfig.settings().cheatTypes() != null) {
+      for (CheatType cheat : myConfig.settings().cheatTypes()) {
+        cheat.execute(myGameInputManager, myGameContext, this);
+      }
+    }
+  }
+
+  /**
+   * Return multiplier
+   *
+   * @return multiplier
+   */
+  public double getMyGameSpeedMultiplier() {
+    return myGameSpeedMultiplier;
+  }
+
+  /**
+   * Set multiplier
+   *
+   * @param myGameSpeedMultiplier multiplier
+   */
+  public void setMyGameSpeedMultiplier(double myGameSpeedMultiplier) {
+    this.myGameSpeedMultiplier = myGameSpeedMultiplier;
   }
 
 }

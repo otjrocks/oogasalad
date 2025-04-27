@@ -61,7 +61,6 @@ public class JsonConfigParser implements ConfigParserInterface {
   private final ObjectMapper mapper;
   private Map<String, EntityConfigRecord> entityMap;
   private final Map<String, EntityTypeRecord> entityTypeMap = new HashMap<>();
-  private String gameFolderBasePath;
 
 
   private static final String JSON_IDENTIFIER = ".json";
@@ -88,7 +87,7 @@ public class JsonConfigParser implements ConfigParserInterface {
    */
   public ConfigModelRecord loadFromFile(String filepath) throws ConfigException {
 
-    this.gameFolderBasePath = new File(filepath).getParent();
+    String gameFolderBasePath = new File(filepath).getParent();
 
     // Step 1: Load primary game config JSON (e.g., gameConfig.json)
     GameConfigRecord gameConfig = loadGameConfig(filepath);
@@ -342,7 +341,8 @@ public class JsonConfigParser implements ConfigParserInterface {
         baseSettings.startingLives(),
         baseSettings.initialScore(),
         baseSettings.winCondition(),
-        baseSettings.loseCondition()
+        baseSettings.loseCondition(),
+        baseSettings.cheatTypes()
     );
   }
 
@@ -439,7 +439,7 @@ public class JsonConfigParser implements ConfigParserInterface {
 
       MetadataRecord metadata = parseMetadata(root);
       SettingsRecord defaultSettings = parseDefaultSettings(root);
-      List<LevelRecord> levels = parseLevels(root, defaultSettings);
+      List<LevelRecord> levels = parseLevels(root);
       List<CollisionConfigRecord> collisions = parseCollisions(root);
       JsonNode currentLevelNode = root.get("currentLevelIndex");
       int currentLevelIndex = currentLevelNode != null ? currentLevelNode.asInt() : 0;
@@ -459,7 +459,7 @@ public class JsonConfigParser implements ConfigParserInterface {
     return mapper.treeToValue(root.get("defaultSettings"), SettingsRecord.class);
   }
 
-  private List<LevelRecord> parseLevels(JsonNode root, SettingsRecord defaultSettings) {
+  private List<LevelRecord> parseLevels(JsonNode root) {
     List<LevelRecord> levels = new ArrayList<>();
     for (JsonNode levelNode : root.get("levels")) {
       String levelMap = levelNode.get("levelMap").asText();
@@ -569,7 +569,7 @@ public class JsonConfigParser implements ConfigParserInterface {
 
   private EntityPropertiesRecord mergeProperties(String modeName,
       EntityPropertiesRecord defaultProps,
-      JsonNode modeNode) throws JsonProcessingException {
+      JsonNode modeNode) {
     final String BLOCKS = "blocks";
 
     List<String> blocks = modeNode.has(BLOCKS)

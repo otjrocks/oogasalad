@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
@@ -35,7 +38,7 @@ public class GameMapControllerTest {
     mockGameMap = mock(GameMapInterface.class);
     mockGameState = mock(GameStateInterface.class);
     GameMapView mockGameView = mock(GameMapView.class);
-    GameContextRecord gameContext = new GameContextRecord(mockGameMap, mockGameState);
+    GameContextRecord gameContext = new GameContextRecord(new GameInputManager(new Scene(new Pane()), new Group()), mockGameMap, mockGameState);
 
     ConfigModelRecord mockConfigModel = mock(ConfigModelRecord.class);
     when(mockConfigModel.winCondition()).thenReturn(new EntityBasedConditionRecord("dot")); // or any WinCondition

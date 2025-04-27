@@ -3,13 +3,19 @@ package oogasalad.player.model.strategies.spawnevent;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.HashSet;
 import java.util.Map;
+
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
 import oogasalad.engine.records.model.ConditionRecord;
+import oogasalad.player.controller.GameInputManager;
 import oogasalad.player.model.GameMap;
 import oogasalad.player.model.GameState;
 import oogasalad.player.model.GameStateInterface;
@@ -22,10 +28,10 @@ class ScoreBasedSpawnEventStrategyTest {
 
   private GameContextRecord contextWithScore(int score) {
     SettingsRecord gameSettings = new SettingsRecord(1.0, 5, 5,
-        new EntityBasedConditionRecord("dot"), new LivesBasedConditionRecord());
+        new EntityBasedConditionRecord("dot"), new LivesBasedConditionRecord(), new HashSet<>());
     GameStateInterface state = new GameState(gameSettings);
     state.updateScore(score);
-    return new GameContextRecord(new GameMap(10, 10), state);
+    return new GameContextRecord(new GameInputManager(new Scene(new Pane()), new Group()), new GameMap(10, 10), state);
   }
 
   private SpawnEventRecord spawnEventWithParams(String amountValue, boolean forSpawn) {

@@ -1,0 +1,25 @@
+{
+  "entityType": {
+    "name": "Cactus",
+    "blocks": [
+    ]
+  },
+  "modes": [
+    {
+      "name": "Default",
+      "image": {
+        "imagePath": "assets/wall.png",
+        "tileWidth": 8,
+        "tileHeight": 8,
+        "tilesToCycle": 1,
+        "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "ConstantDirection",
+        "dx": -1,
+        "dy": 0
+      },
+      "movementSpeed": 1.5
+    }
+  ]
+}

@@ -1,5 +1,9 @@
 package oogasalad.authoring.view;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -8,15 +12,14 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import oogasalad.authoring.model.LevelDraft;
-import oogasalad.authoring.view.mainView.AlertUtil;
+import oogasalad.authoring.view.util.StrategyLoader;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 
-import java.util.*;
 import oogasalad.engine.utility.LanguageManager;
-import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.view.components.FormattingUtil;
+import oogasalad.player.model.strategies.spawnevent.SpawnEventStrategyInterface;
 
 /**
  * A dialog window for editing spawn events within a level. Allows the user to configure entities
@@ -24,12 +27,15 @@ import oogasalad.engine.view.components.FormattingUtil;
  */
 public class SpawnEventDialog extends Stage {
 
-  private static final String CONDITION_TIME_ELAPSED = "TimeElapsed";
-  private static final String CONDITION_SCORE_BASED = "ScoreBased";
-  private static final String PARAM_AMOUNT = "amount";
+  private static final Map<String, List<String>> CONDITION_PARAMETERS = Map.of(
+      "TimeElapsed", List.of("amount"),
+      "ScoreBased", List.of("amount"),
+      "Always", List.of() // If you later have an AlwaysSpawn condition needing no parameters
+  );
 
   private final LevelDraft level;
   private final Map<String, EntityTypeRecord> entityTypes;
+
 
   private final ComboBox<String> entityTypeDropdown = new ComboBox<>();
   private final ComboBox<String> modeDropdown = new ComboBox<>();
@@ -63,6 +69,13 @@ public class SpawnEventDialog extends Stage {
     VBox root = new VBox(10);
     root.setPadding(new Insets(10));
 
+    // <-- your package
+    // <-- the interface they implement
+    Map<String, Class<?>> spawnConditions = StrategyLoader.loadStrategies(
+        "oogasalad.player.model.strategies.spawnevent", // <-- your package
+        SpawnEventStrategyInterface.class // <-- the interface they implement
+    );
+
     HBox row1 = new HBox(10, new Label(LanguageManager.getMessage("ENTITY_TYPE")),
         entityTypeDropdown);
     HBox row2 = new HBox(10, new Label(LanguageManager.getMessage("MODE")), modeDropdown);
@@ -77,14 +90,15 @@ public class SpawnEventDialog extends Stage {
     entityTypeDropdown.getItems().addAll(entityTypes.keySet());
     entityTypeDropdown.setOnAction(e -> updateModes());
 
-    spawnConditionTypeDropdown.getItems().addAll(CONDITION_TIME_ELAPSED, CONDITION_SCORE_BASED);
-    spawnConditionTypeDropdown.setValue(CONDITION_TIME_ELAPSED);
+    spawnConditionTypeDropdown.getItems().addAll(spawnConditions.keySet());
+
     spawnConditionTypeDropdown.setOnAction(
         e -> renderConditionUI(spawnConditionTypeDropdown, spawnConditionParamsBox));
     renderConditionUI(spawnConditionTypeDropdown, spawnConditionParamsBox);
 
     hasDespawnCondition.setOnAction(e -> toggleDespawnControls());
-    despawnConditionTypeDropdown.getItems().addAll(CONDITION_TIME_ELAPSED, CONDITION_SCORE_BASED);
+    despawnConditionTypeDropdown.getItems().addAll(spawnConditions.keySet());
+
     despawnConditionTypeDropdown.setOnAction(
         e -> renderConditionUI(despawnConditionTypeDropdown, despawnConditionParamsBox));
     toggleDespawnControls();
@@ -101,7 +115,7 @@ public class SpawnEventDialog extends Stage {
       }
     });
 
-    table.setPrefHeight(200);
+    table.getStyleClass().add("spawn-event-table");
     table.getItems().addAll(level.getSpawnEvents());
     table.getColumns().addAll(
         makeColumn(LanguageManager.getMessage("ENTITY"), r -> r.entityType().type()),
@@ -134,32 +148,46 @@ public class SpawnEventDialog extends Stage {
     despawnConditionTypeDropdown.setDisable(!enabled);
     despawnConditionParamsBox.setDisable(!enabled);
     if (enabled) {
-      despawnConditionTypeDropdown.setValue(CONDITION_TIME_ELAPSED);
       renderConditionUI(despawnConditionTypeDropdown, despawnConditionParamsBox);
     }
   }
 
-  // TODO: render by reflection, rather than hard code
   private void renderConditionUI(ComboBox<String> typeDropdown, VBox paramBox) {
     paramBox.getChildren().clear();
-    String type = typeDropdown.getValue();
-    if (CONDITION_TIME_ELAPSED.equals(type) || CONDITION_SCORE_BASED.equals(type)) {
-      Label label = new Label(LanguageManager.getMessage("AMOUNT"));
+
+    String selectedType = typeDropdown.getValue();
+    if (selectedType == null || !CONDITION_PARAMETERS.containsKey(selectedType)) {
+      return;
+    }
+
+    List<String> params = CONDITION_PARAMETERS.get(selectedType);
+
+    for (String param : params) {
+      Label label = new Label(param);
       TextField field = FormattingUtil.createTextField();
-      field.setUserData(PARAM_AMOUNT);
+      field.setId(param); // important: set ID = param name
       paramBox.getChildren().addAll(label, field);
     }
   }
 
+
   private Map<String, Object> extractParameters(VBox paramBox) {
-    Map<String, Object> map = new HashMap<>();
+    Map<String, Object> params = new HashMap<>();
+
     for (Node node : paramBox.getChildren()) {
-      if (node instanceof TextField field && PARAM_AMOUNT.equals(field.getUserData())) {
-        map.put(PARAM_AMOUNT, Double.parseDouble(field.getText()));
+      if (node instanceof TextField field && field.getId() != null) {
+        String raw = field.getText();
+        try {
+          params.put(field.getId(), Integer.parseInt(raw)); // Default to parsing as double
+        } catch (NumberFormatException e) {
+          params.put(field.getId(), raw); // fallback: save as string if parse fails
+        }
       }
     }
-    return map;
+
+    return params;
   }
+
 
   private void addSpawnEvent() {
     try {

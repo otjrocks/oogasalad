@@ -127,6 +127,13 @@ public class GameMap implements GameMapInterface {
   }
 
   @Override
+  public void incrementEntityCount(String entityType) {
+    if (entityFrequencyMap.containsKey(entityType)) {
+      entityFrequencyMap.put(entityType, entityFrequencyMap.get(entityType) + 1);
+    }
+  }
+
+  @Override
   public void decrementEntityCount(String entityType) {
     if (entityFrequencyMap.containsKey(entityType)) {
       entityFrequencyMap.put(entityType, entityFrequencyMap.get(entityType) - 1);

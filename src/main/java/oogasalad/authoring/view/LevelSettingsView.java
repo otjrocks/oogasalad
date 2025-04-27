@@ -57,7 +57,7 @@ public class LevelSettingsView {
 
   private void initializeView(LevelController controller) {
     Label titleLabel = new Label(LanguageManager.getMessage("LEVEL_SETTINGS"));
-    titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+    titleLabel.getStyleClass().add("level-title-label");
 
     Button saveButton = new Button(LanguageManager.getMessage("APPLY_LEVEL_SETTINGS"));
     saveButton.setOnAction(e -> applyChanges());

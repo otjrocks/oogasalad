@@ -22,6 +22,8 @@ public class EntityPlacement {
   private double initialY;
   private String mode;
   private int currentFrame;
+  private boolean isJumping = false;
+  private double verticalVelocity = 0;
 
   /**
    * A default constructor is required for the file parsing API.
@@ -251,4 +253,41 @@ public class EntityPlacement {
         .get(this.getMode())
         .image().animationSpeed();
   }
+
+  /**
+   * Checks if the entity is currently in a jumping state.
+   *
+   * @return true if the entity is jumping, false otherwise
+   */
+  public boolean isJumping() {
+    return isJumping;
+  }
+
+  /**
+   * Sets the jumping state of the entity.
+   *
+   * @param jumping true if the entity is jumping, false otherwise
+   */
+  public void setJumping(boolean jumping) {
+    isJumping = jumping;
+  }
+
+  /**
+   * Retrieves the vertical velocity of the entity.
+   *
+   * @return the vertical velocity as a double
+   */
+  public double getVerticalVelocity() {
+    return verticalVelocity;
+  }
+
+  /**
+   * Sets the vertical velocity of the entity.
+   *
+   * @param verticalVelocity the new vertical velocity to be set
+   */
+  public void setVerticalVelocity(double verticalVelocity) {
+    this.verticalVelocity = verticalVelocity;
+  }
+
 }

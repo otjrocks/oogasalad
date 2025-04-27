@@ -72,11 +72,7 @@ public class GameMapView {
    * Call on each game tick to update models, handle removals, and redraw the canvas.
    */
   public void update() {
-    try {
-      myGameMapController.updateEntityModels();
-    } catch (InvalidPositionException e) {
-      throw new RuntimeException(e);
-    }
+    myGameMapController.updateEntityModels();
     initializeEntityViews();  // rebuild views to reflect current entities (removals/additions)
     drawAll();
   }

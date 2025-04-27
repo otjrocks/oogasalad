@@ -17,11 +17,10 @@ import java.nio.file.Path;
  *
  * <p>Separates save/load logic from AuthoringView to improve modularity and maintainability.</p>
  *
+ * @author William He
  * @see AlertUtil
  * @see MenuBarFactory
  * @see AuthoringLayoutBuilder
- *
- * @author William He
  */
 public class SaveLoadManager {
 
@@ -54,7 +53,8 @@ public class SaveLoadManager {
       try {
         controller.getModel().saveGame(savePath);
         AlertUtil.showAlert(owner, LanguageManager.getMessage("SAVED"),
-            LanguageManager.getMessage("SUCCESS_SAVE_JSON"), javafx.scene.control.Alert.AlertType.CONFIRMATION);
+            LanguageManager.getMessage("SUCCESS_SAVE_JSON"),
+            javafx.scene.control.Alert.AlertType.CONFIRMATION);
       } catch (ConfigException e) {
         AlertUtil.showAlert(owner, LanguageManager.getMessage("ERROR_SAVING"),
             e.getMessage(), javafx.scene.control.Alert.AlertType.ERROR);

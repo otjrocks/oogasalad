@@ -7,7 +7,7 @@ import oogasalad.authoring.controller.AuthoringController;
 import oogasalad.authoring.view.EntityPlacementView;
 import oogasalad.authoring.view.EntitySelectorView;
 import oogasalad.authoring.view.EntityTypeEditorView;
-import oogasalad.authoring.view.GameSettingsView;
+import oogasalad.authoring.view.gameSettings.GameSettingsView;
 import oogasalad.authoring.view.LevelSelectorView;
 import oogasalad.authoring.view.LevelSettingsView;
 import oogasalad.authoring.view.canvas.CanvasView;
@@ -17,8 +17,8 @@ import oogasalad.engine.utility.constants.GameConfig;
  * Top-level view for the Authoring Environment.
  *
  * <p>This class coordinates all major UI components, delegates layout setup
- * and event handling to helper classes, and provides access to subviews
- * for interaction with the AuthoringController.</p>
+ * and event handling to helper classes, and provides access to subviews for interaction with the
+ * AuthoringController.</p>
  *
  * <p>AuthoringView itself focuses on maintaining references to components
  * and delegating their initialization and updates.</p>
@@ -28,7 +28,6 @@ import oogasalad.engine.utility.constants.GameConfig;
 public class AuthoringView {
 
   private final BorderPane root;
-  private AuthoringController controller;
 
   // Subviews
   private EntitySelectorView selectorView;
@@ -41,7 +40,6 @@ public class AuthoringView {
 
   // Managers
   private AuthoringLayoutBuilder layoutBuilder;
-  private HelpManager helpManager;
 
   /**
    * Constructs an empty AuthoringView with preset dimensions.
@@ -68,9 +66,8 @@ public class AuthoringView {
    * @param controller the controller coordinating the model and views
    */
   public void setController(AuthoringController controller) {
-    this.controller = controller;
     layoutBuilder = new AuthoringLayoutBuilder(this, controller);
-    helpManager = new HelpManager(this, controller);
+    HelpManager helpManager = new HelpManager(this, controller);
 
     layoutBuilder.buildLayout();
     helpManager.setupHelpSystem();

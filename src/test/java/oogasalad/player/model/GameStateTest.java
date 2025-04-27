@@ -2,6 +2,7 @@ package oogasalad.player.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.HashSet;
 import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
@@ -14,7 +15,7 @@ public class GameStateTest {
 
   @BeforeEach
   void setUp() {
-    SettingsRecord gameSettings = new SettingsRecord(1.0, 5, 5, new EntityBasedConditionRecord("dot"), new LivesBasedConditionRecord());
+    SettingsRecord gameSettings = new SettingsRecord(1.0, 5, 5, new EntityBasedConditionRecord("dot"), new LivesBasedConditionRecord(), new HashSet<>());
     gameState = new GameState(gameSettings);
   }
 

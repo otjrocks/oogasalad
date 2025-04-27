@@ -76,6 +76,18 @@ Label, Text {
 }
 
 /* Button Formatting */
+.button {
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+  -fx-background-radius: 2px;
+  -fx-border-radius: 2px;
+  -fx-font-family: "Inter";
+  -fx-text-alignment: center;
+  -fx-font-size: 12px;
+  -fx-padding: 7px 9px;
+}
 
 .small-button {
   -fx-font-size: 10px;
@@ -99,13 +111,14 @@ Label, Text {
   -fx-font-size: 14px;
   -fx-font-weight: bold;
   -fx-background-color: -fx-highlight;
-  -fx-text-fill: white;
+  -fx-text-fill: -fx-secondary;
   -fx-background-radius: 50%;
   -fx-min-width: 30px;
   -fx-min-height: 30px;
   -fx-max-width: 30px;
   -fx-max-height: 30px;
   -fx-cursor: hand;
+  -fx-border-width: 0px;
 }
 
 .icon-button:hover {
@@ -165,7 +178,7 @@ Label, Text {
   -fx-border-color: -fx-secondary;
   -fx-border-width: 2px;
   -fx-font-family: "Press Start 2P";
-  -fx-font-size: 14px;
+  -fx-font-size: 10px;
   -fx-padding: 5px 10px;
 }
 
@@ -236,7 +249,7 @@ Label, Text {
 /* selector */
 .selector-container {
   -fx-alignment: center;
-  -fx-padding: 25px 5px 10px 5px;
+  -fx-padding: 7px 9px;
 }
 
 .combo-box {
@@ -296,6 +309,7 @@ Label, Text {
 .scroll-pane {
   -fx-background-color: transparent;
 }
+
 .scroll-pane > .viewport {
   -fx-background-color: transparent;
 }
@@ -305,6 +319,18 @@ Label, Text {
 .side-panel {
   -fx-pref-width: 300px;
   -fx-spacing: 10px;
+}
+
+.tile-hover {
+  -fx-stroke: -fx-highlight;
+  -fx-stroke-width: 2px;
+  -fx-fill: transparent;
+}
+
+.tile-selection {
+  -fx-stroke: -fx-accent;
+  -fx-stroke-width: 2px;
+  -fx-fill: transparent;
 }
 
 .selected-tile {
@@ -327,21 +353,21 @@ Label, Text {
 }
 
 .entity-tile {
-  -fx-background-color: white;
-  -fx-border-color: #ccc;
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-highlight;
   -fx-border-width: 1;
   -fx-padding: 6;
   -fx-cursor: hand;
 }
 
 .entity-tile:hover {
-  -fx-background-color: #f9f9f9;
+  -fx-background-color: -fx-highlight;
 }
 
 .selected-tile {
-  -fx-border-color: gold;
+  -fx-border-color: derive(-fx-accent, -20%);
   -fx-border-width: 2;
-  -fx-background-color: rgba(255, 215, 0, 0.15);
+  -fx-background-color: -fx-accent;
 }
 
 /* Game Player Styles */
@@ -394,6 +420,12 @@ Label, Text {
   -fx-font-family: "Press Start 2P";
 }
 
+.delete-button {
+  -fx-background-color: derive(-fx-warning, -30%);
+  -fx-border-color: -fx-warning;
+  -fx-text-fill: derive(-fx-warning, 90%);
+}
+
 
 .end-button {
   -fx-font-size: 15px;
@@ -407,4 +439,227 @@ Label, Text {
   -fx-border-radius: 5px;
   -fx-font-family: "Press Start 2P";
   -fx-translate-y: 80px;
+}
+
+
+/* Scroll bar */
+
+.scroll-bar {
+  -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+  -fx-background-color: -fx-highlight;
+  -fx-background-radius: 5px;
+  -fx-pref-width: 7px;
+  -fx-pref-height: 7px;
+}
+
+.scroll-bar .thumb:hover {
+  -fx-background-color: derive(-fx-highlight, -10%);
+}
+
+.scroll-bar .thumb:pressed {
+  -fx-background-color: derive(-fx-highlight, -20%);
+}
+
+.scroll-bar .track {
+  -fx-background-color: -fx-primary;
+  -fx-background-radius: 10px;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+  -fx-background-color: -fx-highlight;
+  -fx-background-radius: 10px;
+  -fx-padding: 7px;
+}
+
+.scroll-bar .increment-button .arrow,
+.scroll-bar .decrement-button .arrow {
+  -fx-background-color: -fx-secondary;
+}
+
+
+/* Game settings view */
+.game-settings-view {
+  -fx-spacing: 20px;
+  -fx-alignment: center;
+  -fx-text-alignment: center;
+  -fx-min-width: 1100px;
+  -fx-max-height: 250px;
+}
+
+.game-settings-scroll-pane {
+  -fx-pref-width: 1100px;
+  -fx-min-width: 1100px;
+}
+
+.settings-grid {
+  -fx-hgap: 10px;
+  -fx-vgap: 20px;
+  -fx-pref-width: 1000px;
+  -fx-min-width: 1000px;
+}
+
+.settings-title {
+  -fx-font-size: 20px;
+  -fx-font-weight: bold;
+  -fx-text-fill: -fx-secondary;
+  -fx-font-family: "Press Start 2P";
+  -fx-padding: 0 0 8px 0;
+}
+
+/* Spinner */
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px 2px 2px 0;
+  -fx-background-radius: 0 5px 5px 0;
+  -fx-min-width: 30px;
+  -fx-padding: 12px;
+}
+
+.spinner .decrement-arrow-button {
+  -fx-border-width: 0 2px 2px 0;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+  -fx-background-color: derive(-fx-highlight, -20%);
+}
+
+.spinner .increment-arrow,
+.spinner .decrement-arrow {
+  -fx-background-color: -fx-secondary;
+}
+
+.spinner .increment-arrow:hover,
+.spinner .decrement-arrow:hover {
+  -fx-background-color: -fx-highlight;
+}
+
+.check-box {
+  -fx-font-family: "Inter";
+  -fx-font-size: 14px;
+  -fx-text-fill: -fx-secondary;
+  -fx-background-color: -fx-primary;
+  -fx-padding: 5px;
+}
+
+.check-box > .box {
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+  -fx-border-radius: 3px;
+  -fx-background-radius: 3px;
+  -fx-padding: 3px;
+}
+
+.check-box:selected .box {
+  -fx-background-color: -fx-highlight;
+  -fx-border-color: -fx-secondary;
+}
+
+.check-box .mark {
+  -fx-mark-color: transparent;
+}
+
+.check-box:selected .mark {
+  -fx-mark-color: -fx-secondary;
+}
+
+
+.spawn-event-table, .mode-change-event-table {
+  -fx-min-width: 700px;
+  -fx-pref-width: 700px;
+}
+
+/* Table view */
+.table-view {
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+  -fx-font-family: "Inter";
+  -fx-font-size: 14px;
+  -fx-text-fill: -fx-secondary;
+}
+
+.table-view .column-header-background {
+  -fx-background-color: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 0 0 2px 0; /* Only bottom border */
+}
+
+.table-view .column-header,
+.table-view .filler {
+  -fx-background-color: -fx-primary;
+}
+
+.table-view .column-header .label {
+  -fx-text-fill: -fx-secondary;
+  -fx-font-size: 12px;
+  -fx-alignment: center;
+}
+
+.table-view .table-cell {
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 0 1px 0 0;
+  -fx-text-fill: -fx-secondary;
+  -fx-alignment: center;
+  -fx-padding: 10px;
+  -fx-font-size: 14px;
+}
+
+.table-row-cell {
+  -fx-background-color: -fx-primary;
+}
+
+.table-row-cell:hover, .table-row-cell:selected {
+  -fx-background-color: -fx-highlight;
+}
+
+.game-selector-view {
+  -fx-background-color: -fx-primary;
+}
+
+.editor-container {
+  -fx-border-color: -fx-accent;
+  -fx-border-width: 2px;
+  -fx-border-style: dotted;
+}
+
+
+.list-view {
+  -fx-background-color: -fx-primary;
+  -fx-control-inner-background: -fx-primary;
+  -fx-border-color: -fx-secondary;
+  -fx-border-width: 2px;
+}
+
+.list-cell {
+  -fx-background-color: -fx-primary;
+  -fx-text-fill: -fx-secondary;
+  -fx-font-family: "Inter";
+  -fx-font-size: 14px;
+  -fx-padding: 8px;
+}
+
+.list-cell:filled:selected, .list-cell:filled:selected:hover {
+  -fx-background-color: -fx-highlight;
+  -fx-text-fill: -fx-secondary;
+}
+
+.list-cell:filled:hover {
+  -fx-background-color: derive(-fx-highlight, 20%);
+  -fx-text-fill: -fx-secondary;
+}
+
+.collision-rule-dialog {
+  -fx-pref-height: 800px;
+}
+
+.rule-list-scroll-pane {
+  -fx-pref-height: 300px;
 }

@@ -12,8 +12,8 @@ import oogasalad.player.model.api.GameMapFactory;
 import oogasalad.player.model.save.GameSessionManager;
 
 /**
- * A controller that is used to progress through levels of the game.
- * Handles level order and state independently after loading.
+ * A controller that is used to progress through levels of the game. Handles level order and state
+ * independently after loading.
  *
  * @author Luke Fu
  */
@@ -23,24 +23,22 @@ public class LevelController {
   private final ConfigModelRecord myConfigModel;
   private final MainController myMainController;
   private final List<Integer> myLevelOrder;
-  private final GameSessionManager sessionManager;
 
   /**
-   * Constructs a LevelController to manage the progression of game levels.
-   * Initializes the level order based on the provided game configuration,
-   * and sets the starting level based on the current session's saved progress.
-   * If randomization is enabled, the level order will be shuffled.
+   * Constructs a LevelController to manage the progression of game levels. Initializes the level
+   * order based on the provided game configuration, and sets the starting level based on the
+   * current session's saved progress. If randomization is enabled, the level order will be
+   * shuffled.
    *
    * @param mainController the main controller handling overall game input and management
-   * @param configModel the parsed configuration model containing level and settings data
-   * @param randomized true if the level order should be randomized, false otherwise
+   * @param configModel    the parsed configuration model containing level and settings data
+   * @param randomized     true if the level order should be randomized, false otherwise
    * @param sessionManager the manager responsible for tracking and saving session progress
    */
   public LevelController(MainController mainController, ConfigModelRecord configModel,
       boolean randomized, GameSessionManager sessionManager) {
     myMainController = mainController;
     myConfigModel = configModel;
-    this.sessionManager = sessionManager;
     this.myLevelIndex = sessionManager.getCurrentLevel(); // Start from saved level, not configModel directly
 
     myLevelOrder = new ArrayList<>();
@@ -52,6 +50,7 @@ public class LevelController {
       Collections.shuffle(myLevelOrder);
     }
   }
+
   /**
    * Creates current game map and checks if map is out of bounds.
    */
@@ -63,7 +62,8 @@ public class LevelController {
 
     try {
       int mappedIndex = myLevelOrder.get(myLevelIndex);
-      return GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel, mappedIndex);
+      return GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel,
+          mappedIndex);
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn("Failed to create GameMap: ", e);
       return null;
@@ -78,13 +78,6 @@ public class LevelController {
   }
 
   /**
-   * Resets level count to 0
-   */
-  public void resetLevels() {
-    myLevelIndex = 0;
-  }
-
-  /**
    * Returns current level index
    */
   public int getCurrentLevelIndex() {
@@ -96,14 +89,5 @@ public class LevelController {
    */
   public boolean hasNextLevel() {
     return myLevelIndex + 1 < myLevelOrder.size();
-  }
-
-  /**
-   * Returns the current mapped level index.
-   */
-  public int getMappedLevelIndex() {
-    int mappedIndex = myLevelOrder.get(myLevelIndex);
-    LoggingManager.LOGGER.info("Logical level {} mapped to actual level {}", myLevelIndex, mappedIndex);
-    return mappedIndex;
   }
 }

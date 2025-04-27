@@ -25,4 +25,14 @@ public interface LoseConditionInterface {
         + this.getClass().getSimpleName());
   }
 
+  /**
+   * Retrieves the type of the type condition. This method provides a default implementation that
+   * returns "LivesBased".
+   *
+   * @return a string representing the type of the win condition
+   */
+  default String getConditionType() {
+    return "LivesBased"; // Default fallback
+  }
+
 }

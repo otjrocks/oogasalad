@@ -138,8 +138,8 @@ public class CanvasView {
     selectedImageView = imageView;
     selectedEntity = entityViews.get(imageView);
 
-    origCol = canvasGrid.getColFromX(selectedEntity.getX());
-    origRow = canvasGrid.getRowFromY(selectedEntity.getY());
+    origCol = (int) selectedEntity.getX();
+    origRow = (int) selectedEntity.getY();
 
     controller.selectEntityPlacement(selectedEntity);
 
@@ -295,7 +295,6 @@ public class CanvasView {
       int col = canvasGrid.getColFromX(e.getX());
       int row = canvasGrid.getRowFromY(e.getY());
 
-
       if (canvasGrid.isValidCell(row, col)) {
         tileHighlighter.moveHoverTo(canvasGrid.getXFromCol(col), canvasGrid.getYFromRow(row));
         tileHighlighter.showHover();
@@ -314,7 +313,6 @@ public class CanvasView {
 
     int col = canvasGrid.getColFromX(e.getX());
     int row = canvasGrid.getRowFromY(e.getY());
-
 
     if (canvasGrid.isValidCell(row, col) &&
         entityManager.isCellAvailable(row, col, null)) {
@@ -345,6 +343,7 @@ public class CanvasView {
 
   /**
    * Load in a canvas for a specific level
+   *
    * @param level level to load
    */
   public void loadLevel(LevelDraft level) {

@@ -26,13 +26,16 @@ import oogasalad.engine.records.model.MetaDataRecord;
  *
  * @author Will He, Owen Jennings
  */
-public record ConfigModelRecord(MetaDataRecord metadata,
-                                SettingsRecord settings,
-                                List<EntityTypeRecord> entityTypes,
-                                List<ParsedLevelRecord> levels,
-                                List<CollisionRule> collisionRules,
-                                WinConditionInterface winCondition,
-                                LoseConditionInterface loseCondition,
-                                int currentLevelIndex) {
+public record ConfigModelRecord(
+    MetaDataRecord metadata,
+    SettingsRecord settings,
+    List<EntityTypeRecord> entityTypes,
+    List<ParsedLevelRecord> levels,
+    List<CollisionRule> collisionRules,
+    WinConditionInterface winCondition,
+    LoseConditionInterface loseCondition,
+    int currentLevelIndex
+) {
 
 }
+

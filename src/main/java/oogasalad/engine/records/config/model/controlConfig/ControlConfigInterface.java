@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({
     @JsonSubTypes.Type(value = NoneControlConfigRecord.class, name = "None"),
     @JsonSubTypes.Type(value = KeyboardControlConfigRecord.class, name = "Keyboard"),
+    @JsonSubTypes.Type(value = JumpControlConfigRecord.class, name = "Jump"),
     @JsonSubTypes.Type(value = TargetControlConfigRecord.class, name = "Target"),
     @JsonSubTypes.Type(value = ConditionalControlConfigRecord.class, name = "Conditional"),
     @JsonSubTypes.Type(value = ConstantDirectionControlConfigRecord.class, name = "ConstantDirection")

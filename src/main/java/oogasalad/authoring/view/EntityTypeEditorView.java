@@ -3,25 +3,21 @@ package oogasalad.authoring.view;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.utility.LanguageManager;
-import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.view.components.FormattingUtil;
 
 /**
@@ -61,7 +57,6 @@ public class EntityTypeEditorView {
 
     Button deleteButton = new Button(LanguageManager.getMessage("DELETE_ENTITY_TYPE"));
     deleteButton.getStyleClass().add("delete-button");
-    deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
     deleteButton.setOnAction(e -> deleteEntityType());
 
     blocksList = new VBox(5);
@@ -201,7 +196,6 @@ public class EntityTypeEditorView {
 
   private void openEditModeDialog(String oldName, ModeConfigRecord oldConfig) {
     ModeEditorDialog dialog = new ModeEditorDialog(oldConfig);
-
 
     dialog.showAndWait().ifPresent(newConfig -> {
       Map<String, ModeConfigRecord> newModes = new HashMap<>(current.modes());
