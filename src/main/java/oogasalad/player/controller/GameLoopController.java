@@ -36,6 +36,7 @@ public class GameLoopController {
   private final ConfigModelRecord myConfig;
   private double myGameSpeedMultiplier;
   private double myTotalElapsedTime = 0;
+  private double lastUpdateTime = -1;
 
 
   /**
@@ -65,7 +66,6 @@ public class GameLoopController {
    */
   private void initializeGameLoop() {
     myGameLoop = new AnimationTimer() {
-      private long lastUpdateTime = -1;
 
       @Override
       public void handle(long now) {
@@ -243,6 +243,7 @@ public class GameLoopController {
    */
   public void resumeGame() {
     if (myGameLoop != null) {
+      lastUpdateTime = -1;
       myGameLoop.start();
     }
   }
