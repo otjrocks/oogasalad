@@ -16,10 +16,12 @@ import oogasalad.engine.records.config.model.SettingsRecord;
 import oogasalad.engine.records.config.model.losecondition.LoseConditionInterface;
 import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
 import oogasalad.engine.utility.LanguageManager;
+import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.view.components.FormattingUtil;
 
 import java.util.List;
+import org.apache.logging.log4j.Level;
 
 /**
  * GameSettingsView manages the interface for editing game metadata, settings, win/lose conditions,
@@ -163,6 +165,7 @@ public class GameSettingsView {
       errorAlert.setTitle(LanguageManager.getMessage("SAVE_ERROR"));
       FormattingUtil.applyStandardDialogStyle(errorAlert);
       errorAlert.showAndWait();
+      LoggingManager.LOGGER.log(Level.ERROR, LanguageManager.getMessage("SAVE_ERROR"), ex);
       return;
     }
 

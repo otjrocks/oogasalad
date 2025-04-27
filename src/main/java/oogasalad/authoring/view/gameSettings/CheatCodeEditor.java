@@ -76,7 +76,9 @@ public class CheatCodeEditor {
    */
   public void update(Set<CheatType> selectedCheats) {
     cheatCheckboxes.forEach((cheat, checkbox) -> {
-      checkbox.setSelected(selectedCheats.contains(cheat));
+      if (selectedCheats != null) {
+        checkbox.setSelected(selectedCheats.contains(cheat));
+      }
     });
   }
 }
