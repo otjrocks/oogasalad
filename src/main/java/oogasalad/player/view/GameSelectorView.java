@@ -31,6 +31,7 @@ import oogasalad.engine.controller.MainController;
 import oogasalad.engine.exceptions.ConfigException;
 import oogasalad.engine.records.config.GameConfigRecord;
 import oogasalad.engine.utility.FileUtility;
+import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.utility.constants.GameConfig;
@@ -133,14 +134,14 @@ public class GameSelectorView {
   }
 
   private VBox createFileUploadSection() {
-    Button uploadButton = FormattingUtil.createSmallButton("Upload");
+    Button uploadButton = FormattingUtil.createSmallButton(LanguageManager.getMessage("UPLOAD"));
 
-    startButton = FormattingUtil.createSmallButton("Start");
+    startButton = FormattingUtil.createSmallButton(LanguageManager.getMessage("START"));
     startButton.setDisable(true);
 
-    fileLabel = new Label("No file selected");
+    fileLabel = new Label(LanguageManager.getMessage("NO_FILE_SELECTED"));
 
-    fileChooser.setTitle("Open File");
+    fileChooser.setTitle(LanguageManager.getMessage("OPEN_FILE"));
     fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
 
     uploadButton.setOnAction(e -> handleFileUpload());
@@ -162,7 +163,7 @@ public class GameSelectorView {
       pageBox.setAlignment(Pos.CENTER);
 
       if (gameNames.isEmpty()) {
-        Label emptyLabel = new Label("No games available.");
+        Label emptyLabel = new Label(LanguageManager.getMessage("NO_GAMES_AVAILABLE"));
         pageBox.getChildren().add(emptyLabel);
         return pageBox;
       }
@@ -203,7 +204,7 @@ public class GameSelectorView {
     nameLabel.setWrapText(true);
     nameLabel.setMaxWidth(GAME_CARD_WIDTH);
 
-    Button randomizeButton = FormattingUtil.createSmallButton("Randomize Levels");
+    Button randomizeButton = FormattingUtil.createSmallButton(LanguageManager.getMessage("RANDOMIZE"));
     randomizeButton.setWrapText(true);
     randomizeButton.setMaxWidth(GAME_CARD_WIDTH);
     randomizeButton.setOnAction(
@@ -243,7 +244,7 @@ public class GameSelectorView {
     }
 
     Alert infoDialog = new Alert(AlertType.INFORMATION);
-    infoDialog.setTitle("Game Info");
+    infoDialog.setTitle(LanguageManager.getMessage("GAME_INFO"));
     infoDialog.setHeaderText(gameName);
     infoDialog.setContentText(String.format(
         "Author: %s%nDescription: %s",
