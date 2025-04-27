@@ -1,8 +1,8 @@
 {
-  "saveName" : "FlapMan_Save",
+  "saveName" : "output_Save",
   "currentLevel" : 0,
   "totalScore" : 0,
   "lives" : 1,
-  "highScore" : 26,
+  "highScore" : 34,
   "levelOrder" : [ 0 ]
 }
