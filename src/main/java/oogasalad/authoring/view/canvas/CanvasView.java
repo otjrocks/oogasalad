@@ -138,8 +138,8 @@ public class CanvasView {
     selectedImageView = imageView;
     selectedEntity = entityViews.get(imageView);
 
-    origCol = canvasGrid.getColFromX(selectedEntity.getX());
-    origRow = canvasGrid.getRowFromY(selectedEntity.getY());
+    origCol = (int) selectedEntity.getX();
+    origRow = (int) selectedEntity.getY();
 
     controller.selectEntityPlacement(selectedEntity);
 
