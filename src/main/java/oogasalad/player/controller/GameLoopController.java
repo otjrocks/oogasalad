@@ -172,37 +172,56 @@ public class GameLoopController {
 
   private void respawnEntity(EntityTypeRecord entityType) {
     try {
-      List<double[]> openSpots = new ArrayList<>();
-      for (int y = 0; y < myGameContext.gameMap().getHeight(); y++) {
-        for (int x = 0; x < myGameContext.gameMap().getWidth() / 2; x++) { // Only left half
-          if (myGameContext.gameMap().getEntityAt(x, y).isEmpty()) {
-            openSpots.add(new double[]{x + 0.5, y + 0.5}); // Center inside tile
-          }
-        }
-      }
+      List<double[]> openSpots = findAvailableSpots();
 
       if (openSpots.isEmpty()) {
-        LoggingManager.LOGGER.warn("⚠️ No available spots to respawn {}", entityType.type());
+        logNoAvailableSpots(entityType);
         return;
       }
 
-      double[] chosenSpot = openSpots.get((int) (Math.random() * openSpots.size()));
-      double spawnX = chosenSpot[0];
-      double spawnY = chosenSpot[1];
-
-      Entity newEntity = new Entity(
-          myGameContext.inputManager(),
-          new EntityPlacement(entityType, spawnX, spawnY, "Default"),
-          myGameContext.gameMap(),
-          myConfig
-      );
-
-      myGameContext.gameMap().addEntity(newEntity);
-      LoggingManager.LOGGER.info("🍪 Respawned entity '{}' at ({}, {})", entityType.type(), spawnX, spawnY);
+      double[] chosenSpot = pickRandomSpot(openSpots);
+      spawnEntityAtSpot(entityType, chosenSpot);
 
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn("⚠️ Failed to respawn entity {}", entityType.type(), e);
     }
+  }
+
+  private List<double[]> findAvailableSpots() {
+    List<double[]> openSpots = new ArrayList<>();
+    int mapWidth = myGameContext.gameMap().getWidth() / 2;
+    int mapHeight = myGameContext.gameMap().getHeight();
+
+    for (int y = 0; y < mapHeight; y++) {
+      for (int x = 0; x < mapWidth; x++) {
+        if (myGameContext.gameMap().getEntityAt(x, y).isEmpty()) {
+          openSpots.add(new double[]{x + 0.5, y + 0.5});
+        }
+      }
+    }
+    return openSpots;
+  }
+
+  private void logNoAvailableSpots(EntityTypeRecord entityType) {
+    LoggingManager.LOGGER.warn("⚠️ No available spots to respawn {}", entityType.type());
+  }
+
+  private double[] pickRandomSpot(List<double[]> openSpots) {
+    return openSpots.get((int) (Math.random() * openSpots.size()));
+  }
+
+  private void spawnEntityAtSpot(EntityTypeRecord entityType, double[] spot) throws InvalidPositionException {
+    double spawnX = spot[0];
+    double spawnY = spot[1];
+
+    Entity newEntity = new Entity(
+        myGameContext.inputManager(),
+        new EntityPlacement(entityType, spawnX, spawnY, "Default"),
+        myGameContext.gameMap(),
+        myConfig
+    );
+    myGameContext.gameMap().addEntity(newEntity);
+    LoggingManager.LOGGER.info("🍪 Respawned entity '{}' at ({}, {})", entityType.type(), spawnX, spawnY);
   }
 
   private void handleSpawnEvents() {
