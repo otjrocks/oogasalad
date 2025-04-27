@@ -23,7 +23,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import oogasalad.engine.config.JsonConfigParser;
@@ -114,7 +113,7 @@ public class GameSelectorView {
     myRoot.setAlignment(Pos.CENTER);
   }
 
-  private HBox createTopBar() {
+  private VBox createTopBar() {
     Label titleLabel = FormattingUtil.createTitle(getMessage("GAME_PLAYER"));
     titleLabel.setMaxWidth(Double.MAX_VALUE);
     titleLabel.setAlignment(Pos.TOP_CENTER);
@@ -124,12 +123,8 @@ public class GameSelectorView {
       myMainController.hideGameSelectorView();
       myMainController.showSplashScreen();
     });
-
-    Button helpButton = FormattingUtil.createSmallButton("Help");
-
-    HBox topBar = new HBox(10, backButton, titleLabel, helpButton);
-    topBar.setAlignment(Pos.CENTER);
-    HBox.setHgrow(titleLabel, Priority.ALWAYS);
+    VBox topBar = new VBox(10, backButton, titleLabel);
+    topBar.getStyleClass().add("game-selector-top-bar");
     return topBar;
   }
 
