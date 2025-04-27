@@ -155,11 +155,7 @@ public class GameView {
     configureButtonVisibility(gameWon, isFinalLevel);
 
     if (gameWon && !isFinalLevel) {
-      pendingLevelAdvance = true; // 🚀 Mark that we have won but not yet advanced
-    }
-
-    if (!gameWon || isFinalLevel) {
-      // 🚨 Game is either over OR fully won
+      pendingLevelAdvance = true;
       saveFinalProgress();
     }
   }
@@ -213,10 +209,10 @@ public class GameView {
    */
   private void saveFinalProgress() {
     try {
-      sessionManager.save(); // 💾 Save session
-      LoggingManager.LOGGER.info("💾 Final progress saved after game over or game win!");
+      sessionManager.save();
+      LoggingManager.LOGGER.info("Final progress saved after game over or game win!");
     } catch (Exception e) {
-      LoggingManager.LOGGER.warn("❗ Failed to save final progress: {}", e.getMessage());
+      LoggingManager.LOGGER.warn("Failed to save final progress: {}", e.getMessage());
     }
   }
 
