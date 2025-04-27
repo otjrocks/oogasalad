@@ -67,7 +67,7 @@ public class Directions {
      * @return true if this direction is NONE, false otherwise
      */
     public boolean isNone() {
-      return this == NONE;
+      return this != NONE;
     }
 
     /**

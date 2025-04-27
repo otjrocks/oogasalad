@@ -57,7 +57,7 @@ public class TeleportToPartnerPortalStrategy implements CollisionStrategyInterfa
     }
 
     @Override
-    public void handleCollision(CollisionContextRecord collisionContext) throws EntityNotFoundException {
+    public void handleCollision(CollisionContextRecord collisionContext) {
         // Determine which entity is being teleported (the one that collided with the portal)
         Entity entityToTeleport = collisionContext.strategyAppliesTo() == StrategyAppliesTo.ENTITY1
                 ? collisionContext.entity1()

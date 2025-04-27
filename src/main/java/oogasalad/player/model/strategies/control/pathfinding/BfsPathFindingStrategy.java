@@ -76,7 +76,7 @@ public class BfsPathFindingStrategy implements PathFindingStrategyInterface {
 
   private List<int[]> getNeighbors(GameMapInterface map, Node current, EntityPlacement thisEntity,
       Direction thisDirection) {
-    if (current.depth == 0 && thisDirection != null && !thisDirection.isNone()
+    if (current.depth == 0 && thisDirection != null && thisDirection.isNone()
         && thisDirection.getAngle() != null) {
       return PathFindingStrategyHelperMethods.getPreferredNeighbors(map, current.x, current.y,
           thisEntity, thisDirection);

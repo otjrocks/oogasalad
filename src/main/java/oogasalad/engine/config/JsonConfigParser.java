@@ -573,7 +573,7 @@ public class JsonConfigParser implements ConfigParserInterface {
 
   private EntityPropertiesRecord mergeProperties(String modeName,
       EntityPropertiesRecord defaultProps,
-      JsonNode modeNode) throws JsonProcessingException {
+      JsonNode modeNode) {
     final String BLOCKS = "blocks";
 
     List<String> blocks = modeNode.has(BLOCKS)
