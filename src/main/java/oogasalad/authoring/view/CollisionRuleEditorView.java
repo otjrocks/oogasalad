@@ -112,7 +112,6 @@ public class CollisionRuleEditorView {
 
     root.getStyleClass().add("root");
 
-
     ScrollPane scrollPane = new ScrollPane(root);
     scrollPane.setFitToWidth(true);
     scrollPane.setFitToHeight(true); // optional

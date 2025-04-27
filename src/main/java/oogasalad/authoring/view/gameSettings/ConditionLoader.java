@@ -8,18 +8,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Utility class for dynamically loading condition classes
- * (win/lose conditions) from a given package using reflection.
+ * Utility class for dynamically loading condition classes (win/lose conditions) from a given
+ * package using reflection.
  * <p>
- * This allows the GameSettingsView to populate dropdowns without
- * hardcoding available condition types.
+ * This allows the GameSettingsView to populate dropdowns without hardcoding available condition
+ * types.
  * </p>
+ * <p>
+ * Classes are filtered to match a given interface type and are simplified by removing the "Record"
+ * suffix from their names for display.
  *
- * Classes are filtered to match a given interface type and are simplified
- * by removing the "Record" suffix from their names for display.
- *
- * @author
- * William He
+ * @author William He
  */
 public class ConditionLoader {
 
@@ -28,14 +27,17 @@ public class ConditionLoader {
   /**
    * Loads all classes in the given package that implement the specified interface type.
    *
-   * @param packagePath  the fully qualified package path (e.g., "oogasalad.engine.records.config.model.wincondition")
+   * @param packagePath   the fully qualified package path (e.g.,
+   *                      "oogasalad.engine.records.config.model.wincondition")
    * @param interfaceType the interface class the loaded classes must implement
    * @return a map from simplified class name to Class object
    */
-  public static Map<String, Class<?>> loadConditionClasses(String packagePath, Class<?> interfaceType) {
+  public static Map<String, Class<?>> loadConditionClasses(String packagePath,
+      Class<?> interfaceType) {
     Map<String, Class<?>> classMap = new HashMap<>();
     try {
-      String directoryPath = System.getProperty("user.dir") + "/target/classes/" + packagePath.replace('.', '/');
+      String directoryPath =
+          System.getProperty("user.dir") + "/target/classes/" + packagePath.replace('.', '/');
       List<String> classNames = getClassNamesInDirectory(directoryPath);
       classMap.putAll(loadValidConditionClasses(packagePath, classNames, interfaceType));
     } catch (Exception e) {
@@ -57,12 +59,13 @@ public class ConditionLoader {
   /**
    * Loads and validates condition classes from a list of class names.
    *
-   * @param packagePath the package to load classes from
-   * @param classNames  the list of class names
+   * @param packagePath   the package to load classes from
+   * @param classNames    the list of class names
    * @param interfaceType the interface the classes must implement
    * @return a map of valid condition class names to Class objects
    */
-  private static Map<String, Class<?>> loadValidConditionClasses(String packagePath, List<String> classNames, Class<?> interfaceType) {
+  private static Map<String, Class<?>> loadValidConditionClasses(String packagePath,
+      List<String> classNames, Class<?> interfaceType) {
     Map<String, Class<?>> validClasses = new HashMap<>();
     for (String className : classNames) {
       addValidConditionClass(packagePath, className, interfaceType, validClasses);
@@ -70,7 +73,8 @@ public class ConditionLoader {
     return validClasses;
   }
 
-  private static void addValidConditionClass(String packagePath, String className, Class<?> interfaceType, Map<String, Class<?>> validClasses) {
+  private static void addValidConditionClass(String packagePath, String className,
+      Class<?> interfaceType, Map<String, Class<?>> validClasses) {
     try {
       Class<?> clazz = Class.forName(packagePath + "." + className);
       if (isValidConditionClass(clazz, interfaceType)) {

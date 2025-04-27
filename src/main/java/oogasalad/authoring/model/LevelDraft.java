@@ -126,6 +126,7 @@ public class LevelDraft {
 
   /**
    * Set entity placements
+   *
    * @param placements new placements
    */
   public void setEntityPlacements(List<EntityPlacement> placements) {

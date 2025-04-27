@@ -3,16 +3,15 @@ package oogasalad.authoring.view.mainView;
 import javafx.scene.layout.*;
 
 /**
- * Utility class for applying consistent styles and layout adjustments
- * to the Authoring Environment UI components.
+ * Utility class for applying consistent styles and layout adjustments to the Authoring Environment
+ * UI components.
  *
  * <p>Handles layout spacing, sizing of panels, and basic background and border styling.
  * Encapsulates view-specific styling logic separately from the main view-building classes.</p>
  *
+ * @author William He
  * @see AuthoringLayoutBuilder
  * @see AuthoringView
- *
- * @author William He
  */
 public class StyleManager {
 

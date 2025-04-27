@@ -15,7 +15,8 @@ import oogasalad.engine.utility.LanguageManager;
  * <p>Handles adding a help button, help menu, and setting up keyboard shortcuts
  * that trigger context-sensitive help dialogs.</p>
  *
- * <p>Separates help functionality from the core AuthoringView for better modularity and clarity.</p>
+ * <p>Separates help functionality from the core AuthoringView for better modularity and
+ * clarity.</p>
  *
  * @author William He
  */
@@ -28,7 +29,7 @@ public class HelpManager {
   /**
    * Constructs a HelpManager for the given AuthoringView and controller.
    *
-   * @param view the AuthoringView where the help components will be integrated
+   * @param view       the AuthoringView where the help components will be integrated
    * @param controller the controller coordinating the model and view
    */
   public HelpManager(AuthoringView view, AuthoringController controller) {
@@ -37,8 +38,8 @@ public class HelpManager {
   }
 
   /**
-   * Sets up the entire help system, including creating the help button,
-   * help menu, and registering keyboard shortcuts.
+   * Sets up the entire help system, including creating the help button, help menu, and registering
+   * keyboard shortcuts.
    */
   public void setupHelpSystem() {
     Platform.runLater(() -> {
@@ -59,8 +60,8 @@ public class HelpManager {
   }
 
   /**
-   * Adds a floating help button to the canvas area, aligned to the top right.
-   * Clicking the button opens the help dialog.
+   * Adds a floating help button to the canvas area, aligned to the top right. Clicking the button
+   * opens the help dialog.
    */
   private void addHelpButton() {
     Button helpButton = new Button("?");
@@ -79,11 +80,12 @@ public class HelpManager {
   }
 
   /**
-   * Adds a "Help" menu to the existing menu bar, including options for
-   * viewing help contents and an "About" dialog.
+   * Adds a "Help" menu to the existing menu bar, including options for viewing help contents and an
+   * "About" dialog.
    */
   private void addHelpMenu() {
-    MenuBar menuBar = (MenuBar) ((VBox) ((BorderPane) view.getNode()).getCenter()).getChildren().getFirst();
+    MenuBar menuBar = (MenuBar) ((VBox) ((BorderPane) view.getNode()).getCenter()).getChildren()
+        .getFirst();
     Menu helpMenu = new Menu(LanguageManager.getMessage("HELP"));
 
     MenuItem helpContents = new MenuItem(LanguageManager.getMessage("HELP_CONTENTS"));

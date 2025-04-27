@@ -150,8 +150,6 @@ public class ModeChangeEventDialog extends Stage {
   }
 
 
-
-
   private void addModeChangeEvent() {
     String entityTypeKey = entityTypeDropdown.getValue();
     String currentMode = currentModeDropdown.getValue();
@@ -168,10 +166,13 @@ public class ModeChangeEventDialog extends Stage {
 
     for (String paramName : expectedParams) {
       TextField field = (TextField) conditionParamsBox.lookup("#" + paramName);
-      if (field == null) continue;
+      if (field == null) {
+        continue;
+      }
 
       String raw = field.getText();
-      params.put(paramName, raw); // always store as string (consistent with how your strategies parse)
+      params.put(paramName,
+          raw); // always store as string (consistent with how your strategies parse)
     }
 
     ConditionRecord condition = new ConditionRecord(conditionType, params);
@@ -186,8 +187,6 @@ public class ModeChangeEventDialog extends Stage {
     level.getModeChangeEvents().add(event);
     refreshTable();
   }
-
-
 
 
   private void refreshTable() {

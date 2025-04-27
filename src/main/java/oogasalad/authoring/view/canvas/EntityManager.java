@@ -112,7 +112,6 @@ public class EntityManager {
   }
 
 
-
   /**
    * Updates an entity's position in the grid and notifies the controller.
    *

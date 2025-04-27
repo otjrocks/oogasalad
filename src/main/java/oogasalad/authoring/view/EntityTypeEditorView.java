@@ -197,7 +197,6 @@ public class EntityTypeEditorView {
   private void openEditModeDialog(String oldName, ModeConfigRecord oldConfig) {
     ModeEditorDialog dialog = new ModeEditorDialog(oldConfig);
 
-
     dialog.showAndWait().ifPresent(newConfig -> {
       Map<String, ModeConfigRecord> newModes = new HashMap<>(current.modes());
 

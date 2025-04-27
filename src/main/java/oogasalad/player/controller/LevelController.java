@@ -12,8 +12,8 @@ import oogasalad.player.model.api.GameMapFactory;
 import oogasalad.player.model.save.GameSessionManager;
 
 /**
- * A controller that is used to progress through levels of the game.
- * Handles level order and state independently after loading.
+ * A controller that is used to progress through levels of the game. Handles level order and state
+ * independently after loading.
  *
  * @author Luke Fu
  */
@@ -25,14 +25,14 @@ public class LevelController {
   private final List<Integer> myLevelOrder;
 
   /**
-   * Constructs a LevelController to manage the progression of game levels.
-   * Initializes the level order based on the provided game configuration,
-   * and sets the starting level based on the current session's saved progress.
-   * If randomization is enabled, the level order will be shuffled.
+   * Constructs a LevelController to manage the progression of game levels. Initializes the level
+   * order based on the provided game configuration, and sets the starting level based on the
+   * current session's saved progress. If randomization is enabled, the level order will be
+   * shuffled.
    *
    * @param mainController the main controller handling overall game input and management
-   * @param configModel the parsed configuration model containing level and settings data
-   * @param randomized true if the level order should be randomized, false otherwise
+   * @param configModel    the parsed configuration model containing level and settings data
+   * @param randomized     true if the level order should be randomized, false otherwise
    * @param sessionManager the manager responsible for tracking and saving session progress
    */
   public LevelController(MainController mainController, ConfigModelRecord configModel,
@@ -50,6 +50,7 @@ public class LevelController {
       Collections.shuffle(myLevelOrder);
     }
   }
+
   /**
    * Creates current game map and checks if map is out of bounds.
    */
@@ -61,7 +62,8 @@ public class LevelController {
 
     try {
       int mappedIndex = myLevelOrder.get(myLevelIndex);
-      return GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel, mappedIndex);
+      return GameMapFactory.createGameMap(myMainController.getInputManager(), myConfigModel,
+          mappedIndex);
     } catch (InvalidPositionException e) {
       LoggingManager.LOGGER.warn("Failed to create GameMap: ", e);
       return null;

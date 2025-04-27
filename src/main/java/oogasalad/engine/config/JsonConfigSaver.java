@@ -138,7 +138,8 @@ public class JsonConfigSaver implements ConfigSaverInterface {
       LoggingManager.LOGGER.warn("Failed to write asset: {}", currentAssetPath, e);
       throw new ConfigException("Failed to copy assets when creating game file", e);
     } catch (URISyntaxException e) {
-      LoggingManager.LOGGER.warn("Failed to write asset due to URI syntax error: {}", currentAssetPath, e);
+      LoggingManager.LOGGER.warn("Failed to write asset due to URI syntax error: {}",
+          currentAssetPath, e);
       throw new ConfigException("Failed to copy assets when creating game file", e);
     }
   }

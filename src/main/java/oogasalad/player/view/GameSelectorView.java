@@ -200,11 +200,12 @@ public class GameSelectorView {
     image.setFitWidth(GAME_CARD_WIDTH);
     image.setFitHeight(300);
 
-    Label nameLabel =  FormattingUtil.createHeading(gameName);
+    Label nameLabel = FormattingUtil.createHeading(gameName);
     nameLabel.setWrapText(true);
     nameLabel.setMaxWidth(GAME_CARD_WIDTH);
 
-    Button randomizeButton = FormattingUtil.createSmallButton(LanguageManager.getMessage("RANDOMIZE"));
+    Button randomizeButton = FormattingUtil.createSmallButton(
+        LanguageManager.getMessage("RANDOMIZE"));
     randomizeButton.setWrapText(true);
     randomizeButton.setMaxWidth(GAME_CARD_WIDTH);
     randomizeButton.setOnAction(

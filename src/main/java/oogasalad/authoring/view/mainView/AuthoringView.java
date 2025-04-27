@@ -17,8 +17,8 @@ import oogasalad.engine.utility.constants.GameConfig;
  * Top-level view for the Authoring Environment.
  *
  * <p>This class coordinates all major UI components, delegates layout setup
- * and event handling to helper classes, and provides access to subviews
- * for interaction with the AuthoringController.</p>
+ * and event handling to helper classes, and provides access to subviews for interaction with the
+ * AuthoringController.</p>
  *
  * <p>AuthoringView itself focuses on maintaining references to components
  * and delegating their initialization and updates.</p>

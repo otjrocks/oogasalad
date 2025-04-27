@@ -138,12 +138,15 @@ public class SimpleHelpSystem {
     // Update navigation buttons
     prevButton.setDisable(currentSlideIndex == 0);
     nextButton.setDisable(currentSlideIndex == helpSlides.size() - 1);
-    nextButton.setText(currentSlideIndex == helpSlides.size() - 1 ? LanguageManager.getMessage("CLOSE") : LanguageManager.getMessage("NEXT"));
+    nextButton.setText(
+        currentSlideIndex == helpSlides.size() - 1 ? LanguageManager.getMessage("CLOSE")
+            : LanguageManager.getMessage("NEXT"));
 
     // Update slide number
 
-    slideNumberLabel.setText(String.format(LanguageManager.getMessage("SLIDE_NUMBER"), currentSlideIndex + 1,
-        helpSlides.size()));
+    slideNumberLabel.setText(
+        String.format(LanguageManager.getMessage("SLIDE_NUMBER"), currentSlideIndex + 1,
+            helpSlides.size()));
   }
 
   private void showPreviousSlide() {
@@ -174,7 +177,7 @@ public class SimpleHelpSystem {
             "Overview",
             """
                 The Game Authoring Environment allows you to create 2D games without writing code. Key features include:
-
+                
                 • Entity-based game design
                 • Visual level editor
                 • Collision rule system
@@ -188,7 +191,7 @@ public class SimpleHelpSystem {
             "Main Interface",
             """
                 The authoring environment consists of these main areas:
-
+                
                 1. Canvas (center) - Where you place game entities
                 2. Entity Selector (right) - Contains available entity types
                 3. Entity Editor (right) - Configure entity properties
@@ -203,7 +206,7 @@ public class SimpleHelpSystem {
             "Canvas View",
             """
                 The Canvas is where you design your game levels by placing entities:
-
+                
                 • Drag entities from the Entity Selector onto the canvas
                 • Click on placed entities to select and edit them
                 • Right-click on the canvas for additional options
@@ -217,7 +220,7 @@ public class SimpleHelpSystem {
             "Entity System",
             """
                 Entities are the building blocks of your game:
-
+                
                 • Create new entity types using the '+ Add Entity Type' button
                 • Entity types can have multiple modes (states) with different appearances and behaviors
                 • Configure movement speed, controls, and other properties
@@ -230,7 +233,7 @@ public class SimpleHelpSystem {
             "Entity Editor",
             """
                 The Entity Editor appears when you click on an entity type:
-
+                
                 • Change the entity name
                 • Add new modes (different states like 'Default', 'Powered', etc.)
                 • Set movement speed
@@ -244,7 +247,7 @@ public class SimpleHelpSystem {
             "Level System",
             """
                 The Level System lets you create and manage multiple game levels:
-
+                
                 • Add new levels with the 'Add Level' button
                 • Switch between levels using the dropdown
                 • Configure level dimensions (width and height)
@@ -258,7 +261,7 @@ public class SimpleHelpSystem {
             "Collision Rules",
             """
                 Collision Rules define what happens when entities interact:
-
+                
                 • Access from the Game Settings panel ('Collision Rules' button)
                 • Define rules between pairs of entity types
                 • Set actions for each entity involved (destroy, add points, change mode, etc.)
@@ -271,7 +274,7 @@ public class SimpleHelpSystem {
             "Game Settings",
             """
                 Game Settings control global game properties:
-
+                
                 • Set game title, author, and description
                 • Configure overall game speed
                 • Set starting lives and initial score
@@ -285,7 +288,7 @@ public class SimpleHelpSystem {
             "Creating Your First Game",
             """
                 Basic steps to create a simple game:
-
+                
                 1. Create entity types (player, enemies, collectibles, obstacles)
                 2. Configure their appearance and properties
                 3. Set up collision rules between them
@@ -300,7 +303,7 @@ public class SimpleHelpSystem {
             "Tips and Tricks",
             """
                 Helpful tips for efficient game authoring:
-
+                
                 • Use meaningful names for entity types and levels
                 • Start with a simple game to learn the basics
                 • Test your game frequently during development
@@ -315,9 +318,9 @@ public class SimpleHelpSystem {
             "Ready to Create!",
             """
                 You now know the basics of the Game Authoring Environment!
-
+                
                 Remember that game development is an iterative process. Start simple, test often, and gradually add complexity as you become more comfortable with the tools.
-
+                
                 Happy game creating!""",
             null
         )

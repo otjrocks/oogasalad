@@ -33,15 +33,16 @@ public class MainContentFactory {
   }
 
   /**
-   * Creates the full main content layout consisting of the left panel, canvas,
-   * and right panel, and returns it as a BorderPane.
+   * Creates the full main content layout consisting of the left panel, canvas, and right panel, and
+   * returns it as a BorderPane.
    *
    * @return the constructed main content pane
    */
   public BorderPane createMainContent() {
     BorderPane mainContent = new BorderPane();
 
-    VBox left = new VBox(10, view.getLevelSelectorView().getRoot(), view.getLevelSettingsView().getNode());
+    VBox left = new VBox(10, view.getLevelSelectorView().getRoot(),
+        view.getLevelSettingsView().getNode());
     mainContent.setLeft(left);
 
     Node canvasNode = view.getCanvasView().getNode();
@@ -57,7 +58,8 @@ public class MainContentFactory {
   }
 
   /**
-   * Creates and returns the container for the entity editing views (type editor and placement editor).
+   * Creates and returns the container for the entity editing views (type editor and placement
+   * editor).
    *
    * @return the configured AnchorPane containing entity editors
    */

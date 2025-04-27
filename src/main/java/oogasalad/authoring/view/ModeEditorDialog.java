@@ -173,7 +173,8 @@ public class ModeEditorDialog {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle(LanguageManager.getMessage("CHOOSE_IMAGE"));
     fileChooser.getExtensionFilters().add(
-        new FileChooser.ExtensionFilter(LanguageManager.getMessage("IMAGE_FILES"), "*.png", "*.jpg", "*.jpeg", "*.gif")
+        new FileChooser.ExtensionFilter(LanguageManager.getMessage("IMAGE_FILES"), "*.png", "*.jpg",
+            "*.jpeg", "*.gif")
     );
 
     File file = fileChooser.showOpenDialog(getOwnerWindow());
@@ -243,7 +244,6 @@ public class ModeEditorDialog {
         animationSpeed
     );
   }
-
 
 
 }

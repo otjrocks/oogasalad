@@ -1,13 +1,6 @@
 package oogasalad.player.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import oogasalad.engine.records.config.model.SaveConfigRecord;
 import oogasalad.engine.records.config.model.SettingsRecord;
-import oogasalad.player.model.exceptions.SaveFileException;
 
 /**
  * Implementation of the GameState interface. This class manages the player's score, lives, and HUD
@@ -23,9 +16,6 @@ public class GameState implements GameStateInterface {
   private final int startingLives;
   private final int initialScore;
   private double timeElapsed = 0;
-  private int currentLevel;
-  private List<Integer> levelOrder;
-  private final static String SAVE_FOLDER = "data/saves/";
 
   /**
    * Loads in game settings given the game setting record.
@@ -37,8 +27,6 @@ public class GameState implements GameStateInterface {
     this.initialScore = gameSettings.initialScore();
     this.score = initialScore;
     this.lives = startingLives;
-    this.currentLevel = 0;
-    this.levelOrder = generateDefaultLevelOrder(); // You may want to replace this
     this.highScore = 0;
   }
 
@@ -102,13 +90,5 @@ public class GameState implements GameStateInterface {
   @Override
   public void setLives(int lives) {
     this.lives = lives;
-  }
-
-  private List<Integer> generateDefaultLevelOrder() {
-    List<Integer> levels = new ArrayList<>();
-    for (int i = 0; i < 10; i++) {
-      levels.add(i);
-    }
-    return levels;
   }
 }

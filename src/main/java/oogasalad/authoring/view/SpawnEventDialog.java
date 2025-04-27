@@ -76,7 +76,6 @@ public class SpawnEventDialog extends Stage {
         SpawnEventStrategyInterface.class // <-- the interface they implement
     );
 
-
     HBox row1 = new HBox(10, new Label(LanguageManager.getMessage("ENTITY_TYPE")),
         entityTypeDropdown);
     HBox row2 = new HBox(10, new Label(LanguageManager.getMessage("MODE")), modeDropdown);
