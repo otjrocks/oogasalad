@@ -421,9 +421,9 @@ Label, Text {
 }
 
 .delete-button {
-  -fx-background-color: -fx-warning;
-  -fx-border-color: derive(-fx-warning, -20%);
-  -fx-text-fill: -fx-primary;
+  -fx-background-color: derive(-fx-warning, -30%);
+  -fx-border-color: -fx-warning;
+  -fx-text-fill: derive(-fx-warning, 90%);
 }
 
 
