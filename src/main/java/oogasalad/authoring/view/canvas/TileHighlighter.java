@@ -22,15 +22,10 @@ public class TileHighlighter {
    */
   public TileHighlighter(Pane root) {
     hover = new Rectangle();
-    hover.setFill(Color.TRANSPARENT);
-    hover.setStroke(Color.GRAY);
     hover.setVisible(false);
     hover.getStyleClass().add("tile-hover");
 
     selection = new Rectangle();
-    selection.setFill(Color.TRANSPARENT);
-    selection.setStroke(Color.BLUE);
-    selection.setStrokeWidth(2);
     selection.setVisible(false);
     selection.getStyleClass().add("tile-selection");
 

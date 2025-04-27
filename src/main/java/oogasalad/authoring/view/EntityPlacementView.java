@@ -1,29 +1,18 @@
 package oogasalad.authoring.view;
 
-import java.util.Objects;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.utility.LanguageManager;
-import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.view.components.FormattingUtil;
 
 /**
@@ -57,9 +46,7 @@ public class EntityPlacementView {
     this.controller = controller;
     this.rootNode = new VBox(10);
     rootNode.setPadding(new Insets(10));
-    rootNode.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, null, null)));
-    rootNode.setBorder(new Border(
-        new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, null, new BorderWidths(2))));
+    rootNode.getStyleClass().add("entity-placement-view");
 
     setupUI();
 
@@ -113,20 +100,17 @@ public class EntityPlacementView {
     // Title
     Label titleLabel = new Label(LanguageManager.getMessage("SELECTED_ENTITY"));
     titleLabel.getStyleClass().add("section-header");
-    titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
     // Entity type display (non-editable)
     Label typeLabel = new Label(LanguageManager.getMessage("TYPE"));
     entityTypeLabel = new Label(LanguageManager.getMessage("NO_ENTITY_TYPE"));
     entityTypeLabel.getStyleClass().add("info-value");
-    entityTypeLabel.setStyle("-fx-font-weight: bold;");
 
     // Position display (non-editable)
     Label positionLabel = new Label(LanguageManager.getMessage("POSITION"));
     positionValueLabel = new Label(String.format(LanguageManager.getMessage(COORDINATE), 0.0,
         0.0));
     positionValueLabel.getStyleClass().add("info-value");
-    positionValueLabel.setStyle("-fx-font-weight: bold;");
 
     // Mode selection
     Label modeLabel = new Label(LanguageManager.getMessage("MODE"));
@@ -137,7 +121,7 @@ public class EntityPlacementView {
     statusLabel.setVisible(false);
     statusLabel.setWrapText(true);
     statusLabel.setMaxWidth(Double.MAX_VALUE);
-    statusLabel.setStyle("-fx-text-fill: green; -fx-font-style: italic;");
+    statusLabel.getStyleClass().add("status-label");
 
     // Action buttons
     Button applyButton = new Button(LanguageManager.getMessage("APPLY"));
@@ -145,7 +129,6 @@ public class EntityPlacementView {
 
     Button deleteButton = new Button(LanguageManager.getMessage("DELETE"));
     deleteButton.getStyleClass().add("delete-button");
-    deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
     deleteButton.setOnAction(e -> deleteEntity());
 
     // Create a grid for the labels and values

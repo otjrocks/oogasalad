@@ -60,13 +60,8 @@ public class JsonConfigBuilder {
     defaultSettings.set("loseCondition",
         ConditionSerializer.serializeFlat(model.getDefaultSettings().loseCondition(), mapper));
 
-    ArrayNode cheatTypesArray = mapper.createArrayNode();
-    for (CheatType cheatType : model.getDefaultSettings().cheatTypes()) {
-      cheatTypesArray.add(cheatType.name());
-    }
-    defaultSettings.set("cheatTypes", cheatTypesArray);
-
-
+    // === cheat code types ===
+    addCheatTypes(model, mapper, defaultSettings);
 
     // === levels ===
     ArrayNode levels = root.putArray("levels");
@@ -82,6 +77,17 @@ public class JsonConfigBuilder {
       collisionRules.add(mapper.valueToTree(collisionRule));
     }
     return root;
+  }
+
+  private static void addCheatTypes(AuthoringModel model, ObjectMapper mapper,
+      ObjectNode defaultSettings) {
+    if (model.getDefaultSettings().cheatTypes() != null) {
+      ArrayNode cheatTypesArray = mapper.createArrayNode();
+      for (CheatType cheatType : model.getDefaultSettings().cheatTypes()) {
+        cheatTypesArray.add(cheatType.name());
+      }
+      defaultSettings.set("cheatTypes", cheatTypesArray);
+    }
   }
 
   private static void writeMetaData(AuthoringModel model, ObjectNode root) {
