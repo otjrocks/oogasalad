@@ -183,7 +183,7 @@ public class GameLoopController {
       spawnEntityAtSpot(entityType, chosenSpot);
 
     } catch (InvalidPositionException e) {
-      LoggingManager.LOGGER.warn("⚠️ Failed to respawn entity {}", entityType.type(), e);
+      LoggingManager.LOGGER.warn("Failed to respawn entity {}", entityType.type(), e);
     }
   }
 
