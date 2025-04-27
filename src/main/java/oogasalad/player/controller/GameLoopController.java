@@ -224,6 +224,7 @@ public class GameLoopController {
       }
       if (currentTime >= info.revertTime()) {
         entity.getEntityPlacement().setMode(info.originalMode());
+        entity.updateControlStrategy();
         iterator.remove();
       }
     }

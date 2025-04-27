@@ -20,6 +20,8 @@ public class EntityPlacement {
   private double y;
   private double initialX;
   private double initialY;
+  private double previousX;
+  private double previousY;
   private String mode;
   private int currentFrame;
   private boolean isJumping = false;
@@ -290,4 +292,19 @@ public class EntityPlacement {
     this.verticalVelocity = verticalVelocity;
   }
 
+  public double getPreviousX() {
+    return previousX;
+  }
+
+  public double getPreviousY() {
+    return previousY;
+  }
+
+  public void setPreviousX(double previousX) {
+    this.previousX = previousX;
+  }
+
+  public void setPreviousY(double previousY) {
+    this.previousY = previousY;
+  }
 }

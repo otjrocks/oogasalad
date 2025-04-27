@@ -18,7 +18,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = JumpControlConfigRecord.class, name = "Jump"),
     @JsonSubTypes.Type(value = TargetControlConfigRecord.class, name = "Target"),
     @JsonSubTypes.Type(value = ConditionalControlConfigRecord.class, name = "Conditional"),
-    @JsonSubTypes.Type(value = ConstantDirectionControlConfigRecord.class, name = "ConstantDirection")
+    @JsonSubTypes.Type(value = ConstantDirectionControlConfigRecord.class, name = "ConstantDirection"),
+    @JsonSubTypes.Type(value = FollowEntityControlConfigRecord.class, name = "FollowEntity")
 })
 public interface ControlConfigInterface {
 
