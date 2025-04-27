@@ -158,7 +158,7 @@ public class ConditionEditor {
    * @return the constructed LoseConditionInterface, or null if creation fails
    */
   public LoseConditionInterface createSelectedLoseCondition() {
-    String selectedType = getSelectedWinCondition();
+    String selectedType = getSelectedLoseCondition();
     String value = getWinValue();
 
     Class<?> clazz = loseConditions.get(selectedType);
