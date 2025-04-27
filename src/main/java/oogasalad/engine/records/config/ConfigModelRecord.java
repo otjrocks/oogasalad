@@ -40,6 +40,11 @@ public record ConfigModelRecord(
     Map<String, Double> respawnableEntities
 ) {
 
+  /**
+   * Returns the corresponding entity type to its entity name
+   *
+   * @param name represents the entity type name stored in the json file
+   */
   public EntityTypeRecord getEntityTypeByName(String name) {
     return entityTypes().stream()
         .filter(e -> e.type().equals(name))
