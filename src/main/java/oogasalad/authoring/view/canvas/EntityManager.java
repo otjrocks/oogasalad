@@ -121,15 +121,13 @@ public class EntityManager {
    * @param newCol    new column position
    */
   public void updateEntityPosition(EntityPlacement placement, int newRow, int newCol) {
-    int oldRow = grid.getRowFromY(placement.getY());
-    int oldCol = grid.getColFromX(placement.getX());
+    int oldRow = (int) placement.getY();
+    int oldCol = (int) placement.getX();
 
     gridEntities[oldRow][oldCol] = null;
     gridEntities[newRow][newCol] = placement;
 
-    double newX = grid.getXFromCol(newCol);
-    double newY = grid.getYFromRow(newRow);
-    placementHandler.moveEntity(placement, newX, newY);
+    placementHandler.moveEntity(placement, newCol, newRow);
   }
 
   /**
