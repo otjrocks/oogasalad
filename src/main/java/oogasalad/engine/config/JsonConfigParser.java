@@ -65,7 +65,6 @@ public class JsonConfigParser implements ConfigParserInterface {
   private final ObjectMapper mapper;
   private Map<String, EntityConfigRecord> entityMap;
   private final Map<String, EntityTypeRecord> entityTypeMap = new HashMap<>();
-  private String gameFolderBasePath;
 
 
   private static final String JSON_IDENTIFIER = ".json";
@@ -92,7 +91,7 @@ public class JsonConfigParser implements ConfigParserInterface {
    */
   public ConfigModelRecord loadFromFile(String filepath) throws ConfigException {
 
-    this.gameFolderBasePath = new File(filepath).getParent();
+    String gameFolderBasePath = new File(filepath).getParent();
 
     // Step 1: Load primary game config JSON (e.g., gameConfig.json)
     GameConfigRecord gameConfig = loadGameConfig(filepath);

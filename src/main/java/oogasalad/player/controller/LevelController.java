@@ -23,7 +23,6 @@ public class LevelController {
   private final ConfigModelRecord myConfigModel;
   private final MainController myMainController;
   private final List<Integer> myLevelOrder;
-  private final GameSessionManager sessionManager;
 
   /**
    * Constructs a LevelController to manage the progression of game levels.
@@ -40,7 +39,6 @@ public class LevelController {
       boolean randomized, GameSessionManager sessionManager) {
     myMainController = mainController;
     myConfigModel = configModel;
-    this.sessionManager = sessionManager;
     this.myLevelIndex = sessionManager.getCurrentLevel(); // Start from saved level, not configModel directly
 
     myLevelOrder = new ArrayList<>();

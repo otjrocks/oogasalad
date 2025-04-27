@@ -28,7 +28,6 @@ import oogasalad.engine.utility.constants.GameConfig;
 public class AuthoringView {
 
   private final BorderPane root;
-  private AuthoringController controller;
 
   // Subviews
   private EntitySelectorView selectorView;
@@ -41,7 +40,6 @@ public class AuthoringView {
 
   // Managers
   private AuthoringLayoutBuilder layoutBuilder;
-  private HelpManager helpManager;
 
   /**
    * Constructs an empty AuthoringView with preset dimensions.
@@ -68,9 +66,8 @@ public class AuthoringView {
    * @param controller the controller coordinating the model and views
    */
   public void setController(AuthoringController controller) {
-    this.controller = controller;
     layoutBuilder = new AuthoringLayoutBuilder(this, controller);
-    helpManager = new HelpManager(this, controller);
+    HelpManager helpManager = new HelpManager(this, controller);
 
     layoutBuilder.buildLayout();
     helpManager.setupHelpSystem();

@@ -45,7 +45,6 @@ public class ModeChangeEventDialog extends Stage {
   private final ComboBox<String> conditionTypeDropdown = new ComboBox<>();
   private final VBox conditionParamsBox = new VBox(5);
   private final TableView<ModeChangeEventRecord> table = new TableView<>();
-  private final Map<String, Class<?>> modeChangeStrategies;
 
 
   /**
@@ -76,7 +75,8 @@ public class ModeChangeEventDialog extends Stage {
 
     populateEntityTypeDropdown();
 
-    this.modeChangeStrategies = StrategyLoader.loadStrategies(
+    // assuming this interface exists
+    Map<String, Class<?>> modeChangeStrategies = StrategyLoader.loadStrategies(
         "oogasalad.player.model.strategies.modechangeevent",
         ModeChangeEventStrategyInterface.class // assuming this interface exists
     );

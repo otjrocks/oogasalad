@@ -35,7 +35,6 @@ public class SpawnEventDialog extends Stage {
 
   private final LevelDraft level;
   private final Map<String, EntityTypeRecord> entityTypes;
-  private final Map<String, Class<?>> spawnConditions;
 
 
   private final ComboBox<String> entityTypeDropdown = new ComboBox<>();
@@ -70,7 +69,9 @@ public class SpawnEventDialog extends Stage {
     VBox root = new VBox(10);
     root.setPadding(new Insets(10));
 
-    this.spawnConditions = StrategyLoader.loadStrategies(
+    // <-- your package
+    // <-- the interface they implement
+    Map<String, Class<?>> spawnConditions = StrategyLoader.loadStrategies(
         "oogasalad.player.model.strategies.spawnevent", // <-- your package
         SpawnEventStrategyInterface.class // <-- the interface they implement
     );
