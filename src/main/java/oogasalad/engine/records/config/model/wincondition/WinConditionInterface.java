@@ -15,7 +15,8 @@ import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterfac
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = SurviveForTimeConditionRecord.class, name = "SurviveForTime"),
-    @JsonSubTypes.Type(value = EntityBasedConditionRecord.class, name = "EntityBased")
+    @JsonSubTypes.Type(value = EntityBasedConditionRecord.class, name = "EntityBased"),
+    @JsonSubTypes.Type(value = ScoreBasedConditionRecord.class, name = "ScoreReached")
 })
 public interface WinConditionInterface {
 
