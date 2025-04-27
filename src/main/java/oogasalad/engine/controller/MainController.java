@@ -88,6 +88,7 @@ public class MainController {
       LoggingManager.LOGGER.warn(
           "Attempted to hide the game selector screen, even though it wasn't being displayed.");
     }
+    myGameSelectorView = null;
   }
 
   /**
