@@ -1,0 +1,66 @@
+{
+  "metadata" : {
+    "gameTitle" : "Piano Tiles",
+    "author" : "Austin Huang",
+    "gameDescription" : "Kinda"
+  },
+  "defaultSettings" : {
+    "gameSpeed" : 1.0,
+    "startingLives" : 3,
+    "initialScore" : 0,
+    "winCondition" : {
+      "type" : "EntityBased",
+      "entityType" : "fallingtiles"
+    },
+    "loseCondition" : {
+      "type" : "LivesBased"
+    },
+    "cheatTypes" : [ ]
+  },
+  "levels" : [ {
+    "levelMap" : "level1"
+  } ],
+  "collisions" : [ {
+    "entityA" : "fallingtiles",
+    "modeA" : "Default",
+    "entityB" : "slider",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Consume"
+    } ],
+    "eventsB" : [ {
+      "type" : "UpdateScore",
+      "amount" : 100
+    } ]
+  }, {
+    "entityA" : "fallingtiles",
+    "modeA" : "Default",
+    "entityB" : "floor",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Consume"
+    } ],
+    "eventsB" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ]
+  }, {
+    "entityA" : "slider",
+    "modeA" : "Default",
+    "entityB" : "ceiling",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "slider",
+    "modeA" : "Default",
+    "entityB" : "floor",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "eventsB" : [ ]
+  } ]
+}
