@@ -43,5 +43,69 @@
       "amount" : 1
     } ],
     "eventsB" : [ ]
+  }, {
+    "entityA" : "Bird",
+    "modeA" : "Default",
+    "entityB" : "Floor",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Bird",
+    "modeA" : "Default",
+    "entityB" : "Pipe",
+    "modeB" : "Top",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Bird",
+    "modeA" : "Default",
+    "entityB" : "Pipe",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Bird",
+    "modeA" : "Default",
+    "entityB" : "Pipe",
+    "modeB" : "Bottom",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Bird",
+    "modeA" : "Default",
+    "entityB" : "Strawberry",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 5
+    } ],
+    "eventsB" : [ {
+      "type" : "Consume"
+    } ]
+  }, {
+    "entityA" : "Bird",
+    "modeA" : "Default",
+    "entityB" : "Melon",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 10
+    } ],
+    "eventsB" : [ {
+      "type" : "Consume"
+    } ]
   } ]
 }
