@@ -195,7 +195,7 @@ public class GameLoopController {
     for (int y = 0; y < mapHeight; y++) {
       for (int x = 0; x < mapWidth; x++) {
         if (myGameContext.gameMap().getEntityAt(x, y).isEmpty()) {
-          openSpots.add(new double[]{x + 0.5, y + 0.5});
+          openSpots.add(new double[]{x, y});
         }
       }
     }
@@ -221,7 +221,6 @@ public class GameLoopController {
         myConfig
     );
     myGameContext.gameMap().addEntity(newEntity);
-    LoggingManager.LOGGER.info("🍪 Respawned entity '{}' at ({}, {})", entityType.type(), spawnX, spawnY);
   }
 
   private void handleSpawnEvents() {
