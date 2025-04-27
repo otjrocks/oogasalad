@@ -1,7 +1,14 @@
 package oogasalad.authoring.view.mainView;
 
 import javafx.scene.Node;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  * Responsible for building the main content area layout of the AuthoringView.
@@ -61,9 +68,7 @@ public class MainContentFactory {
   private AnchorPane createEditorContainer() {
     AnchorPane container = new AnchorPane();
     container.setMaxHeight(400);
-    container.setBorder(new Border(new BorderStroke(
-        javafx.scene.paint.Color.BLUE, BorderStrokeStyle.DASHED, null, new BorderWidths(1)
-    )));
+    container.getStyleClass().add("editor-container");
 
     view.addEntityTypeEditor(container);
     view.addEntityPlacementView(container);

@@ -321,6 +321,18 @@ Label, Text {
   -fx-spacing: 10px;
 }
 
+.tile-hover {
+  -fx-stroke: -fx-highlight;
+  -fx-stroke-width: 2px;
+  -fx-fill: transparent;
+}
+
+.tile-selection {
+  -fx-stroke: -fx-accent;
+  -fx-stroke-width: 2px;
+  -fx-fill: transparent;
+}
+
 .selected-tile {
   -fx-background-color: lightgray;
 }
@@ -610,4 +622,10 @@ Label, Text {
 
 .game-selector-view {
   -fx-background-color: -fx-primary;
+}
+
+.editor-container {
+  -fx-border-color: -fx-accent;
+  -fx-border-width: 2px;
+  -fx-border-style: dotted;
 }
