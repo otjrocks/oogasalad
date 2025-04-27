@@ -10,12 +10,21 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * Follows closely behind an entity by doing its moves after a short delay
+ */
 public class FollowEntityControlStrategy implements ControlStrategyInterface {
     private final GameMapInterface gameMap;
     private final Queue<double[]> positionQueue;
     private final Entity targetEntity;
     private static final int DELAY = 5;
 
+    /**
+     *
+     * @param gameMap: The map in which the entity is being updated
+     * @param placement: The placement of the entity (unused)
+     * @param config: The controlConfig associated (also unused)
+     */
     public FollowEntityControlStrategy(GameMapInterface gameMap, EntityPlacement placement, ControlConfigInterface config) {
         this.gameMap = gameMap;
         this.positionQueue = new LinkedList<>();

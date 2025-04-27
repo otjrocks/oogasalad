@@ -292,18 +292,30 @@ public class EntityPlacement {
     this.verticalVelocity = verticalVelocity;
   }
 
+  /**
+   * Gets previous x coordinate for reference by tail entities
+   */
   public double getPreviousX() {
     return previousX;
   }
 
+  /**
+   * Gets previous y coordinate for reference by tail entities
+   */
   public double getPreviousY() {
     return previousY;
   }
 
+  /**
+   * Sets previous x coordinate for updating tail entity target
+   */
   public void setPreviousX(double previousX) {
     this.previousX = previousX;
   }
 
+  /**
+   * Sets previous y coordinate for updating tail entity target
+   */
   public void setPreviousY(double previousY) {
     this.previousY = previousY;
   }

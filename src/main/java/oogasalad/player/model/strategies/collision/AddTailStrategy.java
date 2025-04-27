@@ -7,6 +7,9 @@ import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.player.model.Entity;
 import oogasalad.player.model.api.EntityFactory;
 
+/**
+ * Adds tail to pacman entity for snake game
+ */
 public class AddTailStrategy implements CollisionStrategyInterface {
 
     @Override

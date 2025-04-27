@@ -108,6 +108,9 @@ public class Entity {
     myControlStrategy.update(this);
   }
 
+  /**
+   * Updates control strategy in the case of a mode change
+   */
   public void updateControlStrategy() {
     myControlStrategy = ControlStrategyFactory.createControlStrategy(inputManager,
             myEntityPlacement, this.gameMap);
@@ -229,6 +232,9 @@ public class Entity {
     }
   }
 
+  /**
+   * Gets config model record associated with the entity
+   */
   public ConfigModelRecord getConfig() {
     return myConfig;
   }
