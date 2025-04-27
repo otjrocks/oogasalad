@@ -12,6 +12,7 @@ import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.controller.LevelController;
+import oogasalad.player.model.Entity;
 import oogasalad.player.model.GameStateInterface;
 import oogasalad.player.model.exceptions.SaveFileException;
 import oogasalad.player.model.save.GameSessionManager;
@@ -81,10 +82,10 @@ public class GamePlayerView {
   private void loadOrCreateSession() {
     try {
       sessionManager.loadExistingSession();
-      LoggingManager.LOGGER.info("✅ Loaded existing save file for '{}'", gameFolderPath);
+      LoggingManager.LOGGER.info("Loaded existing save file for '{}'", gameFolderPath);
     } catch (IOException e) {
       sessionManager.startNewSession(myConfigModel);
-      LoggingManager.LOGGER.info("📁 No save found, created new session for '{}'", gameFolderPath);
+      LoggingManager.LOGGER.info("No save found, created new session for '{}'", gameFolderPath);
     }
   }
 
@@ -123,7 +124,7 @@ public class GamePlayerView {
     int logicalIndex = levelController.getCurrentLevelIndex();
     int actualMappedIndex = sessionManager.getLevelOrder().get(logicalIndex);
 
-    LoggingManager.LOGGER.info("🧭 Loading mapped level {} (logical index {})", actualMappedIndex,
+    LoggingManager.LOGGER.info("Loading mapped level {} (logical index {})", actualMappedIndex,
         logicalIndex);
 
     myGameView = new GameView(
@@ -152,11 +153,11 @@ public class GamePlayerView {
     try {
       if (myGameView.isPendingLevelAdvance()) {
         sessionManager.advanceLevel(myGameState.getScore());
-        LoggingManager.LOGGER.info("🚀 Level won: saving with next level progress!");
+        LoggingManager.LOGGER.info("Level won: saving with next level progress!");
       }
       sessionManager.updateHighScore(myGameState.getHighScore());
       sessionManager.save();
-      LoggingManager.LOGGER.info("💾 Game saved successfully!");
+      LoggingManager.LOGGER.info("Game saved successfully!");
     } catch (SaveFileException e) {
       LoggingManager.LOGGER.warn("Failed to save game progress: {}", e.getMessage());
     }
@@ -180,7 +181,7 @@ public class GamePlayerView {
 
       refreshGame();
     } else {
-      LoggingManager.LOGGER.info("🎉 All levels complete — cannot advance further.");
+      LoggingManager.LOGGER.info("All levels complete — cannot advance further.");
     }
   }
 
@@ -201,7 +202,11 @@ public class GamePlayerView {
     levelController = new LevelController(myMainController, myConfigModel, isRandomized,
         sessionManager);
     loadGameViewFromSession();
+
+    myGameView.resetControlledEntitiesToSpawn();
+
   }
+
 
   /**
    * Returns privately stored GameView.
@@ -209,4 +214,5 @@ public class GamePlayerView {
   public GameView getGameView() {
     return myGameView;
   }
+
 }
