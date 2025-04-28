@@ -6,15 +6,15 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "assets/pacman.png",
-        "tileWidth": 28,
-        "tileHeight": 28,
-        "tilesToCycle": 6,
-        "animationSpeed": 5.0
+        "imagePath": "assets/dino.png",
+        "tileWidth": 48,
+        "tileHeight": 48,
+        "tilesToCycle": 5,
+        "animationSpeed": 10.0
       },
       "controlConfig": {
         "controlStrategy": "Jump",
-        "jumpforce":  0.45,
+        "jumpforce":  0.55,
         "gravity": 0.05
       },
       "movementSpeed": 1

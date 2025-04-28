@@ -13,26 +13,216 @@
       "id": 3
     },
     {
-      "entity": "dot",
+      "entity": "food",
       "id": 4
+    },
+    {
+      "entity": "restart",
+      "id": 5
     }
   ],
   "mapInfo": {
     "width": 28,
-    "height": 8
+    "height": 22
   },
   "layout": [
-    "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
-    "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
-    "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
-    "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
-    "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
-    "0 0 0 0 0 0 0 0 0 0 4 0 0 0 0 4 0 0 0 0 0 0 4 0 0 0 0 0",
-    "0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 3 0 0 0 0 0 0 3 0 0 0 0 0",
-    "2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2"
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "5.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
   ],
   "spawnEvents": [
+    {
+      "entityType": "3",
+      "x": 26.0,
+      "y": 14.0,
+      "mode": "Top",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 0.0
+        }
+      }
+    },
+    {
+      "entityType": "3",
+      "x": 26.0,
+      "y": 15.0,
+      "mode": "Bottom",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 0.0
+        }
+      }
+    },
+    {
+      "entityType": "4",
+      "x": 26.0,
+      "y": 13.0,
+      "mode": "Default",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 0.0
+        }
+      }
+    },
 
+    {
+      "entityType": "3",
+      "x": 26.0,
+      "y": 14.0,
+      "mode": "Bird",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 0.5
+        }
+      }
+    },
+
+    {
+      "entityType": "3",
+      "x": 26.0,
+      "y": 15.0,
+      "mode": "Default",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 1.3
+        }
+      }
+    },
+    {
+      "entityType": "4",
+      "x": 26.0,
+      "y": 15.0,
+      "mode": "Default",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 1.5
+        }
+      }
+    },
+    {
+      "entityType": "4",
+      "x": 26.0,
+      "y": 15.0,
+      "mode": "Cherry",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 1.9
+        }
+      }
+    },
+    {
+      "entityType": "3",
+      "x": 26.0,
+      "y": 15.0,
+      "mode": "Default",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 2
+        }
+      }
+    },
+    {
+      "entityType": "4",
+      "x": 26.0,
+      "y": 15.0,
+      "mode": "Default",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 2.2
+        }
+      }
+    },
+
+
+    {
+      "entityType": "3",
+      "x": 26.0,
+      "y": 15.0,
+      "mode": "Default",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 3
+        }
+      }
+    },
+    {
+      "entityType": "4",
+      "x": 26.0,
+      "y": 14.0,
+      "mode": "Cheese",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 3
+        }
+      }
+    },
+    {
+      "entityType": "3",
+      "x": 26.0,
+      "y": 15.0,
+      "mode": "Default",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 3.1
+        }
+      }
+    },
+    {
+      "entityType": "4",
+      "x": 26.0,
+      "y": 14.0,
+      "mode": "Cherry",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 3.1
+        }
+      }
+    },
+
+    {
+      "entityType": "5",
+      "x": 26.0,
+      "y": 17.0,
+      "mode": "Default",
+      "spawnCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 3.5
+        }
+      }
+    }
   ],
   "modeChangeEvents": [
 

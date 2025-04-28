@@ -1,16 +1,14 @@
 {
   "entityType": {
-    "name": "Cactus",
-    "blocks": [
-    ]
+    "name": "Food"
   },
   "modes": [
     {
       "name": "Default",
       "image": {
-        "imagePath": "assets/cactus.png",
-        "tileWidth": 35,
-        "tileHeight": 35,
+        "imagePath": "assets/melon.png",
+        "tileWidth": 28,
+        "tileHeight": 28,
         "tilesToCycle": 1,
         "animationSpeed": 1.0
       },
@@ -22,11 +20,11 @@
       "movementSpeed": 1.5
     },
     {
-      "name": "Top",
+      "name": "Cherry",
       "image": {
-        "imagePath": "assets/cactustop.png",
-        "tileWidth": 35,
-        "tileHeight": 35,
+        "imagePath": "assets/cherry.png",
+        "tileWidth": 28,
+        "tileHeight": 28,
         "tilesToCycle": 1,
         "animationSpeed": 1.0
       },
@@ -38,29 +36,13 @@
       "movementSpeed": 1.5
     },
     {
-      "name": "Bottom",
+      "name": "Cheese",
       "image": {
-        "imagePath": "assets/cactusbot.png",
-        "tileWidth": 35,
-        "tileHeight": 35,
+        "imagePath": "assets/cheese.png",
+        "tileWidth": 28,
+        "tileHeight": 28,
         "tilesToCycle": 1,
         "animationSpeed": 1.0
-      },
-      "controlConfig": {
-        "controlStrategy": "ConstantDirection",
-        "dx": -1,
-        "dy": 0
-      },
-      "movementSpeed": 1.5
-    },
-    {
-      "name": "Bird",
-      "image": {
-        "imagePath": "assets/bird.png",
-        "tileWidth": 46,
-        "tileHeight": 38,
-        "tilesToCycle": 2,
-        "animationSpeed": 5.0
       },
       "controlConfig": {
         "controlStrategy": "ConstantDirection",

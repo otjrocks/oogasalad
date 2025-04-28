@@ -9,9 +9,9 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "assets/wall.png",
-        "tileWidth": 8,
-        "tileHeight": 8,
+        "imagePath": "assets/ground.png",
+        "tileWidth": 25,
+        "tileHeight": 25,
         "tilesToCycle": 1,
         "animationSpeed": 1.0
       },
