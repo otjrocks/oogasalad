@@ -108,7 +108,9 @@ public class PinballControlStategy implements ControlStrategyInterface {
   }
 
   private void launchEntity() {
-
+    myIsCharging = false;
+    myIsMoving = true;
+    myTraveledDistance = 0.0;
   }
 
   private void moveEntity(){
