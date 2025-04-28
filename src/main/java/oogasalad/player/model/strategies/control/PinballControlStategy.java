@@ -148,6 +148,16 @@ public class PinballControlStategy implements ControlStrategyInterface {
         myTraveledDistance = 0.0;
         return;
     }
+
+    // Calculate new position
+    double tentativeX = myEntityPlacement.getX() + myXVelocity;
+    double tentativeY = myEntityPlacement.getY() + myYVelocity;
+    
+    // Check if the new position is valid
+    boolean canMoveX = myGameMap.isNotBlocked(myEntityPlacement.getTypeString(),
+        (int) tentativeX, (int) myEntityPlacement.getY());
+    boolean canMoveY = myGameMap.isNotBlocked(myEntityPlacement.getTypeString(),
+        (int) myEntityPlacement.getX(), (int) tentativeY);
   }
 
   /**
