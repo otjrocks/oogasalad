@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TimeBasedOutcomeStrategyTest {
+
   // Test wrote by ChatGPT
   private GameState mockGameState;
   private GameContextRecord mockGameContext;

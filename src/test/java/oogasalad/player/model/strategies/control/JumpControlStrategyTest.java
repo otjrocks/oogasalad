@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class JumpControlStrategyTest {
+
   // Test assisted with ChatGPT
   private GameInputManager mockInputManager;
   private GameMapInterface mockGameMap;

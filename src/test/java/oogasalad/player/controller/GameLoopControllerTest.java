@@ -1,6 +1,9 @@
 package oogasalad.player.controller;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.mock;
@@ -94,6 +97,75 @@ class GameLoopControllerTest extends DukeApplicationTest {
     Thread.sleep(100);
     verify(gameMap, atLeastOnce()).update();
     verify(gameMapView, atLeastOnce()).update();
+  }
+
+  @Test
+  void gameSpeedMultiplier_GetAndSet_Success() {
+    double newSpeed = 2.0;
+    gameLoopController.setGameSpeedMultiplier(newSpeed);
+    assertEquals(newSpeed, gameLoopController.getGameSpeedMultiplier());
+  }
+
+
+  @Test
+  void resumeGame_UpdatesAfterResume_Success() throws InterruptedException {
+    // First pause the game
+    gameLoopController.pauseGame();
+
+    // Clear any previous invocations
+    clearInvocations(gameMap, gameMapView);
+
+    // Resume the game
+    gameLoopController.resumeGame();
+
+    // Wait a bit to allow for updates
+    Thread.sleep(100);
+
+    // Verify updates occurred after resume
+    verify(gameMap, atLeastOnce()).update();
+    verify(gameMapView, atLeastOnce()).update();
+  }
+
+  @Test
+  void pauseAndResume_MultipleTimesInSequence_Success() {
+    // Test multiple pause/resume cycles
+    assertDoesNotThrow(() -> {
+      for (int i = 0; i < 3; i++) {
+        gameLoopController.pauseGame();
+        gameLoopController.resumeGame();
+      }
+    });
+  }
+
+  @Test
+  void gameLoop_VerifyUpdateFrequency_Success() throws InterruptedException {
+    // Clear any previous invocations
+    clearInvocations(gameMap, gameMapView);
+
+    // Wait for multiple update cycles
+    Thread.sleep(300);
+
+    // Verify that multiple updates occurred
+    verify(gameMap, atLeast(2)).update();
+    verify(gameMapView, atLeast(2)).update();
+  }
+
+  @Test
+  void pauseGame_VerifyGameStatePreserved_Success() {
+    // Set initial game speed
+    double initialSpeed = 1.5;
+    gameLoopController.setGameSpeedMultiplier(initialSpeed);
+
+    // Pause game
+    gameLoopController.pauseGame();
+
+    // Verify game speed remains unchanged after pause
+    assertEquals(initialSpeed, gameLoopController.getGameSpeedMultiplier());
+  }
+
+  @Test
+  void resumeGame_WithoutPriorPause_DoesNotThrowException() {
+    assertDoesNotThrow(() -> gameLoopController.resumeGame());
   }
 
 }

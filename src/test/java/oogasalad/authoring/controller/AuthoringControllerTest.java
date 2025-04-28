@@ -24,6 +24,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 class AuthoringControllerTest {
+
   // ChatGPT wrote many of the tests and backbone for these tests.
   private AuthoringController controller;
 
