@@ -184,6 +184,10 @@ public class PinballControlStategy implements ControlStrategyInterface {
     );
     myTraveledDistance += stepDistance;
 
+    // Apply friction
+    myXVelocity *= (1.0 - myFriction);
+    myYVelocity *= (1.0 - myFriction);
+
     
   }
 
