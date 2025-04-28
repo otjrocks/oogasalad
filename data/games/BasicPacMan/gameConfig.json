@@ -1,9 +1,9 @@
 {
   "metadata" : {
-    "gameTitle" : "Advanced Ghost AI Demo",
+    "gameTitle" : "PacMan",
     "author" : "CS308 Team",
     "gameDescription" : "Shows different controlTypes with strategyConfig and collision/mode logic.",
-    "image" : "assets/pacman.png"
+    "image" : "assets/banner.png"
   },
   "defaultSettings" : {
     "gameSpeed" : 1,

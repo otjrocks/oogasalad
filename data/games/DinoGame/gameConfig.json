@@ -2,7 +2,8 @@
   "metadata": {
     "gameTitle": "Pac-ket Dino",
     "author": "Jessica Chen",
-    "gameDescription": "We all know about the dino game, but do you know about packet dino? Well now you're him. A few things about him, he's a bit smaller than dino giving him an advantage of not having to duck when other dino's have to, although the smaller brain might come with a few quirks. He thinks the earth is flat so if he runs enough eventually he'll reach the end right... Oh right, packet dino loves fruit, especially cherries, but be warned, a side affect from being packet-sized is you're lactose intolerant."
+    "gameDescription": "We all know about the dino game, but do you know about packet dino? Well now you're him. A few things about him, he's a bit smaller than dino giving him an advantage of not having to duck when other dino's have to, although the smaller brain might come with a few quirks. He thinks the earth is flat so if he runs enough eventually he'll reach the end right... Oh right, packet dino loves fruit, especially cherries, but be warned, a side affect from being packet-sized is you're lactose intolerant.",
+    "image" : "assets/banner.png"
   },
   "defaultSettings": {
     "gameSpeed": 1,
