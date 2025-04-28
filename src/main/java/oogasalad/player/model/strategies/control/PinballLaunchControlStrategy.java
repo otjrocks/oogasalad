@@ -77,21 +77,21 @@ public class PinballLaunchControlStrategy implements ControlStrategyInterface {
   }
 
   private void handleChargeInput() {
-    // Check if a direction key is being pressed
-    if (myInputManager.isMovingUp()) {
-      handleDirectionCharge(1);
-    } else if (myInputManager.isMovingDown()) {
-      handleDirectionCharge(2);
-    } else if (myInputManager.isMovingLeft()) {
-      handleDirectionCharge(3);
-    } else if (myInputManager.isMovingRight()) {
-      handleDirectionCharge(4);
-    } else {
-      // No key is pressed, release if we were charging
-      if (myIsCharging) {
+    int direction = getDirectionInput();
+    
+    if (direction != 0) {
+        handleDirectionCharge(direction);
+    } else if (myIsCharging) {
         launchEntity();
-      }
     }
+  }
+
+  private int getDirectionInput() {
+      if (myInputManager.isMovingUp()) return 1;
+      if (myInputManager.isMovingDown()) return 2;
+      if (myInputManager.isMovingLeft()) return 3;
+      if (myInputManager.isMovingRight()) return 4;
+      return 0;
   }
   
   private void handleDirectionCharge(int direction) {
