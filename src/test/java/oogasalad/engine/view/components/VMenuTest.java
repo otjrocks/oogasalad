@@ -14,7 +14,8 @@ class VMenuTest extends DukeApplicationTest {
   @Test
   void VMenu_Create_Success() {
     List<String> values = List.of("Test");
-    List<EventHandler<ActionEvent>> actions = List.of(e -> {});
+    List<EventHandler<ActionEvent>> actions = List.of(e -> {
+    });
     assertDoesNotThrow(() -> new VMenu(values, actions));
   }
 

@@ -18,7 +18,8 @@ class CollisionStrategyFactoryTest {
   // I used ChatGPT to assist in writing these tests.
   @Test
   void createCollisionStrategy_stopStrategy_CorrectStrategy() {
-    CollisionStrategyInterface strategy = CollisionStrategyFactory.createCollisionStrategy(new StopCollisionEventRecord());
+    CollisionStrategyInterface strategy = CollisionStrategyFactory.createCollisionStrategy(
+        new StopCollisionEventRecord());
     assertInstanceOf(StopStrategy.class, strategy, "Expected a StopStrategy");
   }
 

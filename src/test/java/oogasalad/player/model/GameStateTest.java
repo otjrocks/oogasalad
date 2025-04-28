@@ -15,7 +15,8 @@ public class GameStateTest {
 
   @BeforeEach
   void setUp() {
-    SettingsRecord gameSettings = new SettingsRecord(1.0, 5, 5, new EntityBasedConditionRecord("dot"), new LivesBasedConditionRecord(), new HashSet<>());
+    SettingsRecord gameSettings = new SettingsRecord(1.0, 5, 5,
+        new EntityBasedConditionRecord("dot"), new LivesBasedConditionRecord(), new HashSet<>());
     gameState = new GameState(gameSettings);
   }
 

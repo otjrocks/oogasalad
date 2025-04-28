@@ -85,7 +85,6 @@ class ControlStrategyHelperMethodsTest {
     when(mockPathStrategy.getPath(any(), anyInt(), anyInt(), anyInt(), anyInt(), any(), any()))
         .thenReturn(new int[]{0, 0});
 
-
     ControlStrategyHelperMethods.getDirectionFromTargetAndPath(
         mockMap, mockEntity, mockPlacement, mockTargetStrategy, mockPathStrategy);
 

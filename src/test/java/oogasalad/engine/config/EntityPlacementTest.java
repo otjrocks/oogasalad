@@ -64,7 +64,8 @@ public class EntityPlacementTest {
 
   @Test
   public void testNullEntityData() {
-    Exception exception = assertThrows(NullPointerException.class, () -> new EntityPlacement(null, 10.0, 20.0, "Default").toString());
+    Exception exception = assertThrows(NullPointerException.class,
+        () -> new EntityPlacement(null, 10.0, 20.0, "Default").toString());
 
     assertNotNull(exception);
   }

@@ -52,10 +52,13 @@ class ConditionalControlStrategyTest {
         .thenReturn(new int[]{1, 0});
 
     try (
-        MockedStatic<TargetStrategyFactory> targetFactoryMock = mockStatic(TargetStrategyFactory.class);
-        MockedStatic<PathFindingStrategyFactory> pathFactoryMock = mockStatic(PathFindingStrategyFactory.class)
+        MockedStatic<TargetStrategyFactory> targetFactoryMock = mockStatic(
+            TargetStrategyFactory.class);
+        MockedStatic<PathFindingStrategyFactory> pathFactoryMock = mockStatic(
+            PathFindingStrategyFactory.class)
     ) {
-      targetFactoryMock.when(() -> TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap))
+      targetFactoryMock.when(
+              () -> TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap))
           .thenReturn(mockTargetStrategy);
 
       pathFactoryMock.when(() -> PathFindingStrategyFactory.createPathFindingStrategy("AStar"))
@@ -64,7 +67,8 @@ class ConditionalControlStrategyTest {
           .thenReturn(mockStrategyOut);
 
       var config = new ConditionalControlConfigRecord(5, "AStar", "Dijkstra", null);
-      ConditionalControlStrategy strategy = new ConditionalControlStrategy(mockMap, mockPlacement, config);
+      ConditionalControlStrategy strategy = new ConditionalControlStrategy(mockMap, mockPlacement,
+          config);
 
       strategy.update(mockEntity);
 
@@ -85,10 +89,13 @@ class ConditionalControlStrategyTest {
         .thenReturn(new int[]{1, 0});
 
     try (
-        MockedStatic<TargetStrategyFactory> targetFactoryMock = mockStatic(TargetStrategyFactory.class);
-        MockedStatic<PathFindingStrategyFactory> pathFactoryMock = mockStatic(PathFindingStrategyFactory.class)
+        MockedStatic<TargetStrategyFactory> targetFactoryMock = mockStatic(
+            TargetStrategyFactory.class);
+        MockedStatic<PathFindingStrategyFactory> pathFactoryMock = mockStatic(
+            PathFindingStrategyFactory.class)
     ) {
-      targetFactoryMock.when(() -> TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap))
+      targetFactoryMock.when(
+              () -> TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap))
           .thenReturn(mockTargetStrategy);
 
       pathFactoryMock.when(() -> PathFindingStrategyFactory.createPathFindingStrategy("AStar"))
@@ -97,7 +104,8 @@ class ConditionalControlStrategyTest {
           .thenReturn(mockStrategyOut);
 
       var config = new ConditionalControlConfigRecord(3, "AStar", "Dijkstra", null);
-      ConditionalControlStrategy strategy = new ConditionalControlStrategy(mockMap, mockPlacement, config);
+      ConditionalControlStrategy strategy = new ConditionalControlStrategy(mockMap, mockPlacement,
+          config);
 
       strategy.update(mockEntity);
 
@@ -117,10 +125,13 @@ class ConditionalControlStrategyTest {
         .thenReturn(new int[]{0, 1});
 
     try (
-        MockedStatic<TargetStrategyFactory> targetFactoryMock = mockStatic(TargetStrategyFactory.class);
-        MockedStatic<PathFindingStrategyFactory> pathFactoryMock = mockStatic(PathFindingStrategyFactory.class)
+        MockedStatic<TargetStrategyFactory> targetFactoryMock = mockStatic(
+            TargetStrategyFactory.class);
+        MockedStatic<PathFindingStrategyFactory> pathFactoryMock = mockStatic(
+            PathFindingStrategyFactory.class)
     ) {
-      targetFactoryMock.when(() -> TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap))
+      targetFactoryMock.when(
+              () -> TargetStrategyFactory.createTargetStrategy(mockPlacement, mockMap))
           .thenReturn(mockTargetStrategy);
 
       pathFactoryMock.when(() -> PathFindingStrategyFactory.createPathFindingStrategy("AStar"))
@@ -129,7 +140,8 @@ class ConditionalControlStrategyTest {
           .thenReturn(mockStrategyOut);
 
       var config = new ConditionalControlConfigRecord(10, "AStar", "Dijkstra", null);
-      ConditionalControlStrategy strategy = new ConditionalControlStrategy(mockMap, mockPlacement, config);
+      ConditionalControlStrategy strategy = new ConditionalControlStrategy(mockMap, mockPlacement,
+          config);
 
       strategy.update(mockEntity);
 

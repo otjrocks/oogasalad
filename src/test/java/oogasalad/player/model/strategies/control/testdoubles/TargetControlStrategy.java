@@ -8,7 +8,8 @@ import oogasalad.player.model.strategies.control.ControlStrategyInterface;
 
 public class TargetControlStrategy implements ControlStrategyInterface {
 
-  public TargetControlStrategy(GameMapInterface map, EntityPlacement placement, ControlConfigInterface config) {
+  public TargetControlStrategy(GameMapInterface map, EntityPlacement placement,
+      ControlConfigInterface config) {
   }
 
   @Override
