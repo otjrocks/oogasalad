@@ -1,8 +1,8 @@
 {
-  "saveName" : "CookieCollector_Save",
+  "saveName" : "output_Save",
   "currentLevel" : 0,
   "totalScore" : 0,
   "lives" : 3,
-  "highScore" : 340,
+  "highScore" : 0,
   "levelOrder" : [ 0 ]
 }

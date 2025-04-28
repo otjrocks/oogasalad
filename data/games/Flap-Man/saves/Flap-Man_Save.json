@@ -1,8 +1,8 @@
 {
-  "saveName" : "MockGame",
+  "saveName" : "Flap-Man_Save",
   "currentLevel" : 0,
   "totalScore" : 0,
-  "lives" : 10,
-  "highScore" : 0,
+  "lives" : 1,
+  "highScore" : 49,
   "levelOrder" : [ 0 ]
 }
