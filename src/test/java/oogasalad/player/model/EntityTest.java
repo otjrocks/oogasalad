@@ -3,6 +3,7 @@ package oogasalad.player.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyDouble;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -11,25 +12,22 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.HashMap;
+import java.util.Map;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.ConstantDirectionControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
-import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
-import oogasalad.engine.records.config.model.controlConfig.TargetControlConfigRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.controller.GameInputManager;
 import oogasalad.player.model.api.ControlStrategyFactory;
 import oogasalad.player.model.strategies.control.ControlStrategyInterface;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.MockedStatic;
-
-import java.util.HashMap;
-import java.util.Map;
 
 class EntityTest {
 
@@ -38,20 +36,38 @@ class EntityTest {
   private GameMapInterface mockMap;
   private ModeConfigRecord mockMode;
   private Entity entity;
+  private MockedStatic<ControlStrategyFactory> controlStrategyFactoryMock;
+
 
   @BeforeEach
   void setUp() {
     mockPlacement = mock(EntityPlacement.class);
     mockInput = mock(GameInputManager.class);
     mockMap = mock(GameMapInterface.class);
+
+    // MOCK STATIC METHOD
+    controlStrategyFactoryMock = mockStatic(ControlStrategyFactory.class);
+    controlStrategyFactoryMock
+        .when(() -> ControlStrategyFactory.createControlStrategy(any(), any(), any()))
+        .thenReturn(mock(ControlStrategyInterface.class));
+
+    // Create dummy mode
     Map<String, ModeConfigRecord> modes = new HashMap<>();
-    ControlConfigInterface mockControl = new ConstantDirectionControlConfigRecord(5, 5);
-    ModeConfigRecord newMode = new ModeConfigRecord("Default", null, mockControl, null, null);
+    ModeConfigRecord newMode = new ModeConfigRecord("Default", null, mock(ControlConfigInterface.class), null, null);
     modes.put("Default", newMode);
+
     when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", modes, null));
     when(mockPlacement.getMode()).thenReturn("Default");
+
     entity = new Entity(mockInput, mockPlacement, mockMap, mock(ConfigModelRecord.class));
   }
+
+  @AfterEach
+  void tearDown() {
+    // VERY IMPORTANT: Close the static mock after each test!
+    controlStrategyFactoryMock.close();
+  }
+
 
   @Test
   void getEntityPlacement_validEntity_returnsEntity() {
@@ -126,5 +142,4 @@ class EntityTest {
     when(mockPlacement.getX()).thenReturn(2.5);
     assertFalse(entity.canMove(Direction.D));
   }
-
 }
