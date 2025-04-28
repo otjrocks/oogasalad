@@ -158,6 +158,18 @@ public class PinballControlStategy implements ControlStrategyInterface {
         (int) tentativeX, (int) myEntityPlacement.getY());
     boolean canMoveY = myGameMap.isNotBlocked(myEntityPlacement.getTypeString(),
         (int) myEntityPlacement.getX(), (int) tentativeY);
+
+    // Update position
+    double oldX = myEntityPlacement.getX();
+    double oldY = myEntityPlacement.getY();
+    
+    if (canMoveX) {
+      myEntityPlacement.setX(tentativeX);
+    } else {
+      // Bounce off wall in X direction
+      myXVelocity = -myXVelocity * 0.5; // Reduce velocity on bounce
+    }
+    
   }
 
   /**
