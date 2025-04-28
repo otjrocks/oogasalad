@@ -32,7 +32,6 @@ import oogasalad.engine.records.config.model.collisionevent.UpdateScoreCollision
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
-import oogasalad.player.model.strategies.collision.StopStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -2,7 +2,6 @@ package oogasalad.engine.records.config;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
 import oogasalad.engine.records.config.model.SettingsRecord;

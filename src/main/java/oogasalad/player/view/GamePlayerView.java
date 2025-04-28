@@ -12,7 +12,6 @@ import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.utility.LoggingManager;
 import oogasalad.player.controller.LevelController;
-import oogasalad.player.model.Entity;
 import oogasalad.player.model.GameStateInterface;
 import oogasalad.player.model.exceptions.SaveFileException;
 import oogasalad.player.model.save.GameSessionManager;
