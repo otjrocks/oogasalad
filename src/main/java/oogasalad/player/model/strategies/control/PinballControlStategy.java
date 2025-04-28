@@ -176,6 +176,14 @@ public class PinballControlStategy implements ControlStrategyInterface {
     // Bounce off wall in Y direction
     myYVelocity = -myYVelocity * 0.5; // Reduce velocity on bounce
     }
+
+    // Calculate distance traveled in this step
+    double stepDistance = Math.sqrt(
+        Math.pow(myEntityPlacement.getX() - oldX, 2) + 
+        Math.pow(myEntityPlacement.getY() - oldY, 2)
+    );
+    myTraveledDistance += stepDistance;
+
     
   }
 
