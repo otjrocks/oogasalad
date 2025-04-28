@@ -16,7 +16,7 @@ public class GameInputManager {
   private final Set<KeyCode> activeKeys = new HashSet<>();
   private KeyCode lastActiveKey = null;
   private GameScreenView gameScreenView;
-  
+
 
   /**
    * Constructor for the input manager that records what keys are actively being pressed by the

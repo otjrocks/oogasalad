@@ -1,7 +1,6 @@
 package oogasalad.player.model.strategies.collision;
 
 import java.util.Iterator;
-import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContextRecord;
 import oogasalad.player.model.Entity;
 

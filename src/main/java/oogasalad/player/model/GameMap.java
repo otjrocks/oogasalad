@@ -99,7 +99,7 @@ public class GameMap implements GameMapInterface {
   @Override
   public void update() {
     for (Entity entity : myEntityList) {
-      if(activeModeChanges.containsKey(entity)) {
+      if (activeModeChanges.containsKey(entity)) {
         entity.updateControlStrategy();
       }
       entity.update();
