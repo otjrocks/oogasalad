@@ -1,9 +1,9 @@
 {
   "metadata" : {
-    "gameTitle" : "Cat And Mouse",
+    "gameTitle" : "PacRat",
     "author" : "CS308 Team",
     "gameDescription" : "Modification with reskinned theme.",
-    "image" : "assets/pacman.png"
+    "image" : "assets/banner.png"
   },
   "defaultSettings" : {
     "gameSpeed" : 1,
