@@ -11,7 +11,6 @@ import static org.mockito.Mockito.when;
 import java.util.HashSet;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
@@ -22,7 +21,6 @@ import oogasalad.player.model.GameMap;
 import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.GameState;
 import oogasalad.player.view.GameMapView;
-import oogasalad.player.view.GameScreenView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,14 +43,18 @@ class GameLoopControllerTest extends DukeApplicationTest {
     SettingsRecord gameSettings = new SettingsRecord(1.0, 5, 5,
         new EntityBasedConditionRecord("dot"), new LivesBasedConditionRecord(), new HashSet<>());
     GameState gameState = new GameState(gameSettings);
-    GameContextRecord gameContext = new GameContextRecord(Mockito.spy(new GameInputManager(mock(Scene.class), mock(Group.class))), gameMap, gameState);
+    GameContextRecord gameContext = new GameContextRecord(
+        Mockito.spy(new GameInputManager(mock(Scene.class), mock(Group.class))), gameMap,
+        gameState);
 
     ConfigModelRecord mockConfigModel = mock(ConfigModelRecord.class);
     when(mockConfigModel.winCondition()).thenReturn(new EntityBasedConditionRecord("dot"));
     when(mockConfigModel.loseCondition()).thenReturn(new LivesBasedConditionRecord());
-    when(mockConfigModel.settings()).thenReturn(new SettingsRecord(1.0, 1, 1, null, null, new HashSet<>()));
+    when(mockConfigModel.settings()).thenReturn(
+        new SettingsRecord(1.0, 1, 1, null, null, new HashSet<>()));
 
-    gameMapView = Mockito.spy(new GameMapView(gameContext, mockConfigModel, "data/games/BasicPacMan/"));
+    gameMapView = Mockito.spy(
+        new GameMapView(gameContext, mockConfigModel, "data/games/BasicPacMan/"));
     gameLoopController = Mockito.spy(
         new GameLoopController(mockConfigModel, gameContext, gameMapView, mock(
             ParsedLevelRecord.class)));

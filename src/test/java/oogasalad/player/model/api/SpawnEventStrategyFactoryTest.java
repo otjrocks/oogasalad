@@ -11,17 +11,20 @@ import oogasalad.player.model.strategies.spawnevent.TimeElapsedSpawnEventStrateg
 import org.junit.jupiter.api.Test;
 
 class SpawnEventStrategyFactoryTest {
+
   // ChatGPT assisted in generating these tests.
   @Test
   void createSpawnEventStrategy_scoreBased_returnsScoreBasedSpawnEventStrategy() {
-    SpawnEventStrategyInterface strategy = SpawnEventStrategyFactory.createSpawnEventStrategy("ScoreBased");
+    SpawnEventStrategyInterface strategy = SpawnEventStrategyFactory.createSpawnEventStrategy(
+        "ScoreBased");
     assertNotNull(strategy);
     assertInstanceOf(ScoreBasedSpawnEventStrategy.class, strategy);
   }
 
   @Test
   void createSpawnEventStrategy_timeElapsed_returnsTimeElapsedSpawnEventStrategy() {
-    SpawnEventStrategyInterface strategy = SpawnEventStrategyFactory.createSpawnEventStrategy("TimeElapsed");
+    SpawnEventStrategyInterface strategy = SpawnEventStrategyFactory.createSpawnEventStrategy(
+        "TimeElapsed");
     assertNotNull(strategy);
     assertInstanceOf(TimeElapsedSpawnEventStrategy.class, strategy);
   }

@@ -94,7 +94,7 @@ public class CanvasViewTest extends DukeApplicationTest {
 
     assertTrue(canvasView.getTileHighlighter().isSelectionVisible(),
         "Selection should be shown after click");
-    assertEquals( 160.0, canvasView.getTileHighlighter().getSelectionX(), 0.1);
+    assertEquals(160.0, canvasView.getTileHighlighter().getSelectionX(), 0.1);
     assertEquals(160.0, canvasView.getTileHighlighter().getSelectionY(), 0.1);
   }
 

@@ -17,7 +17,6 @@ import java.util.Map;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
-import oogasalad.engine.records.config.model.controlConfig.ConstantDirectionControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.utility.constants.Directions.Direction;
@@ -32,8 +31,6 @@ import org.mockito.MockedStatic;
 class EntityTest {
 
   private EntityPlacement mockPlacement;
-  private GameInputManager mockInput;
-  private GameMapInterface mockMap;
   private ModeConfigRecord mockMode;
   private Entity entity;
   private MockedStatic<ControlStrategyFactory> controlStrategyFactoryMock;
@@ -42,8 +39,8 @@ class EntityTest {
   @BeforeEach
   void setUp() {
     mockPlacement = mock(EntityPlacement.class);
-    mockInput = mock(GameInputManager.class);
-    mockMap = mock(GameMapInterface.class);
+    GameInputManager mockInput = mock(GameInputManager.class);
+    GameMapInterface mockMap = mock(GameMapInterface.class);
 
     // MOCK STATIC METHOD
     controlStrategyFactoryMock = mockStatic(ControlStrategyFactory.class);
@@ -53,7 +50,8 @@ class EntityTest {
 
     // Create dummy mode
     Map<String, ModeConfigRecord> modes = new HashMap<>();
-    ModeConfigRecord newMode = new ModeConfigRecord("Default", null, mock(ControlConfigInterface.class), null, null);
+    ModeConfigRecord newMode = new ModeConfigRecord("Default", null,
+        mock(ControlConfigInterface.class), null, null);
     modes.put("Default", newMode);
 
     when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", modes, null));

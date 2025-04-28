@@ -41,7 +41,6 @@ public class HudViewTest extends DukeApplicationTest {
   }
 
 
-
   @BeforeEach
   public void setUp() {
     reset(mockGameState, mockGameView, mockReturnToMenu);
@@ -59,7 +58,6 @@ public class HudViewTest extends DukeApplicationTest {
     assertEquals("Score: 0", scoreLabel.getText());
     assertEquals("Lives: 0", livesLabel.getText());
   }
-
 
 
   @Test
@@ -111,7 +109,6 @@ public class HudViewTest extends DukeApplicationTest {
     clickOn(returnButton);
     verify(mockReturnToMenu).run();
   }
-
 
 
 }

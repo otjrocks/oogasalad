@@ -88,7 +88,8 @@ class GamePlayerViewTest extends DukeApplicationTest {
     });
 
     StackPane pane = gamePlayerView.getPane();
-    assertFalse(pane.getChildren().isEmpty(), "Pane should contain GameView root after next level loaded");
+    assertFalse(pane.getChildren().isEmpty(),
+        "Pane should contain GameView root after next level loaded");
   }
 
 
@@ -110,7 +111,8 @@ class GamePlayerViewTest extends DukeApplicationTest {
     });
 
     StackPane pane = gamePlayerView.getPane();
-    assertFalse(pane.getChildren().isEmpty(), "Pane should still have something even if no more levels");
+    assertFalse(pane.getChildren().isEmpty(),
+        "Pane should still have something even if no more levels");
   }
 
 }

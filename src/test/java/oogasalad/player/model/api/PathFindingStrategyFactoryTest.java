@@ -19,21 +19,24 @@ public class PathFindingStrategyFactoryTest {
 
   @Test
   void createPathFindingStrategy_bfsStrategy_createsInstanceOfBfsPathFindingStrategy() {
-    PathFindingStrategyInterface strategy = PathFindingStrategyFactory.createPathFindingStrategy("Bfs");
+    PathFindingStrategyInterface strategy = PathFindingStrategyFactory.createPathFindingStrategy(
+        "Bfs");
     assertNotNull(strategy);
     assertInstanceOf(BfsPathFindingStrategy.class, strategy);
   }
 
   @Test
   void createPathFindingStrategy_euclideanStrategy_createsInstanceOfEuclideanPathFindingStrategy() {
-    PathFindingStrategyInterface strategy = PathFindingStrategyFactory.createPathFindingStrategy("Euclidean");
+    PathFindingStrategyInterface strategy = PathFindingStrategyFactory.createPathFindingStrategy(
+        "Euclidean");
     assertNotNull(strategy);
     assertInstanceOf(EuclideanPathFindingStrategy.class, strategy);
   }
 
   @Test
   void createPathFindingStrategy_randomStrategy_createsInstanceOfRandomPathFindingStrategy() {
-    PathFindingStrategyInterface strategy = PathFindingStrategyFactory.createPathFindingStrategy("Random");
+    PathFindingStrategyInterface strategy = PathFindingStrategyFactory.createPathFindingStrategy(
+        "Random");
     assertNotNull(strategy);
     assertInstanceOf(RandomPathFindingStrategy.class, strategy);
   }
@@ -49,7 +52,9 @@ public class PathFindingStrategyFactoryTest {
 
   // Dummy class for testing no public constructor case
   public static class HiddenPathFindingStrategy implements PathFindingStrategyInterface {
-    private HiddenPathFindingStrategy() {}
+
+    private HiddenPathFindingStrategy() {
+    }
 
     @Override
     public int[] getPath(GameMapInterface map, int startX, int startY, int targetX, int targetY,

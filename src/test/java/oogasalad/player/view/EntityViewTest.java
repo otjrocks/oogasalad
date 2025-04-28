@@ -64,20 +64,19 @@ class EntityViewTest extends DukeApplicationTest {
   private void testDrawDirection(Direction direction) {
     when(mockEntity.getEntityDirection()).thenReturn(direction);
 
-
     double entity_height = mockEntity.getEntityPlacement().getEntityImageHeight();
     double entity_width = mockEntity.getEntityPlacement().getEntityImageWidth();
     double offsetX = mockEntity.getEntityPlacement().getCurrentFrame() * entity_width;
     double dirOffset = 0;
 
     if (direction == Direction.L) {
-      dirOffset = (int)entity_height;
+      dirOffset = (int) entity_height;
     }
     if (direction == Direction.U) {
-      dirOffset = (int)(2*entity_height);
+      dirOffset = (int) (2 * entity_height);
     }
     if (direction == Direction.D) {
-      dirOffset = (int)(3*entity_height);
+      dirOffset = (int) (3 * entity_height);
     }
 
     EntityView view = new EntityView(mockEntity, "data/games/BasicPacMan/");
