@@ -12,32 +12,33 @@ import oogasalad.player.model.api.EntityFactory;
  */
 public class AddTailStrategy implements CollisionStrategyInterface {
 
-    @Override
-    public void handleCollision(CollisionContextRecord context) throws InvalidPositionException {
-        Entity movingEntity = context.entity1();
+  @Override
+  public void handleCollision(CollisionContextRecord context) throws InvalidPositionException {
+    Entity movingEntity = context.entity1();
 
-        double previousX = movingEntity.getEntityPlacement().getPreviousX();
-        double previousY = movingEntity.getEntityPlacement().getPreviousY();
+    double previousX = movingEntity.getEntityPlacement().getPreviousX();
+    double previousY = movingEntity.getEntityPlacement().getPreviousY();
 
-        if (previousX != movingEntity.getEntityPlacement().getX() || previousY != movingEntity.getEntityPlacement().getY()) {
+    if (previousX != movingEntity.getEntityPlacement().getX()
+        || previousY != movingEntity.getEntityPlacement().getY()) {
 
-            EntityTypeRecord tailType = movingEntity.getConfig().entityTypes().get(3);
+      EntityTypeRecord tailType = movingEntity.getConfig().entityTypes().get(3);
 
-            EntityPlacement tailPlacement = new EntityPlacement(
-                    tailType,
-                    previousX,
-                    previousY,
-                    "Default"
-            );
+      EntityPlacement tailPlacement = new EntityPlacement(
+          tailType,
+          previousX,
+          previousY,
+          "Default"
+      );
 
-            Entity tail = EntityFactory.createEntity(
-                    null,
-                    tailPlacement,
-                    context.gameMap(),
-                    movingEntity.getConfig()
-            );
+      Entity tail = EntityFactory.createEntity(
+          null,
+          tailPlacement,
+          context.gameMap(),
+          movingEntity.getConfig()
+      );
 
-            context.gameMap().addEntity(tail);
-        }
+      context.gameMap().addEntity(tail);
     }
+  }
 }

@@ -132,7 +132,6 @@ public class JsonConfigParser implements ConfigParserInterface {
       respawnableEntities = gameConfig.respawnableEntities();
     }
 
-
     // Step 8: Get current level from gameConfig
     int currentLevel = gameConfig.currentLevelIndex();
     // Step 9: Return the full config model using the first level only for now

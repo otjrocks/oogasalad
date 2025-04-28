@@ -1,8 +1,8 @@
 package oogasalad.engine.records.config.model.controlConfig;
 
 /**
- * Configuration record for the PinballLaunchControlStrategy.
- * Defines parameters for the pinball-like launching behavior.
+ * Configuration record for the PinballLaunchControlStrategy. Defines parameters for the
+ * pinball-like launching behavior.
  */
 public record PinballControlConfigRecord(
     double maxLaunchForce,

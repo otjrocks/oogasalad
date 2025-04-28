@@ -47,5 +47,6 @@ public interface CollisionStrategyInterface {
    * @throws EntityNotFoundException if an entity involved in the collision cannot be found in the
    *                                 game map during processing
    */
-  void handleCollision(CollisionContextRecord collisionContext) throws EntityNotFoundException, InvalidPositionException;
+  void handleCollision(CollisionContextRecord collisionContext)
+      throws EntityNotFoundException, InvalidPositionException;
 }
