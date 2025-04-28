@@ -4,7 +4,7 @@ import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterfac
 import oogasalad.player.model.strategies.gameoutcome.LivesBasedOutcomeStrategy;
 
 /**
- * A record that encapsulates information about the lives based lose condition.
+ * A record that encapsulates information about the entity-based win condition.
  */
 public record LivesBasedConditionRecord() implements LoseConditionInterface {
 

@@ -1,7 +1,5 @@
 package oogasalad.engine.view;
 
-import static oogasalad.engine.utility.ThemeManager.DEFAULT_THEME;
-import static oogasalad.engine.utility.ThemeManager.THEME_KEY;
 import static oogasalad.engine.utility.constants.GameConfig.ELEMENT_SPACING;
 
 import java.util.List;
@@ -10,7 +8,6 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import oogasalad.engine.controller.MainController;
-import oogasalad.engine.controller.PreferencesController;
 import oogasalad.engine.utility.LanguageManager;
 import oogasalad.engine.utility.ThemeManager;
 import oogasalad.engine.utility.constants.GameConfig;
@@ -100,7 +97,7 @@ public class SplashScreenView {
 
   private void initializeThemeSelector() {
     myThemeSelector = new Selector(ThemeManager.getInstance().getAvailableThemes(),
-        PreferencesController.getPreference(THEME_KEY, DEFAULT_THEME), "themeSelector",
+        ThemeManager.DEFAULT_THEME, "themeSelector",
         LanguageManager.getMessage("THEME_SELECTOR_TITLE"), e -> switchTheme());
     myConfigurationBox.getChildren().add(myThemeSelector.getRoot());
   }
