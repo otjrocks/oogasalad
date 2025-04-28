@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
+import oogasalad.engine.controller.PreferencesController;
 
 /**
  * Singleton ThemeManager to handle the setting and switching of the program's theme across all
@@ -18,11 +19,12 @@ public class ThemeManager {
   public static final String DEFAULT_THEME = "Light";
   private static final String COMMON_STYLES_PATH = "/oogasalad/styles.css";
   private static final String FONTS_PATH = "/oogasalad/fonts/";
+  public static final String THEME_KEY = "THEME";
 
   private static ThemeManager instance;
 
   private final List<Scene> registeredScenes = new ArrayList<>();
-  private String currentTheme = DEFAULT_THEME;
+  private String currentTheme = PreferencesController.getPreference(THEME_KEY, DEFAULT_THEME);
 
   private ThemeManager() {
     loadFonts();
@@ -68,6 +70,7 @@ public class ThemeManager {
    */
   public void setTheme(String themeName) {
     currentTheme = themeName;
+    PreferencesController.setPreference(THEME_KEY, themeName);
     for (Scene scene : registeredScenes) {
       applyThemeToScene(scene, themeName);
     }
