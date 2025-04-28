@@ -159,6 +159,7 @@ public class ConditionEditor {
    */
   public LoseConditionInterface createSelectedLoseCondition() {
     String selectedType = getSelectedLoseCondition();
+    String value = getWinValue();
 
     Class<?> clazz = loseConditions.get(selectedType);
     if (clazz == null) {
@@ -166,7 +167,17 @@ public class ConditionEditor {
     }
 
     try {
-      return (LoseConditionInterface) clazz.getDeclaredConstructor().newInstance();
+      Constructor<?> intConstructor = clazz.getConstructor(int.class);
+      int intValue = Integer.parseInt(value);
+      return (LoseConditionInterface) intConstructor.newInstance(intValue);
+    } catch (NoSuchMethodException e) {
+      // Maybe it's a String constructor instead
+      try {
+        Constructor<?> stringConstructor = clazz.getConstructor(String.class);
+        return (LoseConditionInterface) stringConstructor.newInstance(value);
+      } catch (Exception ex) {
+        throw new ViewException(ex.getMessage());
+      }
     } catch (Exception e) {
       throw new ViewException(e.getMessage());
     }

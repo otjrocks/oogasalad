@@ -3,6 +3,7 @@ package oogasalad.engine.utility;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import oogasalad.engine.controller.PreferencesController;
 
 /**
  * A class to handle the selection and handling of language messages from a language properties
@@ -15,8 +16,10 @@ public class LanguageManager {
   private static final String LANGUAGE_FILE_PATH = "oogasalad.languages.";
   private static final String LANGUAGE_DIRECTORY_PATH = "src/main/resources/oogasalad/languages/";
   private static final String DEFAULT_LANGUAGE = "English";
+  public static final String LANGUAGE_KEY = "language";
 
-  private static String myCurrentLanguage = DEFAULT_LANGUAGE;
+  private static String myCurrentLanguage = PreferencesController.getPreference(LANGUAGE_KEY,
+      DEFAULT_LANGUAGE);
   private static ResourceBundle myMessages = getLanguageResourceBundle();
 
   /**
@@ -77,6 +80,7 @@ public class LanguageManager {
   public static void setLanguage(String language) {
     myCurrentLanguage = language;
     myMessages = getLanguageResourceBundle();
+    PreferencesController.setPreference(LANGUAGE_KEY, language);
   }
 
   private static ResourceBundle getLanguageResourceBundle() {
