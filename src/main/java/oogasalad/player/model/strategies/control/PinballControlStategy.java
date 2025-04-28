@@ -140,7 +140,14 @@ public class PinballControlStategy implements ControlStrategyInterface {
   }
 
   private void moveEntity(){
-
+    if (Math.abs(myXVelocity) < 0.1 && Math.abs(myYVelocity) < 0.1 || myTraveledDistance >= myMaxDistance) {
+        // Stop moving if velocity is very low or max distance reached
+        myIsMoving = false;
+        myXVelocity = 0.0;
+        myYVelocity = 0.0;
+        myTraveledDistance = 0.0;
+        return;
+    }
   }
 
   /**
