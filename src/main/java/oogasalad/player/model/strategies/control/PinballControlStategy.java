@@ -68,8 +68,13 @@ public class PinballControlStategy implements ControlStrategyInterface {
     }
   }
 
-  public void update(Entity entity){
-
+  @Override
+  public void update(Entity entity) {
+    if (myIsMoving) {
+      moveEntity(entity);
+    } else {
+      handleChargeInput();
+    }
   }
 
   private void handleChargeInput(){
