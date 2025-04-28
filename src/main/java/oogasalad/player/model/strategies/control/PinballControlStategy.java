@@ -47,6 +47,79 @@ public class PinballControlStategy implements ControlStrategyInterface {
    *                           PinballControlConfigRecord
    */
 
+   public PinballLaunchControlStrategy(GameInputManager input,
+      GameMapInterface gameMap, EntityPlacement entityPlacement,
+      ControlConfigInterface controlConfig) {
+    myEntityPlacement = entityPlacement;
+    myInputManager = input;
+    myGameMap = gameMap;
+    
+    try {
+      PinballControlConfigRecord config = (PinballControlConfigRecord) controlConfig;
+      myMaxLaunchForce = config.maxLaunchForce();
+      myChargeRate = config.chargeRate();
+      myFriction = config.friction();
+      myMaxDistance = config.maxDistance();
+    } catch (ClassCastException e) {
+      LoggingManager.LOGGER.warn(
+          "Error instantiating PinballLaunchControlStrategy, unable to cast provided ControlConfigInterface to PinballControlConfigRecord",
+          e);
+      throw e;
+    }
+  }
+
+  public void update(Entity entity){
+
+  }
+
+  private void handleChargeInput(){
+
+  }
+  private void handleDirectionCharge(){
+
+  }
+
+  private void launchEntity() {
+
+  }
+
+  private void moveEntity(){
+
+  }
+
+  /**
+   * Returns the current charge value as a percentage of the maximum launch force.
+   * This can be used by the UI to display a charge meter.
+   * 
+   * @return percentage of maximum charge (0.0 to 1.0)
+   */
+  public double getChargePercentage() {
+    return myCurrentCharge / myMaxLaunchForce;
+  }
+
+  /**
+   * Returns whether the entity is currently in charging state.
+   * 
+   * @return true if charging, false otherwise
+   */
+  public boolean isCharging() {
+    return myIsCharging;
+  }
+
+  /**
+   * Returns whether the entity is currently moving from a launch.
+   * 
+   * @return true if moving, false otherwise
+   */
+  public boolean isMoving() {
+    return myIsMoving;
+  }
+}
+
+
+
+
+
    
 
 }
