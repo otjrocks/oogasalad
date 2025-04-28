@@ -215,13 +215,4 @@ public class GamePlayerView {
     return myGameView;
   }
 
-  /**
-   * Returns the game session manager for this view.
-   *
-   * @return A game session manager object.
-   */
-  public GameSessionManager getGameSessionManager() {
-    return sessionManager;
-  }
-
 }

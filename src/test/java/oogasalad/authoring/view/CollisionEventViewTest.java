@@ -27,4 +27,12 @@ class CollisionEventViewTest extends DukeApplicationTest {
     clickOn("Consume");
     assertEquals(new ConsumeCollisionEventRecord(), collisionEventView.getCollisionEvent());
   }
+
+  @Test
+  void getCollisionEvent_SelectUpdateLives_ReturnValidUpdateLivesCollisionEvent() {
+    clickOn("#collision-rule-selector");
+    clickOn("UpdateLives");
+    writeInputTo(lookup("#parameter-amount").queryAs(TextInputControl.class), "4");
+    assertEquals(new UpdateLivesCollisionEventRecord(4), collisionEventView.getCollisionEvent());
+  }
 }

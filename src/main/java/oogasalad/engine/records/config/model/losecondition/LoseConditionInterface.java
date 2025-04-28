@@ -2,7 +2,6 @@ package oogasalad.engine.records.config.model.losecondition;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.util.Optional;
 import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterface;
 
 /**
@@ -12,9 +11,7 @@ import oogasalad.player.model.strategies.gameoutcome.GameOutcomeStrategyInterfac
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = LivesBasedConditionRecord.class, name = "LivesBased"),
-    @JsonSubTypes.Type(value = TimeBasedConditionRecord.class, name = "TimeBased"),
-
+    @JsonSubTypes.Type(value = LivesBasedConditionRecord.class, name = "LivesBased")
 })
 public interface LoseConditionInterface {
 
@@ -36,17 +33,6 @@ public interface LoseConditionInterface {
    */
   default String getConditionType() {
     return "LivesBased"; // Default fallback
-  }
-
-
-  /**
-   * Retrieves the value associated with the loss condition, if any.
-   *
-   * @return an {@code Optional} containing the condition value if present, or an empty
-   * {@code Optional} if no value is set.
-   */
-  default Optional<String> getConditionValue() {
-    return Optional.empty();
   }
 
 }

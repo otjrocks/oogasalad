@@ -62,9 +62,7 @@ public class GameMapController {
     frameCount++;
 
     for (Entity entity : gameMap) {
-      entity.getEntityPlacement().setPreviousX(entity.getEntityPlacement().getX());
       entity.getEntityPlacement().setX(entity.getEntityPlacement().getX() + entity.getDx());
-      entity.getEntityPlacement().setPreviousY(entity.getEntityPlacement().getY());
       entity.getEntityPlacement().setY(entity.getEntityPlacement().getY() + entity.getDy());
       if (frameCount % entity.getEntityPlacement().getAnimationSpeed() == 0) {
         entity.getEntityPlacement().increaseCurrentFrame();
@@ -119,7 +117,7 @@ public class GameMapController {
     try {
       collisionStrategy.handleCollision(
           new CollisionContextRecord(e1, e2, gameMap, gameState, appliesTo));
-    } catch (EntityNotFoundException | InvalidPositionException e) {
+    } catch (EntityNotFoundException e) {
       LoggingManager.LOGGER.warn("Unable to handle collision event: {}", collisionEvent, e);
       throw new RuntimeException(e);
     }

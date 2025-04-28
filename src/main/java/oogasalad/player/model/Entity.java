@@ -19,7 +19,6 @@ public class Entity {
   private final EntityPlacement myEntityPlacement;
   private final GameInputManager inputManager;
   private final GameMapInterface gameMap;
-  private ControlStrategyInterface myControlStrategy;
   private double dx;
   private double dy;
   private final double speed;
@@ -40,9 +39,7 @@ public class Entity {
     myEntityPlacement = entityPlacement;
     this.inputManager = input;
     this.gameMap = gameMap;
-    this.myConfig = config;
-    this.myControlStrategy = ControlStrategyFactory.createControlStrategy(inputManager,
-            myEntityPlacement, this.gameMap);
+    myConfig = config;
     speed = setSpeedFromConfig(entityPlacement);
   }
 
@@ -105,15 +102,10 @@ public class Entity {
    * Handle the update of an Entity.
    */
   public void update() {
-    myControlStrategy.update(this);
-  }
+    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(inputManager,
+        myEntityPlacement, gameMap);
 
-  /**
-   * Updates control strategy in the case of a mode change
-   */
-  public void updateControlStrategy() {
-    myControlStrategy = ControlStrategyFactory.createControlStrategy(inputManager,
-            myEntityPlacement, this.gameMap);
+    strategy.update(this);
   }
 
   /**
@@ -230,13 +222,6 @@ public class Entity {
       return this.getEntityPlacement().getX() - (int) this.getEntityPlacement().getX()
           < speed;
     }
-  }
-
-  /**
-   * Gets config model record associated with the entity
-   */
-  public ConfigModelRecord getConfig() {
-    return myConfig;
   }
 
 }

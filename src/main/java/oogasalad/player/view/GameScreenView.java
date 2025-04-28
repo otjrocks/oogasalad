@@ -9,7 +9,6 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import oogasalad.engine.controller.MainController;
 import oogasalad.player.model.GameStateInterface;
-import oogasalad.player.model.save.GameSessionManager;
 import oogasalad.player.view.components.HudView;
 
 /**
@@ -81,9 +80,6 @@ public class GameScreenView {
   private void handleReturnToMainMenu() {
     mainController.getInputManager().getRoot().getChildren().remove(myRoot);
     mainController.showSplashScreen();
-    GameSessionManager gameSessionManager = myGamePlayerView.getGameSessionManager();
-    gameSessionManager.updateHighScore(gameState.getHighScore());
-    gameSessionManager.save();
   }
 
 
