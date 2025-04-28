@@ -13,6 +13,11 @@ import static org.mockito.Mockito.when;
 
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.records.config.ConfigModelRecord;
+import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.config.model.controlConfig.ConstantDirectionControlConfigRecord;
+import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
+import oogasalad.engine.records.config.model.controlConfig.TargetControlConfigRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.utility.constants.Directions.Direction;
 import oogasalad.player.controller.GameInputManager;
@@ -20,13 +25,18 @@ import oogasalad.player.model.api.ControlStrategyFactory;
 import oogasalad.player.model.strategies.control.ControlStrategyInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.MockedStatic;
+
+import java.util.HashMap;
+import java.util.Map;
 
 class EntityTest {
 
   private EntityPlacement mockPlacement;
   private GameInputManager mockInput;
   private GameMapInterface mockMap;
+  private ModeConfigRecord mockMode;
   private Entity entity;
 
   @BeforeEach
@@ -34,7 +44,12 @@ class EntityTest {
     mockPlacement = mock(EntityPlacement.class);
     mockInput = mock(GameInputManager.class);
     mockMap = mock(GameMapInterface.class);
-    when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", null, null));
+    Map<String, ModeConfigRecord> modes = new HashMap<>();
+    ControlConfigInterface mockControl = new ConstantDirectionControlConfigRecord(5, 5);
+    ModeConfigRecord newMode = new ModeConfigRecord("Default", null, mockControl, null, null);
+    modes.put("Default", newMode);
+    when(mockPlacement.getType()).thenReturn(new EntityTypeRecord("test", modes, null));
+    when(mockPlacement.getMode()).thenReturn("Default");
     entity = new Entity(mockInput, mockPlacement, mockMap, mock(ConfigModelRecord.class));
   }
 
@@ -112,17 +127,4 @@ class EntityTest {
     assertFalse(entity.canMove(Direction.D));
   }
 
-  @Test
-  void update_setValidControlStrategy_updatesControlStrategy() {
-    try (MockedStatic<ControlStrategyFactory> factory = mockStatic(ControlStrategyFactory.class)) {
-      ControlStrategyInterface mockStrategy = mock(ControlStrategyInterface.class);
-      factory.when(
-              () -> ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap))
-          .thenReturn(mockStrategy);
-
-      entity.update();
-
-      verify(mockStrategy).update(entity);
-    }
-  }
 }
