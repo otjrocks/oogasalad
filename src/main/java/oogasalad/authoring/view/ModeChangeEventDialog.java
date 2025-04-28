@@ -2,7 +2,6 @@ package oogasalad.authoring.view;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javafx.geometry.Insets;
@@ -19,7 +18,6 @@ import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.ModeChangeEventRecord;
 
 import oogasalad.engine.utility.LanguageManager;
-import oogasalad.engine.utility.LoggingManager;
 import oogasalad.engine.view.components.FormattingUtil;
 import oogasalad.player.model.strategies.modechangeevent.ModeChangeEventStrategyInterface;
 
@@ -45,7 +43,6 @@ public class ModeChangeEventDialog extends Stage {
   private final ComboBox<String> conditionTypeDropdown = new ComboBox<>();
   private final VBox conditionParamsBox = new VBox(5);
   private final TableView<ModeChangeEventRecord> table = new TableView<>();
-  private final Map<String, Class<?>> modeChangeStrategies;
 
 
   /**
@@ -76,7 +73,8 @@ public class ModeChangeEventDialog extends Stage {
 
     populateEntityTypeDropdown();
 
-    this.modeChangeStrategies = StrategyLoader.loadStrategies(
+    // assuming this interface exists
+    Map<String, Class<?>> modeChangeStrategies = StrategyLoader.loadStrategies(
         "oogasalad.player.model.strategies.modechangeevent",
         ModeChangeEventStrategyInterface.class // assuming this interface exists
     );
@@ -152,8 +150,6 @@ public class ModeChangeEventDialog extends Stage {
   }
 
 
-
-
   private void addModeChangeEvent() {
     String entityTypeKey = entityTypeDropdown.getValue();
     String currentMode = currentModeDropdown.getValue();
@@ -170,10 +166,13 @@ public class ModeChangeEventDialog extends Stage {
 
     for (String paramName : expectedParams) {
       TextField field = (TextField) conditionParamsBox.lookup("#" + paramName);
-      if (field == null) continue;
+      if (field == null) {
+        continue;
+      }
 
       String raw = field.getText();
-      params.put(paramName, raw); // always store as string (consistent with how your strategies parse)
+      params.put(paramName,
+          raw); // always store as string (consistent with how your strategies parse)
     }
 
     ConditionRecord condition = new ConditionRecord(conditionType, params);
@@ -188,8 +187,6 @@ public class ModeChangeEventDialog extends Stage {
     level.getModeChangeEvents().add(event);
     refreshTable();
   }
-
-
 
 
   private void refreshTable() {

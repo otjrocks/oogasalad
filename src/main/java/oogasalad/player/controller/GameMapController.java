@@ -58,7 +58,7 @@ public class GameMapController {
   /**
    * Update the entity models that are part of the game map.
    */
-  public void updateEntityModels() throws InvalidPositionException {
+  public void updateEntityModels() {
     frameCount++;
 
     for (Entity entity : gameMap) {

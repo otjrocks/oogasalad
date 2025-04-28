@@ -8,10 +8,11 @@ import oogasalad.engine.records.config.model.CollisionEventInterface;
  * @author Angela Predolac
  */
 public record TeleportToPartnerCollisionEventRecord(
-        String portalType,
-        String partnerType,
-        boolean randomPartner,
-        double offsetX,
-        double offsetY
+    String portalType,
+    String partnerType,
+    boolean randomPartner,
+    double offsetX,
+    double offsetY
 ) implements CollisionEventInterface {
+
 }

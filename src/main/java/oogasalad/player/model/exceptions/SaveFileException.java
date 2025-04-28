@@ -1,8 +1,7 @@
 package oogasalad.player.model.exceptions;
 
 /**
- * An exception thrown by the any function that involves saving information to a save
- * config file.
+ * An exception thrown by the any function that involves saving information to a save config file.
  *
  * @author Jessica Chen
  */

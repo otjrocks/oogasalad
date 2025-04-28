@@ -11,7 +11,8 @@ import oogasalad.player.model.GameStateInterface;
  * @param gameMap   the map representing the current layout and all entities within the game
  * @param gameState the current state of the game, including score, status, and other global data
  */
-public record GameContextRecord(GameInputManager inputManager, GameMapInterface gameMap, GameStateInterface gameState) {
+public record GameContextRecord(GameInputManager inputManager, GameMapInterface gameMap,
+                                GameStateInterface gameState) {
 
   public GameContextRecord {
     if (gameMap == null || gameState == null) {

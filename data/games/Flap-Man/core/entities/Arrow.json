@@ -1,0 +1,59 @@
+{
+  "entityType" : {
+    "name" : "Arrow",
+    "blocks" : [ ]
+  },
+  "modes" : [ {
+    "name" : "Down",
+    "image" : {
+      "imagePath" : "assets/downarrow.png",
+      "tileWidth" : 50,
+      "tileHeight" : 50,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "None"
+    },
+    "movementSpeed" : 1.0
+  }, {
+    "name" : "Left",
+    "image" : {
+      "imagePath" : "assets/leftarrow.png",
+      "tileWidth" : 50,
+      "tileHeight" : 50,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "None"
+    },
+    "movementSpeed" : 0.0
+  }, {
+    "name" : "Right",
+    "image" : {
+      "imagePath" : "assets/rightarrow.png",
+      "tileWidth" : 50,
+      "tileHeight" : 50,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "None"
+    },
+    "movementSpeed" : 0.0
+  }, {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "assets/uparrow.png",
+      "tileWidth" : 50,
+      "tileHeight" : 50,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "None"
+    },
+    "movementSpeed" : 1.0
+  } ]
+}

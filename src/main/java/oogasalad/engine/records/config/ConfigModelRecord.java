@@ -1,6 +1,7 @@
 package oogasalad.engine.records.config;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
@@ -9,7 +10,6 @@ import oogasalad.engine.records.config.model.losecondition.LoseConditionInterfac
 import oogasalad.engine.records.config.model.wincondition.WinConditionInterface;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.engine.records.model.MetaDataRecord;
-import oogasalad.player.model.enums.CheatType;
 
 /**
  * The ConfigModel record serves as a container for the configuration data of a game. It
@@ -36,8 +36,21 @@ public record ConfigModelRecord(
     List<CollisionRule> collisionRules,
     WinConditionInterface winCondition,
     LoseConditionInterface loseCondition,
-    int currentLevelIndex
+    int currentLevelIndex,
+    Map<String, Double> respawnableEntities
 ) {
+
+  /**
+   * Returns the corresponding entity type to its entity name
+   *
+   * @param name represents the entity type name stored in the json file
+   */
+  public EntityTypeRecord getEntityTypeByName(String name) {
+    return entityTypes().stream()
+        .filter(e -> e.type().equals(name))
+        .findFirst()
+        .orElseThrow(() -> new IllegalArgumentException("Entity type not found: " + name));
+  }
 
 }
 
