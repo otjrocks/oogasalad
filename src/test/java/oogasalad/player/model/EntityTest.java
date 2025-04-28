@@ -118,5 +118,4 @@ class EntityTest {
     when(mockPlacement.getX()).thenReturn(2.5);
     assertFalse(entity.canMove(Direction.D));
   }
-
 }
