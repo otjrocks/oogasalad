@@ -169,6 +169,13 @@ public class PinballControlStategy implements ControlStrategyInterface {
       // Bounce off wall in X direction
       myXVelocity = -myXVelocity * 0.5; // Reduce velocity on bounce
     }
+
+    if (canMoveY) {
+        myEntityPlacement.setY(tentativeY);
+    } else {
+    // Bounce off wall in Y direction
+    myYVelocity = -myYVelocity * 0.5; // Reduce velocity on bounce
+    }
     
   }
 
