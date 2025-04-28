@@ -20,7 +20,8 @@ public class HudView extends VBox {
   private final Label scoreLabel;
   private final Label livesLabel;
   private final Label highScoreLabel;
-  private int currentHighScore = -1;
+  private int currentHighScore;
+
 
   /**
    * Constructs HUDView according to state, game view, and runnable

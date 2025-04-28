@@ -16,6 +16,7 @@ public class GameInputManager {
   private final Set<KeyCode> activeKeys = new HashSet<>();
   private KeyCode lastActiveKey = null;
   private GameScreenView gameScreenView;
+  
 
   /**
    * Constructor for the input manager that records what keys are actively being pressed by the
@@ -66,6 +67,13 @@ public class GameInputManager {
    */
   public boolean isMovingRight() {
     return activeKeys.contains(KeyCode.RIGHT);
+  }
+
+  /**
+   * Checks to see if the move is charging
+   */
+  public boolean isCharging() {
+    return activeKeys.contains(KeyCode.SPACE);
   }
 
   /**
