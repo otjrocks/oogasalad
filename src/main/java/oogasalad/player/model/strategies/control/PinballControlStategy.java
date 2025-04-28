@@ -111,6 +111,32 @@ public class PinballControlStategy implements ControlStrategyInterface {
     myIsCharging = false;
     myIsMoving = true;
     myTraveledDistance = 0.0;
+
+    // Set velocity based on direction and charge amount
+    switch (myChargeDirection) {
+        case 1: // Up
+          myXVelocity = 0;
+          myYVelocity = -myCurrentCharge;
+          break;
+        case 2: // Down
+          myXVelocity = 0;
+          myYVelocity = myCurrentCharge;
+          break;
+        case 3: // Left
+          myXVelocity = -myCurrentCharge;
+          myYVelocity = 0;
+          break;
+        case 4: // Right
+          myXVelocity = myCurrentCharge;
+          myYVelocity = 0;
+          break;
+        default:
+          myIsMoving = false;
+          break;
+      }
+      
+      myChargeDirection = 0;
+      myCurrentCharge = 0.0;
   }
 
   private void moveEntity(){
