@@ -94,9 +94,17 @@ public class PinballControlStategy implements ControlStrategyInterface {
       }
     }
   }
-  
-  private void handleDirectionCharge(){
 
+  private void handleDirectionCharge(int direction) {
+    // Start or continue charging in the current direction
+    if (!myIsCharging || myChargeDirection != direction) {
+      myIsCharging = true;
+      myChargeDirection = direction;
+      myCurrentCharge = 0.0;
+    } else {
+      // Increase charge up to max
+      myCurrentCharge = Math.min(myCurrentCharge + myChargeRate, myMaxLaunchForce);
+    }
   }
 
   private void launchEntity() {
