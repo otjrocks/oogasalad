@@ -77,9 +77,24 @@ public class PinballControlStategy implements ControlStrategyInterface {
     }
   }
 
-  private void handleChargeInput(){
-
+  private void handleChargeInput() {
+    // Check if a direction key is being pressed
+    if (myInputManager.isMovingUp()) {
+      handleDirectionCharge(1);
+    } else if (myInputManager.isMovingDown()) {
+      handleDirectionCharge(2);
+    } else if (myInputManager.isMovingLeft()) {
+      handleDirectionCharge(3);
+    } else if (myInputManager.isMovingRight()) {
+      handleDirectionCharge(4);
+    } else {
+      // No key is pressed, release if we were charging
+      if (myIsCharging) {
+        launchEntity();
+      }
+    }
   }
+  
   private void handleDirectionCharge(){
 
   }
