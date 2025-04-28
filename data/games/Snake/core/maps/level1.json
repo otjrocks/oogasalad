@@ -1,0 +1,129 @@
+{
+  "entityMappings" : [ {
+    "entity" : "Pacman",
+    "id" : 1
+  }, {
+    "entity" : "Wall",
+    "id" : 2
+  }, {
+    "entity" : "Cherry",
+    "id" : 3
+  }, {
+    "entity" : "Tail",
+    "id" : 4
+  } ],
+  "mapInfo" : {
+    "width" : 20,
+    "height" : 15,
+    "backgroundImagePath" : "assets/background.png"
+  },
+
+  "layout" : [ "2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0", "2.0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.0", "2.0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.0", "2.0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.0", "2.0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.0", "2.0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.0", "2.0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.0", "2.0 0 0 0 0 0 0 0 0 0 1.0 0 0 0 0 0 0 0 0 2.0", "2.0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.0", "2.0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.0", "2.0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.0", "2.0 0 0 0 0 0 0 0 0 0 3.0 0 0 0 0 0 0 0 0 2.0", "2.0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.0", "2.0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.0", "2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0 2.0" ],
+  "spawnEvents" : [ {
+    "entityType": "3",
+    "spawnCondition": {
+      "type": "TimeElapsed",
+      "parameters": {
+        "amount": 5
+      }
+    },
+    "x": 5,
+    "y": 10,
+    "mode": "Default",
+    "despawnCondition": {
+    }
+  }, {
+    "entityType": "3",
+    "spawnCondition": {
+      "type": "TimeElapsed",
+      "parameters": {
+        "amount": 10
+      }
+    },
+    "x": 15,
+    "y": 12,
+    "mode": "Default",
+    "despawnCondition": {
+    }
+  }, {
+    "entityType": "3",
+    "spawnCondition": {
+      "type": "TimeElapsed",
+      "parameters": {
+        "amount": 15
+      }
+    },
+    "x": 10,
+    "y": 3,
+    "mode": "Default",
+    "despawnCondition": {
+    }
+  }, {
+    "entityType": "3",
+    "spawnCondition": {
+      "type": "TimeElapsed",
+      "parameters": {
+        "amount": 20
+      }
+    },
+    "x": 7,
+    "y": 6,
+    "mode": "Default",
+    "despawnCondition": {
+    }
+  }, {
+    "entityType": "3",
+    "spawnCondition": {
+      "type": "TimeElapsed",
+      "parameters": {
+        "amount": 25
+      }
+    },
+    "x": 5,
+    "y": 10,
+    "mode": "Default",
+    "despawnCondition": {
+    }
+  }, {
+    "entityType": "3",
+    "spawnCondition": {
+      "type": "TimeElapsed",
+      "parameters": {
+        "amount": 30
+      }
+    },
+    "x": 15,
+    "y": 12,
+    "mode": "Default",
+    "despawnCondition": {
+    }
+  }, {
+    "entityType": "3",
+    "spawnCondition": {
+      "type": "TimeElapsed",
+      "parameters": {
+        "amount": 35
+      }
+    },
+    "x": 10,
+    "y": 3,
+    "mode": "Default",
+    "despawnCondition": {
+    }
+  }, {
+    "entityType": "3",
+    "spawnCondition": {
+      "type": "TimeElapsed",
+      "parameters": {
+        "amount": 40
+      }
+    },
+    "x": 7,
+    "y": 6,
+    "mode": "Default",
+    "despawnCondition": {
+    }
+  }
+  ],
+  "modeChangeEvents" : [ ]
+}
