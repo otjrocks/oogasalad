@@ -233,13 +233,13 @@
       "modeChangeInfo": {
         "originalMode": "Default",
         "transitionMode": "Scatter",
-        "revertTime" : 999999999,
+        "revertTime" : 7,
         "transitionTime" : 1
       },
       "changeCondition": {
         "type": "TimeElapsed",
         "parameters": {
-          "amount": 10
+          "amount": 7
         }
       }
     }, {
@@ -247,13 +247,13 @@
       "modeChangeInfo": {
         "originalMode": "Default",
         "transitionMode": "Scatter",
-        "revertTime" : 999999999,
+        "revertTime" : 7,
         "transitionTime" : 1
       },
       "changeCondition": {
         "type": "TimeElapsed",
         "parameters": {
-          "amount": 10
+          "amount": 7
         }
       }
     }, {
@@ -261,13 +261,13 @@
       "modeChangeInfo": {
         "originalMode": "Default",
         "transitionMode": "Scatter",
-        "revertTime" : 999999999,
+        "revertTime" : 7,
         "transitionTime" : 1
       },
       "changeCondition": {
         "type": "TimeElapsed",
         "parameters": {
-          "amount": 10
+          "amount": 7
         }
       }
     }, {
@@ -275,13 +275,69 @@
       "modeChangeInfo": {
         "originalMode": "Default",
         "transitionMode": "Scatter",
-        "revertTime" : 999999999,
+        "revertTime" : 7,
         "transitionTime" : 1
       },
       "changeCondition": {
         "type": "TimeElapsed",
         "parameters": {
-          "amount": 10
+          "amount": 7
+        }
+      }
+    }, {
+      "entityType": "2",
+      "modeChangeInfo": {
+        "originalMode": "Default",
+        "transitionMode": "Scatter",
+        "revertTime" : 7,
+        "transitionTime" : 1
+      },
+      "changeCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 34
+        }
+      }
+    }, {
+      "entityType": "3",
+      "modeChangeInfo": {
+        "originalMode": "Default",
+        "transitionMode": "Scatter",
+        "revertTime" : 7,
+        "transitionTime" : 1
+      },
+      "changeCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 34
+        }
+      }
+    }, {
+      "entityType": "11",
+      "modeChangeInfo": {
+        "originalMode": "Default",
+        "transitionMode": "Scatter",
+        "revertTime" : 7,
+        "transitionTime" : 1
+      },
+      "changeCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 34
+        }
+      }
+    }, {
+      "entityType": "12",
+      "modeChangeInfo": {
+        "originalMode": "Default",
+        "transitionMode": "Scatter",
+        "revertTime" : 7,
+        "transitionTime" : 1
+      },
+      "changeCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 34
         }
       }
     }
