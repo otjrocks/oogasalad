@@ -1,20 +1,20 @@
 {
   "entityType" : {
-    "name" : "cookie",
+    "name" : "cookieupgrade",
     "blocks" : [ "player" ]
   },
   "modes" : [ {
     "name" : "Default",
     "image" : {
-      "imagePath" : "assets/sugarcookie.png",
-      "tileWidth" : 32,
-      "tileHeight" : 32,
-      "tilesToCycle" : 1,
+      "imagePath" : "assets/chocolate.png",
+      "tileWidth" : 8,
+      "tileHeight" : 8,
+      "tilesToCycle" : 6,
       "animationSpeed" : 1.0
     },
     "controlConfig" : {
       "controlStrategy" : "None"
     },
-    "movementSpeed" : 0
+    "movementSpeed" : 1.0
   } ]
 }

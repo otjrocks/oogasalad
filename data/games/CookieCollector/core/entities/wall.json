@@ -7,8 +7,8 @@
     "name" : "Default",
     "image" : {
       "imagePath" : "assets/wall.png",
-      "tileWidth" : 28,
-      "tileHeight" : 28,
+      "tileWidth" : 8,
+      "tileHeight" : 8,
       "tilesToCycle" : 6,
       "animationSpeed" : 1.0
     },

@@ -9,6 +9,10 @@
     {
       "entity" : "cookie",
       "id" : 3
+    },
+    {
+      "entity" : "cookieupgrade",
+      "id" : 4
     }],
   "mapInfo" : {
     "width" : 17,
@@ -28,8 +32,26 @@
     "2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2",
     "2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2",
     "2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2"
-  ]
-,
-  "spawnEvents" : [ ],
+  ],
+  "spawnEvents" : [
+    {
+      "entityType": "4",
+      "spawnCondition": {
+        "type": "ScoreBased",
+        "parameters": {
+          "amount": 200
+        }
+      },
+      "x": 2,
+      "y": 4,
+      "mode": "Default",
+      "despawnCondition": {
+        "type": "ScoreBased",
+        "parameters": {
+          "amount": 1500
+        }
+      }
+    }
+  ],
   "modeChangeEvents" : [ ]
 }
