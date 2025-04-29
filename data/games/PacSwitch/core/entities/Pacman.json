@@ -10,7 +10,7 @@
       "tileWidth" : 28,
       "tileHeight" : 28,
       "tilesToCycle" : 6,
-      "animationSpeed" : 1.0
+      "animationSpeed" : 5.0
     },
     "controlConfig" : {
       "controlStrategy" : "Keyboard"
@@ -23,7 +23,7 @@
       "tileWidth" : 28,
       "tileHeight" : 28,
       "tilesToCycle" : 6,
-      "animationSpeed" : 1.0
+      "animationSpeed" : 5.0
     },
     "controlConfig" : {
       "controlStrategy" : "Keyboard"
@@ -36,7 +36,7 @@
       "tileWidth" : 28,
       "tileHeight" : 28,
       "tilesToCycle" : 6,
-      "animationSpeed" : 1.0
+      "animationSpeed" : 5.0
     },
     "controlConfig" : {
       "controlStrategy" : "Keyboard"
@@ -49,7 +49,7 @@
       "tileWidth" : 28,
       "tileHeight" : 28,
       "tilesToCycle" : 6,
-      "animationSpeed" : 1.0
+      "animationSpeed" : 5.0
     },
     "controlConfig" : {
       "controlStrategy" : "Keyboard"

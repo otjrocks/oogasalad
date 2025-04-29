@@ -13,10 +13,9 @@
       "animationSpeed" : 10.0
     },
     "controlConfig" : {
-      "controlStrategy" : "ConstantDirection",
-      "dx" : 0,
-      "dy" : 1
+      "controlStrategy" : "None"
     },
-    "movementSpeed" : 0.1
+    "movementSpeed" : 0.0
   } ]
+
 }
