@@ -42,15 +42,9 @@
           "amount": 200
         }
       },
-      "x": 2,
+      "x": 14,
       "y": 4,
-      "mode": "Default",
-      "despawnCondition": {
-        "type": "ScoreBased",
-        "parameters": {
-          "amount": 1500
-        }
-      }
+      "mode": "Default"
     }
   ],
   "modeChangeEvents" : [ ]

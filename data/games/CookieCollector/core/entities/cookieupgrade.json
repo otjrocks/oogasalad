@@ -7,14 +7,14 @@
     "name" : "Default",
     "image" : {
       "imagePath" : "assets/chocolate.png",
-      "tileWidth" : 8,
-      "tileHeight" : 8,
-      "tilesToCycle" : 6,
+      "tileWidth" : 32,
+      "tileHeight" : 32,
+      "tilesToCycle" : 1,
       "animationSpeed" : 1.0
     },
     "controlConfig" : {
       "controlStrategy" : "None"
     },
-    "movementSpeed" : 1.0
+    "movementSpeed" : 0
   } ]
 }
