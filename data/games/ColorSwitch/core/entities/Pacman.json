@@ -1,0 +1,59 @@
+{
+  "entityType" : {
+    "name" : "Pacman",
+    "blocks" : [ ]
+  },
+  "modes" : [ {
+    "name" : "Red",
+    "image" : {
+      "imagePath" : "assets/red.png",
+      "tileWidth" : 28,
+      "tileHeight" : 28,
+      "tilesToCycle" : 6,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "Keyboard"
+    },
+    "movementSpeed" : 1.0
+  }, {
+    "name" : "Blue",
+    "image" : {
+      "imagePath" : "assets/blue.png",
+      "tileWidth" : 28,
+      "tileHeight" : 28,
+      "tilesToCycle" : 6,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "Keyboard"
+    },
+    "movementSpeed" : 1.0
+  }, {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "assets/yellow.png",
+      "tileWidth" : 28,
+      "tileHeight" : 28,
+      "tilesToCycle" : 6,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "Keyboard"
+    },
+    "movementSpeed" : 1.0
+  }, {
+    "name" : "Orange",
+    "image" : {
+      "imagePath" : "assets/orange.png",
+      "tileWidth" : 28,
+      "tileHeight" : 28,
+      "tilesToCycle" : 6,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "Keyboard"
+    },
+    "movementSpeed" : 1.0
+  } ]
+}

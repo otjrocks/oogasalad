@@ -1,0 +1,67 @@
+{
+  "entityType" : {
+    "name" : "Wall",
+    "blocks" : [ ]
+  },
+  "modes" : [ {
+    "name" : "Red",
+    "image" : {
+      "imagePath" : "assets/redwall.png",
+      "tileWidth" : 8,
+      "tileHeight" : 8,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "ConstantDirection",
+      "dx" : 0,
+      "dy" : 1
+    },
+    "movementSpeed" : 0.1
+  }, {
+    "name" : "Blue",
+    "image" : {
+      "imagePath" : "assets/bluewall.png",
+      "tileWidth" : 8,
+      "tileHeight" : 8,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "ConstantDirection",
+      "dx" : 0,
+      "dy" : 1
+    },
+    "movementSpeed" : 0.1
+  }, {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "assets/yellowwall.png",
+      "tileWidth" : 8,
+      "tileHeight" : 8,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "ConstantDirection",
+      "dx" : 0,
+      "dy" : 1
+    },
+    "movementSpeed" : 0.1
+  }, {
+    "name" : "Orange",
+    "image" : {
+      "imagePath" : "assets/orangewall.png",
+      "tileWidth" : 8,
+      "tileHeight" : 8,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "ConstantDirection",
+      "dx" : 0,
+      "dy" : 1
+    },
+    "movementSpeed" : 0.1
+  } ]
+}

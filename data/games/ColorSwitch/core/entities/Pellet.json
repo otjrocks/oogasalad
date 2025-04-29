@@ -1,0 +1,22 @@
+{
+  "entityType" : {
+    "name" : "Pellet",
+    "blocks" : [ ]
+  },
+  "modes" : [ {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "assets/melon.png",
+      "tileWidth" : 28,
+      "tileHeight" : 28,
+      "tilesToCycle" : 4,
+      "animationSpeed" : 10.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "ConstantDirection",
+      "dx" : 0,
+      "dy" : 1
+    },
+    "movementSpeed" : 0.1
+  } ]
+}
