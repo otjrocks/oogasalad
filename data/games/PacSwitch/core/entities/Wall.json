@@ -17,7 +17,7 @@
       "dx" : 0,
       "dy" : 1
     },
-    "movementSpeed" : 0.1
+    "movementSpeed" : 0.25
   }, {
     "name" : "Blue",
     "image" : {
@@ -32,7 +32,7 @@
       "dx" : 0,
       "dy" : 1
     },
-    "movementSpeed" : 0.1
+    "movementSpeed" : 0.25
   }, {
     "name" : "Default",
     "image" : {
@@ -47,7 +47,7 @@
       "dx" : 0,
       "dy" : 1
     },
-    "movementSpeed" : 0.1
+    "movementSpeed" : 0.25
   }, {
     "name" : "Orange",
     "image" : {
@@ -62,6 +62,6 @@
       "dx" : 0,
       "dy" : 1
     },
-    "movementSpeed" : 0.1
+    "movementSpeed" : 0.25
   } ]
 }
