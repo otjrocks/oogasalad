@@ -1,0 +1,20 @@
+{
+  "entityType" : {
+    "name" : "Obstacle",
+    "blocks" : [ "Pacman" ]
+  },
+  "modes" : [ {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "assets/obstacle.png",
+      "tileWidth" : 32,
+      "tileHeight" : 32,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 5.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "None"
+    },
+    "movementSpeed" : 0.0
+  } ]
+}
