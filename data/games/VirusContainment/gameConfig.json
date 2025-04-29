@@ -2,7 +2,8 @@
   "metadata" : {
     "gameTitle" : "Virus",
     "author" : "Will He",
-    "gameDescription" : "Virus Game"
+    "gameDescription" : "Virus Game",
+    "image": "assets/banner.png"
   },
   "defaultSettings" : {
     "gameSpeed" : 1.0,
