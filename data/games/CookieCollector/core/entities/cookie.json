@@ -16,5 +16,19 @@
       "controlStrategy" : "None"
     },
     "movementSpeed" : 0
-  } ]
+  },
+    {
+      "name" : "chocolatechip",
+      "image" : {
+        "imagePath" : "assets/chocolatechip.png",
+        "tileWidth" : 32,
+        "tileHeight" : 32,
+        "tilesToCycle" : 1,
+        "animationSpeed" : 1.0
+      },
+      "controlConfig" : {
+        "controlStrategy" : "None"
+      },
+      "movementSpeed" : 0
+    }]
 }

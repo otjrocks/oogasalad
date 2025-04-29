@@ -43,6 +43,43 @@
       "eventsB" : [ {
         "type" : "Consume"
       } ]
+    },
+    {
+      "entityA" : "player",
+      "modeA" : "Default",
+      "entityB" : "cookieupgrade",
+      "eventsA" : [ {
+        "type" : "UpdateScore",
+        "amount" : -200
+      } ],
+      "modeB" : "Default",
+      "eventsB" : [ {
+        "type" : "Consume"
+      } ]
+    },{
+      "entityA" : "player",
+      "modeA" : "Default",
+      "entityB" : "cookieupgrade",
+      "eventsA" : [ {
+        "type" : "ChangeModeForType",
+        "entityType" : "cookie",
+        "newMode" : "chocolatechip"
+      } ],
+      "modeB" : "Default",
+      "eventsB" : [ ]
+    },
+    {
+      "entityA" : "player",
+      "modeA" : "Default",
+      "entityB" : "cookie",
+      "eventsA" : [ {
+        "type" : "UpdateScore",
+        "amount" : 20
+      } ],
+      "modeB" : "chocolatechip",
+      "eventsB" : [ {
+        "type" : "Consume"
+      } ]
     }
   ],
   "respawnableEntities": {
