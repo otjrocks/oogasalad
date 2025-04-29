@@ -1,5 +1,3 @@
-package oogasalad.engine.config.api;
-
 /**
  * <h1>
  * ConfigSaver
@@ -48,3 +46,4 @@ package oogasalad.engine.config.api;
  * @version 1.0
  * @since 1.0
  */
+package oogasalad.engine.config.api;
