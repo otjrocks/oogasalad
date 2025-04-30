@@ -6,39 +6,47 @@
     },
     {
       "key": "OVERVIEW",
-      "image": "overview.png"
+      "image": null
     },
     {
       "key": "INTERFACE",
-      "image": "interface.png"
+      "image": null
     },
     {
-      "key": "CANVAS",
-      "image": "canvas.png"
+      "key": "SAVE",
+      "image": null
+    },
+    {
+      "key": "UPLOAD",
+      "image": null
     },
     {
       "key": "ENTITY",
-      "image": "entities.png"
+      "image": null
     },
     {
-      "key": "ENTITY_EDITOR",
-      "image": "entity_editor.png"
+      "key": "PLACEMENT",
+      "image": null
     },
     {
-      "key": "LEVEL_SYSTEM",
-      "image": "levels.png"
+      "key": "LEVEL",
+      "image": null
     },
     {
-      "key": "COLLISION_RULES",
-      "image": "collisions.png"
+      "key": "EVENTS",
+      "image": null
     },
     {
-      "key": "GAME_SETTINGS",
-      "image": "settings.png"
+      "key": "SETTINGS",
+      "image": null
+    },
+    {
+      "key": "COLLISION",
+      "image": null
     },
     {
       "key": "FIRST_GAME",
-      "image": "first_game.png"
+      "image": null
     },
     {
       "key": "TIPS_AND_TRICKS",
