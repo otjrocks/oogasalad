@@ -32,6 +32,36 @@
     "eventsB" : [ ]
   },
     {
+      "entityA" : "helper",
+      "modeA" : "Active",
+      "entityB" : "wall",
+      "eventsA" : [ {
+        "type" : "Stop"
+      } ],
+      "modeB" : "Default",
+      "eventsB" : [ ]
+    },
+    {
+      "entityA" : "helper",
+      "modeA" : "Default",
+      "entityB" : "wall",
+      "eventsA" : [ {
+        "type" : "Stop"
+      } ],
+      "modeB" : "Default",
+      "eventsB" : [ ]
+    },
+    {
+      "entityA" : "helper",
+      "modeA" : "Active",
+      "entityB" : "cookieupgrade",
+      "eventsA" : [ {
+        "type" : "Stop"
+      } ],
+      "modeB" : "Default",
+      "eventsB" : [ ]
+    },
+    {
       "entityA" : "player",
       "modeA" : "Default",
       "entityB" : "cookie",
@@ -102,8 +132,33 @@
           "type": "Consume"
         }
       ]
+    },
+    {
+      "entityA" : "helper",
+      "modeA" : "Active",
+      "entityB" : "cookie",
+      "eventsA" : [ {
+        "type" : "UpdateScore",
+        "amount" : 10
+      } ],
+      "modeB" : "Default",
+      "eventsB" : [ {
+        "type" : "Consume"
+      } ]
+    },
+    {
+      "entityA" : "helper",
+      "modeA" : "Active",
+      "entityB" : "cookie",
+      "eventsA" : [ {
+        "type" : "UpdateScore",
+        "amount" : 50
+      } ],
+      "modeB" : "chocolatechip",
+      "eventsB" : [ {
+        "type" : "Consume"
+      } ]
     }
-
   ],
   "respawnableEntities": {
     "cookie": 0.4,

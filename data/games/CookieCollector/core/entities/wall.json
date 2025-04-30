@@ -1,7 +1,8 @@
 {
   "entityType" : {
     "name" : "wall",
-    "blocks" : [ "player" ]
+    "blocks" : [ "player",
+      "helper" ]
   },
   "modes" : [ {
     "name" : "Default",

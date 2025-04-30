@@ -10,17 +10,22 @@
         "tileWidth": 40,
         "tileHeight": 50,
         "tilesToCycle": 4,
-        "animationSpeed": 4.0
+        "animationSpeed": 1
       },
       "controlConfig": {
-        "controlStrategy": "None"
+        "controlStrategy": "Target",
+        "pathFindingStrategy": "Bfs",
+        "targetCalculationConfig": {
+          "targetCalculationStrategy": "TargetEntity",
+          "targetType": "cookie"
+        }
       },
-      "movementSpeed": 0
+      "movementSpeed": 1
     },
     {
       "name": "Active",
       "image": {
-        "imagePath": "assets/cookie.png",
+        "imagePath": "assets/baker.png",
         "tileWidth": 40,
         "tileHeight": 50,
         "tilesToCycle": 4,
