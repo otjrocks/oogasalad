@@ -19,6 +19,9 @@
   },
   "levels" : [ {
     "levelMap" : "level1"
+  },
+    {
+    "levelMap" : "level2"
   } ],
   "collisions" : [ {
     "entityA" : "fallingtiles",
