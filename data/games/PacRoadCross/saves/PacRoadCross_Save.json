@@ -1,7 +1,7 @@
 {
   "saveName" : "PacRoadCross_Save",
-  "currentLevel" : 1,
-  "totalScore" : 100,
+  "currentLevel" : 0,
+  "totalScore" : 0,
   "lives" : 1,
   "highScore" : 200,
   "levelOrder" : [ 0, 1 ]

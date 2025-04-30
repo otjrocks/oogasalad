@@ -1,13 +1,11 @@
 {
   "entityType" : {
-    "name" : "wall",
-    "blocks" : [ "player",
-      "helper" ]
+    "name" : "spawnhelper"
   },
   "modes" : [ {
     "name" : "Default",
     "image" : {
-      "imagePath" : "assets/wall.png",
+      "imagePath" : "assets/chefhat.png",
       "tileWidth" : 32,
       "tileHeight" : 32,
       "tilesToCycle" : 1,
@@ -16,6 +14,6 @@
     "controlConfig" : {
       "controlStrategy" : "None"
     },
-    "movementSpeed" : 1.0
+    "movementSpeed" : 0
   } ]
 }

@@ -9,27 +9,76 @@
     {
       "entity" : "cookie",
       "id" : 3
+    },
+    {
+      "entity" : "cookieupgrade",
+      "id" : 4
+    },
+    {
+      "entity" : "spawnhelper",
+      "id" : 5
+    },
+    {
+      "entity" : "helper",
+      "id" : 6
     }],
   "mapInfo" : {
     "width" : 17,
-    "height" : 13
+    "height" : 13,
+    "backgroundImagePath": "assets/background.png"
   },
   "layout": [
     "2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2",
-    "2 3 0 3 0 3 0 3 0 0 0 0 0 0 1 0 2",
-    "2 0 3 0 3 0 0 0 0 0 0 0 0 0 0 2 2",
-    "2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2",
+    "2 3 0 3 0 3 0 3 0 3 0 0 0 0 1 0 2",
     "2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2",
-    "2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2",
+    "2 3 0 3 0 3 0 3 0 3 0 0 0 0 0 0 2",
     "2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2",
-    "2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2",
+    "2 3 0 3 0 3 0 3 0 3 0 0 0 0 0 0 2",
     "2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2",
-    "2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2",
+    "2 3 0 3 0 3 0 3 0 3 0 0 0 0 0 0 2",
     "2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2",
-    "2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2",
+    "2 3 0 3 0 3 0 3 0 3 0 0 0 0 0 0 2",
+    "2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2",
+    "2 3 0 3 0 3 0 3 0 3 0 0 0 0 0 0 2",
     "2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2"
-  ]
-,
-  "spawnEvents" : [ ],
-  "modeChangeEvents" : [ ]
+  ],
+  "spawnEvents" : [
+    {
+      "entityType": "4",
+      "spawnCondition": {
+        "type": "ScoreBased",
+        "parameters": {
+          "amount": 200
+        }
+      },
+      "x": 14,
+      "y": 4,
+      "mode": "Default"
+    },
+    {
+      "entityType": "5",
+      "spawnCondition": {
+        "type": "ScoreBased",
+        "parameters": {
+          "amount": 500
+        }
+      },
+      "x": 13.5,
+      "y": 8,
+      "mode": "Default"
+    },
+    {
+      "entityType": "6",
+      "spawnCondition": {
+        "type": "ScoreBased",
+        "parameters": {
+          "amount": 200
+        }
+      },
+      "x": 14,
+      "y": 10,
+      "mode": "Default"
+    }
+  ],
+  "modeChangeEvents" : []
 }
