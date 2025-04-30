@@ -10,7 +10,7 @@
         "tileWidth": 40,
         "tileHeight": 50,
         "tilesToCycle": 4,
-        "animationSpeed": 1
+        "animationSpeed": 4
       },
       "controlConfig": {
         "controlStrategy": "Target",
