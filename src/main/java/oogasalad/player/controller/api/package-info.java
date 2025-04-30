@@ -1,5 +1,3 @@
-package oogasalad.player.controller.api;
-
 /**
  * GameEndHandlerInterface
  * <h1>
@@ -13,3 +11,5 @@ package oogasalad.player.controller.api;
  * @version 1.0
  * @since 1.0
  */
+package oogasalad.player.controller.api;
+

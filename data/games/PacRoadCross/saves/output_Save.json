@@ -3,6 +3,6 @@
   "currentLevel" : 0,
   "totalScore" : 0,
   "lives" : 1,
-  "highScore" : 34,
-  "levelOrder" : [ 0 ]
+  "highScore" : 200,
+  "levelOrder" : [ 0, 1 ]
 }

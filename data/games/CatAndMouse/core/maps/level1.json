@@ -43,7 +43,8 @@
   ],
   "mapInfo": {
     "width": 28,
-    "height": 31
+    "height": 31,
+    "backgroundImagePath": "assets/background.png"
   },
   "layout": [
     "5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5",
@@ -231,7 +232,7 @@
       "entityType": "2",
       "modeChangeInfo": {
         "originalMode": "Default",
-        "transitionMode": "Frightened",
+        "transitionMode": "Scatter",
         "revertTime" : 999999999,
         "transitionTime" : 1
       },
@@ -245,7 +246,7 @@
       "entityType": "3",
       "modeChangeInfo": {
         "originalMode": "Default",
-        "transitionMode": "Frightened",
+        "transitionMode": "Scatter",
         "revertTime" : 999999999,
         "transitionTime" : 1
       },
@@ -259,7 +260,7 @@
       "entityType": "11",
       "modeChangeInfo": {
         "originalMode": "Default",
-        "transitionMode": "Frightened",
+        "transitionMode": "Scatter",
         "revertTime" : 999999999,
         "transitionTime" : 1
       },
@@ -273,7 +274,7 @@
       "entityType": "12",
       "modeChangeInfo": {
         "originalMode": "Default",
-        "transitionMode": "Frightened",
+        "transitionMode": "Scatter",
         "revertTime" : 999999999,
         "transitionTime" : 1
       },

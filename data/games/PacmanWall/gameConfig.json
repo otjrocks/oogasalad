@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "gameTitle": "Play As Wall",
+    "gameTitle": "Blocked",
     "author": "CS308 Team",
     "gameDescription": "Using the fact that you can push ghosts and player, guide the pacman to eat all the pellets and block them off of danger.",
     "image": "assets/wall.png"

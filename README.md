@@ -25,11 +25,15 @@ Pac-Man.
     * Various sprites from the original game were used. Additionally, this source was used for game
       sprites: https://www.spriters-resource.com/arcade/pacman/
     * For the Cat and Mouse game got insporation from this
-      game: https://www.cbc.ca/kids/games/play/pac-rat
+      game: https://www.cbc.ca/kids/games/play/pac-rat, aesprite to recreate some of these sprites
     * Additional game sprites for other games were modified from https://www.spriters-resource.com/
     * Image editing software for
       sprites: https://imageonline.co/repeat-image-generator.php, https://merge.imageonline.co/
+    * For the dinasour games: https://www.spriters-resource.com/browser_games/googledinosaurrungame/sheet/160414/
+    * For some of the editing of sprite sheets used Aesprite
     * Some styles were used from the previous cell society project.
+
+ * Some of the javadocs were written by AI
 
 ### Running the Program
 

@@ -6,11 +6,11 @@
   "modes" : [ {
     "name" : "Default",
     "image" : {
-      "imagePath" : "assets/virus (1)-modified.jpg",
+      "imagePath" : "assets/virus.png",
       "tileWidth" : 28,
       "tileHeight" : 28,
-      "tilesToCycle" : 1,
-      "animationSpeed" : 1.0
+      "tilesToCycle" : 4,
+      "animationSpeed" : 10.0
     },
     "controlConfig" : {
       "controlStrategy" : "Target",

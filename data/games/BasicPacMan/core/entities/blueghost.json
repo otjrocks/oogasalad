@@ -82,6 +82,26 @@
         }
       },
       "movementSpeed": 1.0
+    },
+    {
+      "name": "Scatter",
+      "image": {
+        "imagePath": "assets/blueghost.png",
+        "tileWidth": 28,
+        "tileHeight": 28,
+        "tilesToCycle": 4,
+        "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "Target",
+        "pathFindingStrategy": "Euclidean",
+        "targetCalculationConfig": {
+          "targetCalculationStrategy": "TargetLocation",
+          "targetX": 0,
+          "targetY": 0
+        }
+      },
+      "movementSpeed": 1.0
     }
   ]
 }

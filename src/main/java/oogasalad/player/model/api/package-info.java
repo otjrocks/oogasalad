@@ -1,5 +1,3 @@
-package oogasalad.player.model.api;
-
 /**
  * <h1>Overview</h1>
  * This package provides factory classes that dynamically create various game strategies, entities,
@@ -52,3 +50,5 @@ package oogasalad.player.model.api;
  * @version 1.0
  * @since 1.0
  */
+package oogasalad.player.model.api;
+
