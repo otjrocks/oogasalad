@@ -16,19 +16,8 @@
     "width" : 5,
     "height" : 15
   },
-  "layout" : [ "0 0 0 0 4.0", "0 0 0 0 0", "0 0 0 0 0", "0 0 4.0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "3.0 3.0 3.0 3.0 3.0", "0 0 1.0 0 0", "2.0 2.0 2.0 2.0 2.0" ],
+  "layout" : [ "4.0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "3.0 3.0 3.0 3.0 3.0", "0 0 1.0 0 0", "2.0 2.0 2.0 2.0 2.0" ],
   "spawnEvents" : [ {
-    "entityType" : "4",
-    "x" : 0.0,
-    "y" : 0.0,
-    "mode" : "Default",
-    "spawnCondition" : {
-      "type" : "TimeElapsed",
-      "parameters" : {
-        "amount" : 0
-      }
-    }
-  }, {
     "entityType" : "4",
     "x" : 1.0,
     "y" : 0.0,
@@ -70,6 +59,50 @@
       "type" : "TimeElapsed",
       "parameters" : {
         "amount" : 4
+      }
+    }
+  }, {
+    "entityType" : "4",
+    "x" : 3.0,
+    "y" : 0.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 5
+      }
+    }
+  }, {
+    "entityType" : "4",
+    "x" : 2.0,
+    "y" : 0.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 6
+      }
+    }
+  }, {
+    "entityType" : "4",
+    "x" : 1.0,
+    "y" : 0.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 7
+      }
+    }
+  }, {
+    "entityType" : "4",
+    "x" : 0.0,
+    "y" : 0.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 8
       }
     }
   } ],
