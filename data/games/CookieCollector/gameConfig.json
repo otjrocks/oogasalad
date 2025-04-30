@@ -2,7 +2,8 @@
   "metadata" : {
     "gameTitle" : "Cookie Collector",
     "author" : "Luke Fu",
-    "gameDescription" : "Collect the cookies and buy power ups"
+    "gameDescription" : "Collect the cookies and buy power ups",
+    "image" : "assets/banner.png"
   },
   "defaultSettings" : {
     "gameSpeed" : 1.0,

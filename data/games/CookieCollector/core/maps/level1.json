@@ -24,7 +24,8 @@
     }],
   "mapInfo" : {
     "width" : 17,
-    "height" : 13
+    "height" : 13,
+    "backgroundImagePath": "assets/background.png"
   },
   "layout": [
     "2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2",
@@ -71,7 +72,7 @@
       "spawnCondition": {
         "type": "ScoreBased",
         "parameters": {
-          "amount": 480
+          "amount": 200
         }
       },
       "x": 14,
