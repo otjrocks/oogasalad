@@ -1,0 +1,40 @@
+{
+  "entityType": {
+    "name": "helper"
+  },
+  "modes": [
+    {
+      "name": "Default",
+      "image": {
+        "imagePath": "assets/baker.png",
+        "tileWidth": 40,
+        "tileHeight": 50,
+        "tilesToCycle": 4,
+        "animationSpeed": 4.0
+      },
+      "controlConfig": {
+        "controlStrategy": "None"
+      },
+      "movementSpeed": 0
+    },
+    {
+      "name": "Active",
+      "image": {
+        "imagePath": "assets/cookie.png",
+        "tileWidth": 40,
+        "tileHeight": 50,
+        "tilesToCycle": 4,
+        "animationSpeed": 1
+      },
+      "controlConfig": {
+        "controlStrategy": "Target",
+        "pathFindingStrategy": "Bfs",
+        "targetCalculationConfig": {
+          "targetCalculationStrategy": "TargetEntity",
+          "targetType": "cookie"
+        }
+      },
+      "movementSpeed": 1.0
+    }
+  ]
+}

@@ -1,12 +1,11 @@
 {
   "entityType" : {
-    "name" : "spawnhelper",
-    "blocks" : [ "player" ]
+    "name" : "spawnhelper"
   },
   "modes" : [ {
     "name" : "Default",
     "image" : {
-      "imagePath" : "assets/chocolate.png",
+      "imagePath" : "assets/chefhat.png",
       "tileWidth" : 32,
       "tileHeight" : 32,
       "tilesToCycle" : 1,

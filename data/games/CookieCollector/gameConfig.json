@@ -80,7 +80,30 @@
       "eventsB" : [ {
         "type" : "Consume"
       } ]
+    },
+    {
+      "entityA" : "player",
+      "modeA" : "Default",
+      "entityB" : "spawnhelper",
+      "modeB" : "Default",
+      "eventsA" : [
+        {
+          "type": "UpdateScore",
+          "amount": -500
+        },
+        {
+          "type": "ChangeModeForType",
+          "entityType": "helper",
+          "newMode": "Active"
+        }
+      ],
+      "eventsB" : [
+        {
+          "type": "Consume"
+        }
+      ]
     }
+
   ],
   "respawnableEntities": {
     "cookie": 0.4,

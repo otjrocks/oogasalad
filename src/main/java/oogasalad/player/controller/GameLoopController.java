@@ -203,7 +203,7 @@ public class GameLoopController {
   }
 
   private void logNoAvailableSpots(EntityTypeRecord entityType) {
-    LoggingManager.LOGGER.warn("⚠️ No available spots to respawn {}", entityType.type());
+    LoggingManager.LOGGER.warn("No available spots to respawn {}", entityType.type());
   }
 
   private double[] pickRandomSpot(List<double[]> openSpots) {
