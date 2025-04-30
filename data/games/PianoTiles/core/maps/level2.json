@@ -19,7 +19,7 @@
   "layout" : [ "4.0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "0 0 0 0 0", "3.0 3.0 3.0 3.0 3.0", "0 0 1.0 0 0", "2.0 2.0 2.0 2.0 2.0" ],
   "spawnEvents" : [ {
     "entityType" : "4",
-    "x" : 1.0,
+    "x" : 3.0,
     "y" : 0.0,
     "mode" : "Default",
     "spawnCondition" : {
@@ -30,7 +30,7 @@
     }
   }, {
     "entityType" : "4",
-    "x" : 2.0,
+    "x" : 0.0,
     "y" : 0.0,
     "mode" : "Default",
     "spawnCondition" : {
@@ -52,7 +52,7 @@
     }
   }, {
     "entityType" : "4",
-    "x" : 4.0,
+    "x" : 1.0,
     "y" : 0.0,
     "mode" : "Default",
     "spawnCondition" : {
@@ -63,7 +63,7 @@
     }
   }, {
     "entityType" : "4",
-    "x" : 3.0,
+    "x" : 4.0,
     "y" : 0.0,
     "mode" : "Default",
     "spawnCondition" : {
@@ -74,7 +74,7 @@
     }
   }, {
     "entityType" : "4",
-    "x" : 2.0,
+    "x" : 1.0,
     "y" : 0.0,
     "mode" : "Default",
     "spawnCondition" : {
@@ -85,7 +85,7 @@
     }
   }, {
     "entityType" : "4",
-    "x" : 1.0,
+    "x" : 4.0,
     "y" : 0.0,
     "mode" : "Default",
     "spawnCondition" : {
@@ -103,6 +103,50 @@
       "type" : "TimeElapsed",
       "parameters" : {
         "amount" : 8
+      }
+    }
+  }, {
+    "entityType" : "4",
+    "x" : 2.0,
+    "y" : 0.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 9
+      }
+    }
+  }, {
+    "entityType" : "4",
+    "x" : 4.0,
+    "y" : 0.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 10
+      }
+    }
+  }, {
+    "entityType" : "4",
+    "x" : 2.0,
+    "y" : 0.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 11
+      }
+    }
+  }, {
+    "entityType" : "4",
+    "x" : 0.0,
+    "y" : 0.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 12
       }
     }
   } ],
