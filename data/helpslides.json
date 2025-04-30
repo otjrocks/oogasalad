@@ -2,59 +2,59 @@
   "slides": [
     {
       "key": "WELCOME",
-      "image": null
+      "image": "pacman-gaming.gif"
     },
     {
       "key": "OVERVIEW",
-      "image": null
+      "image": "pacman-gaming.gif"
     },
     {
       "key": "INTERFACE",
-      "image": null
+      "image": "pacman-gaming.gif"
     },
     {
       "key": "SAVE",
-      "image": null
+      "image": "pacman-gaming.gif"
     },
     {
       "key": "UPLOAD",
-      "image": null
+      "image": "pacman-gaming.gif"
     },
     {
       "key": "ENTITY",
-      "image": null
+      "image": "pacman-gaming.gif"
     },
     {
       "key": "PLACEMENT",
-      "image": null
+      "image": "pacman-gaming.gif"
     },
     {
       "key": "LEVEL",
-      "image": null
+      "image": "pacman-gaming.gif"
     },
     {
       "key": "EVENTS",
-      "image": null
+      "image": "pacman-gaming.gif"
     },
     {
       "key": "SETTINGS",
-      "image": null
+      "image": "pacman-gaming.gif"
     },
     {
       "key": "COLLISION",
-      "image": null
+      "image": "pacman-gaming.gif"
     },
     {
       "key": "FIRST_GAME",
-      "image": null
+      "image": "pacman-gaming.gif"
     },
     {
       "key": "TIPS_AND_TRICKS",
-      "image": null
+      "image": "pacman-gaming.gif"
     },
     {
       "key": "CONCLUSION",
-      "image": null
+      "image": "pacman-gaming.gif"
     }
   ]
 }
