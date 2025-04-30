@@ -6,11 +6,11 @@
   "modes" : [ {
     "name" : "Default",
     "image" : {
-      "imagePath" : "assets/pacman.png",
-      "tileWidth" : 28,
-      "tileHeight" : 28,
-      "tilesToCycle" : 6,
-      "animationSpeed" : 1.0
+      "imagePath" : "assets/baker.png",
+      "tileWidth" : 40,
+      "tileHeight" : 50,
+      "tilesToCycle" : 3,
+      "animationSpeed" : 4.0
     },
     "controlConfig" : {
       "controlStrategy" : "Keyboard"

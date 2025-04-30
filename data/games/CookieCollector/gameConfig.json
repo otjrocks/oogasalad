@@ -10,7 +10,7 @@
     "initialScore" : 0,
     "winCondition" : {
       "type" : "ScoreBased",
-      "amount" : 100000
+      "amount" : 10000
     },
     "loseCondition" : {
       "type" : "LivesBased"
@@ -74,7 +74,7 @@
       "entityB" : "cookie",
       "eventsA" : [ {
         "type" : "UpdateScore",
-        "amount" : 20
+        "amount" : 50
       } ],
       "modeB" : "chocolatechip",
       "eventsB" : [ {
@@ -83,6 +83,7 @@
     }
   ],
   "respawnableEntities": {
-    "cookie": 0.4
+    "cookie": 0.4,
+    "cookieupgrade" : 10
   }
 }
