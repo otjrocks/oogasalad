@@ -14,35 +14,35 @@
     },
     {
       "key": "SAVE",
-      "image": "pacman-gaming.gif"
+      "image": "save.gif"
     },
     {
       "key": "UPLOAD",
-      "image": "pacman-gaming.gif"
+      "image": "upload.gif"
     },
     {
       "key": "ENTITY",
-      "image": "pacman-gaming.gif"
+      "image": "entity.gif"
     },
     {
       "key": "PLACEMENT",
-      "image": "pacman-gaming.gif"
+      "image": "placement.gif"
     },
     {
       "key": "LEVEL",
-      "image": "pacman-gaming.gif"
+      "image": "level.gif"
     },
     {
       "key": "EVENTS",
-      "image": "pacman-gaming.gif"
+      "image": "events.gif"
     },
     {
       "key": "SETTINGS",
-      "image": "pacman-gaming.gif"
+      "image": "settings.gif"
     },
     {
       "key": "COLLISION",
-      "image": "pacman-gaming.gif"
+      "image": "collision.gif"
     },
     {
       "key": "FIRST_GAME",
