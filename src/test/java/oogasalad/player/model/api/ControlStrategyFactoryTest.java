@@ -55,7 +55,8 @@ public class ControlStrategyFactoryTest {
   void createControlStrategy_noneControl_strategyCreated() {
     mockControlConfig(new NoneControlConfigRecord());
 
-    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
+    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput,
+        mockPlacement, mockMap);
     assertInstanceOf(NoneControlStrategy.class, strategy);
   }
 
@@ -63,7 +64,8 @@ public class ControlStrategyFactoryTest {
   void createControlStrategy_keyboardControl_strategyCreated() {
     mockControlConfig(new KeyboardControlConfigRecord());
 
-    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
+    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput,
+        mockPlacement, mockMap);
     assertInstanceOf(KeyboardControlStrategy.class, strategy);
   }
 
@@ -71,7 +73,8 @@ public class ControlStrategyFactoryTest {
   void createControlStrategy_targetControl_strategyCreated() {
     mockControlConfig(new TargetControlConfigRecord("A*", null));
 
-    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
+    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput,
+        mockPlacement, mockMap);
     assertInstanceOf(TargetControlStrategy.class, strategy);
   }
 
@@ -79,14 +82,16 @@ public class ControlStrategyFactoryTest {
   void createControlStrategy_conditionalControl_strategyCreated() {
     mockControlConfig(new ConditionalControlConfigRecord(5, "A*", "Dijkstra", null));
 
-    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap);
+    ControlStrategyInterface strategy = ControlStrategyFactory.createControlStrategy(mockInput,
+        mockPlacement, mockMap);
     assertInstanceOf(ConditionalControlStrategy.class, strategy);
   }
 
   @Test
   void createControlStrategy_invalidStrategyControl_throwsControlStrategyException() {
     // Use anonymous subclass to simulate unsupported config
-    mockControlConfig(new ControlConfigInterface() {});
+    mockControlConfig(new ControlConfigInterface() {
+    });
 
     assertThrows(ControlStrategyException.class,
         () -> ControlStrategyFactory.createControlStrategy(mockInput, mockPlacement, mockMap));

@@ -23,8 +23,6 @@ import util.TestUtils;
 @ExtendWith(MockitoExtension.class)
 class SplashScreenViewTest extends DukeApplicationTest {
 
-  private TestUtils myTestUtils;
-
   @Override
   public void start(Stage stage) {
     Group root = new Group();
@@ -36,7 +34,7 @@ class SplashScreenViewTest extends DukeApplicationTest {
 
   @BeforeEach
   void setUp() {
-    myTestUtils = new TestUtils();
+    TestUtils myTestUtils = new TestUtils();
   }
 
   @Test

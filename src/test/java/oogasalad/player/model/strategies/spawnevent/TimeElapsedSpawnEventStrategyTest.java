@@ -26,12 +26,15 @@ class TimeElapsedSpawnEventStrategyTest {
   private GameContextRecord contextWithTime(double timeElapsed) {
     GameStateInterface mockState = mock(GameStateInterface.class);
     when(mockState.getTimeElapsed()).thenReturn(timeElapsed);
-    return new GameContextRecord(new GameInputManager(new Scene(new Pane()), new Group()), new GameMap(10, 10), mockState);
+    return new GameContextRecord(new GameInputManager(new Scene(new Pane()), new Group()),
+        new GameMap(10, 10), mockState);
   }
 
   private SpawnEventRecord spawnEventWithParams(String amountValue, boolean forSpawn) {
-    ConditionRecord spawnCondition = new ConditionRecord("TimeElapsed", Map.of("amount", amountValue));
-    ConditionRecord despawnCondition = new ConditionRecord("TimeElapsed", Map.of("amount", amountValue));
+    ConditionRecord spawnCondition = new ConditionRecord("TimeElapsed",
+        Map.of("amount", amountValue));
+    ConditionRecord despawnCondition = new ConditionRecord("TimeElapsed",
+        Map.of("amount", amountValue));
     return new SpawnEventRecord(
         null,
         forSpawn ? spawnCondition : new ConditionRecord("TimeElapsed", Map.of()),

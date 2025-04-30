@@ -14,10 +14,9 @@ import oogasalad.engine.utility.ThemeManager;
 public class FormattingUtil {
 
   /**
-   * Applies a standard style to the given Alert dialog.
-   * This method customizes the appearance of the dialog by adding a specific style class
-   * and stylesheet, and registers the dialog's scene with the ThemeManager for consistent
-   * theming.
+   * Applies a standard style to the given Alert dialog. This method customizes the appearance of
+   * the dialog by adding a specific style class and stylesheet, and registers the dialog's scene
+   * with the ThemeManager for consistent theming.
    *
    * @param alert the Alert dialog to which the standard style will be applied
    * @throws NullPointerException if the stylesheet resource cannot be found
@@ -32,7 +31,8 @@ public class FormattingUtil {
   }
 
   /**
-   * Creates a styled button with the specified text and applies the "small-button" CSS style class.
+   * Creates a styled button with the specified text and applies the "small-button" CSS style
+   * class.
    *
    * @param text the text to display on the button
    * @return a Button instance with the specified text and "small-button" style applied
@@ -68,20 +68,8 @@ public class FormattingUtil {
   }
 
   /**
-   * Creates a new Label with the specified text and applies a default style class.
-   *
-   * @param text the text to be displayed on the label
-   * @return a Label instance with the specified text and a default style class applied
-   */
-  public static Label createLabel(String text) {
-    Label label = new Label(text);
-    label.getStyleClass().add("label");
-    return label;
-  }
-
-  /**
-   * Creates a new TextField with default settings.
-   * This method delegates to {@link #createTextField(String)} with a null parameter.
+   * Creates a new TextField with default settings. This method delegates to
+   * {@link #createTextField(String)} with a null parameter.
    *
    * @return a new TextField instance with default configuration
    */
@@ -90,8 +78,8 @@ public class FormattingUtil {
   }
 
   /**
-   * Creates a styled TextField with the specified initial text.
-   * If the provided text is null, an empty TextField is created.
+   * Creates a styled TextField with the specified initial text. If the provided text is null, an
+   * empty TextField is created.
    *
    * @param text the initial text to set in the TextField, or null for an empty TextField
    * @return a TextField instance with the specified text and a "text-input" style class applied

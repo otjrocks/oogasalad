@@ -3,7 +3,6 @@ package oogasalad.player.model.strategies.collision;
 import static oogasalad.engine.records.CollisionContextRecord.StrategyAppliesTo.ENTITY1;
 
 import oogasalad.engine.config.EntityPlacement;
-import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContextRecord;
 
 /**
@@ -15,8 +14,7 @@ import oogasalad.engine.records.CollisionContextRecord;
 public class ReturnToSpawnLocationStrategy implements CollisionStrategyInterface {
 
   @Override
-  public void handleCollision(CollisionContextRecord collisionContext)
-      throws EntityNotFoundException {
+  public void handleCollision(CollisionContextRecord collisionContext) {
     if (collisionContext.strategyAppliesTo() == ENTITY1) {
       EntityPlacement entity1Placement = collisionContext.entity1().getEntityPlacement();
       entity1Placement.setX(entity1Placement.getInitialX());

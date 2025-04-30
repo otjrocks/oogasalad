@@ -8,16 +8,14 @@ import javafx.scene.layout.GridPane;
 import oogasalad.engine.utility.LanguageManager;
 
 /**
- * SettingsEditor provides UI components for editing core game settings:
- * game speed, starting lives, and initial score.
- *
- * The editor uses a GridPane layout and provides methods
- * to retrieve or update the current values.
- *
+ * SettingsEditor provides UI components for editing core game settings: game speed, starting lives,
+ * and initial score.
+ * <p>
+ * The editor uses a GridPane layout and provides methods to retrieve or update the current values.
+ * <p>
  * Designed to be a modular sub-component of GameSettingsView.
  *
- * @author
- * William He
+ * @author William He
  */
 public class SettingsEditor {
 
@@ -29,9 +27,9 @@ public class SettingsEditor {
   /**
    * Constructs a SettingsEditor with initial game settings values.
    *
-   * @param gameSpeed    initial game speed
+   * @param gameSpeed     initial game speed
    * @param startingLives initial number of lives
-   * @param initialScore initial score
+   * @param initialScore  initial score
    */
   public SettingsEditor(double gameSpeed, int startingLives, int initialScore) {
     root = new GridPane();

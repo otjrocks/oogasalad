@@ -10,18 +10,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import oogasalad.engine.utility.LanguageManager;
 import oogasalad.player.model.enums.CheatType;
 
 /**
- * CheatCodeEditor provides a set of checkboxes allowing users to select
- * available cheat codes to enable in the game.
- *
+ * CheatCodeEditor provides a set of checkboxes allowing users to select available cheat codes to
+ * enable in the game.
+ * <p>
  * Cheat codes are dynamically loaded from the CheatType enum.
- *
+ * <p>
  * Designed as a modular component of GameSettingsView.
  *
- * @author
- * William He
+ * @author William He
  */
 public class CheatCodeEditor {
 
@@ -29,14 +29,14 @@ public class CheatCodeEditor {
   private final Map<CheatType, CheckBox> cheatCheckboxes;
 
   /**
-   * Constructs a CheatCodeEditor and dynamically generates checkboxes
-   * for each available CheatType.
+   * Constructs a CheatCodeEditor and dynamically generates checkboxes for each available
+   * CheatType.
    */
   public CheatCodeEditor() {
     root = new VBox(10);
     root.setPadding(new Insets(10));
 
-    Label titleLabel = new Label("Available Cheat Codes");
+    Label titleLabel = new Label(LanguageManager.getMessage("CHEAT_CODES"));
     root.getChildren().add(titleLabel);
 
     cheatCheckboxes = new HashMap<>();
@@ -76,7 +76,9 @@ public class CheatCodeEditor {
    */
   public void update(Set<CheatType> selectedCheats) {
     cheatCheckboxes.forEach((cheat, checkbox) -> {
-      checkbox.setSelected(selectedCheats.contains(cheat));
+      if (selectedCheats != null) {
+        checkbox.setSelected(selectedCheats.contains(cheat));
+      }
     });
   }
 }

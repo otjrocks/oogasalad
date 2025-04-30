@@ -1,8 +1,0 @@
-{
-  "saveName" : "MockGame_Save",
-  "currentLevel" : 0,
-  "totalScore" : 0,
-  "lives" : 10,
-  "highScore" : 0,
-  "levelOrder" : [ 0 ]
-}

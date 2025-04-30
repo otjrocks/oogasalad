@@ -1,0 +1,54 @@
+{
+  "entityType": {
+    "name": "Car",
+    "blocks": []
+  },
+  "modes": [
+    {
+      "name": "Default",
+      "image": {
+        "imagePath": "assets/car.png",
+        "tileWidth": 32,
+        "tileHeight": 32,
+        "tilesToCycle": 1,
+        "animationSpeed": 5.0
+      },
+      "controlConfig": {
+        "controlStrategy": "None"
+      },
+      "movementSpeed": 0.0
+    },
+    {
+      "name": "Left",
+      "image": {
+        "imagePath": "assets/car.png",
+        "tileWidth": 32,
+        "tileHeight": 32,
+        "tilesToCycle": 2,
+        "animationSpeed": 5.0
+      },
+      "controlConfig": {
+        "controlStrategy": "ConstantDirection",
+        "dx": -1,
+        "dy": 0
+      },
+      "movementSpeed": 0.5
+    },
+    {
+      "name": "Right",
+      "image": {
+        "imagePath": "assets/car.png",
+        "tileWidth": 32,
+        "tileHeight": 32,
+        "tilesToCycle": 2,
+        "animationSpeed": 5.0
+      },
+      "controlConfig": {
+        "controlStrategy": "ConstantDirection",
+        "dx": 1,
+        "dy": 0
+      },
+      "movementSpeed": 0.5
+    }
+  ]
+}

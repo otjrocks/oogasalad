@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import oogasalad.engine.controller.MainController;
+import oogasalad.engine.utility.LanguageManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.util.WaitForAsyncUtils;
@@ -23,6 +24,7 @@ public class GameSelectorViewTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) {
+    LanguageManager.setLanguage("English");
     mockController = mock(MainController.class);
     when(mockController.getStage()).thenReturn(stage);
 

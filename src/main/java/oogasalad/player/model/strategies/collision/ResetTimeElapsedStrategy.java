@@ -1,7 +1,6 @@
 package oogasalad.player.model.strategies.collision;
 
 
-import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContextRecord;
 
 /**
@@ -12,8 +11,7 @@ import oogasalad.engine.records.CollisionContextRecord;
 public class ResetTimeElapsedStrategy implements CollisionStrategyInterface {
 
   @Override
-  public void handleCollision(CollisionContextRecord collisionContext)
-      throws EntityNotFoundException {
+  public void handleCollision(CollisionContextRecord collisionContext) {
     collisionContext.gameState().resetTimeElapsed();
   }
 }

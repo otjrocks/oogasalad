@@ -234,16 +234,6 @@ public class AuthoringController {
     return model;
   }
 
-
-  /**
-   * Gets the view for components to access
-   *
-   * @return the AuthoringView instance
-   */
-  public AuthoringView getView() {
-    return view;
-  }
-
   /**
    * Selects an entity placement on the canvas. This is called when a user clicks on an entity in
    * the canvas.
@@ -292,16 +282,6 @@ public class AuthoringController {
 
 
   /**
-   * Gets all entity placements of a specific type in the current level.
-   */
-  private List<EntityPlacement> getPlacementsOfType(String typeName) {
-    return model.getCurrentLevel().getEntityPlacements().stream()
-        .filter(p -> typeName.equals(p.getTypeString()))
-        .toList();
-  }
-
-
-  /**
    * Clears selection references if they match the deleted entity type.
    */
   private void clearSelectionIfDeleted(String typeName) {
@@ -342,7 +322,8 @@ public class AuthoringController {
         config.collisionRules(),
         config.winCondition(),
         config.loseCondition(),
-        config.currentLevelIndex()
+        config.currentLevelIndex(),
+        config.respawnableEntities()
     );
 
     populateModelFromConfig(fixedConfig, projectFolder);

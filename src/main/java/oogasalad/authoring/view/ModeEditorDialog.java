@@ -3,20 +3,17 @@ package oogasalad.authoring.view;
 import java.io.File;
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import oogasalad.authoring.view.mainView.AlertUtil;
 import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
@@ -176,7 +173,8 @@ public class ModeEditorDialog {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle(LanguageManager.getMessage("CHOOSE_IMAGE"));
     fileChooser.getExtensionFilters().add(
-        new FileChooser.ExtensionFilter(LanguageManager.getMessage("IMAGE_FILES"), "*.png", "*.jpg", "*.jpeg", "*.gif")
+        new FileChooser.ExtensionFilter(LanguageManager.getMessage("IMAGE_FILES"), "*.png", "*.jpg",
+            "*.jpeg", "*.gif")
     );
 
     File file = fileChooser.showOpenDialog(getOwnerWindow());
@@ -246,7 +244,6 @@ public class ModeEditorDialog {
         animationSpeed
     );
   }
-
 
 
 }

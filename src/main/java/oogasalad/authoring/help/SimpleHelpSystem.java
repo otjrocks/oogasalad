@@ -11,8 +11,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import oogasalad.authoring.controller.AuthoringController;
-import oogasalad.authoring.view.mainView.AuthoringView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,11 +34,9 @@ public class SimpleHelpSystem {
   /**
    * Constructs a simple help system.
    *
-   * @param controller   the authoring controller
-   * @param view         the authoring view
    * @param primaryStage the main application window
    */
-  public SimpleHelpSystem(AuthoringController controller, AuthoringView view, Stage primaryStage) {
+  public SimpleHelpSystem(Stage primaryStage) {
     this.primaryStage = primaryStage;
     initializeHelpSlides();
   }
@@ -142,12 +138,15 @@ public class SimpleHelpSystem {
     // Update navigation buttons
     prevButton.setDisable(currentSlideIndex == 0);
     nextButton.setDisable(currentSlideIndex == helpSlides.size() - 1);
-    nextButton.setText(currentSlideIndex == helpSlides.size() - 1 ? LanguageManager.getMessage("CLOSE") : LanguageManager.getMessage("NEXT"));
+    nextButton.setText(
+        currentSlideIndex == helpSlides.size() - 1 ? LanguageManager.getMessage("CLOSE")
+            : LanguageManager.getMessage("NEXT"));
 
     // Update slide number
 
-    slideNumberLabel.setText(String.format(LanguageManager.getMessage("SLIDE_NUMBER"), currentSlideIndex + 1,
-        helpSlides.size()));
+    slideNumberLabel.setText(
+        String.format(LanguageManager.getMessage("SLIDE_NUMBER"), currentSlideIndex + 1,
+            helpSlides.size()));
   }
 
   private void showPreviousSlide() {
@@ -326,5 +325,7 @@ public class SimpleHelpSystem {
             null
         )
     );
+    HelpSlideContent helpSlideContent = new HelpSlideContent();
+    helpSlides = helpSlideContent.getHelpSlides();
   }
 }

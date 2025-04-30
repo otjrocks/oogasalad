@@ -23,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ScoreBasedSpawnEventStrategyTest {
+
   // ChatGPT helped in generating these tests.
   private ScoreBasedSpawnEventStrategy strategy;
 
@@ -31,7 +32,8 @@ class ScoreBasedSpawnEventStrategyTest {
         new EntityBasedConditionRecord("dot"), new LivesBasedConditionRecord(), new HashSet<>());
     GameStateInterface state = new GameState(gameSettings);
     state.updateScore(score);
-    return new GameContextRecord(new GameInputManager(new Scene(new Pane()), new Group()), new GameMap(10, 10), state);
+    return new GameContextRecord(new GameInputManager(new Scene(new Pane()), new Group()),
+        new GameMap(10, 10), state);
   }
 
   private SpawnEventRecord spawnEventWithParams(String amountValue, boolean forSpawn) {
@@ -65,7 +67,8 @@ class ScoreBasedSpawnEventStrategyTest {
   @Test
   void shouldSpawn_missingAmountParam_returnsFalse() {
     SpawnEventRecord spawnEvent = new SpawnEventRecord(null,
-        new ConditionRecord("Score", Map.of()), 0, 0, "test", new ConditionRecord("Score", Map.of()));
+        new ConditionRecord("Score", Map.of()), 0, 0, "test",
+        new ConditionRecord("Score", Map.of()));
     GameContextRecord context = contextWithScore(999);
     assertFalse(strategy.shouldSpawn(spawnEvent, context));
   }
@@ -94,7 +97,8 @@ class ScoreBasedSpawnEventStrategyTest {
   @Test
   void shouldDespawn_missingAmountParam_returnsFalse() {
     SpawnEventRecord spawnEvent = new SpawnEventRecord(null,
-        new ConditionRecord("Score", Map.of()), 0, 0, "test", new ConditionRecord("Score", Map.of()));
+        new ConditionRecord("Score", Map.of()), 0, 0, "test",
+        new ConditionRecord("Score", Map.of()));
     GameContextRecord context = contextWithScore(999);
     assertFalse(strategy.shouldDespawn(spawnEvent, context));
   }

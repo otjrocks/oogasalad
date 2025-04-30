@@ -42,8 +42,10 @@ class ConstantsManagerTest {
   @Test
   void getMessage_ValidKeys_CheckAllFolders() {
     try {
-      Assertions.assertEquals("core/assets/", ConstantsManager.getMessage("Config", "ASSETS_FOLDER"));
-      Assertions.assertEquals("core/entities/", ConstantsManager.getMessage("Config", "ENTITIES_FOLDER"));
+      Assertions.assertEquals("core/assets/",
+          ConstantsManager.getMessage("Config", "ASSETS_FOLDER"));
+      Assertions.assertEquals("core/entities/",
+          ConstantsManager.getMessage("Config", "ENTITIES_FOLDER"));
       Assertions.assertEquals("core/maps/", ConstantsManager.getMessage("Config", "MAPS_FOLDER"));
       Assertions.assertEquals("saves/", ConstantsManager.getMessage("Config", "SAVES_FOLDER"));
     } catch (ConstantsManagerException e) {

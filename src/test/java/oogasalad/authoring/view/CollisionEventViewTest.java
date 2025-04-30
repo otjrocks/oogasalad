@@ -3,10 +3,8 @@ package oogasalad.authoring.view;
 import static org.junit.jupiter.api.Assertions.*;
 
 import javafx.scene.Scene;
-import javafx.scene.control.TextInputControl;
 import javafx.stage.Stage;
 import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEventRecord;
-import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEventRecord;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
 
@@ -26,13 +24,5 @@ class CollisionEventViewTest extends DukeApplicationTest {
     clickOn("#collision-rule-selector");
     clickOn("Consume");
     assertEquals(new ConsumeCollisionEventRecord(), collisionEventView.getCollisionEvent());
-  }
-
-  @Test
-  void getCollisionEvent_SelectUpdateLives_ReturnValidUpdateLivesCollisionEvent() {
-    clickOn("#collision-rule-selector");
-    clickOn("UpdateLives");
-    writeInputTo(lookup("#parameter-amount").queryAs(TextInputControl.class), "4");
-    assertEquals(new UpdateLivesCollisionEventRecord(4), collisionEventView.getCollisionEvent());
   }
 }

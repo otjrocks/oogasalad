@@ -5,25 +5,24 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
+import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
+import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
 import oogasalad.engine.records.config.model.losecondition.LivesBasedConditionRecord;
 import oogasalad.engine.records.config.model.wincondition.EntityBasedConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
 import oogasalad.player.model.Entity;
 import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.GameStateInterface;
-import oogasalad.player.view.GameMapView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,11 +36,13 @@ public class GameMapControllerTest {
   public void setUp() {
     mockGameMap = mock(GameMapInterface.class);
     mockGameState = mock(GameStateInterface.class);
-    GameMapView mockGameView = mock(GameMapView.class);
-    GameContextRecord gameContext = new GameContextRecord(new GameInputManager(new Scene(new Pane()), new Group()), mockGameMap, mockGameState);
+    GameInputManager mockInputManager = mock(GameInputManager.class);
+    GameContextRecord gameContext = new GameContextRecord(mockInputManager, mockGameMap,
+        mockGameState);
 
     ConfigModelRecord mockConfigModel = mock(ConfigModelRecord.class);
-    when(mockConfigModel.winCondition()).thenReturn(new EntityBasedConditionRecord("dot")); // or any WinCondition
+    when(mockConfigModel.winCondition()).thenReturn(
+        new EntityBasedConditionRecord("dot")); // or any WinCondition
     when(mockConfigModel.loseCondition()).thenReturn(new LivesBasedConditionRecord());
 
     controller = new GameMapController(gameContext, mockConfigModel);
@@ -49,14 +50,16 @@ public class GameMapControllerTest {
 
   @Test
   public void updateEntityModels_setVelocityForEntity_entityPositionUpdates() throws Exception {
-    Map<String, ModeConfigRecord> map = new HashMap<>();
-    map.put("Default", new ModeConfigRecord(null, null, null,
-            new ImageConfigRecord(null, null, null, null,
-                    2.0), null));
-    EntityTypeRecord type = new EntityTypeRecord("SomeEntity", map, null);
-    EntityPlacement placement = new EntityPlacement(type, 5, 5, "Default");
+    Map<String, ModeConfigRecord> modes = new HashMap<>();
+    ControlConfigInterface mockControl = new KeyboardControlConfigRecord();
+    ImageConfigRecord image = new ImageConfigRecord("sldha", 1, 1, 1, 1.0);
+    ModeConfigRecord newMode = new ModeConfigRecord("Default", null, mockControl, image, null);
+    modes.put("Default", newMode);
+    EntityTypeRecord data = new EntityTypeRecord("test", modes, new ArrayList<String>());
+    EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
     GameInputManager mockInputManager = mock(GameInputManager.class);
-    Entity entity = new Entity(mockInputManager, placement, mockGameMap, mock(ConfigModelRecord.class));
+    Entity entity = new Entity(mockInputManager, placement, mockGameMap,
+        mock(ConfigModelRecord.class));
     entity.setDx(1);
     entity.setDy(-1);
 

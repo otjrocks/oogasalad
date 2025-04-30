@@ -8,7 +8,8 @@ import oogasalad.player.model.strategies.control.ControlStrategyInterface;
 
 public class KeyboardControlStrategy implements ControlStrategyInterface {
 
-  public KeyboardControlStrategy(GameInputManager input, GameMapInterface map, EntityPlacement placement) {
+  public KeyboardControlStrategy(GameInputManager input, GameMapInterface map,
+      EntityPlacement placement) {
   }
 
   @Override

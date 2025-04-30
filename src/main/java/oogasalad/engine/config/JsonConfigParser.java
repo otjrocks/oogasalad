@@ -6,14 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import oogasalad.engine.config.api.ConfigParserInterface;
@@ -37,7 +34,6 @@ import oogasalad.engine.records.model.ModeChangeEventRecord;
 import oogasalad.engine.utility.ConstantsManager;
 import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LoggingManager;
-import oogasalad.player.model.enums.CheatType;
 
 /**
  * The {@code JsonConfigParser} class is responsible for parsing game configuration files in JSON
@@ -65,7 +61,6 @@ public class JsonConfigParser implements ConfigParserInterface {
   private final ObjectMapper mapper;
   private Map<String, EntityConfigRecord> entityMap;
   private final Map<String, EntityTypeRecord> entityTypeMap = new HashMap<>();
-  private String gameFolderBasePath;
 
 
   private static final String JSON_IDENTIFIER = ".json";
@@ -92,7 +87,7 @@ public class JsonConfigParser implements ConfigParserInterface {
    */
   public ConfigModelRecord loadFromFile(String filepath) throws ConfigException {
 
-    this.gameFolderBasePath = new File(filepath).getParent();
+    String gameFolderBasePath = new File(filepath).getParent();
 
     // Step 1: Load primary game config JSON (e.g., gameConfig.json)
     GameConfigRecord gameConfig = loadGameConfig(filepath);
@@ -132,12 +127,16 @@ public class JsonConfigParser implements ConfigParserInterface {
     List<CollisionRule> collisionRules = convertToCollisionRules(gameConfig);
     WinConditionInterface winCondition = gameConfig.settings().winCondition();
     LoseConditionInterface loseCondition = gameConfig.settings().loseCondition();
+    Map<String, Double> respawnableEntities = new HashMap<>();
+    if (gameConfig.respawnableEntities() != null) {
+      respawnableEntities = gameConfig.respawnableEntities();
+    }
 
     // Step 8: Get current level from gameConfig
     int currentLevel = gameConfig.currentLevelIndex();
     // Step 9: Return the full config model using the first level only for now
     return new ConfigModelRecord(metaData, settings, entityTypes, levels, collisionRules,
-        winCondition, loseCondition, currentLevel);
+        winCondition, loseCondition, currentLevel, respawnableEntities);
   }
 
   private ParsedLevelRecord loadLevelConfig(String filepath) throws ConfigException {
@@ -444,17 +443,41 @@ public class JsonConfigParser implements ConfigParserInterface {
 
       MetadataRecord metadata = parseMetadata(root);
       SettingsRecord defaultSettings = parseDefaultSettings(root);
-      List<LevelRecord> levels = parseLevels(root, defaultSettings);
+      List<LevelRecord> levels = parseLevels(root);
       List<CollisionConfigRecord> collisions = parseCollisions(root);
       JsonNode currentLevelNode = root.get("currentLevelIndex");
       int currentLevelIndex = currentLevelNode != null ? currentLevelNode.asInt() : 0;
-      return new GameConfigRecord(metadata, defaultSettings, levels, collisions,
-          getFolderPath(filepath), currentLevelIndex);
+
+      Map<String, Double> respawnableEntities = parseRespawnableEntities(root);
+
+      return new GameConfigRecord(
+          metadata,
+          defaultSettings,
+          levels,
+          collisions,
+          getFolderPath(filepath),
+          currentLevelIndex,
+          respawnableEntities
+      );
 
     } catch (IOException e) {
       throw new ConfigException("Failed to parse config file: " + filepath, e);
     }
   }
+
+  private Map<String, Double> parseRespawnableEntities(JsonNode root) {
+    Map<String, Double> respawnableEntities = new HashMap<>();
+    JsonNode respawnNode = root.get("respawnableEntities");
+    if (respawnNode != null && respawnNode.isObject()) {
+      Iterator<Map.Entry<String, JsonNode>> fields = respawnNode.fields();
+      while (fields.hasNext()) {
+        Map.Entry<String, JsonNode> entry = fields.next();
+        respawnableEntities.put(entry.getKey(), entry.getValue().asDouble());
+      }
+    }
+    return respawnableEntities;
+  }
+
 
   private MetadataRecord parseMetadata(JsonNode root) throws JsonProcessingException {
     return mapper.treeToValue(root.get("metadata"), MetadataRecord.class);
@@ -464,7 +487,7 @@ public class JsonConfigParser implements ConfigParserInterface {
     return mapper.treeToValue(root.get("defaultSettings"), SettingsRecord.class);
   }
 
-  private List<LevelRecord> parseLevels(JsonNode root, SettingsRecord defaultSettings) {
+  private List<LevelRecord> parseLevels(JsonNode root) {
     List<LevelRecord> levels = new ArrayList<>();
     for (JsonNode levelNode : root.get("levels")) {
       String levelMap = levelNode.get("levelMap").asText();
@@ -574,7 +597,7 @@ public class JsonConfigParser implements ConfigParserInterface {
 
   private EntityPropertiesRecord mergeProperties(String modeName,
       EntityPropertiesRecord defaultProps,
-      JsonNode modeNode) throws JsonProcessingException {
+      JsonNode modeNode) {
     final String BLOCKS = "blocks";
 
     List<String> blocks = modeNode.has(BLOCKS)

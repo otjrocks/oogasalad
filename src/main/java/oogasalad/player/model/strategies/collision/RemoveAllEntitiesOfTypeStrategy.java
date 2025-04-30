@@ -1,7 +1,6 @@
 package oogasalad.player.model.strategies.collision;
 
 import java.util.Iterator;
-import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.records.CollisionContextRecord;
 import oogasalad.player.model.Entity;
 
@@ -24,8 +23,7 @@ public class RemoveAllEntitiesOfTypeStrategy implements CollisionStrategyInterfa
   }
 
   @Override
-  public void handleCollision(CollisionContextRecord collisionContext)
-      throws EntityNotFoundException {
+  public void handleCollision(CollisionContextRecord collisionContext) {
     Iterator<Entity> iterator = collisionContext.gameMap().iterator();
     while (iterator.hasNext()) {
       Entity entity = iterator.next();

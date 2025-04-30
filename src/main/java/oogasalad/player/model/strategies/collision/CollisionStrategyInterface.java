@@ -1,6 +1,7 @@
 package oogasalad.player.model.strategies.collision;
 
 import oogasalad.engine.exceptions.EntityNotFoundException;
+import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.CollisionContextRecord;
 import oogasalad.player.model.Entity;
 import oogasalad.player.model.GameMapInterface;
@@ -46,5 +47,6 @@ public interface CollisionStrategyInterface {
    * @throws EntityNotFoundException if an entity involved in the collision cannot be found in the
    *                                 game map during processing
    */
-  void handleCollision(CollisionContextRecord collisionContext) throws EntityNotFoundException;
+  void handleCollision(CollisionContextRecord collisionContext)
+      throws EntityNotFoundException, InvalidPositionException;
 }
