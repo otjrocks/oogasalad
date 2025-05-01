@@ -21,6 +21,9 @@
 * Angela Predolac
 
 * William He
+  * I worked mainly on implementing the authoring environment and making it consistent with the config data structure.
+I also built configParser and configBuilder, implemented cheat keys, and helped with thinking through how we wanted to implement control strategies. My main contribution
+was importing a file on the authoring environment.
 
 * Luke Fu
 
