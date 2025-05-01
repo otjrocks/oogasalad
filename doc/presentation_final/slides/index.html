@@ -82,7 +82,6 @@
     <section data-auto-animate>
       <h1 data-id="title">Data Files</h1>
     </section>
-
     <section data-auto-animate>
       <section data-auto-animate>
         <h2 data-id="title">Data Files: Game</h2>
@@ -100,38 +99,35 @@
       </section>
       <section data-auto-animate>
         <h3 data-id="title">Game Config</h3>
-        <p data-id="description">
-          <small>data/games/BasicPacMan/gameConfig.json</small>
-        </p>
         <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
-                                            data-line-numbers="2-7|8-25|26-42"><script
+                                            data-line-numbers="2-7|8-25|26-42|22"><script
             type="text/template">
           {
-            "metadata" : {
-              "gameTitle" : "PacMan",
-              "author" : "CS308 Team",
-              "gameDescription" : "Shows different controlTypes with strategyConfig and collision/mode logic.",
-              "image" : "assets/banner.png"
+          "metadata" : {
+            "gameTitle" : "PacMan",
+            "author" : "CS308 Team",
+            "gameDescription" : "Shows different controlTypes with strategyConfig and collision/mode logic.",
+            "image" : "assets/banner.png"
+          },
+          "defaultSettings" : {
+            "gameSpeed" : 1,
+            "startingLives" : 10,
+            "initialScore" : 0,
+            "winCondition" : {
+              "type" : "EntityBased",
+              "entityType" : "dot"
             },
-            "defaultSettings" : {
-              "gameSpeed" : 1,
-              "startingLives" : 10,
-              "initialScore" : 0,
-              "winCondition" : {
-                "type" : "EntityBased",
-                "entityType" : "dot"
-              },
-              "loseCondition" : {
-                "type" : "LivesBased"
-              },
-              "cheatTypes": ["NEXT_LEVEL", "ADD_LIFE", "SPEED_UP", "PAUSE_GAME"]
+            "loseCondition" : {
+              "type" : "LivesBased"
             },
-            "levels" : [ {
-              "levelMap" : "level1"
-              }, {
-              "levelMap" : "level2"
-            } ],
-            "collisions" : [
+            "cheatTypes": ["NEXT_LEVEL", "ADD_LIFE", "SPEED_UP", "PAUSE_GAME"]
+          },
+          "levels" : [ {
+            "levelMap" : "level1"
+            }, {
+            "levelMap" : "level2"
+          } ],
+          "collisions" : [
             ...
             {
               "entityA" : "pacman",
@@ -149,43 +145,166 @@
             ... ]
           }
 			</script></code></pre>
+        <p data-id="description">
+          <small>data/games/BasicPacMan/gameConfig.json</small>
+        </p>
       </section>
+      <!--maybe split this so you can see the tiles on the other side but thats like not needed now at all-->
       <section data-auto-animate>
         <h3 data-id="title">Levels</h3>
+        <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers="2-20|21-25|26-40|41-61|62-78"><script
+            type="text/template">
+          {
+            "entityMappings": [
+              {
+                "entity": "pacman",
+                "id": 1
+              },
+              {
+                "entity": "redghost",
+                "id": 2
+              },
+              {
+                "entity": "blueghost",
+                "id": 3
+              },
+              ...
+              {
+                "entity": "cherry",
+                "id": 8
+              },
+            ],
+            "mapInfo": {
+              "width": 28,
+              "height": 31,
+              "backgroundImagePath": "assets/background.png"
+            },
+            "layout": [
+              ...
+              "5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "0 0 0 0 0 0 0 0 0 0 5 5 0 0 0 0 5 5 0 0 0 0 0 0 0 0 0 0",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 1 0 0 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 5"
+              ...
+            ],
+            "spawnEvents": [
+              {
+                "entityType": "8",
+                "spawnCondition": {
+                  "type": "ScoreBased",
+                  "parameters": {
+                    "amount": 700
+                  }
+                },
+                "x": 13.5,
+                "y": 17,
+                "mode": "Default",
+                "despawnCondition": {
+                  "type": "ScoreBased",
+                  "parameters": {
+                    "amount": 1500
+                  }
+                }
+              },
+              ...
+            ],
+            "modeChangeEvents": [
+              {
+                "entityType": "2",
+                "modeChangeInfo": {
+                  "originalMode": "Default",
+                  "transitionMode": "Scatter",
+                  "revertTime" : 7,
+                  "transitionTime" : 1
+                },
+                "changeCondition": {
+                  "type": "TimeElapsed",
+                  "parameters": {
+                    "amount": 7
+                  }
+                }
+              },
+            ]
+          }
+
+			</script></code></pre>
+        <p data-id="description">
+          <small>data/games/BasicPacMan/core/maps/level1.json</small>
+        </p>
       </section>
+      <!--might break the mode part down into different slides so code on one half and the entity on the other-->
       <section data-auto-animate>
         <h3 data-id="title">Entities</h3>
+        <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers="2-4|7-25|27-44"><script
+            type="text/template">
+        {
+          "entityType": {
+            "name": "BlueGhost"
+          },
+          "modes": [
+            {
+            "name": "Default",
+            "image": {
+              "imagePath": "assets/blueghost.png",
+              "tileWidth": 28,
+              "tileHeight": 28,
+              "tilesToCycle": 4,
+              "animationSpeed": 5.0
+            },
+            "controlConfig": {
+              "controlStrategy": "Target",
+              "pathFindingStrategy": "Euclidean",
+              "targetCalculationConfig": {
+                "targetCalculationStrategy": "TargetEntityWithTrap",
+                "targetType": "Pacman",
+                "tilesAhead": 2,
+                "teamEntityType": "PinkGhost"
+              }
+            },
+            "movementSpeed": 1.0
+            }, {
+              "name": "Frightened",
+              "image": {
+                "imagePath": "assets/frightenedghost.png",
+                "tileWidth": 28,
+                "tileHeight": 28,
+                "tilesToCycle": 4,
+                "animationSpeed": 1.0
+              },
+              "controlConfig": {
+                "controlStrategy": "Target",
+                "pathFindingStrategy": "Random",
+                "targetCalculationConfig": {
+                  "targetCalculationStrategy": "TargetLocation",
+                  "targetX": 14,
+                  "targetY": 14
+                }
+              },
+              "movementSpeed": 1.0
+            },
+            ...
+          ]
+        }
+
+			</script></code></pre>
         <p data-id="description">
-          <small
-          >Created by
-            <a
-            >Ishan Madan, Owen Jennings, Jessica Chen, Angela Predolac,
-              William He, Luke Fu, Austin Huang, Troy Ludwig</a
-            ></small
-          >
+          <small>data/games/BasicPacMan/core/entities/blueghost.json</small>
         </p>
       </section>
       <section data-auto-animate>
         <h2 data-id="title">Data Files: Resource Files</h2>
         <p data-id="description">
           <small
-          >Created by
-            <a
-            >Ishan Madan, Owen Jennings, Jessica Chen, Angela Predolac,
-              William He, Luke Fu, Austin Huang, Troy Ludwig</a
-            ></small
-          >
-        </p>
-      </section>
-      <section data-auto-animate>
-        <h3 data-id="title">Language Files</h3>
-        <p data-id="description">
-          <small
-          >Created by
-            <a
-            >Ishan Madan, Owen Jennings, Jessica Chen, Angela Predolac,
-              William He, Luke Fu, Austin Huang, Troy Ludwig</a
-            ></small
+          >Internal resources used.</small
           >
         </p>
       </section>
@@ -193,11 +312,23 @@
         <h3 data-id="title">Theme Files</h3>
         <p data-id="description">
           <small
-          >Created by
-            <a
-            >Ishan Madan, Owen Jennings, Jessica Chen, Angela Predolac,
-              William He, Luke Fu, Austin Huang, Troy Ludwig</a
-            ></small
+          >src/main/resources/oogasalad/themes || src/main/resources/oogasalad/styles.css</small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h3 data-id="title">Language Files</h3>
+        <p data-id="description">
+          <small
+          >src/main/resources/oogasalad/languages</small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h3 data-id="title">Help Json</h3>
+        <p data-id="description">
+          <small
+          >data/helpslides.json</small
           >
         </p>
       </section>
