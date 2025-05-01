@@ -2,7 +2,7 @@
   "metadata" : {
     "gameTitle" : "Cookie Collector",
     "author" : "Luke Fu",
-    "gameDescription" : "Collect the cookies and buy power ups",
+    "gameDescription" : "\nThe cookie factory is producing too many cookies! \nUse arrows to collect the cookies to earn points. \nCollecting chocolate costs 200 and upgrades cookies to chocolate chip cookies. \nThe chef hat costs 500 and trains the helper baker to be able to collect cookies.",
     "image" : "assets/banner.png"
   },
   "defaultSettings" : {
