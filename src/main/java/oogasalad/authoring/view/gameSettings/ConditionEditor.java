@@ -100,6 +100,15 @@ public class ConditionEditor {
   }
 
   /**
+   * Returns the value entered for the selected lose condition.
+   *
+   * @return the lose condition value as a String
+   */
+  public String getLoseValue() {
+    return loseValueField.getText();
+  }
+
+  /**
    * Returns the currently selected lose condition type.
    *
    * @return the lose condition type as a String
@@ -159,7 +168,7 @@ public class ConditionEditor {
    */
   public LoseConditionInterface createSelectedLoseCondition() {
     String selectedType = getSelectedLoseCondition();
-    String value = getWinValue();
+    String value = getLoseValue();
 
     Class<?> clazz = loseConditions.get(selectedType);
     if (clazz == null) {
