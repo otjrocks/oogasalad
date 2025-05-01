@@ -1,6 +1,7 @@
 package oogasalad.authoring.view.gameSettings;
 
 import java.lang.reflect.Constructor;
+
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -28,167 +29,173 @@ import java.util.Map;
  */
 public class ConditionEditor {
 
-  private final ComboBox<String> winConditionDropdown;
-  private final ComboBox<String> loseConditionDropdown;
-  private final TextField winValueField;
-  private final TextField loseValueField;
-  private final GridPane root;
+    private final ComboBox<String> winConditionDropdown;
+    private final ComboBox<String> loseConditionDropdown;
+    private final TextField winValueField;
+    private final TextField loseValueField;
+    private final GridPane root;
 
-  private final Map<String, Class<?>> winConditions;
-  private final Map<String, Class<?>> loseConditions;
+    private final Map<String, Class<?>> winConditions;
+    private final Map<String, Class<?>> loseConditions;
 
-  /**
-   * Constructs a ConditionEditor given mappings of available win and lose conditions.
-   *
-   * @param winConditions  map of win condition names to their Class types
-   * @param loseConditions map of lose condition names to their Class types
-   */
-  public ConditionEditor(Map<String, Class<?>> winConditions,
-      Map<String, Class<?>> loseConditions) {
-    this.winConditions = winConditions;
-    this.loseConditions = loseConditions;
+    /**
+     * Constructs a ConditionEditor given mappings of available win and lose conditions.
+     *
+     * @param winConditions  map of win condition names to their Class types
+     * @param loseConditions map of lose condition names to their Class types
+     */
+    public ConditionEditor(Map<String, Class<?>> winConditions,
+                           Map<String, Class<?>> loseConditions) {
+        this.winConditions = winConditions;
+        this.loseConditions = loseConditions;
 
-    root = new GridPane();
-    root.setHgap(10);
-    root.setVgap(10);
-    root.setPadding(new Insets(10));
+        root = new GridPane();
+        root.setHgap(10);
+        root.setVgap(10);
+        root.setPadding(new Insets(10));
 
-    winConditionDropdown = new ComboBox<>(
-        FXCollections.observableArrayList(winConditions.keySet()));
-    loseConditionDropdown = new ComboBox<>(
-        FXCollections.observableArrayList(loseConditions.keySet()));
+        winConditionDropdown = new ComboBox<>(
+                FXCollections.observableArrayList(winConditions.keySet()));
+        loseConditionDropdown = new ComboBox<>(
+                FXCollections.observableArrayList(loseConditions.keySet()));
 
-    winValueField = new TextField();
-    loseValueField = new TextField();
+        winValueField = new TextField();
+        loseValueField = new TextField();
 
-    root.add(new Label(LanguageManager.getMessage("WIN_CONDITION_TYPE")), 0, 0);
-    root.add(winConditionDropdown, 1, 0);
-    root.add(new Label(LanguageManager.getMessage("WIN_CONDITION_VALUE")), 2, 0);
-    root.add(winValueField, 3, 0);
+        root.add(new Label(LanguageManager.getMessage("WIN_CONDITION_TYPE")), 0, 0);
+        root.add(winConditionDropdown, 1, 0);
+        root.add(new Label(LanguageManager.getMessage("WIN_CONDITION_VALUE")), 2, 0);
+        root.add(winValueField, 3, 0);
 
-    root.add(new Label(LanguageManager.getMessage("LOSE_CONDITION_TYPE")), 0, 1);
-    root.add(loseConditionDropdown, 1, 1);
-    root.add(new Label(LanguageManager.getMessage("LOSE_CONDITION_VALUE")), 2, 1);
-    root.add(loseValueField, 3, 1);
-  }
-
-  /**
-   * Returns the root Node containing the condition selection UI.
-   *
-   * @return the Node representing the editor layout
-   */
-  public Node getNode() {
-    return root;
-  }
-
-  /**
-   * Returns the currently selected win condition type.
-   *
-   * @return the win condition type as a String
-   */
-  public String getSelectedWinCondition() {
-    return winConditionDropdown.getValue();
-  }
-
-  /**
-   * Returns the value entered for the selected win condition.
-   *
-   * @return the win condition value as a String
-   */
-  public String getWinValue() {
-    return winValueField.getText();
-  }
-
-  /**
-   * Returns the value entered for the selected lose condition.
-   *
-   * @return the lose condition value as a String
-   */
-  public String getLoseValue() {
-    return loseValueField.getText();
-  }
-
-  /**
-   * Returns the currently selected lose condition type.
-   *
-   * @return the lose condition type as a String
-   */
-  public String getSelectedLoseCondition() {
-    return loseConditionDropdown.getValue();
-  }
-
-  /**
-   * Updates the selected condition types and associated values.
-   *
-   * @param conditionState Condition state with all values
-   */
-  public void update(ConditionState conditionState) throws ViewException {
-    winConditionDropdown.setValue(conditionState.winType());
-    winValueField.setText(conditionState.winValue());
-    loseConditionDropdown.setValue(conditionState.loseType());
-    loseValueField.setText(conditionState.loseValue());
-  }
-
-  /**
-   * Creates a WinConditionInterface instance based on the user's selection and value input.
-   *
-   * @return the constructed WinConditionInterface
-   * @throws ViewException if reflection instantiation fails
-   */
-  public WinConditionInterface createSelectedWinCondition() {
-    String selectedType = getSelectedWinCondition();
-    String value = getWinValue();
-
-    Class<?> clazz = winConditions.get(selectedType);
-    if (clazz == null) {
-      return null; // fallback
+        root.add(new Label(LanguageManager.getMessage("LOSE_CONDITION_TYPE")), 0, 1);
+        root.add(loseConditionDropdown, 1, 1);
+        root.add(new Label(LanguageManager.getMessage("LOSE_CONDITION_VALUE")), 2, 1);
+        root.add(loseValueField, 3, 1);
     }
 
-    try {
-      Constructor<?> intConstructor = clazz.getConstructor(int.class);
-      int intValue = Integer.parseInt(value);
-      return (WinConditionInterface) intConstructor.newInstance(intValue);
-    } catch (NoSuchMethodException e) {
-      // Maybe it's a String constructor instead
-      try {
-        Constructor<?> stringConstructor = clazz.getConstructor(String.class);
-        return (WinConditionInterface) stringConstructor.newInstance(value);
-      } catch (Exception ex) {
-        throw new ViewException(ex.getMessage());
-      }
-    } catch (Exception e) {
-      throw new ViewException(e.getMessage());
-    }
-  }
-
-  /**
-   * Creates a LoseConditionInterface instance based on the user's selection.
-   *
-   * @return the constructed LoseConditionInterface, or null if creation fails
-   */
-  public LoseConditionInterface createSelectedLoseCondition() {
-    String selectedType = getSelectedLoseCondition();
-    String value = getLoseValue();
-
-    Class<?> clazz = loseConditions.get(selectedType);
-    if (clazz == null) {
-      return null; // fallback
+    /**
+     * Returns the root Node containing the condition selection UI.
+     *
+     * @return the Node representing the editor layout
+     */
+    public Node getNode() {
+        return root;
     }
 
-    try {
-      Constructor<?> intConstructor = clazz.getConstructor(int.class);
-      int intValue = Integer.parseInt(value);
-      return (LoseConditionInterface) intConstructor.newInstance(intValue);
-    } catch (NoSuchMethodException e) {
-      // Maybe it's a String constructor instead
-      try {
-        Constructor<?> stringConstructor = clazz.getConstructor(String.class);
-        return (LoseConditionInterface) stringConstructor.newInstance(value);
-      } catch (Exception ex) {
-        throw new ViewException(ex.getMessage());
-      }
-    } catch (Exception e) {
-      throw new ViewException(e.getMessage());
+    /**
+     * Returns the currently selected win condition type.
+     *
+     * @return the win condition type as a String
+     */
+    public String getSelectedWinCondition() {
+        return winConditionDropdown.getValue();
     }
-  }
+
+    /**
+     * Returns the value entered for the selected win condition.
+     *
+     * @return the win condition value as a String
+     */
+    public String getWinValue() {
+        return winValueField.getText();
+    }
+
+    /**
+     * Returns the value entered for the selected lose condition.
+     *
+     * @return the lose condition value as a String
+     */
+    public String getLoseValue() {
+        return loseValueField.getText();
+    }
+
+    /**
+     * Returns the currently selected lose condition type.
+     *
+     * @return the lose condition type as a String
+     */
+    public String getSelectedLoseCondition() {
+        return loseConditionDropdown.getValue();
+    }
+
+    /**
+     * Updates the selected condition types and associated values.
+     *
+     * @param conditionState Condition state with all values
+     */
+    public void update(ConditionState conditionState) throws ViewException {
+        winConditionDropdown.setValue(conditionState.winType());
+        winValueField.setText(conditionState.winValue());
+        loseConditionDropdown.setValue(conditionState.loseType());
+        loseValueField.setText(conditionState.loseValue());
+    }
+
+    /**
+     * Creates a WinConditionInterface instance based on the user's selection and value input.
+     *
+     * @return the constructed WinConditionInterface
+     * @throws ViewException if reflection instantiation fails
+     */
+    public WinConditionInterface createSelectedWinCondition() {
+        String selectedType = getSelectedWinCondition();
+        String value = getWinValue();
+
+        Class<?> clazz = winConditions.get(selectedType);
+        if (clazz == null) {
+            return null; // fallback
+        }
+
+        try {
+            Constructor<?> intConstructor = clazz.getConstructor(int.class);
+            int intValue = Integer.parseInt(value);
+            return (WinConditionInterface) intConstructor.newInstance(intValue);
+        } catch (NoSuchMethodException e) {
+            // Maybe it's a String constructor instead
+            try {
+                Constructor<?> stringConstructor = clazz.getConstructor(String.class);
+                return (WinConditionInterface) stringConstructor.newInstance(value);
+            } catch (Exception ex) {
+                throw new ViewException(ex.getMessage());
+            }
+        } catch (Exception e) {
+            throw new ViewException(e.getMessage());
+        }
+    }
+
+    /**
+     * Creates a LoseConditionInterface instance based on the user's selection.
+     *
+     * @return the constructed LoseConditionInterface, or null if creation fails
+     */
+    public LoseConditionInterface createSelectedLoseCondition() {
+        String selectedType = getSelectedLoseCondition();
+        String value = getLoseValue();
+
+        Class<?> clazz = loseConditions.get(selectedType);
+        if (clazz == null) {
+            return null; // fallback
+        }
+
+        try {
+            Constructor<?> intConstructor = clazz.getConstructor(int.class);
+            int intValue = Integer.parseInt(value);
+            return (LoseConditionInterface) intConstructor.newInstance(intValue);
+        } catch (NoSuchMethodException e) {
+            try {
+                Constructor<?> stringConstructor = clazz.getConstructor(String.class);
+                return (LoseConditionInterface) stringConstructor.newInstance(value);
+            } catch (NoSuchMethodException ex) {
+                try {
+                    Constructor<?> noArgConstructor = clazz.getConstructor();
+                    return (LoseConditionInterface) noArgConstructor.newInstance();
+                } catch (Exception exc) {
+                    throw new ViewException(exc.getMessage());
+                }
+            } catch (Exception ex) {
+                throw new ViewException(ex.getMessage());
+            }
+        } catch (Exception e) {
+            throw new ViewException(e.getMessage());
+        }
+    }
 }
