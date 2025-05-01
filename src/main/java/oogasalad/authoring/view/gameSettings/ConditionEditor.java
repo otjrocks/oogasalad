@@ -173,29 +173,46 @@ public class ConditionEditor {
 
         Class<?> clazz = loseConditions.get(selectedType);
         if (clazz == null) {
-            return null; // fallback
+            return null;
         }
 
-        try {
-            Constructor<?> intConstructor = clazz.getConstructor(int.class);
-            int intValue = Integer.parseInt(value);
-            return (LoseConditionInterface) intConstructor.newInstance(intValue);
-        } catch (NoSuchMethodException e) {
+        // Try constructors in preferred order
+        for (ConstructorAttempt attempt : ConstructorAttempt.values()) {
             try {
-                Constructor<?> stringConstructor = clazz.getConstructor(String.class);
-                return (LoseConditionInterface) stringConstructor.newInstance(value);
-            } catch (NoSuchMethodException ex) {
-                try {
-                    Constructor<?> noArgConstructor = clazz.getConstructor();
-                    return (LoseConditionInterface) noArgConstructor.newInstance();
-                } catch (Exception exc) {
-                    throw new ViewException(exc.getMessage());
-                }
-            } catch (Exception ex) {
-                throw new ViewException(ex.getMessage());
+                return attempt.construct(clazz, value);
+            } catch (ReflectiveOperationException ignored) {
+                // Try the next one
             }
-        } catch (Exception e) {
-            throw new ViewException(e.getMessage());
         }
+
+        throw new ViewException("No suitable constructor found for " + selectedType);
     }
+
+    // Enum to encapsulate each constructor strategy
+    private enum ConstructorAttempt {
+        INT {
+            @Override
+            LoseConditionInterface construct(Class<?> clazz, String value) throws ReflectiveOperationException {
+                Constructor<?> constructor = clazz.getConstructor(int.class);
+                return (LoseConditionInterface) constructor.newInstance(Integer.parseInt(value));
+            }
+        },
+        STRING {
+            @Override
+            LoseConditionInterface construct(Class<?> clazz, String value) throws ReflectiveOperationException {
+                Constructor<?> constructor = clazz.getConstructor(String.class);
+                return (LoseConditionInterface) constructor.newInstance(value);
+            }
+        },
+        NO_ARG {
+            @Override
+            LoseConditionInterface construct(Class<?> clazz, String value) throws ReflectiveOperationException {
+                Constructor<?> constructor = clazz.getConstructor();
+                return (LoseConditionInterface) constructor.newInstance();
+            }
+        };
+
+        abstract LoseConditionInterface construct(Class<?> clazz, String value) throws ReflectiveOperationException;
+    }
+
 }
