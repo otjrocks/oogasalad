@@ -86,9 +86,7 @@
       <section data-auto-animate>
         <h2 data-id="title">Data Files: Game</h2>
         <p data-id="description">
-          <small
-          >User created data files that are games run by the game player.</small
-          >
+          User created data files that are games run by the game player.
         </p>
       </section>
       <section data-auto-animate>
@@ -303,13 +301,46 @@
       <section data-auto-animate>
         <h2 data-id="title">Data Files: Resource Files</h2>
         <p data-id="description">
-          <small
-          >Internal resources used.</small
-          >
+          Internal resources used.
         </p>
       </section>
       <section data-auto-animate>
         <h3 data-id="title">Theme Files</h3>
+        <div class="r-hstack justify-center">
+          <div style="width: 45%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim><script
+              type="text/template">
+            * {
+              -fx-primary: rgb(0, 0, 64);
+              -fx-secondary: rgb(255, 255, 255);
+              -fx-highlight: rgb(45, 45, 158);
+              -fx-warning: rgb(251, 80, 80);
+              -fx-accent: rgb(41, 159, 255);
+            }
+            </script></code></pre>
+          </div>
+          <div style="width: 45%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                    ><script
+              type="text/template">
+              .root {
+                -fx-font-family: "Inter";
+                -fx-font-size: 14px;
+                -fx-background-color: -fx-primary;
+                -fx-text-fill: -fx-secondary;
+              }
+
+              .center-root {
+                -fx-background-color: -fx-primary;
+                -fx-alignment: center;
+                -fx-text-alignment: center;
+              }
+
+              Label, Text {
+                -fx-fill: -fx-secondary;
+                -fx-text-fill: -fx-secondary;
+              }
+            </script></code></pre>
+          </div>
+        </div>
         <p data-id="description">
           <small
           >src/main/resources/oogasalad/themes || src/main/resources/oogasalad/styles.css</small
@@ -318,6 +349,51 @@
       </section>
       <section data-auto-animate>
         <h3 data-id="title">Language Files</h3>
+        <div class="r-hstack justify-center">
+          <div style="width: 30%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers="4"><script
+              type="text/template">
+            MISSING_KEY=Missing key
+            TITLE=Pac-Man
+            LANGUAGE_SELECTOR_TITLE=Select a language:
+            GAME_PLAYER=Game Player
+            AUTHORING_ENVIRONMENT=Authoring Environment
+            CONFIGURATION=Configuration
+            SCORE_LABEL=Score: %s
+            HIGH_SCORE_LABEL=High Score: %s
+            LIVES_LABEL=Lives: %s
+            </script></code></pre>
+          </div>
+          <div style="width: 30%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers="4-5"
+          ><script
+              type="text/template">
+              MISSING_KEY=Clave faltante
+              TITLE=Pac-Man
+              LANGUAGE_SELECTOR_TITLE=Selecciona un idioma:
+              GAME_PLAYER=Jugador del Juego
+              AUTHORING_ENVIRONMENT=Entorno de Creación
+              CONFIGURATION=Configuración
+              SCORE_LABEL=Puntuación: %s
+              HIGH_SCORE_LABEL=Puntuación más alta: %s
+              LIVES_LABEL=Vidas: %s
+            </script></code></pre>
+          </div>
+          <div style="width: 30%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers="4"><script
+              type="text/template">
+            MISSING_KEY=Chiave mancante
+            TITLE=Pac-Man: Versione Italiano
+            LANGUAGE_SELECTOR_TITLE=Seleziona una lingua:
+            GAME_PLAYER=Giocatore
+            AUTHORING_ENVIRONMENT=Ambiente di Autore
+            CONFIGURATION=Configurazione
+            SCORE_LABEL=Punteggio: %s
+            HIGH_SCORE_LABEL=Punteggio Massimo: %s
+            LIVES_LABEL=Vite: %s
+            </script></code></pre>
+          </div>
+        </div>
         <p data-id="description">
           <small
           >src/main/resources/oogasalad/languages</small
@@ -326,6 +402,38 @@
       </section>
       <section data-auto-animate>
         <h3 data-id="title">Help Json</h3>
+        <div class="r-hstack justify-center">
+          <div style="width: 45%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers="4"><script
+              type="text/template">
+            {
+              "slides": [
+              {
+                "key": "WELCOME",
+                "image": "pacman-gaming.gif"
+              },
+              {
+                "key": "OVERVIEW",
+                "image": "pacman-gaming.gif"
+              },
+              ...
+              ]
+            }
+            </script></code></pre>
+          </div>
+          <div style="width: 45%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers="4-5"
+          ><script
+              type="text/template">
+              INFO_DIALOG_MESSAGE=Author: %s%n%n%nDescription: %s
+              THEME_SELECTOR_TITLE=Theme:
+              # Help Guide Messages
+              WELCOME_TITLE=Welcome to the Game Authoring Environment
+              WELCOME_CONTENT=This help guide will walk you through the main features of the authoring environment and how to create your own games.
+              OVERVIEW_TITLE=Overview
+            </script></code></pre>
+          </div>
+        </div>
         <p data-id="description">
           <small
           >data/helpslides.json</small
