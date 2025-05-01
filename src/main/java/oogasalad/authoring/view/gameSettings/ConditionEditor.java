@@ -188,8 +188,15 @@ public class ConditionEditor {
         throw new ViewException("No suitable constructor found for " + selectedType);
     }
 
-    // Enum to encapsulate each constructor strategy
+    /**
+     * Enum representing different strategies to instantiate a LoseConditionInterface.
+     * Each constant attempts to construct an instance using a specific constructor signature.
+     */
     private enum ConstructorAttempt {
+
+        /**
+         * Tries to use a constructor that takes an int parameter.
+         */
         INT {
             @Override
             LoseConditionInterface construct(Class<?> clazz, String value) throws ReflectiveOperationException {
@@ -197,6 +204,10 @@ public class ConditionEditor {
                 return (LoseConditionInterface) constructor.newInstance(Integer.parseInt(value));
             }
         },
+
+        /**
+         * Tries to use a constructor that takes a String parameter.
+         */
         STRING {
             @Override
             LoseConditionInterface construct(Class<?> clazz, String value) throws ReflectiveOperationException {
@@ -204,6 +215,10 @@ public class ConditionEditor {
                 return (LoseConditionInterface) constructor.newInstance(value);
             }
         },
+
+        /**
+         * Tries to use a no-argument constructor.
+         */
         NO_ARG {
             @Override
             LoseConditionInterface construct(Class<?> clazz, String value) throws ReflectiveOperationException {
@@ -212,7 +227,16 @@ public class ConditionEditor {
             }
         };
 
+        /**
+         * Attempts to instantiate a LoseConditionInterface using the appropriate constructor.
+         *
+         * @param clazz the class to instantiate
+         * @param value the value to pass to the constructor
+         * @return a new instance of LoseConditionInterface
+         * @throws ReflectiveOperationException if instantiation fails
+         */
         abstract LoseConditionInterface construct(Class<?> clazz, String value) throws ReflectiveOperationException;
     }
+
 
 }
