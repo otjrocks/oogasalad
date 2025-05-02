@@ -10,7 +10,7 @@
     "initialScore" : 0,
     "winCondition" : {
       "type" : "EntityBased",
-      "entityType" : "Cherry"
+      "entityType" : "cherry"
     },
     "loseCondition" : {
       "type" : "LivesBased"

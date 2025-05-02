@@ -9,8 +9,8 @@
       "imagePath" : "assets/portal_orange.png",
       "tileWidth" : 1024,
       "tileHeight" : 1024,
-      "tilesToCycle" : 6,
-      "animationSpeed" : 5.0
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
     },
     "controlConfig" : {
       "controlStrategy" : "None"
