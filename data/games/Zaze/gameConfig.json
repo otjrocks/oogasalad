@@ -2,7 +2,8 @@
   "metadata" : {
     "gameTitle" : "PacMaze",
     "author" : "Austin Huang",
-    "gameDescription" : "Pacman must find dot within a certain time"
+    "gameDescription" : "Pacman must find dot within a certain time",
+    "image" : "assets/banner.png"
   },
   "defaultSettings" : {
     "gameSpeed" : 1.0,

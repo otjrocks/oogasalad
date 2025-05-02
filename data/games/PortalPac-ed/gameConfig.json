@@ -2,7 +2,8 @@
   "metadata" : {
     "gameTitle" : "Portal Pac-ed",
     "author" : "Angela Predolac",
-    "gameDescription" : "A twist on classic Pac-Man where Pac-Man and ghosts can teleport through portals scattered around the maze. Portals appear and disappear over time, creating an ever-changing maze experience!"
+    "gameDescription" : "A twist on classic Pac-Man where Pac-Man and ghosts can teleport through portals scattered around the maze. Portals appear and disappear over time, creating an ever-changing maze experience!",
+    "image" : "assets/banner.png"
   },
   "defaultSettings" : {
     "gameSpeed" : 1.0,
