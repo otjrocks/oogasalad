@@ -1,0 +1,150 @@
+{
+  "metadata" : {
+    "gameTitle" : "Play as Ghost",
+    "author" : "Ishan Madan",
+    "gameDescription" : "Play as the ghost and kill PacMan"
+  },
+  "defaultSettings" : {
+    "gameSpeed" : 1.0,
+    "startingLives" : 10,
+    "initialScore" : 0,
+    "winCondition" : {
+      "type" : "EntityBased",
+      "entityType" : "dot"
+    },
+    "loseCondition" : {
+      "type" : "LivesBased"
+    },
+    "cheatTypes" : [ "SPEED_UP", "ADD_LIFE", "PAUSE_GAME", "NEXT_LEVEL" ]
+  },
+  "levels" : [ {
+    "levelMap" : "level1"
+  }, {
+    "levelMap" : "level2"
+  } ],
+  "collisions" : [ {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Wall",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Dot",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 10
+    } ],
+    "eventsB" : [ {
+      "type" : "Consume"
+    } ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Cherry",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 100
+    } ],
+    "eventsB" : [ {
+      "type" : "Consume"
+    } ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Strawberry",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 300
+    } ],
+    "eventsB" : [ {
+      "type" : "Consume"
+    } ]
+  }, {
+    "entityA" : "PinkGhost",
+    "modeA" : "Default",
+    "entityB" : "Wall",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "PinkGhost",
+    "modeA" : "Frightened",
+    "entityB" : "Wall",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "PinkGhost",
+    "modeA" : "Flashing",
+    "entityB" : "Wall",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "PinkGhost",
+    "modeA" : "Dead",
+    "entityB" : "Wall",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "PowerPellet",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 10
+    }, {
+      "type" : "ChangeModeForType",
+      "entityType" : "PinkGhost",
+      "newMode" : "Frightened"
+    } ],
+    "eventsB" : [ {
+      "type" : "Consume"
+    } ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "PinkGhost",
+    "modeB" : "Frightened",
+    "eventsA" : [ ],
+    "eventsB" : [ {
+      "type" : "ChangeModeForType",
+      "entityType" : "PinkGhost",
+      "newMode" : "Dead"
+    } ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "PinkGhost",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "ReturnToSpawnLocation"
+    }, {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ {
+      "type" : "ChangeModeForType",
+      "entityType" : "PinkGhost",
+      "newMode" : "Dead"
+    } ]
+  } ]
+}
