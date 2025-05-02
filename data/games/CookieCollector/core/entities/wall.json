@@ -1,15 +1,16 @@
 {
   "entityType" : {
     "name" : "wall",
-    "blocks" : [ "player" ]
+    "blocks" : [ "player",
+      "helper" ]
   },
   "modes" : [ {
     "name" : "Default",
     "image" : {
       "imagePath" : "assets/wall.png",
-      "tileWidth" : 28,
-      "tileHeight" : 28,
-      "tilesToCycle" : 6,
+      "tileWidth" : 32,
+      "tileHeight" : 32,
+      "tilesToCycle" : 1,
       "animationSpeed" : 1.0
     },
     "controlConfig" : {

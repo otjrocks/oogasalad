@@ -1,21 +1,34 @@
 {
-  "entityType": {
-    "name": "cookie"
+  "entityType" : {
+    "name" : "cookie",
+    "blocks" : [ "player" ]
   },
-  "modes": [
+  "modes" : [ {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "assets/sugarcookie.png",
+      "tileWidth" : 32,
+      "tileHeight" : 32,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "None"
+    },
+    "movementSpeed" : 0
+  },
     {
-      "name": "Default",
-      "image": {
-        "imagePath": "assets/cookie.png",
-        "tileWidth": 32,
-        "tileHeight": 32,
-        "tilesToCycle": 1,
-        "animationSpeed": 1.0
+      "name" : "chocolatechip",
+      "image" : {
+        "imagePath" : "assets/chocolatechip.png",
+        "tileWidth" : 32,
+        "tileHeight" : 32,
+        "tilesToCycle" : 1,
+        "animationSpeed" : 1.0
       },
-      "controlConfig": {
-        "controlStrategy": "None"
+      "controlConfig" : {
+        "controlStrategy" : "None"
       },
-      "movementSpeed": 0.0
-    }
-  ]
+      "movementSpeed" : 0
+    }]
 }

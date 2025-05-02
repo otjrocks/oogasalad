@@ -9,7 +9,7 @@ import oogasalad.player.model.strategies.gameoutcome.ScoreBasedOutcomeStrategy;
  *
  * @param amount Amount of time the player needs to survive.
  */
-public record ScoreBasedConditionRecord(int amount) implements WinConditionInterface{
+public record ScoreBasedConditionRecord(int amount) implements WinConditionInterface {
 
   /**
    * Converts winCondition to ScoreBasedOutcomeStrategy.

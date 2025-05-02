@@ -1,0 +1,55 @@
+{
+  "entityType": {
+    "name": "Food"
+  },
+  "modes": [
+    {
+      "name": "Default",
+      "image": {
+        "imagePath": "assets/melon.png",
+        "tileWidth": 28,
+        "tileHeight": 28,
+        "tilesToCycle": 1,
+        "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "ConstantDirection",
+        "dx": -1,
+        "dy": 0
+      },
+      "movementSpeed": 1.5
+    },
+    {
+      "name": "Cherry",
+      "image": {
+        "imagePath": "assets/cherry.png",
+        "tileWidth": 28,
+        "tileHeight": 28,
+        "tilesToCycle": 1,
+        "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "ConstantDirection",
+        "dx": -1,
+        "dy": 0
+      },
+      "movementSpeed": 1.5
+    },
+    {
+      "name": "Cheese",
+      "image": {
+        "imagePath": "assets/cheese.png",
+        "tileWidth": 28,
+        "tileHeight": 28,
+        "tilesToCycle": 1,
+        "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "ConstantDirection",
+        "dx": -1,
+        "dy": 0
+      },
+      "movementSpeed": 1.5
+    }
+  ]
+}

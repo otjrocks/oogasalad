@@ -203,14 +203,15 @@ public class GameLoopController {
   }
 
   private void logNoAvailableSpots(EntityTypeRecord entityType) {
-    LoggingManager.LOGGER.warn("⚠️ No available spots to respawn {}", entityType.type());
+    LoggingManager.LOGGER.warn("No available spots to respawn {}", entityType.type());
   }
 
   private double[] pickRandomSpot(List<double[]> openSpots) {
     return openSpots.get((int) (Math.random() * openSpots.size()));
   }
 
-  private void spawnEntityAtSpot(EntityTypeRecord entityType, double[] spot) throws InvalidPositionException {
+  private void spawnEntityAtSpot(EntityTypeRecord entityType, double[] spot)
+      throws InvalidPositionException {
     double spawnX = spot[0];
     double spawnY = spot[1];
 
@@ -366,7 +367,7 @@ public class GameLoopController {
    *
    * @return multiplier
    */
-  public double getMyGameSpeedMultiplier() {
+  public double getGameSpeedMultiplier() {
     return myGameSpeedMultiplier;
   }
 
@@ -375,7 +376,7 @@ public class GameLoopController {
    *
    * @param myGameSpeedMultiplier multiplier
    */
-  public void setMyGameSpeedMultiplier(double myGameSpeedMultiplier) {
+  public void setGameSpeedMultiplier(double myGameSpeedMultiplier) {
     this.myGameSpeedMultiplier = myGameSpeedMultiplier;
   }
 

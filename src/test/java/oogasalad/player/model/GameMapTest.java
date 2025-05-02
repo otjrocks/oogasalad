@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.*;
 
@@ -18,7 +17,6 @@ import oogasalad.engine.exceptions.EntityNotFoundException;
 import oogasalad.engine.exceptions.InvalidPositionException;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
-import oogasalad.engine.records.config.model.controlConfig.ConstantDirectionControlConfigRecord;
 import oogasalad.engine.records.config.model.controlConfig.ControlConfigInterface;
 import oogasalad.engine.records.config.model.controlConfig.KeyboardControlConfigRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
@@ -56,7 +54,8 @@ class GameMapTest extends DukeApplicationTest {
     modes.put("Default", newMode);
     EntityTypeRecord data = new EntityTypeRecord("test", modes, new ArrayList<String>());
     EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
-    myEntity = EntityFactory.createEntity(myInput, placement, myGameMap, mock(ConfigModelRecord.class));
+    myEntity = EntityFactory.createEntity(myInput, placement, myGameMap,
+        mock(ConfigModelRecord.class));
   }
 
   @Test
@@ -110,7 +109,8 @@ class GameMapTest extends DukeApplicationTest {
     modes.put("Default", newMode);
     EntityTypeRecord data = new EntityTypeRecord("test", modes, new ArrayList<String>());
     EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
-    Entity secondEntity = EntityFactory.createEntity(myInput, placement, myGameMap, mock(ConfigModelRecord.class));
+    Entity secondEntity = EntityFactory.createEntity(myInput, placement, myGameMap,
+        mock(ConfigModelRecord.class));
     assertDoesNotThrow(() -> myGameMap.addEntity(secondEntity));
     for (Entity next : myGameMap) {
       assertTrue(next.equals(secondEntity) || next.equals(myEntity));
@@ -155,7 +155,8 @@ class GameMapTest extends DukeApplicationTest {
     modes.put("Default", newMode);
     EntityTypeRecord data = new EntityTypeRecord("test", modes, new ArrayList<String>());
     EntityPlacement placement = new EntityPlacement(data, 5, 5, "Default");
-    Entity nonBlockingEntity = EntityFactory.createEntity(myInput, placement, myGameMap, mock(ConfigModelRecord.class));
+    Entity nonBlockingEntity = EntityFactory.createEntity(myInput, placement, myGameMap,
+        mock(ConfigModelRecord.class));
     myGameMap.addEntity(nonBlockingEntity);
 
     assertTrue(myGameMap.isNotBlocked("anyType", 3, 3));
@@ -170,7 +171,8 @@ class GameMapTest extends DukeApplicationTest {
     modes.put("Default", newMode);
     EntityTypeRecord data = new EntityTypeRecord("test", modes, List.of("Player"));
     EntityPlacement placement = new EntityPlacement(data, 4, 4, "Default");
-    Entity blockingEntity = EntityFactory.createEntity(myInput, placement, myGameMap, mock(ConfigModelRecord.class));
+    Entity blockingEntity = EntityFactory.createEntity(myInput, placement, myGameMap,
+        mock(ConfigModelRecord.class));
     myGameMap.addEntity(blockingEntity);
 
     assertFalse(myGameMap.isNotBlocked("Player", 4, 4));

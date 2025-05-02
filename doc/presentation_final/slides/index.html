@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+
+  <title>PacOne - Oogasalad Team 1</title>
+
+  <link rel="stylesheet" href="dist/reset.css"/>
+  <link rel="stylesheet" href="dist/reveal.css"/>
+  <link rel="stylesheet" href="dist/theme/black.css"/>
+
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="plugin/highlight/monokai.css"/>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+    <!-- Title -->
+    <section data-auto-animate>
+      <img
+          src="https://i.gyazo.com/ac303865c3549d69d37c41013d0b9c1d.png"
+          alt="Pacman Logo"
+          style="
+              height: 180px;
+              margin: 0 auto 4rem auto;
+              background: transparent;
+            "
+          data-id="demo-logo"
+      />
+      <h2 data-id="title">Pac-One</h2>
+      <p data-id="description">
+        <small
+        >Created by
+          <a
+          >Ishan Madan, Owen Jennings, Jessica Chen, Angela Predolac,
+            William He, Luke Fu, Austin Huang, Troy Ludwig</a
+          ></small
+        >
+      </p>
+    </section>
+
+    <!-- Demo: Done -->
+    <section data-auto-animate>
+      <section data-auto-animate>
+        <img
+            src="https://i.gyazo.com/ac303865c3549d69d37c41013d0b9c1d.png"
+            alt="Pacman Logo"
+            style="
+                height: 180px;
+                margin: 0 auto 4rem auto;
+                background: transparent;
+              "
+            data-id="demo-logo"
+        />
+        <h1 data-id="title">Demo</h1>
+        <p data-id="description">
+          <small
+          >Overview of authroing environment, game player, and game
+            variations.</small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Demo: Randomized</h2>
+        <img
+            src="https://i.gyazo.com/c44d2148c1bfcfe72c9382f783f54f9c.png"
+            style="height: 300px; background: transparent"
+            data-preview-video="randomized-demo.mp4"
+            data-id="demo-logo"
+        />
+        <p data-id="description">
+          <small>Example of Randomized Play Modes</small>
+        </p>
+      </section>
+    </section>
+
+    <!-- Data Files: Done -->
+    <section data-auto-animate>
+      <section data-auto-animate>
+        <h2 data-id="title">Data Files: Game</h2>
+        <p data-id="description">
+          User created data files that are games run by the game player.
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h3 data-id="title">Hierarchy</h3>
+        <p data-id="description" style="font-size: 10px">
+          my iPad wasn't charged :(
+        </p>
+        <img
+            src="https://i.gyazo.com/b7665670e1840daddd6f566d4045c6bb.png"
+            alt="Hierarchy"
+            data-preview-image="https://i.gyazo.com/b7665670e1840daddd6f566d4045c6bb.png"
+            style="width: 90%; margin-left: 10px;"
+            data-id="code-animation"
+        />
+      </section>
+      <section data-auto-animate>
+        <h3 data-id="title">Game Config</h3>
+        <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers="2-7|8-25|26-42|22"><script
+            type="text/template">
+          {
+          "metadata" : {
+            "gameTitle" : "PacMan",
+            "author" : "CS308 Team",
+            "gameDescription" : "Shows different controlTypes with strategyConfig and collision/mode logic.",
+            "image" : "assets/banner.png"
+          },
+          "defaultSettings" : {
+            "gameSpeed" : 1,
+            "startingLives" : 10,
+            "initialScore" : 0,
+            "winCondition" : {
+              "type" : "EntityBased",
+              "entityType" : "dot"
+            },
+            "loseCondition" : {
+              "type" : "LivesBased"
+            },
+            "cheatTypes": ["NEXT_LEVEL", "ADD_LIFE", "SPEED_UP", "PAUSE_GAME"]
+          },
+          "levels" : [ {
+            "levelMap" : "level1"
+            }, {
+            "levelMap" : "level2"
+          } ],
+          "collisions" : [
+            ...
+            {
+              "entityA" : "pacman",
+              "modeA" : "Default",
+              "entityB" : "dot",
+              "modeB" : "Default",
+              "eventsA" : [ {
+                "type" : "UpdateScore",
+                "amount" : 10
+              } ],
+              "eventsB" : [ {
+                "type" : "Consume"
+              } ]
+            },
+            ... ]
+          }
+			</script></code></pre>
+        <p data-id="description">
+          <small>data/games/BasicPacMan/gameConfig.json</small>
+        </p>
+      </section>
+      <!--Levels-->
+      <section data-auto-animate>
+        <h3 data-id="title">Levels</h3>
+        <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers="2-20|21-25"><script
+            type="text/template">
+          {
+            "entityMappings": [
+              {
+                "entity": "pacman",
+                "id": 1
+              },
+              {
+                "entity": "redghost",
+                "id": 2
+              },
+              {
+                "entity": "blueghost",
+                "id": 3
+              },
+              ...
+              {
+                "entity": "cherry",
+                "id": 8
+              },
+            ],
+            "mapInfo": {
+              "width": 28,
+              "height": 31,
+              "backgroundImagePath": "assets/background.png"
+            },
+            "layout": [
+              ...
+              "5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "0 0 0 0 0 0 0 0 0 0 5 5 0 0 0 0 5 5 0 0 0 0 0 0 0 0 0 0",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 1 0 0 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 5"
+              ...
+            ],
+            "spawnEvents": [
+              {
+                "entityType": "8",
+                "spawnCondition": {
+                  "type": "ScoreBased",
+                  "parameters": {
+                    "amount": 700
+                  }
+                },
+                "x": 13.5,
+                "y": 17,
+                "mode": "Default",
+                "despawnCondition": {
+                  "type": "ScoreBased",
+                  "parameters": {
+                    "amount": 1500
+                  }
+                }
+              },
+              ...
+            ],
+            "modeChangeEvents": [
+              {
+                "entityType": "2",
+                "modeChangeInfo": {
+                  "originalMode": "Default",
+                  "transitionMode": "Scatter",
+                  "revertTime" : 7,
+                  "transitionTime" : 1
+                },
+                "changeCondition": {
+                  "type": "TimeElapsed",
+                  "parameters": {
+                    "amount": 7
+                  }
+                }
+              },
+            ]
+          }
+
+			</script></code></pre>
+        <p data-id="description">
+          <small>data/games/BasicPacMan/core/maps/level1.json</small>
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h3 data-id="title">Levels</h3>
+        <div class="r-hstack justify-center">
+        <pre data-id="code-animation" style="width:60%"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                              data-line-numbers="5-15"><script
+            type="text/template">
+          {
+            ...
+            "layout": [
+              ...
+              "5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "0 0 0 0 0 0 0 0 0 0 5 5 0 0 0 0 5 5 0 0 0 0 0 0 0 0 0 0",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 1 0 0 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 5"
+              ...
+            ],
+            ...
+          }
+			</script></code></pre>
+        <img
+            src="https://i.gyazo.com/c651d21497f701c5afdc48b65d48afdf.png"
+            alt="Level Example"
+            data-preview-image="https://i.gyazo.com/c651d21497f701c5afdc48b65d48afdf.png"
+            style="width: 35%; margin-left: 10px;"
+        />
+        </div>
+        <p data-id="description">
+          <small>data/games/BasicPacMan/core/maps/level1.json</small>
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h3 data-id="title">Levels</h3>
+        <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers="13-31|34-49"><script
+            type="text/template">
+          {
+            "entityMappings": [
+              {
+                "entity": "redghost",
+                "id": 2
+              },
+              {
+                "entity": "cherry",
+                "id": 8
+              },
+            ],
+            ...
+            "spawnEvents": [
+              {
+                "entityType": "8",
+                "spawnCondition": {
+                  "type": "ScoreBased",
+                  "parameters": {
+                    "amount": 700
+                  }
+                },
+                "x": 13.5,
+                "y": 17,
+                "mode": "Default",
+                "despawnCondition": {
+                  "type": "ScoreBased",
+                  "parameters": {
+                    "amount": 1500
+                  }
+                }
+              },
+              ...
+              ],
+              "modeChangeEvents": [
+                {
+                  "entityType": "2",
+                  "modeChangeInfo": {
+                    "originalMode": "Default",
+                    "transitionMode": "Scatter",
+                    "revertTime" : 7,
+                    "transitionTime" : 1
+                  },
+                  "changeCondition": {
+                    "type": "TimeElapsed",
+                    "parameters": {
+                      "amount": 7
+                    }
+                  }
+                },
+              ]
+          }
+
+			</script></code></pre>
+        <p data-id="description">
+          <small>data/games/BasicPacMan/core/maps/level1.json</small>
+        </p>
+      </section>
+      <!--might break the mode part down into different slides so code on one half and the entity on the other-->
+      <section data-auto-animate>
+        <h3 data-id="title">Entities</h3>
+        <div class="r-hstack justify-center">
+        <pre data-id="code-animation" style="width:60%"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers="2-4|7-25|27-44"><script
+            type="text/template">
+        {
+          "entityType": {
+            "name": "BlueGhost"
+          },
+          "modes": [
+            {
+            "name": "Default",
+            "image": {
+              "imagePath": "assets/blueghost.png",
+              "tileWidth": 28,
+              "tileHeight": 28,
+              "tilesToCycle": 4,
+              "animationSpeed": 5.0
+            },
+            "controlConfig": {
+              "controlStrategy": "Target",
+              "pathFindingStrategy": "Euclidean",
+              "targetCalculationConfig": {
+                "targetCalculationStrategy": "TargetEntityWithTrap",
+                "targetType": "Pacman",
+                "tilesAhead": 2,
+                "teamEntityType": "PinkGhost"
+              }
+            },
+            "movementSpeed": 1.0
+            }, {
+              "name": "Frightened",
+              "image": {
+                "imagePath": "assets/frightenedghost.png",
+                "tileWidth": 28,
+                "tileHeight": 28,
+                "tilesToCycle": 4,
+                "animationSpeed": 1.0
+              },
+              "controlConfig": {
+                "controlStrategy": "Target",
+                "pathFindingStrategy": "Random",
+                "targetCalculationConfig": {
+                  "targetCalculationStrategy": "TargetLocation",
+                  "targetX": 14,
+                  "targetY": 14
+                }
+              },
+              "movementSpeed": 1.0
+            },
+            ...
+          ]
+        }
+
+			</script></code></pre>
+          <div class="r-vstack" style="width: 20%;">
+            <img
+                src="https://i.gyazo.com/f22947d0d03c0e0314ae2cca8923c2ad.png"
+                alt="BlueGhost"
+                data-preview-image="https://i.gyazo.com/f22947d0d03c0e0314ae2cca8923c2ad.png"
+                style="margin: 10px;"
+            />
+            <img
+                src="https://i.gyazo.com/959a12accf4d5a72af644ef9de600f00.png"
+                alt="FrightenedGhost"
+                data-preview-image="https://i.gyazo.com/959a12accf4d5a72af644ef9de600f00.png"
+                style="margin: 10px;"
+            />
+          </div>
+        </div>
+        <p data-id="description">
+          <small>data/games/BasicPacMan/core/entities/blueghost.json</small>
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Data Files: Resource Files</h2>
+        <p data-id="description">
+          Internal resources used.
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h3 data-id="title">Theme Files</h3>
+        <div class="r-hstack justify-center">
+          <div style="width: 45%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim><script
+              type="text/template">
+            * {
+              -fx-primary: rgb(0, 0, 64);
+              -fx-secondary: rgb(255, 255, 255);
+              -fx-highlight: rgb(45, 45, 158);
+              -fx-warning: rgb(251, 80, 80);
+              -fx-accent: rgb(41, 159, 255);
+            }
+            </script></code></pre>
+          </div>
+          <div style="width: 45%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                    ><script
+              type="text/template">
+              .root {
+                -fx-font-family: "Inter";
+                -fx-font-size: 14px;
+                -fx-background-color: -fx-primary;
+                -fx-text-fill: -fx-secondary;
+              }
+
+              .center-root {
+                -fx-background-color: -fx-primary;
+                -fx-alignment: center;
+                -fx-text-alignment: center;
+              }
+
+              Label, Text {
+                -fx-fill: -fx-secondary;
+                -fx-text-fill: -fx-secondary;
+              }
+            </script></code></pre>
+          </div>
+        </div>
+        <p data-id="description">
+          <small
+          >src/main/resources/oogasalad/themes || src/main/resources/oogasalad/styles.css</small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h3 data-id="title">Language Files</h3>
+        <div class="r-hstack justify-center">
+          <div style="width: 30%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers="4"><script
+              type="text/template">
+            MISSING_KEY=Missing key
+            TITLE=Pac-Man
+            LANGUAGE_SELECTOR_TITLE=Select a language:
+            GAME_PLAYER=Game Player
+            AUTHORING_ENVIRONMENT=Authoring Environment
+            CONFIGURATION=Configuration
+            SCORE_LABEL=Score: %s
+            HIGH_SCORE_LABEL=High Score: %s
+            LIVES_LABEL=Lives: %s
+            </script></code></pre>
+          </div>
+          <div style="width: 30%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers="4"
+          ><script
+              type="text/template">
+              MISSING_KEY=Clave faltante
+              TITLE=Pac-Man
+              LANGUAGE_SELECTOR_TITLE=Selecciona un idioma:
+              GAME_PLAYER=Jugador del Juego
+              AUTHORING_ENVIRONMENT=Entorno de Creación
+              CONFIGURATION=Configuración
+              SCORE_LABEL=Puntuación: %s
+              HIGH_SCORE_LABEL=Puntuación más alta: %s
+              LIVES_LABEL=Vidas: %s
+            </script></code></pre>
+          </div>
+          <div style="width: 30%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers="4"><script
+              type="text/template">
+            MISSING_KEY=Chiave mancante
+            TITLE=Pac-Man: Versione Italiano
+            LANGUAGE_SELECTOR_TITLE=Seleziona una lingua:
+            GAME_PLAYER=Giocatore
+            AUTHORING_ENVIRONMENT=Ambiente di Autore
+            CONFIGURATION=Configurazione
+            SCORE_LABEL=Punteggio: %s
+            HIGH_SCORE_LABEL=Punteggio Massimo: %s
+            LIVES_LABEL=Vite: %s
+            </script></code></pre>
+          </div>
+        </div>
+        <p data-id="description">
+          <small
+          >src/main/resources/oogasalad/languages</small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h3 data-id="title">Help Json</h3>
+        <div class="r-hstack justify-center">
+          <div style="width: 45%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers="4"><script
+              type="text/template">
+            {
+              "slides": [
+              {
+                "key": "WELCOME",
+                "image": "pacman-gaming.gif"
+              },
+              {
+                "key": "OVERVIEW",
+                "image": "pacman-gaming.gif"
+              },
+              ...
+              ]
+            }
+            </script></code></pre>
+          </div>
+          <div style="width: 45%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers="4-5"
+          ><script
+              type="text/template">
+              INFO_DIALOG_MESSAGE=Author: %s%n%n%nDescription: %s
+              THEME_SELECTOR_TITLE=Theme:
+              # Help Guide Messages
+              WELCOME_TITLE=Welcome to the Game Authoring Environment
+              WELCOME_CONTENT=This help guide will walk you through the main features of the authoring environment and how to create your own games.
+              OVERVIEW_TITLE=Overview
+            </script></code></pre>
+          </div>
+        </div>
+        <p data-id="description">
+          <small
+          >data/helpslides.json</small
+          >
+        </p>
+      </section>
+    </section>
+
+    <!-- API's: Done -->
+    <section data-auto-animate>
+      <!--Collision: Done-->
+      <section data-auto-animate>
+        <h2 data-id="title">API: Collision Strategy Interface</h2>
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers="14-15"><script
+              type="text/template">
+            public interface CollisionStrategyInterface {
+
+              /**
+              * Defines the behavior that should occur after a collision between two entities.
+              *
+              * <p>This method is called whenever two entities collide, allowing for different
+              * collision outcomes depending on the strategy implementation.</p>
+              *
+              * @param collisionContext the context of the collision, containing both entities, the game map,
+              *                         and the current game state
+              * @throws EntityNotFoundException if an entity involved in the collision cannot be found in the
+              *                                 game map during processing
+              */
+              void handleCollision(CollisionContextRecord collisionContext)
+                throws EntityNotFoundException, InvalidPositionException;
+            }
+            </script></code></pre>
+
+        <p data-id="description">
+          <small
+          >oogasalad/player/model/strategies/collision/CollisionStrategyInterface.java </small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">API: Collision Strategy Interface</h2>
+        <div class="r-hstack justify-center">
+          <div style="width: 50%; margin:0;"> <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.65rem;" data-trim
+                                                                        data-line-numbers="4-16"><script
+              type="text/template">
+            public class ConsumeStrategy implements CollisionStrategyInterface {
+
+              @Override
+              public void handleCollision(CollisionContextRecord collisionContext)
+              throws EntityNotFoundException {
+                try {
+                  if (collisionContext.strategyAppliesTo() == ENTITY1) {
+                    collisionContext.gameMap().removeEntity(collisionContext.entity1());
+                  } else {
+                    collisionContext.gameMap().removeEntity(collisionContext.entity2());
+                  }
+                } catch (EntityNotFoundException e) {
+                  throw new EntityNotFoundException(
+                  "Cannot remove requested entity, because it does not exist in the game map!", e);
+                }
+              }
+            }
+            </script></code></pre>
+          </div>
+          <div style="width: 50%; margin:0;"> <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.65rem;" data-trim
+                                                                        data-line-numbers="10-12"
+          ><script
+              type="text/template">
+              public class UpdateLivesStrategy implements CollisionStrategyInterface {
+
+                private final int livesIncrement;
+
+                public UpdateLivesStrategy(int livesIncrement) {
+                  this.livesIncrement = livesIncrement;
+                }
+
+                @Override
+                public void handleCollision(CollisionContextRecord collisionContext) {
+                  collisionContext.gameState().updateLives(livesIncrement);
+                }
+              }
+            </script></code></pre>
+          </div>
+
+        </div>
+          <p data-id="description">
+            <small
+            >Highly extensible as handleCollision allows each implementation to have vastly different outcomes</small
+            >
+          </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">API: Collision Strategy Interface</h2>
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.8rem;" data-trim><script
+            type="text/template">
+            public class CollisionStrategyFactory {
+
+              private static final String STRATEGY_PACKAGE = "oogasalad.player.model.strategies.collision";
+
+              public static CollisionStrategyInterface createCollisionStrategy(
+              CollisionEventInterface collisionEvent) {
+                try {
+                  String eventClassName = collisionEvent.getClass().getSimpleName();
+                  String strategyClassName = eventClassName.replace("CollisionEventRecord",
+                  "Strategy");
+                  Class<?> strategyClass = Class.forName(STRATEGY_PACKAGE + "." + strategyClassName);
+
+                  // Get parameters from event record (supports multiple parameters if needed)
+                  Object[] args = Arrays.stream(collisionEvent.getClass().getRecordComponents())
+                  .map(component -> extractFieldValue(component, collisionEvent))
+                  .toArray();
+
+                  Constructor<?> constructor = Arrays.stream(strategyClass.getConstructors())
+                  .filter(c -> c.getParameterCount() == args.length)
+                  .findFirst()
+                  .orElseThrow();
+
+                  return (CollisionStrategyInterface) constructor.newInstance(args);
+                } catch (Exception e) {
+                  LoggingManager.LOGGER.warn("Failed to create strategy for: {}",
+                  collisionEvent.getClass().getSimpleName(), e);
+                  return defaultStrategy();
+                }
+              }
+
+              private static Object extractFieldValue(RecordComponent component,
+              CollisionEventInterface event) {
+                try {
+                  return component.getAccessor().invoke(event);
+                } catch (Exception e) {
+                  LoggingManager.LOGGER.warn("Failed to extract field: {}", component.getName(), e);
+                  return null;
+                }
+              }
+
+              private static CollisionStrategyInterface defaultStrategy() {
+                try {
+                  Class<?> defaultClass = Class.forName(STRATEGY_PACKAGE + ".ConsumeStrategy");
+                  return (CollisionStrategyInterface) defaultClass.getDeclaredConstructor().newInstance();
+                } catch (Exception e) {
+                  throw new RuntimeException("Failed to create default strategy", e);
+                }
+              }
+            }
+            </script></code></pre>
+
+        <p data-id="description">
+          <small
+          >Using factories and reflections to create collisions allos for users to design the code and not have to change it as more implementations are added.</small
+          >
+        </p>
+      </section>
+      <!--Config Parser: Done-->
+      <section data-auto-animate>
+        <h2 data-id="title">API: Config Parser Interface</h2>
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers="10,19"><script
+            type="text/template">
+            public interface ConfigParserInterface {
+
+              /**
+              * Loads a configuration model from the specified file path.
+              *
+              * @param filepath the path to the configuration file to be loaded
+              * @return a {@code ConfigModel} object representing the loaded configuration
+              * @throws ConfigException if an error occurs while loading or parsing the configuration file
+              */
+              ConfigModelRecord loadFromFile(String filepath) throws ConfigException;
+
+              /**
+              * Loads a game configuration model from the specified file path.
+              *
+              * @param filepath the path to the configuration file to be loaded
+              * @return a {@code GameConfigRecord} object representing the loaded configuration
+              * @throws ConfigException if an error occurs while loading or parsing the configuration file
+              */
+              GameConfigRecord loadGameConfig(String filepath) throws ConfigException;
+            }
+            </script></code></pre>
+
+        <p data-id="description">
+          <small
+          >oogasalad/engine/config/api/ConfigParserInterface.java</small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">API: Config Parser Interface</h2>
+        <!--Didn't know if you wanted implementation-->
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.65rem;" data-trim
+                                                                                  data-line-numbers="4-16"><script
+              type="text/template">
+        </script></code></pre>
+
+        <p data-id="description">
+          <ul>
+            <li>
+              Since the interface standarizes the output of the file can change the data structure of the config or even write the config in a different language as long as it parsers to the same record.</small
+            </li>
+            <li>
+              The format of these outputs make it highly usuable for any feature that involves getting information for a specific game whether that be metadata, level information, or the entire game's information.
+            </li>
+          </ul>
+        </p>
+      </section>
+    </section>
+
+    <!-- Use Cases: Done -->
+    <section data-auto-animate>
+      <!--Collision: Done-->
+      <section data-auto-animate>
+        <h2 data-id="title">Use Case: Collision Strategy Interface</h2>
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers=""><script
+            type="text/template">
+          public class CollisionEventView {
+            public CollisionEventInterface getCollisionEvent() {
+              try {
+                String collisionName = mySelector.getValue();
+                String fullClassName = COLLISION_EVENTS_PACKAGE_PATH + collisionName + "CollisionEventRecord";
+                Class<?> collisionEventClass = Class.forName(fullClassName);
+
+                Map<String, Class<?>> requiredFields = getCollisionRequiredFields(collisionName);
+                Object[] constructorArgs = new Object[requiredFields.size()];
+
+                int index = 0;
+                for (Class<?> paramType : requiredFields.values()) {
+                  String userInput = myParameterFields.get(index).getText();
+                  constructorArgs[index] = FileUtility.castInputToCorrectType(userInput, paramType);
+                  index++;
+                }
+
+                Constructor<?> constructor = collisionEventClass.getDeclaredConstructors()[0];
+                Object eventInstance = constructor.newInstance(constructorArgs);
+
+                return (CollisionEventInterface) eventInstance;
+              } catch (IllegalArgumentException e) {
+                throw e;
+              } catch (Exception e) {
+                LoggingManager.LOGGER.warn("Error getting collision event", e);
+                throw new RuntimeException("Failed to create CollisionEvent: " + e.getMessage());
+              }
+            }
+          }
+        </script></code></pre>
+
+        <p data-id="description">
+          <small
+          >oogasalad/authoring/view/CollisionEventView.java</small
+          >
+        </p>
+      </section>
+      <!--Config Parser: Done -->
+      <section data-auto-animate>
+        <h2 data-id="title">Use Case: Config Parser Interface</h2>
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers=""><script
+            type="text/template">
+            public record ConfigModelRecord(
+            MetaDataRecord metadata,
+            SettingsRecord settings,
+            List<EntityTypeRecord> entityTypes,
+              List<ParsedLevelRecord> levels,
+              List<CollisionRule> collisionRules,
+              WinConditionInterface winCondition,
+              LoseConditionInterface loseCondition,
+              int currentLevelIndex,
+              Map<String, Double> respawnableEntities
+            ) {
+
+              /**
+               * Returns the corresponding entity type to its entity name
+               *
+               * @param name represents the entity type name stored in the json file
+               */
+              public EntityTypeRecord getEntityTypeByName(String name) {
+                return entityTypes().stream()
+                    .filter(e -> e.type().equals(name))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Entity type not found: " + name));
+              }
+
+            }
+            </script></code></pre>
+
+        <p data-id="description">
+          <small
+          >ConfigParser returns a ConfigModelRecord</small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Use Case: Config Parser Interface</h2>
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers="6, 16-17, 19, 32, 49"><script
+            type="text/template">
+          public GamePlayerView(MainController controller, GameStateInterface gameState,
+            String gameFolderPath, boolean randomized) {
+            private void loadConfigFromFile() {
+              JsonConfigParser configParser = new JsonConfigParser();
+              try {
+                myConfigModel = configParser.loadFromFile(gameFolderPath + "/gameConfig.json");
+              } catch (ConfigException e) {
+                LoggingManager.LOGGER.warn("Failed to load config file: {}", GAME_CONFIG_JSON, e);
+              }
+            }
+          }
+
+          public class GameMapFactory {
+            public static GameMapInterface createGameMap(GameInputManager input, ConfigModelRecord configModel,
+              int levelIndex) throws InvalidPositionException {
+              int width = configModel.levels().get(levelIndex).mapInfo().width();
+              int height = configModel.levels().get(levelIndex).mapInfo().height();
+              GameMap gameMap = new GameMap(width, height); // Hardcoded for now
+              for (EntityPlacement entityPlacement : configModel.levels().get(levelIndex).placements()) {
+                Entity entity = EntityFactory.createEntity(input, entityPlacement, gameMap, configModel);
+                gameMap.addEntity(entity);
+              }
+              return gameMap;
+            }
+          }
+
+          public GameView(GameContextRecord gameContext, ConfigModelRecord configModel, int levelIndex,
+            GameSessionManager sessionManager, String gameFolder) {
+            private Image getBackgroundImage(ConfigModelRecord configModel, int levelIndex,
+            String gameFolder) {
+              final Image backgroundImage;
+              String backgroundImagePath = configModel.levels().get(levelIndex).mapInfo().backgroundImagePath();
+              if (backgroundImagePath == null) {
+                return null;
+              }
+              String imagePath = gameFolder + backgroundImagePath;
+              try {
+                backgroundImage = new Image(new FileInputStream(imagePath));
+              } catch (FileNotFoundException e) {
+                LoggingManager.LOGGER.warn("Unable to load background image for level {}", imagePath);
+                throw new RuntimeException("Failed to load image from path: " + imagePath, e);
+              }
+              return backgroundImage;
+            }
+          }
+
+          public GameMapController(GameContextRecord gameContext, ConfigModelRecord configModel) {
+            private void applyCollisionStrategiesFromCollisionRules(Entity e1, Entity e2) {
+              for (CollisionRule collisionRule : myConfigModel.collisionRules()) {
+                if (checkEntityTypesAndModesMatch(e1, e2, collisionRule)) {
+                  applyEntityACollisionStrategy(e1, e2, collisionRule);
+                  applyEntityBCollisionStrategy(e1, e2, collisionRule);
+                }
+              }
+            }
+          }
+        </script></code></pre>
+
+        <p data-id="description">
+          <small
+          >The data from the ConfigModelRecord is then parsed out by the GamePlayerView to use encoded information to set up the game.</small
+          >
+        </p>
+      </section>
+    </section>
+
+    <!-- Designs -->
+    <section data-auto-animate>
+      <section data-auto-animate>
+        <section data-auto-animate>
+          <h2 data-id="title">Stable Design: Entity Placement/Type</h2>
+          <p data-id="description">
+            <small
+            >The stable design is splitting entities into type (holds information for each type) and placement (holds per instance stored information).</small
+            >
+          </p>
+          <div class="r-hstack justify-center">
+            <div style="width: 60%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                          data-line-numbers=""><script
+                type="text/template">
+              public class EntityPlacement {
+                private String type;
+                private EntityTypeRecord resolvedEntityType;
+                private double x;
+                private double y;
+                private double initialX;
+                private double initialY;
+                private double previousX;
+                private double previousY;
+                private String mode;
+                private int currentFrame;
+                private boolean isJumping = false;
+                private double verticalVelocity = 0;
+
+                ... (setters and getters) ...
+              }
+              </script></code></pre>
+            </div>
+            <div style="width: 40%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                          data-line-numbers=""
+            ><script
+                type="text/template">
+                public record EntityTypeRecord(
+                  String type,
+                  Map<String, ModeConfigRecord> modes,
+                  List<String> blocks
+                ) {}
+              </script></code></pre>
+            </div>
+          </div>
+        </section>
+
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Changed Design: Entity Control</h2>
+        <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers=""><script
+            type="text/template">
+         </script></code></pre>
+
+        <p data-id="description">
+          While we always knew that our design wanted to encorporate a control strategy, how that control strategy interacts and changes the entity's direction has changed as we went through what different types of AI's we would need to create "smart" enemies.
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Changed Design: Entity Control</h2>
+        <div class="r-vstack justify-center">
+          <div style="width: 100%;"> <pre><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers=""><script
+              type="text/template">
+              public interface ControlStrategyInterface {
+                void update(Entity entity);
+              }
+              </script></code></pre>
+            <p style="font-size: 1rem">
+              ControlStrategy updates entity direction based on player input or by coordinating information from path finding/target strategy.
+            </p>
+          </div>
+          <div style="width: 100%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers=""
+          ><script
+              type="text/template">
+                public interface PathFindingStrategyInterface {
+                  int[] getPath(GameMapInterface map, int startX, int startY, int targetX, int targetY,
+                  EntityPlacement thisEntity, Direction thisDirection);
+                }
+              </script></code></pre>
+            <p data-id="description" style="font-size: 1rem">PathFindingStrategy determines what is the next direction the entity needs to go to based on the target position calculated by the TargetStrategy
+            </p>
+          </div>
+
+          <div style="width: 100%;"> <pre><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                               data-line-numbers=""><script
+              type="text/template">
+              public interface TargetStrategyInterface {
+                int[] getTargetPosition();
+              }
+              </script></code></pre>
+            <p style="font-size: 1rem">
+              Calculates the target location based on parameters declared in config and also with the relation of the entity that called update.
+            </p>
+          </div>
+        </div>
+
+
+      </section>
+    </section>
+
+
+
+
+    <!-- Team: Done -->
+    <section data-auto-animate>
+      <section data-auto-animate>
+        <h1 data-id="title">Team</h1>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Plan vs Reality</h2>
+        <div class="r-hstack justify-center">
+          <div style="width: 45%;" data-id="visual-1">
+            <div class="r-vstack">
+              <img
+                  src="https://i.gyazo.com/02dc69f8ae1dd3f21265b4228acc8256.png"
+                  alt="Splash"
+                  data-preview-image="https://i.gyazo.com/02dc69f8ae1dd3f21265b4228acc8256.png"
+                  style="height: 120px; margin: 0px;"
+              />
+              <img
+                  src="https://i.gyazo.com/b5075e16b13102c32f4d7f4d3369f4ee.png"
+                  alt="Selector"
+                  data-preview-image="https://i.gyazo.com/b5075e16b13102c32f4d7f4d3369f4ee.png"
+                  style="height: 120px; margin: 0px;"
+              />
+              <img
+                  src="https://i.gyazo.com/50fc873d13553a6e2da4f7bc5d622ed1.png"
+                  alt="Player"
+                  data-preview-image="https://i.gyazo.com/50fc873d13553a6e2da4f7bc5d622ed1.png"
+                  style="height: 120px; margin: 0px;"
+
+              />
+              <img
+                  src="https://i.gyazo.com/88367e3a1a0ec87329459633f8e65a8c.png"
+                  alt="Authoring"
+                  data-preview-image="https://i.gyazo.com/88367e3a1a0ec87329459633f8e65a8c.png"
+                  style="height: 120px; margin: 0px;"
+
+              />
+            </div>
+          </div>
+          <div style="width: 45%;" data-id="visual-2">
+            <div class="r-vstack">
+              <img
+                  src="https://i.gyazo.com/94881ad980c4feba619c0370e0a79a22.png"
+                  alt="Splash"
+                  data-preview-image="https://i.gyazo.com/94881ad980c4feba619c0370e0a79a22.png"
+                  style="height: 120px; margin: 0px;"
+              />
+              <img
+                  src="https://i.gyazo.com/935351948d9be5712923ad55812c3b26.png"
+                  alt="Selector"
+                  data-preview-image="https://i.gyazo.com/935351948d9be5712923ad55812c3b26.png"
+                  style="height: 120px; margin: 0px;"
+              />
+              <img
+                  src="https://i.gyazo.com/8726e718d2e78c39f827dc77baab6985.png"
+                  alt="Player"
+                  data-preview-image="https://i.gyazo.com/8726e718d2e78c39f827dc77baab6985.png"
+                  style="height: 120px; margin: 0px;"
+
+              />
+              <img
+                  src="https://i.gyazo.com/eed05f2efcdc46dba80e4edadc0820c1.png"
+                  alt="Authoring"
+                  data-preview-image="https://i.gyazo.com/eed05f2efcdc46dba80e4edadc0820c1.png"
+                  style="height: 120px; margin: 0px;"
+
+              />
+            </div>
+          </div>
+        </div>
+        <p data-id="description">
+          <small
+          >Overall design remained relatively consistent in layout.</small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Plan vs Reality</h2>
+        <p data-id="description">
+          <small
+          >Main class hierarchy remained consistent although specific implementations changed/new strategies such as spawn event strategies were added.</small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">4 Major Events</h2>
+        <div class="r-hstack justify-center">
+          <div style="width: 22%;" data-id="visual">
+            Initial Design Meeting
+          </div>
+          <div style="width: 22%;  margin-left: 2%;" data-id="visual-1">
+            Splitting Config into Multiple Files
+          </div>
+          <div style="width: 22%;  margin-left: 2%;" data-id="visual-2">
+            Going End to End
+          </div>
+          <div style="width: 22%;  margin-left: 2%;" data-id="visual">
+            Building out Level Structure
+          </div>
+        </div>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Worked To Improve</h2>
+        <div class="r-hstack justify-center">
+          <div style="width: 45%;" data-id="visual-1">
+            Pair Programming
+          </div>
+          <div style="width: 45%;" data-id="visual-2">
+            Smaller Tasks
+          </div>
+        </div>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Team Contract</h2>
+        <div class="r-hstack justify-center">
+          <div style="width: 90%;" data-id="visual-3">
+            Was Good
+          </div>
+        </div>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Individual Learning</h2>
+        <div class="r-hstack justify-center">
+          <div style="width: 22%;" data-id="visual">
+            <h6>Agile Process</h6>
+            <small><ul>
+              <li>splitting tasks to smaller goals</li>
+              <li>weekly standups</li>
+              <li>clear deadlines</li>
+            </ul></small>
+          </div>
+          <div style="width: 22%; margin-left: 2%;" data-id="visual">
+            <h6>Large Project</h6>
+            <small><ul>
+              <li>making sure everyone on the same page</li>
+              <li>reduce merge conflicts through feature branches</li>
+              <li>making tasks before theres code</li>
+            </ul></small>
+          </div>
+          <div style="width: 22%; margin-left: 2%;" data-id="visual">
+            <h6>Positive Culture</h6>
+            <small><ul>
+              <li>in person coding sessions</li>
+              <li>open communication if theres issues or blockers</li>
+              <li>taking oppurtunity to actively try to help</li>
+            </ul></small>
+          </div>
+          <div style="width: 22%;  margin-left: 2%;" data-id="visual">
+            <h6>Solve Problems</h6>
+            <small><ul>
+              <li>not being accusitory</li>
+              <li>being honest about struggles, confusion, schedule conflicts</li>
+              <li>planning code and issues</li>
+            </ul></small>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+</div>
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script>
+  // More info about initialization & config:
+  // - https://revealjs.com/initialization/
+  // - https://revealjs.com/config/
+  Reveal.initialize({
+    hash: true,
+    progress: true,
+    navigationMode: 'linear',
+
+    // Learn about plugins: https://revealjs.com/plugins/
+    plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+  });
+</script>
+</body>
+</html>

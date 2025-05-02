@@ -6,7 +6,8 @@ import oogasalad.player.model.strategies.control.targetcalculation.TargetStrateg
 
 public class TargetEntityWithTrapStrategy implements TargetStrategyInterface {
 
-  public TargetEntityWithTrapStrategy(GameMapInterface map, Map<String, Object> config, String typeString) {
+  public TargetEntityWithTrapStrategy(GameMapInterface map, Map<String, Object> config,
+      String typeString) {
   }
 
   @Override

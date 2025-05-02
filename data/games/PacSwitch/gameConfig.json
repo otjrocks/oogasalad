@@ -1,0 +1,476 @@
+{
+  "metadata": {
+    "gameTitle": "Pac-Switch",
+    "author": "Jessica Chen",
+    "gameDescription": "Collect all the melons, but beware they have some side effects...",
+    "image": "assets/banner.png"
+  },
+  "defaultSettings": {
+    "gameSpeed": 1.0,
+    "startingLives": 1,
+    "initialScore": 0,
+    "winCondition": {
+      "type" : "EntityBased",
+      "entityType" : "pellet"
+    },
+    "loseCondition": {
+      "type": "LivesBased"
+    },
+    "cheatTypes": []
+  },
+  "levels": [
+    {
+      "levelMap": "level1"
+    }
+  ],
+  "collisions": [
+    {
+      "entityA": "Pellet",
+      "modeA": "Default",
+      "entityB": "Pacman",
+      "modeB": "Default",
+      "eventsA": [
+        {
+          "type": "Consume"
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pellet",
+      "modeA": "Default",
+      "entityB": "Pacman",
+      "modeB": "Red",
+      "eventsA": [
+        {
+          "type": "Consume"
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pellet",
+      "modeA": "Default",
+      "entityB": "Pacman",
+      "modeB": "Blue",
+      "eventsA": [
+        {
+          "type": "Consume"
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pellet",
+      "modeA": "Default",
+      "entityB": "Pacman",
+      "modeB": "Orange",
+      "eventsA": [
+        {
+          "type": "Consume"
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Default",
+      "entityB": "Pellet",
+      "modeB": "Default",
+      "eventsA": [
+        {
+          "type": "ChangeModeForType",
+          "entityType": "Pacman",
+          "newMode": "Red"
+        },
+        {
+          "type": "UpdateScore",
+          "amount": 100
+        }
+      ],
+      "eventsB": [
+        {
+          "type": "Consume"
+        }
+      ]
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Blue",
+      "entityB": "Pellet",
+      "modeB": "Default",
+      "eventsA": [
+        {
+          "type": "ChangeModeForType",
+          "entityType": "Pacman",
+          "newMode": "Orange"
+        },
+        {
+          "type": "UpdateScore",
+          "amount": 100
+        }
+      ],
+      "eventsB": [
+        {
+          "type": "Consume"
+        }
+      ]
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Red",
+      "entityB": "Pellet",
+      "modeB": "Default",
+      "eventsA": [
+        {
+          "type": "ChangeModeForType",
+          "entityType": "Pacman",
+          "newMode": "Blue"
+        },
+        {
+          "type": "UpdateScore",
+          "amount": 100
+        }
+      ],
+      "eventsB": [
+        {
+          "type": "Consume"
+        }
+      ]
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Orange",
+      "entityB": "Pellet",
+      "modeB": "Default",
+      "eventsA": [
+        {
+          "type": "ChangeModeForType",
+          "entityType": "Pacman",
+          "newMode": "Default"
+        },
+        {
+          "type": "UpdateScore",
+          "amount": 100
+        }
+      ],
+      "eventsB": [
+        {
+          "type": "Consume"
+        }
+      ]
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Default",
+      "entityB": "Wall",
+      "modeB": "Red",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Default",
+      "entityB": "Wall",
+      "modeB": "Blue",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Default",
+      "entityB": "Wall",
+      "modeB": "Orange",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Red",
+      "entityB": "Wall",
+      "modeB": "Blue",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Red",
+      "entityB": "Wall",
+      "modeB": "Default",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Red",
+      "entityB": "Wall",
+      "modeB": "Orange",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Blue",
+      "entityB": "Wall",
+      "modeB": "Red",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Blue",
+      "entityB": "Wall",
+      "modeB": "Default",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Blue",
+      "entityB": "Wall",
+      "modeB": "Orange",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Orange",
+      "entityB": "Wall",
+      "modeB": "Red",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Orange",
+      "entityB": "Wall",
+      "modeB": "Blue",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Orange",
+      "entityB": "Wall",
+      "modeB": "Default",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Default",
+      "entityB": "ReverseWall",
+      "modeB": "Red",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Default",
+      "entityB": "ReverseWall",
+      "modeB": "Blue",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Default",
+      "entityB": "ReverseWall",
+      "modeB": "Orange",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Red",
+      "entityB": "ReverseWall",
+      "modeB": "Blue",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Red",
+      "entityB": "ReverseWall",
+      "modeB": "Default",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Red",
+      "entityB": "ReverseWall",
+      "modeB": "Orange",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Blue",
+      "entityB": "ReverseWall",
+      "modeB": "Red",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Blue",
+      "entityB": "ReverseWall",
+      "modeB": "Default",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Blue",
+      "entityB": "ReverseWall",
+      "modeB": "Orange",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Orange",
+      "entityB": "ReverseWall",
+      "modeB": "Red",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Orange",
+      "entityB": "ReverseWall",
+      "modeB": "Blue",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    },
+    {
+      "entityA": "Pacman",
+      "modeA": "Orange",
+      "entityB": "ReverseWall",
+      "modeB": "Default",
+      "eventsA": [
+        {
+          "type": "UpdateLives",
+          "amount": -1
+        }
+      ],
+      "eventsB": []
+    }
+  ]
+}

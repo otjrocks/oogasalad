@@ -1,0 +1,118 @@
+{
+  "metadata" : {
+    "gameTitle" : "Pac-ed",
+    "author" : "Jessica Chen",
+    "gameDescription" : "Why'd the pacman cross the road? Well he dropped his cherry on the other side of course. Also you know that thought experiemnt of something vs a slow that chases you forever, he also made that deal, but with a ghost so better cross fast",
+    "image" : "assets/banner.png"
+  },
+  "defaultSettings" : {
+    "gameSpeed" : 1,
+    "startingLives" : 1,
+    "initialScore" : 0,
+    "winCondition" : {
+      "type" : "EntityBased",
+      "entityType" : "cherry"
+    },
+    "loseCondition" : {
+      "type" : "LivesBased"
+    }
+  },
+  "levels" : [ {
+    "levelMap" : "level1"
+  },
+    {
+      "levelMap" : "level2"
+    }],
+  "collisions" : [ {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Obstacle",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Cherry",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 100
+    } ],
+    "eventsB" : [ {
+      "type" : "Consume"
+    } ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "BlueGhost",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Truck",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Truck",
+    "modeB" : "Left",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Truck",
+    "modeB" : "Right",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Car",
+    "modeB" : "Left",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Car",
+    "modeB" : "Right",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Car",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ ]
+  } ]
+}

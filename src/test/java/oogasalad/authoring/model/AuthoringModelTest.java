@@ -14,15 +14,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import oogasalad.engine.config.CollisionRule;
 import oogasalad.engine.config.EntityPlacement;
 import oogasalad.engine.config.JsonConfigParser;
 import oogasalad.engine.records.config.ImageConfigRecord;
 import oogasalad.engine.records.config.ModeConfigRecord;
 import oogasalad.engine.records.config.model.EntityPropertiesRecord;
 import oogasalad.engine.records.config.model.SpawnEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.StopCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEventRecord;
+import oogasalad.engine.records.config.model.collisionevent.UpdateScoreCollisionEventRecord;
 import oogasalad.engine.records.config.model.controlConfig.NoneControlConfigRecord;
 import oogasalad.engine.records.model.ConditionRecord;
 import oogasalad.engine.records.model.EntityTypeRecord;
@@ -67,27 +73,80 @@ class AuthoringModelTest {
   }
 
   private String saveSampleGameFromAuthoringEnvironment() throws IOException {
+    // IntelliJ code assist with Claude 3.5 Sonnet added additional fields to this test
+    // Set up basic game metadata
+    model.setGameTitle("Test Game");
+    model.setAuthor("Test Author");
+    model.setGameDescription("Test Description");
+
+    // Create mode configurations with different states
+    Map<String, ModeConfigRecord> modes = new HashMap<>();
+
+    // Default mode
+    modes.put("Default", new ModeConfigRecord("Default",
+        new EntityPropertiesRecord("Default", List.of()),
+        new NoneControlConfigRecord(),
+        new ImageConfigRecord(
+            getClass().getClassLoader().getResource("mock.png").toExternalForm(),
+            10, 15, 5, 1.0),
+        2.0));
+
+    // Powered mode with different properties
+    modes.put("Powered", new ModeConfigRecord("Powered",
+        new EntityPropertiesRecord("Powered", List.of()),
+        new NoneControlConfigRecord(),
+        new ImageConfigRecord(
+            getClass().getClassLoader().getResource("mock.png").toExternalForm(),
+            12, 18, 6, 1.5),
+        3.0));
+
+    // Add entity type with modes and mode changes
     model.addEntityType(new EntityTypeRecord(
         "testEntity",
-        Map.ofEntries(
-            Map.entry("Default", new ModeConfigRecord("Default",
-                new EntityPropertiesRecord("Default", List.of()),
-                new NoneControlConfigRecord(),
-                new ImageConfigRecord(
-                    getClass().getClassLoader().getResource("mock.png").toExternalForm(), 10, 15, 5,
-                    1.0),
-                2.0)
-            )
-        ),
+        modes,
+        null
+    ));
+
+    // Add second entity type for collision rules
+    model.addEntityType(new EntityTypeRecord(
+        "targetEntity",
+        Map.of("Default", new ModeConfigRecord("Default",
+            new EntityPropertiesRecord("Default", List.of()),
+            new NoneControlConfigRecord(),
+            new ImageConfigRecord(
+                getClass().getClassLoader().getResource("mock.png").toExternalForm(),
+                8, 12, 4, 1.0),
+            1.0)),
         List.of()
     ));
+
+    // Add collision rules
+    List<CollisionRule> collisionRules = List.of(
+        new CollisionRule(
+            "testEntity", "Default",
+            "targetEntity", "Default",
+            List.of(new StopCollisionEventRecord()),
+            List.of(new ConsumeCollisionEventRecord())
+        ),
+        new CollisionRule(
+            "testEntity", "Powered",
+            "targetEntity", "Default",
+            List.of(new UpdateScoreCollisionEventRecord(5)),
+            List.of(new UpdateLivesCollisionEventRecord(1), new ConsumeCollisionEventRecord())
+        )
+    );
+    model.setCollisionRules(collisionRules);
+
+    // Add level
     model.addLevel(level);
+
+    // Save and return path
     Path tempDir = Files.createTempDirectory("testGameOutput");
     System.out.println("Saved to: " + tempDir.toAbsolutePath());
-    assertDoesNotThrow(
-        () -> model.saveGame(tempDir));
+    assertDoesNotThrow(() -> model.saveGame(tempDir));
     return tempDir.toAbsolutePath().toString();
   }
+
 
   @Test
   public void addEntityType_NewEntityType_EntityAdded() {
@@ -220,6 +279,7 @@ class AuthoringModelTest {
     level.createAndAddEntityPlacement(mockTemplate1, 10, 20);
     List<EntityPlacement> placements = level.getEntityPlacements();
 
-    assertThrows(UnsupportedOperationException.class, () -> placements.add(new EntityPlacement(mockTemplate1, 0, 0, "Default")));
+    assertThrows(UnsupportedOperationException.class,
+        () -> placements.add(new EntityPlacement(mockTemplate1, 0, 0, "Default")));
   }
 }

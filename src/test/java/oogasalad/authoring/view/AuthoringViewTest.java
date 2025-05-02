@@ -2,7 +2,6 @@ package oogasalad.authoring.view;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -38,11 +37,12 @@ public class AuthoringViewTest extends DukeApplicationTest {
     AuthoringModel mockModel = mock(AuthoringModel.class);
     LevelDraft mockLevel = mock(LevelDraft.class);
 
-    when(mockModel.getDefaultSettings()).thenReturn(new SettingsRecord(2.0, 2, 2,  new SurviveForTimeConditionRecord(5), new LivesBasedConditionRecord(), new HashSet<>()));
+    when(mockModel.getDefaultSettings()).thenReturn(
+        new SettingsRecord(2.0, 2, 2, new SurviveForTimeConditionRecord(5),
+            new LivesBasedConditionRecord(), new HashSet<>()));
     when(mockModel.getCurrentLevel()).thenReturn(mockLevel);
     when(mockLevel.getEntityPlacements()).thenReturn(List.of());
     when(mockLevelController.getCurrentLevel()).thenReturn(mockLevel);
-
 
     when(mockController.getModel()).thenReturn(mockModel);
     when(mockController.getLevelController()).thenReturn(mockLevelController);
@@ -64,7 +64,9 @@ public class AuthoringViewTest extends DukeApplicationTest {
   @Test
   public void setController_ValidController_SubViewsInitialized() {
     AuthoringModel mockModel = mock(AuthoringModel.class);
-    when(mockModel.getDefaultSettings()).thenReturn(new SettingsRecord(2.0, 2, 2, new SurviveForTimeConditionRecord(5), new LivesBasedConditionRecord(), new HashSet<>()));
+    when(mockModel.getDefaultSettings()).thenReturn(
+        new SettingsRecord(2.0, 2, 2, new SurviveForTimeConditionRecord(5),
+            new LivesBasedConditionRecord(), new HashSet<>()));
 
     when(mockController.getModel()).thenReturn(mockModel);
     when(mockController.getLevelController()).thenReturn(mockLevelController);
@@ -74,12 +76,13 @@ public class AuthoringViewTest extends DukeApplicationTest {
     when(mockLevel.getEntityPlacements()).thenReturn(List.of());
     when(mockLevelController.getCurrentLevel()).thenReturn(mockLevel);
 
-
     interact(() -> authoringView.setController(mockController));
 
     assertNotNull(authoringView.getCanvasView(), "CanvasView should be initialized");
-    assertNotNull(authoringView.getEntitySelectorView(), "EntitySelectorView should be initialized");
-    assertNotNull(authoringView.getEntityEditorView(), "EntityTypeEditorView should be initialized");
+    assertNotNull(authoringView.getEntitySelectorView(),
+        "EntitySelectorView should be initialized");
+    assertNotNull(authoringView.getEntityEditorView(),
+        "EntityTypeEditorView should be initialized");
     assertNotNull(authoringView.getGameSettingsView(), "GameSettingsView should be initialized");
     assertNotNull(authoringView.getLevelSelectorView(), "LevelSelectorView should be initialized");
 
@@ -90,7 +93,8 @@ public class AuthoringViewTest extends DukeApplicationTest {
 
   @Test
   public void getEntityEditorView_DefaultVisibility_NotVisible() {
-    assertFalse(authoringView.getEntityEditorView().getRoot().isVisible(), "EntityTypeEditorView should be hidden by default");
+    assertFalse(authoringView.getEntityEditorView().getRoot().isVisible(),
+        "EntityTypeEditorView should be hidden by default");
   }
 
   @Test

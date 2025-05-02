@@ -75,7 +75,6 @@ public class LevelSelectorViewTest extends DukeApplicationTest {
   }
 
 
-
   @Test
   public void levelDropdown_ChangeSelection_CallsSwitchToLevel() {
     LevelDraft l1 = new LevelDraft("Level 1", "");

@@ -42,14 +42,17 @@ class EuclideanPathFindingStrategyTest {
         new int[]{1, 1}
     ));
 
-    try (MockedStatic<PathFindingStrategyHelperMethods> utilities = mockStatic(PathFindingStrategyHelperMethods.class)) {
+    try (MockedStatic<PathFindingStrategyHelperMethods> utilities = mockStatic(
+        PathFindingStrategyHelperMethods.class)) {
       utilities.when(() ->
-              PathFindingStrategyHelperMethods.getValidDirections(mockMap, startX, startY, mockEntity, Direction.NONE))
+              PathFindingStrategyHelperMethods.getValidDirections(mockMap, startX, startY, mockEntity,
+                  Direction.NONE))
           .thenReturn(neighbors);
 
       mockPositionValidity(neighbors, true);
 
-      int[] result = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntity, Direction.NONE);
+      int[] result = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntity,
+          Direction.NONE);
 
       assertArrayEquals(new int[]{1, 0}, result);
     }
@@ -68,12 +71,15 @@ class EuclideanPathFindingStrategyTest {
     when(mockMap.isValidPosition(anyInt(), anyInt())).thenReturn(true);
     when(mockMap.isNotBlocked(any(), anyInt(), anyInt())).thenReturn(true);
 
-    try (MockedStatic<PathFindingStrategyHelperMethods> utilities = mockStatic(PathFindingStrategyHelperMethods.class)) {
+    try (MockedStatic<PathFindingStrategyHelperMethods> utilities = mockStatic(
+        PathFindingStrategyHelperMethods.class)) {
       utilities.when(() ->
-              PathFindingStrategyHelperMethods.getValidDirections(mockMap, startX, startY, mockEntity, Direction.D))
+              PathFindingStrategyHelperMethods.getValidDirections(mockMap, startX, startY, mockEntity,
+                  Direction.D))
           .thenReturn(preferred);
 
-      int[] result = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntity, Direction.D);
+      int[] result = strategy.getPath(mockMap, startX, startY, targetX, targetY, mockEntity,
+          Direction.D);
 
       assertArrayEquals(new int[]{0, 1}, result);
     }

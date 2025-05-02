@@ -1,6 +1,9 @@
 package oogasalad.player.controller;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.mock;
@@ -11,7 +14,6 @@ import static org.mockito.Mockito.when;
 import java.util.HashSet;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import oogasalad.engine.records.GameContextRecord;
 import oogasalad.engine.records.config.ConfigModelRecord;
 import oogasalad.engine.records.config.model.ParsedLevelRecord;
@@ -22,7 +24,6 @@ import oogasalad.player.model.GameMap;
 import oogasalad.player.model.GameMapInterface;
 import oogasalad.player.model.GameState;
 import oogasalad.player.view.GameMapView;
-import oogasalad.player.view.GameScreenView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,14 +46,18 @@ class GameLoopControllerTest extends DukeApplicationTest {
     SettingsRecord gameSettings = new SettingsRecord(1.0, 5, 5,
         new EntityBasedConditionRecord("dot"), new LivesBasedConditionRecord(), new HashSet<>());
     GameState gameState = new GameState(gameSettings);
-    GameContextRecord gameContext = new GameContextRecord(Mockito.spy(new GameInputManager(mock(Scene.class), mock(Group.class))), gameMap, gameState);
+    GameContextRecord gameContext = new GameContextRecord(
+        Mockito.spy(new GameInputManager(mock(Scene.class), mock(Group.class))), gameMap,
+        gameState);
 
     ConfigModelRecord mockConfigModel = mock(ConfigModelRecord.class);
     when(mockConfigModel.winCondition()).thenReturn(new EntityBasedConditionRecord("dot"));
     when(mockConfigModel.loseCondition()).thenReturn(new LivesBasedConditionRecord());
-    when(mockConfigModel.settings()).thenReturn(new SettingsRecord(1.0, 1, 1, null, null, new HashSet<>()));
+    when(mockConfigModel.settings()).thenReturn(
+        new SettingsRecord(1.0, 1, 1, null, null, new HashSet<>()));
 
-    gameMapView = Mockito.spy(new GameMapView(gameContext, mockConfigModel, "data/games/BasicPacMan/"));
+    gameMapView = Mockito.spy(
+        new GameMapView(gameContext, mockConfigModel, "data/games/BasicPacMan/"));
     gameLoopController = Mockito.spy(
         new GameLoopController(mockConfigModel, gameContext, gameMapView, mock(
             ParsedLevelRecord.class)));
@@ -92,6 +97,75 @@ class GameLoopControllerTest extends DukeApplicationTest {
     Thread.sleep(100);
     verify(gameMap, atLeastOnce()).update();
     verify(gameMapView, atLeastOnce()).update();
+  }
+
+  @Test
+  void gameSpeedMultiplier_GetAndSet_Success() {
+    double newSpeed = 2.0;
+    gameLoopController.setGameSpeedMultiplier(newSpeed);
+    assertEquals(newSpeed, gameLoopController.getGameSpeedMultiplier());
+  }
+
+
+  @Test
+  void resumeGame_UpdatesAfterResume_Success() throws InterruptedException {
+    // First pause the game
+    gameLoopController.pauseGame();
+
+    // Clear any previous invocations
+    clearInvocations(gameMap, gameMapView);
+
+    // Resume the game
+    gameLoopController.resumeGame();
+
+    // Wait a bit to allow for updates
+    Thread.sleep(100);
+
+    // Verify updates occurred after resume
+    verify(gameMap, atLeastOnce()).update();
+    verify(gameMapView, atLeastOnce()).update();
+  }
+
+  @Test
+  void pauseAndResume_MultipleTimesInSequence_Success() {
+    // Test multiple pause/resume cycles
+    assertDoesNotThrow(() -> {
+      for (int i = 0; i < 3; i++) {
+        gameLoopController.pauseGame();
+        gameLoopController.resumeGame();
+      }
+    });
+  }
+
+  @Test
+  void gameLoop_VerifyUpdateFrequency_Success() throws InterruptedException {
+    // Clear any previous invocations
+    clearInvocations(gameMap, gameMapView);
+
+    // Wait for multiple update cycles
+    Thread.sleep(300);
+
+    // Verify that multiple updates occurred
+    verify(gameMap, atLeast(2)).update();
+    verify(gameMapView, atLeast(2)).update();
+  }
+
+  @Test
+  void pauseGame_VerifyGameStatePreserved_Success() {
+    // Set initial game speed
+    double initialSpeed = 1.5;
+    gameLoopController.setGameSpeedMultiplier(initialSpeed);
+
+    // Pause game
+    gameLoopController.pauseGame();
+
+    // Verify game speed remains unchanged after pause
+    assertEquals(initialSpeed, gameLoopController.getGameSpeedMultiplier());
+  }
+
+  @Test
+  void resumeGame_WithoutPriorPause_DoesNotThrowException() {
+    assertDoesNotThrow(() -> gameLoopController.resumeGame());
   }
 
 }

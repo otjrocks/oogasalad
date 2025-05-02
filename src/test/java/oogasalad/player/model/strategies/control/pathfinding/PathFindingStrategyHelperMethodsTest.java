@@ -35,31 +35,36 @@ class PathFindingStrategyHelperMethodsTest {
 
   @Test
   void getPreferredNeighbors_down_returnsDownLeftRight() {
-    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5, mockEntity, Direction.D);
+    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5,
+        mockEntity, Direction.D);
     assertContainsDirections(result, 5, 5, List.of(Direction.D, Direction.L, Direction.R));
   }
 
   @Test
   void getPreferredNeighbors_up_returnsUpLeftRight() {
-    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5, mockEntity, Direction.U);
+    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5,
+        mockEntity, Direction.U);
     assertContainsDirections(result, 5, 5, List.of(Direction.U, Direction.L, Direction.R));
   }
 
   @Test
   void getPreferredNeighbors_left_returnsLeftUpDown() {
-    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5, mockEntity, Direction.L);
+    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5,
+        mockEntity, Direction.L);
     assertContainsDirections(result, 5, 5, List.of(Direction.L, Direction.U, Direction.D));
   }
 
   @Test
   void getPreferredNeighbors_right_returnsRightUpDown() {
-    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5, mockEntity, Direction.R);
+    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5,
+        mockEntity, Direction.R);
     assertContainsDirections(result, 5, 5, List.of(Direction.R, Direction.U, Direction.D));
   }
 
   @Test
   void getPreferredNeighbors_none_returnsEmpty() {
-    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5, mockEntity, Direction.NONE);
+    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5,
+        mockEntity, Direction.NONE);
     assertTrue(result.isEmpty(), "Expected no preferred neighbors for NONE direction.");
   }
 
@@ -67,49 +72,56 @@ class PathFindingStrategyHelperMethodsTest {
   @Test
   void getPreferredNeighbors_leftBlocked_returnsDownRight() {
     blockPosition(4, 5); // L from (5,5)
-    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5, mockEntity, Direction.D);
+    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5,
+        mockEntity, Direction.D);
     assertContainsDirections(result, 5, 5, List.of(Direction.D, Direction.R));
   }
 
   @Test
   void getPreferredNeighbors_rightBlocked_returnsDownLeft() {
     blockPosition(6, 5); // R from (5,5)
-    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5, mockEntity, Direction.D);
+    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5,
+        mockEntity, Direction.D);
     assertContainsDirections(result, 5, 5, List.of(Direction.D, Direction.L));
   }
 
   @Test
   void getPreferredNeighbors_downBlocked_returnsLeftRight() {
     blockPosition(5, 6); // D from (5,5)
-    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5, mockEntity, Direction.D);
+    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5,
+        mockEntity, Direction.D);
     assertContainsDirections(result, 5, 5, List.of(Direction.L, Direction.R));
   }
 
   @Test
   void getPreferredNeighbors_upBlocked_returnsRightDown() {
     blockPosition(5, 4); // U from (5,5)
-    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5, mockEntity, Direction.R);
+    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5,
+        mockEntity, Direction.R);
     assertContainsDirections(result, 5, 5, List.of(Direction.R, Direction.D));
   }
 
   @Test
   void getPreferredNeighbors_downBlockedOnLeft_returnsUpLeft() {
     blockPosition(5, 6); // D from (5,5)
-    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5, mockEntity, Direction.L);
+    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5,
+        mockEntity, Direction.L);
     assertContainsDirections(result, 5, 5, List.of(Direction.L, Direction.U));
   }
 
   @Test
   void getPreferredNeighbors_leftBlockedOnUp_returnsUpRight() {
     blockPosition(4, 5); // L from (5,5)
-    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5, mockEntity, Direction.U);
+    List<int[]> result = PathFindingStrategyHelperMethods.getPreferredNeighbors(mockMap, 5, 5,
+        mockEntity, Direction.U);
     assertContainsDirections(result, 5, 5, List.of(Direction.U, Direction.R));
   }
 
 
   @Test
   void getAllValidNeighbors_returnsAllDirections() {
-    List<int[]> result = PathFindingStrategyHelperMethods.getAllValidNeighbors(mockMap, 0, 0, mockEntity);
+    List<int[]> result = PathFindingStrategyHelperMethods.getAllValidNeighbors(mockMap, 0, 0,
+        mockEntity);
 
     Set<List<Integer>> expected = new HashSet<>();
     for (Direction dir : Direction.values()) {
@@ -125,7 +137,8 @@ class PathFindingStrategyHelperMethodsTest {
 
   @Test
   void getValidDirections_null_returnsAllValid() {
-    List<int[]> result = PathFindingStrategyHelperMethods.getValidDirections(mockMap, 5, 5, mockEntity, null);
+    List<int[]> result = PathFindingStrategyHelperMethods.getValidDirections(mockMap, 5, 5,
+        mockEntity, null);
 
     Set<List<Integer>> expected = new HashSet<>();
     for (Direction dir : Direction.values()) {
@@ -134,12 +147,14 @@ class PathFindingStrategyHelperMethodsTest {
       }
     }
 
-    assertEquals(expected, toOffsetSet(result), "Should return all valid directions for null input.");
+    assertEquals(expected, toOffsetSet(result),
+        "Should return all valid directions for null input.");
   }
 
   @Test
   void getValidDirections_none_returnsAllValid() {
-    List<int[]> result = PathFindingStrategyHelperMethods.getValidDirections(mockMap, 5, 5, mockEntity, Direction.NONE);
+    List<int[]> result = PathFindingStrategyHelperMethods.getValidDirections(mockMap, 5, 5,
+        mockEntity, Direction.NONE);
 
     Set<List<Integer>> expected = new HashSet<>();
     for (Direction dir : Direction.values()) {
@@ -153,7 +168,8 @@ class PathFindingStrategyHelperMethodsTest {
 
   @Test
   void getValidDirections_directionD_returnsPreferredOnly() {
-    List<int[]> result = PathFindingStrategyHelperMethods.getValidDirections(mockMap, 5, 5, mockEntity, Direction.D);
+    List<int[]> result = PathFindingStrategyHelperMethods.getValidDirections(mockMap, 5, 5,
+        mockEntity, Direction.D);
     assertContainsDirections(result, 5, 5, List.of(Direction.D, Direction.L, Direction.R));
   }
 
@@ -161,7 +177,8 @@ class PathFindingStrategyHelperMethodsTest {
     when(mockMap.isNotBlocked(anyString(), eq(x), eq(y))).thenReturn(false);
   }
 
-  private void assertContainsDirections(List<int[]> result, int baseX, int baseY, List<Direction> directions) {
+  private void assertContainsDirections(List<int[]> result, int baseX, int baseY,
+      List<Direction> directions) {
     Set<String> expected = new HashSet<>();
     for (Direction dir : directions) {
       expected.add((baseX + dir.getDx()) + "," + (baseY + dir.getDy()));

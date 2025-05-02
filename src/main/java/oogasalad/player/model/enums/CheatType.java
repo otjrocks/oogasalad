@@ -77,7 +77,7 @@ public enum CheatType {
     public void execute(GameInputManager inputManager, GameContextRecord context,
         GameLoopController loop) {
       if (inputManager.shouldSpeedUpGame()) {
-        loop.setMyGameSpeedMultiplier(loop.getMyGameSpeedMultiplier() * 1.1);
+        loop.setGameSpeedMultiplier(loop.getGameSpeedMultiplier() * 1.1);
       }
     }
   };

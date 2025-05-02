@@ -136,7 +136,6 @@ class BfsPathFindingStrategyTest {
     int[] actual = strategy.getPath(mockMap, 0, 0, 2, 2, mockEntityPlacement,
         Direction.NONE);
 
-
     assertArrayEquals(new int[]{0, 0}, actual);
   }
 

@@ -3,10 +3,8 @@ package oogasalad.authoring.view;
 import static org.junit.jupiter.api.Assertions.*;
 
 import javafx.scene.Scene;
-import javafx.scene.control.TextInputControl;
 import javafx.stage.Stage;
 import oogasalad.engine.records.config.model.collisionevent.ConsumeCollisionEventRecord;
-import oogasalad.engine.records.config.model.collisionevent.UpdateLivesCollisionEventRecord;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
 

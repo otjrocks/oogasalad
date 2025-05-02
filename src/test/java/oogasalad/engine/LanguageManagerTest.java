@@ -1,6 +1,6 @@
 package oogasalad.engine;
 
-import java.util.List;
+import oogasalad.engine.utility.FileUtility;
 import oogasalad.engine.utility.LanguageManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,9 @@ class LanguageManagerTest {
 
   @Test
   void getAvailableLanguages_EnsureCurrentLanguagesAvailable_ReturnCorrectLanguagesList() {
-    Assertions.assertEquals(List.of("English", "Italian"), LanguageManager.getAvailableLanguages());
+    Assertions.assertEquals(
+        FileUtility.getFileNamesInDirectory("src/main/resources/oogasalad/languages",
+            ".properties"), LanguageManager.getAvailableLanguages());
   }
 
   @Test

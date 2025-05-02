@@ -8,11 +8,59 @@
     {
       "name": "Default",
       "image": {
-        "imagePath": "assets/wall.png",
-        "tileWidth": 8,
-        "tileHeight": 8,
+        "imagePath": "assets/cactus.png",
+        "tileWidth": 35,
+        "tileHeight": 35,
         "tilesToCycle": 1,
         "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "ConstantDirection",
+        "dx": -1,
+        "dy": 0
+      },
+      "movementSpeed": 1.5
+    },
+    {
+      "name": "Top",
+      "image": {
+        "imagePath": "assets/cactustop.png",
+        "tileWidth": 35,
+        "tileHeight": 35,
+        "tilesToCycle": 1,
+        "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "ConstantDirection",
+        "dx": -1,
+        "dy": 0
+      },
+      "movementSpeed": 1.5
+    },
+    {
+      "name": "Bottom",
+      "image": {
+        "imagePath": "assets/cactusbot.png",
+        "tileWidth": 35,
+        "tileHeight": 35,
+        "tilesToCycle": 1,
+        "animationSpeed": 1.0
+      },
+      "controlConfig": {
+        "controlStrategy": "ConstantDirection",
+        "dx": -1,
+        "dy": 0
+      },
+      "movementSpeed": 1.5
+    },
+    {
+      "name": "Bird",
+      "image": {
+        "imagePath": "assets/bird.png",
+        "tileWidth": 46,
+        "tileHeight": 38,
+        "tilesToCycle": 2,
+        "animationSpeed": 5.0
       },
       "controlConfig": {
         "controlStrategy": "ConstantDirection",

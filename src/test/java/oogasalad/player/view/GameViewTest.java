@@ -49,7 +49,6 @@ public class GameViewTest extends DukeApplicationTest {
   }
 
 
-
   @Test
   void getRoot_initialization_initializedRoot() {
     StackPane root = gameView.getRoot();

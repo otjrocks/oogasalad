@@ -7,8 +7,8 @@
       "name": "Default",
       "image": {
         "imagePath": "assets/dot.png",
-        "tileWidth": 32,
-        "tileHeight": 32,
+        "tileWidth": 28,
+        "tileHeight": 28,
         "tilesToCycle": 1,
         "animationSpeed": 1.0
       },

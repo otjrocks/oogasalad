@@ -48,7 +48,7 @@
   },
   "layout": [
     "5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5",
-    "5 6 6 6 6 6 6 6 6 6 6 6 6 5 5 6 6 6 6 6 6 6 6 6 6 6 6 5",
+    "5 10 6 6 6 6 6 6 6 6 6 6 6 5 5 6 6 6 6 6 6 6 6 6 6 6 10 5",
     "5 6 5 5 5 5 6 5 5 5 5 5 6 5 5 6 5 5 5 5 5 6 5 5 5 5 6 5",
     "5 6 5 5 5 5 6 5 5 5 5 5 6 5 5 6 5 5 5 5 5 6 5 5 5 5 6 5",
     "5 6 5 5 5 5 6 5 5 5 5 5 6 5 5 6 5 5 5 5 5 6 5 5 5 5 6 5",
@@ -232,56 +232,112 @@
       "entityType": "2",
       "modeChangeInfo": {
         "originalMode": "Default",
-        "transitionMode": "Frightened",
-        "revertTime" : 999999999,
+        "transitionMode": "Scatter",
+        "revertTime" : 7,
         "transitionTime" : 1
       },
       "changeCondition": {
         "type": "TimeElapsed",
         "parameters": {
-          "amount": 10
+          "amount": 7
         }
       }
     }, {
       "entityType": "3",
       "modeChangeInfo": {
         "originalMode": "Default",
-        "transitionMode": "Frightened",
-        "revertTime" : 999999999,
+        "transitionMode": "Scatter",
+        "revertTime" : 7,
         "transitionTime" : 1
       },
       "changeCondition": {
         "type": "TimeElapsed",
         "parameters": {
-          "amount": 10
+          "amount": 7
         }
       }
     }, {
       "entityType": "11",
       "modeChangeInfo": {
         "originalMode": "Default",
-        "transitionMode": "Frightened",
-        "revertTime" : 999999999,
+        "transitionMode": "Scatter",
+        "revertTime" : 7,
         "transitionTime" : 1
       },
       "changeCondition": {
         "type": "TimeElapsed",
         "parameters": {
-          "amount": 10
+          "amount": 7
         }
       }
     }, {
       "entityType": "12",
       "modeChangeInfo": {
         "originalMode": "Default",
-        "transitionMode": "Frightened",
-        "revertTime" : 999999999,
+        "transitionMode": "Scatter",
+        "revertTime" : 7,
         "transitionTime" : 1
       },
       "changeCondition": {
         "type": "TimeElapsed",
         "parameters": {
-          "amount": 10
+          "amount": 7
+        }
+      }
+    }, {
+      "entityType": "2",
+      "modeChangeInfo": {
+        "originalMode": "Default",
+        "transitionMode": "Scatter",
+        "revertTime" : 7,
+        "transitionTime" : 1
+      },
+      "changeCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 34
+        }
+      }
+    }, {
+      "entityType": "3",
+      "modeChangeInfo": {
+        "originalMode": "Default",
+        "transitionMode": "Scatter",
+        "revertTime" : 7,
+        "transitionTime" : 1
+      },
+      "changeCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 34
+        }
+      }
+    }, {
+      "entityType": "11",
+      "modeChangeInfo": {
+        "originalMode": "Default",
+        "transitionMode": "Scatter",
+        "revertTime" : 7,
+        "transitionTime" : 1
+      },
+      "changeCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 34
+        }
+      }
+    }, {
+      "entityType": "12",
+      "modeChangeInfo": {
+        "originalMode": "Default",
+        "transitionMode": "Scatter",
+        "revertTime" : 7,
+        "transitionTime" : 1
+      },
+      "changeCondition": {
+        "type": "TimeElapsed",
+        "parameters": {
+          "amount": 34
         }
       }
     }

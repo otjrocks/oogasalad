@@ -80,8 +80,10 @@ class TargetControlStrategyTest {
     when(entity.canMove(expectedDirection)).thenReturn(canMove);
 
     try (
-        MockedStatic<TargetStrategyFactory> mockTargetFactory = mockStatic(TargetStrategyFactory.class);
-        MockedStatic<PathFindingStrategyFactory> mockPathFactory = mockStatic(PathFindingStrategyFactory.class)
+        MockedStatic<TargetStrategyFactory> mockTargetFactory = mockStatic(
+            TargetStrategyFactory.class);
+        MockedStatic<PathFindingStrategyFactory> mockPathFactory = mockStatic(
+            PathFindingStrategyFactory.class)
     ) {
       mockTargetFactory.when(() -> TargetStrategyFactory.createTargetStrategy(placement, gameMap))
           .thenReturn(mockTargetStrategy);
