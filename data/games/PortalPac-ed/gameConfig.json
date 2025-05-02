@@ -1,0 +1,90 @@
+{
+  "metadata" : {
+    "gameTitle" : "Portal Pac-ed",
+    "author" : "Angela Predolac",
+    "gameDescription" : "A twist on classic Pac-Man where Pac-Man and ghosts can teleport through portals scattered around the maze. Portals appear and disappear over time, creating an ever-changing maze experience!"
+  },
+  "defaultSettings" : {
+    "gameSpeed" : 1.0,
+    "startingLives" : 3,
+    "initialScore" : 0,
+    "winCondition" : {
+      "type" : "EntityBased",
+      "entityType" : "Cherry"
+    },
+    "loseCondition" : {
+      "type" : "LivesBased"
+    },
+    "cheatTypes" : [ ]
+  },
+  "levels" : [ {
+    "levelMap" : "level1"
+  } ],
+  "collisions" : [ {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Wall",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Cherry",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateScore",
+      "amount" : 100
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "Ghost",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "UpdateLives",
+      "amount" : -1
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "OrangePortal",
+    "modeB" : "Default",
+    "eventsA" : [ ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Pacman",
+    "modeA" : "Default",
+    "entityB" : "BluePortal",
+    "modeB" : "Default",
+    "eventsA" : [ ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Ghost",
+    "modeA" : "Default",
+    "entityB" : "Wall",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Ghost",
+    "modeA" : "Default",
+    "entityB" : "OrangePortal",
+    "modeB" : "Default",
+    "eventsA" : [ ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "Ghost",
+    "modeA" : "Default",
+    "entityB" : "BluePortal",
+    "modeB" : "Default",
+    "eventsA" : [ ],
+    "eventsB" : [ ]
+  } ]
+}
