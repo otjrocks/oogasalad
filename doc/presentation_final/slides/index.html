@@ -88,9 +88,16 @@
       </section>
       <section data-auto-animate>
         <h3 data-id="title">Hierarchy</h3>
-        <p data-id="description">
-          I'll probably make an image to show the general layout
+        <p data-id="description" style="font-size: 10px">
+          my iPad wasn't charged :(
         </p>
+        <img
+            src="https://i.gyazo.com/b7665670e1840daddd6f566d4045c6bb.png"
+            alt="Hierarchy"
+            data-preview-image="https://i.gyazo.com/b7665670e1840daddd6f566d4045c6bb.png"
+            style="width: 90%; margin-left: 10px;"
+            data-id="code-animation"
+        />
       </section>
       <section data-auto-animate>
         <h3 data-id="title">Game Config</h3>
@@ -554,17 +561,358 @@
       </section>
     </section>
 
-    <!-- API's -->
+    <!-- API's: Done -->
     <section data-auto-animate>
+      <!--Collision: Done-->
       <section data-auto-animate>
-        <h1 data-id="title">APIs</h1>
+        <h2 data-id="title">API: Collision Strategy Interface</h2>
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.8rem;" data-trim
+                                                                        data-line-numbers="14-15"><script
+              type="text/template">
+            public interface CollisionStrategyInterface {
+
+              /**
+              * Defines the behavior that should occur after a collision between two entities.
+              *
+              * <p>This method is called whenever two entities collide, allowing for different
+              * collision outcomes depending on the strategy implementation.</p>
+              *
+              * @param collisionContext the context of the collision, containing both entities, the game map,
+              *                         and the current game state
+              * @throws EntityNotFoundException if an entity involved in the collision cannot be found in the
+              *                                 game map during processing
+              */
+              void handleCollision(CollisionContextRecord collisionContext)
+                throws EntityNotFoundException, InvalidPositionException;
+            }
+            </script></code></pre>
+
+        <p data-id="description">
+          <small
+          >oogasalad/player/model/strategies/collision/CollisionStrategyInterface.java </small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">API: Collision Strategy Interface</h2>
+        <div class="r-hstack justify-center">
+          <div style="width: 50%; margin:0;"> <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.65rem;" data-trim
+                                                                        data-line-numbers="4-16"><script
+              type="text/template">
+            public class ConsumeStrategy implements CollisionStrategyInterface {
+
+              @Override
+              public void handleCollision(CollisionContextRecord collisionContext)
+              throws EntityNotFoundException {
+                try {
+                  if (collisionContext.strategyAppliesTo() == ENTITY1) {
+                    collisionContext.gameMap().removeEntity(collisionContext.entity1());
+                  } else {
+                    collisionContext.gameMap().removeEntity(collisionContext.entity2());
+                  }
+                } catch (EntityNotFoundException e) {
+                  throw new EntityNotFoundException(
+                  "Cannot remove requested entity, because it does not exist in the game map!", e);
+                }
+              }
+            }
+            </script></code></pre>
+          </div>
+          <div style="width: 50%; margin:0;"> <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.65rem;" data-trim
+                                                                        data-line-numbers="10-12"
+          ><script
+              type="text/template">
+              public class UpdateLivesStrategy implements CollisionStrategyInterface {
+
+                private final int livesIncrement;
+
+                public UpdateLivesStrategy(int livesIncrement) {
+                  this.livesIncrement = livesIncrement;
+                }
+
+                @Override
+                public void handleCollision(CollisionContextRecord collisionContext) {
+                  collisionContext.gameState().updateLives(livesIncrement);
+                }
+              }
+            </script></code></pre>
+          </div>
+
+        </div>
+          <p data-id="description">
+            <small
+            >Highly extensible as handleCollision allows each implementation to have vastly different outcomes</small
+            >
+          </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">API: Collision Strategy Interface</h2>
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.8rem;" data-trim><script
+            type="text/template">
+            public class CollisionStrategyFactory {
+
+              private static final String STRATEGY_PACKAGE = "oogasalad.player.model.strategies.collision";
+
+              public static CollisionStrategyInterface createCollisionStrategy(
+              CollisionEventInterface collisionEvent) {
+                try {
+                  String eventClassName = collisionEvent.getClass().getSimpleName();
+                  String strategyClassName = eventClassName.replace("CollisionEventRecord",
+                  "Strategy");
+                  Class<?> strategyClass = Class.forName(STRATEGY_PACKAGE + "." + strategyClassName);
+
+                  // Get parameters from event record (supports multiple parameters if needed)
+                  Object[] args = Arrays.stream(collisionEvent.getClass().getRecordComponents())
+                  .map(component -> extractFieldValue(component, collisionEvent))
+                  .toArray();
+
+                  Constructor<?> constructor = Arrays.stream(strategyClass.getConstructors())
+                  .filter(c -> c.getParameterCount() == args.length)
+                  .findFirst()
+                  .orElseThrow();
+
+                  return (CollisionStrategyInterface) constructor.newInstance(args);
+                } catch (Exception e) {
+                  LoggingManager.LOGGER.warn("Failed to create strategy for: {}",
+                  collisionEvent.getClass().getSimpleName(), e);
+                  return defaultStrategy();
+                }
+              }
+
+              private static Object extractFieldValue(RecordComponent component,
+              CollisionEventInterface event) {
+                try {
+                  return component.getAccessor().invoke(event);
+                } catch (Exception e) {
+                  LoggingManager.LOGGER.warn("Failed to extract field: {}", component.getName(), e);
+                  return null;
+                }
+              }
+
+              private static CollisionStrategyInterface defaultStrategy() {
+                try {
+                  Class<?> defaultClass = Class.forName(STRATEGY_PACKAGE + ".ConsumeStrategy");
+                  return (CollisionStrategyInterface) defaultClass.getDeclaredConstructor().newInstance();
+                } catch (Exception e) {
+                  throw new RuntimeException("Failed to create default strategy", e);
+                }
+              }
+            }
+            </script></code></pre>
+
+        <p data-id="description">
+          <small
+          >Using factories and reflections to create collisions allos for users to design the code and not have to change it as more implementations are added.</small
+          >
+        </p>
+      </section>
+      <!--Config Parser: Done-->
+      <section data-auto-animate>
+        <h2 data-id="title">API: Config Parser Interface</h2>
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers="10,19"><script
+            type="text/template">
+            public interface ConfigParserInterface {
+
+              /**
+              * Loads a configuration model from the specified file path.
+              *
+              * @param filepath the path to the configuration file to be loaded
+              * @return a {@code ConfigModel} object representing the loaded configuration
+              * @throws ConfigException if an error occurs while loading or parsing the configuration file
+              */
+              ConfigModelRecord loadFromFile(String filepath) throws ConfigException;
+
+              /**
+              * Loads a game configuration model from the specified file path.
+              *
+              * @param filepath the path to the configuration file to be loaded
+              * @return a {@code GameConfigRecord} object representing the loaded configuration
+              * @throws ConfigException if an error occurs while loading or parsing the configuration file
+              */
+              GameConfigRecord loadGameConfig(String filepath) throws ConfigException;
+            }
+            </script></code></pre>
+
+        <p data-id="description">
+          <small
+          >oogasalad/engine/config/api/ConfigParserInterface.java</small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">API: Config Parser Interface</h2>
+        <!--Didn't know if you wanted implementation-->
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.65rem;" data-trim
+                                                                                  data-line-numbers="4-16"><script
+              type="text/template">
+        </script></code></pre>
+
+        <p data-id="description">
+          <ul>
+            <li>
+              Since the interface standarizes the output of the file can change the data structure of the config or even write the config in a different language as long as it parsers to the same record.</small
+            </li>
+            <li>
+              The format of these outputs make it highly usuable for any feature that involves getting information for a specific game whether that be metadata, level information, or the entire game's information.
+            </li>
+          </ul>
+        </p>
       </section>
     </section>
 
-    <!-- Use Cases -->
+    <!-- Use Cases: Done -->
     <section data-auto-animate>
+      <!--Collision: Done-->
       <section data-auto-animate>
-        <h1 data-id="title">Use Cases</h1>
+        <h2 data-id="title">Use Case: Collision Strategy Interface</h2>
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers=""><script
+            type="text/template">
+          public class CollisionEventView {
+            public CollisionEventInterface getCollisionEvent() {
+              try {
+                String collisionName = mySelector.getValue();
+                String fullClassName = COLLISION_EVENTS_PACKAGE_PATH + collisionName + "CollisionEventRecord";
+                Class<?> collisionEventClass = Class.forName(fullClassName);
+
+                Map<String, Class<?>> requiredFields = getCollisionRequiredFields(collisionName);
+                Object[] constructorArgs = new Object[requiredFields.size()];
+
+                int index = 0;
+                for (Class<?> paramType : requiredFields.values()) {
+                  String userInput = myParameterFields.get(index).getText();
+                  constructorArgs[index] = FileUtility.castInputToCorrectType(userInput, paramType);
+                  index++;
+                }
+
+                Constructor<?> constructor = collisionEventClass.getDeclaredConstructors()[0];
+                Object eventInstance = constructor.newInstance(constructorArgs);
+
+                return (CollisionEventInterface) eventInstance;
+              } catch (IllegalArgumentException e) {
+                throw e;
+              } catch (Exception e) {
+                LoggingManager.LOGGER.warn("Error getting collision event", e);
+                throw new RuntimeException("Failed to create CollisionEvent: " + e.getMessage());
+              }
+            }
+          }
+        </script></code></pre>
+
+        <p data-id="description">
+          <small
+          >oogasalad/authoring/view/CollisionEventView.java</small
+          >
+        </p>
+      </section>
+      <!--Config Parser: Done -->
+      <section data-auto-animate>
+        <h2 data-id="title">Use Case: Config Parser Interface</h2>
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers=""><script
+            type="text/template">
+            public record ConfigModelRecord(
+            MetaDataRecord metadata,
+            SettingsRecord settings,
+            List<EntityTypeRecord> entityTypes,
+              List<ParsedLevelRecord> levels,
+              List<CollisionRule> collisionRules,
+              WinConditionInterface winCondition,
+              LoseConditionInterface loseCondition,
+              int currentLevelIndex,
+              Map<String, Double> respawnableEntities
+            ) {
+
+              /**
+               * Returns the corresponding entity type to its entity name
+               *
+               * @param name represents the entity type name stored in the json file
+               */
+              public EntityTypeRecord getEntityTypeByName(String name) {
+                return entityTypes().stream()
+                    .filter(e -> e.type().equals(name))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Entity type not found: " + name));
+              }
+
+            }
+            </script></code></pre>
+
+        <p data-id="description">
+          <small
+          >ConfigParser returns a ConfigModelRecord</small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Use Case: Config Parser Interface</h2>
+        <pre data-id="code-animation"><code class="hljs java" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers="6, 16-17, 19, 32, 49"><script
+            type="text/template">
+          public GamePlayerView(MainController controller, GameStateInterface gameState,
+            String gameFolderPath, boolean randomized) {
+            private void loadConfigFromFile() {
+              JsonConfigParser configParser = new JsonConfigParser();
+              try {
+                myConfigModel = configParser.loadFromFile(gameFolderPath + "/gameConfig.json");
+              } catch (ConfigException e) {
+                LoggingManager.LOGGER.warn("Failed to load config file: {}", GAME_CONFIG_JSON, e);
+              }
+            }
+          }
+
+          public class GameMapFactory {
+            public static GameMapInterface createGameMap(GameInputManager input, ConfigModelRecord configModel,
+              int levelIndex) throws InvalidPositionException {
+              int width = configModel.levels().get(levelIndex).mapInfo().width();
+              int height = configModel.levels().get(levelIndex).mapInfo().height();
+              GameMap gameMap = new GameMap(width, height); // Hardcoded for now
+              for (EntityPlacement entityPlacement : configModel.levels().get(levelIndex).placements()) {
+                Entity entity = EntityFactory.createEntity(input, entityPlacement, gameMap, configModel);
+                gameMap.addEntity(entity);
+              }
+              return gameMap;
+            }
+          }
+
+          public GameView(GameContextRecord gameContext, ConfigModelRecord configModel, int levelIndex,
+            GameSessionManager sessionManager, String gameFolder) {
+            private Image getBackgroundImage(ConfigModelRecord configModel, int levelIndex,
+            String gameFolder) {
+              final Image backgroundImage;
+              String backgroundImagePath = configModel.levels().get(levelIndex).mapInfo().backgroundImagePath();
+              if (backgroundImagePath == null) {
+                return null;
+              }
+              String imagePath = gameFolder + backgroundImagePath;
+              try {
+                backgroundImage = new Image(new FileInputStream(imagePath));
+              } catch (FileNotFoundException e) {
+                LoggingManager.LOGGER.warn("Unable to load background image for level {}", imagePath);
+                throw new RuntimeException("Failed to load image from path: " + imagePath, e);
+              }
+              return backgroundImage;
+            }
+          }
+
+          public GameMapController(GameContextRecord gameContext, ConfigModelRecord configModel) {
+            private void applyCollisionStrategiesFromCollisionRules(Entity e1, Entity e2) {
+              for (CollisionRule collisionRule : myConfigModel.collisionRules()) {
+                if (checkEntityTypesAndModesMatch(e1, e2, collisionRule)) {
+                  applyEntityACollisionStrategy(e1, e2, collisionRule);
+                  applyEntityBCollisionStrategy(e1, e2, collisionRule);
+                }
+              }
+            }
+          }
+        </script></code></pre>
+
+        <p data-id="description">
+          <small
+          >The data from the ConfigModelRecord is then parsed out by the GamePlayerView to use encoded information to set up the game.</small
+          >
+        </p>
       </section>
     </section>
 
