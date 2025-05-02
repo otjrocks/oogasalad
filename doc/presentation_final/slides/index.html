@@ -43,7 +43,7 @@
       </p>
     </section>
 
-    <!-- Demo -->
+    <!-- Demo: Done -->
     <section data-auto-animate>
       <section data-auto-animate>
         <img
@@ -78,10 +78,7 @@
       </section>
     </section>
 
-    <!-- Data Files -->
-    <section data-auto-animate>
-      <h1 data-id="title">Data Files</h1>
-    </section>
+    <!-- Data Files: Done -->
     <section data-auto-animate>
       <section data-auto-animate>
         <h2 data-id="title">Data Files: Game</h2>
@@ -147,11 +144,11 @@
           <small>data/games/BasicPacMan/gameConfig.json</small>
         </p>
       </section>
-      <!--maybe split this so you can see the tiles on the other side but thats like not needed now at all-->
+      <!--Levels-->
       <section data-auto-animate>
         <h3 data-id="title">Levels</h3>
         <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
-                                            data-line-numbers="2-20|21-25|26-40|41-61|62-78"><script
+                                            data-line-numbers="2-20|21-25"><script
             type="text/template">
           {
             "entityMappings": [
@@ -238,10 +235,110 @@
           <small>data/games/BasicPacMan/core/maps/level1.json</small>
         </p>
       </section>
+      <section data-auto-animate>
+        <h3 data-id="title">Levels</h3>
+        <div class="r-hstack justify-center">
+        <pre data-id="code-animation" style="width:60%"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                                              data-line-numbers="5-15"><script
+            type="text/template">
+          {
+            ...
+            "layout": [
+              ...
+              "5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 0 0 0 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "0 0 0 0 0 0 0 0 0 0 5 5 0 0 0 0 5 5 0 0 0 0 0 0 0 0 0 0",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 0 0 0 0 0 0 1 0 0 0 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 5",
+              "5 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 6 5 5 5 5 5 5 5 5 5"
+              ...
+            ],
+            ...
+          }
+			</script></code></pre>
+        <img
+            src="https://i.gyazo.com/c651d21497f701c5afdc48b65d48afdf.png"
+            alt="Level Example"
+            data-preview-image="https://i.gyazo.com/c651d21497f701c5afdc48b65d48afdf.png"
+            style="width: 35%; margin-left: 10px;"
+        />
+        </div>
+        <p data-id="description">
+          <small>data/games/BasicPacMan/core/maps/level1.json</small>
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h3 data-id="title">Levels</h3>
+        <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+                                            data-line-numbers="13-31|34-49"><script
+            type="text/template">
+          {
+            "entityMappings": [
+              {
+                "entity": "redghost",
+                "id": 2
+              },
+              {
+                "entity": "cherry",
+                "id": 8
+              },
+            ],
+            ...
+            "spawnEvents": [
+              {
+                "entityType": "8",
+                "spawnCondition": {
+                  "type": "ScoreBased",
+                  "parameters": {
+                    "amount": 700
+                  }
+                },
+                "x": 13.5,
+                "y": 17,
+                "mode": "Default",
+                "despawnCondition": {
+                  "type": "ScoreBased",
+                  "parameters": {
+                    "amount": 1500
+                  }
+                }
+              },
+              ...
+              ],
+              "modeChangeEvents": [
+                {
+                  "entityType": "2",
+                  "modeChangeInfo": {
+                    "originalMode": "Default",
+                    "transitionMode": "Scatter",
+                    "revertTime" : 7,
+                    "transitionTime" : 1
+                  },
+                  "changeCondition": {
+                    "type": "TimeElapsed",
+                    "parameters": {
+                      "amount": 7
+                    }
+                  }
+                },
+              ]
+          }
+
+			</script></code></pre>
+        <p data-id="description">
+          <small>data/games/BasicPacMan/core/maps/level1.json</small>
+        </p>
+      </section>
       <!--might break the mode part down into different slides so code on one half and the entity on the other-->
       <section data-auto-animate>
         <h3 data-id="title">Entities</h3>
-        <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
+        <div class="r-hstack justify-center">
+        <pre data-id="code-animation" style="width:60%"><code class="hljs json" style="font-size: 0.8rem;" data-trim
                                             data-line-numbers="2-4|7-25|27-44"><script
             type="text/template">
         {
@@ -294,6 +391,21 @@
         }
 
 			</script></code></pre>
+          <div class="r-vstack" style="width: 20%;">
+            <img
+                src="https://i.gyazo.com/f22947d0d03c0e0314ae2cca8923c2ad.png"
+                alt="BlueGhost"
+                data-preview-image="https://i.gyazo.com/f22947d0d03c0e0314ae2cca8923c2ad.png"
+                style="margin: 10px;"
+            />
+            <img
+                src="https://i.gyazo.com/959a12accf4d5a72af644ef9de600f00.png"
+                alt="FrightenedGhost"
+                data-preview-image="https://i.gyazo.com/959a12accf4d5a72af644ef9de600f00.png"
+                style="margin: 10px;"
+            />
+          </div>
+        </div>
         <p data-id="description">
           <small>data/games/BasicPacMan/core/entities/blueghost.json</small>
         </p>
@@ -365,7 +477,7 @@
             </script></code></pre>
           </div>
           <div style="width: 30%;"> <pre data-id="code-animation"><code class="hljs json" style="font-size: 0.8rem;" data-trim
-                                                                        data-line-numbers="4-5"
+                                                                        data-line-numbers="4"
           ><script
               type="text/template">
               MISSING_KEY=Clave faltante
@@ -444,22 +556,189 @@
 
     <!-- API's -->
     <section data-auto-animate>
-      <h1 data-id="title">APIs</h1>
+      <section data-auto-animate>
+        <h1 data-id="title">APIs</h1>
+      </section>
     </section>
 
     <!-- Use Cases -->
     <section data-auto-animate>
-      <h1 data-id="title">Use Cases</h1>
+      <section data-auto-animate>
+        <h1 data-id="title">Use Cases</h1>
+      </section>
     </section>
 
     <!-- Designs -->
     <section data-auto-animate>
-      <h1 data-id="title">Use Cases</h1>
+      <section data-auto-animate>
+        <h1 data-id="title">Designs</h1>
+      </section>
     </section>
 
-    <!-- Team -->
+    <!-- Team: Done -->
     <section data-auto-animate>
-      <h1 data-id="title">Team</h1>
+      <section data-auto-animate>
+        <h1 data-id="title">Team</h1>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Plan vs Reality</h2>
+        <div class="r-hstack justify-center">
+          <div style="width: 45%;" data-id="visual-1">
+            <div class="r-vstack">
+              <img
+                  src="https://i.gyazo.com/02dc69f8ae1dd3f21265b4228acc8256.png"
+                  alt="Splash"
+                  data-preview-image="https://i.gyazo.com/02dc69f8ae1dd3f21265b4228acc8256.png"
+                  style="height: 120px; margin: 0px;"
+              />
+              <img
+                  src="https://i.gyazo.com/b5075e16b13102c32f4d7f4d3369f4ee.png"
+                  alt="Selector"
+                  data-preview-image="https://i.gyazo.com/b5075e16b13102c32f4d7f4d3369f4ee.png"
+                  style="height: 120px; margin: 0px;"
+              />
+              <img
+                  src="https://i.gyazo.com/50fc873d13553a6e2da4f7bc5d622ed1.png"
+                  alt="Player"
+                  data-preview-image="https://i.gyazo.com/50fc873d13553a6e2da4f7bc5d622ed1.png"
+                  style="height: 120px; margin: 0px;"
+
+              />
+              <img
+                  src="https://i.gyazo.com/88367e3a1a0ec87329459633f8e65a8c.png"
+                  alt="Authoring"
+                  data-preview-image="https://i.gyazo.com/88367e3a1a0ec87329459633f8e65a8c.png"
+                  style="height: 120px; margin: 0px;"
+
+              />
+            </div>
+          </div>
+          <div style="width: 45%;" data-id="visual-2">
+            <div class="r-vstack">
+              <img
+                  src="https://i.gyazo.com/94881ad980c4feba619c0370e0a79a22.png"
+                  alt="Splash"
+                  data-preview-image="https://i.gyazo.com/94881ad980c4feba619c0370e0a79a22.png"
+                  style="height: 120px; margin: 0px;"
+              />
+              <img
+                  src="https://i.gyazo.com/935351948d9be5712923ad55812c3b26.png"
+                  alt="Selector"
+                  data-preview-image="https://i.gyazo.com/935351948d9be5712923ad55812c3b26.png"
+                  style="height: 120px; margin: 0px;"
+              />
+              <img
+                  src="https://i.gyazo.com/8726e718d2e78c39f827dc77baab6985.png"
+                  alt="Player"
+                  data-preview-image="https://i.gyazo.com/8726e718d2e78c39f827dc77baab6985.png"
+                  style="height: 120px; margin: 0px;"
+
+              />
+              <img
+                  src="https://i.gyazo.com/eed05f2efcdc46dba80e4edadc0820c1.png"
+                  alt="Authoring"
+                  data-preview-image="https://i.gyazo.com/eed05f2efcdc46dba80e4edadc0820c1.png"
+                  style="height: 120px; margin: 0px;"
+
+              />
+            </div>
+          </div>
+        </div>
+        <p data-id="description">
+          <small
+          >Overall design remained relatively consistent in layout.</small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Plan vs Reality</h2>
+        <div class="r-hstack justify-center">
+          <div style="width: 45%;" data-id="visual-2">
+            Initial Structure
+          </div>
+          <div style="width: 45%;" data-id="visual-1">
+            Actual Implementation of Main Classes
+          </div>
+        </div>
+        <p data-id="description">
+          <small
+          >Main class hierarchy remained consistent although specific implementations changed.</small
+          >
+        </p>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">4 Major Events</h2>
+        <div class="r-hstack justify-center">
+          <div style="width: 22%;" data-id="visual">
+            Initial Design Meeting
+          </div>
+          <div style="width: 22%;  margin-left: 2%;" data-id="visual-1">
+            Splitting Config into Multiple Files
+          </div>
+          <div style="width: 22%;  margin-left: 2%;" data-id="visual-2">
+            Going End to End
+          </div>
+          <div style="width: 22%;  margin-left: 2%;" data-id="visual">
+            Building out Level Structure
+          </div>
+        </div>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Worked To Improve</h2>
+        <div class="r-hstack justify-center">
+          <div style="width: 45%;" data-id="visual-1">
+            Pair Programming
+          </div>
+          <div style="width: 45%;" data-id="visual-2">
+            Smaller Tasks
+          </div>
+        </div>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Team Contract</h2>
+        <div class="r-hstack justify-center">
+          <div style="width: 90%;" data-id="visual-3">
+            Was Good
+          </div>
+        </div>
+      </section>
+      <section data-auto-animate>
+        <h2 data-id="title">Individual Learning</h2>
+        <div class="r-hstack justify-center">
+          <div style="width: 22%;" data-id="visual">
+            <h6>Agile Process</h6>
+            <small><ul>
+              <li>splitting tasks to smaller goals</li>
+              <li>weekly standups</li>
+              <li>clear deadlines</li>
+            </ul></small>
+          </div>
+          <div style="width: 22%; margin-left: 2%;" data-id="visual">
+            <h6>Large Project</h6>
+            <small><ul>
+              <li>making sure everyone on the same page</li>
+              <li>reduce merge conflicts through feature branches</li>
+              <li>making tasks before theres code</li>
+            </ul></small>
+          </div>
+          <div style="width: 22%; margin-left: 2%;" data-id="visual">
+            <h6>Positive Culture</h6>
+            <small><ul>
+              <li>in person coding sessions</li>
+              <li>open communication if theres issues or blockers</li>
+              <li>taking oppurtunity to actively try to help</li>
+            </ul></small>
+          </div>
+          <div style="width: 22%;  margin-left: 2%;" data-id="visual">
+            <h6>Solve Problems</h6>
+            <small><ul>
+              <li>not being accusitory</li>
+              <li>being honest about struggles, confusion, schedule conflicts</li>
+              <li>planning code and issues</li>
+            </ul></small>
+          </div>
+        </div>
+      </section>
     </section>
   </div>
 </div>
