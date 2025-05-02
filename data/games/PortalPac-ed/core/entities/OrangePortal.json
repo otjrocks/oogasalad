@@ -1,0 +1,20 @@
+{
+  "entityType" : {
+    "name" : "OrangePortal",
+    "blocks" : [ ]
+  },
+  "modes" : [ {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "assets/portal_orange.png",
+      "tileWidth" : 1024,
+      "tileHeight" : 1024,
+      "tilesToCycle" : 6,
+      "animationSpeed" : 5.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "None"
+    },
+    "movementSpeed" : 0.0
+  } ]
+}
