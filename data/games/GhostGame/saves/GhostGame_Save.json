@@ -1,0 +1,8 @@
+{
+  "saveName" : "GhostGame_Save",
+  "currentLevel" : 0,
+  "totalScore" : 0,
+  "lives" : 10,
+  "highScore" : 2460,
+  "levelOrder" : [ 0, 1 ]
+}
