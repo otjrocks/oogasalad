@@ -1,8 +1,9 @@
 {
   "metadata" : {
-    "gameTitle" : "Play as Ghost",
+    "gameTitle" : "GhostPac",
     "author" : "Ishan Madan",
-    "gameDescription" : "Play as the ghost and kill PacMan"
+    "gameDescription" : "Play as the ghost and kill PacMan",
+    "image" : "assets/banner.png"
   },
   "defaultSettings" : {
     "gameSpeed" : 1.0,
