@@ -1,24 +1,23 @@
 /**
- * <p>
- * Contains classes that define different collision strategies for handling entity interactions during gameplay.
- * Each strategy modifies the game state based on specific collision outcomes, such as updating lives,
- * changing modes, or teleporting entities.
- * </p>
+ * Provides a set of collision strategies used to define specific outcomes when entities in the game interact.
  *
- * <p><b>Strategy Classes:</b></p>
+ * <p>This package is part of the Strategy design pattern that allows game designers to customize entity behaviors
+ * without modifying existing code. Each strategy implements the
+ * {@link oogasalad.player.model.strategies.collision.CollisionStrategyInterface} and defines a unique
+ * response to a collision event. These responses can include teleportation, halting movement, resetting game state,
+ * or removing entities from the game map.</p>
+ *
+ * <p>Example strategies include:</p>
  * <ul>
- *   <li>{@code AddTailStrategy} - Adds a tail segment to the entity upon collision.</li>
- *   <li>{@code ChangeModeForEntityStrategy} - Changes the mode of a specific entity.</li>
- *   <li>{@code ChangeModeForTypeStrategy} - Changes the mode of all entities of a given type.</li>
- *   <li>{@code ConsumeStrategy} - Removes the collided entity from the game.</li>
- *   <li>{@code RemoveAllEntitiesOfTypeStrategy} - Removes all entities of a specified type.</li>
- *   <li>{@code ResetTimeElapsedStrategy} - Resets time tracking for an entity or system.</li>
- *   <li>{@code ReturnToSpawnLocationStrategy} - Returns an entity to its original spawn location.</li>
- *   <li>{@code StopStrategy} - Stops the entity’s movement.</li>
- *   <li>{@code TeleportToPartnerPortalStrategy} - Teleports the entity to its linked portal partner.</li>
- *   <li>{@code TemporaryModeChangeStrategy} - Temporarily changes the entity’s mode for a duration.</li>
- *   <li>{@code UpdateLivesStrategy} - Modifies the number of lives.</li>
- *   <li>{@code UpdateScoreStrategy} - Modifies the player’s score.</li>
+ *   <li>{@link oogasalad.player.model.strategies.collision.StopStrategy}
+ *   – Stops the movement of an entity upon collision.</li>
+ *   <li>{@link oogasalad.player.model.strategies.collision.ReturnToSpawnLocationStrategy}
+ *   – Sends the entity back to its spawn location.</li>
+ *   <li>{@link oogasalad.player.model.strategies.collision.RemoveAllEntitiesOfTypeStrategy}
+ *   – Clears all entities of a specified type from the map.</li>
  * </ul>
+ *
+ * <p>This extensible architecture allows the game engine to remain open for extension and closed for modification,
+ * promoting clean and modular design.</p>
  */
 package oogasalad.player.model.strategies.collision;

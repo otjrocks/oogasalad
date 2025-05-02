@@ -1,0 +1,242 @@
+{
+  "entityMappings" : [ {
+    "entity" : "Pacman",
+    "id" : 1
+  }, {
+    "entity" : "PinkGhost",
+    "id" : 2
+  }, {
+    "entity" : "Wall",
+    "id" : 3
+  }, {
+    "entity" : "Cherry",
+    "id" : 4
+  }, {
+    "entity" : "Strawberry",
+    "id" : 5
+  }, {
+    "entity" : "Dot",
+    "id" : 6
+  }, {
+    "entity" : "BlueGhost",
+    "id" : 7
+  }, {
+    "entity" : "OrangeGhost",
+    "id" : 8
+  }, {
+    "entity" : "PowerPellet",
+    "id" : 9
+  }, {
+    "entity" : "RedGhost",
+    "id" : 10
+  } ],
+  "mapInfo" : {
+    "width" : 28,
+    "height" : 31,
+    "backgroundImagePath" : "assets/background.png"
+  },
+  "layout" : [ "3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0", "3.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 3.0 3.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 3.0", "3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0", "3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0", "3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0", "3.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 3.0", "3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0", "3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0", "3.0 6.0 6.0 6.0 6.0 6.0 6.0 3.0 3.0 6.0 6.0 6.0 6.0 3.0 3.0 6.0 6.0 6.0 6.0 3.0 3.0 6.0 6.0 6.0 6.0 6.0 6.0 3.0", "3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 0 3.0 3.0 0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0", "3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 0 3.0 3.0 0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0", "3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 0 0 0 0 0 0 0 0 0 0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0", "3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0", "3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0", "0 0 0 0 0 0 6.0 0 0 0 3.0 3.0 0 0 0 0 3.0 3.0 0 0 0 6.0 0 0 0 0 0 0", "3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0", "3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0", "3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 0 0 0 0 0 0 1.0 0 0 0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0", "3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0", "3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0", "3.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 3.0 3.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 3.0", "3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0", "3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 6.0 3.0", "3.0 6.0 6.0 6.0 3.0 3.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 0 0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 3.0 3.0 6.0 6.0 6.0 3.0", "3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0", "3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0", "3.0 6.0 6.0 6.0 6.0 6.0 6.0 3.0 3.0 6.0 6.0 6.0 6.0 3.0 3.0 6.0 6.0 6.0 6.0 3.0 3.0 6.0 6.0 6.0 6.0 6.0 6.0 3.0", "3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0", "3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0 3.0 6.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 6.0 3.0", "3.0 9.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 6.0 9.0 3.0", "3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0 3.0" ],
+  "spawnEvents" : [ {
+    "entityType" : "4",
+    "x" : 13.5,
+    "y" : 17.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "ScoreBased",
+      "parameters" : {
+        "amount" : 700
+      }
+    },
+    "despawnCondition" : {
+      "type" : "ScoreBased",
+      "parameters" : {
+        "amount" : 1500
+      }
+    }
+  }, {
+    "entityType" : "10",
+    "x" : 13.5,
+    "y" : 11.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 0
+      }
+    },
+    "despawnCondition" : {
+      "type" : "Always",
+      "parameters" : { }
+    }
+  }, {
+    "entityType" : "2",
+    "x" : 13.5,
+    "y" : 11.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 3
+      }
+    },
+    "despawnCondition" : {
+      "type" : "Always",
+      "parameters" : { }
+    }
+  }, {
+    "entityType" : "7",
+    "x" : 13.5,
+    "y" : 11.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 5
+      }
+    },
+    "despawnCondition" : {
+      "type" : "Always",
+      "parameters" : { }
+    }
+  }, {
+    "entityType" : "8",
+    "x" : 13.5,
+    "y" : 11.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 9
+      }
+    },
+    "despawnCondition" : {
+      "type" : "Always",
+      "parameters" : { }
+    }
+  }, {
+    "entityType" : "10",
+    "x" : 13.5,
+    "y" : 14.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 0
+      }
+    },
+    "despawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 0
+      }
+    }
+  }, {
+    "entityType" : "2",
+    "x" : 15.0,
+    "y" : 14.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 0
+      }
+    },
+    "despawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 3
+      }
+    }
+  }, {
+    "entityType" : "7",
+    "x" : 12.0,
+    "y" : 14.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 0
+      }
+    },
+    "despawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 5
+      }
+    }
+  }, {
+    "entityType" : "8",
+    "x" : 13.5,
+    "y" : 14.0,
+    "mode" : "Default",
+    "spawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 0
+      }
+    },
+    "despawnCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 9
+      }
+    }
+  } ],
+  "modeChangeEvents" : [ {
+    "entityType" : "10",
+    "modeChangeInfo" : {
+      "originalMode" : "Default",
+      "transitionMode" : "Frightened",
+      "revertTime" : 9.99999999E8,
+      "transitionTime" : 1.0
+    },
+    "changeCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 10
+      }
+    }
+  }, {
+    "entityType" : "7",
+    "modeChangeInfo" : {
+      "originalMode" : "Default",
+      "transitionMode" : "Frightened",
+      "revertTime" : 9.99999999E8,
+      "transitionTime" : 1.0
+    },
+    "changeCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 10
+      }
+    }
+  }, {
+    "entityType" : "8",
+    "modeChangeInfo" : {
+      "originalMode" : "Default",
+      "transitionMode" : "Frightened",
+      "revertTime" : 9.99999999E8,
+      "transitionTime" : 1.0
+    },
+    "changeCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 10
+      }
+    }
+  }, {
+    "entityType" : "2",
+    "modeChangeInfo" : {
+      "originalMode" : "Default",
+      "transitionMode" : "Frightened",
+      "revertTime" : 9.99999999E8,
+      "transitionTime" : 1.0
+    },
+    "changeCondition" : {
+      "type" : "TimeElapsed",
+      "parameters" : {
+        "amount" : 10
+      }
+    }
+  } ]
+}

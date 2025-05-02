@@ -1,28 +1,36 @@
 /**
- * <p>
- * Contains control strategies that define how entities behave or move within the game.
- * This includes both user-input-based controls and autonomous behavior driven by AI strategies
- * such as pathfinding and targeting.
- * </p>
+ * Provides control strategies for managing entity behavior, including player input, AI movement,
+ * and navigation toward dynamic or static targets.
  *
- * <p><b>Main Strategy Classes:</b></p>
+ * <p>This package contains the core logic that drives how game entities make movement decisions or respond to input.
+ * Strategies implement the {@link oogasalad.player.model.strategies.control.ControlStrategyInterface}, allowing
+ * flexible, interchangeable control logic.</p>
+ *
+ * <p>Example included control strategies:</p>
  * <ul>
- *   <li>{@code ConditionalControlStrategy} - Chooses behavior based on specific in-game conditions.</li>
- *   <li>{@code ConstantDirectionControlStrategy} - Moves an entity in a fixed direction continuously.</li>
- *   <li>{@code ControlManager} - Oversees and coordinates control strategies for all entities.</li>
- *   <li>{@code ControlStrategyHelperMethods} - Utility methods used across different control strategies.</li>
- *   <li>{@code FollowEntityControlStrategy} - Follows a specified target entity around the map.</li>
- *   <li>{@code JumpControlStrategy} - Allows entities to move in large discrete steps ("jumps").</li>
- *   <li>{@code KeyboardControlStrategy} - Accepts keyboard input for user-controlled entity movement.</li>
- *   <li>{@code NoneControlStrategy} - Represents entities with no control or fixed/static behavior.</li>
- *   <li>{@code PinballLaunchControlStrategy} - Launches entities with specific physics-style control (e.g., pinball launcher).</li>
- *   <li>{@code TargetControlStrategy} - Moves entities toward a target computed by a targeting strategy.</li>
+ *   <li>{@link oogasalad.player.model.strategies.control.KeyboardControlStrategy}
+ *   – Allows entity movement via keyboard input.</li>
+ *   <li>{@link oogasalad.player.model.strategies.control.NoneControlStrategy}
+ *   – A no-op strategy for stationary or passive entities.</li>
+ *   <li>{@link oogasalad.player.model.strategies.control.TargetControlStrategy}
+ *   – Moves entities toward calculated targets using configurable pathfinding and targeting.</li>
  * </ul>
  *
- * <p><b>Sub-packages:</b></p>
+ * <p>Nested subpackages:</p>
  * <ul>
- *   <li>{@code pathfinding} - Contains strategies for determining movement paths toward targets using algorithms like BFS and Euclidean distance.</li>
- *   <li>{@code targetcalculation} - Provides strategies for selecting and computing target locations or entities.</li>
+ *   <li><b>pathfinding</b> – Defines algorithms like BFS or Euclidean for navigating game maps
+ *       ({@link oogasalad.player.model.strategies.control.pathfinding}).</li>
+ *   <li><b>targetcalculation</b> – Determines target positions using heuristics or entity positions
+ *       ({@link oogasalad.player.model.strategies.control.targetcalculation}).</li>
  * </ul>
+ *
+ * <p>Utilities:</p>
+ * <ul>
+ *   <li>{@link oogasalad.player.model.strategies.control.ControlManager}
+ *   – Reflection-based utility for retrieving available strategy types and their configuration requirements.</li>
+ * </ul>
+ *
+ * <p>This package and its subpackages are designed to be extensible and configuration-driven,
+ * promoting modular AI and user control logic within the game engine.</p>
  */
 package oogasalad.player.model.strategies.control;
