@@ -4,5 +4,5 @@
   "totalScore" : 0,
   "lives" : 3,
   "highScore" : 700,
-  "levelOrder" : [ 0 ]
+  "levelOrder" : [ 0, 1 ]
 }

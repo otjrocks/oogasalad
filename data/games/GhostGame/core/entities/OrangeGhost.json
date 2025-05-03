@@ -1,0 +1,84 @@
+{
+  "entityType" : {
+    "name" : "OrangeGhost",
+    "blocks" : [ ]
+  },
+  "modes" : [ {
+    "name" : "Dead",
+    "image" : {
+      "imagePath" : "assets/eyeghost.png",
+      "tileWidth" : 28,
+      "tileHeight" : 28,
+      "tilesToCycle" : 1,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "Target",
+      "pathFindingStrategy" : "Euclidean",
+      "targetCalculationConfig" : {
+        "targetCalculationStrategy" : "TargetLocation",
+        "targetX" : 14.0,
+        "targetY" : 14.0
+      }
+    },
+    "movementSpeed" : 1.0
+  }, {
+    "name" : "Frightened",
+    "image" : {
+      "imagePath" : "assets/frightenedghost.png",
+      "tileWidth" : 28,
+      "tileHeight" : 28,
+      "tilesToCycle" : 4,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "Target",
+      "pathFindingStrategy" : "Random",
+      "targetCalculationConfig" : {
+        "targetCalculationStrategy" : "TargetLocation",
+        "targetX" : 14.0,
+        "targetY" : 14.0
+      }
+    },
+    "movementSpeed" : 1.0
+  }, {
+    "name" : "Flashing",
+    "image" : {
+      "imagePath" : "assets/flashingghost.png",
+      "tileWidth" : 28,
+      "tileHeight" : 28,
+      "tilesToCycle" : 4,
+      "animationSpeed" : 1.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "Target",
+      "pathFindingStrategy" : "Random",
+      "targetCalculationConfig" : {
+        "targetCalculationStrategy" : "TargetLocation",
+        "targetX" : 14.0,
+        "targetY" : 14.0
+      }
+    },
+    "movementSpeed" : 1.0
+  }, {
+    "name" : "Default",
+    "image" : {
+      "imagePath" : "assets/orangeghost.png",
+      "tileWidth" : 28,
+      "tileHeight" : 28,
+      "tilesToCycle" : 4,
+      "animationSpeed" : 5.0
+    },
+    "controlConfig" : {
+      "controlStrategy" : "Conditional",
+      "radius" : 8,
+      "pathFindingStrategyInRadius" : "Euclidean",
+      "pathFindingStrategyOutRadius" : "Random",
+      "targetCalculationConfig" : {
+        "targetCalculationStrategy" : "TargetEntity",
+        "targetType" : "Pacman"
+      }
+    },
+    "movementSpeed" : 1.0
+  } ]
+}

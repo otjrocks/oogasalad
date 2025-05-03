@@ -1,0 +1,47 @@
+{
+  "metadata" : {
+    "gameTitle" : "PacMaze",
+    "author" : "Austin Huang",
+    "gameDescription" : "Pacman must find dot within a certain time",
+    "image" : "assets/banner.png"
+  },
+  "defaultSettings" : {
+    "gameSpeed" : 1.0,
+    "startingLives" : 1,
+    "initialScore" : 0,
+    "winCondition" : {
+      "type" : "EntityBased",
+      "entityType" : "dot"
+    },
+    "loseCondition" : {
+      "type" : "TimeBased",
+      "amount" : 20
+    },
+    "cheatTypes": ["NEXT_LEVEL"]
+  },
+  "levels" : [ {
+    "levelMap" : "level1"
+  }, {
+    "levelMap" : "level2"
+    }
+  ],
+  "collisions" : [ {
+    "entityA" : "dot",
+    "modeA" : "Default",
+    "entityB" : "pacman",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Consume"
+    } ],
+    "eventsB" : [ ]
+  }, {
+    "entityA" : "pacman",
+    "modeA" : "Default",
+    "entityB" : "wall",
+    "modeB" : "Default",
+    "eventsA" : [ {
+      "type" : "Stop"
+    } ],
+    "eventsB" : [ ]
+  } ]
+}

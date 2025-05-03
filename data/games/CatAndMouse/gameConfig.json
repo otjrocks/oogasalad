@@ -2,7 +2,7 @@
   "metadata" : {
     "gameTitle" : "Pac-Rat",
     "author" : "CS308 Team",
-    "gameDescription" : "Shows different controlTypes with strategyConfig and collision/mode logic.",
+    "gameDescription" : "Shows reskinning of pac man.",
     "image" : "assets/banner.png"
   },
   "defaultSettings" : {
