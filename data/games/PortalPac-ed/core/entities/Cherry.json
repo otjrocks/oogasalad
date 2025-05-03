@@ -9,7 +9,7 @@
       "imagePath" : "assets/cherry.png",
       "tileWidth" : 28,
       "tileHeight" : 28,
-      "tilesToCycle" : 6,
+      "tilesToCycle" : 1,
       "animationSpeed" : 1.0
     },
     "controlConfig" : {
