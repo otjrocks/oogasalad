@@ -50,19 +50,33 @@
     } ],
     "eventsB" : [ ]
   }, {
-    "entityA" : "Pacman",
-    "modeA" : "Default",
-    "entityB" : "OrangePortal",
-    "modeB" : "Default",
-    "eventsA" : [ ],
-    "eventsB" : [ ]
+    "entityA": "Pacman",
+    "modeA": "Default",
+    "entityB": "OrangePortal",
+    "modeB": "Default",
+    "eventsA": [{
+      "type": "TeleportToPartner",
+      "portalType": "OrangePortal",
+      "partnerType": "BluePortal",
+      "randomPartner": false,
+      "offsetX": 1.0,
+      "offsetY": 0.0
+    }],
+    "eventsB": []
   }, {
-    "entityA" : "Pacman",
-    "modeA" : "Default",
-    "entityB" : "BluePortal",
-    "modeB" : "Default",
-    "eventsA" : [ ],
-    "eventsB" : [ ]
+    "entityA": "Pacman",
+    "modeA": "Default",
+    "entityB": "BluePortal",
+    "modeB": "Default",
+    "eventsA": [{
+      "type": "TeleportToPartner",
+      "portalType": "BluePortal",
+      "partnerType": "OrangePortal",
+      "randomPartner": false,
+      "offsetX": 0.0,
+      "offsetY": 0.0
+    }],
+    "eventsB": []
   }, {
     "entityA" : "Ghost",
     "modeA" : "Default",
@@ -73,18 +87,32 @@
     } ],
     "eventsB" : [ ]
   }, {
-    "entityA" : "Ghost",
-    "modeA" : "Default",
-    "entityB" : "OrangePortal",
-    "modeB" : "Default",
-    "eventsA" : [ ],
-    "eventsB" : [ ]
+    "entityA": "Ghost",
+    "modeA": "Default",
+    "entityB": "OrangePortal",
+    "modeB": "Default",
+    "eventsA": [{
+      "type": "TeleportToPartner",
+      "portalType": "OrangePortal",
+      "partnerType": "BluePortal",
+      "randomPartner": true,
+      "offsetX": 0.0,
+      "offsetY": 0.0
+    }],
+    "eventsB": []
   }, {
-    "entityA" : "Ghost",
-    "modeA" : "Default",
-    "entityB" : "BluePortal",
-    "modeB" : "Default",
-    "eventsA" : [ ],
-    "eventsB" : [ ]
+    "entityA": "Ghost",
+    "modeA": "Default",
+    "entityB": "BluePortal",
+    "modeB": "Default",
+    "eventsA": [{
+      "type": "TeleportToPartner",
+      "portalType": "BluePortal",
+      "partnerType": "OrangePortal",
+      "randomPartner": true,
+      "offsetX": 0.0,
+      "offsetY": 0.0
+    }],
+    "eventsB": []
   } ]
 }
