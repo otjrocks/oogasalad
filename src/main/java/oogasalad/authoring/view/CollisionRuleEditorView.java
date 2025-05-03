@@ -311,7 +311,6 @@ public class CollisionRuleEditorView {
         targetList.add(event);
       }
     } catch (IllegalArgumentException e) {
-      System.out.println(targetList);
       showError("Invalid " + errorContext + ": " + e.getMessage());
     }
   }
