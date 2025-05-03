@@ -15,6 +15,6 @@
     "controlConfig" : {
       "controlStrategy" : "Keyboard"
     },
-    "movementSpeed" : 1.0
+    "movementSpeed" : 1.5
   } ]
 }

@@ -21,7 +21,8 @@ import oogasalad.engine.records.config.model.collisionevent.*;
     @JsonSubTypes.Type(value = RemoveAllEntitiesOfTypeCollisionEventRecord.class, name = "RemoveAllEntitiesOfType"),
     @JsonSubTypes.Type(value = TemporaryModeChangeCollisionEventRecord.class, name = "TemporaryModeChange"),
     @JsonSubTypes.Type(value = ChangeModeForEntityCollisionEventRecord.class, name = "ChangeModeForEntity"),
-    @JsonSubTypes.Type(value = AddTailCollisionEventRecord.class, name = "AddTail")
+    @JsonSubTypes.Type(value = AddTailCollisionEventRecord.class, name = "AddTail"),
+    @JsonSubTypes.Type(value = TeleportToPartnerCollisionEventRecord.class, name = "TeleportToPartner")
 })
 public interface CollisionEventInterface {
 
