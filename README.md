@@ -5,7 +5,7 @@
 ### Authors: Ishan Madan (im121), Owen Jennings (otj4), Jessica Chen (jc939), Angela Predolac (ap721), William He (wwh15), Luke Fu (lmf59), Austin Huang (ash110), Troy Ludwig (tdl21)
 
 This project implements an authoring environment and player for the traditional arcade game,
-Pac-Man.
+Pac-Man and supports multiple game variations.
 
 ### Timeline
 
@@ -18,6 +18,7 @@ Pac-Man.
 ### Attributions
 
 * Resources used for learning (including AI assistance)
+    * Java and JavaFX online documentation.
 
 * Resources used directly (including AI assistance)
     * Our project uses Google Fonts for our game fonts. The specific fonts we use are Inter and
@@ -113,6 +114,9 @@ Pac-Man.
   * In authoring environment can configure cheat codes to add to your game, if these are added, then within the game, the cheat key can be used.
 
 ### Assignment Impressions
+
+* This assignment was a challenge that strengthened our ability to work in large groups and collaborate with other software developers. The open-ended nature of the project allowed us to clearly display some of the design techniques that we have learned in the class, especially design patterns. 
+* We were impressed by the flexibility of our design and the breadth of game variations that could be made in our engine originally designed around the PacMan game.
 
 
 
