@@ -25,6 +25,7 @@
     - I worked on creating strategy interfaces and implementations, specifically the collision and gameOutcome strategies, and integrating some of this logic into the game. I implemented the logic for detecting win and loss conditions from config and displaying the game outcome label and buttons for level progression. I created the power pellet entity and strategy for mode changes. I built the game selector screen, including the game cards to select games made by the team and the upload file button. I also worked on small miscellaneous tasks like styling and language management.
 
 - Troy Ludwig
+    - I worked on implementing entity sprites/animations and developing mode change events for shifting entity behaviors mid-game. I developed several collision strategies including all of those that shift the mode of an entity type or individual entity, and the addTailStrategy for my snake implementation. I also developed the initial input manager for controllable entities and refactored to avoid having JavaFX aspects within model packages. I took on miscellaneous tasks like removing hard coded values.
 
 ## Design Goals
 

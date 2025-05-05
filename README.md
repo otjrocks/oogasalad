@@ -5,7 +5,7 @@
 ### Authors: Ishan Madan (im121), Owen Jennings (otj4), Jessica Chen (jc939), Angela Predolac (ap721), William He (wwh15), Luke Fu (lmf59), Austin Huang (ash110), Troy Ludwig (tdl21)
 
 This project implements an authoring environment and player for the traditional arcade game,
-Pac-Man.
+Pac-Man and supports multiple game variations.
 
 ### Timeline
 
@@ -18,6 +18,7 @@ Pac-Man.
 ### Attributions
 
 * Resources used for learning (including AI assistance)
+    * Java and JavaFX online documentation.
 
 * Resources used directly (including AI assistance)
     * Our project uses Google Fonts for our game fonts. The specific fonts we use are Inter and
@@ -27,6 +28,7 @@ Pac-Man.
     * For the Cat and Mouse game got insporation from this
       game: https://www.cbc.ca/kids/games/play/pac-rat, aesprite to recreate some of these sprites
     * Additional game sprites for other games were modified from https://www.spriters-resource.com/
+      * This specific sprite sheet was modified for the Flap-Man game: https://www.spriters-resource.com/mobile/flappybird/sheet/59894/
     * Image editing software for
       sprites: https://imageonline.co/repeat-image-generator.php, https://merge.imageonline.co/
     * For the dinasour games: https://www.spriters-resource.com/browser_games/googledinosaurrungame/sheet/160414/
@@ -42,7 +44,7 @@ Pac-Man.
   * src/main/java/oogasalad/Main.java
 
 * Data files needed:
-  * The files within /data for loading game player games as well as the wizard system and /src/resources for internal documentation
+  * The files within /data for loading game player games as well as the wizard system and within /src/main/resources for internal documentation, language support, and css styling.
 
 * Interesting data files:
   * The files in data/games/BasicPacMan code pacman mostly as in the arcade game with a few modifications
@@ -73,8 +75,8 @@ Pac-Man.
 * Known Bugs:
   * If you restart a game, if an entity was wrapping on restart, it throws an invalid placement error when you try to reset, however if you return to home and click the game again, the error does not persist.
   * The player's movement is maintained after restarting (i.e if you were moving right and died, the next game you play, your player continues moving right).
-  * If you restart a game, you can no longer pause the game.
-  Since these bugs are not game breaking, we just did not have time to fix them before the codee freeze.
+  * If you restart a game, you can no longer pause the game, the button does not function and you have to return to the home screen to fix this behavior.
+  Since these bugs are not game breaking, we just did not have time to fix them before the code freeze.
 
 * Features implemented:
   * Authoring Environment
@@ -94,7 +96,7 @@ Pac-Man.
     * Show any number of games automattically, can add a new game by putting the game folder (i.e. from the output of authoring environment) into data/games
     * On the splash screen can see information about each game by clicking the i icon under the card for the game
     * Using return to home can select any game to play without restarting the program
-    * Pause a game during play by using the pause button at the top or the pause cheat codee when enabled.
+    * Pause a game during play by using the pause button at the top or the pause cheat code when enabled.
     * Can see HUD information such as high scores (which are through successive runs of the program), score, lives, etc..
     * Save progress in a game to restart later, the specific save points you can save progress are just between levels. You can do this manually by hitting save game between the level transitions, it also does it automatically by saving your level every so often, then if you exit and replay, the game will load on your last level.
 
@@ -111,8 +113,12 @@ Pac-Man.
 
 * Noteworthy Features:
   * In authoring environment can configure cheat codes to add to your game, if these are added, then within the game, the cheat key can be used.
+  * Infinitely spawning levels can be created with a combination of spawn entity events and the reset time collision strategy (see Flap-Man for an example of infinitely spawning pipes).
 
 ### Assignment Impressions
+
+* This assignment was a challenge that strengthened our ability to work in large groups and collaborate with other software developers. The open-ended nature of the project allowed us to clearly display some of the design techniques that we have learned in the class, especially design patterns. 
+* We were impressed by the flexibility of our design and the breadth of game variations that could be made in our engine originally designed around the PacMan game.
 
 
 
